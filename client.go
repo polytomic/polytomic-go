@@ -1,8 +1,28 @@
 package polytomic
 
+import "github.com/carlmjohnson/requests"
+
 type Client struct {
+	host          string
+	deploymentKey string
 }
 
-func NewClient() *Client {
-	return &Client{}
+func NewClient(host, key string) *Client {
+	return &Client{
+		host:          host,
+		deploymentKey: key,
+	}
+}
+
+func (c *Client) Workspaces() *WorkspaceApi {
+	return &WorkspaceApi{client: c}
+}
+
+// newRequest returns a configured request builder...
+func (c *Client) newRequest(url string) *requests.Builder {
+	return requests.
+		URL(url).
+		Host(c.host).
+		BasicAuth(c.deploymentKey, "").
+		UserAgent("polytomic-go")
 }

@@ -7,6 +7,8 @@ type Client struct {
 	deploymentKey string
 }
 
+// NewClient returns a Polytomic API client which will make requests to the
+// specified host, using the provided deployment API key.
 func NewClient(host, key string) *Client {
 	return &Client{
 		host:          host,
@@ -14,12 +16,19 @@ func NewClient(host, key string) *Client {
 	}
 }
 
+// Workspaces returns an API client for modifying Polytomic workspaces.
 func (c *Client) Workspaces() *WorkspaceApi {
 	return &WorkspaceApi{client: c}
 }
 
+// Users returns an API client for modifying Polytomic users.
 func (c *Client) Users() *UserApi {
 	return &UserApi{client: c}
+}
+
+// Connections returns an API client for modifying Polytomic connections.
+func (c *Client) Connections() *ConnectionApi {
+	return &ConnectionApi{client: c}
 }
 
 // newRequest returns a configured request builder...

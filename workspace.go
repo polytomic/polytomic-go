@@ -79,7 +79,3 @@ func (a *WorkspaceApi) Delete(ctx context.Context, id uuid.UUID) error {
 
 	return nil
 }
-
-type topLevelResult struct {
-	Result interface{} `json:"result"`
-}

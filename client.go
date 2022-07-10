@@ -18,6 +18,10 @@ func (c *Client) Workspaces() *WorkspaceApi {
 	return &WorkspaceApi{client: c}
 }
 
+func (c *Client) Users() *UserApi {
+	return &UserApi{client: c}
+}
+
 // newRequest returns a configured request builder...
 func (c *Client) newRequest(url string) *requests.Builder {
 	return requests.
@@ -25,4 +29,8 @@ func (c *Client) newRequest(url string) *requests.Builder {
 		Host(c.host).
 		BasicAuth(c.deploymentKey, "").
 		UserAgent("polytomic-go")
+}
+
+type topLevelResult struct {
+	Result interface{} `json:"result"`
 }

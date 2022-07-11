@@ -16,9 +16,9 @@ func NewClient(host, key string) *Client {
 	}
 }
 
-// Workspaces returns an API client for modifying Polytomic workspaces.
-func (c *Client) Workspaces() *WorkspaceApi {
-	return &WorkspaceApi{client: c}
+// Organizations returns an API client for modifying Polytomic organizations.
+func (c *Client) Organizations() *OrganizationApi {
+	return &OrganizationApi{client: c}
 }
 
 // Users returns an API client for modifying Polytomic users.

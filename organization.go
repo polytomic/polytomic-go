@@ -7,28 +7,28 @@ import (
 	"github.com/google/uuid"
 )
 
-type Workspace struct {
+type Organization struct {
 	ID        uuid.UUID `json:"id,omitempty"`
 	Name      string    `json:"name,omitempty"`
 	SSODomain string    `json:"sso_domain,omitempty"`
 	SSOOrgId  string    `json:"sso_org_id,omitempty"`
 }
 
-type WorkspaceMutation struct {
+type OrganizationMutation struct {
 	Name      string `json:"name,omitempty"`
 	SSODomain string `json:"sso_domain,omitempty"`
 	SSOOrgId  string `json:"sso_org_id,omitempty"`
 }
 
-type WorkspaceApi struct {
+type OrganizationApi struct {
 	client *Client
 }
 
-func (a *WorkspaceApi) Create(ctx context.Context, ws WorkspaceMutation) (*Workspace, error) {
-	var workspace Workspace
+func (a *OrganizationApi) Create(ctx context.Context, ws OrganizationMutation) (*Organization, error) {
+	var workspace Organization
 	result := topLevelResult{Result: &workspace}
 
-	err := a.client.newRequest("/api/workspaces").
+	err := a.client.newRequest("/api/organizations").
 		BodyJSON(&ws).
 		ToJSON(&result).
 		Fetch(ctx)
@@ -39,11 +39,11 @@ func (a *WorkspaceApi) Create(ctx context.Context, ws WorkspaceMutation) (*Works
 	return &workspace, nil
 }
 
-func (a *WorkspaceApi) Get(ctx context.Context, id uuid.UUID) (*Workspace, error) {
-	var workspace Workspace
+func (a *OrganizationApi) Get(ctx context.Context, id uuid.UUID) (*Organization, error) {
+	var workspace Organization
 	result := topLevelResult{Result: &workspace}
 
-	err := a.client.newRequest(fmt.Sprintf("/api/workspaces/%s", id.String())).
+	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s", id.String())).
 		ToJSON(&result).
 		Fetch(ctx)
 	if err != nil {
@@ -53,11 +53,11 @@ func (a *WorkspaceApi) Get(ctx context.Context, id uuid.UUID) (*Workspace, error
 	return &workspace, nil
 }
 
-func (a *WorkspaceApi) Update(ctx context.Context, id uuid.UUID, ws WorkspaceMutation) (*Workspace, error) {
-	var workspace Workspace
+func (a *OrganizationApi) Update(ctx context.Context, id uuid.UUID, ws OrganizationMutation) (*Organization, error) {
+	var workspace Organization
 	result := topLevelResult{Result: &workspace}
 
-	err := a.client.newRequest(fmt.Sprintf("/api/workspaces/%s", id.String())).
+	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s", id.String())).
 		Patch().
 		BodyJSON(&ws).
 		ToJSON(&result).
@@ -69,8 +69,8 @@ func (a *WorkspaceApi) Update(ctx context.Context, id uuid.UUID, ws WorkspaceMut
 	return &workspace, nil
 }
 
-func (a *WorkspaceApi) Delete(ctx context.Context, id uuid.UUID) error {
-	err := a.client.newRequest(fmt.Sprintf("/api/workspaces/%s", id.String())).
+func (a *OrganizationApi) Delete(ctx context.Context, id uuid.UUID) error {
+	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s", id.String())).
 		Delete().
 		Fetch(ctx)
 	if err != nil {

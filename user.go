@@ -8,10 +8,10 @@ import (
 )
 
 type User struct {
-	ID          uuid.UUID `json:"id,omitempty"`
-	WorkspaceId uuid.UUID `json:"workspace_id"`
-	Email       string    `json:"email"`
-	Role        string    `json:"role"`
+	ID             uuid.UUID `json:"id,omitempty"`
+	OrganizationId uuid.UUID `json:"organization_id"`
+	Email          string    `json:"email"`
+	Role           string    `json:"role"`
 }
 
 type UserMutation struct {
@@ -23,11 +23,11 @@ type UserApi struct {
 	client *Client
 }
 
-func (a *UserApi) Create(ctx context.Context, workspaceId uuid.UUID, ws UserMutation) (*User, error) {
+func (a *UserApi) Create(ctx context.Context, organizationId uuid.UUID, ws UserMutation) (*User, error) {
 	var user User
 	result := topLevelResult{Result: &user}
 
-	err := a.client.newRequest(fmt.Sprintf("/api/workspaces/%s/users", workspaceId)).
+	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s/users", organizationId)).
 		BodyJSON(&ws).
 		ToJSON(&result).
 		Fetch(ctx)
@@ -38,11 +38,11 @@ func (a *UserApi) Create(ctx context.Context, workspaceId uuid.UUID, ws UserMuta
 	return &user, nil
 }
 
-func (a *UserApi) Get(ctx context.Context, workspaceId, userId uuid.UUID) (*User, error) {
+func (a *UserApi) Get(ctx context.Context, organizationId, userId uuid.UUID) (*User, error) {
 	var user User
 	result := topLevelResult{Result: &user}
 
-	err := a.client.newRequest(fmt.Sprintf("/api/workspaces/%s/users/%s", workspaceId, userId)).
+	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s/users/%s", organizationId, userId)).
 		ToJSON(&result).
 		Fetch(ctx)
 	if err != nil {
@@ -52,11 +52,11 @@ func (a *UserApi) Get(ctx context.Context, workspaceId, userId uuid.UUID) (*User
 	return &user, nil
 }
 
-func (a *UserApi) Update(ctx context.Context, workspaceId, userId uuid.UUID, ws UserMutation) (*User, error) {
+func (a *UserApi) Update(ctx context.Context, organizationId, userId uuid.UUID, ws UserMutation) (*User, error) {
 	var user User
 	result := topLevelResult{Result: &user}
 
-	err := a.client.newRequest(fmt.Sprintf("/api/workspaces/%s/users/%s", workspaceId, userId)).
+	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s/users/%s", organizationId, userId)).
 		Patch().
 		BodyJSON(&ws).
 		ToJSON(&result).
@@ -68,8 +68,8 @@ func (a *UserApi) Update(ctx context.Context, workspaceId, userId uuid.UUID, ws 
 	return &user, nil
 }
 
-func (a *UserApi) Delete(ctx context.Context, workspaceId, userId uuid.UUID) error {
-	err := a.client.newRequest(fmt.Sprintf("/api/workspaces/%s/users/%s", workspaceId, userId)).
+func (a *UserApi) Delete(ctx context.Context, organizationId, userId uuid.UUID) error {
+	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s/users/%s", organizationId, userId)).
 		Delete().
 		Fetch(ctx)
 	if err != nil {

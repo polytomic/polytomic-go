@@ -8,23 +8,23 @@ import (
 )
 
 type Connection struct {
-	WorkspaceID string `json:"workspace_id"`
-	ID          string `json:"id"`
-	Name        string `json:"name"`
-	Type        string `json:"type"`
+	OrganizationId string `json:"organization_id"`
+	ID             string `json:"id"`
+	Name           string `json:"name"`
+	Type           string `json:"type"`
 }
 
 type CreateConnectionMutation struct {
-	WorkspaceId   string      `json:"workspace_id,omitempty"`
-	Name          string      `json:"name" validate:"required"`
-	Configuration interface{} `json:"configuration" validate:"required"`
-	Type          string      `json:"type" validate:"required"`
+	OrganizationId string      `json:"organization_id,omitempty"`
+	Name           string      `json:"name" validate:"required"`
+	Configuration  interface{} `json:"configuration" validate:"required"`
+	Type           string      `json:"type" validate:"required"`
 }
 
 type UpdateConnectionMutation struct {
-	WorkspaceId   string      `json:"workspace_id,omitempty"`
-	Name          string      `json:"name" validate:"required"`
-	Configuration interface{} `json:"configuration" validate:"required"`
+	OrganizationId string      `json:"organization_id,omitempty"`
+	Name           string      `json:"name" validate:"required"`
+	Configuration  interface{} `json:"configuration" validate:"required"`
 }
 
 type ConnectionApi struct {

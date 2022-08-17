@@ -23,8 +23,7 @@ type Authenticator requests.Config
 // key to authenticate requests.
 func DeploymentKey(deploymentKey string) Authenticator {
 	return func(rb *requests.Builder) {
-		rb.
-			BasicAuth(deploymentKey, "")
+		rb.BasicAuth(deploymentKey, "")
 	}
 }
 

@@ -1,8 +1,9 @@
 package polytomic
 
 const (
-	AthenaConnectionType    = "awsathena"
-	SQLServerConnectionType = "azuresql"
+	AthenaConnectionType     = "awsathena"
+	PostgresqlConnectionType = "postgresql"
+	SQLServerConnectionType  = "azuresql"
 )
 
 type AthenaConfiguration struct {
@@ -18,4 +19,13 @@ type SQLServerConfiguration struct {
 	Password string `json:"password"`
 	Database string `json:"database"`
 	Port     int    `json:"port"`
+}
+
+type PostgresqlConfiguration struct {
+	Hostname string `json:"hostname"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Database string `json:"database"`
+	Port     int    `json:"port"`
+	SSL      bool   `json:"ssl"`
 }

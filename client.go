@@ -43,6 +43,9 @@ type Client struct {
 // NewClient returns a Polytomic API client which will make requests to the
 // specified host, using the provided Authenticator.
 func NewClient(host string, auth Authenticator) *Client {
+	if host == "" {
+		host = DefaultHost
+	}
 	return &Client{
 		auth: auth,
 		host: host,

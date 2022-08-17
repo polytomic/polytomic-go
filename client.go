@@ -11,17 +11,44 @@ import (
 	"github.com/carlmjohnson/requests"
 )
 
+const (
+	DefaultHost = "app.polytomic.com"
+)
+
+// Authenticator defines the function signature used to set authentication
+// information on client requests.
+type Authenticator requests.Config
+
+// DeploymentKey returns an Authenticator which will use the deployment-level
+// key to authenticate requests.
+func DeploymentKey(deploymentKey string) Authenticator {
+	return func(rb *requests.Builder) {
+		rb.BasicAuth(deploymentKey, "")
+	}
+}
+
+// APIKey returns an Authenticator which will use the provided API key to
+// authenticate requests.
+func APIKey(apiKey string) Authenticator {
+	return func(rb *requests.Builder) {
+		rb.Bearer(apiKey)
+	}
+}
+
 type Client struct {
-	host          string
-	deploymentKey string
+	auth requests.Config
+	host string
 }
 
 // NewClient returns a Polytomic API client which will make requests to the
-// specified host, using the provided deployment API key.
-func NewClient(host, key string) *Client {
+// specified host, using the provided Authenticator.
+func NewClient(host string, auth Authenticator) *Client {
+	if host == "" {
+		host = DefaultHost
+	}
 	return &Client{
-		host:          host,
-		deploymentKey: key,
+		auth: auth,
+		host: host,
 	}
 }
 
@@ -45,7 +72,7 @@ func (c *Client) newRequest(url string) *requests.Builder {
 	return requests.
 		URL(url).
 		Host(c.host).
-		BasicAuth(c.deploymentKey, "").
+		Config(c.auth).
 		UserAgent("polytomic-go").
 		AddValidator(checkApiResponse)
 }

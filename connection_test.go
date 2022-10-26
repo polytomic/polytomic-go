@@ -20,7 +20,7 @@ func TestGetConnectionReturnsServerError(t *testing.T) {
 		Reply(http.StatusForbidden).
 		BodyString(`{"error":{"message":"invalid or unknown API key"}}`)
 
-	client := NewClient("polytomic.example.com", "key")
+	client := NewClient("polytomic.example.com", DeploymentKey("key"))
 	_, err := client.Connections().Get(context.Background(), connId)
 
 	apiErr := ApiError{}

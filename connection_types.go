@@ -1,11 +1,31 @@
 package polytomic
 
 const (
-	AthenaConnectionType     = "awsathena"
-	PostgresqlConnectionType = "postgresql"
-	SQLServerConnectionType  = "azuresql"
-	S3ConnectionType         = "s3"
+	AthenaConnectionType             = "awsathena"
+	PostgresqlConnectionType         = "postgresql"
+	SQLServerConnectionType          = "azuresql"
+	S3ConnectionType                 = "s3"
+	AzureBlobConnectionType          = "azureblob"
+	GoogleCloudStorageConnectionType = "gcs"
+	BigQueryConnectionType           = "bigquery"
 )
+
+type BigQueryConfiguration struct {
+	ServiceAccountCredentials string `json:"service_account"`
+	Location                  string `json:"location"`
+}
+
+type GCSConfiguration struct {
+	ProjectId                 string `json:"project_id"`
+	ServiceAccountCredentials string `json:"service_account"`
+	Bucket                    string `json:"bucket"`
+}
+
+type AzureBlobConfiguration struct {
+	AccountName   string `json:"account_name"`
+	AccessKey     string `json:"access_key"`
+	ContainerName string `json:"container_name"`
+}
 
 type S3Configuration struct {
 	AccessKeyID     string `json:"aws_access_key_id"`

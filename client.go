@@ -2,6 +2,7 @@ package polytomic
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -31,7 +32,8 @@ func DeploymentKey(deploymentKey string) Authenticator {
 // authenticate requests.
 func APIKey(apiKey string) Authenticator {
 	return func(rb *requests.Builder) {
-		rb.Bearer(apiKey)
+		value := base64.StdEncoding.EncodeToString([]byte(apiKey))
+		rb.Bearer(value)
 	}
 }
 

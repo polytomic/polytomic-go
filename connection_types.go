@@ -45,10 +45,10 @@ type GoogleSheetsConfiguration struct {
 }
 
 type SalesforceConfiguration struct {
-	Username    string `json:"username"`
-	Domain      string `json:"domain"`
-	InstanceURL string `json:"instance_url"`
-	APIVersion  int    `json:"api_version"`
+	Username    string `json:"username" mapstructure:"username"`
+	Domain      string `json:"domain" mapstructure:"domain"`
+	InstanceURL string `json:"instance_url" mapstructure:"instance_url"`
+	APIVersion  int    `json:"api_version" mapstructure:"api_version"`
 }
 
 type BigQueryConfiguration struct {

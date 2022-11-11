@@ -108,10 +108,6 @@ type PostgresqlConfiguration struct {
 	ChangeDetection bool   `json:"change_detection"`
 	Publication     string `json:"publication"`
 
-	SQLTunnelConfiguration
-}
-
-type SQLTunnelConfiguration struct {
 	SSH        bool   `json:"ssh"`
 	SSHUser    string `json:"ssh_user,omitempty"`
 	SSHHost    string `json:"ssh_host,omitempty"`

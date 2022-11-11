@@ -24,7 +24,7 @@ type SnowflakeConfiguration struct {
 	AdditionalParams string `json:"params" mapstructure:"params"`
 }
 
-type HubspotConnfiguration struct {
+type HubspotConfiguration struct {
 	HubDomain string `json:"hub_domain" mapstructure:"hub_domain"`
 	HubId     int    `json:"hub_id" mapstructure:"hub_id"`
 }

@@ -1,0 +1,28 @@
+{
+  "result": {
+    "schemas": [
+      {
+        "ID": "issue",
+        "Name": "Issue",
+        "Modes": [
+          "mode_source"
+        ]
+      },
+      {
+        "ID": "user",
+        "Name": "User",
+        "Modes": [
+          "mode_source"
+        ]
+      },
+      {
+        "ID": "project",
+        "Name": "Project",
+        "Modes": [
+          "mode_source"
+        ]
+      }
+    ],
+    "configuration": null
+  }
+}

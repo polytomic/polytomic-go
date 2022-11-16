@@ -1,0 +1,33 @@
+{
+  "result": {
+    "modes": [
+      {
+        "ID": "replicate",
+        "Label": "Replicate",
+        "Description": "Replicate the source table to the destination",
+        "RequiresIdentity": false,
+        "SupportsTargetFilters": false,
+        "SupportsFieldSyncMode": false
+      }
+    ],
+    "configuration": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "$ref": "#/definitions/BulkDestinationConfiguration",
+      "definitions": {
+        "BulkDestinationConfiguration": {
+          "required": [
+            "dataset"
+          ],
+          "properties": {
+            "dataset": {
+              "type": "string",
+              "title": "Output dataset"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object"
+        }
+      }
+    }
+  }
+}

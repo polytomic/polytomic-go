@@ -8,11 +8,17 @@ import (
 )
 
 type Connection struct {
-	OrganizationId string      `json:"organization_id"`
-	ID             string      `json:"id"`
-	Name           string      `json:"name"`
-	Type           string      `json:"type"`
-	Configuration  interface{} `json:"configuration"`
+	OrganizationId string         `json:"organization_id"`
+	ID             string         `json:"id"`
+	Name           string         `json:"name"`
+	Type           ConnectionType `json:"type"`
+	Configuration  interface{}    `json:"configuration"`
+}
+
+type ConnectionType struct {
+	ID         string   `json:"id"`
+	Name       string   `json:"name"`
+	Operations []string `json:"operations"`
 }
 
 type CreateConnectionMutation struct {

@@ -44,4 +44,18 @@ func TestGetConnectionReturnsServerError(t *testing.T) {
 
 		assert.True(t, gock.IsDone())
 	})
+
+	t.Run("Get connection by ID", func(t *testing.T) {
+		gock.New("https://polytomic.example.com").
+			Get(fmt.Sprintf("/api/connections/%s", connId.String())).
+			Reply(http.StatusOK).
+			File("fixtures/connection.json")
+
+		client := NewClient("polytomic.example.com", APIKey("key"))
+		conn, err := client.Connections().Get(context.Background(), connId)
+		assert.NoError(t, err)
+		assert.Equal(t, "example", conn.Name)
+
+		assert.True(t, gock.IsDone())
+	})
 }

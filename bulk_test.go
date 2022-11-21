@@ -26,9 +26,7 @@ func TestGetSource(t *testing.T) {
 		source, err := client.Bulk().GetSource(context.Background(), connId.String())
 		assert.NoError(t, err)
 		assert.Equal(t, 3, len(source.Schemas))
-		assert.Equal(t, "issue", source.Schemas[0].ID)
-		assert.Equal(t, "Issue", source.Schemas[0].Name)
-		assert.Equal(t, "mode_source", source.Schemas[0].Modes[0])
+		assert.Equal(t, "user", source.Schemas[0])
 
 		assert.True(t, gock.IsDone())
 	})
@@ -68,9 +66,9 @@ func TestCreateBulkSync(t *testing.T) {
 			Frequency: &frequency,
 		},
 		Name: "test-sync",
-		Schemas: []BulkSchema{{
-			ID: "issue",
-		}},
+		Schemas: []string{
+			"issue",
+		},
 	}
 
 	defer gock.Off()
@@ -87,4 +85,24 @@ func TestCreateBulkSync(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, "3b3561f3-3247-4c38-96b5-a36a86d99dee", created.ID)
 	})
+}
+
+func TestGetBulkSync(t *testing.T) {
+	syncId := uuid.New()
+	defer gock.Off()
+
+	t.Run("Get bulk sync", func(t *testing.T) {
+		gock.New("https://polytomic.example.com").
+			Get(fmt.Sprintf("/api/bulk/syncs/%s", syncId.String())).
+			Reply(http.StatusOK).
+			File("fixtures/bulk_sync.json")
+		defer gock.Off()
+
+		client := NewClient("polytomic.example.com", DeploymentKey("key"))
+		sync, err := client.Bulk().GetBulkSync(context.Background(), syncId.String())
+		assert.NoError(t, err)
+		assert.Equal(t, "3b3561f3-3247-4c38-96b5-a36a86d99dee", sync.ID)
+		assert.Equal(t, "Jira2", sync.Name)
+	})
+
 }

@@ -22,15 +22,15 @@ type Schedule struct {
 	Frequency  *string `json:"frequency,omitempty" tfsdk:"frequency"`
 	DayOfWeek  *string `json:"day_of_week,omitempty" tfsdk:"day_of_week"`
 	Hour       *string `json:"hour,omitempty" tfsdk:"hour"`
-	Minute     *string `json:"minut,omitempty" tfsdk:"minute"`
+	Minute     *string `json:"minute,omitempty" tfsdk:"minute"`
 	Month      *string `json:"month,omitempty" tfsdk:"month"`
 	DayOfMonth *string `json:"day_of_month,omitempty" tfsdk:"day_of_month"`
 }
 
 type BulkSchema struct {
-	ID      string `json:"id" tfsdk:"id"`
-	Name    string `json:"name" tfsdk:"name"`
-	Enabled bool   `json:"enabled" tfsdk:"enabled"`
+	ID           string `json:"id" tfsdk:"id"`
+	Enabled      bool   `json:"enabled" tfsdk:"enabled"`
+	PartitionKey string `json:"partition_key" tfsdk:"partition_key"`
 }
 
 type Schema struct {
@@ -158,15 +158,23 @@ func (b *BulkApi) GetBulkSyncSchemas(ctx context.Context, id string) ([]BulkSche
 	return schemas, nil
 }
 
-func (b *BulkApi) UpdateBulkSyncSchemas(ctx context.Context, id string, schemas []BulkSchema) error {
-	return b.client.newRequest(fmt.Sprintf("/api/bulk/syncs/%s/schemas", id)).
+func (b *BulkApi) UpdateBulkSyncSchemas(ctx context.Context, id string, schemas []BulkSchema) ([]BulkSchema, error) {
+	var resultSchemas []BulkSchema
+	result := topLevelResult{Result: &schemas}
+	err := b.client.newRequest(fmt.Sprintf("/api/bulk/syncs/%s/schemas", id)).
+		BodyJSON(schemas).
+		ToJSON(&result).
 		Patch().
-		BodyJSON(&schemas).
 		Fetch(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return resultSchemas, nil
 }
 
-func (b *BulkApi) GetBulkSyncSchema(ctx context.Context, id, schemaID string, schema BulkSchema) (*BulkSchema, error) {
-	var result BulkSchema
+func (b *BulkApi) GetBulkSyncSchema(ctx context.Context, id, schemaID string) (*BulkSchema, error) {
+	var schema BulkSchema
+	result := topLevelResult{Result: &schema}
 	err := b.client.newRequest(fmt.Sprintf("/api/bulk/syncs/%s/schemas/%s", id, schemaID)).
 		ToJSON(&result).
 		Fetch(ctx)
@@ -174,5 +182,20 @@ func (b *BulkApi) GetBulkSyncSchema(ctx context.Context, id, schemaID string, sc
 		return nil, err
 	}
 
-	return &result, nil
+	return &schema, nil
+}
+
+func (b *BulkApi) UpdateBulkSyncSchema(ctx context.Context, syncID, schemaID string, schema BulkSchema) (*BulkSchema, error) {
+	var resultSchema BulkSchema
+	result := topLevelResult{Result: &resultSchema}
+	err := b.client.newRequest(fmt.Sprintf("/api/bulk/syncs/%s/schemas/%s", syncID, schemaID)).
+		Patch().
+		BodyJSON(&schema).
+		ToJSON(&result).
+		Fetch(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &resultSchema, nil
 }

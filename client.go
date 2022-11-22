@@ -74,6 +74,11 @@ func (c *Client) Bulk() *BulkApi {
 	return &BulkApi{client: c}
 }
 
+// Models returns an API client for modifying Polytomic bulk syncs.
+func (c *Client) Models() *ModelApi {
+	return &ModelApi{client: c}
+}
+
 // newRequest returns a configured request builder...
 func (c *Client) newRequest(url string) *requests.Builder {
 	return requests.

@@ -33,6 +33,10 @@ type BulkSchema struct {
 	PartitionKey string `json:"partition_key" tfsdk:"partition_key"`
 }
 
+type BulkSchemaUpdate struct {
+	Schemas []BulkSchema `json:"schemas"`
+}
+
 type Schema struct {
 	ID    string   `json:"id" tfsdk:"id"`
 	Name  string   `json:"name" tfsdk:"name"`
@@ -160,9 +164,9 @@ func (b *BulkApi) GetBulkSyncSchemas(ctx context.Context, id string) ([]BulkSche
 
 func (b *BulkApi) UpdateBulkSyncSchemas(ctx context.Context, id string, schemas []BulkSchema) ([]BulkSchema, error) {
 	var resultSchemas []BulkSchema
-	result := topLevelResult{Result: &schemas}
+	result := topLevelResult{Result: &resultSchemas}
 	err := b.client.newRequest(fmt.Sprintf("/api/bulk/syncs/%s/schemas", id)).
-		BodyJSON(schemas).
+		BodyJSON(BulkSchemaUpdate{schemas}).
 		ToJSON(&result).
 		Patch().
 		Fetch(ctx)

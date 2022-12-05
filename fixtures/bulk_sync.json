@@ -1,19 +1,17 @@
 {
-  "result": {
-    "id": "3b3561f3-3247-4c38-96b5-a36a86d99dee",
-    "name": "Jira2",
-    "destination_connection_id": "5ff69368-6504-11ed-9bb3-ea7534cffcad",
-    "source_connection_id": "503c2db0-978a-4884-9fc0-658a3dad82f1",
-    "mode": "replicate",
-    "discover": false,
-    "active": true,
-    "schedule": {
-      "frequency": "manual",
-      "day_of_week": "",
-      "hour": "",
-      "minute": "",
-      "month": "",
-      "day_of_month": ""
-    }
+  "id": "3b3561f3-3247-4c38-96b5-a36a86d99dee",
+  "name": "Jira2",
+  "destination_connection_id": "5ff69368-6504-11ed-9bb3-ea7534cffcad",
+  "source_connection_id": "503c2db0-978a-4884-9fc0-658a3dad82f1",
+  "mode": "replicate",
+  "discover": false,
+  "active": true,
+  "schedule": {
+    "frequency": "manual",
+    "day_of_week": "",
+    "hour": "",
+    "minute": "",
+    "month": "",
+    "day_of_month": ""
   }
 }

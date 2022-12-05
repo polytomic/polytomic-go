@@ -40,11 +40,9 @@ type ConnectionApi struct {
 
 func (a *ConnectionApi) Create(ctx context.Context, ws CreateConnectionMutation) (*Connection, error) {
 	var connection Connection
-	result := topLevelResult{Result: &connection}
-
 	err := a.client.newRequest("/api/connections").
 		BodyJSON(&ws).
-		ToJSON(&result).
+		ToJSON(&connection).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -55,10 +53,8 @@ func (a *ConnectionApi) Create(ctx context.Context, ws CreateConnectionMutation)
 
 func (a *ConnectionApi) Get(ctx context.Context, connectionId uuid.UUID) (*Connection, error) {
 	var connection Connection
-	result := topLevelResult{Result: &connection}
-
 	err := a.client.newRequest(fmt.Sprintf("/api/connections/%s", connectionId)).
-		ToJSON(&result).
+		ToJSON(&connection).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -69,12 +65,10 @@ func (a *ConnectionApi) Get(ctx context.Context, connectionId uuid.UUID) (*Conne
 
 func (a *ConnectionApi) Update(ctx context.Context, connectionId uuid.UUID, ws UpdateConnectionMutation) (*Connection, error) {
 	var connection Connection
-	result := topLevelResult{Result: &connection}
-
 	err := a.client.newRequest(fmt.Sprintf("/api/connections/%s", connectionId)).
 		Patch().
 		BodyJSON(&ws).
-		ToJSON(&result).
+		ToJSON(&connection).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err

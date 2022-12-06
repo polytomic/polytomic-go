@@ -82,7 +82,7 @@ type Source struct {
 	Field   string `json:"field" tfsdk:"field"`
 }
 
-func (s *SyncApi) Create(ctx context.Context, r ModelRequest) (*SyncResponse, error) {
+func (s *SyncApi) Create(ctx context.Context, r SyncRequest) (*SyncResponse, error) {
 	var sync SyncResponse
 	err := s.client.newRequest("/api/syncs").
 		BodyJSON(&r).

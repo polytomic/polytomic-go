@@ -30,7 +30,7 @@ type SyncResponse struct {
 	Fields         []SyncField `json:"fields" tfsdk:"fields"`
 	OverrideFields []SyncField `json:"override_fields" tfsdk:"override_fields"`
 	Filters        []Filter    `json:"filters" tfsdk:"filters"`
-	FilterLogic    *string     `json:"filter_logic" tfsdk:"filter_logic"`
+	FilterLogic    string      `json:"filter_logic" tfsdk:"filter_logic"`
 	Overrides      []Override  `json:"overrides" tfsdk:"overrides"`
 	Schedule       Schedule    `json:"schedule" tfsdk:"schedule"`
 	Identity       *Identity   `json:"identity" tfsdk:"identity"`

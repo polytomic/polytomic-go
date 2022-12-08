@@ -30,7 +30,7 @@ type SyncResponse struct {
 	Fields         []SyncField `json:"fields" tfsdk:"fields"`
 	OverrideFields []SyncField `json:"override_fields" tfsdk:"override_fields"`
 	Filters        []Filter    `json:"filters" tfsdk:"filters"`
-	FilterLogic    string      `json:"filter_logic" tfsdk:"filter_logic"`
+	FilterLogic    *string     `json:"filter_logic" tfsdk:"filter_logic"`
 	Overrides      []Override  `json:"overrides" tfsdk:"overrides"`
 	Schedule       Schedule    `json:"schedule" tfsdk:"schedule"`
 	Identity       *Identity   `json:"identity" tfsdk:"identity"`
@@ -70,11 +70,11 @@ type Target struct {
 }
 
 type Identity struct {
-	Source            Source  `json:"source" tfsdk:"source"`
-	Target            string  `json:"target" tfsdk:"target"`
-	Function          string  `json:"function" tfsdk:"function"`
-	RemoteFieldTypeID *string `json:"remote_field_type_id" tfsdk:"remote_field_type_id"`
-	NewField          bool    `json:"new_field" tfsdk:"new_field"`
+	Source            Source `json:"source" tfsdk:"source"`
+	Target            string `json:"target" tfsdk:"target"`
+	Function          string `json:"function" tfsdk:"function"`
+	RemoteFieldTypeID string `json:"remote_field_type_id" tfsdk:"remote_field_type_id"`
+	NewField          bool   `json:"new_field" tfsdk:"new_field"`
 }
 
 type Source struct {

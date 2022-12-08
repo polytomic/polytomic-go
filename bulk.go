@@ -19,12 +19,12 @@ type BulkSyncRequest struct {
 }
 
 type Schedule struct {
-	Frequency  *string `json:"frequency,omitempty" tfsdk:"frequency"`
-	DayOfWeek  *string `json:"day_of_week,omitempty" tfsdk:"day_of_week"`
-	Hour       *string `json:"hour,omitempty" tfsdk:"hour"`
-	Minute     *string `json:"minute,omitempty" tfsdk:"minute"`
-	Month      *string `json:"month,omitempty" tfsdk:"month"`
-	DayOfMonth *string `json:"day_of_month,omitempty" tfsdk:"day_of_month"`
+	Frequency  string `json:"frequency,omitempty" tfsdk:"frequency"`
+	DayOfWeek  string `json:"day_of_week,omitempty" tfsdk:"day_of_week"`
+	Hour       string `json:"hour,omitempty" tfsdk:"hour"`
+	Minute     string `json:"minute,omitempty" tfsdk:"minute"`
+	Month      string `json:"month,omitempty" tfsdk:"month"`
+	DayOfMonth string `json:"day_of_month,omitempty" tfsdk:"day_of_month"`
 }
 
 type BulkSchema struct {

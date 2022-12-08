@@ -63,7 +63,7 @@ func TestCreateBulkSync(t *testing.T) {
 		Mode:               "replicate",
 		Active:             true,
 		Schedule: Schedule{
-			Frequency: &frequency,
+			Frequency: frequency,
 		},
 		Name: "test-sync",
 		Schemas: []string{

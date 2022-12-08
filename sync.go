@@ -61,12 +61,12 @@ type Filter struct {
 }
 
 type Target struct {
-	ConnectionID  string                 `json:"connection_id" tfsdk:"connection_id"`
-	Object        string                 `json:"object" tfsdk:"object"`
-	SearchValues  map[string]interface{} `json:"search_values" tfsdk:"search_values"`
-	Configuration map[string]interface{} `json:"configuration" tfsdk:"configuration"`
-	NewName       string                 `json:"new_name" tfsdk:"new_name"`
-	FilterLogic   string                 `json:"filter_logic" tfsdk:"filter_logic"`
+	ConnectionID  string            `json:"connection_id" tfsdk:"connection_id"`
+	Object        string            `json:"object" tfsdk:"object"`
+	SearchValues  map[string]string `json:"search_values" tfsdk:"search_values"`
+	Configuration map[string]string `json:"configuration" tfsdk:"configuration"`
+	NewName       string            `json:"new_name" tfsdk:"new_name"`
+	FilterLogic   string            `json:"filter_logic" tfsdk:"filter_logic"`
 }
 
 type Identity struct {

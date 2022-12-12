@@ -39,11 +39,11 @@ type SyncResponse struct {
 }
 
 type SyncField struct {
-	Source        Source `json:"source" tfsdk:"source"`
-	Target        string `json:"target" tfsdk:"target"`
-	New           bool   `json:"new" tfsdk:"new"`
-	OverrideValue string `json:"override_value" tfsdk:"override_value"`
-	SyncMode      string `json:"sync_mode" tfsdk:"sync_mode"`
+	Source        Source  `json:"source,omitempty" tfsdk:"source"`
+	Target        string  `json:"target,omitempty" tfsdk:"target"`
+	New           *bool   `json:"new,omitempty" tfsdk:"new"`
+	OverrideValue *string `json:"override_value,omitempty" tfsdk:"override_value"`
+	SyncMode      *string `json:"sync_mode,omitempty" tfsdk:"sync_mode"`
 }
 
 type Override struct {

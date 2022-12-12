@@ -13,6 +13,9 @@ import (
 
 const (
 	DefaultHost = "app.polytomic.com"
+
+	Version       = "2022-12-12"
+	VersionHeader = "X-Polytomic-Version"
 )
 
 // Authenticator defines the function signature used to set authentication
@@ -89,6 +92,7 @@ func (c *Client) newRequest(url string) *requests.Builder {
 		URL(url).
 		Host(c.host).
 		Config(c.auth).
+		Header(VersionHeader, Version).
 		UserAgent("polytomic-go").
 		AddValidator(checkApiResponse)
 }

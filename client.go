@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -14,6 +13,9 @@ import (
 
 const (
 	DefaultHost = "app.polytomic.com"
+
+	Version       = "2022-12-12"
+	VersionHeader = "X-Polytomic-Version"
 )
 
 // Authenticator defines the function signature used to set authentication
@@ -74,9 +76,14 @@ func (c *Client) Bulk() *BulkApi {
 	return &BulkApi{client: c}
 }
 
-// Models returns an API client for modifying Polytomic bulk syncs.
+// Models returns an API client for modifying Polytomic models.
 func (c *Client) Models() *ModelApi {
 	return &ModelApi{client: c}
+}
+
+// Syncs returns an API client for modifying Polytomic syncs.
+func (c *Client) Syncs() *SyncApi {
+	return &SyncApi{client: c}
 }
 
 // newRequest returns a configured request builder...
@@ -85,13 +92,9 @@ func (c *Client) newRequest(url string) *requests.Builder {
 		URL(url).
 		Host(c.host).
 		Config(c.auth).
+		Header(VersionHeader, Version).
 		UserAgent("polytomic-go").
 		AddValidator(checkApiResponse)
-}
-
-type topLevelResult struct {
-	Result interface{} `json:"result"`
-	Error  interface{} `json:"error"`
 }
 
 // checkApiResponse provides a request.ResponseHandler which will attempt to
@@ -100,8 +103,6 @@ func checkApiResponse(res *http.Response) error {
 	if res.StatusCode < 400 {
 		return nil
 	}
-
-	result := topLevelResult{}
 
 	buf := &bytes.Buffer{}
 	defer func() {
@@ -113,18 +114,35 @@ func checkApiResponse(res *http.Response) error {
 		return err
 	}
 
-	if json.Unmarshal(body, &result) != nil || result.Error == nil {
-		// this wasn't a top level result
-		return errors.New(fmt.Sprintf("unexpected error (%d): %s", res.StatusCode, string(body)))
-	}
-	if errmap, ok := result.Error.(map[string]interface{}); ok {
-		if msg, ok := errmap["message"]; ok {
-			if msgStr, ok := msg.(string); ok {
-				return ApiError{message: msgStr, statusCode: res.StatusCode}
-			}
+	var apiErr Error
+	if err := json.Unmarshal(body, &apiErr); err != nil {
+		// Try legacy format
+		var legacyErr LegacyError
+		if err := json.Unmarshal(body, &legacyErr); err != nil {
+			return fmt.Errorf("unexpected response: %w", err)
 		}
+		apiErr = Error{
+			Error: legacyErr.Error.Message,
+		}
+
 	}
-	return nil
+
+	return ApiError{
+		message:    apiErr.Error,
+		statusCode: res.StatusCode,
+	}
+
+}
+
+type LegacyError struct {
+	Error struct {
+		Message string `json:"message"`
+	} `json:"error"`
+}
+
+type Error struct {
+	Error      string `json:"error"`
+	StatusCode string `json:"status"`
 }
 
 type ApiError struct {

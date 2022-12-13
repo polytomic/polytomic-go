@@ -61,10 +61,9 @@ type ModelFieldRequest struct {
 
 func (m *ModelApi) Create(ctx context.Context, r ModelRequest) (*Model, error) {
 	var model Model
-	result := topLevelResult{Result: &model}
 	err := m.client.newRequest("/api/models").
 		BodyJSON(&r).
-		ToJSON(&result).
+		ToJSON(&model).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -75,9 +74,8 @@ func (m *ModelApi) Create(ctx context.Context, r ModelRequest) (*Model, error) {
 
 func (m *ModelApi) Get(ctx context.Context, id string) (*Model, error) {
 	var model Model
-	result := topLevelResult{Result: &model}
 	err := m.client.newRequest("/api/models/" + id).
-		ToJSON(&result).
+		ToJSON(&model).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -88,11 +86,10 @@ func (m *ModelApi) Get(ctx context.Context, id string) (*Model, error) {
 
 func (m *ModelApi) Update(ctx context.Context, id string, r ModelRequest) (*Model, error) {
 	var model Model
-	result := topLevelResult{Result: &model}
 	err := m.client.newRequest("/api/models/" + id).
 		Patch().
 		BodyJSON(&r).
-		ToJSON(&result).
+		ToJSON(&model).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err

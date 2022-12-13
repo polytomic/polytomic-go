@@ -1,10 +1,4 @@
 {
-  "result": {
-    "schemas": [
-      "user",
-      "project",
-      "issue"
-    ],
-    "configuration": null
-  }
+  "schemas": ["user", "project", "issue"],
+  "configuration": null
 }

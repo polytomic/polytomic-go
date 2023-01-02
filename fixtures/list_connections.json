@@ -1,0 +1,66 @@
+[
+  {
+    "organization_id": "a352e762-1724-4e1c-bf39-de9624ff927c",
+    "id": "f91e157a-7b92-4ccb-8ab1-e21d3e83b810",
+    "name": "",
+    "type": {
+      "id": "salesforce",
+      "name": "Salesforce",
+      "Operations": [
+        "FIELDSETQUERY",
+        "TARGET",
+        "Filters",
+        "IdentityFunctions",
+        "SupportsSQL",
+        "BulkSyncSource",
+        "PolytomicConnection"
+      ]
+    },
+    "configuration": {
+      "api_version": 56,
+      "daily_api_calls": 3750000,
+      "domain": "blah.scratch.my.salesforce.com",
+      "enforce_api_limits": false,
+      "instance_url": "https://blah.scratch.my.salesforce.com",
+      "max_api_calls": 5000000,
+      "oauth_access_token": "secret",
+      "oauth_refresh_token": "secret",
+      "oauth_token_expiry": "2023-01-02T17:22:48Z",
+      "username": "user@example.com"
+    },
+    "auth_url": ""
+  },
+  {
+    "organization_id": "a352e762-1724-4e1c-bf39-de9624ff927c",
+    "id": "1e953aaa-5daf-11ea-960a-acde48001122",
+    "name": "Acme Test",
+    "type": {
+      "id": "postgresql",
+      "name": "PostgreSQL",
+      "Operations": [
+        "FIELDSETQUERY",
+        "IsTruncatable",
+        "SupportsSQL",
+        "TARGET",
+        "TargetCreator",
+        "BulkSyncSource"
+      ]
+    },
+    "configuration": {
+      "ca_cert": "",
+      "change_detection": false,
+      "client_certificate": "",
+      "client_certs": false,
+      "client_key": "",
+      "database": "blah",
+      "hostname": "blah.us-west-2.rds.amazonaws.com",
+      "password": "*************************",
+      "port": 5432,
+      "publication": "",
+      "ssh": false,
+      "ssl": true,
+      "username": "user"
+    },
+    "auth_url": ""
+  }
+]

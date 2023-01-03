@@ -51,9 +51,9 @@ func (a *ConnectionApi) Create(ctx context.Context, ws CreateConnectionMutation)
 	return &connection, nil
 }
 
-func (a *ConnectionApi) Get(ctx context.Context, connectionId uuid.UUID) (*Connection, error) {
+func (c *ConnectionApi) Get(ctx context.Context, connectionId uuid.UUID) (*Connection, error) {
 	var connection Connection
-	err := a.client.newRequest(fmt.Sprintf("/api/connections/%s", connectionId)).
+	err := c.client.newRequest(fmt.Sprintf("/api/connections/%s", connectionId)).
 		ToJSON(&connection).
 		Fetch(ctx)
 	if err != nil {
@@ -63,9 +63,21 @@ func (a *ConnectionApi) Get(ctx context.Context, connectionId uuid.UUID) (*Conne
 	return &connection, nil
 }
 
-func (a *ConnectionApi) Update(ctx context.Context, connectionId uuid.UUID, ws UpdateConnectionMutation) (*Connection, error) {
+func (c *ConnectionApi) List(ctx context.Context) ([]Connection, error) {
+	var connections []Connection
+	err := c.client.newRequest("/api/connections").
+		ToJSON(&connections).
+		Fetch(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return connections, nil
+}
+
+func (c *ConnectionApi) Update(ctx context.Context, connectionId uuid.UUID, ws UpdateConnectionMutation) (*Connection, error) {
 	var connection Connection
-	err := a.client.newRequest(fmt.Sprintf("/api/connections/%s", connectionId)).
+	err := c.client.newRequest(fmt.Sprintf("/api/connections/%s", connectionId)).
 		Patch().
 		BodyJSON(&ws).
 		ToJSON(&connection).
@@ -77,8 +89,8 @@ func (a *ConnectionApi) Update(ctx context.Context, connectionId uuid.UUID, ws U
 	return &connection, nil
 }
 
-func (a *ConnectionApi) Delete(ctx context.Context, connectionId uuid.UUID) error {
-	err := a.client.newRequest(fmt.Sprintf("/api/connections/%s", connectionId)).
+func (c *ConnectionApi) Delete(ctx context.Context, connectionId uuid.UUID) error {
+	err := c.client.newRequest(fmt.Sprintf("/api/connections/%s", connectionId)).
 		Delete().
 		Fetch(ctx)
 	if err != nil {

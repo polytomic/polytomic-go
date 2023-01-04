@@ -227,9 +227,9 @@ type CSVConnectionConfiguration struct {
 }
 
 type ChargeBeeConnectionConfiguration struct {
-	Site     string `json:"site" mapstructure:"site"`
-	APIKey   string `json:"api_key" mapstructure:"api_key"`
-	RPMLimit int    `json:"ratelimit_rpm" mapstructure:"ratelimit_rpm"`
+	Site         string `json:"site" mapstructure:"site"`
+	APIKey       string `json:"api_key" mapstructure:"api_key"`
+	RatelimitRPM int    `json:"ratelimit_rpm" mapstructure:"ratelimit_rpm"`
 }
 
 type CloudSQLConnectionConfiguration struct {

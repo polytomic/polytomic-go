@@ -9,17 +9,36 @@ const (
 	AzureBlobConnectionType          = "azureblob"
 	SQLServerConnectionType          = "azuresql"
 	BigQueryConnectionType           = "bigquery"
+	ChargebeeConnectionType          = "chargebee"
+	CloudSQLConnectionType           = "cloudsql"
+	CosmosDBConnectionType           = "cosmosdb"
+	CustomerIOConnectionType         = "customerio"
 	CsvConnectionType                = "csv"
+	DialpadConnectionType            = "dialpad"
+	FreshdeskConnectionType          = "freshdesk"
+	FullstoryConnectionType          = "fullstory"
+	HarmonicConnectionType           = "harmonic"
+	KlaviyoConnectionType            = "klaviyo"
+	KustomerConnectionType           = "kustomer"
+	LobConnectionType                = "lob"
 	GoogleCloudStorageConnectionType = "gcs"
 	GoogleSheetsConnectionType       = "gsheets"
 	GoogleAdsConnectionType          = "googleads"
 	HubspotConnectionType            = "hubspot"
+	IntercomConnectionType           = "intercom"
 	MarketoConnectionType            = "marketo"
 	MongoDBConnectionType            = "mongodb"
+	MysqlConnectionType              = "mysql"
+	NetsuiteConnectionType           = "netsuite"
+	PipedriveConnectionType          = "pipedrive"
 	PostgresqlConnectionType         = "postgresql"
+	RedshiftConnectionType           = "redshift"
 	S3ConnectionType                 = "s3"
 	SalesforceConnectionType         = "salesforce"
+	SegmentConnectionType            = "segment"
 	SnowflakeConnectionType          = "snowflake"
+	StripeConnectionType             = "stripe"
+	WebhookConnectionType            = "webhook"
 )
 
 type SnowflakeConfiguration struct {
@@ -205,4 +224,124 @@ type CSVConnectionConfiguration struct {
 	Headers               []RequestParameter `json:"headers" mapstructure:"headers"`
 	QueryStringParameters []RequestParameter `json:"parameters" mapstructure:"parameters"`
 	Auth                  Auth               `json:"auth" mapstructure:",squash"`
+}
+
+type ChargeBeeConnectionConfiguration struct {
+	Site     string `json:"site" mapstructure:"site"`
+	APIKey   string `json:"api_key" mapstructure:"api_key"`
+	RPMLimit int    `json:"ratelimit_rpm" mapstructure:"ratelimit_rpm"`
+}
+
+type CloudSQLConnectionConfiguration struct {
+	ConnectionName string `json:"connection_name" mapstructure:"connection_name"`
+	Database       string `json:"database" mapstructure:"database"`
+	Username       string `json:"username" mapstructure:"username"`
+	Password       string `json:"password" mapstructure:"password"`
+	Credentials    string `json:"credentials" mapstructure:"credentials"`
+}
+
+type CosmosDBConnectionConfiguration struct {
+	URI string `json:"uri" mapstructure:"uri"`
+	Key string `json:"key" mapstructure:"key"`
+}
+
+type CustomerIOConnectionConfiguration struct {
+	SiteID         string `json:"site_id" mapstructure:"site_id"`
+	TrackingAPIKey string `json:"tracking_api_key" mapstructure:"tracking_api_key"`
+	AppAPIKey      string `json:"app_api_key" mapstructure:"app_api_key"`
+}
+
+type DialpadConnectionConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key"`
+}
+
+type FreshdeskConnectionConfiguration struct {
+	Subdomain string `json:"subdomain" mapstructure:"subdomain"`
+	Apikey    string `json:"apikey" mapstructure:"apikey"`
+}
+
+type FullstoryConnectionConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key"`
+}
+
+type HarmonicConnectionConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key"`
+}
+
+type IntercomConnectionConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key"`
+}
+
+type KlaviyoConnectionConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key"`
+}
+
+type KustomerConnectionConfiguration struct {
+	Domain string `json:"domain" mapstructure:"domain"`
+	Apikey string `json:"apikey" mapstructure:"apikey"`
+}
+
+type LobConnectionConfiguration struct {
+	Apikey string `json:"apikey" mapstructure:"apikey"`
+}
+
+type MysqlConnectionConfiguration struct {
+	Hostname string `json:"hostname" mapstructure:"hostname"`
+	Account  string `json:"account" mapstructure:"account"`
+	Passwd   string `json:"passwd" mapstructure:"passwd"`
+	Dbname   string `json:"dbname" mapstructure:"dbname"`
+	Port     int    `json:"port" mapstructure:"port"`
+
+	SSH        bool   `json:"ssh" mapstructure:"ssh"`
+	SSHUser    string `json:"ssh_user" mapstructure:"ssh_user"`
+	SSHHost    string `json:"ssh_host" mapstructure:"ssh_host"`
+	SSHPort    int    `json:"ssh_port" mapstructure:"ssh_port"`
+	PrivateKey string `json:"ssh_private_key" mapstructure:"ssh_private_key"`
+}
+
+type NetsuiteConnectionConfiguration struct {
+	AccountID      string `json:"account_id" mapstructure:"account_id"`
+	ConsumerKey    string `json:"consumer_key" mapstructure:"consumer_key"`
+	ConsumerSecret string `json:"consumer_secret" mapstructure:"consumer_secret"`
+	Token          string `json:"token" mapstructure:"token"`
+	TokenSecret    string `json:"token_secret" mapstructure:"token_secret"`
+}
+
+type PipedriveConnectionConfiguration struct {
+	Domain string `json:"domain" mapstructure:"domain"`
+	APIKey string `json:"api_key" mapstructure:"api_key"`
+}
+
+type RedshiftConnectionConfiguration struct {
+	Hostname string `json:"hostname" mapstructure:"hostname"`
+	Username string `json:"username" mapstructure:"username"`
+	Password string `json:"password" mapstructure:"password"`
+	Database string `json:"database" mapstructure:"database"`
+	Port     int    `json:"port" mapstructure:"port"`
+
+	SSH        bool   `json:"ssh" mapstructure:"ssh"`
+	SSHUser    string `json:"ssh_user" mapstructure:"ssh_user"`
+	SSHHost    string `json:"ssh_host" mapstructure:"ssh_host"`
+	SSHPort    int    `json:"ssh_port" mapstructure:"ssh_port"`
+	PrivateKey string `json:"ssh_private_key" mapstructure:"ssh_private_key"`
+
+	AwsAccessKeyID     string `json:"aws_access_key_id" mapstructure:"aws_access_key_id"`
+	AwsSecretAccessKey string `json:"aws_secret_access_key" mapstructure:"aws_secret_access_key"`
+	S3BucketName       string `json:"s3_bucket_name" mapstructure:"s3_bucket_name"`
+	S3BucketRegion     string `json:"s3_bucket_region" mapstructure:"s3_bucket_region"`
+}
+
+type SegmentConnectionConfiguration struct {
+	WriteKey string `json:"write_key" mapstructure:"write_key"`
+}
+
+type StripeConnectionConfiguration struct {
+	APIKey  string `json:"api_key" mapstructure:"api_key"`
+	Version string `json:"version" mapstructure:"version"`
+}
+
+type WebhookConnectionConfiguration struct {
+	URL     string             `json:"url" mapstructure:"url"`
+	Secret  string             `json:"secret" mapstructure:"secret"`
+	Headers []RequestParameter `json:"headers" mapstructure:"headers"`
 }

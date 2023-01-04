@@ -1,17 +1,24 @@
 package polytomic
 
 const (
+	AffinityConnectionType           = "affinity"
+	AirtableConnectionType           = "airtable"
+	AmplitudeConnectionType          = "amplitude"
+	APIConnectionType                = "api"
 	AthenaConnectionType             = "awsathena"
-	PostgresqlConnectionType         = "postgresql"
-	SQLServerConnectionType          = "azuresql"
-	S3ConnectionType                 = "s3"
 	AzureBlobConnectionType          = "azureblob"
-	GoogleCloudStorageConnectionType = "gcs"
+	SQLServerConnectionType          = "azuresql"
 	BigQueryConnectionType           = "bigquery"
+	CsvConnectionType                = "csv"
+	GoogleCloudStorageConnectionType = "gcs"
 	GoogleSheetsConnectionType       = "gsheets"
 	GoogleAdsConnectionType          = "googleads"
-	SalesforceConnectionType         = "salesforce"
 	HubspotConnectionType            = "hubspot"
+	MarketoConnectionType            = "marketo"
+	MongoDBConnectionType            = "mongodb"
+	PostgresqlConnectionType         = "postgresql"
+	S3ConnectionType                 = "s3"
+	SalesforceConnectionType         = "salesforce"
 	SnowflakeConnectionType          = "snowflake"
 )
 
@@ -19,7 +26,7 @@ type SnowflakeConfiguration struct {
 	Account          string `json:"account" mapstructure:"account"`
 	Username         string `json:"username" mapstructure:"username"`
 	Password         string `json:"password" mapstructure:"password"`
-	Database         string `json:"dbname" mapstructure:"dbname"`
+	Dbname           string `json:"dbname" mapstructure:"dbname"`
 	Warehouse        string `json:"warehouse" mapstructure:"warehouse"`
 	AdditionalParams string `json:"params" mapstructure:"params"`
 }
@@ -52,14 +59,15 @@ type SalesforceConfiguration struct {
 }
 
 type BigQueryConfiguration struct {
-	ServiceAccountCredentials string `json:"service_account" mapstructure:"service_account"`
-	Location                  string `json:"location" mapstructure:"location"`
+	ProjectID      string `json:"project_id" mapstructure:"project_id"`
+	ServiceAccount string `json:"service_account" mapstructure:"service_account"`
+	Location       string `json:"location" mapstructure:"location"`
 }
 
 type GCSConfiguration struct {
-	ProjectId                 string `json:"project_id" mapstructure:"project_id"`
-	ServiceAccountCredentials string `json:"service_account" mapstructure:"service_account"`
-	Bucket                    string `json:"bucket" mapstructure:"bucket"`
+	ProjectId      string `json:"project_id" mapstructure:"project_id"`
+	ServiceAccount string `json:"service_account" mapstructure:"service_account"`
+	Bucket         string `json:"bucket" mapstructure:"bucket"`
 }
 
 type AzureBlobConfiguration struct {
@@ -113,4 +121,88 @@ type PostgresqlConfiguration struct {
 	SSHHost    string `json:"ssh_host,omitempty" mapstructure:"ssh_host"`
 	SSHPort    int    `json:"ssh_port,omitempty" mapstructure:"ssh_port"`
 	PrivateKey string `json:"ssh_private_key,omitempty" mapstructure:"ssh_private_key"`
+}
+
+type MongoDBConfiguration struct {
+	Hosts            string `json:"hosts" mapstructure:"hosts"`
+	Username         string `json:"username" mapstructure:"username"`
+	Password         string `json:"password" mapstructure:"password"`
+	Database         string `json:"database" mapstructure:"database"`
+	SRV              bool   `json:"srv" mapstructure:"srv"`
+	AdditionalParams string `json:"params" mapstructure:"params"`
+}
+
+type MarketoConfiguration struct {
+	ClientID     string `json:"client_id" mapstructure:"client_id"`
+	ClientSecret string `json:"client_secret" mapstructure:"client_secret"`
+	RESTEndpoint string `json:"rest_endpoint" mapstructure:"rest_endpoint"`
+
+	EnforceAPILimits  bool `json:"enforce_api_limits" mapstructure:"enforce_api_limits"`
+	DailyAPICalls     int  `json:"daily_api_calls" mapstructure:"daily_api_calls"`
+	ConcurrentImports int  `json:"concurrent_imports" mapstructure:"concurrent_imports"`
+}
+
+type AffinityConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key"`
+}
+
+type AirtableConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key"`
+}
+
+type AmplitudeConfiguration struct {
+	APIKey    string `json:"api_key" mapstructure:"api_key"`
+	SecretKey string `json:"secret_key" mapstructure:"secret_key"`
+}
+
+type APIConnectionConfiguration struct {
+	URL                   string             `json:"url" mapstructure:"url"`
+	Headers               []RequestParameter `json:"headers" mapstructure:"headers"`
+	Body                  string             `json:"body" mapstructure:"body"`
+	QueryStringParameters []RequestParameter `json:"parameters" mapstructure:"parameters"`
+	Healthcheck           string             `json:"healthcheck" mapstructure:"healthcheck"`
+	Auth                  Auth               `json:"auth" mapstructure:",squash"`
+}
+
+type RequestParameter struct {
+	Name  string      `json:"name" mapstructure:"name"`
+	Value interface{} `json:"value" mapstructure:"value"`
+}
+
+type Auth struct {
+	// BasicAuthConf provides basic authentication credentials
+	// e.g.
+	// Authorization: Basic <base64 encoded username:password>
+	// RFC7617
+	Basic *BasicAuthConf `json:"basic,omitempty" mapstructure:"basic"`
+	// HeaderAuthConf provides header authentication credentials
+	// e.g.
+	// Authorization: Bearer <token>
+	Header *RequestParameter `json:"header,omitempty" mapstructure:"header"`
+	// OAuthConf provides OAuth authentication using the client credentials flow
+	// e.g.
+	// Client ID: <client id>
+	// Client Secret: <client secret>
+	// Callback URL: <callback url>
+	// RFC6749 Section-4.4
+	OAuth *ClientCredentialConf `json:"oauth,omitempty" mapstructure:"oauth"`
+}
+
+type BasicAuthConf struct {
+	Username string `json:"username,omitempty" mapstructure:"username"`
+	Password string `json:"password,omitempty" mapstructure:"password"`
+}
+
+type ClientCredentialConf struct {
+	ClientID      string             `json:"client_id" mapstructure:"client_id"`
+	ClientSecret  string             `json:"client_secret" mapstructure:"client_secret"`
+	TokenEndpoint string             `json:"token_endpoint" mapstructure:"token_endpoint"`
+	ExtraFormData []RequestParameter `json:"extra_form_data" mapstructure:"extra_form_data"`
+}
+
+type CSVConnectionConfiguration struct {
+	URL                   string             `json:"url" mapstructure:"url"`
+	Headers               []RequestParameter `json:"headers" mapstructure:"headers"`
+	QueryStringParameters []RequestParameter `json:"parameters" mapstructure:"parameters"`
+	Auth                  Auth               `json:"auth" mapstructure:",squash"`
 }

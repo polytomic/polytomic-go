@@ -88,14 +88,16 @@ func (b *BulkApi) GetDestination(ctx context.Context, connID string) (*BulkDesti
 }
 
 type BulkSyncResponse struct {
-	ID                 string   `json:"id" tfsdk:"id" mapstructure:"id"`
-	Name               string   `json:"name" tfsdk:"name" mapstructure:"name"`
-	DestConnectionID   string   `json:"destination_connection_id" tfsdk:"destination_connection_id" mapstructure:"destination_connection_id"`
-	SourceConnectionID string   `json:"source_connection_id" tfsdk:"source_connection_id" mapstructure:"source_connection_id"`
-	Mode               string   `json:"mode" tfsdk:"mode" mapstructure:"mode"`
-	Discover           bool     `json:"discover" tfsdk:"discover" mapstructure:"discover"`
-	Active             bool     `json:"active" tfsdk:"active" mapstructure:"active"`
-	Schedule           Schedule `json:"schedule" tfsdk:"schedule" mapstructure:"schedule"`
+	ID                       string                 `json:"id" tfsdk:"id" mapstructure:"id"`
+	Name                     string                 `json:"name" tfsdk:"name" mapstructure:"name"`
+	DestConnectionID         string                 `json:"destination_connection_id" tfsdk:"destination_connection_id" mapstructure:"destination_connection_id"`
+	SourceConnectionID       string                 `json:"source_connection_id" tfsdk:"source_connection_id" mapstructure:"source_connection_id"`
+	Mode                     string                 `json:"mode" tfsdk:"mode" mapstructure:"mode"`
+	Discover                 bool                   `json:"discover" tfsdk:"discover" mapstructure:"discover"`
+	Active                   bool                   `json:"active" tfsdk:"active" mapstructure:"active"`
+	Schedule                 Schedule               `json:"schedule" tfsdk:"schedule" mapstructure:"schedule"`
+	DestinationConfiguration map[string]interface{} `json:"destination_configuration" tfsdk:"destination_configuration" mapstructure:"destination_configuration"`
+	SourceConfiguration      map[string]interface{} `json:"source_configuration" tfsdk:"source_configuration" mapstructure:"source_configuration"`
 }
 
 func (b *BulkApi) CreateBulkSync(ctx context.Context, sync BulkSyncRequest) (*BulkSyncResponse, error) {

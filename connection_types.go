@@ -193,37 +193,37 @@ type Auth struct {
 	// e.g.
 	// Authorization: Basic <base64 encoded username:password>
 	// RFC7617
-	Basic *BasicAuthConf `json:"basic,omitempty" mapstructure:"basic"`
+	Basic *BasicAuthConf `json:"basic,omitempty" mapstructure:"basic" tfsdk:"basic"`
 	// HeaderAuthConf provides header authentication credentials
 	// e.g.
 	// Authorization: Bearer <token>
-	Header *RequestParameter `json:"header,omitempty" mapstructure:"header"`
+	Header *RequestParameter `json:"header,omitempty" mapstructure:"header" tfsdk:"header"`
 	// OAuthConf provides OAuth authentication using the client credentials flow
 	// e.g.
 	// Client ID: <client id>
 	// Client Secret: <client secret>
 	// Callback URL: <callback url>
 	// RFC6749 Section-4.4
-	OAuth *ClientCredentialConf `json:"oauth,omitempty" mapstructure:"oauth"`
+	OAuth *ClientCredentialConf `json:"oauth,omitempty" mapstructure:"oauth" tfsdk:"oauth"`
 }
 
 type BasicAuthConf struct {
-	Username string `json:"username,omitempty" mapstructure:"username"`
-	Password string `json:"password,omitempty" mapstructure:"password"`
+	Username string `json:"username,omitempty" mapstructure:"username" tfsdk:"username"`
+	Password string `json:"password,omitempty" mapstructure:"password" tfsdk:"password"`
 }
 
 type ClientCredentialConf struct {
-	ClientID      string             `json:"client_id" mapstructure:"client_id"`
-	ClientSecret  string             `json:"client_secret" mapstructure:"client_secret"`
-	TokenEndpoint string             `json:"token_endpoint" mapstructure:"token_endpoint"`
-	ExtraFormData []RequestParameter `json:"extra_form_data" mapstructure:"extra_form_data"`
+	ClientID      string             `json:"client_id" mapstructure:"client_id" tfsdk:"client_id"`
+	ClientSecret  string             `json:"client_secret" mapstructure:"client_secret" tfsdk:"client_secret"`
+	TokenEndpoint string             `json:"token_endpoint" mapstructure:"token_endpoint" tfsdk:"token_endpoint"`
+	ExtraFormData []RequestParameter `json:"extra_form_data" mapstructure:"extra_form_data" tfsdk:"extra_form_data"`
 }
 
 type CSVConnectionConfiguration struct {
 	URL                   string             `json:"url" mapstructure:"url"`
 	Headers               []RequestParameter `json:"headers" mapstructure:"headers"`
 	QueryStringParameters []RequestParameter `json:"parameters" mapstructure:"parameters"`
-	Auth                  Auth               `json:"auth" mapstructure:",squash"`
+	Auth                  Auth               `json:"auth" mapstructure:",squash" tfsdk:"auth"`
 }
 
 type ChargeBeeConnectionConfiguration struct {

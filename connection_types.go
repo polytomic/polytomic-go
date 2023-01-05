@@ -184,8 +184,8 @@ type APIConnectionConfiguration struct {
 }
 
 type RequestParameter struct {
-	Name  string      `json:"name" mapstructure:"name" tfsdk:"name"`
-	Value interface{} `json:"value" mapstructure:"value" tfsdk:"value"`
+	Name  string `json:"name" mapstructure:"name" tfsdk:"name"`
+	Value string `json:"value" mapstructure:"value" tfsdk:"value"`
 }
 
 type Auth struct {

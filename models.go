@@ -84,6 +84,18 @@ func (m *ModelApi) Get(ctx context.Context, id string) (*Model, error) {
 	return &model, nil
 }
 
+func (m *ModelApi) List(ctx context.Context) ([]Model, error) {
+	var models []Model
+	err := m.client.newRequest("/api/models").
+		ToJSON(&models).
+		Fetch(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return models, nil
+}
+
 func (m *ModelApi) Update(ctx context.Context, id string, r ModelRequest) (*Model, error) {
 	var model Model
 	err := m.client.newRequest("/api/models/" + id).

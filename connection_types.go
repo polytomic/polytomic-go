@@ -175,12 +175,12 @@ type AmplitudeConfiguration struct {
 }
 
 type APIConnectionConfiguration struct {
-	URL                   string             `json:"url" mapstructure:"url"`
-	Headers               []RequestParameter `json:"headers" mapstructure:"headers"`
-	Body                  string             `json:"body" mapstructure:"body"`
-	QueryStringParameters []RequestParameter `json:"parameters" mapstructure:"parameters"`
-	Healthcheck           string             `json:"healthcheck" mapstructure:"healthcheck"`
-	Auth                  Auth               `json:"auth" mapstructure:",squash"`
+	URL         string             `json:"url" mapstructure:"url"`
+	Headers     []RequestParameter `json:"headers" mapstructure:"headers"`
+	Body        string             `json:"body" mapstructure:"body"`
+	Parameters  []RequestParameter `json:"parameters" mapstructure:"parameters"`
+	Healthcheck string             `json:"healthcheck" mapstructure:"healthcheck"`
+	Auth        Auth               `json:"auth" mapstructure:",squash"`
 }
 
 type RequestParameter struct {

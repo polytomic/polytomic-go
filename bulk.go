@@ -19,12 +19,12 @@ type BulkSyncRequest struct {
 }
 
 type Schedule struct {
-	Frequency  *string `json:"frequency,omitempty" tfsdk:"frequency"`
-	DayOfWeek  *string `json:"day_of_week,omitempty" tfsdk:"day_of_week"`
-	Hour       *string `json:"hour,omitempty" tfsdk:"hour"`
-	Minute     *string `json:"minute,omitempty" tfsdk:"minute"`
-	Month      *string `json:"month,omitempty" tfsdk:"month"`
-	DayOfMonth *string `json:"day_of_month,omitempty" tfsdk:"day_of_month"`
+	Frequency  *string `json:"frequency,omitempty" tfsdk:"frequency" mapstructure:"frequency"`
+	DayOfWeek  *string `json:"day_of_week,omitempty" tfsdk:"day_of_week" mapstructure:"day_of_week"`
+	Hour       *string `json:"hour,omitempty" tfsdk:"hour" mapstructure:"hour"`
+	Minute     *string `json:"minute,omitempty" tfsdk:"minute" mapstructure:"minute"`
+	Month      *string `json:"month,omitempty" tfsdk:"month" mapstructure:"month"`
+	DayOfMonth *string `json:"day_of_month,omitempty" tfsdk:"day_of_month" mapstructure:"day_of_month"`
 }
 
 type BulkSchema struct {
@@ -88,14 +88,16 @@ func (b *BulkApi) GetDestination(ctx context.Context, connID string) (*BulkDesti
 }
 
 type BulkSyncResponse struct {
-	ID                 string   `json:"id" tfsdk:"id"`
-	Name               string   `json:"name" tfsdk:"name"`
-	DestConnectionID   string   `json:"destination_connection_id" tfsdk:"destination_connection_id"`
-	SourceConnectionID string   `json:"source_connection_id" tfsdk:"source_connection_id"`
-	Mode               string   `json:"mode" tfsdk:"mode"`
-	Discover           bool     `json:"discover" tfsdk:"discover"`
-	Active             bool     `json:"active" tfsdk:"active"`
-	Schedule           Schedule `json:"schedule" tfsdk:"schedule"`
+	ID                       string                 `json:"id" tfsdk:"id" mapstructure:"id"`
+	Name                     string                 `json:"name" tfsdk:"name" mapstructure:"name"`
+	DestConnectionID         string                 `json:"destination_connection_id" tfsdk:"destination_connection_id" mapstructure:"destination_connection_id"`
+	SourceConnectionID       string                 `json:"source_connection_id" tfsdk:"source_connection_id" mapstructure:"source_connection_id"`
+	Mode                     string                 `json:"mode" tfsdk:"mode" mapstructure:"mode"`
+	Discover                 bool                   `json:"discover" tfsdk:"discover" mapstructure:"discover"`
+	Active                   bool                   `json:"active" tfsdk:"active" mapstructure:"active"`
+	Schedule                 Schedule               `json:"schedule" tfsdk:"schedule" mapstructure:"schedule"`
+	DestinationConfiguration map[string]interface{} `json:"destination_configuration" tfsdk:"destination_configuration" mapstructure:"destination_configuration"`
+	SourceConfiguration      map[string]interface{} `json:"source_configuration" tfsdk:"source_configuration" mapstructure:"source_configuration"`
 }
 
 func (b *BulkApi) CreateBulkSync(ctx context.Context, sync BulkSyncRequest) (*BulkSyncResponse, error) {
@@ -141,6 +143,17 @@ func (b *BulkApi) GetBulkSync(ctx context.Context, id string) (*BulkSyncResponse
 	}
 
 	return &bulk, nil
+}
+
+func (b *BulkApi) ListBulkSyncs(ctx context.Context) ([]BulkSyncResponse, error) {
+	var bulks []BulkSyncResponse
+	err := b.client.newRequest("/api/bulk/syncs").
+		ToJSON(&bulks).
+		Fetch(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return bulks, nil
 }
 
 func (b *BulkApi) GetBulkSyncSchemas(ctx context.Context, id string) ([]BulkSchema, error) {

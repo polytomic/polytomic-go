@@ -96,10 +96,10 @@ type AzureBlobConfiguration struct {
 }
 
 type S3Configuration struct {
-	AccessKeyID     string `json:"aws_access_key_id" mapstructure:"aws_access_key_id"`
-	AccessKeySecret string `json:"aws_secret_access_key" mapstructure:"aws_secret_access_key"`
-	Region          string `json:"s3_bucket_region" mapstructure:"s3_bucket_region"`
-	Bucket          string `json:"s3_bucket_name" mapstructure:"s3_bucket_name"`
+	AwsAccessKeyID     string `json:"aws_access_key_id" mapstructure:"aws_access_key_id"`
+	AwsSecretAccessKey string `json:"aws_secret_access_key" mapstructure:"aws_secret_access_key"`
+	S3BucketRegion     string `json:"s3_bucket_region" mapstructure:"s3_bucket_region"`
+	S3BucketName       string `json:"s3_bucket_name" mapstructure:"s3_bucket_name"`
 }
 
 type AthenaConfiguration struct {

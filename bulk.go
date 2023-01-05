@@ -143,6 +143,17 @@ func (b *BulkApi) GetBulkSync(ctx context.Context, id string) (*BulkSyncResponse
 	return &bulk, nil
 }
 
+func (b *BulkApi) ListBulkSyncs(ctx context.Context) ([]BulkSyncResponse, error) {
+	var bulks []BulkSyncResponse
+	err := b.client.newRequest("/api/bulk/syncs").
+		ToJSON(&bulks).
+		Fetch(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return bulks, nil
+}
+
 func (b *BulkApi) GetBulkSyncSchemas(ctx context.Context, id string) ([]BulkSchema, error) {
 	var schemas []BulkSchema
 	err := b.client.newRequest(fmt.Sprintf("/api/bulk/syncs/%s/schemas", id)).

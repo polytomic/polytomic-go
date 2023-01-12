@@ -153,3 +153,7 @@ type ApiError struct {
 func (e ApiError) Error() string {
 	return fmt.Sprintf("%s (%d)", e.message, e.statusCode)
 }
+
+type Response struct {
+	Data interface{} `json:"data"`
+}

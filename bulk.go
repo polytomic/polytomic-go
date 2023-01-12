@@ -65,8 +65,9 @@ type BulkApi struct {
 
 func (b *BulkApi) GetSource(ctx context.Context, connID string) (*BulkSource, error) {
 	var source BulkSource
+	resp := Response{Data: &source}
 	err := b.client.newRequest(fmt.Sprintf("/api/bulk/source/%s", connID)).
-		ToJSON(&source).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -77,8 +78,9 @@ func (b *BulkApi) GetSource(ctx context.Context, connID string) (*BulkSource, er
 
 func (b *BulkApi) GetDestination(ctx context.Context, connID string) (*BulkDestination, error) {
 	var dest BulkDestination
+	resp := Response{Data: &dest}
 	err := b.client.newRequest(fmt.Sprintf("/api/bulk/dest/%s", connID)).
-		ToJSON(&dest).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -102,9 +104,10 @@ type BulkSyncResponse struct {
 
 func (b *BulkApi) CreateBulkSync(ctx context.Context, sync BulkSyncRequest) (*BulkSyncResponse, error) {
 	var bulk BulkSyncResponse
+	resp := Response{Data: &bulk}
 	err := b.client.newRequest("/api/bulk/syncs").
 		BodyJSON(&sync).
-		ToJSON(&bulk).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -115,10 +118,11 @@ func (b *BulkApi) CreateBulkSync(ctx context.Context, sync BulkSyncRequest) (*Bu
 
 func (b *BulkApi) UpdateBulkSync(ctx context.Context, id string, sync BulkSyncRequest) (*BulkSyncResponse, error) {
 	var bulk BulkSyncResponse
+	resp := Response{Data: &bulk}
 	err := b.client.newRequest(fmt.Sprintf("/api/bulk/syncs/%s", id)).
 		Patch().
 		BodyJSON(&sync).
-		ToJSON(&bulk).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -135,8 +139,9 @@ func (b *BulkApi) DeleteBulkSync(ctx context.Context, id string) error {
 
 func (b *BulkApi) GetBulkSync(ctx context.Context, id string) (*BulkSyncResponse, error) {
 	var bulk BulkSyncResponse
+	resp := Response{Data: &bulk}
 	err := b.client.newRequest(fmt.Sprintf("/api/bulk/syncs/%s", id)).
-		ToJSON(&bulk).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -147,8 +152,9 @@ func (b *BulkApi) GetBulkSync(ctx context.Context, id string) (*BulkSyncResponse
 
 func (b *BulkApi) ListBulkSyncs(ctx context.Context) ([]BulkSyncResponse, error) {
 	var bulks []BulkSyncResponse
+	resp := Response{Data: &bulks}
 	err := b.client.newRequest("/api/bulk/syncs").
-		ToJSON(&bulks).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -158,8 +164,9 @@ func (b *BulkApi) ListBulkSyncs(ctx context.Context) ([]BulkSyncResponse, error)
 
 func (b *BulkApi) GetBulkSyncSchemas(ctx context.Context, id string) ([]BulkSchema, error) {
 	var schemas []BulkSchema
+	resp := Response{Data: &schemas}
 	err := b.client.newRequest(fmt.Sprintf("/api/bulk/syncs/%s/schemas", id)).
-		ToJSON(&schemas).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -170,9 +177,10 @@ func (b *BulkApi) GetBulkSyncSchemas(ctx context.Context, id string) ([]BulkSche
 
 func (b *BulkApi) UpdateBulkSyncSchemas(ctx context.Context, id string, schemas []BulkSchema) ([]BulkSchema, error) {
 	var resultSchemas []BulkSchema
+	resp := Response{Data: &resultSchemas}
 	err := b.client.newRequest(fmt.Sprintf("/api/bulk/syncs/%s/schemas", id)).
 		BodyJSON(BulkSchemaUpdate{schemas}).
-		ToJSON(&schemas).
+		ToJSON(&resp).
 		Patch().
 		Fetch(ctx)
 	if err != nil {
@@ -183,8 +191,9 @@ func (b *BulkApi) UpdateBulkSyncSchemas(ctx context.Context, id string, schemas 
 
 func (b *BulkApi) GetBulkSyncSchema(ctx context.Context, id, schemaID string) (*BulkSchema, error) {
 	var schema BulkSchema
+	resp := Response{Data: &schema}
 	err := b.client.newRequest(fmt.Sprintf("/api/bulk/syncs/%s/schemas/%s", id, schemaID)).
-		ToJSON(&schema).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err

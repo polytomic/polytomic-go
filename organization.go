@@ -26,9 +26,10 @@ type OrganizationApi struct {
 
 func (a *OrganizationApi) Create(ctx context.Context, ws OrganizationMutation) (*Organization, error) {
 	var workspace Organization
+	resp := Response{Data: &workspace}
 	err := a.client.newRequest("/api/organizations").
 		BodyJSON(&ws).
-		ToJSON(&workspace).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -39,8 +40,9 @@ func (a *OrganizationApi) Create(ctx context.Context, ws OrganizationMutation) (
 
 func (a *OrganizationApi) Get(ctx context.Context, id uuid.UUID) (*Organization, error) {
 	var workspace Organization
+	resp := Response{Data: &workspace}
 	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s", id.String())).
-		ToJSON(&workspace).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -51,10 +53,11 @@ func (a *OrganizationApi) Get(ctx context.Context, id uuid.UUID) (*Organization,
 
 func (a *OrganizationApi) Update(ctx context.Context, id uuid.UUID, ws OrganizationMutation) (*Organization, error) {
 	var workspace Organization
+	resp := Response{Data: &workspace}
 	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s", id.String())).
 		Patch().
 		BodyJSON(&ws).
-		ToJSON(&workspace).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err

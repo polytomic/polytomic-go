@@ -25,9 +25,10 @@ type UserApi struct {
 
 func (a *UserApi) Create(ctx context.Context, organizationId uuid.UUID, ws UserMutation) (*User, error) {
 	var user User
+	resp := Response{Data: &user}
 	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s/users", organizationId)).
 		BodyJSON(&ws).
-		ToJSON(&user).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -38,8 +39,9 @@ func (a *UserApi) Create(ctx context.Context, organizationId uuid.UUID, ws UserM
 
 func (a *UserApi) Get(ctx context.Context, organizationId, userId uuid.UUID) (*User, error) {
 	var user User
+	resp := Response{Data: &user}
 	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s/users/%s", organizationId, userId)).
-		ToJSON(&user).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -50,10 +52,11 @@ func (a *UserApi) Get(ctx context.Context, organizationId, userId uuid.UUID) (*U
 
 func (a *UserApi) Update(ctx context.Context, organizationId, userId uuid.UUID, ws UserMutation) (*User, error) {
 	var user User
+	resp := Response{Data: &user}
 	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s/users/%s", organizationId, userId)).
 		Patch().
 		BodyJSON(&ws).
-		ToJSON(&user).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err

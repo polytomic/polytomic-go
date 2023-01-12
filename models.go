@@ -61,9 +61,10 @@ type ModelFieldRequest struct {
 
 func (m *ModelApi) Create(ctx context.Context, r ModelRequest) (*Model, error) {
 	var model Model
+	resp := Response{Data: &model}
 	err := m.client.newRequest("/api/models").
 		BodyJSON(&r).
-		ToJSON(&model).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -74,8 +75,9 @@ func (m *ModelApi) Create(ctx context.Context, r ModelRequest) (*Model, error) {
 
 func (m *ModelApi) Get(ctx context.Context, id string) (*Model, error) {
 	var model Model
+	resp := Response{Data: &model}
 	err := m.client.newRequest("/api/models/" + id).
-		ToJSON(&model).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -86,8 +88,9 @@ func (m *ModelApi) Get(ctx context.Context, id string) (*Model, error) {
 
 func (m *ModelApi) List(ctx context.Context) ([]Model, error) {
 	var models []Model
+	resp := Response{Data: &models}
 	err := m.client.newRequest("/api/models").
-		ToJSON(&models).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -98,10 +101,11 @@ func (m *ModelApi) List(ctx context.Context) ([]Model, error) {
 
 func (m *ModelApi) Update(ctx context.Context, id string, r ModelRequest) (*Model, error) {
 	var model Model
+	resp := Response{Data: &model}
 	err := m.client.newRequest("/api/models/" + id).
 		Patch().
 		BodyJSON(&r).
-		ToJSON(&model).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err

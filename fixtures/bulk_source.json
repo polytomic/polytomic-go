@@ -1,4 +1,6 @@
 {
-  "schemas": ["user", "project", "issue"],
-  "configuration": null
+  "data": {
+    "schemas": ["user", "project", "issue"],
+    "configuration": null
+  }
 }

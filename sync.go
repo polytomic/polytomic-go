@@ -85,9 +85,10 @@ type Source struct {
 
 func (s *SyncApi) Create(ctx context.Context, r SyncRequest) (*SyncResponse, error) {
 	var sync SyncResponse
+	resp := Response{Data: &sync}
 	err := s.client.newRequest("/api/syncs").
 		BodyJSON(&r).
-		ToJSON(&sync).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -105,8 +106,9 @@ func (s *SyncApi) Create(ctx context.Context, r SyncRequest) (*SyncResponse, err
 
 func (s *SyncApi) Get(ctx context.Context, id string) (*SyncResponse, error) {
 	var sync SyncResponse
+	resp := Response{Data: &sync}
 	err := s.client.newRequest("/api/syncs/" + id).
-		ToJSON(&sync).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -117,8 +119,9 @@ func (s *SyncApi) Get(ctx context.Context, id string) (*SyncResponse, error) {
 
 func (s *SyncApi) List(ctx context.Context) ([]SyncResponse, error) {
 	var syncs []SyncResponse
+	resp := Response{Data: &syncs}
 	err := s.client.newRequest("/api/syncs").
-		ToJSON(&syncs).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
@@ -128,10 +131,11 @@ func (s *SyncApi) List(ctx context.Context) ([]SyncResponse, error) {
 
 func (s *SyncApi) Update(ctx context.Context, id string, r SyncRequest) (*SyncResponse, error) {
 	var sync SyncResponse
+	resp := Response{Data: &sync}
 	err := s.client.newRequest("/api/syncs/" + id).
 		Patch().
 		BodyJSON(&r).
-		ToJSON(&sync).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err

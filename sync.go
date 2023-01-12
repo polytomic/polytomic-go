@@ -14,12 +14,12 @@ type SyncRequest struct {
 	Target         Target      `json:"target"`
 	Mode           string      `json:"mode"`
 	Fields         []SyncField `json:"fields"`
-	OverrideFields []SyncField `json:"override_fields"`
-	Filters        []Filter    `json:"filters"`
-	FilterLogic    string      `json:"filter_logic"`
-	Overrides      []Override  `json:"overrides"`
+	OverrideFields []SyncField `json:"override_fields,omitempty"`
+	Filters        []Filter    `json:"filters,omitempty"`
+	FilterLogic    string      `json:"filter_logic,omitempty"`
+	Overrides      []Override  `json:"overrides,omitempty"`
 	Schedule       Schedule    `json:"schedule"`
-	Identity       *Identity   `json:"identity"`
+	Identity       *Identity   `json:"identity,omitempty"`
 	SyncAllRecords bool        `json:"sync_all_records"`
 }
 
@@ -64,10 +64,10 @@ type Filter struct {
 type Target struct {
 	ConnectionID  string            `json:"connection_id" tfsdk:"connection_id" mapstructure:"connection_id"`
 	Object        *string           `json:"object" tfsdk:"object" mapstructure:"object"`
-	SearchValues  map[string]string `json:"search_values" tfsdk:"search_values" mapstructure:"search_values,omitempty"`
-	Configuration map[string]string `json:"configuration" tfsdk:"configuration" mapstructure:"configuration,omitempty"`
-	NewName       *string           `json:"new_name" tfsdk:"new_name" mapstructure:"new_name"`
-	FilterLogic   *string           `json:"filter_logic" tfsdk:"filter_logic" mapstructure:"filter_logic"`
+	SearchValues  map[string]string `json:"search_values,omitempty" tfsdk:"search_values" mapstructure:"search_values,omitempty"`
+	Configuration map[string]string `json:"configuration,omitempty" tfsdk:"configuration" mapstructure:"configuration,omitempty"`
+	NewName       *string           `json:"new_name,omitempty" tfsdk:"new_name" mapstructure:"new_name"`
+	FilterLogic   *string           `json:"filter_logic,omitempty" tfsdk:"filter_logic" mapstructure:"filter_logic"`
 }
 
 type Identity struct {

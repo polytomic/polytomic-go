@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 
 	"github.com/carlmjohnson/requests"
 )
@@ -47,6 +48,9 @@ type Client struct {
 // NewClient returns a Polytomic API client which will make requests to the
 // specified host, using the provided Authenticator.
 func NewClient(host string, auth Authenticator) *Client {
+	if parsed, err := url.Parse(host); err == nil {
+		host = parsed.Host
+	}
 	if host == "" {
 		host = DefaultHost
 	}

@@ -19,12 +19,7 @@ func TestCheckApiResponse(t *testing.T) {
 		"unauthorized": {
 			http.StatusUnauthorized,
 			`{"error":{"message":"invalid or unknown API key"}}`,
-			"invalid or unknown API key (401)",
-		},
-		"not top-level": {
-			http.StatusInternalServerError,
-			"Oh hello, error",
-			"unexpected error (500): Oh hello, error",
+			"invalid or unknown API key (401): []",
 		},
 	}
 

@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/carlmjohnson/requests"
 )
@@ -48,8 +49,10 @@ type Client struct {
 // NewClient returns a Polytomic API client which will make requests to the
 // specified host, using the provided Authenticator.
 func NewClient(host string, auth Authenticator) *Client {
-	if parsed, err := url.Parse(host); err == nil {
-		host = parsed.Host
+	if strings.HasPrefix(host, "https://") || strings.HasPrefix(host, "http://") {
+		if parsed, err := url.Parse(host); err == nil {
+			host = parsed.Host
+		}
 	}
 	if host == "" {
 		host = DefaultHost
@@ -119,21 +122,21 @@ func checkApiResponse(res *http.Response) error {
 	}
 
 	var apiErr Error
-	if err := json.Unmarshal(body, &apiErr); err != nil {
+	if err := json.Unmarshal(body, &apiErr); err != nil || apiErr.Message == "" {
 		// Try legacy format
 		var legacyErr LegacyError
 		if err := json.Unmarshal(body, &legacyErr); err != nil {
 			return fmt.Errorf("unexpected response: %w", err)
 		}
 		apiErr = Error{
-			Error: legacyErr.Error.Message,
+			Message: legacyErr.Error.Message,
 		}
-
 	}
 
 	return ApiError{
-		message:    apiErr.Error,
-		statusCode: res.StatusCode,
+		StatusCode: res.StatusCode,
+		Message:    apiErr.Message,
+		Metadata:   apiErr.Metadata,
 	}
 
 }
@@ -145,17 +148,19 @@ type LegacyError struct {
 }
 
 type Error struct {
-	Error      string `json:"error"`
-	StatusCode string `json:"status"`
+	Message    string        `json:"message"`
+	StatusCode int           `json:"status_code"`
+	Metadata   []interface{} `json:"metadata"`
 }
 
 type ApiError struct {
-	statusCode int
-	message    string
+	StatusCode int           `json:"status_code"`
+	Message    string        `json:"message"`
+	Metadata   []interface{} `json:"metadata"`
 }
 
 func (e ApiError) Error() string {
-	return fmt.Sprintf("%s (%d)", e.message, e.statusCode)
+	return fmt.Sprintf("%s (%d): %v", e.Message, e.StatusCode, e.Metadata)
 }
 
 type Response struct {

@@ -28,7 +28,7 @@ func TestGetConnectionReturnsServerError(t *testing.T) {
 
 		apiErr := ApiError{}
 		assert.ErrorAs(t, err, &apiErr)
-		assert.Equal(t, "invalid or unknown API key", apiErr.message)
+		assert.Equal(t, "invalid or unknown API key", apiErr.Message)
 		assert.True(t, gock.IsDone())
 	})
 

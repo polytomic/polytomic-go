@@ -11,6 +11,7 @@ type SyncApi struct {
 
 type SyncRequest struct {
 	Name           string      `json:"name"`
+	OrganizationID string      `json:"organization_id,omitempty"`
 	Target         Target      `json:"target"`
 	Mode           string      `json:"mode"`
 	Fields         []SyncField `json:"fields"`
@@ -25,6 +26,7 @@ type SyncRequest struct {
 
 type SyncResponse struct {
 	ID             string      `json:"id" tfsdk:"id" mapstructure:"id"`
+	OrganizationID string      `json:"organization_id" tfsdk:"organization_id" mapstructure:"organization_id"`
 	Name           string      `json:"name" tfsdk:"name" mapstructure:"name"`
 	Target         Target      `json:"target" tfsdk:"target" mapstructure:"target"`
 	Mode           string      `json:"mode" tfsdk:"mode" mapstructure:"mode"`

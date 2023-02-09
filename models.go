@@ -10,6 +10,7 @@ type ModelApi struct {
 
 type Model struct {
 	ID              string                 `json:"id" tfsdk:"id"`
+	OrganizationID  string                 `json:"organization_id" tfsdk:"organization_id"`
 	Name            string                 `json:"name" tfsdk:"name"`
 	Type            string                 `json:"type" tfsdk:"type"`
 	Version         int                    `json:"version" tfsdk:"version"`
@@ -44,6 +45,7 @@ type RelationTo struct {
 
 type ModelRequest struct {
 	ConnectionID     string                 `json:"connection_id" tfsdk:"connection_id"`
+	OrganizationID   string                 `json:"organization_id,omitempty" tfsdk:"organization_id"`
 	Name             string                 `json:"name" tfsdk:"name"`
 	Configuration    map[string]interface{} `json:"configuration" tfsdk:"configuration"`
 	Fields           []string               `json:"fields" tfsdk:"fields"`

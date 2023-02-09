@@ -7,6 +7,7 @@ import (
 
 type BulkSyncRequest struct {
 	Name                     string                 `json:"name"`
+	OrganizationID           string                 `json:"organization_id,omitempty"`
 	DestConnectionID         string                 `json:"destination_connection_id"`
 	SourceConnectionID       string                 `json:"source_connection_id"`
 	Mode                     string                 `json:"mode"`
@@ -91,6 +92,7 @@ func (b *BulkApi) GetDestination(ctx context.Context, connID string) (*BulkDesti
 
 type BulkSyncResponse struct {
 	ID                       string                 `json:"id" tfsdk:"id" mapstructure:"id"`
+	OrganizationID           string                 `json:"organization_id " tfsdk:"organization_id" mapstructure:"organization_id"`
 	Name                     string                 `json:"name" tfsdk:"name" mapstructure:"name"`
 	DestConnectionID         string                 `json:"destination_connection_id" tfsdk:"destination_connection_id" mapstructure:"destination_connection_id"`
 	SourceConnectionID       string                 `json:"source_connection_id" tfsdk:"source_connection_id" mapstructure:"source_connection_id"`

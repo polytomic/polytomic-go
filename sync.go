@@ -58,7 +58,7 @@ type Filter struct {
 	FieldID   string      `json:"field_id" tfsdk:"field_id" mapstructure:"field_id"`
 	FieldType string      `json:"field_type" tfsdk:"field_type" mapstructure:"field_type"`
 	Function  string      `json:"function" tfsdk:"function" mapstructure:"function"`
-	Value     interface{} `json:"value" tfsdk:"value" mapstructure:"value"`
+	Value     interface{} `json:"value,omitempty" tfsdk:"value" mapstructure:"value"`
 	Label     string      `json:"label" tfsdk:"label" mapstructure:"label"`
 }
 

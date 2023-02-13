@@ -2,7 +2,6 @@ package polytomic
 
 import (
 	"context"
-	"strings"
 )
 
 type SyncApi struct {
@@ -94,13 +93,6 @@ func (s *SyncApi) Create(ctx context.Context, r SyncRequest) (*SyncResponse, err
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
-	}
-
-	// remap keys to lowercase
-	for key, val := range sync.Target.Configuration {
-		newkey := strings.ToLower(key)
-		delete(sync.Target.Configuration, key)
-		sync.Target.Configuration[newkey] = val
 	}
 
 	return &sync, nil

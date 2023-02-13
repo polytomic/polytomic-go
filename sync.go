@@ -2,7 +2,6 @@ package polytomic
 
 import (
 	"context"
-	"strings"
 )
 
 type SyncApi struct {
@@ -56,11 +55,11 @@ type Override struct {
 }
 
 type Filter struct {
-	FieldID   string `json:"field_id" tfsdk:"field_id" mapstructure:"field_id"`
-	FieldType string `json:"field_type" tfsdk:"field_type" mapstructure:"field_type"`
-	Function  string `json:"function" tfsdk:"function" mapstructure:"function"`
-	Value     string `json:"value" tfsdk:"value" mapstructure:"value"`
-	Label     string `json:"label" tfsdk:"label" mapstructure:"label"`
+	FieldID   string      `json:"field_id" tfsdk:"field_id" mapstructure:"field_id"`
+	FieldType string      `json:"field_type" tfsdk:"field_type" mapstructure:"field_type"`
+	Function  string      `json:"function" tfsdk:"function" mapstructure:"function"`
+	Value     interface{} `json:"value,omitempty" tfsdk:"value" mapstructure:"value"`
+	Label     string      `json:"label" tfsdk:"label" mapstructure:"label"`
 }
 
 type Target struct {
@@ -94,13 +93,6 @@ func (s *SyncApi) Create(ctx context.Context, r SyncRequest) (*SyncResponse, err
 		Fetch(ctx)
 	if err != nil {
 		return nil, err
-	}
-
-	// remap keys to lowercase
-	for key, val := range sync.Target.Configuration {
-		newkey := strings.ToLower(key)
-		delete(sync.Target.Configuration, key)
-		sync.Target.Configuration[newkey] = val
 	}
 
 	return &sync, nil

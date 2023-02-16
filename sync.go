@@ -48,10 +48,10 @@ type SyncField struct {
 }
 
 type Override struct {
-	FieldID  string `json:"field_id" tfsdk:"field_id" mapstructure:"field_id"`
-	Function string `json:"function" tfsdk:"function" mapstructure:"function"`
-	Value    string `json:"value" tfsdk:"value" mapstructure:"value"`
-	Override string `json:"override" tfsdk:"override" mapstructure:"override"`
+	FieldID  string      `json:"field_id" tfsdk:"field_id" mapstructure:"field_id"`
+	Function string      `json:"function" tfsdk:"function" mapstructure:"function"`
+	Value    interface{} `json:"value" tfsdk:"value" mapstructure:"value"`
+	Override interface{} `json:"override" tfsdk:"override" mapstructure:"override"`
 }
 
 type Filter struct {

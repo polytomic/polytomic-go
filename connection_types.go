@@ -5,6 +5,7 @@ const (
 	AirtableConnectionType           = "airtable"
 	AmplitudeConnectionType          = "amplitude"
 	APIConnectionType                = "api"
+	AscendConnectionType             = "ascend"
 	AthenaConnectionType             = "awsathena"
 	AzureBlobConnectionType          = "azureblob"
 	SQLServerConnectionType          = "azuresql"
@@ -42,6 +43,7 @@ const (
 	ShopifyConnectionType            = "shopify"
 	SmartSheetConnectionType         = "smartsheet"
 	SnowflakeConnectionType          = "snowflake"
+	StatsigConnectionType            = "statsig"
 	StripeConnectionType             = "stripe"
 	SurvicateConnectionType          = "survicate"
 	SynapseConnectionType            = "synapse"
@@ -50,6 +52,10 @@ const (
 	WebhookConnectionType            = "webhook"
 	ZendeskConnectionType            = "zendesk"
 )
+
+type AscendConnectionConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
+}
 
 type SnowflakeConfiguration struct {
 	Account   string `json:"account" mapstructure:"account,omitempty" tfsdk:"account"`
@@ -358,6 +364,10 @@ type ShopifyConnectionConfiguration struct {
 }
 
 type SmartSheetConnectionConfiguration struct{}
+
+type StatsigConnectionConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
+}
 
 type StripeConnectionConfiguration struct {
 	APIKey  string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`

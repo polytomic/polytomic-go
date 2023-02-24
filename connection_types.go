@@ -9,6 +9,7 @@ const (
 	AzureBlobConnectionType          = "azureblob"
 	SQLServerConnectionType          = "azuresql"
 	BigQueryConnectionType           = "bigquery"
+	BingAdsConnectionType            = "bingads"
 	ChargebeeConnectionType          = "chargebee"
 	CloudSQLConnectionType           = "cloudsql"
 	CosmosDBConnectionType           = "cosmosdb"
@@ -26,6 +27,7 @@ const (
 	GoogleAdsConnectionType          = "googleads"
 	HubspotConnectionType            = "hubspot"
 	IntercomConnectionType           = "intercom"
+	IterableConnectionType           = "iterable"
 	MarketoConnectionType            = "marketo"
 	MongoDBConnectionType            = "mongodb"
 	MysqlConnectionType              = "mysql"
@@ -36,9 +38,17 @@ const (
 	S3ConnectionType                 = "s3"
 	SalesforceConnectionType         = "salesforce"
 	SegmentConnectionType            = "segment"
+	ShipBobConnectionType            = "shipbob"
+	ShopifyConnectionType            = "shopify"
+	SmartSheetConnectionType         = "smartsheet"
 	SnowflakeConnectionType          = "snowflake"
 	StripeConnectionType             = "stripe"
+	SurvicateConnectionType          = "survicate"
+	SynapseConnectionType            = "synapse"
+	UserVoiceConnectionType          = "uservoice"
+	VanillaConnectionType            = "vanilla"
 	WebhookConnectionType            = "webhook"
+	ZendeskConnectionType            = "zendesk"
 )
 
 type SnowflakeConfiguration struct {
@@ -82,6 +92,8 @@ type BigQueryConfiguration struct {
 	ServiceAccount string `json:"service_account" mapstructure:"service_account" tfsdk:"service_account"`
 	Location       string `json:"location" mapstructure:"location" tfsdk:"location"`
 }
+
+type BingAdsConnectionConfiguration struct{}
 
 type GCSConfiguration struct {
 	ProjectId      string `json:"project_id" mapstructure:"project_id" tfsdk:"project_id"`
@@ -272,6 +284,10 @@ type IntercomConnectionConfiguration struct {
 	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
 }
 
+type IterableConnectionConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
+}
+
 type KlaviyoConnectionConfiguration struct {
 	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
 }
@@ -335,13 +351,47 @@ type SegmentConnectionConfiguration struct {
 	WriteKey string `json:"write_key" mapstructure:"write_key" tfsdk:"write_key"`
 }
 
+type ShipBobConnectionConfiguration struct{}
+
+type ShopifyConnectionConfiguration struct {
+	Store string `json:"store" mapstructure:"store" tfsdk:"store"`
+}
+
+type SmartSheetConnectionConfiguration struct{}
+
 type StripeConnectionConfiguration struct {
 	APIKey  string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
 	Version string `json:"version" mapstructure:"version" tfsdk:"version"`
+}
+
+type SurvicateConnectionConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
+}
+
+type SynapseConnectionConfiguration struct {
+	Hostname string `json:"hostname" mapstructure:"hostname" tfsdk:"hostname"`
+	Username string `json:"username" mapstructure:"username" tfsdk:"username"`
+	Password string `json:"password" mapstructure:"password" tfsdk:"password"`
+	Database string `json:"database" mapstructure:"database" tfsdk:"database"`
+	Port     int    `json:"port" mapstructure:"port" tfsdk:"port"`
+}
+
+type UserVoiceConnectionConfiguration struct {
+	Domain string `json:"domain" mapstructure:"domain" tfsdk:"domain"`
+	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
+}
+
+type VanillaConnectionConfiguration struct {
+	Domain string `json:"domain" mapstructure:"domain" tfsdk:"domain"`
+	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
 }
 
 type WebhookConnectionConfiguration struct {
 	URL     string             `json:"url" mapstructure:"url" tfsdk:"url"`
 	Secret  string             `json:"secret" mapstructure:"secret" tfsdk:"secret"`
 	Headers []RequestParameter `json:"headers" mapstructure:"headers" tfsdk:"headers"`
+}
+
+type ZendeskConnectionConfiguration struct {
+	Domain string `json:"domain" mapstructure:"domain" tfsdk:"domain"`
 }

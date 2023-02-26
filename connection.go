@@ -13,6 +13,8 @@ type Connection struct {
 	Name           string         `json:"name"`
 	Type           ConnectionType `json:"type"`
 	Configuration  interface{}    `json:"configuration"`
+	AuthURL        string         `json:"auth_url"`
+	Status         string         `json:"status"`
 }
 
 type ConnectionType struct {

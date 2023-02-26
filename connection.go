@@ -36,9 +36,15 @@ type UpdateConnectionMutation struct {
 	Configuration  interface{} `json:"configuration" validate:"required"`
 }
 
-type ConnectionSource struct {
-	Items         map[string]ConnectionSource `json:"items"`
-	RequiresOneOf []string                    `json:"requires_one_of"`
+type ConnectionMetaWrapper struct {
+	Items         map[string]ConnectionMeta `json:"items"`
+	RequiresOneOf []string                  `json:"requires_one_of"`
+}
+
+type ConnectionMeta struct {
+	Items         []interface{} `json:"items"`
+	RequiresOneOf []string      `json:"requires_one_of"`
+	HasItems      bool          `json:"has_items"`
 }
 
 type ConnectionApi struct {
@@ -59,8 +65,8 @@ func (c *ConnectionApi) Create(ctx context.Context, ws CreateConnectionMutation)
 	return &connection, nil
 }
 
-func (c *ConnectionApi) GetSource(ctx context.Context, connectionId uuid.UUID) (*ConnectionSource, error) {
-	var source ConnectionSource
+func (c *ConnectionApi) GetSource(ctx context.Context, connectionId uuid.UUID) (*ConnectionMetaWrapper, error) {
+	var source ConnectionMetaWrapper
 	resp := Response{Data: &source}
 	err := c.client.newRequest(fmt.Sprintf("/api/connections/%s/source", connectionId)).
 		ToJSON(&resp).

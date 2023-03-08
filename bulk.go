@@ -17,6 +17,7 @@ type BulkSyncRequest struct {
 	Schedule                 Schedule               `json:"schedule"`
 	DestinationConfiguration map[string]interface{} `json:"destination_configuration"`
 	SourceConfiguration      map[string]interface{} `json:"source_configuration"`
+	Policies                 []string               `json:"policies"`
 }
 
 type Schedule struct {
@@ -102,6 +103,7 @@ type BulkSyncResponse struct {
 	Schedule                 Schedule               `json:"schedule" tfsdk:"schedule" mapstructure:"schedule"`
 	DestinationConfiguration map[string]interface{} `json:"destination_configuration" tfsdk:"destination_configuration" mapstructure:"destination_configuration"`
 	SourceConfiguration      map[string]interface{} `json:"source_configuration" tfsdk:"source_configuration" mapstructure:"source_configuration"`
+	Policies                 []string               `json:"policies,omitempty" tfsdk:"policies" mapstructure:"policies"`
 }
 
 func (b *BulkApi) CreateBulkSync(ctx context.Context, sync BulkSyncRequest) (*BulkSyncResponse, error) {

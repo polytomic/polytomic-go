@@ -21,6 +21,7 @@ type SyncRequest struct {
 	Schedule       Schedule    `json:"schedule"`
 	Identity       *Identity   `json:"identity,omitempty"`
 	SyncAllRecords bool        `json:"sync_all_records"`
+	Policies       []string    `json:"policies"`
 }
 
 type SyncResponse struct {
@@ -37,6 +38,7 @@ type SyncResponse struct {
 	Schedule       Schedule    `json:"schedule" tfsdk:"schedule" mapstructure:"schedule"`
 	Identity       *Identity   `json:"identity" tfsdk:"identity" mapstructure:"identity"`
 	SyncAllRecords bool        `json:"sync_all_records" tfsdk:"sync_all_records" mapstructure:"sync_all_records"`
+	Policies       []string    `json:"policies,omitempty" tfsdk:"policies" mapstructure:"policies"`
 }
 
 type SyncField struct {

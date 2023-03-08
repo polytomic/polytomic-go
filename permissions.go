@@ -75,7 +75,7 @@ func (p *PermissionsApi) UpdateRole(ctx context.Context, id string, r RoleReques
 	return &role, nil
 }
 
-func (p *PermissionsApi) Delete(ctx context.Context, id string) error {
+func (p *PermissionsApi) DeleteRole(ctx context.Context, id string) error {
 	return p.client.newRequest("/api/permissions/roles/" + id).
 		Delete().
 		Fetch(ctx)

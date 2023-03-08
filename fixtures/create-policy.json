@@ -1,0 +1,52 @@
+{
+    "data": {
+        "id": "10000000-0000-0000-0000-000000000000",
+        "organization_id": "00000000-0000-0000-0000-000000000000",
+        "name": "test policy",
+        "system": false,
+        "policy_actions": [
+            {
+                "action": "read",
+                "role_ids": [
+                    "00000000-0000-0000-0000-000000000001"
+                ]
+            },
+            {
+                "action": "delete",
+                "role_ids": []
+            },
+            {
+                "action": "export",
+                "role_ids": []
+            },
+            {
+                "action": "sync_to",
+                "role_ids": []
+            },
+            {
+                "action": "create",
+                "role_ids": []
+            },
+            {
+                "action": "edit",
+                "role_ids": []
+            },
+            {
+                "action": "trigger",
+                "role_ids": []
+            },
+            {
+                "action": "query",
+                "role_ids": []
+            },
+            {
+                "action": "apply_policy",
+                "role_ids": []
+            },
+            {
+                "action": "modify_policy",
+                "role_ids": []
+            }
+        ]
+    }
+}

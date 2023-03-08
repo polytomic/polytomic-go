@@ -93,6 +93,11 @@ func (c *Client) Syncs() *SyncApi {
 	return &SyncApi{client: c}
 }
 
+// Permissions returns an API client for modifying Polytomic permissions.
+func (c *Client) Permissions() *PermissionsApi {
+	return &PermissionsApi{client: c}
+}
+
 // newRequest returns a configured request builder...
 func (c *Client) newRequest(url string) *requests.Builder {
 	return requests.

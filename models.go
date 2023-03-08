@@ -20,6 +20,7 @@ type Model struct {
 	Relations       []Relation             `json:"relations" tfsdk:"relations"`
 	Identifier      string                 `json:"identifier" tfsdk:"identifier"`
 	TrackingColumns []string               `json:"tracking_columns" tfsdk:"tracking_columns"`
+	Policies        []string               `json:"policies,omitempty" tfsdk:"policies"`
 }
 
 type ModelField struct {
@@ -53,6 +54,7 @@ type ModelRequest struct {
 	Relations        []Relation             `json:"relations" tfsdk:"relations"`
 	Identifier       string                 `json:"identifier" tfsdk:"identifier"`
 	TrackingColumns  []string               `json:"tracking_columns" tfsdk:"tracking_columns"`
+	Policies         []string               `json:"policies" tfsdk:"policies"`
 }
 
 type ModelFieldRequest struct {

@@ -12,7 +12,7 @@ const (
 	BigQueryConnectionType           = "bigquery"
 	BingAdsConnectionType            = "bingads"
 	ChargebeeConnectionType          = "chargebee"
-	CloudSQLConnectionType           = "cloudsql"
+	CloudSQLConnectionType           = "googlecloudsql"
 	CosmosDBConnectionType           = "cosmosdb"
 	CustomerIOConnectionType         = "customerio"
 	CsvConnectionType                = "csv"

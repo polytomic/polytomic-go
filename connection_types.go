@@ -6,6 +6,7 @@ const (
 	AmplitudeConnectionType          = "amplitude"
 	APIConnectionType                = "api"
 	AscendConnectionType             = "ascend"
+	AsanaConnectionType              = "asana"
 	AthenaConnectionType             = "awsathena"
 	AzureBlobConnectionType          = "azureblob"
 	SQLServerConnectionType          = "azuresql"
@@ -16,6 +17,7 @@ const (
 	CosmosDBConnectionType           = "cosmosdb"
 	CustomerIOConnectionType         = "customerio"
 	CsvConnectionType                = "csv"
+	DatabricksConnectionType         = "databricks"
 	DialpadConnectionType            = "dialpad"
 	FreshdeskConnectionType          = "freshdesk"
 	FullstoryConnectionType          = "fullstory"
@@ -24,11 +26,13 @@ const (
 	KustomerConnectionType           = "kustomer"
 	LobConnectionType                = "lob"
 	GoogleCloudStorageConnectionType = "gcs"
+	GithubConnectionType             = "github"
 	GoogleSheetsConnectionType       = "gsheets"
 	GoogleAdsConnectionType          = "googleads"
 	HubspotConnectionType            = "hubspot"
 	IntercomConnectionType           = "intercom"
 	IterableConnectionType           = "iterable"
+	LinkedinAdsConnectionType        = "linkedinads"
 	MarketoConnectionType            = "marketo"
 	MongoDBConnectionType            = "mongodb"
 	MysqlConnectionType              = "mysql"
@@ -53,8 +57,17 @@ const (
 	ZendeskConnectionType            = "zendesk"
 )
 
+type ValueSelection struct {
+	Value string  `json:"value"`
+	Label *string `json:"label"`
+}
+
 type AscendConnectionConfiguration struct {
 	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
+}
+
+type AsanaConnectionConfiguration struct {
+	PAT string `json:"pat" mapstructure:"pat" tfsdk:"pat"`
 }
 
 type SnowflakeConfiguration struct {
@@ -269,6 +282,18 @@ type CustomerIOConnectionConfiguration struct {
 	AppAPIKey      string `json:"app_api_key" mapstructure:"app_api_key" tfsdk:"app_api_key"`
 }
 
+type DatabricksConnectionConfiguration struct {
+	ServerHostname     string `json:"server_hostname" mapstructure:"server_hostname" tfsdk:"server_hostname"`
+	Port               int    `json:"port" mapstructure:"port" tfsdk:"port"`
+	AccessToken        string `json:"access_token" mapstructure:"access_token" tfsdk:"access_token"`
+	HTTPPath           string `json:"http_path" mapstructure:"http_path" tfsdk:"http_path"`
+	AwsAccessKeyID     string `json:"aws_access_key_id" mapstructure:"aws_access_key_id" tfsdk:"aws_access_key_id"`
+	AwsSecretAccessKey string `json:"aws_secret_access_key" mapstructure:"aws_secret_access_key" tfsdk:"aws_secret_access_key"`
+	AwsUser            string `json:"aws_user" mapstructure:"aws_user" tfsdk:"aws_user"`
+	S3BucketName       string `json:"s3_bucket_name" mapstructure:"s3_bucket_name" tfsdk:"s3_bucket_name"`
+	S3BucketRegion     string `json:"s3_bucket_region" mapstructure:"s3_bucket_region" tfsdk:"s3_bucket_region"`
+}
+
 type DialpadConnectionConfiguration struct {
 	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
 }
@@ -280,6 +305,10 @@ type FreshdeskConnectionConfiguration struct {
 
 type FullstoryConnectionConfiguration struct {
 	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
+}
+
+type GithubConnectionConfiguration struct {
+	Repositories []ValueSelection `json:"repositories" mapstructure:"repositories" tfsdk:"repositories"`
 }
 
 type HarmonicConnectionConfiguration struct {
@@ -301,6 +330,10 @@ type KlaviyoConnectionConfiguration struct {
 type KustomerConnectionConfiguration struct {
 	Domain string `json:"domain" mapstructure:"domain" tfsdk:"domain"`
 	Apikey string `json:"apikey" mapstructure:"apikey" tfsdk:"apikey"`
+}
+
+type LinkedinAdsConnectionConfiguration struct {
+	Accounts []ValueSelection `json:"accounts" mapstructure:"accounts" tfsdk:"accounts"`
 }
 
 type LobConnectionConfiguration struct {

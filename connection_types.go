@@ -18,6 +18,7 @@ const (
 	CustomerIOConnectionType         = "customerio"
 	CsvConnectionType                = "csv"
 	DatabricksConnectionType         = "databricks"
+	DelightedConnectionType          = "delighted"
 	DialpadConnectionType            = "dialpad"
 	FreshdeskConnectionType          = "freshdesk"
 	FullstoryConnectionType          = "fullstory"
@@ -32,6 +33,7 @@ const (
 	HubspotConnectionType            = "hubspot"
 	IntercomConnectionType           = "intercom"
 	IterableConnectionType           = "iterable"
+	LinearConnectionType             = "linear"
 	LinkedinAdsConnectionType        = "linkedinads"
 	MarketoConnectionType            = "marketo"
 	MongoDBConnectionType            = "mongodb"
@@ -294,6 +296,10 @@ type DatabricksConnectionConfiguration struct {
 	S3BucketRegion     string `json:"s3_bucket_region" mapstructure:"s3_bucket_region" tfsdk:"s3_bucket_region"`
 }
 
+type DelightedConnectionConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
+}
+
 type DialpadConnectionConfiguration struct {
 	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
 }
@@ -332,6 +338,10 @@ type KustomerConnectionConfiguration struct {
 	Apikey string `json:"apikey" mapstructure:"apikey" tfsdk:"apikey"`
 }
 
+type LinearConnectionConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
+}
+
 type LinkedinAdsConnectionConfiguration struct {
 	Accounts []ValueSelection `json:"accounts" mapstructure:"accounts" tfsdk:"accounts"`
 }
@@ -352,6 +362,8 @@ type MysqlConnectionConfiguration struct {
 	SSHHost       string `json:"ssh_host" mapstructure:"ssh_host" tfsdk:"ssh_host"`
 	SSHPort       int    `json:"ssh_port" mapstructure:"ssh_port" tfsdk:"ssh_port"`
 	SSHPrivateKey string `json:"ssh_private_key" mapstructure:"ssh_private_key" tfsdk:"ssh_private_key"`
+
+	ChangeDetection bool `json:"change_detection" mapstructure:"change_detection" tfsdk:"change_detection"`
 }
 
 type NetsuiteConnectionConfiguration struct {

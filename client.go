@@ -44,11 +44,25 @@ func APIKey(apiKey string) Authenticator {
 type Client struct {
 	auth requests.Config
 	host string
+	ua   string
+}
+
+type clientOpts func(*clientOptions)
+
+type clientOptions struct {
+	UserAgent string
+}
+
+// WithUserAgent sets the User-Agent header on all requests.
+func WithUserAgent(ua string) clientOpts {
+	return func(o *clientOptions) {
+		o.UserAgent = ua
+	}
 }
 
 // NewClient returns a Polytomic API client which will make requests to the
 // specified host, using the provided Authenticator.
-func NewClient(host string, auth Authenticator) *Client {
+func NewClient(host string, auth Authenticator, opts ...clientOpts) *Client {
 	if strings.HasPrefix(host, "https://") || strings.HasPrefix(host, "http://") {
 		if parsed, err := url.Parse(host); err == nil {
 			host = parsed.Host
@@ -57,9 +71,18 @@ func NewClient(host string, auth Authenticator) *Client {
 	if host == "" {
 		host = DefaultHost
 	}
+
+	o := &clientOptions{
+		UserAgent: "polytomic-go/" + Version,
+	}
+	for _, opt := range opts {
+		opt(o)
+	}
+
 	return &Client{
 		auth: auth,
 		host: host,
+		ua:   o.UserAgent,
 	}
 }
 
@@ -105,7 +128,7 @@ func (c *Client) newRequest(url string) *requests.Builder {
 		Host(c.host).
 		Config(c.auth).
 		Header(VersionHeader, Version).
-		UserAgent("polytomic-go").
+		UserAgent(c.ua).
 		AddValidator(checkApiResponse)
 }
 

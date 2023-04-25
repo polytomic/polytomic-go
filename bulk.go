@@ -30,10 +30,17 @@ type Schedule struct {
 }
 
 type BulkSchema struct {
-	ID           string `json:"id" tfsdk:"id"`
-	Name         string `json:"name" tfsdk:"name"`
-	Enabled      bool   `json:"enabled" tfsdk:"enabled"`
-	PartitionKey string `json:"partition_key" tfsdk:"partition_key"`
+	ID           string  `json:"id" tfsdk:"id"`
+	Name         string  `json:"name" tfsdk:"name"`
+	Enabled      bool    `json:"enabled" tfsdk:"enabled"`
+	PartitionKey string  `json:"partition_key" tfsdk:"partition_key"`
+	Fields       []Field `json:"fields,omitempty" tfsdk:"fields"`
+}
+
+type Field struct {
+	ID         string `json:"id" tfsdk:"id"`
+	Enabled    bool   `json:"enabled" tfsdk:"enabled"`
+	Obfuscated bool   `json:"obfuscate,omitempty" tfsdk:"obfuscated"`
 }
 
 type BulkSchemaUpdate struct {
@@ -76,6 +83,19 @@ func (b *BulkApi) GetSource(ctx context.Context, connID string) (*BulkSource, er
 	}
 
 	return &source, nil
+}
+
+func (b *BulkApi) GetSourceSchema(ctx context.Context, connID string, schemaID string) (*BulkSchema, error) {
+	var schema BulkSchema
+	resp := Response{Data: &schema}
+	err := b.client.newRequest(fmt.Sprintf("/api/bulk/source/%s/schema/%s", connID, schemaID)).
+		ToJSON(&resp).
+		Fetch(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &schema, nil
 }
 
 func (b *BulkApi) GetDestination(ctx context.Context, connID string) (*BulkDestination, error) {

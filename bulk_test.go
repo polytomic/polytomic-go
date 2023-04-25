@@ -26,7 +26,29 @@ func TestGetSource(t *testing.T) {
 		source, err := client.Bulk().GetSource(context.Background(), connId.String())
 		assert.NoError(t, err)
 		assert.Equal(t, 3, len(source.Schemas))
-		assert.Equal(t, "user", source.Schemas[0])
+		assert.Equal(t, Schema{ID: "test.test", Name: "test.test"}, source.Schemas[0])
+
+		assert.True(t, gock.IsDone())
+	})
+}
+
+func TestGetSourceSchema(t *testing.T) {
+	connId := uuid.New()
+	schemaId := "test.test"
+	defer gock.Off()
+
+	t.Run("Get bulk source schema", func(t *testing.T) {
+		gock.New("https://polytomic.example.com").
+			Get(fmt.Sprintf("/api/bulk/source/%s/schema/%s", connId.String(), schemaId)).
+			Reply(http.StatusOK).
+			File("fixtures/bulk_source_schema.json")
+		defer gock.Off()
+
+		client := NewClient("polytomic.example.com", DeploymentKey("key"))
+		schema, err := client.Bulk().GetSourceSchema(context.Background(), connId.String(), schemaId)
+		assert.NoError(t, err)
+		assert.Equal(t, "test.test", schema.ID)
+		assert.Equal(t, "test.test", schema.Name)
 
 		assert.True(t, gock.IsDone())
 	})

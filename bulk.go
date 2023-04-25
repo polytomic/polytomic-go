@@ -48,8 +48,15 @@ type BulkSchemaUpdate struct {
 }
 
 type Schema struct {
+	ID     string        `json:"id" tfsdk:"id"`
+	Name   string        `json:"name" tfsdk:"name"`
+	Fields []SchemaField `json:"fields,omitempty" tfsdk:"fields"`
+}
+
+type SchemaField struct {
 	ID   string `json:"id" tfsdk:"id"`
 	Name string `json:"name" tfsdk:"name"`
+	Type string `json:"type" tfsdk:"type"`
 }
 
 type Mode struct {
@@ -85,8 +92,8 @@ func (b *BulkApi) GetSource(ctx context.Context, connID string) (*BulkSource, er
 	return &source, nil
 }
 
-func (b *BulkApi) GetSourceSchema(ctx context.Context, connID string, schemaID string) (*BulkSchema, error) {
-	var schema BulkSchema
+func (b *BulkApi) GetSourceSchema(ctx context.Context, connID string, schemaID string) (*Schema, error) {
+	var schema Schema
 	resp := Response{Data: &schema}
 	err := b.client.newRequest(fmt.Sprintf("/api/bulk/source/%s/schema/%s", connID, schemaID)).
 		ToJSON(&resp).

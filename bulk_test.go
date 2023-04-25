@@ -49,6 +49,7 @@ func TestGetSourceSchema(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, "test.test", schema.ID)
 		assert.Equal(t, "test.test", schema.Name)
+		assert.Equal(t, "string", schema.Fields[0].Type)
 
 		assert.True(t, gock.IsDone())
 	})

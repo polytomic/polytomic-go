@@ -16,7 +16,7 @@ import (
 const (
 	DefaultHost = "app.polytomic.com"
 
-	Version       = "2022-12-12"
+	Version       = "2023-04-25"
 	VersionHeader = "X-Polytomic-Version"
 )
 

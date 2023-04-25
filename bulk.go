@@ -31,6 +31,7 @@ type Schedule struct {
 
 type BulkSchema struct {
 	ID           string `json:"id" tfsdk:"id"`
+	Name         string `json:"name" tfsdk:"name"`
 	Enabled      bool   `json:"enabled" tfsdk:"enabled"`
 	PartitionKey string `json:"partition_key" tfsdk:"partition_key"`
 }
@@ -40,9 +41,8 @@ type BulkSchemaUpdate struct {
 }
 
 type Schema struct {
-	ID    string   `json:"id" tfsdk:"id"`
-	Name  string   `json:"name" tfsdk:"name"`
-	Modes []string `json:"modes" tfsdk:"modes"`
+	ID   string `json:"id" tfsdk:"id"`
+	Name string `json:"name" tfsdk:"name"`
 }
 
 type Mode struct {
@@ -52,7 +52,7 @@ type Mode struct {
 }
 
 type BulkSource struct {
-	Schemas       []string    `json:"schemas" tfsdk:"schemas"`
+	Schemas       []Schema    `json:"schemas" tfsdk:"schemas"`
 	Configuration interface{} `json:"configuration" tfsdk:"configuration"`
 }
 

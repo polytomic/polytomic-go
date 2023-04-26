@@ -238,7 +238,7 @@ func (b *BulkApi) UpdateBulkSyncSchema(ctx context.Context, syncID, schemaID str
 	resp := Response{Data: &resultSchema}
 	err := b.client.newRequest(fmt.Sprintf("/api/bulk/syncs/%s/schemas/%s", syncID, schemaID)).
 		Patch().
-		BodyJSON(&schema).
+		BodyJSON(schema).
 		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {

@@ -1,6 +1,19 @@
 {
   "data": {
-    "schemas": ["user", "project", "issue"],
+    "schemas": [
+      {
+        "id": "test.test",
+        "name": "test.test"
+      },
+      {
+        "id": "asdf.asdf",
+        "name": "asdf.asdf"
+      },
+      {
+        "id": "asdf.custom_companies",
+        "name": "asdf.custom_companies"
+      }
+    ],
     "configuration": null
   }
 }

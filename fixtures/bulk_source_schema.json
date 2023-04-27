@@ -1,0 +1,23 @@
+{
+    "data": {
+        "id": "test.test",
+        "name": "test.test",
+        "fields": [
+            {
+                "id": "first_name",
+                "name": "First Name",
+                "type": "string"
+            },
+            {
+                "id": "last_name",
+                "name": "Last Name",
+                "type": "string"
+            },
+            {
+                "id": "email",
+                "name": "Email",
+                "type": "string"
+            }
+        ]
+    }
+}

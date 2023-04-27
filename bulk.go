@@ -30,10 +30,17 @@ type Schedule struct {
 }
 
 type BulkSchema struct {
-	ID           string `json:"id" tfsdk:"id"`
-	Name         string `json:"name" tfsdk:"name"`
-	Enabled      bool   `json:"enabled" tfsdk:"enabled"`
-	PartitionKey string `json:"partition_key" tfsdk:"partition_key"`
+	ID           string  `json:"id" tfsdk:"id"`
+	Name         string  `json:"name" tfsdk:"name"`
+	Enabled      bool    `json:"enabled" tfsdk:"enabled"`
+	PartitionKey string  `json:"partition_key" tfsdk:"partition_key"`
+	Fields       []Field `json:"fields,omitempty" tfsdk:"fields"`
+}
+
+type Field struct {
+	ID         string `json:"id" tfsdk:"id"`
+	Enabled    bool   `json:"enabled" tfsdk:"enabled"`
+	Obfuscated bool   `json:"obfuscate,omitempty" tfsdk:"obfuscated"`
 }
 
 type BulkSchemaUpdate struct {
@@ -41,8 +48,15 @@ type BulkSchemaUpdate struct {
 }
 
 type Schema struct {
+	ID     string        `json:"id" tfsdk:"id"`
+	Name   string        `json:"name" tfsdk:"name"`
+	Fields []SchemaField `json:"fields,omitempty" tfsdk:"fields"`
+}
+
+type SchemaField struct {
 	ID   string `json:"id" tfsdk:"id"`
 	Name string `json:"name" tfsdk:"name"`
+	Type string `json:"type" tfsdk:"type"`
 }
 
 type Mode struct {
@@ -76,6 +90,19 @@ func (b *BulkApi) GetSource(ctx context.Context, connID string) (*BulkSource, er
 	}
 
 	return &source, nil
+}
+
+func (b *BulkApi) GetSourceSchema(ctx context.Context, connID string, schemaID string) (*Schema, error) {
+	var schema Schema
+	resp := Response{Data: &schema}
+	err := b.client.newRequest(fmt.Sprintf("/api/bulk/source/%s/schema/%s", connID, schemaID)).
+		ToJSON(&resp).
+		Fetch(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &schema, nil
 }
 
 func (b *BulkApi) GetDestination(ctx context.Context, connID string) (*BulkDestination, error) {
@@ -208,10 +235,11 @@ func (b *BulkApi) GetBulkSyncSchema(ctx context.Context, id, schemaID string) (*
 
 func (b *BulkApi) UpdateBulkSyncSchema(ctx context.Context, syncID, schemaID string, schema BulkSchema) (*BulkSchema, error) {
 	var resultSchema BulkSchema
+	resp := Response{Data: &resultSchema}
 	err := b.client.newRequest(fmt.Sprintf("/api/bulk/syncs/%s/schemas/%s", syncID, schemaID)).
 		Patch().
-		BodyJSON(&schema).
-		ToJSON(&resultSchema).
+		BodyJSON(schema).
+		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
 		return nil, err

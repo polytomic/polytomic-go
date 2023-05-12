@@ -148,6 +148,7 @@ type SQLServerConfiguration struct {
 	Password string `json:"password" mapstructure:"password" tfsdk:"password"`
 	Database string `json:"database" mapstructure:"database" tfsdk:"database"`
 	Port     int    `json:"port" mapstructure:"port" tfsdk:"port"`
+	SSL      bool   `json:"ssl" mapstructure:"ssl" tfsdk:"ssl"`
 }
 
 type PostgresqlConfiguration struct {

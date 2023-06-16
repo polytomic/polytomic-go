@@ -154,7 +154,7 @@ func checkApiResponse(res *http.Response) error {
 		// Try legacy format
 		var legacyErr LegacyError
 		if err := json.Unmarshal(body, &legacyErr); err != nil {
-			return fmt.Errorf("unexpected response: %w", err)
+			return fmt.Errorf("unexpected response: %w", string(body))
 		}
 		apiErr = Error{
 			Message: legacyErr.Error.Message,

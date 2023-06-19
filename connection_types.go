@@ -33,6 +33,7 @@ const (
 	HubspotConnectionType            = "hubspot"
 	IntercomConnectionType           = "intercom"
 	IterableConnectionType           = "iterable"
+	JiraConnectionType               = "jira"
 	LinearConnectionType             = "linear"
 	LinkedinAdsConnectionType        = "linkedinads"
 	MarketoConnectionType            = "marketo"
@@ -328,6 +329,15 @@ type IntercomConnectionConfiguration struct {
 
 type IterableConnectionConfiguration struct {
 	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
+}
+
+type JiraConnectionConfiguration struct {
+	URL        string `json:"url" mapstructure:"url" tfsdk:"url"`
+	AuthMethod string `json:"auth_method" mapstructure:"auth_method" tfsdk:"auth_method"`
+	Username   string `json:"username" mapstructure:"username" tfsdk:"username"`
+	APIKey     string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
+
+	AccessToken string `json:"access_token" mapstructure:"access_token" tfsdk:"access_token"`
 }
 
 type KlaviyoConnectionConfiguration struct {

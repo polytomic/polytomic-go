@@ -22,6 +22,7 @@ type SyncRequest struct {
 	Identity       *Identity   `json:"identity,omitempty"`
 	SyncAllRecords bool        `json:"sync_all_records"`
 	Policies       []string    `json:"policies"`
+	Active         bool        `json:"active"`
 }
 
 type SyncResponse struct {
@@ -39,6 +40,7 @@ type SyncResponse struct {
 	Identity       *Identity   `json:"identity" tfsdk:"identity" mapstructure:"identity"`
 	SyncAllRecords bool        `json:"sync_all_records" tfsdk:"sync_all_records" mapstructure:"sync_all_records"`
 	Policies       []string    `json:"policies,omitempty" tfsdk:"policies" mapstructure:"policies"`
+	Active         bool        `json:"active" tfsdk:"active" mapstructure:"active"`
 }
 
 type SyncField struct {

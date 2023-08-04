@@ -20,6 +20,8 @@ const (
 	DatabricksConnectionType         = "databricks"
 	DelightedConnectionType          = "delighted"
 	DialpadConnectionType            = "dialpad"
+	DynamoDBConnectionType           = "dynamodb"
+	FacebookAdsConnectionType        = "facebookads"
 	FreshdeskConnectionType          = "freshdesk"
 	FullstoryConnectionType          = "fullstory"
 	HarmonicConnectionType           = "harmonic"
@@ -304,6 +306,16 @@ type DelightedConnectionConfiguration struct {
 
 type DialpadConnectionConfiguration struct {
 	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
+}
+
+type DynamoDBConnectionConfiguration struct {
+	AccessID        string `json:"access_id" mapstructure:"access_id" tfsdk:"access_id"`
+	Region          string `json:"region" mapstructure:"region" tfsdk:"region"`
+	SecretAccessKey string `json:"secret_access_key" mapstructure:"secret_access_key" tfsdk:"secret_access_key"`
+}
+
+type FacebookAdsConnectionConfiguration struct {
+	Accounts []ValueSelection `json:"accounts" mapstructure:"accounts" tfsdk:"accounts"`
 }
 
 type FreshdeskConnectionConfiguration struct {

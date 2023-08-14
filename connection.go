@@ -14,6 +14,7 @@ type Connection struct {
 	Type           ConnectionType `json:"type"`
 	Configuration  interface{}    `json:"configuration"`
 	AuthURL        string         `json:"auth_url"`
+	AuthCode       string         `json:"auth_code"`
 	Status         string         `json:"status"`
 	Policies       []string       `json:"policies,omitempty"`
 }
@@ -30,6 +31,7 @@ type CreateConnectionMutation struct {
 	Configuration  interface{} `json:"configuration" validate:"required"`
 	Type           string      `json:"type" validate:"required"`
 	Policies       []string    `json:"policies"`
+	RedirectURL    string      `json:"redirect_url"`
 }
 
 type UpdateConnectionMutation struct {

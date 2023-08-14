@@ -51,14 +51,14 @@ type Client struct {
 type clientOpts func(*clientOptions)
 
 type clientOptions struct {
-	UserAgent string
+	userAgent string
 	version   string
 }
 
 // WithUserAgent sets the User-Agent header on all requests.
 func WithUserAgent(ua string) clientOpts {
 	return func(o *clientOptions) {
-		o.UserAgent = ua
+		o.userAgent = ua
 	}
 }
 
@@ -80,23 +80,24 @@ func NewClient(host string, auth Authenticator, opts ...clientOpts) *Client {
 		host = DefaultHost
 	}
 
-	o := &clientOptions{
-		UserAgent: "polytomic-go/" + DefaultVersion,
-	}
+	o := &clientOptions{}
 	for _, opt := range opts {
 		opt(o)
 	}
 
-	version := o.version
-	if version == "" {
-		version = DefaultVersion
+	if o.version == "" {
+		o.version = DefaultVersion
+	}
+
+	if o.userAgent == "" {
+		o.userAgent = "polytomic-go/" + o.version
 	}
 
 	return &Client{
 		auth:    auth,
 		host:    host,
-		ua:      o.UserAgent,
-		version: version,
+		ua:      o.userAgent,
+		version: o.version,
 	}
 }
 

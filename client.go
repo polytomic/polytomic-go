@@ -16,8 +16,8 @@ import (
 const (
 	DefaultHost = "app.polytomic.com"
 
-	Version       = "2023-04-25"
-	VersionHeader = "X-Polytomic-Version"
+	DefaultVersion = "2023-04-25"
+	VersionHeader  = "X-Polytomic-Version"
 )
 
 // Authenticator defines the function signature used to set authentication
@@ -42,21 +42,29 @@ func APIKey(apiKey string) Authenticator {
 }
 
 type Client struct {
-	auth requests.Config
-	host string
-	ua   string
+	auth    requests.Config
+	host    string
+	ua      string
+	version string
 }
 
 type clientOpts func(*clientOptions)
 
 type clientOptions struct {
-	UserAgent string
+	userAgent string
+	version   string
 }
 
 // WithUserAgent sets the User-Agent header on all requests.
 func WithUserAgent(ua string) clientOpts {
 	return func(o *clientOptions) {
-		o.UserAgent = ua
+		o.userAgent = ua
+	}
+}
+
+func WithAPIVersion(version string) clientOpts {
+	return func(o *clientOptions) {
+		o.version = version
 	}
 }
 
@@ -72,17 +80,24 @@ func NewClient(host string, auth Authenticator, opts ...clientOpts) *Client {
 		host = DefaultHost
 	}
 
-	o := &clientOptions{
-		UserAgent: "polytomic-go/" + Version,
-	}
+	o := &clientOptions{}
 	for _, opt := range opts {
 		opt(o)
 	}
 
+	if o.version == "" {
+		o.version = DefaultVersion
+	}
+
+	if o.userAgent == "" {
+		o.userAgent = "polytomic-go/" + o.version
+	}
+
 	return &Client{
-		auth: auth,
-		host: host,
-		ua:   o.UserAgent,
+		auth:    auth,
+		host:    host,
+		ua:      o.userAgent,
+		version: o.version,
 	}
 }
 
@@ -127,7 +142,7 @@ func (c *Client) newRequest(url string) *requests.Builder {
 		URL(url).
 		Host(c.host).
 		Config(c.auth).
-		Header(VersionHeader, Version).
+		Header(VersionHeader, c.version).
 		UserAgent(c.ua).
 		AddValidator(checkApiResponse)
 }

@@ -91,7 +91,7 @@ type Source struct {
 func (s *SyncApi) Create(ctx context.Context, r SyncRequest, opts ...requestOpts) (*SyncResponse, error) {
 	var sync SyncResponse
 	resp := Response{Data: &sync}
-	err := s.client.newRequest("/api/syncs").
+	err := s.client.newRequest("/api/syncs", opts...).
 		BodyJSON(&r).
 		ToJSON(&resp).
 		Fetch(ctx)
@@ -105,7 +105,7 @@ func (s *SyncApi) Create(ctx context.Context, r SyncRequest, opts ...requestOpts
 func (s *SyncApi) Get(ctx context.Context, id string, opts ...requestOpts) (*SyncResponse, error) {
 	var sync SyncResponse
 	resp := Response{Data: &sync}
-	err := s.client.newRequest("/api/syncs/" + id).
+	err := s.client.newRequest("/api/syncs/"+id, opts...).
 		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
@@ -118,7 +118,7 @@ func (s *SyncApi) Get(ctx context.Context, id string, opts ...requestOpts) (*Syn
 func (s *SyncApi) List(ctx context.Context, opts ...requestOpts) ([]SyncResponse, error) {
 	var syncs []SyncResponse
 	resp := Response{Data: &syncs}
-	err := s.client.newRequest("/api/syncs").
+	err := s.client.newRequest("/api/syncs", opts...).
 		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
@@ -130,7 +130,7 @@ func (s *SyncApi) List(ctx context.Context, opts ...requestOpts) ([]SyncResponse
 func (s *SyncApi) Update(ctx context.Context, id string, r SyncRequest, opts ...requestOpts) (*SyncResponse, error) {
 	var sync SyncResponse
 	resp := Response{Data: &sync}
-	err := s.client.newRequest("/api/syncs/" + id).
+	err := s.client.newRequest("/api/syncs/"+id, opts...).
 		Patch().
 		BodyJSON(&r).
 		ToJSON(&resp).
@@ -143,7 +143,7 @@ func (s *SyncApi) Update(ctx context.Context, id string, r SyncRequest, opts ...
 }
 
 func (s *SyncApi) Delete(ctx context.Context, id string, opts ...requestOpts) error {
-	return s.client.newRequest("/api/syncs/" + id).
+	return s.client.newRequest("/api/syncs/"+id, opts...).
 		Delete().
 		Fetch(ctx)
 }

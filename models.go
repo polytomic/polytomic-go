@@ -63,10 +63,10 @@ type ModelFieldRequest struct {
 	Type  string `json:"type" tfsdk:"type"`
 }
 
-func (m *ModelApi) Create(ctx context.Context, r ModelRequest) (*Model, error) {
+func (m *ModelApi) Create(ctx context.Context, r ModelRequest, opts ...requestOpts) (*Model, error) {
 	var model Model
 	resp := Response{Data: &model}
-	err := m.client.newRequest("/api/models").
+	err := m.client.newRequest("/api/models", opts...).
 		BodyJSON(&r).
 		ToJSON(&resp).
 		Fetch(ctx)
@@ -77,10 +77,10 @@ func (m *ModelApi) Create(ctx context.Context, r ModelRequest) (*Model, error) {
 	return &model, nil
 }
 
-func (m *ModelApi) Get(ctx context.Context, id string) (*Model, error) {
+func (m *ModelApi) Get(ctx context.Context, id string, opts ...requestOpts) (*Model, error) {
 	var model Model
 	resp := Response{Data: &model}
-	err := m.client.newRequest("/api/models/" + id).
+	err := m.client.newRequest("/api/models/"+id, opts...).
 		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
@@ -90,10 +90,10 @@ func (m *ModelApi) Get(ctx context.Context, id string) (*Model, error) {
 	return &model, nil
 }
 
-func (m *ModelApi) List(ctx context.Context) ([]Model, error) {
+func (m *ModelApi) List(ctx context.Context, opts ...requestOpts) ([]Model, error) {
 	var models []Model
 	resp := Response{Data: &models}
-	err := m.client.newRequest("/api/models").
+	err := m.client.newRequest("/api/models", opts...).
 		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
@@ -103,10 +103,10 @@ func (m *ModelApi) List(ctx context.Context) ([]Model, error) {
 	return models, nil
 }
 
-func (m *ModelApi) Update(ctx context.Context, id string, r ModelRequest) (*Model, error) {
+func (m *ModelApi) Update(ctx context.Context, id string, r ModelRequest, opts ...requestOpts) (*Model, error) {
 	var model Model
 	resp := Response{Data: &model}
-	err := m.client.newRequest("/api/models/" + id).
+	err := m.client.newRequest("/api/models/"+id, opts...).
 		Patch().
 		BodyJSON(&r).
 		ToJSON(&resp).
@@ -118,8 +118,8 @@ func (m *ModelApi) Update(ctx context.Context, id string, r ModelRequest) (*Mode
 	return &model, nil
 }
 
-func (m *ModelApi) Delete(ctx context.Context, id string) error {
-	return m.client.newRequest("/api/models/" + id).
+func (m *ModelApi) Delete(ctx context.Context, id string, opts ...requestOpts) error {
+	return m.client.newRequest("/api/models/"+id, opts...).
 		Delete().
 		Fetch(ctx)
 }

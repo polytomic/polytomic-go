@@ -24,10 +24,10 @@ type OrganizationApi struct {
 	client *Client
 }
 
-func (a *OrganizationApi) Create(ctx context.Context, ws OrganizationMutation) (*Organization, error) {
+func (a *OrganizationApi) Create(ctx context.Context, ws OrganizationMutation, opts ...requestOpts) (*Organization, error) {
 	var workspace Organization
 	resp := Response{Data: &workspace}
-	err := a.client.newRequest("/api/organizations").
+	err := a.client.newRequest("/api/organizations", opts...).
 		BodyJSON(&ws).
 		ToJSON(&resp).
 		Fetch(ctx)
@@ -38,10 +38,10 @@ func (a *OrganizationApi) Create(ctx context.Context, ws OrganizationMutation) (
 	return &workspace, nil
 }
 
-func (a *OrganizationApi) Get(ctx context.Context, id uuid.UUID) (*Organization, error) {
+func (a *OrganizationApi) Get(ctx context.Context, id uuid.UUID, opts ...requestOpts) (*Organization, error) {
 	var workspace Organization
 	resp := Response{Data: &workspace}
-	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s", id.String())).
+	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s", id.String()), opts...).
 		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
@@ -51,10 +51,10 @@ func (a *OrganizationApi) Get(ctx context.Context, id uuid.UUID) (*Organization,
 	return &workspace, nil
 }
 
-func (a *OrganizationApi) Update(ctx context.Context, id uuid.UUID, ws OrganizationMutation) (*Organization, error) {
+func (a *OrganizationApi) Update(ctx context.Context, id uuid.UUID, ws OrganizationMutation, opts ...requestOpts) (*Organization, error) {
 	var workspace Organization
 	resp := Response{Data: &workspace}
-	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s", id.String())).
+	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s", id.String()), opts...).
 		Patch().
 		BodyJSON(&ws).
 		ToJSON(&resp).
@@ -66,8 +66,8 @@ func (a *OrganizationApi) Update(ctx context.Context, id uuid.UUID, ws Organizat
 	return &workspace, nil
 }
 
-func (a *OrganizationApi) Delete(ctx context.Context, id uuid.UUID) error {
-	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s", id.String())).
+func (a *OrganizationApi) Delete(ctx context.Context, id uuid.UUID, opts ...requestOpts) error {
+	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s", id.String()), opts...).
 		Delete().
 		Fetch(ctx)
 	if err != nil {

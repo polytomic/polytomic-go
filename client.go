@@ -16,8 +16,9 @@ import (
 const (
 	DefaultHost = "app.polytomic.com"
 
-	DefaultVersion = "2023-04-25"
-	VersionHeader  = "X-Polytomic-Version"
+	DefaultVersion       = "2023-04-25"
+	VersionHeader        = "X-Polytomic-Version"
+	IdempotencyKeyHeader = "Idempotency-Key"
 )
 
 // Authenticator defines the function signature used to set authentication
@@ -136,15 +137,39 @@ func (c *Client) Permissions() *PermissionsApi {
 	return &PermissionsApi{client: c}
 }
 
+type requestOpts func(*requestOptions)
+
+type requestOptions struct {
+	IdempotencyKey string
+}
+
+// WithIdempotencyKey sets the Idempotency-Key header on the request.
+func WithIdempotencyKey(key string) requestOpts {
+	return func(o *requestOptions) {
+		o.IdempotencyKey = key
+	}
+}
+
 // newRequest returns a configured request builder...
-func (c *Client) newRequest(url string) *requests.Builder {
-	return requests.
+func (c *Client) newRequest(url string, opts ...requestOpts) *requests.Builder {
+	r := requests.
 		URL(url).
 		Host(c.host).
 		Config(c.auth).
 		Header(VersionHeader, c.version).
 		UserAgent(c.ua).
 		AddValidator(checkApiResponse)
+
+	options := requestOptions{}
+	for _, opt := range opts {
+		opt(&options)
+	}
+
+	if options.IdempotencyKey != "" {
+		r.Header(IdempotencyKeyHeader, options.IdempotencyKey)
+	}
+
+	return r
 }
 
 // checkApiResponse provides a request.ResponseHandler which will attempt to

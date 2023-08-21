@@ -56,10 +56,10 @@ type ConnectionApi struct {
 	client *Client
 }
 
-func (c *ConnectionApi) Create(ctx context.Context, ws CreateConnectionMutation) (*Connection, error) {
+func (c *ConnectionApi) Create(ctx context.Context, ws CreateConnectionMutation, opts ...requestOpts) (*Connection, error) {
 	var connection Connection
 	resp := Response{Data: &connection}
-	err := c.client.newRequest("/api/connections").
+	err := c.client.newRequest("/api/connections", opts...).
 		BodyJSON(&ws).
 		ToJSON(&resp).
 		Fetch(ctx)
@@ -70,10 +70,10 @@ func (c *ConnectionApi) Create(ctx context.Context, ws CreateConnectionMutation)
 	return &connection, nil
 }
 
-func (c *ConnectionApi) GetSource(ctx context.Context, connectionId uuid.UUID) (*ConnectionMetaWrapper, error) {
+func (c *ConnectionApi) GetSource(ctx context.Context, connectionId uuid.UUID, opts ...requestOpts) (*ConnectionMetaWrapper, error) {
 	var source ConnectionMetaWrapper
 	resp := Response{Data: &source}
-	err := c.client.newRequest(fmt.Sprintf("/api/connections/%s/source", connectionId)).
+	err := c.client.newRequest(fmt.Sprintf("/api/connections/%s/source", connectionId), opts...).
 		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
@@ -82,10 +82,10 @@ func (c *ConnectionApi) GetSource(ctx context.Context, connectionId uuid.UUID) (
 	return &source, nil
 }
 
-func (c *ConnectionApi) Get(ctx context.Context, connectionId uuid.UUID) (*Connection, error) {
+func (c *ConnectionApi) Get(ctx context.Context, connectionId uuid.UUID, opts ...requestOpts) (*Connection, error) {
 	var connection Connection
 	resp := Response{Data: &connection}
-	err := c.client.newRequest(fmt.Sprintf("/api/connections/%s", connectionId)).
+	err := c.client.newRequest(fmt.Sprintf("/api/connections/%s", connectionId), opts...).
 		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
@@ -95,10 +95,10 @@ func (c *ConnectionApi) Get(ctx context.Context, connectionId uuid.UUID) (*Conne
 	return &connection, nil
 }
 
-func (c *ConnectionApi) List(ctx context.Context) ([]Connection, error) {
+func (c *ConnectionApi) List(ctx context.Context, opts ...requestOpts) ([]Connection, error) {
 	var connections []Connection
 	resp := Response{Data: &connections}
-	err := c.client.newRequest("/api/connections").
+	err := c.client.newRequest("/api/connections", opts...).
 		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
@@ -108,10 +108,10 @@ func (c *ConnectionApi) List(ctx context.Context) ([]Connection, error) {
 	return connections, nil
 }
 
-func (c *ConnectionApi) Update(ctx context.Context, connectionId uuid.UUID, ws UpdateConnectionMutation) (*Connection, error) {
+func (c *ConnectionApi) Update(ctx context.Context, connectionId uuid.UUID, ws UpdateConnectionMutation, opts ...requestOpts) (*Connection, error) {
 	var connection Connection
 	resp := Response{Data: &connection}
-	err := c.client.newRequest(fmt.Sprintf("/api/connections/%s", connectionId)).
+	err := c.client.newRequest(fmt.Sprintf("/api/connections/%s", connectionId), opts...).
 		Patch().
 		BodyJSON(&ws).
 		ToJSON(&resp).
@@ -123,8 +123,8 @@ func (c *ConnectionApi) Update(ctx context.Context, connectionId uuid.UUID, ws U
 	return &connection, nil
 }
 
-func (c *ConnectionApi) Delete(ctx context.Context, connectionId uuid.UUID) error {
-	err := c.client.newRequest(fmt.Sprintf("/api/connections/%s", connectionId)).
+func (c *ConnectionApi) Delete(ctx context.Context, connectionId uuid.UUID, opts ...requestOpts) error {
+	err := c.client.newRequest(fmt.Sprintf("/api/connections/%s", connectionId), opts...).
 		Delete().
 		Fetch(ctx)
 	if err != nil {

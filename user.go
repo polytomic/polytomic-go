@@ -23,10 +23,10 @@ type UserApi struct {
 	client *Client
 }
 
-func (a *UserApi) Create(ctx context.Context, organizationId uuid.UUID, ws UserMutation) (*User, error) {
+func (a *UserApi) Create(ctx context.Context, organizationId uuid.UUID, ws UserMutation, opts ...requestOpts) (*User, error) {
 	var user User
 	resp := Response{Data: &user}
-	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s/users", organizationId)).
+	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s/users", organizationId), opts...).
 		BodyJSON(&ws).
 		ToJSON(&resp).
 		Fetch(ctx)
@@ -37,10 +37,10 @@ func (a *UserApi) Create(ctx context.Context, organizationId uuid.UUID, ws UserM
 	return &user, nil
 }
 
-func (a *UserApi) Get(ctx context.Context, organizationId, userId uuid.UUID) (*User, error) {
+func (a *UserApi) Get(ctx context.Context, organizationId, userId uuid.UUID, opts ...requestOpts) (*User, error) {
 	var user User
 	resp := Response{Data: &user}
-	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s/users/%s", organizationId, userId)).
+	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s/users/%s", organizationId, userId), opts...).
 		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
@@ -50,10 +50,10 @@ func (a *UserApi) Get(ctx context.Context, organizationId, userId uuid.UUID) (*U
 	return &user, nil
 }
 
-func (a *UserApi) Update(ctx context.Context, organizationId, userId uuid.UUID, ws UserMutation) (*User, error) {
+func (a *UserApi) Update(ctx context.Context, organizationId, userId uuid.UUID, ws UserMutation, opts ...requestOpts) (*User, error) {
 	var user User
 	resp := Response{Data: &user}
-	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s/users/%s", organizationId, userId)).
+	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s/users/%s", organizationId, userId), opts...).
 		Patch().
 		BodyJSON(&ws).
 		ToJSON(&resp).
@@ -65,8 +65,8 @@ func (a *UserApi) Update(ctx context.Context, organizationId, userId uuid.UUID, 
 	return &user, nil
 }
 
-func (a *UserApi) Delete(ctx context.Context, organizationId, userId uuid.UUID) error {
-	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s/users/%s", organizationId, userId)).
+func (a *UserApi) Delete(ctx context.Context, organizationId, userId uuid.UUID, opts ...requestOpts) error {
+	err := a.client.newRequest(fmt.Sprintf("/api/organizations/%s/users/%s", organizationId, userId), opts...).
 		Delete().
 		Fetch(ctx)
 	if err != nil {

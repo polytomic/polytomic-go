@@ -88,7 +88,7 @@ type Source struct {
 	Field   string `json:"field" tfsdk:"field" mapstructure:"field"`
 }
 
-func (s *SyncApi) Create(ctx context.Context, r SyncRequest) (*SyncResponse, error) {
+func (s *SyncApi) Create(ctx context.Context, r SyncRequest, opts ...requestOpts) (*SyncResponse, error) {
 	var sync SyncResponse
 	resp := Response{Data: &sync}
 	err := s.client.newRequest("/api/syncs").
@@ -102,7 +102,7 @@ func (s *SyncApi) Create(ctx context.Context, r SyncRequest) (*SyncResponse, err
 	return &sync, nil
 }
 
-func (s *SyncApi) Get(ctx context.Context, id string) (*SyncResponse, error) {
+func (s *SyncApi) Get(ctx context.Context, id string, opts ...requestOpts) (*SyncResponse, error) {
 	var sync SyncResponse
 	resp := Response{Data: &sync}
 	err := s.client.newRequest("/api/syncs/" + id).
@@ -115,7 +115,7 @@ func (s *SyncApi) Get(ctx context.Context, id string) (*SyncResponse, error) {
 	return &sync, nil
 }
 
-func (s *SyncApi) List(ctx context.Context) ([]SyncResponse, error) {
+func (s *SyncApi) List(ctx context.Context, opts ...requestOpts) ([]SyncResponse, error) {
 	var syncs []SyncResponse
 	resp := Response{Data: &syncs}
 	err := s.client.newRequest("/api/syncs").
@@ -127,7 +127,7 @@ func (s *SyncApi) List(ctx context.Context) ([]SyncResponse, error) {
 	return syncs, nil
 }
 
-func (s *SyncApi) Update(ctx context.Context, id string, r SyncRequest) (*SyncResponse, error) {
+func (s *SyncApi) Update(ctx context.Context, id string, r SyncRequest, opts ...requestOpts) (*SyncResponse, error) {
 	var sync SyncResponse
 	resp := Response{Data: &sync}
 	err := s.client.newRequest("/api/syncs/" + id).
@@ -142,7 +142,7 @@ func (s *SyncApi) Update(ctx context.Context, id string, r SyncRequest) (*SyncRe
 	return &sync, nil
 }
 
-func (s *SyncApi) Delete(ctx context.Context, id string) error {
+func (s *SyncApi) Delete(ctx context.Context, id string, opts ...requestOpts) error {
 	return s.client.newRequest("/api/syncs/" + id).
 		Delete().
 		Fetch(ctx)

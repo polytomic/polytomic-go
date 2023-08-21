@@ -20,7 +20,7 @@ type RoleRequest struct {
 	OrganizationID string `json:"organization_id,omitempty" tfsdk:"organization_id"`
 }
 
-func (p *PermissionsApi) CreateRole(ctx context.Context, r RoleRequest) (*Role, error) {
+func (p *PermissionsApi) CreateRole(ctx context.Context, r RoleRequest, opts ...requestOpts) (*Role, error) {
 	var role Role
 	resp := Response{Data: &role}
 	err := p.client.newRequest("/api/permissions/roles").
@@ -34,10 +34,10 @@ func (p *PermissionsApi) CreateRole(ctx context.Context, r RoleRequest) (*Role, 
 	return &role, nil
 }
 
-func (p *PermissionsApi) GetRole(ctx context.Context, id string) (*Role, error) {
+func (p *PermissionsApi) GetRole(ctx context.Context, id string, opts ...requestOpts) (*Role, error) {
 	var role Role
 	resp := Response{Data: &role}
-	err := p.client.newRequest("/api/permissions/roles/" + id).
+	err := p.client.newRequest("/api/permissions/roles/"+id, opts...).
 		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
@@ -47,10 +47,10 @@ func (p *PermissionsApi) GetRole(ctx context.Context, id string) (*Role, error) 
 	return &role, nil
 }
 
-func (p *PermissionsApi) ListRoles(ctx context.Context) ([]Role, error) {
+func (p *PermissionsApi) ListRoles(ctx context.Context, opts ...requestOpts) ([]Role, error) {
 	var roles []Role
 	resp := Response{Data: &roles}
-	err := p.client.newRequest("/api/permissions/roles").
+	err := p.client.newRequest("/api/permissions/roles", opts...).
 		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
@@ -60,10 +60,10 @@ func (p *PermissionsApi) ListRoles(ctx context.Context) ([]Role, error) {
 	return roles, nil
 }
 
-func (p *PermissionsApi) UpdateRole(ctx context.Context, id string, r RoleRequest) (*Role, error) {
+func (p *PermissionsApi) UpdateRole(ctx context.Context, id string, r RoleRequest, opts ...requestOpts) (*Role, error) {
 	var role Role
 	resp := Response{Data: &role}
-	err := p.client.newRequest("/api/permissions/roles/" + id).
+	err := p.client.newRequest("/api/permissions/roles/"+id, opts...).
 		Patch().
 		BodyJSON(&r).
 		ToJSON(&resp).
@@ -75,8 +75,8 @@ func (p *PermissionsApi) UpdateRole(ctx context.Context, id string, r RoleReques
 	return &role, nil
 }
 
-func (p *PermissionsApi) DeleteRole(ctx context.Context, id string) error {
-	return p.client.newRequest("/api/permissions/roles/" + id).
+func (p *PermissionsApi) DeleteRole(ctx context.Context, id string, opts ...requestOpts) error {
+	return p.client.newRequest("/api/permissions/roles/"+id, opts...).
 		Delete().
 		Fetch(ctx)
 }
@@ -100,10 +100,10 @@ type PolicyAction struct {
 	RoleIDs []string `json:"role_ids" tfsdk:"role_ids"`
 }
 
-func (p *PermissionsApi) CreatePolicy(ctx context.Context, r PolicyRequest) (*Policy, error) {
+func (p *PermissionsApi) CreatePolicy(ctx context.Context, r PolicyRequest, opts ...requestOpts) (*Policy, error) {
 	var policy Policy
 	resp := Response{Data: &policy}
-	err := p.client.newRequest("/api/permissions/policies").
+	err := p.client.newRequest("/api/permissions/policies", opts...).
 		BodyJSON(&r).
 		ToJSON(&resp).
 		Fetch(ctx)
@@ -114,10 +114,10 @@ func (p *PermissionsApi) CreatePolicy(ctx context.Context, r PolicyRequest) (*Po
 	return &policy, nil
 }
 
-func (p *PermissionsApi) GetPolicy(ctx context.Context, id string) (*Policy, error) {
+func (p *PermissionsApi) GetPolicy(ctx context.Context, id string, opts ...requestOpts) (*Policy, error) {
 	var policy Policy
 	resp := Response{Data: &policy}
-	err := p.client.newRequest("/api/permissions/policies/" + id).
+	err := p.client.newRequest("/api/permissions/policies/"+id, opts...).
 		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
@@ -127,10 +127,10 @@ func (p *PermissionsApi) GetPolicy(ctx context.Context, id string) (*Policy, err
 	return &policy, nil
 }
 
-func (p *PermissionsApi) ListPolicies(ctx context.Context) ([]Policy, error) {
+func (p *PermissionsApi) ListPolicies(ctx context.Context, opts ...requestOpts) ([]Policy, error) {
 	var policies []Policy
 	resp := Response{Data: &policies}
-	err := p.client.newRequest("/api/permissions/policies").
+	err := p.client.newRequest("/api/permissions/policies", opts...).
 		ToJSON(&resp).
 		Fetch(ctx)
 	if err != nil {
@@ -140,10 +140,10 @@ func (p *PermissionsApi) ListPolicies(ctx context.Context) ([]Policy, error) {
 	return policies, nil
 }
 
-func (p *PermissionsApi) UpdatePolicy(ctx context.Context, id string, r PolicyRequest) (*Policy, error) {
+func (p *PermissionsApi) UpdatePolicy(ctx context.Context, id string, r PolicyRequest, opts ...requestOpts) (*Policy, error) {
 	var policy Policy
 	resp := Response{Data: &policy}
-	err := p.client.newRequest("/api/permissions/policies/" + id).
+	err := p.client.newRequest("/api/permissions/policies/"+id, opts...).
 		Patch().
 		BodyJSON(&r).
 		ToJSON(&resp).
@@ -155,8 +155,8 @@ func (p *PermissionsApi) UpdatePolicy(ctx context.Context, id string, r PolicyRe
 	return &policy, nil
 }
 
-func (p *PermissionsApi) DeletePolicy(ctx context.Context, id string) error {
-	return p.client.newRequest("/api/permissions/policies/" + id).
+func (p *PermissionsApi) DeletePolicy(ctx context.Context, id string, opts ...requestOpts) error {
+	return p.client.newRequest("/api/permissions/policies/"+id, opts...).
 		Delete().
 		Fetch(ctx)
 }

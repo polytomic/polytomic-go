@@ -141,12 +141,19 @@ type requestOpts func(*requestOptions)
 
 type requestOptions struct {
 	IdempotencyKey string
+	ForceDelete    bool
 }
 
 // WithIdempotencyKey sets the Idempotency-Key header on the request.
 func WithIdempotencyKey(key string) requestOpts {
 	return func(o *requestOptions) {
 		o.IdempotencyKey = key
+	}
+}
+
+func WithForceDelete() requestOpts {
+	return func(o *requestOptions) {
+		o.ForceDelete = true
 	}
 }
 
@@ -167,6 +174,10 @@ func (c *Client) newRequest(url string, opts ...requestOpts) *requests.Builder {
 
 	if options.IdempotencyKey != "" {
 		r.Header(IdempotencyKeyHeader, options.IdempotencyKey)
+	}
+
+	if options.ForceDelete {
+		r.Param("force", "true")
 	}
 
 	return r

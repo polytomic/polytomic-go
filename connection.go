@@ -32,7 +32,7 @@ type CreateConnectionMutation struct {
 	Type           string      `json:"type" validate:"required"`
 	Policies       []string    `json:"policies"`
 	RedirectURL    string      `json:"redirect_url"`
-	Validate       bool        `json:"validate,omitempty"`
+	Validate       bool        `json:"validate"`
 }
 
 type UpdateConnectionMutation struct {
@@ -40,7 +40,7 @@ type UpdateConnectionMutation struct {
 	Name           string      `json:"name" validate:"required"`
 	Configuration  interface{} `json:"configuration" validate:"required"`
 	Policies       []string    `json:"policies"`
-	Validate       bool        `json:"validate,omitempty"`
+	Validate       bool        `json:"validate"`
 }
 
 type ConnectionMetaWrapper struct {

@@ -18,6 +18,7 @@ const (
 	CustomerIOConnectionType         = "customerio"
 	CsvConnectionType                = "csv"
 	DatabricksConnectionType         = "databricks"
+	DatadogConnectionType            = "datadog"
 	DelightedConnectionType          = "delighted"
 	DialpadConnectionType            = "dialpad"
 	DynamoDBConnectionType           = "dynamodb"
@@ -32,6 +33,7 @@ const (
 	GithubConnectionType             = "github"
 	GoogleSheetsConnectionType       = "gsheets"
 	GoogleAdsConnectionType          = "googleads"
+	HoneycombConnectionType          = "honeycomb"
 	HubspotConnectionType            = "hubspot"
 	IntercomConnectionType           = "intercom"
 	IterableConnectionType           = "iterable"
@@ -300,6 +302,10 @@ type DatabricksConnectionConfiguration struct {
 	S3BucketRegion     string `json:"s3_bucket_region" mapstructure:"s3_bucket_region" tfsdk:"s3_bucket_region"`
 }
 
+type DatadogConnectionConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
+}
+
 type DelightedConnectionConfiguration struct {
 	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
 }
@@ -333,6 +339,11 @@ type GithubConnectionConfiguration struct {
 
 type HarmonicConnectionConfiguration struct {
 	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
+}
+
+type HoneycombConnectionConfiguration struct {
+	APIKey  string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
+	Dataset string `json:"dataset" mapstructure:"dataset" tfsdk:"dataset"`
 }
 
 type IntercomConnectionConfiguration struct {

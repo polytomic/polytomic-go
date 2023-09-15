@@ -140,8 +140,9 @@ func (c *Client) Permissions() *PermissionsApi {
 type requestOpts func(*requestOptions)
 
 type requestOptions struct {
-	IdempotencyKey string
-	ForceDelete    bool
+	IdempotencyKey       string
+	ForceDelete          bool
+	SkipConfigValidation bool
 }
 
 // WithIdempotencyKey sets the Idempotency-Key header on the request.
@@ -154,6 +155,12 @@ func WithIdempotencyKey(key string) requestOpts {
 func WithForceDelete() requestOpts {
 	return func(o *requestOptions) {
 		o.ForceDelete = true
+	}
+}
+
+func SkipConfigValidation() requestOpts {
+	return func(o *requestOptions) {
+		o.SkipConfigValidation = true
 	}
 }
 

@@ -32,6 +32,7 @@ type CreateConnectionMutation struct {
 	Type           string      `json:"type" validate:"required"`
 	Policies       []string    `json:"policies"`
 	RedirectURL    string      `json:"redirect_url"`
+	Validate       bool        `json:"validate,omitempty"`
 }
 
 type UpdateConnectionMutation struct {
@@ -39,6 +40,7 @@ type UpdateConnectionMutation struct {
 	Name           string      `json:"name" validate:"required"`
 	Configuration  interface{} `json:"configuration" validate:"required"`
 	Policies       []string    `json:"policies"`
+	Validate       bool        `json:"validate,omitempty"`
 }
 
 type ConnectionMetaWrapper struct {
@@ -57,6 +59,14 @@ type ConnectionApi struct {
 }
 
 func (c *ConnectionApi) Create(ctx context.Context, ws CreateConnectionMutation, opts ...requestOpts) (*Connection, error) {
+	options := requestOptions{}
+	for _, opt := range opts {
+		opt(&options)
+	}
+	if options.SkipConfigValidation {
+		ws.Validate = false
+	}
+
 	var connection Connection
 	resp := Response{Data: &connection}
 	err := c.client.newRequest("/api/connections", opts...).
@@ -109,6 +119,14 @@ func (c *ConnectionApi) List(ctx context.Context, opts ...requestOpts) ([]Connec
 }
 
 func (c *ConnectionApi) Update(ctx context.Context, connectionId uuid.UUID, ws UpdateConnectionMutation, opts ...requestOpts) (*Connection, error) {
+	options := requestOptions{}
+	for _, opt := range opts {
+		opt(&options)
+	}
+	if options.SkipConfigValidation {
+		ws.Validate = false
+	}
+
 	var connection Connection
 	resp := Response{Data: &connection}
 	err := c.client.newRequest(fmt.Sprintf("/api/connections/%s", connectionId), opts...).

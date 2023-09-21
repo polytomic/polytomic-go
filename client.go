@@ -47,6 +47,7 @@ type Client struct {
 	host    string
 	ua      string
 	version string
+	client  *http.Client
 }
 
 type clientOpts func(*clientOptions)
@@ -54,6 +55,7 @@ type clientOpts func(*clientOptions)
 type clientOptions struct {
 	userAgent string
 	version   string
+	client    *http.Client
 }
 
 // WithUserAgent sets the User-Agent header on all requests.
@@ -66,6 +68,12 @@ func WithUserAgent(ua string) clientOpts {
 func WithAPIVersion(version string) clientOpts {
 	return func(o *clientOptions) {
 		o.version = version
+	}
+}
+
+func WithClient(client *http.Client) clientOpts {
+	return func(o *clientOptions) {
+		o.client = client
 	}
 }
 
@@ -94,12 +102,17 @@ func NewClient(host string, auth Authenticator, opts ...clientOpts) *Client {
 		o.userAgent = "polytomic-go/" + o.version
 	}
 
-	return &Client{
+	c := &Client{
 		auth:    auth,
 		host:    host,
 		ua:      o.userAgent,
 		version: o.version,
 	}
+	if o.client != nil {
+		c.client = o.client
+	}
+
+	return c
 }
 
 // Organizations returns an API client for modifying Polytomic organizations.
@@ -143,7 +156,6 @@ type requestOptions struct {
 	IdempotencyKey       string
 	ForceDelete          bool
 	SkipConfigValidation bool
-	Client               *http.Client
 }
 
 // WithIdempotencyKey sets the Idempotency-Key header on the request.
@@ -162,12 +174,6 @@ func WithForceDelete() requestOpts {
 func SkipConfigValidation() requestOpts {
 	return func(o *requestOptions) {
 		o.SkipConfigValidation = true
-	}
-}
-
-func WithClient(client *http.Client) requestOpts {
-	return func(o *requestOptions) {
-		o.Client = client
 	}
 }
 
@@ -194,8 +200,8 @@ func (c *Client) newRequest(url string, opts ...requestOpts) *requests.Builder {
 		r.Param("force", "true")
 	}
 
-	if options.Client != nil {
-		r.Client(options.Client)
+	if c.client != nil {
+		r.Client(c.client)
 	}
 
 	return r

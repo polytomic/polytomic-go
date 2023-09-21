@@ -143,6 +143,7 @@ type requestOptions struct {
 	IdempotencyKey       string
 	ForceDelete          bool
 	SkipConfigValidation bool
+	Client               *http.Client
 }
 
 // WithIdempotencyKey sets the Idempotency-Key header on the request.
@@ -161,6 +162,12 @@ func WithForceDelete() requestOpts {
 func SkipConfigValidation() requestOpts {
 	return func(o *requestOptions) {
 		o.SkipConfigValidation = true
+	}
+}
+
+func WithClient(client *http.Client) requestOpts {
+	return func(o *requestOptions) {
+		o.Client = client
 	}
 }
 
@@ -185,6 +192,10 @@ func (c *Client) newRequest(url string, opts ...requestOpts) *requests.Builder {
 
 	if options.ForceDelete {
 		r.Param("force", "true")
+	}
+
+	if options.Client != nil {
+		r.Client(options.Client)
 	}
 
 	return r

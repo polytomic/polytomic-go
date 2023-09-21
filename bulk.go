@@ -21,12 +21,18 @@ type BulkSyncRequest struct {
 }
 
 type Schedule struct {
-	Frequency  *string `json:"frequency,omitempty" tfsdk:"frequency" mapstructure:"frequency"`
-	DayOfWeek  *string `json:"day_of_week,omitempty" tfsdk:"day_of_week" mapstructure:"day_of_week"`
-	Hour       *string `json:"hour,omitempty" tfsdk:"hour" mapstructure:"hour"`
-	Minute     *string `json:"minute,omitempty" tfsdk:"minute" mapstructure:"minute"`
-	Month      *string `json:"month,omitempty" tfsdk:"month" mapstructure:"month"`
-	DayOfMonth *string `json:"day_of_month,omitempty" tfsdk:"day_of_month" mapstructure:"day_of_month"`
+	Frequency  *string   `json:"frequency,omitempty" tfsdk:"frequency" mapstructure:"frequency"`
+	DayOfWeek  *string   `json:"day_of_week,omitempty" tfsdk:"day_of_week" mapstructure:"day_of_week"`
+	Hour       *string   `json:"hour,omitempty" tfsdk:"hour" mapstructure:"hour"`
+	Minute     *string   `json:"minute,omitempty" tfsdk:"minute" mapstructure:"minute"`
+	Month      *string   `json:"month,omitempty" tfsdk:"month" mapstructure:"month"`
+	DayOfMonth *string   `json:"day_of_month,omitempty" tfsdk:"day_of_month" mapstructure:"day_of_month"`
+	RunAfter   *RunAfter `json:"run_after,omitempty" tfsdk:"run_after" mapstructure:"run_after"`
+}
+
+type RunAfter struct {
+	SyncIDs     []string `json:"sync_ids,omitempty" tfsdk:"sync_ids" mapstructure:"sync_ids"`
+	BulkSyncIDs []string `json:"bulk_sync_ids,omitempty" tfsdk:"bulk_sync_ids" mapstructure:"bulk_sync_ids"`
 }
 
 type BulkSchema struct {

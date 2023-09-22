@@ -1,67 +1,71 @@
 package polytomic
 
 const (
-	AffinityConnectionType           = "affinity"
-	AirtableConnectionType           = "airtable"
-	AmplitudeConnectionType          = "amplitude"
-	APIConnectionType                = "api"
-	AscendConnectionType             = "ascend"
-	AsanaConnectionType              = "asana"
-	AthenaConnectionType             = "awsathena"
-	AzureBlobConnectionType          = "azureblob"
-	SQLServerConnectionType          = "azuresql"
-	BigQueryConnectionType           = "bigquery"
-	BingAdsConnectionType            = "bingads"
-	ChargebeeConnectionType          = "chargebee"
-	CloudSQLConnectionType           = "googlecloudsql"
-	CosmosDBConnectionType           = "cosmosdb"
-	CustomerIOConnectionType         = "customerio"
-	CsvConnectionType                = "csv"
-	DatabricksConnectionType         = "databricks"
-	DatadogConnectionType            = "datadog"
-	DelightedConnectionType          = "delighted"
-	DialpadConnectionType            = "dialpad"
-	DynamoDBConnectionType           = "dynamodb"
-	FacebookAdsConnectionType        = "facebookads"
-	FreshdeskConnectionType          = "freshdesk"
-	FullstoryConnectionType          = "fullstory"
-	HarmonicConnectionType           = "harmonic"
-	KlaviyoConnectionType            = "klaviyo"
-	KustomerConnectionType           = "kustomer"
-	LobConnectionType                = "lob"
-	GoogleCloudStorageConnectionType = "gcs"
-	GithubConnectionType             = "github"
-	GoogleSheetsConnectionType       = "gsheets"
-	GoogleAdsConnectionType          = "googleads"
-	HoneycombConnectionType          = "honeycomb"
-	HubspotConnectionType            = "hubspot"
-	IntercomConnectionType           = "intercom"
-	IterableConnectionType           = "iterable"
-	JiraConnectionType               = "jira"
-	LinearConnectionType             = "linear"
-	LinkedinAdsConnectionType        = "linkedinads"
-	MarketoConnectionType            = "marketo"
-	MongoDBConnectionType            = "mongodb"
-	MysqlConnectionType              = "mysql"
-	NetsuiteConnectionType           = "netsuite"
-	PipedriveConnectionType          = "pipedrive"
-	PostgresqlConnectionType         = "postgresql"
-	RedshiftConnectionType           = "redshift"
-	S3ConnectionType                 = "s3"
-	SalesforceConnectionType         = "salesforce"
-	SegmentConnectionType            = "segment"
-	ShipBobConnectionType            = "shipbob"
-	ShopifyConnectionType            = "shopify"
-	SmartSheetConnectionType         = "smartsheet"
-	SnowflakeConnectionType          = "snowflake"
-	StatsigConnectionType            = "statsig"
-	StripeConnectionType             = "stripe"
-	SurvicateConnectionType          = "survicate"
-	SynapseConnectionType            = "synapse"
-	UserVoiceConnectionType          = "uservoice"
-	VanillaConnectionType            = "vanilla"
-	WebhookConnectionType            = "webhook"
-	ZendeskConnectionType            = "zendesk"
+	AffinityConnectionType            = "affinity"
+	AirtableConnectionType            = "airtable"
+	AmplitudeConnectionType           = "amplitude"
+	APIConnectionType                 = "api"
+	AscendConnectionType              = "ascend"
+	AsanaConnectionType               = "asana"
+	AthenaConnectionType              = "awsathena"
+	AzureBlobConnectionType           = "azureblob"
+	SQLServerConnectionType           = "azuresql"
+	BigQueryConnectionType            = "bigquery"
+	BingAdsConnectionType             = "bingads"
+	ChargebeeConnectionType           = "chargebee"
+	DataliteConnectionType            = "datalite"
+	CloudSQLConnectionType            = "googlecloudsql"
+	CosmosDBConnectionType            = "cosmosdb"
+	CustomerIOConnectionType          = "customerio"
+	CsvConnectionType                 = "csv"
+	DatabricksConnectionType          = "databricks"
+	DatadogConnectionType             = "datadog"
+	DelightedConnectionType           = "delighted"
+	DialpadConnectionType             = "dialpad"
+	DynamoDBConnectionType            = "dynamodb"
+	FacebookAdsConnectionType         = "fbaudience"
+	FreshdeskConnectionType           = "freshdesk"
+	FullstoryConnectionType           = "fullstory"
+	HarmonicConnectionType            = "harmonic"
+	KlaviyoConnectionType             = "klaviyo"
+	KustomerConnectionType            = "kustomer"
+	LobConnectionType                 = "lob"
+	GoogleCloudStorageConnectionType  = "gcs"
+	GithubConnectionType              = "github"
+	GoogleSheetsConnectionType        = "gsheets"
+	GoogleAdsConnectionType           = "googleads"
+	GoogleSearchConsoleConnectionType = "googlesearchconsole"
+	HoneycombConnectionType           = "honeycomb"
+	HubspotConnectionType             = "hubspot"
+	IntercomConnectionType            = "intercom"
+	IterableConnectionType            = "iterable"
+	JiraConnectionType                = "jira"
+	LinearConnectionType              = "linear"
+	LinkedinAdsConnectionType         = "linkedinads"
+	MarketoConnectionType             = "marketo"
+	MongoDBConnectionType             = "mongodb"
+	MysqlConnectionType               = "mysql"
+	NetsuiteConnectionType            = "netsuite"
+	OutreachConnectionType            = "outreach"
+	PipedriveConnectionType           = "pipedrive"
+	PostgresqlConnectionType          = "postgresql"
+	RedshiftConnectionType            = "redshift"
+	S3ConnectionType                  = "s3"
+	SalesforceConnectionType          = "salesforce"
+	SegmentConnectionType             = "segment"
+	ShipBobConnectionType             = "shipbob"
+	ShopifyConnectionType             = "shopify"
+	SlackConnectionType               = "slack"
+	SmartSheetConnectionType          = "smartsheet"
+	SnowflakeConnectionType           = "snowflake"
+	StatsigConnectionType             = "statsig"
+	StripeConnectionType              = "stripe"
+	SurvicateConnectionType           = "survicate"
+	SynapseConnectionType             = "synapse"
+	UserVoiceConnectionType           = "uservoice"
+	VanillaConnectionType             = "vanilla"
+	WebhookConnectionType             = "webhook"
+	ZendeskConnectionType             = "zendesk"
 )
 
 type ValueSelection struct {
@@ -306,6 +310,8 @@ type DatadogConnectionConfiguration struct {
 	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
 }
 
+type DataliteConnectionConfiguration struct{}
+
 type DelightedConnectionConfiguration struct {
 	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
 }
@@ -335,6 +341,10 @@ type FullstoryConnectionConfiguration struct {
 
 type GithubConnectionConfiguration struct {
 	Repositories []ValueSelection `json:"repositories" mapstructure:"repositories" tfsdk:"repositories"`
+}
+
+type GoogleSearchConsoleConnectionConfiguration struct {
+	Sites []ValueSelection `json:"sites" mapstructure:"sites" tfsdk:"sites"`
 }
 
 type HarmonicConnectionConfiguration struct {
@@ -408,6 +418,8 @@ type NetsuiteConnectionConfiguration struct {
 	TokenSecret    string `json:"token_secret" mapstructure:"token_secret" tfsdk:"token_secret"`
 }
 
+type OutreachConnectionConfiguration struct{}
+
 type PipedriveConnectionConfiguration struct {
 	Domain string `json:"domain" mapstructure:"domain" tfsdk:"domain"`
 	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
@@ -440,6 +452,10 @@ type ShipBobConnectionConfiguration struct{}
 
 type ShopifyConnectionConfiguration struct {
 	Store string `json:"store" mapstructure:"store" tfsdk:"store"`
+}
+
+type SlackConnectionConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
 }
 
 type SmartSheetConnectionConfiguration struct{}

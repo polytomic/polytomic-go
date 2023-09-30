@@ -85,7 +85,7 @@ func TestCreateBulkSync(t *testing.T) {
 		DestConnectionID:   "dest-connection-id",
 		Mode:               "replicate",
 		Active:             true,
-		Schedule: Schedule{
+		Schedule: BulkSchedule{
 			Frequency: &frequency,
 		},
 		Name: "test-sync",

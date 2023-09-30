@@ -142,7 +142,7 @@ type BulkSyncResponse struct {
 	Mode                     string                 `json:"mode" tfsdk:"mode" mapstructure:"mode"`
 	Discover                 bool                   `json:"discover" tfsdk:"discover" mapstructure:"discover"`
 	Active                   bool                   `json:"active" tfsdk:"active" mapstructure:"active"`
-	Schedule                 Schedule               `json:"schedule" tfsdk:"schedule" mapstructure:"schedule"`
+	Schedule                 BulkSchedule           `json:"schedule" tfsdk:"schedule" mapstructure:"schedule"`
 	DestinationConfiguration map[string]interface{} `json:"destination_configuration" tfsdk:"destination_configuration" mapstructure:"destination_configuration"`
 	SourceConfiguration      map[string]interface{} `json:"source_configuration" tfsdk:"source_configuration" mapstructure:"source_configuration"`
 	Policies                 []string               `json:"policies,omitempty" tfsdk:"policies" mapstructure:"policies"`

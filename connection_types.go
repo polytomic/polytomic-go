@@ -22,6 +22,7 @@ const (
 	DatadogConnectionType             = "datadog"
 	DelightedConnectionType           = "delighted"
 	DialpadConnectionType             = "dialpad"
+	DittofeedConnectionType           = "dittofeed"
 	DynamoDBConnectionType            = "dynamodb"
 	FacebookAdsConnectionType         = "fbaudience"
 	FreshdeskConnectionType           = "freshdesk"
@@ -38,10 +39,12 @@ const (
 	HoneycombConnectionType           = "honeycomb"
 	HubspotConnectionType             = "hubspot"
 	IntercomConnectionType            = "intercom"
+	IronCladConnectionType            = "ironclad"
 	IterableConnectionType            = "iterable"
 	JiraConnectionType                = "jira"
 	LinearConnectionType              = "linear"
 	LinkedinAdsConnectionType         = "linkedinads"
+	MailerCheckConnectionType         = "mailercheck"
 	MarketoConnectionType             = "marketo"
 	MongoDBConnectionType             = "mongodb"
 	MysqlConnectionType               = "mysql"
@@ -62,10 +65,12 @@ const (
 	StripeConnectionType              = "stripe"
 	SurvicateConnectionType           = "survicate"
 	SynapseConnectionType             = "synapse"
+	TixrConnectionType                = "tixr"
 	UserVoiceConnectionType           = "uservoice"
 	VanillaConnectionType             = "vanilla"
 	WebhookConnectionType             = "webhook"
 	ZendeskConnectionType             = "zendesk"
+	ZoomInfoConnectionType            = "zoominfo"
 )
 
 type ValueSelection struct {
@@ -320,6 +325,11 @@ type DialpadConnectionConfiguration struct {
 	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
 }
 
+type DittofeedConnectionConfiguration struct {
+	URL      string `json:"url" mapstructure:"url" tfsdk:"url"`
+	WriteKey string `json:"write_key" mapstructure:"write_key" tfsdk:"write_key"`
+}
+
 type DynamoDBConnectionConfiguration struct {
 	AccessID        string `json:"access_id" mapstructure:"access_id" tfsdk:"access_id"`
 	Region          string `json:"region" mapstructure:"region" tfsdk:"region"`
@@ -354,6 +364,10 @@ type HarmonicConnectionConfiguration struct {
 type HoneycombConnectionConfiguration struct {
 	APIKey  string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
 	Dataset string `json:"dataset" mapstructure:"dataset" tfsdk:"dataset"`
+}
+
+type IronCladConnectionConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
 }
 
 type IntercomConnectionConfiguration struct {
@@ -391,7 +405,11 @@ type LinkedinAdsConnectionConfiguration struct {
 }
 
 type LobConnectionConfiguration struct {
-	Apikey string `json:"apikey" mapstructure:"apikey" tfsdk:"apikey"`
+	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
+}
+
+type MailerCheckConnectionConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
 }
 
 type MysqlConnectionConfiguration struct {
@@ -481,6 +499,11 @@ type SynapseConnectionConfiguration struct {
 	Port     int    `json:"port" mapstructure:"port" tfsdk:"port"`
 }
 
+type TixrConnectionConfiguration struct {
+	ClientPrivateKey string `json:"client_private_key" mapstructure:"client_private_key" tfsdk:"client_private_key"`
+	ClientSecret     string `json:"client_secret" mapstructure:"client_secret" tfsdk:"client_secret"`
+}
+
 type UserVoiceConnectionConfiguration struct {
 	Domain string `json:"domain" mapstructure:"domain" tfsdk:"domain"`
 	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
@@ -499,4 +522,10 @@ type WebhookConnectionConfiguration struct {
 
 type ZendeskConnectionConfiguration struct {
 	Domain string `json:"domain" mapstructure:"domain" tfsdk:"domain"`
+}
+
+type ZoomInfoConnectionConfiguration struct {
+	UserName   string `json:"username" mapstructure:"username" tfsdk:"username"`
+	ClientID   string `json:"client_id" mapstructure:"client_id" tfsdk:"client_id"`
+	PrivateKey string `json:"private_key" mapstructure:"private_key" tfsdk:"private_key"`
 }

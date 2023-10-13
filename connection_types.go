@@ -525,7 +525,7 @@ type ZendeskConnectionConfiguration struct {
 }
 
 type ZoomInfoConnectionConfiguration struct {
-	UserName   string `json:"username" mapstructure:"username" tfsdk:"username"`
+	Username   string `json:"username" mapstructure:"username" tfsdk:"username"`
 	ClientID   string `json:"client_id" mapstructure:"client_id" tfsdk:"client_id"`
 	PrivateKey string `json:"private_key" mapstructure:"private_key" tfsdk:"private_key"`
 }

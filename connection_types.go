@@ -49,9 +49,11 @@ const (
 	MongoDBConnectionType             = "mongodb"
 	MysqlConnectionType               = "mysql"
 	NetsuiteConnectionType            = "netsuite"
+	OpenSearchConnectionType          = "opensearch"
 	OutreachConnectionType            = "outreach"
 	PipedriveConnectionType           = "pipedrive"
 	PostgresqlConnectionType          = "postgresql"
+	QuickbooksConnectionType          = "quickbooks"
 	RedshiftConnectionType            = "redshift"
 	S3ConnectionType                  = "s3"
 	SalesforceConnectionType          = "salesforce"
@@ -436,11 +438,22 @@ type NetsuiteConnectionConfiguration struct {
 	TokenSecret    string `json:"token_secret" mapstructure:"token_secret" tfsdk:"token_secret"`
 }
 
+type OpenSearchConnectionConfiguration struct {
+	Endpoint           string `json:"endpoint" mapstructure:"endpoint" tfsdk:"endpoint"`
+	AwsAccessKeyID     string `json:"aws_access_key_id" mapstructure:"aws_access_key_id" tfsdk:"aws_access_key_id"`
+	AwsSecretAccessKey string `json:"aws_secret_access_key" mapstructure:"aws_secret_access_key" tfsdk:"aws_secret_access_key"`
+	Region             string `json:"region" mapstructure:"region" tfsdk:"region"`
+}
+
 type OutreachConnectionConfiguration struct{}
 
 type PipedriveConnectionConfiguration struct {
 	Domain string `json:"domain" mapstructure:"domain" tfsdk:"domain"`
 	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
+}
+
+type QuickbooksConnectionConfiguration struct {
+	RealmID string `json:"realm_id" mapstructure:"realm_id" tfsdk:"realm_id"`
 }
 
 type RedshiftConnectionConfiguration struct {

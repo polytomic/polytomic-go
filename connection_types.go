@@ -8,6 +8,7 @@ const (
 	AscendConnectionType              = "ascend"
 	AsanaConnectionType               = "asana"
 	AthenaConnectionType              = "awsathena"
+	AWSOpenSearchConnectionType       = "awsopensearch"
 	AzureBlobConnectionType           = "azureblob"
 	SQLServerConnectionType           = "azuresql"
 	BigQueryConnectionType            = "bigquery"
@@ -49,7 +50,6 @@ const (
 	MongoDBConnectionType             = "mongodb"
 	MysqlConnectionType               = "mysql"
 	NetsuiteConnectionType            = "netsuite"
-	OpenSearchConnectionType          = "opensearch"
 	OutreachConnectionType            = "outreach"
 	PipedriveConnectionType           = "pipedrive"
 	PostgresqlConnectionType          = "postgresql"
@@ -438,7 +438,7 @@ type NetsuiteConnectionConfiguration struct {
 	TokenSecret    string `json:"token_secret" mapstructure:"token_secret" tfsdk:"token_secret"`
 }
 
-type OpenSearchConnectionConfiguration struct {
+type AWSOpenSearchConnectionConfiguration struct {
 	Endpoint           string `json:"endpoint" mapstructure:"endpoint" tfsdk:"endpoint"`
 	AwsAccessKeyID     string `json:"aws_access_key_id" mapstructure:"aws_access_key_id" tfsdk:"aws_access_key_id"`
 	AwsSecretAccessKey string `json:"aws_secret_access_key" mapstructure:"aws_secret_access_key" tfsdk:"aws_secret_access_key"`

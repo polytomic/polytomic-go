@@ -1,0 +1,13 @@
+{
+    "data": {
+      "id": "cfe8c8b9-8632-42ee-8838-dbd3c117fdf8",
+      "email": "test@example.com",
+      "role": "admin",
+      "organization_id": "cfe8c8b9-8632-42ee-8838-dbd3c117fdf8",
+      "organization_name": "Example Org",
+      "is_user": true,
+      "is_organization": false,
+      "is_partner": false,
+      "is_system": false
+    }
+  }

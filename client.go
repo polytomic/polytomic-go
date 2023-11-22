@@ -150,6 +150,11 @@ func (c *Client) Permissions() *PermissionsApi {
 	return &PermissionsApi{client: c}
 }
 
+// Identity returns an API client for querying Polytomic identity information.
+func (c *Client) Identity() *IdentityApi {
+	return &IdentityApi{client: c}
+}
+
 type requestOpts func(*requestOptions)
 
 type requestOptions struct {

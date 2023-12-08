@@ -68,6 +68,7 @@ const (
 	SurvicateConnectionType           = "survicate"
 	SynapseConnectionType             = "synapse"
 	TixrConnectionType                = "tixr"
+	UnbounceConnectionType            = "unbounce"
 	UserVoiceConnectionType           = "uservoice"
 	VanillaConnectionType             = "vanilla"
 	WebhookConnectionType             = "webhook"
@@ -515,6 +516,10 @@ type SynapseConnectionConfiguration struct {
 type TixrConnectionConfiguration struct {
 	ClientPrivateKey string `json:"client_private_key" mapstructure:"client_private_key" tfsdk:"client_private_key"`
 	ClientSecret     string `json:"client_secret" mapstructure:"client_secret" tfsdk:"client_secret"`
+}
+
+type UnbounceConnectionConfiguration struct {
+	APIKey string `json:"api_key" mapstructure:"api_key" tfsdk:"api_key"`
 }
 
 type UserVoiceConnectionConfiguration struct {

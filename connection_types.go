@@ -55,6 +55,7 @@ const (
 	PostgresqlConnectionType          = "postgresql"
 	QuickbooksConnectionType          = "quickbooks"
 	RedshiftConnectionType            = "redshift"
+	RedshiftServerlessConnectionType  = "redshiftserverless"
 	S3ConnectionType                  = "s3"
 	SalesforceConnectionType          = "salesforce"
 	SegmentConnectionType             = "segment"
@@ -474,6 +475,14 @@ type RedshiftConnectionConfiguration struct {
 	AwsSecretAccessKey string `json:"aws_secret_access_key" mapstructure:"aws_secret_access_key" tfsdk:"aws_secret_access_key"`
 	S3BucketName       string `json:"s3_bucket_name" mapstructure:"s3_bucket_name" tfsdk:"s3_bucket_name"`
 	S3BucketRegion     string `json:"s3_bucket_region" mapstructure:"s3_bucket_region" tfsdk:"s3_bucket_region"`
+}
+
+type RedshiftServerlessConnectionConfiguration struct {
+	Database  string `json:"database" mapstructure:"database" tfsdk:"database"`
+	Workgroup string `json:"workgroup" mapstructure:"workgroup" tfsdk:"workgroup"`
+
+	IAMRoleARN string `json:"iam_role_arn,omitempty" mapstructure:"iam_role_arn" tfsdk:"iam_role_arn"`
+	ExternalID string `json:"external_id,omitempty" mapstructure:"external_id" tfsdk:"external_id"`
 }
 
 type SegmentConnectionConfiguration struct {

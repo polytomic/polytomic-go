@@ -155,7 +155,7 @@ type S3Configuration struct {
 
 type AthenaConfiguration struct {
 	AccessKeyID     string `json:"access_id" mapstructure:"access_id" tfsdk:"access_id"`
-	AccessKeySecret string `json:"secret_access_key" mapstructure:"secret_access_key"` //nolint:gosec
+	AccessKeySecret string `json:"secret_access_key" mapstructure:"secret_access_key" tfsdk:"secret_access_key"` //nolint:gosec
 	Region          string `json:"region" mapstructure:"region" tfsdk:"region"`
 	OutputBucket    string `json:"outputbucket" mapstructure:"outputbucket" tfsdk:"outputbucket"`
 }

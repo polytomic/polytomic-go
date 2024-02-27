@@ -42,7 +42,7 @@ func (c *Client) List(
 ) (*polytomicgo.V2ListExecutionResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -98,7 +98,7 @@ func (c *Client) Get(
 ) (*polytomicgo.V2GetExecutionResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

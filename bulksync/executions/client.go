@@ -43,7 +43,7 @@ func (c *Client) List(
 ) (*polytomicgo.V3ListBulkSyncExecutionsEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -99,7 +99,7 @@ func (c *Client) Start(
 ) (*polytomicgo.V3BulkSyncExecutionEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -156,7 +156,7 @@ func (c *Client) Get(
 ) (*polytomicgo.V3BulkSyncExecutionEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

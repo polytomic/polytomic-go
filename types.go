@@ -9,13 +9,120 @@ import (
 	time "time"
 )
 
+type BulkExecutionStatus string
+
+const (
+	BulkExecutionStatusCreated    BulkExecutionStatus = "created"
+	BulkExecutionStatusScheduled  BulkExecutionStatus = "scheduled"
+	BulkExecutionStatusRunning    BulkExecutionStatus = "running"
+	BulkExecutionStatusExporting  BulkExecutionStatus = "exporting"
+	BulkExecutionStatusCanceling  BulkExecutionStatus = "canceling"
+	BulkExecutionStatusCanceled   BulkExecutionStatus = "canceled"
+	BulkExecutionStatusCompleted  BulkExecutionStatus = "completed"
+	BulkExecutionStatusFailed     BulkExecutionStatus = "failed"
+	BulkExecutionStatusProcessing BulkExecutionStatus = "processing"
+	BulkExecutionStatusErrors     BulkExecutionStatus = "errors"
+)
+
+func NewBulkExecutionStatusFromString(s string) (BulkExecutionStatus, error) {
+	switch s {
+	case "created":
+		return BulkExecutionStatusCreated, nil
+	case "scheduled":
+		return BulkExecutionStatusScheduled, nil
+	case "running":
+		return BulkExecutionStatusRunning, nil
+	case "exporting":
+		return BulkExecutionStatusExporting, nil
+	case "canceling":
+		return BulkExecutionStatusCanceling, nil
+	case "canceled":
+		return BulkExecutionStatusCanceled, nil
+	case "completed":
+		return BulkExecutionStatusCompleted, nil
+	case "failed":
+		return BulkExecutionStatusFailed, nil
+	case "processing":
+		return BulkExecutionStatusProcessing, nil
+	case "errors":
+		return BulkExecutionStatusErrors, nil
+	}
+	var t BulkExecutionStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BulkExecutionStatus) Ptr() *BulkExecutionStatus {
+	return &b
+}
+
+type BulkItemizedSchedule struct {
+	Item     BulkSelectiveMode `json:"item,omitempty" url:"item,omitempty"`
+	Schedule *BulkSchedule     `json:"schedule,omitempty" url:"schedule,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkItemizedSchedule) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkItemizedSchedule
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkItemizedSchedule(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkItemizedSchedule) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkMultiScheduleConfiguration struct {
+	Schedules []*BulkItemizedSchedule `json:"schedules,omitempty" url:"schedules,omitempty"`
+	Type      string                  `json:"type" url:"type"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkMultiScheduleConfiguration) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkMultiScheduleConfiguration
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkMultiScheduleConfiguration(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkMultiScheduleConfiguration) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 type BulkSchedule struct {
-	DayOfMonth *string `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
-	DayOfWeek  *string `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
-	Frequency  string  `json:"frequency" url:"frequency"`
-	Hour       *string `json:"hour,omitempty" url:"hour,omitempty"`
-	Minute     *string `json:"minute,omitempty" url:"minute,omitempty"`
-	Month      *string `json:"month,omitempty" url:"month,omitempty"`
+	DayOfMonth *string                         `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
+	DayOfWeek  *string                         `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
+	Frequency  string                          `json:"frequency" url:"frequency"`
+	Hour       *string                         `json:"hour,omitempty" url:"hour,omitempty"`
+	Minute     *string                         `json:"minute,omitempty" url:"minute,omitempty"`
+	Month      *string                         `json:"month,omitempty" url:"month,omitempty"`
+	Multi      *BulkMultiScheduleConfiguration `json:"multi,omitempty" url:"multi,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -41,6 +148,117 @@ func (b *BulkSchedule) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSchemaExecutionStatus string
+
+const (
+	BulkSchemaExecutionStatusCreated   BulkSchemaExecutionStatus = "created"
+	BulkSchemaExecutionStatusScheduled BulkSchemaExecutionStatus = "scheduled"
+	BulkSchemaExecutionStatusRunning   BulkSchemaExecutionStatus = "running"
+	BulkSchemaExecutionStatusExporting BulkSchemaExecutionStatus = "exporting"
+	BulkSchemaExecutionStatusCanceled  BulkSchemaExecutionStatus = "canceled"
+	BulkSchemaExecutionStatusCompleted BulkSchemaExecutionStatus = "completed"
+	BulkSchemaExecutionStatusFailed    BulkSchemaExecutionStatus = "failed"
+)
+
+func NewBulkSchemaExecutionStatusFromString(s string) (BulkSchemaExecutionStatus, error) {
+	switch s {
+	case "created":
+		return BulkSchemaExecutionStatusCreated, nil
+	case "scheduled":
+		return BulkSchemaExecutionStatusScheduled, nil
+	case "running":
+		return BulkSchemaExecutionStatusRunning, nil
+	case "exporting":
+		return BulkSchemaExecutionStatusExporting, nil
+	case "canceled":
+		return BulkSchemaExecutionStatusCanceled, nil
+	case "completed":
+		return BulkSchemaExecutionStatusCompleted, nil
+	case "failed":
+		return BulkSchemaExecutionStatusFailed, nil
+	}
+	var t BulkSchemaExecutionStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BulkSchemaExecutionStatus) Ptr() *BulkSchemaExecutionStatus {
+	return &b
+}
+
+type BulkSelectiveMode string
+
+const (
+	BulkSelectiveModeNone                 BulkSelectiveMode = "none"
+	BulkSelectiveModeIncrementalFields    BulkSelectiveMode = "incrementalFields"
+	BulkSelectiveModeNonincrementalFields BulkSelectiveMode = "nonincrementalFields"
+)
+
+func NewBulkSelectiveModeFromString(s string) (BulkSelectiveMode, error) {
+	switch s {
+	case "none":
+		return BulkSelectiveModeNone, nil
+	case "incrementalFields":
+		return BulkSelectiveModeIncrementalFields, nil
+	case "nonincrementalFields":
+		return BulkSelectiveModeNonincrementalFields, nil
+	}
+	var t BulkSelectiveMode
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BulkSelectiveMode) Ptr() *BulkSelectiveMode {
+	return &b
+}
+
+type ExecutionStatus string
+
+const (
+	ExecutionStatusCreated     ExecutionStatus = "created"
+	ExecutionStatusScheduled   ExecutionStatus = "scheduled"
+	ExecutionStatusQueued      ExecutionStatus = "queued"
+	ExecutionStatusWaiting     ExecutionStatus = "waiting"
+	ExecutionStatusRunning     ExecutionStatus = "running"
+	ExecutionStatusProcessing  ExecutionStatus = "processing"
+	ExecutionStatusCanceling   ExecutionStatus = "canceling"
+	ExecutionStatusCanceled    ExecutionStatus = "canceled"
+	ExecutionStatusCompleted   ExecutionStatus = "completed"
+	ExecutionStatusFailed      ExecutionStatus = "failed"
+	ExecutionStatusInterrupted ExecutionStatus = "interrupted"
+)
+
+func NewExecutionStatusFromString(s string) (ExecutionStatus, error) {
+	switch s {
+	case "created":
+		return ExecutionStatusCreated, nil
+	case "scheduled":
+		return ExecutionStatusScheduled, nil
+	case "queued":
+		return ExecutionStatusQueued, nil
+	case "waiting":
+		return ExecutionStatusWaiting, nil
+	case "running":
+		return ExecutionStatusRunning, nil
+	case "processing":
+		return ExecutionStatusProcessing, nil
+	case "canceling":
+		return ExecutionStatusCanceling, nil
+	case "canceled":
+		return ExecutionStatusCanceled, nil
+	case "completed":
+		return ExecutionStatusCompleted, nil
+	case "failed":
+		return ExecutionStatusFailed, nil
+	case "interrupted":
+		return ExecutionStatusInterrupted, nil
+	}
+	var t ExecutionStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (e ExecutionStatus) Ptr() *ExecutionStatus {
+	return &e
 }
 
 type LabelLabel = map[string]interface{}
@@ -575,6 +793,95 @@ func (v *V2ConnectionMetaResponse) String() string {
 	return fmt.Sprintf("%#v", v)
 }
 
+type V2ConnectionParameterValue struct {
+	Label *string     `json:"label,omitempty" url:"label,omitempty"`
+	Value interface{} `json:"value,omitempty" url:"value,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ConnectionParameterValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionParameterValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionParameterValue(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionParameterValue) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ConnectionParameterValuesResp struct {
+	AllowsCreation *bool                         `json:"allows_creation,omitempty" url:"allows_creation,omitempty"`
+	Values         []*V2ConnectionParameterValue `json:"values,omitempty" url:"values,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ConnectionParameterValuesResp) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionParameterValuesResp
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionParameterValuesResp(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionParameterValuesResp) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ConnectionParameterValuesResponseEnvelope struct {
+	Data map[string]*V2ConnectionParameterValuesResp `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ConnectionParameterValuesResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionParameterValuesResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionParameterValuesResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionParameterValuesResponseEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
 type V2ConnectionResponseEnvelope struct {
 	Data *V2ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
 
@@ -1039,7 +1346,7 @@ type V2GetExecutionResponseSchema struct {
 	Errors      []string           `json:"errors,omitempty" url:"errors,omitempty"`
 	Id          *string            `json:"id,omitempty" url:"id,omitempty"`
 	StartedAt   *time.Time         `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status      *string            `json:"status,omitempty" url:"status,omitempty"`
+	Status      *ExecutionStatus   `json:"status,omitempty" url:"status,omitempty"`
 	Type        *string            `json:"type,omitempty" url:"type,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -2059,9 +2366,9 @@ func (v *V2StartSyncResponseEnvelope) String() string {
 }
 
 type V2StartSyncResponseSchema struct {
-	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
-	Id        *string    `json:"id,omitempty" url:"id,omitempty"`
-	Status    *string    `json:"status,omitempty" url:"status,omitempty"`
+	CreatedAt *time.Time       `json:"created_at,omitempty" url:"created_at,omitempty"`
+	Id        *string          `json:"id,omitempty" url:"id,omitempty"`
+	Status    *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -2684,6 +2991,7 @@ type V3BulkSchema struct {
 	Enabled      *bool          `json:"enabled,omitempty" url:"enabled,omitempty"`
 	Fields       []*V3BulkField `json:"fields,omitempty" url:"fields,omitempty"`
 	Id           *string        `json:"id,omitempty" url:"id,omitempty"`
+	OutputName   *string        `json:"output_name,omitempty" url:"output_name,omitempty"`
 	PartitionKey *string        `json:"partition_key,omitempty" url:"partition_key,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -2749,7 +3057,7 @@ type V3BulkSyncExecution struct {
 	IsTest      *bool                        `json:"is_test,omitempty" url:"is_test,omitempty"`
 	Schemas     []*V3BulkSyncSchemaExecution `json:"schemas,omitempty" url:"schemas,omitempty"`
 	StartedAt   *time.Time                   `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status      *string                      `json:"status,omitempty" url:"status,omitempty"`
+	Status      *BulkExecutionStatus         `json:"status,omitempty" url:"status,omitempty"`
 	Type        *string                      `json:"type,omitempty" url:"type,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -2834,13 +3142,13 @@ func (v *V3BulkSyncExecutionEnvelope) String() string {
 }
 
 type V3BulkSyncSchemaExecution struct {
-	CompletedAt   *time.Time `json:"completed_at,omitempty" url:"completed_at,omitempty"`
-	ErrorCount    *int       `json:"error_count,omitempty" url:"error_count,omitempty"`
-	RecordCount   *int       `json:"record_count,omitempty" url:"record_count,omitempty"`
-	Schema        *string    `json:"schema,omitempty" url:"schema,omitempty"`
-	StartedAt     *time.Time `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status        *string    `json:"status,omitempty" url:"status,omitempty"`
-	StatusMessage *string    `json:"status_message,omitempty" url:"status_message,omitempty"`
+	CompletedAt   *time.Time                 `json:"completed_at,omitempty" url:"completed_at,omitempty"`
+	ErrorCount    *int                       `json:"error_count,omitempty" url:"error_count,omitempty"`
+	RecordCount   *int                       `json:"record_count,omitempty" url:"record_count,omitempty"`
+	Schema        *string                    `json:"schema,omitempty" url:"schema,omitempty"`
+	StartedAt     *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
+	Status        *BulkSchemaExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	StatusMessage *string                    `json:"status_message,omitempty" url:"status_message,omitempty"`
 
 	_rawJSON json.RawMessage
 }

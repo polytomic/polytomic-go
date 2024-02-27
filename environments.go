@@ -9,5 +9,5 @@ package polytomic
 var Environments = struct {
 	Default string
 }{
-	Default: "https://app.polytomic.com/",
+	Default: "https://app.polytomic-local.com:8443/",
 }

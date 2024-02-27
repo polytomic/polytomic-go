@@ -44,7 +44,7 @@ func (c *Client) List(
 ) (*polytomicgo.V2OrganizationsEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -102,7 +102,7 @@ func (c *Client) Create(
 ) (*polytomicgo.V2OrganizationEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -161,7 +161,7 @@ func (c *Client) Get(
 ) (*polytomicgo.V2OrganizationEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -219,7 +219,7 @@ func (c *Client) Remove(
 ) error {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -276,7 +276,7 @@ func (c *Client) Update(
 ) (*polytomicgo.V2OrganizationEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

@@ -41,7 +41,7 @@ func (c *Client) GetTypes(
 ) (*polytomicgo.V2ConnectionTypeResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -95,7 +95,7 @@ func (c *Client) List(
 ) (*polytomicgo.V2ConnectionListResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -150,7 +150,7 @@ func (c *Client) Create(
 ) (*polytomicgo.V2CreateConnectionResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -206,7 +206,7 @@ func (c *Client) ApiV3Connect(
 ) (*polytomicgo.V3ConnectCardResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -262,7 +262,7 @@ func (c *Client) Get(
 ) (*polytomicgo.V2ConnectionResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -318,7 +318,7 @@ func (c *Client) Remove(
 ) error {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -380,7 +380,7 @@ func (c *Client) Update(
 ) (*polytomicgo.V2CreateConnectionResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -429,6 +429,61 @@ func (c *Client) Update(
 	return response, nil
 }
 
+func (c *Client) ApiV2ConnectionParameterValues(
+	ctx context.Context,
+	id string,
+	opts ...option.RequestOption,
+) (*polytomicgo.V2ConnectionParameterValuesResponseEnvelope, error) {
+	options := core.NewRequestOptions(opts...)
+
+	baseURL := "https://app.polytomic-local.com:8443/"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/parameter_values", id)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *polytomicgo.V2ConnectionParameterValuesResponseEnvelope
+	if err := c.caller.Call(
+		ctx,
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodGet,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
+		},
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 func (c *Client) GetSource(
 	ctx context.Context,
 	id string,
@@ -436,7 +491,7 @@ func (c *Client) GetSource(
 ) (*polytomicgo.V2GetConnectionMetaEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -492,7 +547,7 @@ func (c *Client) GetSourceFields(
 ) (*polytomicgo.V2ModelFieldResponse, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -549,7 +604,7 @@ func (c *Client) GetTarget(
 ) (*polytomicgo.V2GetConnectionMetaEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -613,7 +668,7 @@ func (c *Client) GetTargetFields(
 ) (*polytomicgo.V2TargetResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -668,7 +723,7 @@ func (c *Client) Connect(
 ) error {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

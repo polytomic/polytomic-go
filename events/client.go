@@ -41,7 +41,7 @@ func (c *Client) ApiV2GetEvents(
 ) (*polytomicgo.V2EventsEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -103,7 +103,7 @@ func (c *Client) ApiV2GetEventTypes(
 ) (*polytomicgo.V2EventTypesEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

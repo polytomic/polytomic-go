@@ -43,7 +43,7 @@ func (c *Client) GetRecords(
 ) (*polytomicgo.V3SchemaRecordsResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic.com/"
+	baseURL := "https://app.polytomic-local.com:8443/"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

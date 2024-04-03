@@ -7,6 +7,7 @@ import (
 	connections "github.com/polytomic/polytomic-go/connections"
 	core "github.com/polytomic/polytomic-go/core"
 	events "github.com/polytomic/polytomic-go/events"
+	jobs "github.com/polytomic/polytomic-go/jobs"
 	models "github.com/polytomic/polytomic-go/models"
 	modelsyncclient "github.com/polytomic/polytomic-go/modelsync/client"
 	option "github.com/polytomic/polytomic-go/option"
@@ -27,6 +28,7 @@ type Client struct {
 	Connections  *connections.Client
 	Schemas      *schemas.Client
 	Events       *events.Client
+	Jobs         *jobs.Client
 	Models       *models.Client
 	Organization *organization.Client
 	Users        *users.Client
@@ -50,6 +52,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Connections:  connections.NewClient(opts...),
 		Schemas:      schemas.NewClient(opts...),
 		Events:       events.NewClient(opts...),
+		Jobs:         jobs.NewClient(opts...),
 		Models:       models.NewClient(opts...),
 		Organization: organization.NewClient(opts...),
 		Users:        users.NewClient(opts...),

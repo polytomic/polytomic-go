@@ -42,10 +42,10 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2ListSyncResponseEnvelope, error) {
+) (*polytomicgo.ListModelSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -75,7 +75,7 @@ func (c *Client) List(
 		return apiError
 	}
 
-	var response *polytomicgo.V2ListSyncResponseEnvelope
+	var response *polytomicgo.ListModelSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -95,12 +95,12 @@ func (c *Client) List(
 
 func (c *Client) Create(
 	ctx context.Context,
-	request *polytomicgo.V2CreateSyncRequest,
+	request *polytomicgo.CreateModelSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2SyncResponseEnvelope, error) {
+) (*polytomicgo.ModelSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -130,7 +130,7 @@ func (c *Client) Create(
 		return apiError
 	}
 
-	var response *polytomicgo.V2SyncResponseEnvelope
+	var response *polytomicgo.ModelSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -149,14 +149,68 @@ func (c *Client) Create(
 	return response, nil
 }
 
+func (c *Client) GetScheduleOptions(
+	ctx context.Context,
+	opts ...option.RequestOption,
+) (*polytomicgo.ScheduleOptionResponseEnvelope, error) {
+	options := core.NewRequestOptions(opts...)
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/" + "api/syncs/schedules"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *polytomicgo.ScheduleOptionResponseEnvelope
+	if err := c.caller.Call(
+		ctx,
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodGet,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
+		},
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2SyncResponseEnvelope, error) {
+) (*polytomicgo.ModelSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -186,7 +240,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *polytomicgo.V2SyncResponseEnvelope
+	var response *polytomicgo.ModelSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -211,7 +265,7 @@ func (c *Client) Remove(
 ) error {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -260,12 +314,12 @@ func (c *Client) Remove(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.V2UpdateSyncRequest,
+	request *polytomicgo.UpdateModelSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2SyncResponseEnvelope, error) {
+) (*polytomicgo.ModelSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -295,7 +349,7 @@ func (c *Client) Update(
 		return apiError
 	}
 
-	var response *polytomicgo.V2SyncResponseEnvelope
+	var response *polytomicgo.ModelSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -317,12 +371,12 @@ func (c *Client) Update(
 func (c *Client) Activate(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.V2ActivateSyncInput,
+	request *polytomicgo.ActivateSyncInput,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2ActivateSyncEnvelope, error) {
+) (*polytomicgo.ActivateSyncEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -352,7 +406,7 @@ func (c *Client) Activate(
 		return apiError
 	}
 
-	var response *polytomicgo.V2ActivateSyncEnvelope
+	var response *polytomicgo.ActivateSyncEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -374,12 +428,12 @@ func (c *Client) Activate(
 func (c *Client) Start(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.V2StartSyncRequest,
+	request *polytomicgo.StartModelSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2StartSyncResponseEnvelope, error) {
+) (*polytomicgo.StartModelSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -409,7 +463,7 @@ func (c *Client) Start(
 		return apiError
 	}
 
-	var response *polytomicgo.V2StartSyncResponseEnvelope
+	var response *polytomicgo.StartModelSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -432,10 +486,10 @@ func (c *Client) GetStatus(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2SyncStatusEnvelope, error) {
+) (*polytomicgo.SyncStatusEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -465,7 +519,7 @@ func (c *Client) GetStatus(
 		return apiError
 	}
 
-	var response *polytomicgo.V2SyncStatusEnvelope
+	var response *polytomicgo.SyncStatusEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -481,224 +535,4 @@ func (c *Client) GetStatus(
 		return nil, err
 	}
 	return response, nil
-}
-
-func (c *Client) ApiV2GetExecutionLogs4(
-	ctx context.Context,
-	syncId string,
-	id string,
-	filename string,
-	opts ...option.RequestOption,
-) error {
-	options := core.NewRequestOptions(opts...)
-
-	baseURL := "https://app.polytomic-local.com:8443/"
-	if c.baseURL != "" {
-		baseURL = c.baseURL
-	}
-	if options.BaseURL != "" {
-		baseURL = options.BaseURL
-	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/syncs/%v/executions/%v/errors/%v", syncId, id, filename)
-
-	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
-
-	errorDecoder := func(statusCode int, body io.Reader) error {
-		raw, err := io.ReadAll(body)
-		if err != nil {
-			return err
-		}
-		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
-		decoder := json.NewDecoder(bytes.NewReader(raw))
-		switch statusCode {
-		case 401:
-			value := new(polytomicgo.UnauthorizedError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		}
-		return apiError
-	}
-
-	if err := c.caller.Call(
-		ctx,
-		&core.CallParams{
-			URL:          endpointURL,
-			Method:       http.MethodGet,
-			MaxAttempts:  options.MaxAttempts,
-			Headers:      headers,
-			Client:       options.HTTPClient,
-			ErrorDecoder: errorDecoder,
-		},
-	); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *Client) ApiV2GetExecutionLogs2(
-	ctx context.Context,
-	syncId string,
-	id string,
-	filename string,
-	opts ...option.RequestOption,
-) error {
-	options := core.NewRequestOptions(opts...)
-
-	baseURL := "https://app.polytomic-local.com:8443/"
-	if c.baseURL != "" {
-		baseURL = c.baseURL
-	}
-	if options.BaseURL != "" {
-		baseURL = options.BaseURL
-	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/syncs/%v/executions/%v/inserts/%v", syncId, id, filename)
-
-	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
-
-	errorDecoder := func(statusCode int, body io.Reader) error {
-		raw, err := io.ReadAll(body)
-		if err != nil {
-			return err
-		}
-		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
-		decoder := json.NewDecoder(bytes.NewReader(raw))
-		switch statusCode {
-		case 401:
-			value := new(polytomicgo.UnauthorizedError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		}
-		return apiError
-	}
-
-	if err := c.caller.Call(
-		ctx,
-		&core.CallParams{
-			URL:          endpointURL,
-			Method:       http.MethodGet,
-			MaxAttempts:  options.MaxAttempts,
-			Headers:      headers,
-			Client:       options.HTTPClient,
-			ErrorDecoder: errorDecoder,
-		},
-	); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *Client) ApiV2GetExecutionLogs(
-	ctx context.Context,
-	syncId string,
-	id string,
-	filename string,
-	opts ...option.RequestOption,
-) error {
-	options := core.NewRequestOptions(opts...)
-
-	baseURL := "https://app.polytomic-local.com:8443/"
-	if c.baseURL != "" {
-		baseURL = c.baseURL
-	}
-	if options.BaseURL != "" {
-		baseURL = options.BaseURL
-	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/syncs/%v/executions/%v/records/%v", syncId, id, filename)
-
-	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
-
-	errorDecoder := func(statusCode int, body io.Reader) error {
-		raw, err := io.ReadAll(body)
-		if err != nil {
-			return err
-		}
-		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
-		decoder := json.NewDecoder(bytes.NewReader(raw))
-		switch statusCode {
-		case 401:
-			value := new(polytomicgo.UnauthorizedError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		}
-		return apiError
-	}
-
-	if err := c.caller.Call(
-		ctx,
-		&core.CallParams{
-			URL:          endpointURL,
-			Method:       http.MethodGet,
-			MaxAttempts:  options.MaxAttempts,
-			Headers:      headers,
-			Client:       options.HTTPClient,
-			ErrorDecoder: errorDecoder,
-		},
-	); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *Client) ApiV2GetExecutionLogs3(
-	ctx context.Context,
-	syncId string,
-	id string,
-	filename string,
-	opts ...option.RequestOption,
-) error {
-	options := core.NewRequestOptions(opts...)
-
-	baseURL := "https://app.polytomic-local.com:8443/"
-	if c.baseURL != "" {
-		baseURL = c.baseURL
-	}
-	if options.BaseURL != "" {
-		baseURL = options.BaseURL
-	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/syncs/%v/executions/%v/updates/%v", syncId, id, filename)
-
-	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
-
-	errorDecoder := func(statusCode int, body io.Reader) error {
-		raw, err := io.ReadAll(body)
-		if err != nil {
-			return err
-		}
-		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
-		decoder := json.NewDecoder(bytes.NewReader(raw))
-		switch statusCode {
-		case 401:
-			value := new(polytomicgo.UnauthorizedError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		}
-		return apiError
-	}
-
-	if err := c.caller.Call(
-		ctx,
-		&core.CallParams{
-			URL:          endpointURL,
-			Method:       http.MethodGet,
-			MaxAttempts:  options.MaxAttempts,
-			Headers:      headers,
-			Client:       options.HTTPClient,
-			ErrorDecoder: errorDecoder,
-		},
-	); err != nil {
-		return err
-	}
-	return nil
 }

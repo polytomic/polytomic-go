@@ -40,10 +40,10 @@ func (c *Client) GetRecords(
 	connectionId string,
 	schemaId string,
 	opts ...option.RequestOption,
-) (*polytomicgo.V3SchemaRecordsResponseEnvelope, error) {
+) (*polytomicgo.SchemaRecordsResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -73,7 +73,7 @@ func (c *Client) GetRecords(
 		return apiError
 	}
 
-	var response *polytomicgo.V3SchemaRecordsResponseEnvelope
+	var response *polytomicgo.SchemaRecordsResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

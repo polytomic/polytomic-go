@@ -39,10 +39,10 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2ListPoliciesResponseEnvelope, error) {
+) (*polytomicgo.ListPoliciesResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -72,7 +72,7 @@ func (c *Client) List(
 		return apiError
 	}
 
-	var response *polytomicgo.V2ListPoliciesResponseEnvelope
+	var response *polytomicgo.ListPoliciesResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -92,12 +92,12 @@ func (c *Client) List(
 
 func (c *Client) Create(
 	ctx context.Context,
-	request *permissions.V2CreatePolicyRequest,
+	request *permissions.CreatePolicyRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2PolicyResponseEnvelope, error) {
+) (*polytomicgo.PolicyResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -127,7 +127,7 @@ func (c *Client) Create(
 		return apiError
 	}
 
-	var response *polytomicgo.V2PolicyResponseEnvelope
+	var response *polytomicgo.PolicyResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -150,10 +150,10 @@ func (c *Client) Get(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2PolicyResponseEnvelope, error) {
+) (*polytomicgo.PolicyResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -183,7 +183,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *polytomicgo.V2PolicyResponseEnvelope
+	var response *polytomicgo.PolicyResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -208,7 +208,7 @@ func (c *Client) Delete(
 ) error {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -257,12 +257,12 @@ func (c *Client) Delete(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *permissions.V2UpdatePolicyRequest,
+	request *permissions.UpdatePolicyRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2PolicyResponseEnvelope, error) {
+) (*polytomicgo.PolicyResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -292,7 +292,7 @@ func (c *Client) Update(
 		return apiError
 	}
 
-	var response *polytomicgo.V2PolicyResponseEnvelope
+	var response *polytomicgo.PolicyResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

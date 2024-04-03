@@ -2,13 +2,13 @@
 
 package polytomic
 
-type V2CreateWebhooksSchema struct {
+type CreateWebhooksSchema struct {
 	Endpoint       string  `json:"endpoint" url:"endpoint"`
 	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Secret         string  `json:"secret" url:"secret"`
 }
 
-type V2UpdateWebhooksSchema struct {
+type UpdateWebhooksSchema struct {
 	Endpoint       string  `json:"endpoint" url:"endpoint"`
 	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Secret         string  `json:"secret" url:"secret"`

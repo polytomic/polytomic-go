@@ -40,10 +40,10 @@ func (c *Client) List(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomicgo.V3ListBulkSyncExecutionsEnvelope, error) {
+) (*polytomicgo.ListBulkSyncExecutionsEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -73,7 +73,7 @@ func (c *Client) List(
 		return apiError
 	}
 
-	var response *polytomicgo.V3ListBulkSyncExecutionsEnvelope
+	var response *polytomicgo.ListBulkSyncExecutionsEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -94,12 +94,12 @@ func (c *Client) List(
 func (c *Client) Start(
 	ctx context.Context,
 	id string,
-	request *bulksync.V3StartBulkSyncRequest,
+	request *bulksync.StartBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.V3BulkSyncExecutionEnvelope, error) {
+) (*polytomicgo.BulkSyncExecutionEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -129,7 +129,7 @@ func (c *Client) Start(
 		return apiError
 	}
 
-	var response *polytomicgo.V3BulkSyncExecutionEnvelope
+	var response *polytomicgo.BulkSyncExecutionEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -153,10 +153,10 @@ func (c *Client) Get(
 	id string,
 	execId string,
 	opts ...option.RequestOption,
-) (*polytomicgo.V3BulkSyncExecutionEnvelope, error) {
+) (*polytomicgo.BulkSyncExecutionEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -186,7 +186,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *polytomicgo.V3BulkSyncExecutionEnvelope
+	var response *polytomicgo.BulkSyncExecutionEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

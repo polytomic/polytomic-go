@@ -9,6 +9,180 @@ import (
 	time "time"
 )
 
+type ApiKeyResponse struct {
+	Value *string `json:"value,omitempty" url:"value,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (a *ApiKeyResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ApiKeyResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = ApiKeyResponse(value)
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *ApiKeyResponse) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type ApiKeyResponseEnvelope struct {
+	Data *ApiKeyResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (a *ApiKeyResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ApiKeyResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = ApiKeyResponseEnvelope(value)
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *ApiKeyResponseEnvelope) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type ActivateSyncEnvelope struct {
+	Data *ActivateSyncOutput `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (a *ActivateSyncEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ActivateSyncEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = ActivateSyncEnvelope(value)
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *ActivateSyncEnvelope) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type ActivateSyncInput struct {
+	Active bool `json:"active" url:"active"`
+
+	_rawJSON json.RawMessage
+}
+
+func (a *ActivateSyncInput) UnmarshalJSON(data []byte) error {
+	type unmarshaler ActivateSyncInput
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = ActivateSyncInput(value)
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *ActivateSyncInput) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type ActivateSyncOutput struct {
+	Active *bool   `json:"active,omitempty" url:"active,omitempty"`
+	Id     *string `json:"id,omitempty" url:"id,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (a *ActivateSyncOutput) UnmarshalJSON(data []byte) error {
+	type unmarshaler ActivateSyncOutput
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = ActivateSyncOutput(value)
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *ActivateSyncOutput) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type BulkDiscover string
+
+const (
+	BulkDiscoverAll                BulkDiscover = "all"
+	BulkDiscoverOnlyIncremental    BulkDiscover = "onlyIncremental"
+	BulkDiscoverOnlyNonIncremental BulkDiscover = "onlyNonIncremental"
+	BulkDiscoverNone               BulkDiscover = "none"
+)
+
+func NewBulkDiscoverFromString(s string) (BulkDiscover, error) {
+	switch s {
+	case "all":
+		return BulkDiscoverAll, nil
+	case "onlyIncremental":
+		return BulkDiscoverOnlyIncremental, nil
+	case "onlyNonIncremental":
+		return BulkDiscoverOnlyNonIncremental, nil
+	case "none":
+		return BulkDiscoverNone, nil
+	}
+	var t BulkDiscover
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BulkDiscover) Ptr() *BulkDiscover {
+	return &b
+}
+
 type BulkExecutionStatus string
 
 const (
@@ -53,6 +227,37 @@ func NewBulkExecutionStatusFromString(s string) (BulkExecutionStatus, error) {
 
 func (b BulkExecutionStatus) Ptr() *BulkExecutionStatus {
 	return &b
+}
+
+type BulkField struct {
+	Enabled    *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
+	Id         *string `json:"id,omitempty" url:"id,omitempty"`
+	Obfuscated *bool   `json:"obfuscated,omitempty" url:"obfuscated,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkField) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkField
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkField(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkField) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
 }
 
 type BulkItemizedSchedule struct {
@@ -118,7 +323,7 @@ func (b *BulkMultiScheduleConfiguration) String() string {
 type BulkSchedule struct {
 	DayOfMonth *string                         `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
 	DayOfWeek  *string                         `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
-	Frequency  string                          `json:"frequency" url:"frequency"`
+	Frequency  ScheduleFrequency               `json:"frequency,omitempty" url:"frequency,omitempty"`
 	Hour       *string                         `json:"hour,omitempty" url:"hour,omitempty"`
 	Minute     *string                         `json:"minute,omitempty" url:"minute,omitempty"`
 	Month      *string                         `json:"month,omitempty" url:"month,omitempty"`
@@ -139,6 +344,68 @@ func (b *BulkSchedule) UnmarshalJSON(data []byte) error {
 }
 
 func (b *BulkSchedule) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSchema struct {
+	Enabled      *bool        `json:"enabled,omitempty" url:"enabled,omitempty"`
+	Fields       []*BulkField `json:"fields,omitempty" url:"fields,omitempty"`
+	Id           *string      `json:"id,omitempty" url:"id,omitempty"`
+	OutputName   *string      `json:"output_name,omitempty" url:"output_name,omitempty"`
+	PartitionKey *string      `json:"partition_key,omitempty" url:"partition_key,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSchema(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSchema) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSchemaEnvelope struct {
+	Data *BulkSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSchemaEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSchemaEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSchemaEnvelope(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSchemaEnvelope) String() string {
 	if len(b._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
 			return value
@@ -212,6 +479,1273 @@ func (b BulkSelectiveMode) Ptr() *BulkSelectiveMode {
 	return &b
 }
 
+type BulkSyncDest struct {
+	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
+	Modes         []*SupportedMode       `json:"modes,omitempty" url:"modes,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncDest) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncDest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncDest(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncDest) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncDestEnvelope struct {
+	Data *BulkSyncDest `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncDestEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncDestEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncDestEnvelope(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncDestEnvelope) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncExecution struct {
+	CompletedAt *time.Time                 `json:"completed_at,omitempty" url:"completed_at,omitempty"`
+	CreatedAt   *time.Time                 `json:"created_at,omitempty" url:"created_at,omitempty"`
+	Id          *string                    `json:"id,omitempty" url:"id,omitempty"`
+	IsResync    *bool                      `json:"is_resync,omitempty" url:"is_resync,omitempty"`
+	IsTest      *bool                      `json:"is_test,omitempty" url:"is_test,omitempty"`
+	Schemas     []*BulkSyncSchemaExecution `json:"schemas,omitempty" url:"schemas,omitempty"`
+	StartedAt   *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
+	Status      *BulkExecutionStatus       `json:"status,omitempty" url:"status,omitempty"`
+	Type        *string                    `json:"type,omitempty" url:"type,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncExecution) UnmarshalJSON(data []byte) error {
+	type embed BulkSyncExecution
+	var unmarshaler = struct {
+		embed
+		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
+		CreatedAt   *core.DateTime `json:"created_at,omitempty"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BulkSyncExecution(unmarshaler.embed)
+	b.CompletedAt = unmarshaler.CompletedAt.TimePtr()
+	b.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	b.StartedAt = unmarshaler.StartedAt.TimePtr()
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncExecution) MarshalJSON() ([]byte, error) {
+	type embed BulkSyncExecution
+	var marshaler = struct {
+		embed
+		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
+		CreatedAt   *core.DateTime `json:"created_at,omitempty"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+	}{
+		embed:       embed(*b),
+		CompletedAt: core.NewOptionalDateTime(b.CompletedAt),
+		CreatedAt:   core.NewOptionalDateTime(b.CreatedAt),
+		StartedAt:   core.NewOptionalDateTime(b.StartedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (b *BulkSyncExecution) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncExecutionEnvelope struct {
+	Data *BulkSyncExecution `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncExecutionEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncExecutionEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncExecutionEnvelope(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncExecutionEnvelope) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncListEnvelope struct {
+	Data []*BulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncListEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncListEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncListEnvelope(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncListEnvelope) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncResponse struct {
+	Active                   *bool                  `json:"active,omitempty" url:"active,omitempty"`
+	DestinationConfiguration map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
+	DestinationConnectionId  *string                `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	Discover                 *bool                  `json:"discover,omitempty" url:"discover,omitempty"`
+	Id                       *string                `json:"id,omitempty" url:"id,omitempty"`
+	Mode                     *string                `json:"mode,omitempty" url:"mode,omitempty"`
+	Name                     *string                `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId           *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies                 []string               `json:"policies,omitempty" url:"policies,omitempty"`
+	Schedule                 *BulkSchedule          `json:"schedule,omitempty" url:"schedule,omitempty"`
+	SourceConfiguration      map[string]interface{} `json:"source_configuration,omitempty" url:"source_configuration,omitempty"`
+	SourceConnectionId       *string                `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncResponse(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncResponse) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncResponseEnvelope struct {
+	Data *BulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncResponseEnvelope(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncResponseEnvelope) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncSchemaExecution struct {
+	CompletedAt   *time.Time                 `json:"completed_at,omitempty" url:"completed_at,omitempty"`
+	ErrorCount    *int                       `json:"error_count,omitempty" url:"error_count,omitempty"`
+	RecordCount   *int                       `json:"record_count,omitempty" url:"record_count,omitempty"`
+	Schema        *string                    `json:"schema,omitempty" url:"schema,omitempty"`
+	StartedAt     *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
+	Status        *BulkSchemaExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	StatusMessage *string                    `json:"status_message,omitempty" url:"status_message,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncSchemaExecution) UnmarshalJSON(data []byte) error {
+	type embed BulkSyncSchemaExecution
+	var unmarshaler = struct {
+		embed
+		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BulkSyncSchemaExecution(unmarshaler.embed)
+	b.CompletedAt = unmarshaler.CompletedAt.TimePtr()
+	b.StartedAt = unmarshaler.StartedAt.TimePtr()
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncSchemaExecution) MarshalJSON() ([]byte, error) {
+	type embed BulkSyncSchemaExecution
+	var marshaler = struct {
+		embed
+		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+	}{
+		embed:       embed(*b),
+		CompletedAt: core.NewOptionalDateTime(b.CompletedAt),
+		StartedAt:   core.NewOptionalDateTime(b.StartedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (b *BulkSyncSchemaExecution) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncSource struct {
+	Configuration interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
+	Schemas       []*Schema   `json:"schemas,omitempty" url:"schemas,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncSource) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncSource
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncSource(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncSource) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncSourceEnvelope struct {
+	Data *BulkSyncSource `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncSourceEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncSourceEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncSourceEnvelope(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncSourceEnvelope) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncSourceSchemaEnvelope struct {
+	Data *Schema `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncSourceSchemaEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncSourceSchemaEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncSourceSchemaEnvelope(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncSourceSchemaEnvelope) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncSourceStatus struct {
+	CacheStatus         *string    `json:"cache_status,omitempty" url:"cache_status,omitempty"`
+	LastRefreshFinished *time.Time `json:"last_refresh_finished,omitempty" url:"last_refresh_finished,omitempty"`
+	LastRefreshStarted  *time.Time `json:"last_refresh_started,omitempty" url:"last_refresh_started,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncSourceStatus) UnmarshalJSON(data []byte) error {
+	type embed BulkSyncSourceStatus
+	var unmarshaler = struct {
+		embed
+		LastRefreshFinished *core.DateTime `json:"last_refresh_finished,omitempty"`
+		LastRefreshStarted  *core.DateTime `json:"last_refresh_started,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BulkSyncSourceStatus(unmarshaler.embed)
+	b.LastRefreshFinished = unmarshaler.LastRefreshFinished.TimePtr()
+	b.LastRefreshStarted = unmarshaler.LastRefreshStarted.TimePtr()
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncSourceStatus) MarshalJSON() ([]byte, error) {
+	type embed BulkSyncSourceStatus
+	var marshaler = struct {
+		embed
+		LastRefreshFinished *core.DateTime `json:"last_refresh_finished,omitempty"`
+		LastRefreshStarted  *core.DateTime `json:"last_refresh_started,omitempty"`
+	}{
+		embed:               embed(*b),
+		LastRefreshFinished: core.NewOptionalDateTime(b.LastRefreshFinished),
+		LastRefreshStarted:  core.NewOptionalDateTime(b.LastRefreshStarted),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (b *BulkSyncSourceStatus) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncSourceStatusEnvelope struct {
+	Data *BulkSyncSourceStatus `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncSourceStatusEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncSourceStatusEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncSourceStatusEnvelope(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncSourceStatusEnvelope) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncStatusEnvelope struct {
+	Data *BulkSyncStatusResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncStatusEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncStatusEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncStatusEnvelope(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncStatusEnvelope) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncStatusResponse struct {
+	CurrentExecution  *BulkSyncExecution `json:"current_execution,omitempty" url:"current_execution,omitempty"`
+	LastExecution     *BulkSyncExecution `json:"last_execution,omitempty" url:"last_execution,omitempty"`
+	NextExecutionTime *time.Time         `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncStatusResponse) UnmarshalJSON(data []byte) error {
+	type embed BulkSyncStatusResponse
+	var unmarshaler = struct {
+		embed
+		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BulkSyncStatusResponse(unmarshaler.embed)
+	b.NextExecutionTime = unmarshaler.NextExecutionTime.TimePtr()
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncStatusResponse) MarshalJSON() ([]byte, error) {
+	type embed BulkSyncStatusResponse
+	var marshaler = struct {
+		embed
+		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty"`
+	}{
+		embed:             embed(*b),
+		NextExecutionTime: core.NewOptionalDateTime(b.NextExecutionTime),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (b *BulkSyncStatusResponse) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type ConfigurationValue struct {
+	Items []interface{} `json:"items,omitempty" url:"items,omitempty"`
+	Type  *string       `json:"type,omitempty" url:"type,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ConfigurationValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConfigurationValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConfigurationValue(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConfigurationValue) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConnectCardResponse struct {
+	RedirectUrl *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
+	Token       *string `json:"token,omitempty" url:"token,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ConnectCardResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectCardResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectCardResponse(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectCardResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConnectCardResponseEnvelope struct {
+	Data *ConnectCardResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ConnectCardResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectCardResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectCardResponseEnvelope(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectCardResponseEnvelope) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConnectionListResponseEnvelope struct {
+	Data []*ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ConnectionListResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionListResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionListResponseEnvelope(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionListResponseEnvelope) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConnectionMeta struct {
+	HasItems      *bool         `json:"has_items,omitempty" url:"has_items,omitempty"`
+	Items         []interface{} `json:"items,omitempty" url:"items,omitempty"`
+	RequiresOneOf []string      `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ConnectionMeta) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionMeta
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionMeta(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionMeta) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConnectionMetaResponse struct {
+	Configuration map[string]*ConfigurationValue `json:"configuration,omitempty" url:"configuration,omitempty"`
+	Items         map[string]*ConnectionMeta     `json:"items,omitempty" url:"items,omitempty"`
+	RequiresOneOf []string                       `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ConnectionMetaResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionMetaResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionMetaResponse(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionMetaResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConnectionParameterValue struct {
+	Label *string     `json:"label,omitempty" url:"label,omitempty"`
+	Value interface{} `json:"value,omitempty" url:"value,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ConnectionParameterValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionParameterValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionParameterValue(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionParameterValue) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConnectionParameterValuesResp struct {
+	AllowsCreation *bool                       `json:"allows_creation,omitempty" url:"allows_creation,omitempty"`
+	Values         []*ConnectionParameterValue `json:"values,omitempty" url:"values,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ConnectionParameterValuesResp) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionParameterValuesResp
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionParameterValuesResp(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionParameterValuesResp) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConnectionParameterValuesResponseEnvelope struct {
+	Data map[string]*ConnectionParameterValuesResp `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ConnectionParameterValuesResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionParameterValuesResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionParameterValuesResponseEnvelope(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionParameterValuesResponseEnvelope) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConnectionResponseEnvelope struct {
+	Data *ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ConnectionResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionResponseEnvelope(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionResponseEnvelope) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConnectionResponseSchema struct {
+	Configuration  map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
+	Id             *string                `json:"id,omitempty" url:"id,omitempty"`
+	Name           *string                `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies       []string               `json:"policies,omitempty" url:"policies,omitempty"`
+	Status         *string                `json:"status,omitempty" url:"status,omitempty"`
+	StatusError    *string                `json:"status_error,omitempty" url:"status_error,omitempty"`
+	Type           *ConnectionTypeSchema  `json:"type,omitempty" url:"type,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ConnectionResponseSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionResponseSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionResponseSchema(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionResponseSchema) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConnectionType struct {
+	EnvConfig map[string]interface{} `json:"envConfig,omitempty" url:"envConfig,omitempty"`
+	Id        *string                `json:"id,omitempty" url:"id,omitempty"`
+	Name      *string                `json:"name,omitempty" url:"name,omitempty"`
+	UseOauth  *bool                  `json:"use_oauth,omitempty" url:"use_oauth,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ConnectionType) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionType
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionType(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionType) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConnectionTypeResponseEnvelope struct {
+	Data []*ConnectionType `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ConnectionTypeResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionTypeResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionTypeResponseEnvelope(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionTypeResponseEnvelope) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConnectionTypeSchema struct {
+	Id         *string  `json:"id,omitempty" url:"id,omitempty"`
+	Name       *string  `json:"name,omitempty" url:"name,omitempty"`
+	Operations []string `json:"operations,omitempty" url:"operations,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ConnectionTypeSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionTypeSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionTypeSchema(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionTypeSchema) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CreateConnectionResponseEnvelope struct {
+	Data *CreateConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *CreateConnectionResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateConnectionResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreateConnectionResponseEnvelope(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateConnectionResponseEnvelope) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CreateConnectionResponseSchema struct {
+	// Code to enter in order to complete connection authentication.
+	AuthCode *string `json:"auth_code,omitempty" url:"auth_code,omitempty"`
+	// URL to visit to complete connection authentication.
+	AuthUrl        *string                `json:"auth_url,omitempty" url:"auth_url,omitempty"`
+	Configuration  map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
+	Id             *string                `json:"id,omitempty" url:"id,omitempty"`
+	Name           *string                `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies       []string               `json:"policies,omitempty" url:"policies,omitempty"`
+	Status         *string                `json:"status,omitempty" url:"status,omitempty"`
+	StatusError    *string                `json:"status_error,omitempty" url:"status_error,omitempty"`
+	Type           *ConnectionTypeSchema  `json:"type,omitempty" url:"type,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *CreateConnectionResponseSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateConnectionResponseSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreateConnectionResponseSchema(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateConnectionResponseSchema) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type Event struct {
+	CreatedAt      *time.Time  `json:"created_at,omitempty" url:"created_at,omitempty"`
+	Event          interface{} `json:"event,omitempty" url:"event,omitempty"`
+	Id             *string     `json:"id,omitempty" url:"id,omitempty"`
+	OrganizationId *string     `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Type           *string     `json:"type,omitempty" url:"type,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (e *Event) UnmarshalJSON(data []byte) error {
+	type embed Event
+	var unmarshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+	}{
+		embed: embed(*e),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*e = Event(unmarshaler.embed)
+	e.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	e._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *Event) MarshalJSON() ([]byte, error) {
+	type embed Event
+	var marshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+	}{
+		embed:     embed(*e),
+		CreatedAt: core.NewOptionalDateTime(e.CreatedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (e *Event) String() string {
+	if len(e._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(e._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+type EventTypesEnvelope struct {
+	Data []string `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (e *EventTypesEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler EventTypesEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = EventTypesEnvelope(value)
+	e._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *EventTypesEnvelope) String() string {
+	if len(e._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(e._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+type EventsEnvelope struct {
+	Data []*Event `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (e *EventsEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler EventsEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = EventsEnvelope(value)
+	e._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *EventsEnvelope) String() string {
+	if len(e._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(e._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+type ExecutionCounts struct {
+	Error  *int `json:"error,omitempty" url:"error,omitempty"`
+	Insert *int `json:"insert,omitempty" url:"insert,omitempty"`
+	Total  *int `json:"total,omitempty" url:"total,omitempty"`
+	Update *int `json:"update,omitempty" url:"update,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (e *ExecutionCounts) UnmarshalJSON(data []byte) error {
+	type unmarshaler ExecutionCounts
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = ExecutionCounts(value)
+	e._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *ExecutionCounts) String() string {
+	if len(e._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(e._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+type ExecutionLogResponse struct {
+	Expires *time.Time `json:"expires,omitempty" url:"expires,omitempty"`
+	Urls    []string   `json:"urls,omitempty" url:"urls,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (e *ExecutionLogResponse) UnmarshalJSON(data []byte) error {
+	type embed ExecutionLogResponse
+	var unmarshaler = struct {
+		embed
+		Expires *core.DateTime `json:"expires,omitempty"`
+	}{
+		embed: embed(*e),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*e = ExecutionLogResponse(unmarshaler.embed)
+	e.Expires = unmarshaler.Expires.TimePtr()
+	e._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *ExecutionLogResponse) MarshalJSON() ([]byte, error) {
+	type embed ExecutionLogResponse
+	var marshaler = struct {
+		embed
+		Expires *core.DateTime `json:"expires,omitempty"`
+	}{
+		embed:   embed(*e),
+		Expires: core.NewOptionalDateTime(e.Expires),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (e *ExecutionLogResponse) String() string {
+	if len(e._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(e._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+type ExecutionLogsResponseEnvelope struct {
+	Data *ExecutionLogResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (e *ExecutionLogsResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ExecutionLogsResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = ExecutionLogsResponseEnvelope(value)
+	e._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *ExecutionLogsResponseEnvelope) String() string {
+	if len(e._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(e._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
 type ExecutionStatus string
 
 const (
@@ -261,7 +1795,1228 @@ func (e ExecutionStatus) Ptr() *ExecutionStatus {
 	return &e
 }
 
+type Filter struct {
+	FieldId   string      `json:"field_id" url:"field_id"`
+	FieldType string      `json:"field_type" url:"field_type"`
+	Function  string      `json:"function" url:"function"`
+	Label     *string     `json:"label,omitempty" url:"label,omitempty"`
+	Value     interface{} `json:"value,omitempty" url:"value,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (f *Filter) UnmarshalJSON(data []byte) error {
+	type unmarshaler Filter
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*f = Filter(value)
+	f._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (f *Filter) String() string {
+	if len(f._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(f._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(f); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", f)
+}
+
+type GetConnectionMetaEnvelope struct {
+	Data *ConnectionMetaResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GetConnectionMetaEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetConnectionMetaEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetConnectionMetaEnvelope(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetConnectionMetaEnvelope) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GetExecutionResponseEnvelope struct {
+	Data *GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GetExecutionResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetExecutionResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetExecutionResponseEnvelope(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetExecutionResponseEnvelope) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GetExecutionResponseSchema struct {
+	CompletedAt *time.Time       `json:"completed_at,omitempty" url:"completed_at,omitempty"`
+	Counts      *ExecutionCounts `json:"counts,omitempty" url:"counts,omitempty"`
+	CreatedAt   *time.Time       `json:"created_at,omitempty" url:"created_at,omitempty"`
+	Errors      []string         `json:"errors,omitempty" url:"errors,omitempty"`
+	Id          *string          `json:"id,omitempty" url:"id,omitempty"`
+	StartedAt   *time.Time       `json:"started_at,omitempty" url:"started_at,omitempty"`
+	Status      *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	Type        *string          `json:"type,omitempty" url:"type,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GetExecutionResponseSchema) UnmarshalJSON(data []byte) error {
+	type embed GetExecutionResponseSchema
+	var unmarshaler = struct {
+		embed
+		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
+		CreatedAt   *core.DateTime `json:"created_at,omitempty"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+	}{
+		embed: embed(*g),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*g = GetExecutionResponseSchema(unmarshaler.embed)
+	g.CompletedAt = unmarshaler.CompletedAt.TimePtr()
+	g.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	g.StartedAt = unmarshaler.StartedAt.TimePtr()
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetExecutionResponseSchema) MarshalJSON() ([]byte, error) {
+	type embed GetExecutionResponseSchema
+	var marshaler = struct {
+		embed
+		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
+		CreatedAt   *core.DateTime `json:"created_at,omitempty"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+	}{
+		embed:       embed(*g),
+		CompletedAt: core.NewOptionalDateTime(g.CompletedAt),
+		CreatedAt:   core.NewOptionalDateTime(g.CreatedAt),
+		StartedAt:   core.NewOptionalDateTime(g.StartedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (g *GetExecutionResponseSchema) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GetIdentityResponseEnvelope struct {
+	Data *GetIdentityResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GetIdentityResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetIdentityResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetIdentityResponseEnvelope(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetIdentityResponseEnvelope) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GetIdentityResponseSchema struct {
+	Email            *string `json:"email,omitempty" url:"email,omitempty"`
+	Id               *string `json:"id,omitempty" url:"id,omitempty"`
+	IsOrganization   *bool   `json:"is_organization,omitempty" url:"is_organization,omitempty"`
+	IsPartner        *bool   `json:"is_partner,omitempty" url:"is_partner,omitempty"`
+	IsSystem         *bool   `json:"is_system,omitempty" url:"is_system,omitempty"`
+	IsUser           *bool   `json:"is_user,omitempty" url:"is_user,omitempty"`
+	OrganizationId   *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationName *string `json:"organization_name,omitempty" url:"organization_name,omitempty"`
+	Role             *string `json:"role,omitempty" url:"role,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GetIdentityResponseSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetIdentityResponseSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetIdentityResponseSchema(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetIdentityResponseSchema) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type Identity struct {
+	Function          string  `json:"function" url:"function"`
+	NewField          *bool   `json:"new_field,omitempty" url:"new_field,omitempty"`
+	RemoteFieldTypeId *string `json:"remote_field_type_id,omitempty" url:"remote_field_type_id,omitempty"`
+	Source            *Source `json:"source,omitempty" url:"source,omitempty"`
+	Target            string  `json:"target" url:"target"`
+
+	_rawJSON json.RawMessage
+}
+
+func (i *Identity) UnmarshalJSON(data []byte) error {
+	type unmarshaler Identity
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = Identity(value)
+	i._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *Identity) String() string {
+	if len(i._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(i._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+type IdentityFunction struct {
+	Id    *string `json:"id,omitempty" url:"id,omitempty"`
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (i *IdentityFunction) UnmarshalJSON(data []byte) error {
+	type unmarshaler IdentityFunction
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = IdentityFunction(value)
+	i._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *IdentityFunction) String() string {
+	if len(i._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(i._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+type JobResponse struct {
+	Error  *string         `json:"error,omitempty" url:"error,omitempty"`
+	JobId  *string         `json:"job_id,omitempty" url:"job_id,omitempty"`
+	Result interface{}     `json:"result,omitempty" url:"result,omitempty"`
+	Status *WorkTaskStatus `json:"status,omitempty" url:"status,omitempty"`
+	Type   *string         `json:"type,omitempty" url:"type,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (j *JobResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler JobResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*j = JobResponse(value)
+	j._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (j *JobResponse) String() string {
+	if len(j._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(j._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(j); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", j)
+}
+
+type JobResponseEnvelope struct {
+	Data *JobResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (j *JobResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler JobResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*j = JobResponseEnvelope(value)
+	j._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (j *JobResponseEnvelope) String() string {
+	if len(j._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(j._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(j); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", j)
+}
+
+type JsonschemaForm = map[string]interface{}
+
 type LabelLabel = map[string]interface{}
+
+type ListBulkSchema struct {
+	Data []*BulkSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (l *ListBulkSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListBulkSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListBulkSchema(value)
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListBulkSchema) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type ListBulkSyncExecutionsEnvelope struct {
+	Data []*BulkSyncExecution `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (l *ListBulkSyncExecutionsEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListBulkSyncExecutionsEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListBulkSyncExecutionsEnvelope(value)
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListBulkSyncExecutionsEnvelope) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type ListExecutionResponseEnvelope struct {
+	Data []*GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (l *ListExecutionResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListExecutionResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListExecutionResponseEnvelope(value)
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListExecutionResponseEnvelope) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type ListModelSyncResponseEnvelope struct {
+	Data []*ModelSyncResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (l *ListModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListModelSyncResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListModelSyncResponseEnvelope(value)
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListModelSyncResponseEnvelope) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type ListPoliciesResponseEnvelope struct {
+	Data []*PolicyResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (l *ListPoliciesResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListPoliciesResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListPoliciesResponseEnvelope(value)
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListPoliciesResponseEnvelope) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type ListUsersEnvelope struct {
+	Data []*User `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (l *ListUsersEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListUsersEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListUsersEnvelope(value)
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListUsersEnvelope) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type Mode struct {
+	Description           *string `json:"description,omitempty" url:"description,omitempty"`
+	Label                 *string `json:"label,omitempty" url:"label,omitempty"`
+	Mode                  *string `json:"mode,omitempty" url:"mode,omitempty"`
+	RequiresIdentity      *bool   `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
+	SupportsFieldSyncMode *bool   `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
+	SupportsTargetFilters *bool   `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *Mode) UnmarshalJSON(data []byte) error {
+	type unmarshaler Mode
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = Mode(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *Mode) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type ModelField struct {
+	Description *string     `json:"description,omitempty" url:"description,omitempty"`
+	Example     interface{} `json:"example,omitempty" url:"example,omitempty"`
+	Label       *string     `json:"label,omitempty" url:"label,omitempty"`
+	Name        *string     `json:"name,omitempty" url:"name,omitempty"`
+	RemoteType  *string     `json:"remote_type,omitempty" url:"remote_type,omitempty"`
+	Type        *string     `json:"type,omitempty" url:"type,omitempty"`
+	Unique      *bool       `json:"unique,omitempty" url:"unique,omitempty"`
+	UserAdded   *bool       `json:"user_added,omitempty" url:"user_added,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *ModelField) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelField
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelField(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelField) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type ModelFieldResponse struct {
+	Data []*ModelField `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *ModelFieldResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelFieldResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelFieldResponse(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelFieldResponse) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type ModelListResponseEnvelope struct {
+	Data []*ModelResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *ModelListResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelListResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelListResponseEnvelope(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelListResponseEnvelope) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type ModelModelFieldRequest struct {
+	Example *string `json:"example,omitempty" url:"example,omitempty"`
+	Label   string  `json:"label" url:"label"`
+	Name    string  `json:"name" url:"name"`
+	Type    string  `json:"type" url:"type"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *ModelModelFieldRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelModelFieldRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelModelFieldRequest(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelModelFieldRequest) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type ModelRelation struct {
+	From *string          `json:"from,omitempty" url:"from,omitempty"`
+	To   *ModelRelationTo `json:"to,omitempty" url:"to,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *ModelRelation) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelRelation
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelRelation(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelRelation) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type ModelRelationTo struct {
+	Field   *string `json:"field,omitempty" url:"field,omitempty"`
+	ModelId *string `json:"model_id,omitempty" url:"model_id,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *ModelRelationTo) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelRelationTo
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelRelationTo(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelRelationTo) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type ModelResponse struct {
+	Configuration   map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
+	ConnectionId    *string                `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	Fields          []*ModelField          `json:"fields,omitempty" url:"fields,omitempty"`
+	Id              *string                `json:"id,omitempty" url:"id,omitempty"`
+	Identifier      *string                `json:"identifier,omitempty" url:"identifier,omitempty"`
+	Labels          []LabelLabel           `json:"labels,omitempty" url:"labels,omitempty"`
+	Name            *string                `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId  *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies        []string               `json:"policies,omitempty" url:"policies,omitempty"`
+	Relations       []*Relation            `json:"relations,omitempty" url:"relations,omitempty"`
+	TrackingColumns []string               `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
+	Type            *string                `json:"type,omitempty" url:"type,omitempty"`
+	Version         *int                   `json:"version,omitempty" url:"version,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *ModelResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelResponse(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelResponse) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type ModelResponseEnvelope struct {
+	Data *ModelResponse `json:"data,omitempty" url:"data,omitempty"`
+	Job  *JobResponse   `json:"job,omitempty" url:"job,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *ModelResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelResponseEnvelope(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelResponseEnvelope) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type ModelSyncField struct {
+	New           *bool   `json:"new,omitempty" url:"new,omitempty"`
+	OverrideValue *string `json:"override_value,omitempty" url:"override_value,omitempty"`
+	Source        *Source `json:"source,omitempty" url:"source,omitempty"`
+	SyncMode      *string `json:"sync_mode,omitempty" url:"sync_mode,omitempty"`
+	Target        string  `json:"target" url:"target"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *ModelSyncField) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelSyncField
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelSyncField(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelSyncField) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type ModelSyncResponse struct {
+	Active         *bool             `json:"active,omitempty" url:"active,omitempty"`
+	Fields         []*ModelSyncField `json:"fields,omitempty" url:"fields,omitempty"`
+	FilterLogic    *string           `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
+	Filters        []*Filter         `json:"filters,omitempty" url:"filters,omitempty"`
+	Id             *string           `json:"id,omitempty" url:"id,omitempty"`
+	Identity       *Identity         `json:"identity,omitempty" url:"identity,omitempty"`
+	Mode           *string           `json:"mode,omitempty" url:"mode,omitempty"`
+	Name           *string           `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId *string           `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
+	Overrides      []*Override       `json:"overrides,omitempty" url:"overrides,omitempty"`
+	Policies       []string          `json:"policies,omitempty" url:"policies,omitempty"`
+	Schedule       *Schedule         `json:"schedule,omitempty" url:"schedule,omitempty"`
+	SyncAllRecords *bool             `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
+	Target         *Target           `json:"target,omitempty" url:"target,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *ModelSyncResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelSyncResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelSyncResponse(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelSyncResponse) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type ModelSyncResponseEnvelope struct {
+	Data *ModelSyncResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *ModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelSyncResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelSyncResponseEnvelope(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelSyncResponseEnvelope) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type Organization struct {
+	Id        *string `json:"id,omitempty" url:"id,omitempty"`
+	Issuer    *string `json:"issuer,omitempty" url:"issuer,omitempty"`
+	Name      *string `json:"name,omitempty" url:"name,omitempty"`
+	SsoDomain *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
+	SsoOrgId  *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (o *Organization) UnmarshalJSON(data []byte) error {
+	type unmarshaler Organization
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*o = Organization(value)
+	o._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (o *Organization) String() string {
+	if len(o._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(o._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(o); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", o)
+}
+
+type OrganizationEnvelope struct {
+	Data *Organization `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (o *OrganizationEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler OrganizationEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*o = OrganizationEnvelope(value)
+	o._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (o *OrganizationEnvelope) String() string {
+	if len(o._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(o._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(o); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", o)
+}
+
+type OrganizationsEnvelope struct {
+	Data []*Organization `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (o *OrganizationsEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler OrganizationsEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*o = OrganizationsEnvelope(value)
+	o._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (o *OrganizationsEnvelope) String() string {
+	if len(o._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(o._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(o); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", o)
+}
+
+type Override struct {
+	FieldId  *string     `json:"field_id,omitempty" url:"field_id,omitempty"`
+	Function *string     `json:"function,omitempty" url:"function,omitempty"`
+	Override interface{} `json:"override,omitempty" url:"override,omitempty"`
+	Value    interface{} `json:"value,omitempty" url:"value,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (o *Override) UnmarshalJSON(data []byte) error {
+	type unmarshaler Override
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*o = Override(value)
+	o._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (o *Override) String() string {
+	if len(o._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(o._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(o); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", o)
+}
+
+type PickValue struct {
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	Value *string `json:"value,omitempty" url:"value,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *PickValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler PickValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PickValue(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PickValue) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PolicyAction struct {
+	Action  string   `json:"action" url:"action"`
+	RoleIds []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *PolicyAction) UnmarshalJSON(data []byte) error {
+	type unmarshaler PolicyAction
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PolicyAction(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PolicyAction) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PolicyResponse struct {
+	Id             *string         `json:"id,omitempty" url:"id,omitempty"`
+	Name           *string         `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId *string         `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	PolicyActions  []*PolicyAction `json:"policy_actions,omitempty" url:"policy_actions,omitempty"`
+	System         *bool           `json:"system,omitempty" url:"system,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *PolicyResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler PolicyResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PolicyResponse(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PolicyResponse) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PolicyResponseEnvelope struct {
+	Data *PolicyResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *PolicyResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler PolicyResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PolicyResponseEnvelope(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PolicyResponseEnvelope) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type Relation struct {
+	From *string     `json:"from,omitempty" url:"from,omitempty"`
+	To   *RelationTo `json:"to,omitempty" url:"to,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (r *Relation) UnmarshalJSON(data []byte) error {
+	type unmarshaler Relation
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = Relation(value)
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *Relation) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+type RelationTo struct {
+	Field   *string `json:"field,omitempty" url:"field,omitempty"`
+	ModelId *string `json:"model_id,omitempty" url:"model_id,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (r *RelationTo) UnmarshalJSON(data []byte) error {
+	type unmarshaler RelationTo
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RelationTo(value)
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RelationTo) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
 
 type RestErrResponse struct {
 	// Application-specific error code.
@@ -299,6 +3054,330 @@ func (r *RestErrResponse) String() string {
 	return fmt.Sprintf("%#v", r)
 }
 
+type RoleListResponseEnvelope struct {
+	Data []*RoleResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (r *RoleListResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler RoleListResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RoleListResponseEnvelope(value)
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RoleListResponseEnvelope) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+type RoleResponse struct {
+	Id             *string `json:"id,omitempty" url:"id,omitempty"`
+	Name           *string `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	System         *bool   `json:"system,omitempty" url:"system,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (r *RoleResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler RoleResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RoleResponse(value)
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RoleResponse) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+type RoleResponseEnvelope struct {
+	Data *RoleResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (r *RoleResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler RoleResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RoleResponseEnvelope(value)
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RoleResponseEnvelope) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+type RunAfter struct {
+	BulkSyncIds []string `json:"bulk_sync_ids,omitempty" url:"bulk_sync_ids,omitempty"`
+	SyncIds     []string `json:"sync_ids,omitempty" url:"sync_ids,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (r *RunAfter) UnmarshalJSON(data []byte) error {
+	type unmarshaler RunAfter
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RunAfter(value)
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RunAfter) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+type Schedule struct {
+	ConnectionId *string   `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	DayOfMonth   *string   `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
+	DayOfWeek    *string   `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
+	Frequency    *string   `json:"frequency,omitempty" url:"frequency,omitempty"`
+	Hour         *string   `json:"hour,omitempty" url:"hour,omitempty"`
+	JobId        *int      `json:"job_id,omitempty" url:"job_id,omitempty"`
+	Minute       *string   `json:"minute,omitempty" url:"minute,omitempty"`
+	Month        *string   `json:"month,omitempty" url:"month,omitempty"`
+	RunAfter     *RunAfter `json:"run_after,omitempty" url:"run_after,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *Schedule) UnmarshalJSON(data []byte) error {
+	type unmarshaler Schedule
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = Schedule(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *Schedule) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type ScheduleFrequency string
+
+const (
+	ScheduleFrequencyManual     ScheduleFrequency = "manual"
+	ScheduleFrequencyContinuous ScheduleFrequency = "continuous"
+	ScheduleFrequencyHourly     ScheduleFrequency = "hourly"
+	ScheduleFrequencyDaily      ScheduleFrequency = "daily"
+	ScheduleFrequencyWeekly     ScheduleFrequency = "weekly"
+	ScheduleFrequencyCustom     ScheduleFrequency = "custom"
+	ScheduleFrequencyBuilder    ScheduleFrequency = "builder"
+	ScheduleFrequencyRunafter   ScheduleFrequency = "runafter"
+	ScheduleFrequencyMulti      ScheduleFrequency = "multi"
+	ScheduleFrequencyDbtcloud   ScheduleFrequency = "dbtcloud"
+)
+
+func NewScheduleFrequencyFromString(s string) (ScheduleFrequency, error) {
+	switch s {
+	case "manual":
+		return ScheduleFrequencyManual, nil
+	case "continuous":
+		return ScheduleFrequencyContinuous, nil
+	case "hourly":
+		return ScheduleFrequencyHourly, nil
+	case "daily":
+		return ScheduleFrequencyDaily, nil
+	case "weekly":
+		return ScheduleFrequencyWeekly, nil
+	case "custom":
+		return ScheduleFrequencyCustom, nil
+	case "builder":
+		return ScheduleFrequencyBuilder, nil
+	case "runafter":
+		return ScheduleFrequencyRunafter, nil
+	case "multi":
+		return ScheduleFrequencyMulti, nil
+	case "dbtcloud":
+		return ScheduleFrequencyDbtcloud, nil
+	}
+	var t ScheduleFrequency
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s ScheduleFrequency) Ptr() *ScheduleFrequency {
+	return &s
+}
+
+type ScheduleOptionResponse struct {
+	ScheduleOptions []*ScheduleScheduleOption `json:"schedule_options,omitempty" url:"schedule_options,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *ScheduleOptionResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ScheduleOptionResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = ScheduleOptionResponse(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *ScheduleOptionResponse) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type ScheduleOptionResponseEnvelope struct {
+	Data *ScheduleOptionResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *ScheduleOptionResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ScheduleOptionResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = ScheduleOptionResponseEnvelope(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *ScheduleOptionResponseEnvelope) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type ScheduleScheduleOption struct {
+	Configuration *JsonschemaForm    `json:"configuration,omitempty" url:"configuration,omitempty"`
+	Description   *string            `json:"description,omitempty" url:"description,omitempty"`
+	Frequency     *ScheduleFrequency `json:"frequency,omitempty" url:"frequency,omitempty"`
+	Label         *string            `json:"label,omitempty" url:"label,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *ScheduleScheduleOption) UnmarshalJSON(data []byte) error {
+	type unmarshaler ScheduleScheduleOption
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = ScheduleScheduleOption(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *ScheduleScheduleOption) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type Schema struct {
+	Fields []*SchemaField `json:"fields,omitempty" url:"fields,omitempty"`
+	Id     *string        `json:"id,omitempty" url:"id,omitempty"`
+	Name   *string        `json:"name,omitempty" url:"name,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *Schema) UnmarshalJSON(data []byte) error {
+	type unmarshaler Schema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = Schema(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *Schema) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
 type SchemaAssociation struct {
 	Id              *string  `json:"id,omitempty" url:"id,omitempty"`
 	Name            *string  `json:"name,omitempty" url:"name,omitempty"`
@@ -320,6 +3399,211 @@ func (s *SchemaAssociation) UnmarshalJSON(data []byte) error {
 }
 
 func (s *SchemaAssociation) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SchemaField struct {
+	Association *SchemaAssociation `json:"association,omitempty" url:"association,omitempty"`
+	Id          *string            `json:"id,omitempty" url:"id,omitempty"`
+	Name        *string            `json:"name,omitempty" url:"name,omitempty"`
+	RemoteType  *string            `json:"remote_type,omitempty" url:"remote_type,omitempty"`
+	Type        *string            `json:"type,omitempty" url:"type,omitempty"`
+	Values      []*PickValue       `json:"values,omitempty" url:"values,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SchemaField) UnmarshalJSON(data []byte) error {
+	type unmarshaler SchemaField
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SchemaField(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SchemaField) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SchemaRecordsResponseEnvelope struct {
+	Data []map[string]interface{} `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SchemaRecordsResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler SchemaRecordsResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SchemaRecordsResponseEnvelope(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SchemaRecordsResponseEnvelope) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type Source struct {
+	Field   string `json:"field" url:"field"`
+	ModelId string `json:"model_id" url:"model_id"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *Source) UnmarshalJSON(data []byte) error {
+	type unmarshaler Source
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = Source(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *Source) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type StartModelSyncResponseEnvelope struct {
+	Data *StartModelSyncResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *StartModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler StartModelSyncResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = StartModelSyncResponseEnvelope(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *StartModelSyncResponseEnvelope) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type StartModelSyncResponseSchema struct {
+	CreatedAt *time.Time       `json:"created_at,omitempty" url:"created_at,omitempty"`
+	Id        *string          `json:"id,omitempty" url:"id,omitempty"`
+	Status    *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *StartModelSyncResponseSchema) UnmarshalJSON(data []byte) error {
+	type embed StartModelSyncResponseSchema
+	var unmarshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+	}{
+		embed: embed(*s),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*s = StartModelSyncResponseSchema(unmarshaler.embed)
+	s.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *StartModelSyncResponseSchema) MarshalJSON() ([]byte, error) {
+	type embed StartModelSyncResponseSchema
+	var marshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+	}{
+		embed:     embed(*s),
+		CreatedAt: core.NewOptionalDateTime(s.CreatedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (s *StartModelSyncResponseSchema) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SupportedMode struct {
+	Description           *string `json:"description,omitempty" url:"description,omitempty"`
+	Id                    *string `json:"id,omitempty" url:"id,omitempty"`
+	Label                 *string `json:"label,omitempty" url:"label,omitempty"`
+	RequiresIdentity      *bool   `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
+	SupportsFieldSyncMode *bool   `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
+	SupportsTargetFilters *bool   `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SupportedMode) UnmarshalJSON(data []byte) error {
+	type unmarshaler SupportedMode
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SupportedMode(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SupportedMode) String() string {
 	if len(s._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
 			return value
@@ -369,2269 +3653,85 @@ func (s *SyncDestinationProperties) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
-type V2ActivateSyncEnvelope struct {
-	Data *V2ActivateSyncOutput `json:"data,omitempty" url:"data,omitempty"`
+type SyncStatusEnvelope struct {
+	Data *SyncStatusResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (v *V2ActivateSyncEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ActivateSyncEnvelope
+func (s *SyncStatusEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler SyncStatusEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = V2ActivateSyncEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
+	*s = SyncStatusEnvelope(value)
+	s._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2ActivateSyncEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+func (s *SyncStatusEnvelope) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(v); err == nil {
+	if value, err := core.StringifyJSON(s); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", s)
 }
 
-type V2ActivateSyncInput struct {
-	Active bool `json:"active" url:"active"`
+type SyncStatusResponse struct {
+	CurrentExecution  *GetExecutionResponseSchema `json:"current_execution,omitempty" url:"current_execution,omitempty"`
+	LastExecution     *GetExecutionResponseSchema `json:"last_execution,omitempty" url:"last_execution,omitempty"`
+	NextExecutionTime *time.Time                  `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (v *V2ActivateSyncInput) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ActivateSyncInput
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ActivateSyncInput(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ActivateSyncInput) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ActivateSyncOutput struct {
-	Active *bool   `json:"active,omitempty" url:"active,omitempty"`
-	Id     *string `json:"id,omitempty" url:"id,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ActivateSyncOutput) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ActivateSyncOutput
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ActivateSyncOutput(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ActivateSyncOutput) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ApiKeyResponse struct {
-	Value *string `json:"value,omitempty" url:"value,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ApiKeyResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ApiKeyResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ApiKeyResponse(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ApiKeyResponse) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ApiKeyResponseEnvelope struct {
-	Data *V2ApiKeyResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ApiKeyResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ApiKeyResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ApiKeyResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ApiKeyResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2BulkSyncDest struct {
-	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Modes         []*V2SupportedMode     `json:"modes,omitempty" url:"modes,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2BulkSyncDest) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2BulkSyncDest
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2BulkSyncDest(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2BulkSyncDest) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2BulkSyncDestEnvelope struct {
-	Data *V2BulkSyncDest `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2BulkSyncDestEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2BulkSyncDestEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2BulkSyncDestEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2BulkSyncDestEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2BulkSyncListEnvelope struct {
-	Data []*V2BulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2BulkSyncListEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2BulkSyncListEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2BulkSyncListEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2BulkSyncListEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2BulkSyncResponse struct {
-	Active                   *bool                  `json:"active,omitempty" url:"active,omitempty"`
-	DestinationConfiguration map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
-	DestinationConnectionId  *string                `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
-	Discover                 *bool                  `json:"discover,omitempty" url:"discover,omitempty"`
-	Id                       *string                `json:"id,omitempty" url:"id,omitempty"`
-	Mode                     *string                `json:"mode,omitempty" url:"mode,omitempty"`
-	Name                     *string                `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId           *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies                 []string               `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule                 *BulkSchedule          `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SourceConfiguration      map[string]interface{} `json:"source_configuration,omitempty" url:"source_configuration,omitempty"`
-	SourceConnectionId       *string                `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2BulkSyncResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2BulkSyncResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2BulkSyncResponse(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2BulkSyncResponse) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2BulkSyncResponseEnvelope struct {
-	Data *V2BulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2BulkSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2BulkSyncResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2BulkSyncResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2BulkSyncResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ConfigurationValue struct {
-	Items []interface{} `json:"items,omitempty" url:"items,omitempty"`
-	Type  *string       `json:"type,omitempty" url:"type,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ConfigurationValue) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ConfigurationValue
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ConfigurationValue(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ConfigurationValue) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ConnectionListResponseEnvelope struct {
-	Data []*V2ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ConnectionListResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ConnectionListResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ConnectionListResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ConnectionListResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ConnectionMeta struct {
-	HasItems      *bool         `json:"has_items,omitempty" url:"has_items,omitempty"`
-	Items         []interface{} `json:"items,omitempty" url:"items,omitempty"`
-	RequiresOneOf []string      `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ConnectionMeta) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ConnectionMeta
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ConnectionMeta(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ConnectionMeta) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ConnectionMetaResponse struct {
-	Configuration map[string]*V2ConfigurationValue `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Items         map[string]*V2ConnectionMeta     `json:"items,omitempty" url:"items,omitempty"`
-	RequiresOneOf []string                         `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ConnectionMetaResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ConnectionMetaResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ConnectionMetaResponse(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ConnectionMetaResponse) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ConnectionParameterValue struct {
-	Label *string     `json:"label,omitempty" url:"label,omitempty"`
-	Value interface{} `json:"value,omitempty" url:"value,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ConnectionParameterValue) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ConnectionParameterValue
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ConnectionParameterValue(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ConnectionParameterValue) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ConnectionParameterValuesResp struct {
-	AllowsCreation *bool                         `json:"allows_creation,omitempty" url:"allows_creation,omitempty"`
-	Values         []*V2ConnectionParameterValue `json:"values,omitempty" url:"values,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ConnectionParameterValuesResp) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ConnectionParameterValuesResp
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ConnectionParameterValuesResp(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ConnectionParameterValuesResp) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ConnectionParameterValuesResponseEnvelope struct {
-	Data map[string]*V2ConnectionParameterValuesResp `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ConnectionParameterValuesResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ConnectionParameterValuesResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ConnectionParameterValuesResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ConnectionParameterValuesResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ConnectionResponseEnvelope struct {
-	Data *V2ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ConnectionResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ConnectionResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ConnectionResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ConnectionResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ConnectionResponseSchema struct {
-	Configuration  map[string]interface{}  `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Id             *string                 `json:"id,omitempty" url:"id,omitempty"`
-	Name           *string                 `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId *string                 `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies       []string                `json:"policies,omitempty" url:"policies,omitempty"`
-	Status         *string                 `json:"status,omitempty" url:"status,omitempty"`
-	StatusError    *string                 `json:"status_error,omitempty" url:"status_error,omitempty"`
-	Type           *V2ConnectionTypeSchema `json:"type,omitempty" url:"type,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ConnectionResponseSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ConnectionResponseSchema
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ConnectionResponseSchema(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ConnectionResponseSchema) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ConnectionType struct {
-	EnvConfig map[string]interface{} `json:"envConfig,omitempty" url:"envConfig,omitempty"`
-	Id        *string                `json:"id,omitempty" url:"id,omitempty"`
-	Name      *string                `json:"name,omitempty" url:"name,omitempty"`
-	UseOauth  *bool                  `json:"use_oauth,omitempty" url:"use_oauth,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ConnectionType) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ConnectionType
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ConnectionType(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ConnectionType) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ConnectionTypeResponseEnvelope struct {
-	Data []*V2ConnectionType `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ConnectionTypeResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ConnectionTypeResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ConnectionTypeResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ConnectionTypeResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ConnectionTypeSchema struct {
-	Id   *string `json:"id,omitempty" url:"id,omitempty"`
-	Name *string `json:"name,omitempty" url:"name,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ConnectionTypeSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ConnectionTypeSchema
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ConnectionTypeSchema(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ConnectionTypeSchema) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2CreateConnectionResponseEnvelope struct {
-	Data *V2CreateConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2CreateConnectionResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2CreateConnectionResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2CreateConnectionResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2CreateConnectionResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2CreateConnectionResponseSchema struct {
-	// Code to enter in order to complete connection authentication.
-	AuthCode *string `json:"auth_code,omitempty" url:"auth_code,omitempty"`
-	// URL to visit to complete connection authentication.
-	AuthUrl        *string                 `json:"auth_url,omitempty" url:"auth_url,omitempty"`
-	Configuration  map[string]interface{}  `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Id             *string                 `json:"id,omitempty" url:"id,omitempty"`
-	Name           *string                 `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId *string                 `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies       []string                `json:"policies,omitempty" url:"policies,omitempty"`
-	Status         *string                 `json:"status,omitempty" url:"status,omitempty"`
-	StatusError    *string                 `json:"status_error,omitempty" url:"status_error,omitempty"`
-	Type           *V2ConnectionTypeSchema `json:"type,omitempty" url:"type,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2CreateConnectionResponseSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2CreateConnectionResponseSchema
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2CreateConnectionResponseSchema(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2CreateConnectionResponseSchema) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2Event struct {
-	CreatedAt      *time.Time  `json:"created_at,omitempty" url:"created_at,omitempty"`
-	Event          interface{} `json:"event,omitempty" url:"event,omitempty"`
-	Id             *string     `json:"id,omitempty" url:"id,omitempty"`
-	OrganizationId *string     `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Type           *string     `json:"type,omitempty" url:"type,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2Event) UnmarshalJSON(data []byte) error {
-	type embed V2Event
-	var unmarshaler = struct {
-		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*v = V2Event(unmarshaler.embed)
-	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2Event) MarshalJSON() ([]byte, error) {
-	type embed V2Event
-	var marshaler = struct {
-		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
-	}{
-		embed:     embed(*v),
-		CreatedAt: core.NewOptionalDateTime(v.CreatedAt),
-	}
-	return json.Marshal(marshaler)
-}
-
-func (v *V2Event) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2EventTypesEnvelope struct {
-	Data []string `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2EventTypesEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2EventTypesEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2EventTypesEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2EventTypesEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2EventsEnvelope struct {
-	Data []*V2Event `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2EventsEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2EventsEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2EventsEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2EventsEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ExecutionCounts struct {
-	Error  *int `json:"error,omitempty" url:"error,omitempty"`
-	Insert *int `json:"insert,omitempty" url:"insert,omitempty"`
-	Total  *int `json:"total,omitempty" url:"total,omitempty"`
-	Update *int `json:"update,omitempty" url:"update,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ExecutionCounts) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ExecutionCounts
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ExecutionCounts(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ExecutionCounts) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2Filter struct {
-	FieldId   string      `json:"field_id" url:"field_id"`
-	FieldType string      `json:"field_type" url:"field_type"`
-	Function  string      `json:"function" url:"function"`
-	Label     *string     `json:"label,omitempty" url:"label,omitempty"`
-	Value     interface{} `json:"value,omitempty" url:"value,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2Filter) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2Filter
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2Filter(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2Filter) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2GetConnectionMetaEnvelope struct {
-	Data *V2ConnectionMetaResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2GetConnectionMetaEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2GetConnectionMetaEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2GetConnectionMetaEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2GetConnectionMetaEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2GetExecutionResponseEnvelope struct {
-	Data *V2GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2GetExecutionResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2GetExecutionResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2GetExecutionResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2GetExecutionResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2GetExecutionResponseSchema struct {
-	CompletedAt *time.Time         `json:"completed_at,omitempty" url:"completed_at,omitempty"`
-	Counts      *V2ExecutionCounts `json:"counts,omitempty" url:"counts,omitempty"`
-	CreatedAt   *time.Time         `json:"created_at,omitempty" url:"created_at,omitempty"`
-	Errors      []string           `json:"errors,omitempty" url:"errors,omitempty"`
-	Id          *string            `json:"id,omitempty" url:"id,omitempty"`
-	StartedAt   *time.Time         `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status      *ExecutionStatus   `json:"status,omitempty" url:"status,omitempty"`
-	Type        *string            `json:"type,omitempty" url:"type,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2GetExecutionResponseSchema) UnmarshalJSON(data []byte) error {
-	type embed V2GetExecutionResponseSchema
-	var unmarshaler = struct {
-		embed
-		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
-		CreatedAt   *core.DateTime `json:"created_at,omitempty"`
-		StartedAt   *core.DateTime `json:"started_at,omitempty"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*v = V2GetExecutionResponseSchema(unmarshaler.embed)
-	v.CompletedAt = unmarshaler.CompletedAt.TimePtr()
-	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	v.StartedAt = unmarshaler.StartedAt.TimePtr()
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2GetExecutionResponseSchema) MarshalJSON() ([]byte, error) {
-	type embed V2GetExecutionResponseSchema
-	var marshaler = struct {
-		embed
-		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
-		CreatedAt   *core.DateTime `json:"created_at,omitempty"`
-		StartedAt   *core.DateTime `json:"started_at,omitempty"`
-	}{
-		embed:       embed(*v),
-		CompletedAt: core.NewOptionalDateTime(v.CompletedAt),
-		CreatedAt:   core.NewOptionalDateTime(v.CreatedAt),
-		StartedAt:   core.NewOptionalDateTime(v.StartedAt),
-	}
-	return json.Marshal(marshaler)
-}
-
-func (v *V2GetExecutionResponseSchema) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2GetIdentityResponseEnvelope struct {
-	Data *V2GetIdentityResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2GetIdentityResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2GetIdentityResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2GetIdentityResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2GetIdentityResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2GetIdentityResponseSchema struct {
-	Email            *string `json:"email,omitempty" url:"email,omitempty"`
-	Id               *string `json:"id,omitempty" url:"id,omitempty"`
-	IsOrganization   *bool   `json:"is_organization,omitempty" url:"is_organization,omitempty"`
-	IsPartner        *bool   `json:"is_partner,omitempty" url:"is_partner,omitempty"`
-	IsSystem         *bool   `json:"is_system,omitempty" url:"is_system,omitempty"`
-	IsUser           *bool   `json:"is_user,omitempty" url:"is_user,omitempty"`
-	OrganizationId   *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	OrganizationName *string `json:"organization_name,omitempty" url:"organization_name,omitempty"`
-	Role             *string `json:"role,omitempty" url:"role,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2GetIdentityResponseSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2GetIdentityResponseSchema
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2GetIdentityResponseSchema(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2GetIdentityResponseSchema) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2Identity struct {
-	Function          string    `json:"function" url:"function"`
-	NewField          *bool     `json:"new_field,omitempty" url:"new_field,omitempty"`
-	RemoteFieldTypeId *string   `json:"remote_field_type_id,omitempty" url:"remote_field_type_id,omitempty"`
-	Source            *V2Source `json:"source,omitempty" url:"source,omitempty"`
-	Target            string    `json:"target" url:"target"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2Identity) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2Identity
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2Identity(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2Identity) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2IdentityFunction struct {
-	Id    *string `json:"id,omitempty" url:"id,omitempty"`
-	Label *string `json:"label,omitempty" url:"label,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2IdentityFunction) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2IdentityFunction
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2IdentityFunction(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2IdentityFunction) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ListExecutionResponseEnvelope struct {
-	Data []*V2GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ListExecutionResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ListExecutionResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ListExecutionResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ListExecutionResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ListPoliciesResponseEnvelope struct {
-	Data []*V2PolicyResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ListPoliciesResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ListPoliciesResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ListPoliciesResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ListPoliciesResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ListSyncResponseEnvelope struct {
-	Data []*V2SyncResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ListSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ListSyncResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ListSyncResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ListSyncResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ListUsersEnvelope struct {
-	Data []*V2User `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ListUsersEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ListUsersEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ListUsersEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ListUsersEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2Mode struct {
-	Description           *string `json:"description,omitempty" url:"description,omitempty"`
-	Label                 *string `json:"label,omitempty" url:"label,omitempty"`
-	Mode                  *string `json:"mode,omitempty" url:"mode,omitempty"`
-	RequiresIdentity      *bool   `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
-	SupportsFieldSyncMode *bool   `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
-	SupportsTargetFilters *bool   `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2Mode) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2Mode
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2Mode(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2Mode) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ModelField struct {
-	Description *string     `json:"description,omitempty" url:"description,omitempty"`
-	Example     interface{} `json:"example,omitempty" url:"example,omitempty"`
-	Label       *string     `json:"label,omitempty" url:"label,omitempty"`
-	Name        *string     `json:"name,omitempty" url:"name,omitempty"`
-	RemoteType  *string     `json:"remote_type,omitempty" url:"remote_type,omitempty"`
-	Type        *string     `json:"type,omitempty" url:"type,omitempty"`
-	Unique      *bool       `json:"unique,omitempty" url:"unique,omitempty"`
-	UserAdded   *bool       `json:"user_added,omitempty" url:"user_added,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ModelField) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ModelField
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ModelField(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ModelField) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ModelFieldRequest struct {
-	Example *string `json:"example,omitempty" url:"example,omitempty"`
-	Label   string  `json:"label" url:"label"`
-	Name    string  `json:"name" url:"name"`
-	Type    string  `json:"type" url:"type"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ModelFieldRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ModelFieldRequest
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ModelFieldRequest(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ModelFieldRequest) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ModelFieldResponse struct {
-	Data []*V2ModelField `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ModelFieldResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ModelFieldResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ModelFieldResponse(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ModelFieldResponse) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ModelListResponseEnvelope struct {
-	Data []*V2ModelResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ModelListResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ModelListResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ModelListResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ModelListResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ModelResponse struct {
-	Configuration   map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionId    *string                `json:"connection_id,omitempty" url:"connection_id,omitempty"`
-	Fields          []*V2ModelField        `json:"fields,omitempty" url:"fields,omitempty"`
-	Id              *string                `json:"id,omitempty" url:"id,omitempty"`
-	Identifier      *string                `json:"identifier,omitempty" url:"identifier,omitempty"`
-	Labels          []LabelLabel           `json:"labels,omitempty" url:"labels,omitempty"`
-	Name            *string                `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId  *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies        []string               `json:"policies,omitempty" url:"policies,omitempty"`
-	Relations       []*V2Relation          `json:"relations,omitempty" url:"relations,omitempty"`
-	TrackingColumns []string               `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
-	Type            *string                `json:"type,omitempty" url:"type,omitempty"`
-	Version         *int                   `json:"version,omitempty" url:"version,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ModelResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ModelResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ModelResponse(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ModelResponse) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2ModelResponseEnvelope struct {
-	Data *V2ModelResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2ModelResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ModelResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ModelResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ModelResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2Organization struct {
-	Id        *string `json:"id,omitempty" url:"id,omitempty"`
-	Issuer    *string `json:"issuer,omitempty" url:"issuer,omitempty"`
-	Name      *string `json:"name,omitempty" url:"name,omitempty"`
-	SsoDomain *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
-	SsoOrgId  *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2Organization) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2Organization
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2Organization(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2Organization) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2OrganizationEnvelope struct {
-	Data *V2Organization `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2OrganizationEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2OrganizationEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2OrganizationEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2OrganizationEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2OrganizationsEnvelope struct {
-	Data []*V2Organization `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2OrganizationsEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2OrganizationsEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2OrganizationsEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2OrganizationsEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2Override struct {
-	FieldId  *string     `json:"field_id,omitempty" url:"field_id,omitempty"`
-	Function *string     `json:"function,omitempty" url:"function,omitempty"`
-	Override interface{} `json:"override,omitempty" url:"override,omitempty"`
-	Value    interface{} `json:"value,omitempty" url:"value,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2Override) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2Override
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2Override(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2Override) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2PolicyAction struct {
-	Action  string   `json:"action" url:"action"`
-	RoleIds []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2PolicyAction) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2PolicyAction
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2PolicyAction(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2PolicyAction) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2PolicyResponse struct {
-	Id             *string           `json:"id,omitempty" url:"id,omitempty"`
-	Name           *string           `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId *string           `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	PolicyActions  []*V2PolicyAction `json:"policy_actions,omitempty" url:"policy_actions,omitempty"`
-	System         *bool             `json:"system,omitempty" url:"system,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2PolicyResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2PolicyResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2PolicyResponse(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2PolicyResponse) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2PolicyResponseEnvelope struct {
-	Data *V2PolicyResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2PolicyResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2PolicyResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2PolicyResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2PolicyResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2Relation struct {
-	From *string       `json:"from,omitempty" url:"from,omitempty"`
-	To   *V2RelationTo `json:"to,omitempty" url:"to,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2Relation) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2Relation
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2Relation(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2Relation) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2RelationTo struct {
-	Field   *string `json:"field,omitempty" url:"field,omitempty"`
-	ModelId *string `json:"model_id,omitempty" url:"model_id,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2RelationTo) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2RelationTo
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2RelationTo(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2RelationTo) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2RoleListResponseEnvelope struct {
-	Data []*V2RoleResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2RoleListResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2RoleListResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2RoleListResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2RoleListResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2RoleResponse struct {
-	Id             *string `json:"id,omitempty" url:"id,omitempty"`
-	Name           *string `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	System         *bool   `json:"system,omitempty" url:"system,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2RoleResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2RoleResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2RoleResponse(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2RoleResponse) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2RoleResponseEnvelope struct {
-	Data *V2RoleResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2RoleResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2RoleResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2RoleResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2RoleResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2RunAfter struct {
-	BulkSyncIds []string `json:"bulk_sync_ids,omitempty" url:"bulk_sync_ids,omitempty"`
-	SyncIds     []string `json:"sync_ids,omitempty" url:"sync_ids,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2RunAfter) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2RunAfter
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2RunAfter(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2RunAfter) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2Schedule struct {
-	DayOfMonth *string     `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
-	DayOfWeek  *string     `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
-	Frequency  *string     `json:"frequency,omitempty" url:"frequency,omitempty"`
-	Hour       *string     `json:"hour,omitempty" url:"hour,omitempty"`
-	Minute     *string     `json:"minute,omitempty" url:"minute,omitempty"`
-	Month      *string     `json:"month,omitempty" url:"month,omitempty"`
-	RunAfter   *V2RunAfter `json:"run_after,omitempty" url:"run_after,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2Schedule) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2Schedule
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2Schedule(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2Schedule) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2Source struct {
-	Field   string `json:"field" url:"field"`
-	ModelId string `json:"model_id" url:"model_id"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2Source) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2Source
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2Source(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2Source) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2StartSyncResponseEnvelope struct {
-	Data *V2StartSyncResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2StartSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2StartSyncResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2StartSyncResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2StartSyncResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2StartSyncResponseSchema struct {
-	CreatedAt *time.Time       `json:"created_at,omitempty" url:"created_at,omitempty"`
-	Id        *string          `json:"id,omitempty" url:"id,omitempty"`
-	Status    *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2StartSyncResponseSchema) UnmarshalJSON(data []byte) error {
-	type embed V2StartSyncResponseSchema
-	var unmarshaler = struct {
-		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*v = V2StartSyncResponseSchema(unmarshaler.embed)
-	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2StartSyncResponseSchema) MarshalJSON() ([]byte, error) {
-	type embed V2StartSyncResponseSchema
-	var marshaler = struct {
-		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
-	}{
-		embed:     embed(*v),
-		CreatedAt: core.NewOptionalDateTime(v.CreatedAt),
-	}
-	return json.Marshal(marshaler)
-}
-
-func (v *V2StartSyncResponseSchema) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2SupportedMode struct {
-	Description           *string `json:"description,omitempty" url:"description,omitempty"`
-	Id                    *string `json:"id,omitempty" url:"id,omitempty"`
-	Label                 *string `json:"label,omitempty" url:"label,omitempty"`
-	RequiresIdentity      *bool   `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
-	SupportsFieldSyncMode *bool   `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
-	SupportsTargetFilters *bool   `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2SupportedMode) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2SupportedMode
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2SupportedMode(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2SupportedMode) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2SyncField struct {
-	New           *bool     `json:"new,omitempty" url:"new,omitempty"`
-	OverrideValue *string   `json:"override_value,omitempty" url:"override_value,omitempty"`
-	Source        *V2Source `json:"source,omitempty" url:"source,omitempty"`
-	SyncMode      *string   `json:"sync_mode,omitempty" url:"sync_mode,omitempty"`
-	Target        string    `json:"target" url:"target"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2SyncField) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2SyncField
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2SyncField(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2SyncField) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2SyncResponse struct {
-	Active         *bool          `json:"active,omitempty" url:"active,omitempty"`
-	Fields         []*V2SyncField `json:"fields,omitempty" url:"fields,omitempty"`
-	FilterLogic    *string        `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
-	Filters        []*V2Filter    `json:"filters,omitempty" url:"filters,omitempty"`
-	Id             *string        `json:"id,omitempty" url:"id,omitempty"`
-	Identity       *V2Identity    `json:"identity,omitempty" url:"identity,omitempty"`
-	Mode           *string        `json:"mode,omitempty" url:"mode,omitempty"`
-	Name           *string        `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId *string        `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	OverrideFields []*V2SyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
-	Overrides      []*V2Override  `json:"overrides,omitempty" url:"overrides,omitempty"`
-	Policies       []string       `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule       *V2Schedule    `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SyncAllRecords *bool          `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
-	Target         *V2Target      `json:"target,omitempty" url:"target,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2SyncResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2SyncResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2SyncResponse(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2SyncResponse) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2SyncResponseEnvelope struct {
-	Data *V2SyncResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2SyncResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2SyncResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2SyncResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2SyncResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2SyncStatusEnvelope struct {
-	Data *V2SyncStatusResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2SyncStatusEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2SyncStatusEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2SyncStatusEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2SyncStatusEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V2SyncStatusResponse struct {
-	CurrentExecution  *V2GetExecutionResponseSchema `json:"current_execution,omitempty" url:"current_execution,omitempty"`
-	LastExecution     *V2GetExecutionResponseSchema `json:"last_execution,omitempty" url:"last_execution,omitempty"`
-	NextExecutionTime *time.Time                    `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V2SyncStatusResponse) UnmarshalJSON(data []byte) error {
-	type embed V2SyncStatusResponse
+func (s *SyncStatusResponse) UnmarshalJSON(data []byte) error {
+	type embed SyncStatusResponse
 	var unmarshaler = struct {
 		embed
 		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty"`
 	}{
-		embed: embed(*v),
+		embed: embed(*s),
 	}
 	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*v = V2SyncStatusResponse(unmarshaler.embed)
-	v.NextExecutionTime = unmarshaler.NextExecutionTime.TimePtr()
-	v._rawJSON = json.RawMessage(data)
+	*s = SyncStatusResponse(unmarshaler.embed)
+	s.NextExecutionTime = unmarshaler.NextExecutionTime.TimePtr()
+	s._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2SyncStatusResponse) MarshalJSON() ([]byte, error) {
-	type embed V2SyncStatusResponse
+func (s *SyncStatusResponse) MarshalJSON() ([]byte, error) {
+	type embed SyncStatusResponse
 	var marshaler = struct {
 		embed
 		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty"`
 	}{
-		embed:             embed(*v),
-		NextExecutionTime: core.NewOptionalDateTime(v.NextExecutionTime),
+		embed:             embed(*s),
+		NextExecutionTime: core.NewOptionalDateTime(s.NextExecutionTime),
 	}
 	return json.Marshal(marshaler)
 }
 
-func (v *V2SyncStatusResponse) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+func (s *SyncStatusResponse) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(v); err == nil {
+	if value, err := core.StringifyJSON(s); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", s)
 }
 
-type V2Target struct {
+type Target struct {
 	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
 	ConnectionId  string                 `json:"connection_id" url:"connection_id"`
 	FilterLogic   *string                `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
@@ -2642,73 +3742,73 @@ type V2Target struct {
 	_rawJSON json.RawMessage
 }
 
-func (v *V2Target) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2Target
+func (t *Target) UnmarshalJSON(data []byte) error {
+	type unmarshaler Target
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = V2Target(value)
-	v._rawJSON = json.RawMessage(data)
+	*t = Target(value)
+	t._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2Target) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+func (t *Target) String() string {
+	if len(t._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(v); err == nil {
+	if value, err := core.StringifyJSON(t); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", t)
 }
 
-type V2TargetField struct {
-	Association       *bool                 `json:"association,omitempty" url:"association,omitempty"`
-	Createable        *bool                 `json:"createable,omitempty" url:"createable,omitempty"`
-	Description       *string               `json:"description,omitempty" url:"description,omitempty"`
-	Filterable        *bool                 `json:"filterable,omitempty" url:"filterable,omitempty"`
-	Id                *string               `json:"id,omitempty" url:"id,omitempty"`
-	IdentityFunctions []*V2IdentityFunction `json:"identity_functions,omitempty" url:"identity_functions,omitempty"`
-	Name              *string               `json:"name,omitempty" url:"name,omitempty"`
-	Required          *bool                 `json:"required,omitempty" url:"required,omitempty"`
-	SourceType        *string               `json:"source_type,omitempty" url:"source_type,omitempty"`
-	SupportsIdentity  *bool                 `json:"supports_identity,omitempty" url:"supports_identity,omitempty"`
-	Type              *string               `json:"type,omitempty" url:"type,omitempty"`
-	Updateable        *bool                 `json:"updateable,omitempty" url:"updateable,omitempty"`
+type TargetField struct {
+	Association       *bool               `json:"association,omitempty" url:"association,omitempty"`
+	Createable        *bool               `json:"createable,omitempty" url:"createable,omitempty"`
+	Description       *string             `json:"description,omitempty" url:"description,omitempty"`
+	Filterable        *bool               `json:"filterable,omitempty" url:"filterable,omitempty"`
+	Id                *string             `json:"id,omitempty" url:"id,omitempty"`
+	IdentityFunctions []*IdentityFunction `json:"identity_functions,omitempty" url:"identity_functions,omitempty"`
+	Name              *string             `json:"name,omitempty" url:"name,omitempty"`
+	Required          *bool               `json:"required,omitempty" url:"required,omitempty"`
+	SourceType        *string             `json:"source_type,omitempty" url:"source_type,omitempty"`
+	SupportsIdentity  *bool               `json:"supports_identity,omitempty" url:"supports_identity,omitempty"`
+	Type              *string             `json:"type,omitempty" url:"type,omitempty"`
+	Updateable        *bool               `json:"updateable,omitempty" url:"updateable,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (v *V2TargetField) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2TargetField
+func (t *TargetField) UnmarshalJSON(data []byte) error {
+	type unmarshaler TargetField
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = V2TargetField(value)
-	v._rawJSON = json.RawMessage(data)
+	*t = TargetField(value)
+	t._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2TargetField) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+func (t *TargetField) String() string {
+	if len(t._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(v); err == nil {
+	if value, err := core.StringifyJSON(t); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", t)
 }
 
-type V2TargetResponse struct {
-	Fields      []*V2TargetField           `json:"fields,omitempty" url:"fields,omitempty"`
+type TargetResponse struct {
+	Fields      []*TargetField             `json:"fields,omitempty" url:"fields,omitempty"`
 	Id          *string                    `json:"id,omitempty" url:"id,omitempty"`
-	Modes       []*V2Mode                  `json:"modes,omitempty" url:"modes,omitempty"`
+	Modes       []*Mode                    `json:"modes,omitempty" url:"modes,omitempty"`
 	Name        *string                    `json:"name,omitempty" url:"name,omitempty"`
 	Properties  *SyncDestinationProperties `json:"properties,omitempty" url:"properties,omitempty"`
 	RefreshedAt *time.Time                 `json:"refreshed_at,omitempty" url:"refreshed_at,omitempty"`
@@ -2716,77 +3816,77 @@ type V2TargetResponse struct {
 	_rawJSON json.RawMessage
 }
 
-func (v *V2TargetResponse) UnmarshalJSON(data []byte) error {
-	type embed V2TargetResponse
+func (t *TargetResponse) UnmarshalJSON(data []byte) error {
+	type embed TargetResponse
 	var unmarshaler = struct {
 		embed
 		RefreshedAt *core.DateTime `json:"refreshed_at,omitempty"`
 	}{
-		embed: embed(*v),
+		embed: embed(*t),
 	}
 	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*v = V2TargetResponse(unmarshaler.embed)
-	v.RefreshedAt = unmarshaler.RefreshedAt.TimePtr()
-	v._rawJSON = json.RawMessage(data)
+	*t = TargetResponse(unmarshaler.embed)
+	t.RefreshedAt = unmarshaler.RefreshedAt.TimePtr()
+	t._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2TargetResponse) MarshalJSON() ([]byte, error) {
-	type embed V2TargetResponse
+func (t *TargetResponse) MarshalJSON() ([]byte, error) {
+	type embed TargetResponse
 	var marshaler = struct {
 		embed
 		RefreshedAt *core.DateTime `json:"refreshed_at,omitempty"`
 	}{
-		embed:       embed(*v),
-		RefreshedAt: core.NewOptionalDateTime(v.RefreshedAt),
+		embed:       embed(*t),
+		RefreshedAt: core.NewOptionalDateTime(t.RefreshedAt),
 	}
 	return json.Marshal(marshaler)
 }
 
-func (v *V2TargetResponse) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+func (t *TargetResponse) String() string {
+	if len(t._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(v); err == nil {
+	if value, err := core.StringifyJSON(t); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", t)
 }
 
-type V2TargetResponseEnvelope struct {
-	Data *V2TargetResponse `json:"data,omitempty" url:"data,omitempty"`
+type TargetResponseEnvelope struct {
+	Data *TargetResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (v *V2TargetResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2TargetResponseEnvelope
+func (t *TargetResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler TargetResponseEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = V2TargetResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
+	*t = TargetResponseEnvelope(value)
+	t._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2TargetResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+func (t *TargetResponseEnvelope) String() string {
+	if len(t._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(v); err == nil {
+	if value, err := core.StringifyJSON(t); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", t)
 }
 
-type V2User struct {
+type User struct {
 	Email          *string `json:"email,omitempty" url:"email,omitempty"`
 	Id             *string `json:"id,omitempty" url:"id,omitempty"`
 	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
@@ -2795,59 +3895,59 @@ type V2User struct {
 	_rawJSON json.RawMessage
 }
 
-func (v *V2User) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2User
+func (u *User) UnmarshalJSON(data []byte) error {
+	type unmarshaler User
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = V2User(value)
-	v._rawJSON = json.RawMessage(data)
+	*u = User(value)
+	u._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2User) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+func (u *User) String() string {
+	if len(u._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(v); err == nil {
+	if value, err := core.StringifyJSON(u); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", u)
 }
 
-type V2UserEnvelope struct {
-	Data *V2User `json:"data,omitempty" url:"data,omitempty"`
+type UserEnvelope struct {
+	Data *User `json:"data,omitempty" url:"data,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (v *V2UserEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2UserEnvelope
+func (u *UserEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = V2UserEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
+	*u = UserEnvelope(value)
+	u._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2UserEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+func (u *UserEnvelope) String() string {
+	if len(u._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(v); err == nil {
+	if value, err := core.StringifyJSON(u); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", u)
 }
 
-type V2Webhook struct {
+type Webhook struct {
 	CreatedAt      *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
 	Endpoint       *string    `json:"endpoint,omitempty" url:"endpoint,omitempty"`
 	Id             *string    `json:"id,omitempty" url:"id,omitempty"`
@@ -2857,832 +3957,126 @@ type V2Webhook struct {
 	_rawJSON json.RawMessage
 }
 
-func (v *V2Webhook) UnmarshalJSON(data []byte) error {
-	type embed V2Webhook
+func (w *Webhook) UnmarshalJSON(data []byte) error {
+	type embed Webhook
 	var unmarshaler = struct {
 		embed
 		CreatedAt *core.DateTime `json:"created_at,omitempty"`
 	}{
-		embed: embed(*v),
+		embed: embed(*w),
 	}
 	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*v = V2Webhook(unmarshaler.embed)
-	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	v._rawJSON = json.RawMessage(data)
+	*w = Webhook(unmarshaler.embed)
+	w.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	w._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2Webhook) MarshalJSON() ([]byte, error) {
-	type embed V2Webhook
+func (w *Webhook) MarshalJSON() ([]byte, error) {
+	type embed Webhook
 	var marshaler = struct {
 		embed
 		CreatedAt *core.DateTime `json:"created_at,omitempty"`
 	}{
-		embed:     embed(*v),
-		CreatedAt: core.NewOptionalDateTime(v.CreatedAt),
+		embed:     embed(*w),
+		CreatedAt: core.NewOptionalDateTime(w.CreatedAt),
 	}
 	return json.Marshal(marshaler)
 }
 
-func (v *V2Webhook) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+func (w *Webhook) String() string {
+	if len(w._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(w._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(v); err == nil {
+	if value, err := core.StringifyJSON(w); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", w)
 }
 
-type V2WebhookEnvelope struct {
-	Data *V2Webhook `json:"data,omitempty" url:"data,omitempty"`
+type WebhookEnvelope struct {
+	Data *Webhook `json:"data,omitempty" url:"data,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (v *V2WebhookEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2WebhookEnvelope
+func (w *WebhookEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler WebhookEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = V2WebhookEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
+	*w = WebhookEnvelope(value)
+	w._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2WebhookEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+func (w *WebhookEnvelope) String() string {
+	if len(w._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(w._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(v); err == nil {
+	if value, err := core.StringifyJSON(w); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", w)
 }
 
-type V2WebhookListEnvelope struct {
-	Data []*V2Webhook `json:"data,omitempty" url:"data,omitempty"`
+type WebhookListEnvelope struct {
+	Data []*Webhook `json:"data,omitempty" url:"data,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (v *V2WebhookListEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2WebhookListEnvelope
+func (w *WebhookListEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler WebhookListEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = V2WebhookListEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
+	*w = WebhookListEnvelope(value)
+	w._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2WebhookListEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+func (w *WebhookListEnvelope) String() string {
+	if len(w._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(w._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(v); err == nil {
+	if value, err := core.StringifyJSON(w); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", w)
 }
 
-type V3BulkField struct {
-	Enabled    *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Id         *string `json:"id,omitempty" url:"id,omitempty"`
-	Obfuscated *bool   `json:"obfuscated,omitempty" url:"obfuscated,omitempty"`
+type WorkTaskStatus string
 
-	_rawJSON json.RawMessage
-}
-
-func (v *V3BulkField) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3BulkField
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3BulkField(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkField) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3BulkSchema struct {
-	Enabled      *bool          `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Fields       []*V3BulkField `json:"fields,omitempty" url:"fields,omitempty"`
-	Id           *string        `json:"id,omitempty" url:"id,omitempty"`
-	OutputName   *string        `json:"output_name,omitempty" url:"output_name,omitempty"`
-	PartitionKey *string        `json:"partition_key,omitempty" url:"partition_key,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3BulkSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3BulkSchema
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3BulkSchema(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkSchema) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3BulkSchemaEnvelope struct {
-	Data *V3BulkSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3BulkSchemaEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3BulkSchemaEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3BulkSchemaEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkSchemaEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3BulkSyncExecution struct {
-	CompletedAt *time.Time                   `json:"completed_at,omitempty" url:"completed_at,omitempty"`
-	CreatedAt   *time.Time                   `json:"created_at,omitempty" url:"created_at,omitempty"`
-	Id          *string                      `json:"id,omitempty" url:"id,omitempty"`
-	IsResync    *bool                        `json:"is_resync,omitempty" url:"is_resync,omitempty"`
-	IsTest      *bool                        `json:"is_test,omitempty" url:"is_test,omitempty"`
-	Schemas     []*V3BulkSyncSchemaExecution `json:"schemas,omitempty" url:"schemas,omitempty"`
-	StartedAt   *time.Time                   `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status      *BulkExecutionStatus         `json:"status,omitempty" url:"status,omitempty"`
-	Type        *string                      `json:"type,omitempty" url:"type,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3BulkSyncExecution) UnmarshalJSON(data []byte) error {
-	type embed V3BulkSyncExecution
-	var unmarshaler = struct {
-		embed
-		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
-		CreatedAt   *core.DateTime `json:"created_at,omitempty"`
-		StartedAt   *core.DateTime `json:"started_at,omitempty"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*v = V3BulkSyncExecution(unmarshaler.embed)
-	v.CompletedAt = unmarshaler.CompletedAt.TimePtr()
-	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	v.StartedAt = unmarshaler.StartedAt.TimePtr()
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkSyncExecution) MarshalJSON() ([]byte, error) {
-	type embed V3BulkSyncExecution
-	var marshaler = struct {
-		embed
-		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
-		CreatedAt   *core.DateTime `json:"created_at,omitempty"`
-		StartedAt   *core.DateTime `json:"started_at,omitempty"`
-	}{
-		embed:       embed(*v),
-		CompletedAt: core.NewOptionalDateTime(v.CompletedAt),
-		CreatedAt:   core.NewOptionalDateTime(v.CreatedAt),
-		StartedAt:   core.NewOptionalDateTime(v.StartedAt),
-	}
-	return json.Marshal(marshaler)
-}
-
-func (v *V3BulkSyncExecution) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3BulkSyncExecutionEnvelope struct {
-	Data *V3BulkSyncExecution `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3BulkSyncExecutionEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3BulkSyncExecutionEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3BulkSyncExecutionEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkSyncExecutionEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3BulkSyncSchemaExecution struct {
-	CompletedAt   *time.Time                 `json:"completed_at,omitempty" url:"completed_at,omitempty"`
-	ErrorCount    *int                       `json:"error_count,omitempty" url:"error_count,omitempty"`
-	RecordCount   *int                       `json:"record_count,omitempty" url:"record_count,omitempty"`
-	Schema        *string                    `json:"schema,omitempty" url:"schema,omitempty"`
-	StartedAt     *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status        *BulkSchemaExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-	StatusMessage *string                    `json:"status_message,omitempty" url:"status_message,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3BulkSyncSchemaExecution) UnmarshalJSON(data []byte) error {
-	type embed V3BulkSyncSchemaExecution
-	var unmarshaler = struct {
-		embed
-		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
-		StartedAt   *core.DateTime `json:"started_at,omitempty"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*v = V3BulkSyncSchemaExecution(unmarshaler.embed)
-	v.CompletedAt = unmarshaler.CompletedAt.TimePtr()
-	v.StartedAt = unmarshaler.StartedAt.TimePtr()
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkSyncSchemaExecution) MarshalJSON() ([]byte, error) {
-	type embed V3BulkSyncSchemaExecution
-	var marshaler = struct {
-		embed
-		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
-		StartedAt   *core.DateTime `json:"started_at,omitempty"`
-	}{
-		embed:       embed(*v),
-		CompletedAt: core.NewOptionalDateTime(v.CompletedAt),
-		StartedAt:   core.NewOptionalDateTime(v.StartedAt),
-	}
-	return json.Marshal(marshaler)
-}
-
-func (v *V3BulkSyncSchemaExecution) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3BulkSyncSource struct {
-	Configuration interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Schemas       []*V3Schema `json:"schemas,omitempty" url:"schemas,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3BulkSyncSource) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3BulkSyncSource
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3BulkSyncSource(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkSyncSource) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3BulkSyncSourceEnvelope struct {
-	Data *V3BulkSyncSource `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3BulkSyncSourceEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3BulkSyncSourceEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3BulkSyncSourceEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkSyncSourceEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3BulkSyncSourceSchemaEnvelope struct {
-	Data *V3Schema `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3BulkSyncSourceSchemaEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3BulkSyncSourceSchemaEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3BulkSyncSourceSchemaEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkSyncSourceSchemaEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3BulkSyncSourceStatus struct {
-	CacheStatus         *string    `json:"cache_status,omitempty" url:"cache_status,omitempty"`
-	LastRefreshFinished *time.Time `json:"last_refresh_finished,omitempty" url:"last_refresh_finished,omitempty"`
-	LastRefreshStarted  *time.Time `json:"last_refresh_started,omitempty" url:"last_refresh_started,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3BulkSyncSourceStatus) UnmarshalJSON(data []byte) error {
-	type embed V3BulkSyncSourceStatus
-	var unmarshaler = struct {
-		embed
-		LastRefreshFinished *core.DateTime `json:"last_refresh_finished,omitempty"`
-		LastRefreshStarted  *core.DateTime `json:"last_refresh_started,omitempty"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*v = V3BulkSyncSourceStatus(unmarshaler.embed)
-	v.LastRefreshFinished = unmarshaler.LastRefreshFinished.TimePtr()
-	v.LastRefreshStarted = unmarshaler.LastRefreshStarted.TimePtr()
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkSyncSourceStatus) MarshalJSON() ([]byte, error) {
-	type embed V3BulkSyncSourceStatus
-	var marshaler = struct {
-		embed
-		LastRefreshFinished *core.DateTime `json:"last_refresh_finished,omitempty"`
-		LastRefreshStarted  *core.DateTime `json:"last_refresh_started,omitempty"`
-	}{
-		embed:               embed(*v),
-		LastRefreshFinished: core.NewOptionalDateTime(v.LastRefreshFinished),
-		LastRefreshStarted:  core.NewOptionalDateTime(v.LastRefreshStarted),
-	}
-	return json.Marshal(marshaler)
-}
-
-func (v *V3BulkSyncSourceStatus) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3BulkSyncSourceStatusEnvelope struct {
-	Data *V3BulkSyncSourceStatus `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3BulkSyncSourceStatusEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3BulkSyncSourceStatusEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3BulkSyncSourceStatusEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkSyncSourceStatusEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3BulkSyncStatusEnvelope struct {
-	Data *V3BulkSyncStatusResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3BulkSyncStatusEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3BulkSyncStatusEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3BulkSyncStatusEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkSyncStatusEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3BulkSyncStatusResponse struct {
-	CurrentExecution  *V3BulkSyncExecution `json:"current_execution,omitempty" url:"current_execution,omitempty"`
-	LastExecution     *V3BulkSyncExecution `json:"last_execution,omitempty" url:"last_execution,omitempty"`
-	NextExecutionTime *time.Time           `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3BulkSyncStatusResponse) UnmarshalJSON(data []byte) error {
-	type embed V3BulkSyncStatusResponse
-	var unmarshaler = struct {
-		embed
-		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*v = V3BulkSyncStatusResponse(unmarshaler.embed)
-	v.NextExecutionTime = unmarshaler.NextExecutionTime.TimePtr()
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkSyncStatusResponse) MarshalJSON() ([]byte, error) {
-	type embed V3BulkSyncStatusResponse
-	var marshaler = struct {
-		embed
-		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty"`
-	}{
-		embed:             embed(*v),
-		NextExecutionTime: core.NewOptionalDateTime(v.NextExecutionTime),
-	}
-	return json.Marshal(marshaler)
-}
-
-func (v *V3BulkSyncStatusResponse) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3ConnectCardResponse struct {
-	RedirectUrl *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
-	Token       *string `json:"token,omitempty" url:"token,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3ConnectCardResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3ConnectCardResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3ConnectCardResponse(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3ConnectCardResponse) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3ConnectCardResponseEnvelope struct {
-	Data *V3ConnectCardResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3ConnectCardResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3ConnectCardResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3ConnectCardResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3ConnectCardResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
+const (
+	WorkTaskStatusRunning WorkTaskStatus = "running"
+	WorkTaskStatusDone    WorkTaskStatus = "done"
+	WorkTaskStatusFailed  WorkTaskStatus = "failed"
+)
 
-type V3ListBulkSchemaEnvelope struct {
-	Data []*V3BulkSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3ListBulkSchemaEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3ListBulkSchemaEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3ListBulkSchemaEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3ListBulkSchemaEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3ListBulkSyncExecutionsEnvelope struct {
-	Data []*V3BulkSyncExecution `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3ListBulkSyncExecutionsEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3ListBulkSyncExecutionsEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3ListBulkSyncExecutionsEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3ListBulkSyncExecutionsEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3PickValue struct {
-	Label *string `json:"label,omitempty" url:"label,omitempty"`
-	Value *string `json:"value,omitempty" url:"value,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3PickValue) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3PickValue
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3PickValue(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3PickValue) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
+func NewWorkTaskStatusFromString(s string) (WorkTaskStatus, error) {
+	switch s {
+	case "running":
+		return WorkTaskStatusRunning, nil
+	case "done":
+		return WorkTaskStatusDone, nil
+	case "failed":
+		return WorkTaskStatusFailed, nil
 	}
-	return fmt.Sprintf("%#v", v)
+	var t WorkTaskStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-type V3Schema struct {
-	Fields []*V3SchemaField `json:"fields,omitempty" url:"fields,omitempty"`
-	Id     *string          `json:"id,omitempty" url:"id,omitempty"`
-	Name   *string          `json:"name,omitempty" url:"name,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3Schema) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3Schema
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3Schema(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3Schema) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3SchemaField struct {
-	Association *SchemaAssociation `json:"association,omitempty" url:"association,omitempty"`
-	Id          *string            `json:"id,omitempty" url:"id,omitempty"`
-	Name        *string            `json:"name,omitempty" url:"name,omitempty"`
-	RemoteType  *string            `json:"remote_type,omitempty" url:"remote_type,omitempty"`
-	Type        *string            `json:"type,omitempty" url:"type,omitempty"`
-	Values      []*V3PickValue     `json:"values,omitempty" url:"values,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3SchemaField) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3SchemaField
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3SchemaField(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3SchemaField) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type V3SchemaRecordsResponseEnvelope struct {
-	Data []map[string]interface{} `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V3SchemaRecordsResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3SchemaRecordsResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3SchemaRecordsResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3SchemaRecordsResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
+func (w WorkTaskStatus) Ptr() *WorkTaskStatus {
+	return &w
 }

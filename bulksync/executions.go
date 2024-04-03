@@ -2,7 +2,7 @@
 
 package bulksync
 
-type V3StartBulkSyncRequest struct {
+type StartBulkSyncRequest struct {
 	Resync  *bool    `json:"resync,omitempty" url:"resync,omitempty"`
 	Schemas []string `json:"schemas,omitempty" url:"schemas,omitempty"`
 	Test    *bool    `json:"test,omitempty" url:"test,omitempty"`

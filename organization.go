@@ -2,7 +2,7 @@
 
 package polytomic
 
-type V2CreateOrganizationRequestSchema struct {
+type CreateOrganizationRequestSchema struct {
 	ClientId     *string `json:"client_id,omitempty" url:"client_id,omitempty"`
 	ClientSecret *string `json:"client_secret,omitempty" url:"client_secret,omitempty"`
 	Issuer       *string `json:"issuer,omitempty" url:"issuer,omitempty"`
@@ -11,7 +11,7 @@ type V2CreateOrganizationRequestSchema struct {
 	SsoOrgId     *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
 }
 
-type V2UpdateOrganizationRequestSchema struct {
+type UpdateOrganizationRequestSchema struct {
 	ClientId     *string `json:"client_id,omitempty" url:"client_id,omitempty"`
 	ClientSecret *string `json:"client_secret,omitempty" url:"client_secret,omitempty"`
 	Issuer       *string `json:"issuer,omitempty" url:"issuer,omitempty"`

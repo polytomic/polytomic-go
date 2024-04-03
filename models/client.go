@@ -38,10 +38,10 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2ModelListResponseEnvelope, error) {
+) (*polytomicgo.ModelListResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -71,7 +71,7 @@ func (c *Client) List(
 		return apiError
 	}
 
-	var response *polytomicgo.V2ModelListResponseEnvelope
+	var response *polytomicgo.ModelListResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -91,12 +91,12 @@ func (c *Client) List(
 
 func (c *Client) Create(
 	ctx context.Context,
-	request *polytomicgo.V2CreateModelRequest,
+	request *polytomicgo.CreateModelRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2ModelResponseEnvelope, error) {
+) (*polytomicgo.ModelResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -104,6 +104,14 @@ func (c *Client) Create(
 		baseURL = options.BaseURL
 	}
 	endpointURL := baseURL + "/" + "api/models"
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -126,7 +134,7 @@ func (c *Client) Create(
 		return apiError
 	}
 
-	var response *polytomicgo.V2ModelResponseEnvelope
+	var response *polytomicgo.ModelResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -149,10 +157,10 @@ func (c *Client) Get(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2ModelResponseEnvelope, error) {
+) (*polytomicgo.ModelResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -182,7 +190,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *polytomicgo.V2ModelResponseEnvelope
+	var response *polytomicgo.ModelResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -207,7 +215,7 @@ func (c *Client) Remove(
 ) error {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -256,12 +264,12 @@ func (c *Client) Remove(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.V2UpdateModelRequest,
+	request *polytomicgo.UpdateModelRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2ModelResponseEnvelope, error) {
+) (*polytomicgo.ModelResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -269,6 +277,14 @@ func (c *Client) Update(
 		baseURL = options.BaseURL
 	}
 	endpointURL := fmt.Sprintf(baseURL+"/"+"api/models/%v", id)
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -291,7 +307,7 @@ func (c *Client) Update(
 		return apiError
 	}
 
-	var response *polytomicgo.V2ModelResponseEnvelope
+	var response *polytomicgo.ModelResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

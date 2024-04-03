@@ -17,12 +17,12 @@ type RequestOption interface {
 // This type is primarily used by the generated code and is not meant
 // to be used directly; use the option package instead.
 type RequestOptions struct {
-	BaseURL          string
-	HTTPClient       HTTPClient
-	HTTPHeader       http.Header
-	MaxAttempts      uint
-	Token            string
-	PolytomicVersion *string
+	BaseURL           string
+	HTTPClient        HTTPClient
+	HTTPHeader        http.Header
+	MaxAttempts       uint
+	Token             string
+	XPolytomicVersion *string
 }
 
 // NewRequestOptions returns a new *RequestOptions value.
@@ -46,8 +46,8 @@ func (r *RequestOptions) ToHeader() http.Header {
 	if r.Token != "" {
 		header.Set("Authorization", "Bearer "+r.Token)
 	}
-	if r.PolytomicVersion != nil {
-		header.Set("X-Polytomic-Version", fmt.Sprintf("%v", r.PolytomicVersion))
+	if r.XPolytomicVersion != nil {
+		header.Set("X-Polytomic-Version", fmt.Sprintf("%v", r.XPolytomicVersion))
 	}
 	return header
 }
@@ -56,7 +56,7 @@ func (r *RequestOptions) cloneHeader() http.Header {
 	headers := r.HTTPHeader.Clone()
 	headers.Set("X-Fern-Language", "Go")
 	headers.Set("X-Fern-SDK-Name", "github.com/polytomic/polytomic-go")
-	headers.Set("X-Fern-SDK-Version", "v0.1.0")
+	headers.Set("X-Fern-SDK-Version", "v0.1.1")
 	return headers
 }
 
@@ -105,11 +105,11 @@ func (t *TokenOption) applyRequestOptions(opts *RequestOptions) {
 	opts.Token = t.Token
 }
 
-// PolytomicVersionOption implements the RequestOption interface.
-type PolytomicVersionOption struct {
-	PolytomicVersion *string
+// XPolytomicVersionOption implements the RequestOption interface.
+type XPolytomicVersionOption struct {
+	XPolytomicVersion *string
 }
 
-func (p *PolytomicVersionOption) applyRequestOptions(opts *RequestOptions) {
-	opts.PolytomicVersion = p.PolytomicVersion
+func (x *XPolytomicVersionOption) applyRequestOptions(opts *RequestOptions) {
+	opts.XPolytomicVersion = x.XPolytomicVersion
 }

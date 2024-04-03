@@ -47,9 +47,9 @@ func WithToken(token string) *core.TokenOption {
 	}
 }
 
-// WithPolytomicVersion sets the polytomicVersion request header.
-func WithPolytomicVersion(polytomicVersion *string) *core.PolytomicVersionOption {
-	return &core.PolytomicVersionOption{
-		PolytomicVersion: polytomicVersion,
+// WithXPolytomicVersion sets the xPolytomicVersion request header.
+func WithXPolytomicVersion(xPolytomicVersion *string) *core.XPolytomicVersionOption {
+	return &core.XPolytomicVersionOption{
+		XPolytomicVersion: xPolytomicVersion,
 	}
 }

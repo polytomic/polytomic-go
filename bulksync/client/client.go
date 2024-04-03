@@ -46,10 +46,10 @@ func (c *Client) GetDestination(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2BulkSyncDestEnvelope, error) {
+) (*polytomicgo.BulkSyncDestEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -79,7 +79,7 @@ func (c *Client) GetDestination(
 		return apiError
 	}
 
-	var response *polytomicgo.V2BulkSyncDestEnvelope
+	var response *polytomicgo.BulkSyncDestEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -102,10 +102,10 @@ func (c *Client) GetSource(
 	connectionId string,
 	request *polytomicgo.BulkSyncGetSourceRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.V3BulkSyncSourceEnvelope, error) {
+) (*polytomicgo.BulkSyncSourceEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -143,7 +143,7 @@ func (c *Client) GetSource(
 		return apiError
 	}
 
-	var response *polytomicgo.V3BulkSyncSourceEnvelope
+	var response *polytomicgo.BulkSyncSourceEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -166,10 +166,10 @@ func (c *Client) GetSourceSchema(
 	connectionId string,
 	schemaId string,
 	opts ...option.RequestOption,
-) (*polytomicgo.V3BulkSyncSourceSchemaEnvelope, error) {
+) (*polytomicgo.BulkSyncSourceSchemaEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -199,7 +199,7 @@ func (c *Client) GetSourceSchema(
 		return apiError
 	}
 
-	var response *polytomicgo.V3BulkSyncSourceSchemaEnvelope
+	var response *polytomicgo.BulkSyncSourceSchemaEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -217,14 +217,14 @@ func (c *Client) GetSourceSchema(
 	return response, nil
 }
 
-func (c *Client) ApiV3GetBulkSourceStatus(
+func (c *Client) GetSourceStatus(
 	ctx context.Context,
 	connectionId string,
 	opts ...option.RequestOption,
-) (*polytomicgo.V3BulkSyncSourceStatusEnvelope, error) {
+) (*polytomicgo.BulkSyncSourceStatusEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -254,7 +254,7 @@ func (c *Client) ApiV3GetBulkSourceStatus(
 		return apiError
 	}
 
-	var response *polytomicgo.V3BulkSyncSourceStatusEnvelope
+	var response *polytomicgo.BulkSyncSourceStatusEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -275,10 +275,10 @@ func (c *Client) ApiV3GetBulkSourceStatus(
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2BulkSyncListEnvelope, error) {
+) (*polytomicgo.BulkSyncListEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -308,7 +308,7 @@ func (c *Client) List(
 		return apiError
 	}
 
-	var response *polytomicgo.V2BulkSyncListEnvelope
+	var response *polytomicgo.BulkSyncListEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -328,12 +328,12 @@ func (c *Client) List(
 
 func (c *Client) Create(
 	ctx context.Context,
-	request *polytomicgo.V2CreateBulkSyncRequest,
+	request *polytomicgo.CreateBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2BulkSyncResponseEnvelope, error) {
+) (*polytomicgo.BulkSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -363,7 +363,7 @@ func (c *Client) Create(
 		return apiError
 	}
 
-	var response *polytomicgo.V2BulkSyncResponseEnvelope
+	var response *polytomicgo.BulkSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -387,10 +387,10 @@ func (c *Client) Get(
 	id string,
 	request *polytomicgo.BulkSyncGetRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2BulkSyncResponseEnvelope, error) {
+) (*polytomicgo.BulkSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -428,7 +428,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *polytomicgo.V2BulkSyncResponseEnvelope
+	var response *polytomicgo.BulkSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -454,7 +454,7 @@ func (c *Client) Remove(
 ) error {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -514,12 +514,12 @@ func (c *Client) Remove(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.V2UpdateBulkSyncRequest,
+	request *polytomicgo.UpdateBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2BulkSyncResponseEnvelope, error) {
+) (*polytomicgo.BulkSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -549,7 +549,7 @@ func (c *Client) Update(
 		return apiError
 	}
 
-	var response *polytomicgo.V2BulkSyncResponseEnvelope
+	var response *polytomicgo.BulkSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -571,12 +571,12 @@ func (c *Client) Update(
 func (c *Client) Activate(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.V2ActivateSyncInput,
+	request *polytomicgo.ActivateSyncInput,
 	opts ...option.RequestOption,
-) (*polytomicgo.V2ActivateSyncEnvelope, error) {
+) (*polytomicgo.ActivateSyncEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -606,7 +606,7 @@ func (c *Client) Activate(
 		return apiError
 	}
 
-	var response *polytomicgo.V2ActivateSyncEnvelope
+	var response *polytomicgo.ActivateSyncEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -629,10 +629,10 @@ func (c *Client) GetStatus(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomicgo.V3BulkSyncStatusEnvelope, error) {
+) (*polytomicgo.BulkSyncStatusEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
-	baseURL := "https://app.polytomic-local.com:8443/"
+	baseURL := "https://app.polytomic.com"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -662,7 +662,7 @@ func (c *Client) GetStatus(
 		return apiError
 	}
 
-	var response *polytomicgo.V3BulkSyncStatusEnvelope
+	var response *polytomicgo.BulkSyncStatusEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

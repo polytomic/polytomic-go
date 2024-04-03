@@ -1,12 +1,13 @@
 // This file was auto-generated from our API Definition.
 
-package events
+package jobs
 
 import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
 	errors "errors"
+	fmt "fmt"
 	polytomicgo "github.com/polytomic/polytomic-go"
 	core "github.com/polytomic/polytomic-go/core"
 	option "github.com/polytomic/polytomic-go/option"
@@ -34,11 +35,12 @@ func NewClient(opts ...option.RequestOption) *Client {
 	}
 }
 
-func (c *Client) ApiV2GetEvents(
+func (c *Client) Get(
 	ctx context.Context,
-	request *polytomicgo.EventsApiV2GetEventsRequest,
+	id string,
+	type_ string,
 	opts ...option.RequestOption,
-) (*polytomicgo.EventsEnvelope, error) {
+) (*polytomicgo.JobResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -48,15 +50,7 @@ func (c *Client) ApiV2GetEvents(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := baseURL + "/" + "api/events"
-
-	queryParams, err := core.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/jobs/%v/%v", id, type_)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -79,61 +73,7 @@ func (c *Client) ApiV2GetEvents(
 		return apiError
 	}
 
-	var response *polytomicgo.EventsEnvelope
-	if err := c.caller.Call(
-		ctx,
-		&core.CallParams{
-			URL:          endpointURL,
-			Method:       http.MethodGet,
-			MaxAttempts:  options.MaxAttempts,
-			Headers:      headers,
-			Client:       options.HTTPClient,
-			Response:     &response,
-			ErrorDecoder: errorDecoder,
-		},
-	); err != nil {
-		return nil, err
-	}
-	return response, nil
-}
-
-func (c *Client) ApiV2GetEventTypes(
-	ctx context.Context,
-	opts ...option.RequestOption,
-) (*polytomicgo.EventTypesEnvelope, error) {
-	options := core.NewRequestOptions(opts...)
-
-	baseURL := "https://app.polytomic.com"
-	if c.baseURL != "" {
-		baseURL = c.baseURL
-	}
-	if options.BaseURL != "" {
-		baseURL = options.BaseURL
-	}
-	endpointURL := baseURL + "/" + "api/events_types"
-
-	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
-
-	errorDecoder := func(statusCode int, body io.Reader) error {
-		raw, err := io.ReadAll(body)
-		if err != nil {
-			return err
-		}
-		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
-		decoder := json.NewDecoder(bytes.NewReader(raw))
-		switch statusCode {
-		case 401:
-			value := new(polytomicgo.UnauthorizedError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		}
-		return apiError
-	}
-
-	var response *polytomicgo.EventTypesEnvelope
+	var response *polytomicgo.JobResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

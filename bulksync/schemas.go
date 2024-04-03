@@ -6,8 +6,12 @@ import (
 	polytomicgo "github.com/polytomic/polytomic-go"
 )
 
-type V3UpdateBulkSchema struct {
-	Enabled      *bool                      `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Fields       []*polytomicgo.V3BulkField `json:"fields,omitempty" url:"fields,omitempty"`
-	PartitionKey *string                    `json:"partition_key,omitempty" url:"partition_key,omitempty"`
+type SchemasListRequest struct {
+	Filters map[string]*string `json:"-" url:"filters,omitempty"`
+}
+
+type UpdateBulkSchema struct {
+	Enabled      *bool                    `json:"enabled,omitempty" url:"enabled,omitempty"`
+	Fields       []*polytomicgo.BulkField `json:"fields,omitempty" url:"fields,omitempty"`
+	PartitionKey *string                  `json:"partition_key,omitempty" url:"partition_key,omitempty"`
 }

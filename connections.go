@@ -2,6 +2,15 @@
 
 package polytomic
 
+type ConnectCardRequest struct {
+	Connection     *string  `json:"connection,omitempty" url:"connection,omitempty"`
+	Name           string   `json:"name" url:"name"`
+	OrganizationId *string  `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	RedirectUrl    string   `json:"redirect_url" url:"redirect_url"`
+	Type           *string  `json:"type,omitempty" url:"type,omitempty"`
+	Whitelist      []string `json:"whitelist,omitempty" url:"whitelist,omitempty"`
+}
+
 type CreateConnectionRequestSchema struct {
 	Configuration  map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
 	Name           string                 `json:"name" url:"name"`

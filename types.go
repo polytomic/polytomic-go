@@ -1857,35 +1857,6 @@ func (g *GetConnectionMetaEnvelope) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
-type GetExecutionResponseEnvelope struct {
-	Data *GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (g *GetExecutionResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetExecutionResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetExecutionResponseEnvelope(value)
-	g._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetExecutionResponseEnvelope) String() string {
-	if len(g._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
 type GetExecutionResponseSchema struct {
 	CompletedAt *time.Time       `json:"completed_at,omitempty" url:"completed_at,omitempty"`
 	Counts      *ExecutionCounts `json:"counts,omitempty" url:"counts,omitempty"`

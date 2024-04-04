@@ -100,13 +100,12 @@ func (c *Client) List(
 	return response, nil
 }
 
-func (c *Client) Update(
+func (c *Client) Patch(
 	ctx context.Context,
 	id string,
-	schemaId string,
-	request *bulksync.UpdateBulkSchema,
+	request *bulksync.BulkSyncSchemasRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.BulkSchemaEnvelope, error) {
+) (*polytomicgo.ListBulkSchema, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -116,7 +115,7 @@ func (c *Client) Update(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schemas/%v", id, schemaId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schemas", id)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -139,7 +138,7 @@ func (c *Client) Update(
 		return apiError
 	}
 
-	var response *polytomicgo.BulkSchemaEnvelope
+	var response *polytomicgo.ListBulkSchema
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -205,6 +204,64 @@ func (c *Client) Get(
 			MaxAttempts:  options.MaxAttempts,
 			Headers:      headers,
 			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
+		},
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+func (c *Client) Update(
+	ctx context.Context,
+	id string,
+	schemaId string,
+	request *bulksync.UpdateBulkSchema,
+	opts ...option.RequestOption,
+) (*polytomicgo.BulkSchemaEnvelope, error) {
+	options := core.NewRequestOptions(opts...)
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schemas/%v", id, schemaId)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *polytomicgo.BulkSchemaEnvelope
+	if err := c.caller.Call(
+		ctx,
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodPatch,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Request:      request,
 			Response:     &response,
 			ErrorDecoder: errorDecoder,
 		},

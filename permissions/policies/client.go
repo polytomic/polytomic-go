@@ -201,7 +201,7 @@ func (c *Client) Get(
 	return response, nil
 }
 
-func (c *Client) Delete(
+func (c *Client) Remove(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,

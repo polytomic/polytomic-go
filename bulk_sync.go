@@ -34,6 +34,12 @@ type BulkSyncRemoveRequest struct {
 	RefreshSchemas *bool `json:"-" url:"refresh_schemas,omitempty"`
 }
 
+type StartBulkSyncRequest struct {
+	Resync  *bool    `json:"resync,omitempty" url:"resync,omitempty"`
+	Schemas []string `json:"schemas,omitempty" url:"schemas,omitempty"`
+	Test    *bool    `json:"test,omitempty" url:"test,omitempty"`
+}
+
 type UpdateBulkSyncRequest struct {
 	Active                     *bool                  `json:"active,omitempty" url:"active,omitempty"`
 	AutomaticallyAddNewFields  *BulkDiscover          `json:"automatically_add_new_fields,omitempty" url:"automatically_add_new_fields,omitempty"`

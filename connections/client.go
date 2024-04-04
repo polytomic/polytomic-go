@@ -201,8 +201,9 @@ func (c *Client) Create(
 
 func (c *Client) Connect(
 	ctx context.Context,
+	request *polytomicgo.ConnectCardRequest,
 	opts ...option.RequestOption,
-) error {
+) (*polytomicgo.ConnectCardResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -216,19 +217,42 @@ func (c *Client) Connect(
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *polytomicgo.ConnectCardResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
-			URL:         endpointURL,
-			Method:      http.MethodPost,
-			MaxAttempts: options.MaxAttempts,
-			Headers:     headers,
-			Client:      options.HTTPClient,
+			URL:          endpointURL,
+			Method:       http.MethodPost,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Request:      request,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return response, nil
 }
 
 func (c *Client) Get(

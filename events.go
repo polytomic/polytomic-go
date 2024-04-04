@@ -6,7 +6,7 @@ import (
 	time "time"
 )
 
-type EventsApiV2GetEventsRequest struct {
+type EventsListRequest struct {
 	OrganizationId *string    `json:"-" url:"organization_id,omitempty"`
 	Type           *string    `json:"-" url:"type,omitempty"`
 	StartingAfter  *time.Time `json:"-" url:"starting_after,omitempty"`

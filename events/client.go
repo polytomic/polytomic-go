@@ -34,9 +34,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 	}
 }
 
-func (c *Client) ApiV2GetEvents(
+func (c *Client) List(
 	ctx context.Context,
-	request *polytomicgo.EventsApiV2GetEventsRequest,
+	request *polytomicgo.EventsListRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.EventsEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -97,7 +97,7 @@ func (c *Client) ApiV2GetEvents(
 	return response, nil
 }
 
-func (c *Client) ApiV2GetEventTypes(
+func (c *Client) GetTypes(
 	ctx context.Context,
 	opts ...option.RequestOption,
 ) (*polytomicgo.EventTypesEnvelope, error) {

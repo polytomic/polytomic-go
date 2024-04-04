@@ -1,13 +1,12 @@
 // This file was auto-generated from our API Definition.
 
-package executions
+package identity
 
 import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
 	errors "errors"
-	fmt "fmt"
 	polytomicgo "github.com/polytomic/polytomic-go"
 	core "github.com/polytomic/polytomic-go/core"
 	option "github.com/polytomic/polytomic-go/option"
@@ -35,67 +34,10 @@ func NewClient(opts ...option.RequestOption) *Client {
 	}
 }
 
-func (c *Client) List(
-	ctx context.Context,
-	id string,
-	opts ...option.RequestOption,
-) (*polytomicgo.ListBulkSyncExecutionsEnvelope, error) {
-	options := core.NewRequestOptions(opts...)
-
-	baseURL := "https://app.polytomic.com"
-	if c.baseURL != "" {
-		baseURL = c.baseURL
-	}
-	if options.BaseURL != "" {
-		baseURL = options.BaseURL
-	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/executions", id)
-
-	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
-
-	errorDecoder := func(statusCode int, body io.Reader) error {
-		raw, err := io.ReadAll(body)
-		if err != nil {
-			return err
-		}
-		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
-		decoder := json.NewDecoder(bytes.NewReader(raw))
-		switch statusCode {
-		case 401:
-			value := new(polytomicgo.UnauthorizedError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		}
-		return apiError
-	}
-
-	var response *polytomicgo.ListBulkSyncExecutionsEnvelope
-	if err := c.caller.Call(
-		ctx,
-		&core.CallParams{
-			URL:          endpointURL,
-			Method:       http.MethodGet,
-			MaxAttempts:  options.MaxAttempts,
-			Headers:      headers,
-			Client:       options.HTTPClient,
-			Response:     &response,
-			ErrorDecoder: errorDecoder,
-		},
-	); err != nil {
-		return nil, err
-	}
-	return response, nil
-}
-
 func (c *Client) Get(
 	ctx context.Context,
-	id string,
-	execId string,
 	opts ...option.RequestOption,
-) (*polytomicgo.BulkSyncExecutionEnvelope, error) {
+) (*polytomicgo.GetIdentityResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -105,7 +47,7 @@ func (c *Client) Get(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/executions/%v", id, execId)
+	endpointURL := baseURL + "/" + "api/me"
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -128,7 +70,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *polytomicgo.BulkSyncExecutionEnvelope
+	var response *polytomicgo.GetIdentityResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

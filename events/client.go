@@ -75,6 +75,20 @@ func (c *Client) List(
 				return apiError
 			}
 			return value
+		case 422:
+			value := new(polytomicgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
 		}
 		return apiError
 	}

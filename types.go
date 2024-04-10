@@ -156,6 +156,37 @@ func (a *ActivateSyncOutput) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+type ApiError struct {
+	Message  *string     `json:"message,omitempty" url:"message,omitempty"`
+	Metadata interface{} `json:"metadata,omitempty" url:"metadata,omitempty"`
+	Status   *int        `json:"status,omitempty" url:"status,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (a *ApiError) UnmarshalJSON(data []byte) error {
+	type unmarshaler ApiError
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = ApiError(value)
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *ApiError) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
 type BulkDiscover string
 
 const (
@@ -1847,6 +1878,35 @@ func (g *GetConnectionMetaEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 func (g *GetConnectionMetaEnvelope) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GetExecutionResponseEnvelope struct {
+	Data *GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GetExecutionResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetExecutionResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetExecutionResponseEnvelope(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetExecutionResponseEnvelope) String() string {
 	if len(g._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
 			return value

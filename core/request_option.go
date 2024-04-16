@@ -45,7 +45,7 @@ func (r *RequestOptions) ToHeader() http.Header {
 	if r.Token != "" {
 		header.Set("Authorization", "Bearer "+r.Token)
 	}
-	header.Set("X-Polytomic-Version", fmt.Sprintf("%v", "2023-04-25"))
+	header.Set("X-Polytomic-Version", fmt.Sprintf("%v", "2024-02-08"))
 	return header
 }
 
@@ -53,7 +53,7 @@ func (r *RequestOptions) cloneHeader() http.Header {
 	headers := r.HTTPHeader.Clone()
 	headers.Set("X-Fern-Language", "Go")
 	headers.Set("X-Fern-SDK-Name", "github.com/polytomic/polytomic-go")
-	headers.Set("X-Fern-SDK-Version", "v0.1.4")
+	headers.Set("X-Fern-SDK-Version", "v0.2.0")
 	return headers
 }
 

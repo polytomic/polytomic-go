@@ -19,6 +19,20 @@ type CreateModelSyncRequest struct {
 	Target         *Target           `json:"target,omitempty" url:"target,omitempty"`
 }
 
+type ModelSyncGetSourceRequest struct {
+	Params map[string][]string `json:"-" url:"params,omitempty"`
+}
+
+type ModelSyncGetTargetRequest struct {
+	Type   *string `json:"-" url:"type,omitempty"`
+	Search *string `json:"-" url:"search,omitempty"`
+}
+
+type ModelSyncGetTargetFieldsRequest struct {
+	Target  string `json:"-" url:"target"`
+	Refresh *bool  `json:"-" url:"refresh,omitempty"`
+}
+
 type StartModelSyncRequest struct {
 	Identities []string `json:"identities,omitempty" url:"identities,omitempty"`
 }

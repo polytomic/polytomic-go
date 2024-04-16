@@ -50,7 +50,7 @@ func (c *Client) Get(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/jobs/%v/%v", id, type_)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/jobs/%v/%v", type_, id)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 

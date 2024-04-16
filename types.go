@@ -2046,6 +2046,35 @@ func (g *GetIdentityResponseSchema) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GetModelSyncSourceMetaEnvelope struct {
+	Data *ModelSyncSourceMetaResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GetModelSyncSourceMetaEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetModelSyncSourceMetaEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetModelSyncSourceMetaEnvelope(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetModelSyncSourceMetaEnvelope) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type Identity struct {
 	Function          string  `json:"function" url:"function" tfsdk:"function"`
 	NewField          *bool   `json:"new_field,omitempty" url:"new_field,omitempty" tfsdk:"new_field"`
@@ -2734,6 +2763,37 @@ func (m *ModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 func (m *ModelSyncResponseEnvelope) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type ModelSyncSourceMetaResponse struct {
+	Configuration map[string]*ConfigurationValue `json:"configuration,omitempty" url:"configuration,omitempty"`
+	Items         map[string]*SourceMeta         `json:"items,omitempty" url:"items,omitempty"`
+	RequiresOneOf []string                       `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *ModelSyncSourceMetaResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelSyncSourceMetaResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelSyncSourceMetaResponse(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelSyncSourceMetaResponse) String() string {
 	if len(m._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
 			return value
@@ -3524,6 +3584,37 @@ func (s *Source) UnmarshalJSON(data []byte) error {
 }
 
 func (s *Source) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SourceMeta struct {
+	HasItems      *bool         `json:"has_items,omitempty" url:"has_items,omitempty"`
+	Items         []interface{} `json:"items,omitempty" url:"items,omitempty"`
+	RequiresOneOf []string      `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SourceMeta) UnmarshalJSON(data []byte) error {
+	type unmarshaler SourceMeta
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SourceMeta(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SourceMeta) String() string {
 	if len(s._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
 			return value

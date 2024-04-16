@@ -23,20 +23,6 @@ type CreateConnectionRequestSchema struct {
 	Validate *bool `json:"validate,omitempty" url:"validate,omitempty"`
 }
 
-type ModelFieldsRequest struct {
-	Query map[string]interface{} `json:"query,omitempty" url:"query,omitempty"`
-}
-
-type ConnectionsGetTargetRequest struct {
-	Type   *string `json:"-" url:"type,omitempty"`
-	Search *string `json:"-" url:"search,omitempty"`
-}
-
-type TargetRequest struct {
-	Refresh *bool  `json:"refresh,omitempty" url:"refresh,omitempty"`
-	Target  string `json:"target" url:"target"`
-}
-
 type ConnectionsRemoveRequest struct {
 	Force *bool `json:"-" url:"force,omitempty"`
 }

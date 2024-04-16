@@ -27,6 +27,7 @@ type Client struct {
 
 	BulkSync     *bulksyncclient.Client
 	Connections  *connections.Client
+	ModelSync    *modelsyncclient.Client
 	Schemas      *schemas.Client
 	Events       *events.Client
 	Jobs         *jobs.Client
@@ -35,7 +36,6 @@ type Client struct {
 	Organization *organization.Client
 	Users        *users.Client
 	Permissions  *permissionsclient.Client
-	ModelSync    *modelsyncclient.Client
 	Webhooks     *webhooks.Client
 }
 
@@ -52,6 +52,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		header:       options.ToHeader(),
 		BulkSync:     bulksyncclient.NewClient(opts...),
 		Connections:  connections.NewClient(opts...),
+		ModelSync:    modelsyncclient.NewClient(opts...),
 		Schemas:      schemas.NewClient(opts...),
 		Events:       events.NewClient(opts...),
 		Jobs:         jobs.NewClient(opts...),
@@ -60,7 +61,6 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Organization: organization.NewClient(opts...),
 		Users:        users.NewClient(opts...),
 		Permissions:  permissionsclient.NewClient(opts...),
-		ModelSync:    modelsyncclient.NewClient(opts...),
 		Webhooks:     webhooks.NewClient(opts...),
 	}
 }

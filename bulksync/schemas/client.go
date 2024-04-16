@@ -313,7 +313,7 @@ func (c *Client) Update(
 		ctx,
 		&core.CallParams{
 			URL:          endpointURL,
-			Method:       http.MethodPatch,
+			Method:       http.MethodPut,
 			MaxAttempts:  options.MaxAttempts,
 			Headers:      headers,
 			Client:       options.HTTPClient,

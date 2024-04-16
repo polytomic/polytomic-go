@@ -157,11 +157,11 @@ func (a *ActivateSyncOutput) String() string {
 }
 
 type ApiError struct {
-	Message  *string     `json:"message,omitempty" url:"message,omitempty"`
-	Metadata interface{} `json:"metadata,omitempty" url:"metadata,omitempty"`
-	Status   *int        `json:"status,omitempty" url:"status,omitempty"`
+	Message  *string     `json:"message,omitempty" url:"message,omitempty" tfsdk:"message"`
+	Metadata interface{} `json:"metadata,omitempty" url:"metadata,omitempty" tfsdk:"metadata"`
+	Status   *int        `json:"status,omitempty" url:"status,omitempty" tfsdk:"status"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (a *ApiError) UnmarshalJSON(data []byte) error {
@@ -1890,9 +1890,9 @@ func (g *GetConnectionMetaEnvelope) String() string {
 }
 
 type GetExecutionResponseEnvelope struct {
-	Data *GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+	Data *GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (g *GetExecutionResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -2047,9 +2047,9 @@ func (g *GetIdentityResponseSchema) String() string {
 }
 
 type GetModelSyncSourceMetaEnvelope struct {
-	Data *ModelSyncSourceMetaResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data *ModelSyncSourceMetaResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (g *GetModelSyncSourceMetaEnvelope) UnmarshalJSON(data []byte) error {
@@ -2775,11 +2775,11 @@ func (m *ModelSyncResponseEnvelope) String() string {
 }
 
 type ModelSyncSourceMetaResponse struct {
-	Configuration map[string]*ConfigurationValue `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Items         map[string]*SourceMeta         `json:"items,omitempty" url:"items,omitempty"`
-	RequiresOneOf []string                       `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
+	Configuration map[string]*ConfigurationValue `json:"configuration,omitempty" url:"configuration,omitempty" tfsdk:"configuration"`
+	Items         map[string]*SourceMeta         `json:"items,omitempty" url:"items,omitempty" tfsdk:"items"`
+	RequiresOneOf []string                       `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty" tfsdk:"requires_one_of"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (m *ModelSyncSourceMetaResponse) UnmarshalJSON(data []byte) error {
@@ -3596,11 +3596,11 @@ func (s *Source) String() string {
 }
 
 type SourceMeta struct {
-	HasItems      *bool         `json:"has_items,omitempty" url:"has_items,omitempty"`
-	Items         []interface{} `json:"items,omitempty" url:"items,omitempty"`
-	RequiresOneOf []string      `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
+	HasItems      *bool         `json:"has_items,omitempty" url:"has_items,omitempty" tfsdk:"has_items"`
+	Items         []interface{} `json:"items,omitempty" url:"items,omitempty" tfsdk:"items"`
+	RequiresOneOf []string      `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty" tfsdk:"requires_one_of"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (s *SourceMeta) UnmarshalJSON(data []byte) error {
@@ -4203,3 +4203,4 @@ func NewWorkTaskStatusFromString(s string) (WorkTaskStatus, error) {
 func (w WorkTaskStatus) Ptr() *WorkTaskStatus {
 	return &w
 }
+

@@ -39,7 +39,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 // webhook may be created per organization. The webhook will be called for events
 // in that organization.
 //
-// Consult the [Events documentation](https://docs.polytomic.com/reference/events) for more information.
+// Consult the [Events documentation](https://apidocs.polytomic.com/getting-started/events) for more information.
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -105,7 +105,7 @@ func (c *Client) List(
 // webhook may be created per organization. The webhook will be called for events
 // in that organization.
 //
-// Consult the [Events documentation](https://docs.polytomic.com/reference/events) for more information.
+// Consult the [Events documentation](https://apidocs.polytomic.com/getting-started/events) for more information.
 func (c *Client) Create(
 	ctx context.Context,
 	request *polytomicgo.CreateWebhooksSchema,
@@ -180,7 +180,7 @@ func (c *Client) Create(
 // webhook may be created per organization. The webhook will be called for events
 // in that organization.
 //
-// Consult the [Events documentation](https://docs.polytomic.com/reference/events) for more information.
+// Consult the [Events documentation](https://apidocs.polytomic.com/getting-started/events) for more information.
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
@@ -247,7 +247,7 @@ func (c *Client) Get(
 // webhook may be created per organization. The webhook will be called for events
 // in that organization.
 //
-// Consult the [Events documentation](https://docs.polytomic.com/reference/events) for more information.
+// Consult the [Events documentation](https://apidocs.polytomic.com/getting-started/events) for more information.
 func (c *Client) Update(
 	ctx context.Context,
 	id string,

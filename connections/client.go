@@ -255,7 +255,7 @@ func (c *Client) Connect(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := baseURL + "/" + "api/connections/connect"
+	endpointURL := baseURL + "/" + "api/connections/connect/"
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 

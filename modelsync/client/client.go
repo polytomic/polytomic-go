@@ -917,6 +917,9 @@ func (c *Client) Activate(
 	return response, nil
 }
 
+// > 🚧 Force full resync
+// >
+// > Use caution when setting the `resync` parameter to `true`. This will force a full resync of the data from the source system. This can be a time-consuming operation and may impact the performance of the source system. It is recommended to only use this option when necessary.
 func (c *Client) Start(
 	ctx context.Context,
 	id string,

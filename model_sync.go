@@ -35,6 +35,7 @@ type ModelSyncGetTargetFieldsRequest struct {
 
 type StartModelSyncRequest struct {
 	Identities []string `json:"identities,omitempty" url:"identities,omitempty"`
+	Resync     *bool    `json:"resync,omitempty" url:"resync,omitempty"`
 }
 
 type UpdateModelSyncRequest struct {

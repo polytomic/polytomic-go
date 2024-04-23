@@ -37,7 +37,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 
 // > 🚧 Requires partner key
 // >
-// > User endpoints are only accessible using [partner keys](https://docs.polytomic.com/reference/authentication#partner-keys)
+// > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/getting-started/obtaining-api-keys#partner-keys)
 func (c *Client) List(
 	ctx context.Context,
 	orgId string,
@@ -102,7 +102,7 @@ func (c *Client) List(
 
 // > 🚧 Requires partner key
 // >
-// > User endpoints are only accessible using [partner keys](https://docs.polytomic.com/reference/authentication#partner-keys)
+// > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/getting-started/obtaining-api-keys#partner-keys)
 func (c *Client) Create(
 	ctx context.Context,
 	orgId string,
@@ -176,7 +176,7 @@ func (c *Client) Create(
 
 // > 🚧 Requires partner key
 // >
-// > User endpoints are only accessible using [partner keys](https://docs.polytomic.com/reference/authentication#partner-keys)
+// > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/getting-started/obtaining-api-keys#partner-keys)
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
@@ -249,7 +249,7 @@ func (c *Client) Get(
 
 // > 🚧 Requires partner key
 // >
-// > User endpoints are only accessible using [partner keys](https://docs.polytomic.com/reference/authentication#partner-keys)
+// > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/getting-started/obtaining-api-keys#partner-keys)
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
@@ -324,7 +324,7 @@ func (c *Client) Update(
 
 // > 🚧 Requires partner key
 // >
-// > User endpoints are only accessible using [partner keys](https://docs.polytomic.com/reference/authentication#partner-keys)
+// > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/getting-started/obtaining-api-keys#partner-keys)
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
@@ -397,7 +397,7 @@ func (c *Client) Remove(
 
 // > 🚧 Requires partner key
 // >
-// > User endpoints are only accessible using [partner keys](https://docs.polytomic.com/reference/authentication#partner-keys)
+// > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/getting-started/obtaining-api-keys#partner-keys)
 func (c *Client) CreateApiKey(
 	ctx context.Context,
 	orgId string,

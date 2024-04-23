@@ -253,7 +253,7 @@ func (c *Client) Get(
 
 // > 📘 Updating schemas
 // >
-// > Schema updates can be performed using the [Update Bulk Sync Schemas](https://docs.polytomic.com/reference/apiv3updatebulksyncschemas) endpoint.
+// > Schema updates can be performed using the [Update Bulk Sync Schemas](https://apidocs.polytomic.com/api-reference/bulk-sync/schemas/patch) endpoint.
 func (c *Client) Update(
 	ctx context.Context,
 	id string,

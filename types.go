@@ -5,14 +5,15 @@ package polytomic
 import (
 	json "encoding/json"
 	fmt "fmt"
-	core "github.com/polytomic/polytomic-go/core"
 	time "time"
+
+	core "github.com/polytomic/polytomic-go/core"
 )
 
 type ApiKeyResponse struct {
-	Value *string `json:"value,omitempty" url:"value,omitempty"`
+	Value *string `json:"value,omitempty" url:"value,omitempty" tfsdk:"value"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (a *ApiKeyResponse) UnmarshalJSON(data []byte) error {
@@ -39,9 +40,9 @@ func (a *ApiKeyResponse) String() string {
 }
 
 type ApiKeyResponseEnvelope struct {
-	Data *ApiKeyResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data *ApiKeyResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (a *ApiKeyResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -68,9 +69,9 @@ func (a *ApiKeyResponseEnvelope) String() string {
 }
 
 type ActivateSyncEnvelope struct {
-	Data *ActivateSyncOutput `json:"data,omitempty" url:"data,omitempty"`
+	Data *ActivateSyncOutput `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (a *ActivateSyncEnvelope) UnmarshalJSON(data []byte) error {
@@ -97,9 +98,9 @@ func (a *ActivateSyncEnvelope) String() string {
 }
 
 type ActivateSyncInput struct {
-	Active bool `json:"active" url:"active"`
+	Active bool `json:"active" url:"active" tfsdk:"active"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (a *ActivateSyncInput) UnmarshalJSON(data []byte) error {
@@ -126,10 +127,10 @@ func (a *ActivateSyncInput) String() string {
 }
 
 type ActivateSyncOutput struct {
-	Active *bool   `json:"active,omitempty" url:"active,omitempty"`
-	Id     *string `json:"id,omitempty" url:"id,omitempty"`
+	Active *bool   `json:"active,omitempty" url:"active,omitempty" tfsdk:"active"`
+	Id     *string `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (a *ActivateSyncOutput) UnmarshalJSON(data []byte) error {
@@ -156,11 +157,11 @@ func (a *ActivateSyncOutput) String() string {
 }
 
 type ApiError struct {
-	Message  *string     `json:"message,omitempty" url:"message,omitempty"`
-	Metadata interface{} `json:"metadata,omitempty" url:"metadata,omitempty"`
-	Status   *int        `json:"status,omitempty" url:"status,omitempty"`
+	Message  *string     `json:"message,omitempty" url:"message,omitempty" tfsdk:"message"`
+	Metadata interface{} `json:"metadata,omitempty" url:"metadata,omitempty" tfsdk:"metadata"`
+	Status   *int        `json:"status,omitempty" url:"status,omitempty" tfsdk:"status"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (a *ApiError) UnmarshalJSON(data []byte) error {
@@ -261,11 +262,11 @@ func (b BulkExecutionStatus) Ptr() *BulkExecutionStatus {
 }
 
 type BulkField struct {
-	Enabled    *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Id         *string `json:"id,omitempty" url:"id,omitempty"`
-	Obfuscated *bool   `json:"obfuscated,omitempty" url:"obfuscated,omitempty"`
+	Enabled    *bool   `json:"enabled,omitempty" url:"enabled,omitempty" tfsdk:"enabled"`
+	Id         *string `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Obfuscated *bool   `json:"obfuscated,omitempty" url:"obfuscated,omitempty" tfsdk:"obfuscated"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkField) UnmarshalJSON(data []byte) error {
@@ -292,10 +293,10 @@ func (b *BulkField) String() string {
 }
 
 type BulkItemizedSchedule struct {
-	Item     BulkSelectiveMode `json:"item,omitempty" url:"item,omitempty"`
-	Schedule *BulkSchedule     `json:"schedule,omitempty" url:"schedule,omitempty"`
+	Item     BulkSelectiveMode `json:"item,omitempty" url:"item,omitempty" tfsdk:"item"`
+	Schedule *BulkSchedule     `json:"schedule,omitempty" url:"schedule,omitempty" tfsdk:"schedule"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkItemizedSchedule) UnmarshalJSON(data []byte) error {
@@ -322,10 +323,10 @@ func (b *BulkItemizedSchedule) String() string {
 }
 
 type BulkMultiScheduleConfiguration struct {
-	Schedules []*BulkItemizedSchedule `json:"schedules,omitempty" url:"schedules,omitempty"`
-	Type      string                  `json:"type" url:"type"`
+	Schedules []*BulkItemizedSchedule `json:"schedules,omitempty" url:"schedules,omitempty" tfsdk:"schedules"`
+	Type      string                  `json:"type" url:"type" tfsdk:"type"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkMultiScheduleConfiguration) UnmarshalJSON(data []byte) error {
@@ -352,15 +353,15 @@ func (b *BulkMultiScheduleConfiguration) String() string {
 }
 
 type BulkSchedule struct {
-	DayOfMonth *string                         `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
-	DayOfWeek  *string                         `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
-	Frequency  ScheduleFrequency               `json:"frequency,omitempty" url:"frequency,omitempty"`
-	Hour       *string                         `json:"hour,omitempty" url:"hour,omitempty"`
-	Minute     *string                         `json:"minute,omitempty" url:"minute,omitempty"`
-	Month      *string                         `json:"month,omitempty" url:"month,omitempty"`
-	Multi      *BulkMultiScheduleConfiguration `json:"multi,omitempty" url:"multi,omitempty"`
+	DayOfMonth *string                         `json:"day_of_month,omitempty" url:"day_of_month,omitempty" tfsdk:"day_of_month"`
+	DayOfWeek  *string                         `json:"day_of_week,omitempty" url:"day_of_week,omitempty" tfsdk:"day_of_week"`
+	Frequency  ScheduleFrequency               `json:"frequency,omitempty" url:"frequency,omitempty" tfsdk:"frequency"`
+	Hour       *string                         `json:"hour,omitempty" url:"hour,omitempty" tfsdk:"hour"`
+	Minute     *string                         `json:"minute,omitempty" url:"minute,omitempty" tfsdk:"minute"`
+	Month      *string                         `json:"month,omitempty" url:"month,omitempty" tfsdk:"month"`
+	Multi      *BulkMultiScheduleConfiguration `json:"multi,omitempty" url:"multi,omitempty" tfsdk:"multi"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSchedule) UnmarshalJSON(data []byte) error {
@@ -387,13 +388,13 @@ func (b *BulkSchedule) String() string {
 }
 
 type BulkSchema struct {
-	Enabled      *bool        `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Fields       []*BulkField `json:"fields,omitempty" url:"fields,omitempty"`
-	Id           *string      `json:"id,omitempty" url:"id,omitempty"`
-	OutputName   *string      `json:"output_name,omitempty" url:"output_name,omitempty"`
-	PartitionKey *string      `json:"partition_key,omitempty" url:"partition_key,omitempty"`
+	Enabled      *bool        `json:"enabled,omitempty" url:"enabled,omitempty" tfsdk:"enabled"`
+	Fields       []*BulkField `json:"fields,omitempty" url:"fields,omitempty" tfsdk:"fields"`
+	Id           *string      `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	OutputName   *string      `json:"output_name,omitempty" url:"output_name,omitempty" tfsdk:"output_name"`
+	PartitionKey *string      `json:"partition_key,omitempty" url:"partition_key,omitempty" tfsdk:"partition_key"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSchema) UnmarshalJSON(data []byte) error {
@@ -420,9 +421,9 @@ func (b *BulkSchema) String() string {
 }
 
 type BulkSchemaEnvelope struct {
-	Data *BulkSchema `json:"data,omitempty" url:"data,omitempty"`
+	Data *BulkSchema `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSchemaEnvelope) UnmarshalJSON(data []byte) error {
@@ -511,10 +512,10 @@ func (b BulkSelectiveMode) Ptr() *BulkSelectiveMode {
 }
 
 type BulkSyncDest struct {
-	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Modes         []*SupportedMode       `json:"modes,omitempty" url:"modes,omitempty"`
+	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty" tfsdk:"configuration"`
+	Modes         []*SupportedMode       `json:"modes,omitempty" url:"modes,omitempty" tfsdk:"modes"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSyncDest) UnmarshalJSON(data []byte) error {
@@ -541,9 +542,9 @@ func (b *BulkSyncDest) String() string {
 }
 
 type BulkSyncDestEnvelope struct {
-	Data *BulkSyncDest `json:"data,omitempty" url:"data,omitempty"`
+	Data *BulkSyncDest `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSyncDestEnvelope) UnmarshalJSON(data []byte) error {
@@ -570,26 +571,26 @@ func (b *BulkSyncDestEnvelope) String() string {
 }
 
 type BulkSyncExecution struct {
-	CompletedAt *time.Time                 `json:"completed_at,omitempty" url:"completed_at,omitempty"`
-	CreatedAt   *time.Time                 `json:"created_at,omitempty" url:"created_at,omitempty"`
-	Id          *string                    `json:"id,omitempty" url:"id,omitempty"`
-	IsResync    *bool                      `json:"is_resync,omitempty" url:"is_resync,omitempty"`
-	IsTest      *bool                      `json:"is_test,omitempty" url:"is_test,omitempty"`
-	Schemas     []*BulkSyncSchemaExecution `json:"schemas,omitempty" url:"schemas,omitempty"`
-	StartedAt   *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status      *BulkExecutionStatus       `json:"status,omitempty" url:"status,omitempty"`
-	Type        *string                    `json:"type,omitempty" url:"type,omitempty"`
+	CompletedAt *time.Time                 `json:"completed_at,omitempty" url:"completed_at,omitempty" tfsdk:"completed_at"`
+	CreatedAt   *time.Time                 `json:"created_at,omitempty" url:"created_at,omitempty" tfsdk:"created_at"`
+	Id          *string                    `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	IsResync    *bool                      `json:"is_resync,omitempty" url:"is_resync,omitempty" tfsdk:"is_resync"`
+	IsTest      *bool                      `json:"is_test,omitempty" url:"is_test,omitempty" tfsdk:"is_test"`
+	Schemas     []*BulkSyncSchemaExecution `json:"schemas,omitempty" url:"schemas,omitempty" tfsdk:"schemas"`
+	StartedAt   *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty" tfsdk:"started_at"`
+	Status      *BulkExecutionStatus       `json:"status,omitempty" url:"status,omitempty" tfsdk:"status"`
+	Type        *string                    `json:"type,omitempty" url:"type,omitempty" tfsdk:"type"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSyncExecution) UnmarshalJSON(data []byte) error {
 	type embed BulkSyncExecution
 	var unmarshaler = struct {
-		embed
-		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
-		CreatedAt   *core.DateTime `json:"created_at,omitempty"`
-		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+		embed       `tfsdk:"embed"`
+		CompletedAt *core.DateTime `json:"completed_at,omitempty" tfsdk:"completed_at"`
+		CreatedAt   *core.DateTime `json:"created_at,omitempty" tfsdk:"created_at"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty" tfsdk:"started_at"`
 	}{
 		embed: embed(*b),
 	}
@@ -607,10 +608,10 @@ func (b *BulkSyncExecution) UnmarshalJSON(data []byte) error {
 func (b *BulkSyncExecution) MarshalJSON() ([]byte, error) {
 	type embed BulkSyncExecution
 	var marshaler = struct {
-		embed
-		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
-		CreatedAt   *core.DateTime `json:"created_at,omitempty"`
-		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+		embed       `tfsdk:"embed"`
+		CompletedAt *core.DateTime `json:"completed_at,omitempty" tfsdk:"completed_at"`
+		CreatedAt   *core.DateTime `json:"created_at,omitempty" tfsdk:"created_at"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty" tfsdk:"started_at"`
 	}{
 		embed:       embed(*b),
 		CompletedAt: core.NewOptionalDateTime(b.CompletedAt),
@@ -633,9 +634,9 @@ func (b *BulkSyncExecution) String() string {
 }
 
 type BulkSyncExecutionEnvelope struct {
-	Data *BulkSyncExecution `json:"data,omitempty" url:"data,omitempty"`
+	Data *BulkSyncExecution `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSyncExecutionEnvelope) UnmarshalJSON(data []byte) error {
@@ -662,9 +663,9 @@ func (b *BulkSyncExecutionEnvelope) String() string {
 }
 
 type BulkSyncListEnvelope struct {
-	Data []*BulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data []*BulkSyncResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSyncListEnvelope) UnmarshalJSON(data []byte) error {
@@ -691,20 +692,20 @@ func (b *BulkSyncListEnvelope) String() string {
 }
 
 type BulkSyncResponse struct {
-	Active                   *bool                  `json:"active,omitempty" url:"active,omitempty"`
-	DestinationConfiguration map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
-	DestinationConnectionId  *string                `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
-	Discover                 *bool                  `json:"discover,omitempty" url:"discover,omitempty"`
-	Id                       *string                `json:"id,omitempty" url:"id,omitempty"`
-	Mode                     *string                `json:"mode,omitempty" url:"mode,omitempty"`
-	Name                     *string                `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId           *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies                 []string               `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule                 *BulkSchedule          `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SourceConfiguration      map[string]interface{} `json:"source_configuration,omitempty" url:"source_configuration,omitempty"`
-	SourceConnectionId       *string                `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	Active                   *bool                  `json:"active,omitempty" url:"active,omitempty" tfsdk:"active"`
+	DestinationConfiguration map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty" tfsdk:"destination_configuration"`
+	DestinationConnectionId  *string                `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty" tfsdk:"destination_connection_id"`
+	Discover                 *bool                  `json:"discover,omitempty" url:"discover,omitempty" tfsdk:"discover"`
+	Id                       *string                `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Mode                     *string                `json:"mode,omitempty" url:"mode,omitempty" tfsdk:"mode"`
+	Name                     *string                `json:"name,omitempty" url:"name,omitempty" tfsdk:"name"`
+	OrganizationId           *string                `json:"organization_id,omitempty" url:"organization_id,omitempty" tfsdk:"organization_id"`
+	Policies                 []string               `json:"policies,omitempty" url:"policies,omitempty" tfsdk:"policies"`
+	Schedule                 *BulkSchedule          `json:"schedule,omitempty" url:"schedule,omitempty" tfsdk:"schedule"`
+	SourceConfiguration      map[string]interface{} `json:"source_configuration,omitempty" url:"source_configuration,omitempty" tfsdk:"source_configuration"`
+	SourceConnectionId       *string                `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty" tfsdk:"source_connection_id"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSyncResponse) UnmarshalJSON(data []byte) error {
@@ -731,9 +732,9 @@ func (b *BulkSyncResponse) String() string {
 }
 
 type BulkSyncResponseEnvelope struct {
-	Data *BulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data *BulkSyncResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -760,23 +761,23 @@ func (b *BulkSyncResponseEnvelope) String() string {
 }
 
 type BulkSyncSchemaExecution struct {
-	CompletedAt   *time.Time                 `json:"completed_at,omitempty" url:"completed_at,omitempty"`
-	ErrorCount    *int                       `json:"error_count,omitempty" url:"error_count,omitempty"`
-	RecordCount   *int                       `json:"record_count,omitempty" url:"record_count,omitempty"`
-	Schema        *string                    `json:"schema,omitempty" url:"schema,omitempty"`
-	StartedAt     *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status        *BulkSchemaExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-	StatusMessage *string                    `json:"status_message,omitempty" url:"status_message,omitempty"`
+	CompletedAt   *time.Time                 `json:"completed_at,omitempty" url:"completed_at,omitempty" tfsdk:"completed_at"`
+	ErrorCount    *int                       `json:"error_count,omitempty" url:"error_count,omitempty" tfsdk:"error_count"`
+	RecordCount   *int                       `json:"record_count,omitempty" url:"record_count,omitempty" tfsdk:"record_count"`
+	Schema        *string                    `json:"schema,omitempty" url:"schema,omitempty" tfsdk:"schema"`
+	StartedAt     *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty" tfsdk:"started_at"`
+	Status        *BulkSchemaExecutionStatus `json:"status,omitempty" url:"status,omitempty" tfsdk:"status"`
+	StatusMessage *string                    `json:"status_message,omitempty" url:"status_message,omitempty" tfsdk:"status_message"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSyncSchemaExecution) UnmarshalJSON(data []byte) error {
 	type embed BulkSyncSchemaExecution
 	var unmarshaler = struct {
-		embed
-		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
-		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+		embed       `tfsdk:"embed"`
+		CompletedAt *core.DateTime `json:"completed_at,omitempty" tfsdk:"completed_at"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty" tfsdk:"started_at"`
 	}{
 		embed: embed(*b),
 	}
@@ -793,9 +794,9 @@ func (b *BulkSyncSchemaExecution) UnmarshalJSON(data []byte) error {
 func (b *BulkSyncSchemaExecution) MarshalJSON() ([]byte, error) {
 	type embed BulkSyncSchemaExecution
 	var marshaler = struct {
-		embed
-		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
-		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+		embed       `tfsdk:"embed"`
+		CompletedAt *core.DateTime `json:"completed_at,omitempty" tfsdk:"completed_at"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty" tfsdk:"started_at"`
 	}{
 		embed:       embed(*b),
 		CompletedAt: core.NewOptionalDateTime(b.CompletedAt),
@@ -817,10 +818,10 @@ func (b *BulkSyncSchemaExecution) String() string {
 }
 
 type BulkSyncSource struct {
-	Configuration interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Schemas       []*Schema   `json:"schemas,omitempty" url:"schemas,omitempty"`
+	Configuration interface{} `json:"configuration,omitempty" url:"configuration,omitempty" tfsdk:"configuration"`
+	Schemas       []*Schema   `json:"schemas,omitempty" url:"schemas,omitempty" tfsdk:"schemas"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSyncSource) UnmarshalJSON(data []byte) error {
@@ -847,9 +848,9 @@ func (b *BulkSyncSource) String() string {
 }
 
 type BulkSyncSourceEnvelope struct {
-	Data *BulkSyncSource `json:"data,omitempty" url:"data,omitempty"`
+	Data *BulkSyncSource `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSyncSourceEnvelope) UnmarshalJSON(data []byte) error {
@@ -876,9 +877,9 @@ func (b *BulkSyncSourceEnvelope) String() string {
 }
 
 type BulkSyncSourceSchemaEnvelope struct {
-	Data *Schema `json:"data,omitempty" url:"data,omitempty"`
+	Data *Schema `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSyncSourceSchemaEnvelope) UnmarshalJSON(data []byte) error {
@@ -905,19 +906,19 @@ func (b *BulkSyncSourceSchemaEnvelope) String() string {
 }
 
 type BulkSyncSourceStatus struct {
-	CacheStatus         *string    `json:"cache_status,omitempty" url:"cache_status,omitempty"`
-	LastRefreshFinished *time.Time `json:"last_refresh_finished,omitempty" url:"last_refresh_finished,omitempty"`
-	LastRefreshStarted  *time.Time `json:"last_refresh_started,omitempty" url:"last_refresh_started,omitempty"`
+	CacheStatus         *string    `json:"cache_status,omitempty" url:"cache_status,omitempty" tfsdk:"cache_status"`
+	LastRefreshFinished *time.Time `json:"last_refresh_finished,omitempty" url:"last_refresh_finished,omitempty" tfsdk:"last_refresh_finished"`
+	LastRefreshStarted  *time.Time `json:"last_refresh_started,omitempty" url:"last_refresh_started,omitempty" tfsdk:"last_refresh_started"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSyncSourceStatus) UnmarshalJSON(data []byte) error {
 	type embed BulkSyncSourceStatus
 	var unmarshaler = struct {
-		embed
-		LastRefreshFinished *core.DateTime `json:"last_refresh_finished,omitempty"`
-		LastRefreshStarted  *core.DateTime `json:"last_refresh_started,omitempty"`
+		embed               `tfsdk:"embed"`
+		LastRefreshFinished *core.DateTime `json:"last_refresh_finished,omitempty" tfsdk:"last_refresh_finished"`
+		LastRefreshStarted  *core.DateTime `json:"last_refresh_started,omitempty" tfsdk:"last_refresh_started"`
 	}{
 		embed: embed(*b),
 	}
@@ -934,9 +935,9 @@ func (b *BulkSyncSourceStatus) UnmarshalJSON(data []byte) error {
 func (b *BulkSyncSourceStatus) MarshalJSON() ([]byte, error) {
 	type embed BulkSyncSourceStatus
 	var marshaler = struct {
-		embed
-		LastRefreshFinished *core.DateTime `json:"last_refresh_finished,omitempty"`
-		LastRefreshStarted  *core.DateTime `json:"last_refresh_started,omitempty"`
+		embed               `tfsdk:"embed"`
+		LastRefreshFinished *core.DateTime `json:"last_refresh_finished,omitempty" tfsdk:"last_refresh_finished"`
+		LastRefreshStarted  *core.DateTime `json:"last_refresh_started,omitempty" tfsdk:"last_refresh_started"`
 	}{
 		embed:               embed(*b),
 		LastRefreshFinished: core.NewOptionalDateTime(b.LastRefreshFinished),
@@ -958,9 +959,9 @@ func (b *BulkSyncSourceStatus) String() string {
 }
 
 type BulkSyncSourceStatusEnvelope struct {
-	Data *BulkSyncSourceStatus `json:"data,omitempty" url:"data,omitempty"`
+	Data *BulkSyncSourceStatus `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSyncSourceStatusEnvelope) UnmarshalJSON(data []byte) error {
@@ -987,9 +988,9 @@ func (b *BulkSyncSourceStatusEnvelope) String() string {
 }
 
 type BulkSyncStatusEnvelope struct {
-	Data *BulkSyncStatusResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data *BulkSyncStatusResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSyncStatusEnvelope) UnmarshalJSON(data []byte) error {
@@ -1016,18 +1017,18 @@ func (b *BulkSyncStatusEnvelope) String() string {
 }
 
 type BulkSyncStatusResponse struct {
-	CurrentExecution  *BulkSyncExecution `json:"current_execution,omitempty" url:"current_execution,omitempty"`
-	LastExecution     *BulkSyncExecution `json:"last_execution,omitempty" url:"last_execution,omitempty"`
-	NextExecutionTime *time.Time         `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty"`
+	CurrentExecution  *BulkSyncExecution `json:"current_execution,omitempty" url:"current_execution,omitempty" tfsdk:"current_execution"`
+	LastExecution     *BulkSyncExecution `json:"last_execution,omitempty" url:"last_execution,omitempty" tfsdk:"last_execution"`
+	NextExecutionTime *time.Time         `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty" tfsdk:"next_execution_time"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (b *BulkSyncStatusResponse) UnmarshalJSON(data []byte) error {
 	type embed BulkSyncStatusResponse
 	var unmarshaler = struct {
-		embed
-		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty"`
+		embed             `tfsdk:"embed"`
+		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty" tfsdk:"next_execution_time"`
 	}{
 		embed: embed(*b),
 	}
@@ -1043,8 +1044,8 @@ func (b *BulkSyncStatusResponse) UnmarshalJSON(data []byte) error {
 func (b *BulkSyncStatusResponse) MarshalJSON() ([]byte, error) {
 	type embed BulkSyncStatusResponse
 	var marshaler = struct {
-		embed
-		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty"`
+		embed             `tfsdk:"embed"`
+		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty" tfsdk:"next_execution_time"`
 	}{
 		embed:             embed(*b),
 		NextExecutionTime: core.NewOptionalDateTime(b.NextExecutionTime),
@@ -1065,10 +1066,10 @@ func (b *BulkSyncStatusResponse) String() string {
 }
 
 type ConfigurationValue struct {
-	Items []interface{} `json:"items,omitempty" url:"items,omitempty"`
-	Type  *string       `json:"type,omitempty" url:"type,omitempty"`
+	Items []interface{} `json:"items,omitempty" url:"items,omitempty" tfsdk:"items"`
+	Type  *string       `json:"type,omitempty" url:"type,omitempty" tfsdk:"type"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (c *ConfigurationValue) UnmarshalJSON(data []byte) error {
@@ -1095,10 +1096,10 @@ func (c *ConfigurationValue) String() string {
 }
 
 type ConnectCardResponse struct {
-	RedirectUrl *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
-	Token       *string `json:"token,omitempty" url:"token,omitempty"`
+	RedirectUrl *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty" tfsdk:"redirect_url"`
+	Token       *string `json:"token,omitempty" url:"token,omitempty" tfsdk:"token"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (c *ConnectCardResponse) UnmarshalJSON(data []byte) error {
@@ -1125,9 +1126,9 @@ func (c *ConnectCardResponse) String() string {
 }
 
 type ConnectCardResponseEnvelope struct {
-	Data *ConnectCardResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data *ConnectCardResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (c *ConnectCardResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -1154,9 +1155,9 @@ func (c *ConnectCardResponseEnvelope) String() string {
 }
 
 type ConnectionListResponseEnvelope struct {
-	Data []*ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+	Data []*ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (c *ConnectionListResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -1183,11 +1184,11 @@ func (c *ConnectionListResponseEnvelope) String() string {
 }
 
 type ConnectionMeta struct {
-	HasItems      *bool         `json:"has_items,omitempty" url:"has_items,omitempty"`
-	Items         []interface{} `json:"items,omitempty" url:"items,omitempty"`
-	RequiresOneOf []string      `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
+	HasItems      *bool         `json:"has_items,omitempty" url:"has_items,omitempty" tfsdk:"has_items"`
+	Items         []interface{} `json:"items,omitempty" url:"items,omitempty" tfsdk:"items"`
+	RequiresOneOf []string      `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty" tfsdk:"requires_one_of"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (c *ConnectionMeta) UnmarshalJSON(data []byte) error {
@@ -1214,11 +1215,11 @@ func (c *ConnectionMeta) String() string {
 }
 
 type ConnectionMetaResponse struct {
-	Configuration map[string]*ConfigurationValue `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Items         map[string]*ConnectionMeta     `json:"items,omitempty" url:"items,omitempty"`
-	RequiresOneOf []string                       `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
+	Configuration map[string]*ConfigurationValue `json:"configuration,omitempty" url:"configuration,omitempty" tfsdk:"configuration"`
+	Items         map[string]*ConnectionMeta     `json:"items,omitempty" url:"items,omitempty" tfsdk:"items"`
+	RequiresOneOf []string                       `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty" tfsdk:"requires_one_of"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (c *ConnectionMetaResponse) UnmarshalJSON(data []byte) error {
@@ -1245,10 +1246,10 @@ func (c *ConnectionMetaResponse) String() string {
 }
 
 type ConnectionParameterValue struct {
-	Label *string     `json:"label,omitempty" url:"label,omitempty"`
-	Value interface{} `json:"value,omitempty" url:"value,omitempty"`
+	Label *string     `json:"label,omitempty" url:"label,omitempty" tfsdk:"label"`
+	Value interface{} `json:"value,omitempty" url:"value,omitempty" tfsdk:"value"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (c *ConnectionParameterValue) UnmarshalJSON(data []byte) error {
@@ -1275,10 +1276,10 @@ func (c *ConnectionParameterValue) String() string {
 }
 
 type ConnectionParameterValuesResp struct {
-	AllowsCreation *bool                       `json:"allows_creation,omitempty" url:"allows_creation,omitempty"`
-	Values         []*ConnectionParameterValue `json:"values,omitempty" url:"values,omitempty"`
+	AllowsCreation *bool                       `json:"allows_creation,omitempty" url:"allows_creation,omitempty" tfsdk:"allows_creation"`
+	Values         []*ConnectionParameterValue `json:"values,omitempty" url:"values,omitempty" tfsdk:"values"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (c *ConnectionParameterValuesResp) UnmarshalJSON(data []byte) error {
@@ -1305,9 +1306,9 @@ func (c *ConnectionParameterValuesResp) String() string {
 }
 
 type ConnectionParameterValuesResponseEnvelope struct {
-	Data map[string]*ConnectionParameterValuesResp `json:"data,omitempty" url:"data,omitempty"`
+	Data map[string]*ConnectionParameterValuesResp `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (c *ConnectionParameterValuesResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -1334,9 +1335,9 @@ func (c *ConnectionParameterValuesResponseEnvelope) String() string {
 }
 
 type ConnectionResponseEnvelope struct {
-	Data *ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+	Data *ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (c *ConnectionResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -1363,16 +1364,16 @@ func (c *ConnectionResponseEnvelope) String() string {
 }
 
 type ConnectionResponseSchema struct {
-	Configuration  map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Id             *string                `json:"id,omitempty" url:"id,omitempty"`
-	Name           *string                `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies       []string               `json:"policies,omitempty" url:"policies,omitempty"`
-	Status         *string                `json:"status,omitempty" url:"status,omitempty"`
-	StatusError    *string                `json:"status_error,omitempty" url:"status_error,omitempty"`
-	Type           *ConnectionTypeSchema  `json:"type,omitempty" url:"type,omitempty"`
+	Configuration  map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty" tfsdk:"configuration"`
+	Id             *string                `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Name           *string                `json:"name,omitempty" url:"name,omitempty" tfsdk:"name"`
+	OrganizationId *string                `json:"organization_id,omitempty" url:"organization_id,omitempty" tfsdk:"organization_id"`
+	Policies       []string               `json:"policies,omitempty" url:"policies,omitempty" tfsdk:"policies"`
+	Status         *string                `json:"status,omitempty" url:"status,omitempty" tfsdk:"status"`
+	StatusError    *string                `json:"status_error,omitempty" url:"status_error,omitempty" tfsdk:"status_error"`
+	Type           *ConnectionTypeSchema  `json:"type,omitempty" url:"type,omitempty" tfsdk:"type"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (c *ConnectionResponseSchema) UnmarshalJSON(data []byte) error {
@@ -1399,12 +1400,12 @@ func (c *ConnectionResponseSchema) String() string {
 }
 
 type ConnectionType struct {
-	EnvConfig map[string]interface{} `json:"envConfig,omitempty" url:"envConfig,omitempty"`
-	Id        *string                `json:"id,omitempty" url:"id,omitempty"`
-	Name      *string                `json:"name,omitempty" url:"name,omitempty"`
-	UseOauth  *bool                  `json:"use_oauth,omitempty" url:"use_oauth,omitempty"`
+	EnvConfig map[string]interface{} `json:"envConfig,omitempty" url:"envConfig,omitempty" tfsdk:"env_config"`
+	Id        *string                `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Name      *string                `json:"name,omitempty" url:"name,omitempty" tfsdk:"name"`
+	UseOauth  *bool                  `json:"use_oauth,omitempty" url:"use_oauth,omitempty" tfsdk:"use_oauth"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (c *ConnectionType) UnmarshalJSON(data []byte) error {
@@ -1431,9 +1432,9 @@ func (c *ConnectionType) String() string {
 }
 
 type ConnectionTypeResponseEnvelope struct {
-	Data []*ConnectionType `json:"data,omitempty" url:"data,omitempty"`
+	Data []*ConnectionType `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (c *ConnectionTypeResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -1460,11 +1461,11 @@ func (c *ConnectionTypeResponseEnvelope) String() string {
 }
 
 type ConnectionTypeSchema struct {
-	Id         *string  `json:"id,omitempty" url:"id,omitempty"`
-	Name       *string  `json:"name,omitempty" url:"name,omitempty"`
-	Operations []string `json:"operations,omitempty" url:"operations,omitempty"`
+	Id         *string  `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Name       *string  `json:"name,omitempty" url:"name,omitempty" tfsdk:"name"`
+	Operations []string `json:"operations,omitempty" url:"operations,omitempty" tfsdk:"operations"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (c *ConnectionTypeSchema) UnmarshalJSON(data []byte) error {
@@ -1491,9 +1492,9 @@ func (c *ConnectionTypeSchema) String() string {
 }
 
 type CreateConnectionResponseEnvelope struct {
-	Data *CreateConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+	Data *CreateConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (c *CreateConnectionResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -1521,19 +1522,19 @@ func (c *CreateConnectionResponseEnvelope) String() string {
 
 type CreateConnectionResponseSchema struct {
 	// Code to enter in order to complete connection authentication.
-	AuthCode *string `json:"auth_code,omitempty" url:"auth_code,omitempty"`
+	AuthCode *string `json:"auth_code,omitempty" url:"auth_code,omitempty" tfsdk:"auth_code"`
 	// URL to visit to complete connection authentication.
-	AuthUrl        *string                `json:"auth_url,omitempty" url:"auth_url,omitempty"`
-	Configuration  map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Id             *string                `json:"id,omitempty" url:"id,omitempty"`
-	Name           *string                `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies       []string               `json:"policies,omitempty" url:"policies,omitempty"`
-	Status         *string                `json:"status,omitempty" url:"status,omitempty"`
-	StatusError    *string                `json:"status_error,omitempty" url:"status_error,omitempty"`
-	Type           *ConnectionTypeSchema  `json:"type,omitempty" url:"type,omitempty"`
+	AuthUrl        *string                `json:"auth_url,omitempty" url:"auth_url,omitempty" tfsdk:"auth_url"`
+	Configuration  map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty" tfsdk:"configuration"`
+	Id             *string                `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Name           *string                `json:"name,omitempty" url:"name,omitempty" tfsdk:"name"`
+	OrganizationId *string                `json:"organization_id,omitempty" url:"organization_id,omitempty" tfsdk:"organization_id"`
+	Policies       []string               `json:"policies,omitempty" url:"policies,omitempty" tfsdk:"policies"`
+	Status         *string                `json:"status,omitempty" url:"status,omitempty" tfsdk:"status"`
+	StatusError    *string                `json:"status_error,omitempty" url:"status_error,omitempty" tfsdk:"status_error"`
+	Type           *ConnectionTypeSchema  `json:"type,omitempty" url:"type,omitempty" tfsdk:"type"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (c *CreateConnectionResponseSchema) UnmarshalJSON(data []byte) error {
@@ -1560,20 +1561,20 @@ func (c *CreateConnectionResponseSchema) String() string {
 }
 
 type Event struct {
-	CreatedAt      *time.Time  `json:"created_at,omitempty" url:"created_at,omitempty"`
-	Event          interface{} `json:"event,omitempty" url:"event,omitempty"`
-	Id             *string     `json:"id,omitempty" url:"id,omitempty"`
-	OrganizationId *string     `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Type           *string     `json:"type,omitempty" url:"type,omitempty"`
+	CreatedAt      *time.Time  `json:"created_at,omitempty" url:"created_at,omitempty" tfsdk:"created_at"`
+	Event          interface{} `json:"event,omitempty" url:"event,omitempty" tfsdk:"event"`
+	Id             *string     `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	OrganizationId *string     `json:"organization_id,omitempty" url:"organization_id,omitempty" tfsdk:"organization_id"`
+	Type           *string     `json:"type,omitempty" url:"type,omitempty" tfsdk:"type"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (e *Event) UnmarshalJSON(data []byte) error {
 	type embed Event
 	var unmarshaler = struct {
-		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		embed     `tfsdk:"embed"`
+		CreatedAt *core.DateTime `json:"created_at,omitempty" tfsdk:"created_at"`
 	}{
 		embed: embed(*e),
 	}
@@ -1589,8 +1590,8 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 func (e *Event) MarshalJSON() ([]byte, error) {
 	type embed Event
 	var marshaler = struct {
-		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		embed     `tfsdk:"embed"`
+		CreatedAt *core.DateTime `json:"created_at,omitempty" tfsdk:"created_at"`
 	}{
 		embed:     embed(*e),
 		CreatedAt: core.NewOptionalDateTime(e.CreatedAt),
@@ -1611,9 +1612,9 @@ func (e *Event) String() string {
 }
 
 type EventTypesEnvelope struct {
-	Data []string `json:"data,omitempty" url:"data,omitempty"`
+	Data []string `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (e *EventTypesEnvelope) UnmarshalJSON(data []byte) error {
@@ -1640,9 +1641,9 @@ func (e *EventTypesEnvelope) String() string {
 }
 
 type EventsEnvelope struct {
-	Data []*Event `json:"data,omitempty" url:"data,omitempty"`
+	Data []*Event `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (e *EventsEnvelope) UnmarshalJSON(data []byte) error {
@@ -1669,12 +1670,12 @@ func (e *EventsEnvelope) String() string {
 }
 
 type ExecutionCounts struct {
-	Error  *int `json:"error,omitempty" url:"error,omitempty"`
-	Insert *int `json:"insert,omitempty" url:"insert,omitempty"`
-	Total  *int `json:"total,omitempty" url:"total,omitempty"`
-	Update *int `json:"update,omitempty" url:"update,omitempty"`
+	Error  *int `json:"error,omitempty" url:"error,omitempty" tfsdk:"error"`
+	Insert *int `json:"insert,omitempty" url:"insert,omitempty" tfsdk:"insert"`
+	Total  *int `json:"total,omitempty" url:"total,omitempty" tfsdk:"total"`
+	Update *int `json:"update,omitempty" url:"update,omitempty" tfsdk:"update"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (e *ExecutionCounts) UnmarshalJSON(data []byte) error {
@@ -1701,17 +1702,17 @@ func (e *ExecutionCounts) String() string {
 }
 
 type ExecutionLogResponse struct {
-	Expires *time.Time `json:"expires,omitempty" url:"expires,omitempty"`
-	Urls    []string   `json:"urls,omitempty" url:"urls,omitempty"`
+	Expires *time.Time `json:"expires,omitempty" url:"expires,omitempty" tfsdk:"expires"`
+	Urls    []string   `json:"urls,omitempty" url:"urls,omitempty" tfsdk:"urls"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (e *ExecutionLogResponse) UnmarshalJSON(data []byte) error {
 	type embed ExecutionLogResponse
 	var unmarshaler = struct {
-		embed
-		Expires *core.DateTime `json:"expires,omitempty"`
+		embed   `tfsdk:"embed"`
+		Expires *core.DateTime `json:"expires,omitempty" tfsdk:"expires"`
 	}{
 		embed: embed(*e),
 	}
@@ -1727,8 +1728,8 @@ func (e *ExecutionLogResponse) UnmarshalJSON(data []byte) error {
 func (e *ExecutionLogResponse) MarshalJSON() ([]byte, error) {
 	type embed ExecutionLogResponse
 	var marshaler = struct {
-		embed
-		Expires *core.DateTime `json:"expires,omitempty"`
+		embed   `tfsdk:"embed"`
+		Expires *core.DateTime `json:"expires,omitempty" tfsdk:"expires"`
 	}{
 		embed:   embed(*e),
 		Expires: core.NewOptionalDateTime(e.Expires),
@@ -1749,9 +1750,9 @@ func (e *ExecutionLogResponse) String() string {
 }
 
 type ExecutionLogsResponseEnvelope struct {
-	Data *ExecutionLogResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data *ExecutionLogResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (e *ExecutionLogsResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -1827,13 +1828,13 @@ func (e ExecutionStatus) Ptr() *ExecutionStatus {
 }
 
 type Filter struct {
-	FieldId   string      `json:"field_id" url:"field_id"`
-	FieldType string      `json:"field_type" url:"field_type"`
-	Function  string      `json:"function" url:"function"`
-	Label     *string     `json:"label,omitempty" url:"label,omitempty"`
-	Value     interface{} `json:"value,omitempty" url:"value,omitempty"`
+	FieldId   string      `json:"field_id" url:"field_id" tfsdk:"field_id"`
+	FieldType string      `json:"field_type" url:"field_type" tfsdk:"field_type"`
+	Function  string      `json:"function" url:"function" tfsdk:"function"`
+	Label     *string     `json:"label,omitempty" url:"label,omitempty" tfsdk:"label"`
+	Value     interface{} `json:"value,omitempty" url:"value,omitempty" tfsdk:"value"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (f *Filter) UnmarshalJSON(data []byte) error {
@@ -1860,9 +1861,9 @@ func (f *Filter) String() string {
 }
 
 type GetConnectionMetaEnvelope struct {
-	Data *ConnectionMetaResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data *ConnectionMetaResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (g *GetConnectionMetaEnvelope) UnmarshalJSON(data []byte) error {
@@ -1889,9 +1890,9 @@ func (g *GetConnectionMetaEnvelope) String() string {
 }
 
 type GetExecutionResponseEnvelope struct {
-	Data *GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+	Data *GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (g *GetExecutionResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -1918,25 +1919,25 @@ func (g *GetExecutionResponseEnvelope) String() string {
 }
 
 type GetExecutionResponseSchema struct {
-	CompletedAt *time.Time       `json:"completed_at,omitempty" url:"completed_at,omitempty"`
-	Counts      *ExecutionCounts `json:"counts,omitempty" url:"counts,omitempty"`
-	CreatedAt   *time.Time       `json:"created_at,omitempty" url:"created_at,omitempty"`
-	Errors      []string         `json:"errors,omitempty" url:"errors,omitempty"`
-	Id          *string          `json:"id,omitempty" url:"id,omitempty"`
-	StartedAt   *time.Time       `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status      *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-	Type        *string          `json:"type,omitempty" url:"type,omitempty"`
+	CompletedAt *time.Time       `json:"completed_at,omitempty" url:"completed_at,omitempty" tfsdk:"completed_at"`
+	Counts      *ExecutionCounts `json:"counts,omitempty" url:"counts,omitempty" tfsdk:"counts"`
+	CreatedAt   *time.Time       `json:"created_at,omitempty" url:"created_at,omitempty" tfsdk:"created_at"`
+	Errors      []string         `json:"errors,omitempty" url:"errors,omitempty" tfsdk:"errors"`
+	Id          *string          `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	StartedAt   *time.Time       `json:"started_at,omitempty" url:"started_at,omitempty" tfsdk:"started_at"`
+	Status      *ExecutionStatus `json:"status,omitempty" url:"status,omitempty" tfsdk:"status"`
+	Type        *string          `json:"type,omitempty" url:"type,omitempty" tfsdk:"type"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (g *GetExecutionResponseSchema) UnmarshalJSON(data []byte) error {
 	type embed GetExecutionResponseSchema
 	var unmarshaler = struct {
-		embed
-		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
-		CreatedAt   *core.DateTime `json:"created_at,omitempty"`
-		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+		embed       `tfsdk:"embed"`
+		CompletedAt *core.DateTime `json:"completed_at,omitempty" tfsdk:"completed_at"`
+		CreatedAt   *core.DateTime `json:"created_at,omitempty" tfsdk:"created_at"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty" tfsdk:"started_at"`
 	}{
 		embed: embed(*g),
 	}
@@ -1954,10 +1955,10 @@ func (g *GetExecutionResponseSchema) UnmarshalJSON(data []byte) error {
 func (g *GetExecutionResponseSchema) MarshalJSON() ([]byte, error) {
 	type embed GetExecutionResponseSchema
 	var marshaler = struct {
-		embed
-		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
-		CreatedAt   *core.DateTime `json:"created_at,omitempty"`
-		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+		embed       `tfsdk:"embed"`
+		CompletedAt *core.DateTime `json:"completed_at,omitempty" tfsdk:"completed_at"`
+		CreatedAt   *core.DateTime `json:"created_at,omitempty" tfsdk:"created_at"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty" tfsdk:"started_at"`
 	}{
 		embed:       embed(*g),
 		CompletedAt: core.NewOptionalDateTime(g.CompletedAt),
@@ -1980,9 +1981,9 @@ func (g *GetExecutionResponseSchema) String() string {
 }
 
 type GetIdentityResponseEnvelope struct {
-	Data *GetIdentityResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+	Data *GetIdentityResponseSchema `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (g *GetIdentityResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -2009,17 +2010,17 @@ func (g *GetIdentityResponseEnvelope) String() string {
 }
 
 type GetIdentityResponseSchema struct {
-	Email            *string `json:"email,omitempty" url:"email,omitempty"`
-	Id               *string `json:"id,omitempty" url:"id,omitempty"`
-	IsOrganization   *bool   `json:"is_organization,omitempty" url:"is_organization,omitempty"`
-	IsPartner        *bool   `json:"is_partner,omitempty" url:"is_partner,omitempty"`
-	IsSystem         *bool   `json:"is_system,omitempty" url:"is_system,omitempty"`
-	IsUser           *bool   `json:"is_user,omitempty" url:"is_user,omitempty"`
-	OrganizationId   *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	OrganizationName *string `json:"organization_name,omitempty" url:"organization_name,omitempty"`
-	Role             *string `json:"role,omitempty" url:"role,omitempty"`
+	Email            *string `json:"email,omitempty" url:"email,omitempty" tfsdk:"email"`
+	Id               *string `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	IsOrganization   *bool   `json:"is_organization,omitempty" url:"is_organization,omitempty" tfsdk:"is_organization"`
+	IsPartner        *bool   `json:"is_partner,omitempty" url:"is_partner,omitempty" tfsdk:"is_partner"`
+	IsSystem         *bool   `json:"is_system,omitempty" url:"is_system,omitempty" tfsdk:"is_system"`
+	IsUser           *bool   `json:"is_user,omitempty" url:"is_user,omitempty" tfsdk:"is_user"`
+	OrganizationId   *string `json:"organization_id,omitempty" url:"organization_id,omitempty" tfsdk:"organization_id"`
+	OrganizationName *string `json:"organization_name,omitempty" url:"organization_name,omitempty" tfsdk:"organization_name"`
+	Role             *string `json:"role,omitempty" url:"role,omitempty" tfsdk:"role"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (g *GetIdentityResponseSchema) UnmarshalJSON(data []byte) error {
@@ -2046,9 +2047,9 @@ func (g *GetIdentityResponseSchema) String() string {
 }
 
 type GetModelSyncSourceMetaEnvelope struct {
-	Data *ModelSyncSourceMetaResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data *ModelSyncSourceMetaResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (g *GetModelSyncSourceMetaEnvelope) UnmarshalJSON(data []byte) error {
@@ -2075,13 +2076,13 @@ func (g *GetModelSyncSourceMetaEnvelope) String() string {
 }
 
 type Identity struct {
-	Function          string  `json:"function" url:"function"`
-	NewField          *bool   `json:"new_field,omitempty" url:"new_field,omitempty"`
-	RemoteFieldTypeId *string `json:"remote_field_type_id,omitempty" url:"remote_field_type_id,omitempty"`
-	Source            *Source `json:"source,omitempty" url:"source,omitempty"`
-	Target            string  `json:"target" url:"target"`
+	Function          string  `json:"function" url:"function" tfsdk:"function"`
+	NewField          *bool   `json:"new_field,omitempty" url:"new_field,omitempty" tfsdk:"new_field"`
+	RemoteFieldTypeId *string `json:"remote_field_type_id,omitempty" url:"remote_field_type_id,omitempty" tfsdk:"remote_field_type_id"`
+	Source            *Source `json:"source,omitempty" url:"source,omitempty" tfsdk:"source"`
+	Target            string  `json:"target" url:"target" tfsdk:"target"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (i *Identity) UnmarshalJSON(data []byte) error {
@@ -2108,10 +2109,10 @@ func (i *Identity) String() string {
 }
 
 type IdentityFunction struct {
-	Id    *string `json:"id,omitempty" url:"id,omitempty"`
-	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	Id    *string `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Label *string `json:"label,omitempty" url:"label,omitempty" tfsdk:"label"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (i *IdentityFunction) UnmarshalJSON(data []byte) error {
@@ -2138,13 +2139,13 @@ func (i *IdentityFunction) String() string {
 }
 
 type JobResponse struct {
-	Error  *string         `json:"error,omitempty" url:"error,omitempty"`
-	JobId  *string         `json:"job_id,omitempty" url:"job_id,omitempty"`
-	Result interface{}     `json:"result,omitempty" url:"result,omitempty"`
-	Status *WorkTaskStatus `json:"status,omitempty" url:"status,omitempty"`
-	Type   *string         `json:"type,omitempty" url:"type,omitempty"`
+	Error  *string         `json:"error,omitempty" url:"error,omitempty" tfsdk:"error"`
+	JobId  *string         `json:"job_id,omitempty" url:"job_id,omitempty" tfsdk:"job_id"`
+	Result interface{}     `json:"result,omitempty" url:"result,omitempty" tfsdk:"result"`
+	Status *WorkTaskStatus `json:"status,omitempty" url:"status,omitempty" tfsdk:"status"`
+	Type   *string         `json:"type,omitempty" url:"type,omitempty" tfsdk:"type"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (j *JobResponse) UnmarshalJSON(data []byte) error {
@@ -2171,9 +2172,9 @@ func (j *JobResponse) String() string {
 }
 
 type JobResponseEnvelope struct {
-	Data *JobResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data *JobResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (j *JobResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -2204,9 +2205,9 @@ type JsonschemaForm = map[string]interface{}
 type LabelLabel = map[string]interface{}
 
 type ListBulkSchema struct {
-	Data []*BulkSchema `json:"data,omitempty" url:"data,omitempty"`
+	Data []*BulkSchema `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (l *ListBulkSchema) UnmarshalJSON(data []byte) error {
@@ -2233,9 +2234,9 @@ func (l *ListBulkSchema) String() string {
 }
 
 type ListBulkSyncExecutionsEnvelope struct {
-	Data []*BulkSyncExecution `json:"data,omitempty" url:"data,omitempty"`
+	Data []*BulkSyncExecution `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (l *ListBulkSyncExecutionsEnvelope) UnmarshalJSON(data []byte) error {
@@ -2262,9 +2263,9 @@ func (l *ListBulkSyncExecutionsEnvelope) String() string {
 }
 
 type ListExecutionResponseEnvelope struct {
-	Data []*GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+	Data []*GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (l *ListExecutionResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -2291,9 +2292,9 @@ func (l *ListExecutionResponseEnvelope) String() string {
 }
 
 type ListModelSyncResponseEnvelope struct {
-	Data []*ModelSyncResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data []*ModelSyncResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (l *ListModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -2320,9 +2321,9 @@ func (l *ListModelSyncResponseEnvelope) String() string {
 }
 
 type ListPoliciesResponseEnvelope struct {
-	Data []*PolicyResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data []*PolicyResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (l *ListPoliciesResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -2349,9 +2350,9 @@ func (l *ListPoliciesResponseEnvelope) String() string {
 }
 
 type ListUsersEnvelope struct {
-	Data []*User `json:"data,omitempty" url:"data,omitempty"`
+	Data []*User `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (l *ListUsersEnvelope) UnmarshalJSON(data []byte) error {
@@ -2378,14 +2379,14 @@ func (l *ListUsersEnvelope) String() string {
 }
 
 type Mode struct {
-	Description           *string `json:"description,omitempty" url:"description,omitempty"`
-	Label                 *string `json:"label,omitempty" url:"label,omitempty"`
-	Mode                  *string `json:"mode,omitempty" url:"mode,omitempty"`
-	RequiresIdentity      *bool   `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
-	SupportsFieldSyncMode *bool   `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
-	SupportsTargetFilters *bool   `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
+	Description           *string `json:"description,omitempty" url:"description,omitempty" tfsdk:"description"`
+	Label                 *string `json:"label,omitempty" url:"label,omitempty" tfsdk:"label"`
+	Mode                  *string `json:"mode,omitempty" url:"mode,omitempty" tfsdk:"mode"`
+	RequiresIdentity      *bool   `json:"requires_identity,omitempty" url:"requires_identity,omitempty" tfsdk:"requires_identity"`
+	SupportsFieldSyncMode *bool   `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty" tfsdk:"supports_field_sync_mode"`
+	SupportsTargetFilters *bool   `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty" tfsdk:"supports_target_filters"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (m *Mode) UnmarshalJSON(data []byte) error {
@@ -2412,16 +2413,16 @@ func (m *Mode) String() string {
 }
 
 type ModelField struct {
-	Description *string     `json:"description,omitempty" url:"description,omitempty"`
-	Example     interface{} `json:"example,omitempty" url:"example,omitempty"`
-	Label       *string     `json:"label,omitempty" url:"label,omitempty"`
-	Name        *string     `json:"name,omitempty" url:"name,omitempty"`
-	RemoteType  *string     `json:"remote_type,omitempty" url:"remote_type,omitempty"`
-	Type        *string     `json:"type,omitempty" url:"type,omitempty"`
-	Unique      *bool       `json:"unique,omitempty" url:"unique,omitempty"`
-	UserAdded   *bool       `json:"user_added,omitempty" url:"user_added,omitempty"`
+	Description *string     `json:"description,omitempty" url:"description,omitempty" tfsdk:"description"`
+	Example     interface{} `json:"example,omitempty" url:"example,omitempty" tfsdk:"example"`
+	Label       *string     `json:"label,omitempty" url:"label,omitempty" tfsdk:"label"`
+	Name        *string     `json:"name,omitempty" url:"name,omitempty" tfsdk:"name"`
+	RemoteType  *string     `json:"remote_type,omitempty" url:"remote_type,omitempty" tfsdk:"remote_type"`
+	Type        *string     `json:"type,omitempty" url:"type,omitempty" tfsdk:"type"`
+	Unique      *bool       `json:"unique,omitempty" url:"unique,omitempty" tfsdk:"unique"`
+	UserAdded   *bool       `json:"user_added,omitempty" url:"user_added,omitempty" tfsdk:"user_added"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (m *ModelField) UnmarshalJSON(data []byte) error {
@@ -2448,9 +2449,9 @@ func (m *ModelField) String() string {
 }
 
 type ModelFieldResponse struct {
-	Data []*ModelField `json:"data,omitempty" url:"data,omitempty"`
+	Data []*ModelField `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (m *ModelFieldResponse) UnmarshalJSON(data []byte) error {
@@ -2477,9 +2478,9 @@ func (m *ModelFieldResponse) String() string {
 }
 
 type ModelListResponseEnvelope struct {
-	Data []*ModelResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data []*ModelResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (m *ModelListResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -2506,12 +2507,12 @@ func (m *ModelListResponseEnvelope) String() string {
 }
 
 type ModelModelFieldRequest struct {
-	Example *string `json:"example,omitempty" url:"example,omitempty"`
-	Label   string  `json:"label" url:"label"`
-	Name    string  `json:"name" url:"name"`
-	Type    string  `json:"type" url:"type"`
+	Example *string `json:"example,omitempty" url:"example,omitempty" tfsdk:"example"`
+	Label   string  `json:"label" url:"label" tfsdk:"label"`
+	Name    string  `json:"name" url:"name" tfsdk:"name"`
+	Type    string  `json:"type" url:"type" tfsdk:"type"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (m *ModelModelFieldRequest) UnmarshalJSON(data []byte) error {
@@ -2538,10 +2539,10 @@ func (m *ModelModelFieldRequest) String() string {
 }
 
 type ModelRelation struct {
-	From *string          `json:"from,omitempty" url:"from,omitempty"`
-	To   *ModelRelationTo `json:"to,omitempty" url:"to,omitempty"`
+	From *string          `json:"from,omitempty" url:"from,omitempty" tfsdk:"from"`
+	To   *ModelRelationTo `json:"to,omitempty" url:"to,omitempty" tfsdk:"to"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (m *ModelRelation) UnmarshalJSON(data []byte) error {
@@ -2568,10 +2569,10 @@ func (m *ModelRelation) String() string {
 }
 
 type ModelRelationTo struct {
-	Field   *string `json:"field,omitempty" url:"field,omitempty"`
-	ModelId *string `json:"model_id,omitempty" url:"model_id,omitempty"`
+	Field   *string `json:"field,omitempty" url:"field,omitempty" tfsdk:"field"`
+	ModelId *string `json:"model_id,omitempty" url:"model_id,omitempty" tfsdk:"model_id"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (m *ModelRelationTo) UnmarshalJSON(data []byte) error {
@@ -2598,21 +2599,21 @@ func (m *ModelRelationTo) String() string {
 }
 
 type ModelResponse struct {
-	Configuration   map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionId    *string                `json:"connection_id,omitempty" url:"connection_id,omitempty"`
-	Fields          []*ModelField          `json:"fields,omitempty" url:"fields,omitempty"`
-	Id              *string                `json:"id,omitempty" url:"id,omitempty"`
-	Identifier      *string                `json:"identifier,omitempty" url:"identifier,omitempty"`
-	Labels          []LabelLabel           `json:"labels,omitempty" url:"labels,omitempty"`
-	Name            *string                `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId  *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies        []string               `json:"policies,omitempty" url:"policies,omitempty"`
-	Relations       []*Relation            `json:"relations,omitempty" url:"relations,omitempty"`
-	TrackingColumns []string               `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
-	Type            *string                `json:"type,omitempty" url:"type,omitempty"`
-	Version         *int                   `json:"version,omitempty" url:"version,omitempty"`
+	Configuration   map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty" tfsdk:"configuration"`
+	ConnectionId    *string                `json:"connection_id,omitempty" url:"connection_id,omitempty" tfsdk:"connection_id"`
+	Fields          []*ModelField          `json:"fields,omitempty" url:"fields,omitempty" tfsdk:"fields"`
+	Id              *string                `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Identifier      *string                `json:"identifier,omitempty" url:"identifier,omitempty" tfsdk:"identifier"`
+	Labels          []LabelLabel           `json:"labels,omitempty" url:"labels,omitempty" tfsdk:"labels"`
+	Name            *string                `json:"name,omitempty" url:"name,omitempty" tfsdk:"name"`
+	OrganizationId  *string                `json:"organization_id,omitempty" url:"organization_id,omitempty" tfsdk:"organization_id"`
+	Policies        []string               `json:"policies,omitempty" url:"policies,omitempty" tfsdk:"policies"`
+	Relations       []*Relation            `json:"relations,omitempty" url:"relations,omitempty" tfsdk:"relations"`
+	TrackingColumns []string               `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty" tfsdk:"tracking_columns"`
+	Type            *string                `json:"type,omitempty" url:"type,omitempty" tfsdk:"type"`
+	Version         *int                   `json:"version,omitempty" url:"version,omitempty" tfsdk:"version"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (m *ModelResponse) UnmarshalJSON(data []byte) error {
@@ -2639,10 +2640,10 @@ func (m *ModelResponse) String() string {
 }
 
 type ModelResponseEnvelope struct {
-	Data *ModelResponse `json:"data,omitempty" url:"data,omitempty"`
-	Job  *JobResponse   `json:"job,omitempty" url:"job,omitempty"`
+	Data *ModelResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
+	Job  *JobResponse   `json:"job,omitempty" url:"job,omitempty" tfsdk:"job"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (m *ModelResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -2669,13 +2670,13 @@ func (m *ModelResponseEnvelope) String() string {
 }
 
 type ModelSyncField struct {
-	New           *bool   `json:"new,omitempty" url:"new,omitempty"`
-	OverrideValue *string `json:"override_value,omitempty" url:"override_value,omitempty"`
-	Source        *Source `json:"source,omitempty" url:"source,omitempty"`
-	SyncMode      *string `json:"sync_mode,omitempty" url:"sync_mode,omitempty"`
-	Target        string  `json:"target" url:"target"`
+	New           *bool   `json:"new,omitempty" url:"new,omitempty" tfsdk:"new"`
+	OverrideValue *string `json:"override_value,omitempty" url:"override_value,omitempty" tfsdk:"override_value"`
+	Source        *Source `json:"source,omitempty" url:"source,omitempty" tfsdk:"source"`
+	SyncMode      *string `json:"sync_mode,omitempty" url:"sync_mode,omitempty" tfsdk:"sync_mode"`
+	Target        string  `json:"target" url:"target" tfsdk:"target"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (m *ModelSyncField) UnmarshalJSON(data []byte) error {
@@ -2702,23 +2703,23 @@ func (m *ModelSyncField) String() string {
 }
 
 type ModelSyncResponse struct {
-	Active         *bool             `json:"active,omitempty" url:"active,omitempty"`
-	Fields         []*ModelSyncField `json:"fields,omitempty" url:"fields,omitempty"`
-	FilterLogic    *string           `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
-	Filters        []*Filter         `json:"filters,omitempty" url:"filters,omitempty"`
-	Id             *string           `json:"id,omitempty" url:"id,omitempty"`
-	Identity       *Identity         `json:"identity,omitempty" url:"identity,omitempty"`
-	Mode           *string           `json:"mode,omitempty" url:"mode,omitempty"`
-	Name           *string           `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId *string           `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
-	Overrides      []*Override       `json:"overrides,omitempty" url:"overrides,omitempty"`
-	Policies       []string          `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule       *Schedule         `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SyncAllRecords *bool             `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
-	Target         *Target           `json:"target,omitempty" url:"target,omitempty"`
+	Active         *bool             `json:"active,omitempty" url:"active,omitempty" tfsdk:"active"`
+	Fields         []*ModelSyncField `json:"fields,omitempty" url:"fields,omitempty" tfsdk:"fields"`
+	FilterLogic    *string           `json:"filter_logic,omitempty" url:"filter_logic,omitempty" tfsdk:"filter_logic"`
+	Filters        []*Filter         `json:"filters,omitempty" url:"filters,omitempty" tfsdk:"filters"`
+	Id             *string           `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Identity       *Identity         `json:"identity,omitempty" url:"identity,omitempty" tfsdk:"identity"`
+	Mode           *string           `json:"mode,omitempty" url:"mode,omitempty" tfsdk:"mode"`
+	Name           *string           `json:"name,omitempty" url:"name,omitempty" tfsdk:"name"`
+	OrganizationId *string           `json:"organization_id,omitempty" url:"organization_id,omitempty" tfsdk:"organization_id"`
+	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"override_fields,omitempty" tfsdk:"override_fields"`
+	Overrides      []*Override       `json:"overrides,omitempty" url:"overrides,omitempty" tfsdk:"overrides"`
+	Policies       []string          `json:"policies,omitempty" url:"policies,omitempty" tfsdk:"policies"`
+	Schedule       *Schedule         `json:"schedule,omitempty" url:"schedule,omitempty" tfsdk:"schedule"`
+	SyncAllRecords *bool             `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty" tfsdk:"sync_all_records"`
+	Target         *Target           `json:"target,omitempty" url:"target,omitempty" tfsdk:"target"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (m *ModelSyncResponse) UnmarshalJSON(data []byte) error {
@@ -2745,9 +2746,9 @@ func (m *ModelSyncResponse) String() string {
 }
 
 type ModelSyncResponseEnvelope struct {
-	Data *ModelSyncResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data *ModelSyncResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (m *ModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -2774,11 +2775,11 @@ func (m *ModelSyncResponseEnvelope) String() string {
 }
 
 type ModelSyncSourceMetaResponse struct {
-	Configuration map[string]*ConfigurationValue `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Items         map[string]*SourceMeta         `json:"items,omitempty" url:"items,omitempty"`
-	RequiresOneOf []string                       `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
+	Configuration map[string]*ConfigurationValue `json:"configuration,omitempty" url:"configuration,omitempty" tfsdk:"configuration"`
+	Items         map[string]*SourceMeta         `json:"items,omitempty" url:"items,omitempty" tfsdk:"items"`
+	RequiresOneOf []string                       `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty" tfsdk:"requires_one_of"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (m *ModelSyncSourceMetaResponse) UnmarshalJSON(data []byte) error {
@@ -2805,13 +2806,13 @@ func (m *ModelSyncSourceMetaResponse) String() string {
 }
 
 type Organization struct {
-	Id        *string `json:"id,omitempty" url:"id,omitempty"`
-	Issuer    *string `json:"issuer,omitempty" url:"issuer,omitempty"`
-	Name      *string `json:"name,omitempty" url:"name,omitempty"`
-	SsoDomain *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
-	SsoOrgId  *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
+	Id        *string `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Issuer    *string `json:"issuer,omitempty" url:"issuer,omitempty" tfsdk:"issuer"`
+	Name      *string `json:"name,omitempty" url:"name,omitempty" tfsdk:"name"`
+	SsoDomain *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty" tfsdk:"sso_domain"`
+	SsoOrgId  *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty" tfsdk:"sso_org_id"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (o *Organization) UnmarshalJSON(data []byte) error {
@@ -2838,9 +2839,9 @@ func (o *Organization) String() string {
 }
 
 type OrganizationEnvelope struct {
-	Data *Organization `json:"data,omitempty" url:"data,omitempty"`
+	Data *Organization `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (o *OrganizationEnvelope) UnmarshalJSON(data []byte) error {
@@ -2867,9 +2868,9 @@ func (o *OrganizationEnvelope) String() string {
 }
 
 type OrganizationsEnvelope struct {
-	Data []*Organization `json:"data,omitempty" url:"data,omitempty"`
+	Data []*Organization `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (o *OrganizationsEnvelope) UnmarshalJSON(data []byte) error {
@@ -2896,12 +2897,12 @@ func (o *OrganizationsEnvelope) String() string {
 }
 
 type Override struct {
-	FieldId  *string     `json:"field_id,omitempty" url:"field_id,omitempty"`
-	Function *string     `json:"function,omitempty" url:"function,omitempty"`
-	Override interface{} `json:"override,omitempty" url:"override,omitempty"`
-	Value    interface{} `json:"value,omitempty" url:"value,omitempty"`
+	FieldId  *string     `json:"field_id,omitempty" url:"field_id,omitempty" tfsdk:"field_id"`
+	Function *string     `json:"function,omitempty" url:"function,omitempty" tfsdk:"function"`
+	Override interface{} `json:"override,omitempty" url:"override,omitempty" tfsdk:"override"`
+	Value    interface{} `json:"value,omitempty" url:"value,omitempty" tfsdk:"value"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (o *Override) UnmarshalJSON(data []byte) error {
@@ -2928,10 +2929,10 @@ func (o *Override) String() string {
 }
 
 type PickValue struct {
-	Label *string `json:"label,omitempty" url:"label,omitempty"`
-	Value *string `json:"value,omitempty" url:"value,omitempty"`
+	Label *string `json:"label,omitempty" url:"label,omitempty" tfsdk:"label"`
+	Value *string `json:"value,omitempty" url:"value,omitempty" tfsdk:"value"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (p *PickValue) UnmarshalJSON(data []byte) error {
@@ -2958,10 +2959,10 @@ func (p *PickValue) String() string {
 }
 
 type PolicyAction struct {
-	Action  string   `json:"action" url:"action"`
-	RoleIds []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
+	Action  string   `json:"action" url:"action" tfsdk:"action"`
+	RoleIds []string `json:"role_ids,omitempty" url:"role_ids,omitempty" tfsdk:"role_ids"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (p *PolicyAction) UnmarshalJSON(data []byte) error {
@@ -2988,13 +2989,13 @@ func (p *PolicyAction) String() string {
 }
 
 type PolicyResponse struct {
-	Id             *string         `json:"id,omitempty" url:"id,omitempty"`
-	Name           *string         `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId *string         `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	PolicyActions  []*PolicyAction `json:"policy_actions,omitempty" url:"policy_actions,omitempty"`
-	System         *bool           `json:"system,omitempty" url:"system,omitempty"`
+	Id             *string         `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Name           *string         `json:"name,omitempty" url:"name,omitempty" tfsdk:"name"`
+	OrganizationId *string         `json:"organization_id,omitempty" url:"organization_id,omitempty" tfsdk:"organization_id"`
+	PolicyActions  []*PolicyAction `json:"policy_actions,omitempty" url:"policy_actions,omitempty" tfsdk:"policy_actions"`
+	System         *bool           `json:"system,omitempty" url:"system,omitempty" tfsdk:"system"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (p *PolicyResponse) UnmarshalJSON(data []byte) error {
@@ -3021,9 +3022,9 @@ func (p *PolicyResponse) String() string {
 }
 
 type PolicyResponseEnvelope struct {
-	Data *PolicyResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data *PolicyResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (p *PolicyResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -3050,10 +3051,10 @@ func (p *PolicyResponseEnvelope) String() string {
 }
 
 type Relation struct {
-	From *string     `json:"from,omitempty" url:"from,omitempty"`
-	To   *RelationTo `json:"to,omitempty" url:"to,omitempty"`
+	From *string     `json:"from,omitempty" url:"from,omitempty" tfsdk:"from"`
+	To   *RelationTo `json:"to,omitempty" url:"to,omitempty" tfsdk:"to"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (r *Relation) UnmarshalJSON(data []byte) error {
@@ -3080,10 +3081,10 @@ func (r *Relation) String() string {
 }
 
 type RelationTo struct {
-	Field   *string `json:"field,omitempty" url:"field,omitempty"`
-	ModelId *string `json:"model_id,omitempty" url:"model_id,omitempty"`
+	Field   *string `json:"field,omitempty" url:"field,omitempty" tfsdk:"field"`
+	ModelId *string `json:"model_id,omitempty" url:"model_id,omitempty" tfsdk:"model_id"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (r *RelationTo) UnmarshalJSON(data []byte) error {
@@ -3111,15 +3112,15 @@ func (r *RelationTo) String() string {
 
 type RestErrResponse struct {
 	// Application-specific error code.
-	Code *int `json:"code,omitempty" url:"code,omitempty"`
+	Code *int `json:"code,omitempty" url:"code,omitempty" tfsdk:"code"`
 	// Application context.
-	Context map[string]interface{} `json:"context,omitempty" url:"context,omitempty"`
+	Context map[string]interface{} `json:"context,omitempty" url:"context,omitempty" tfsdk:"context"`
 	// Error message.
-	Error *string `json:"error,omitempty" url:"error,omitempty"`
+	Error *string `json:"error,omitempty" url:"error,omitempty" tfsdk:"error"`
 	// Status text.
-	Status *string `json:"status,omitempty" url:"status,omitempty"`
+	Status *string `json:"status,omitempty" url:"status,omitempty" tfsdk:"status"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (r *RestErrResponse) UnmarshalJSON(data []byte) error {
@@ -3146,9 +3147,9 @@ func (r *RestErrResponse) String() string {
 }
 
 type RoleListResponseEnvelope struct {
-	Data []*RoleResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data []*RoleResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (r *RoleListResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -3175,12 +3176,12 @@ func (r *RoleListResponseEnvelope) String() string {
 }
 
 type RoleResponse struct {
-	Id             *string `json:"id,omitempty" url:"id,omitempty"`
-	Name           *string `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	System         *bool   `json:"system,omitempty" url:"system,omitempty"`
+	Id             *string `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Name           *string `json:"name,omitempty" url:"name,omitempty" tfsdk:"name"`
+	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty" tfsdk:"organization_id"`
+	System         *bool   `json:"system,omitempty" url:"system,omitempty" tfsdk:"system"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (r *RoleResponse) UnmarshalJSON(data []byte) error {
@@ -3207,9 +3208,9 @@ func (r *RoleResponse) String() string {
 }
 
 type RoleResponseEnvelope struct {
-	Data *RoleResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data *RoleResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (r *RoleResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -3236,10 +3237,10 @@ func (r *RoleResponseEnvelope) String() string {
 }
 
 type RunAfter struct {
-	BulkSyncIds []string `json:"bulk_sync_ids,omitempty" url:"bulk_sync_ids,omitempty"`
-	SyncIds     []string `json:"sync_ids,omitempty" url:"sync_ids,omitempty"`
+	BulkSyncIds []string `json:"bulk_sync_ids,omitempty" url:"bulk_sync_ids,omitempty" tfsdk:"bulk_sync_ids"`
+	SyncIds     []string `json:"sync_ids,omitempty" url:"sync_ids,omitempty" tfsdk:"sync_ids"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (r *RunAfter) UnmarshalJSON(data []byte) error {
@@ -3266,17 +3267,17 @@ func (r *RunAfter) String() string {
 }
 
 type Schedule struct {
-	ConnectionId *string   `json:"connection_id,omitempty" url:"connection_id,omitempty"`
-	DayOfMonth   *string   `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
-	DayOfWeek    *string   `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
-	Frequency    *string   `json:"frequency,omitempty" url:"frequency,omitempty"`
-	Hour         *string   `json:"hour,omitempty" url:"hour,omitempty"`
-	JobId        *int      `json:"job_id,omitempty" url:"job_id,omitempty"`
-	Minute       *string   `json:"minute,omitempty" url:"minute,omitempty"`
-	Month        *string   `json:"month,omitempty" url:"month,omitempty"`
-	RunAfter     *RunAfter `json:"run_after,omitempty" url:"run_after,omitempty"`
+	ConnectionId *string   `json:"connection_id,omitempty" url:"connection_id,omitempty" tfsdk:"connection_id"`
+	DayOfMonth   *string   `json:"day_of_month,omitempty" url:"day_of_month,omitempty" tfsdk:"day_of_month"`
+	DayOfWeek    *string   `json:"day_of_week,omitempty" url:"day_of_week,omitempty" tfsdk:"day_of_week"`
+	Frequency    *string   `json:"frequency,omitempty" url:"frequency,omitempty" tfsdk:"frequency"`
+	Hour         *string   `json:"hour,omitempty" url:"hour,omitempty" tfsdk:"hour"`
+	JobId        *int      `json:"job_id,omitempty" url:"job_id,omitempty" tfsdk:"job_id"`
+	Minute       *string   `json:"minute,omitempty" url:"minute,omitempty" tfsdk:"minute"`
+	Month        *string   `json:"month,omitempty" url:"month,omitempty" tfsdk:"month"`
+	RunAfter     *RunAfter `json:"run_after,omitempty" url:"run_after,omitempty" tfsdk:"run_after"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (s *Schedule) UnmarshalJSON(data []byte) error {
@@ -3349,9 +3350,9 @@ func (s ScheduleFrequency) Ptr() *ScheduleFrequency {
 }
 
 type ScheduleOptionResponse struct {
-	ScheduleOptions []*ScheduleScheduleOption `json:"schedule_options,omitempty" url:"schedule_options,omitempty"`
+	ScheduleOptions []*ScheduleScheduleOption `json:"schedule_options,omitempty" url:"schedule_options,omitempty" tfsdk:"schedule_options"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (s *ScheduleOptionResponse) UnmarshalJSON(data []byte) error {
@@ -3378,9 +3379,9 @@ func (s *ScheduleOptionResponse) String() string {
 }
 
 type ScheduleOptionResponseEnvelope struct {
-	Data *ScheduleOptionResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data *ScheduleOptionResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (s *ScheduleOptionResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -3407,12 +3408,12 @@ func (s *ScheduleOptionResponseEnvelope) String() string {
 }
 
 type ScheduleScheduleOption struct {
-	Configuration *JsonschemaForm    `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Description   *string            `json:"description,omitempty" url:"description,omitempty"`
-	Frequency     *ScheduleFrequency `json:"frequency,omitempty" url:"frequency,omitempty"`
-	Label         *string            `json:"label,omitempty" url:"label,omitempty"`
+	Configuration *JsonschemaForm    `json:"configuration,omitempty" url:"configuration,omitempty" tfsdk:"configuration"`
+	Description   *string            `json:"description,omitempty" url:"description,omitempty" tfsdk:"description"`
+	Frequency     *ScheduleFrequency `json:"frequency,omitempty" url:"frequency,omitempty" tfsdk:"frequency"`
+	Label         *string            `json:"label,omitempty" url:"label,omitempty" tfsdk:"label"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (s *ScheduleScheduleOption) UnmarshalJSON(data []byte) error {
@@ -3439,11 +3440,11 @@ func (s *ScheduleScheduleOption) String() string {
 }
 
 type Schema struct {
-	Fields []*SchemaField `json:"fields,omitempty" url:"fields,omitempty"`
-	Id     *string        `json:"id,omitempty" url:"id,omitempty"`
-	Name   *string        `json:"name,omitempty" url:"name,omitempty"`
+	Fields []*SchemaField `json:"fields,omitempty" url:"fields,omitempty" tfsdk:"fields"`
+	Id     *string        `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Name   *string        `json:"name,omitempty" url:"name,omitempty" tfsdk:"name"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (s *Schema) UnmarshalJSON(data []byte) error {
@@ -3470,12 +3471,12 @@ func (s *Schema) String() string {
 }
 
 type SchemaAssociation struct {
-	Id              *string  `json:"id,omitempty" url:"id,omitempty"`
-	Name            *string  `json:"name,omitempty" url:"name,omitempty"`
-	ReferenceTo     []string `json:"reference_to,omitempty" url:"reference_to,omitempty"`
-	ReferencedField *string  `json:"referenced_field,omitempty" url:"referenced_field,omitempty"`
+	Id              *string  `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Name            *string  `json:"name,omitempty" url:"name,omitempty" tfsdk:"name"`
+	ReferenceTo     []string `json:"reference_to,omitempty" url:"reference_to,omitempty" tfsdk:"reference_to"`
+	ReferencedField *string  `json:"referenced_field,omitempty" url:"referenced_field,omitempty" tfsdk:"referenced_field"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (s *SchemaAssociation) UnmarshalJSON(data []byte) error {
@@ -3502,14 +3503,14 @@ func (s *SchemaAssociation) String() string {
 }
 
 type SchemaField struct {
-	Association *SchemaAssociation `json:"association,omitempty" url:"association,omitempty"`
-	Id          *string            `json:"id,omitempty" url:"id,omitempty"`
-	Name        *string            `json:"name,omitempty" url:"name,omitempty"`
-	RemoteType  *string            `json:"remote_type,omitempty" url:"remote_type,omitempty"`
-	Type        *string            `json:"type,omitempty" url:"type,omitempty"`
-	Values      []*PickValue       `json:"values,omitempty" url:"values,omitempty"`
+	Association *SchemaAssociation `json:"association,omitempty" url:"association,omitempty" tfsdk:"association"`
+	Id          *string            `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Name        *string            `json:"name,omitempty" url:"name,omitempty" tfsdk:"name"`
+	RemoteType  *string            `json:"remote_type,omitempty" url:"remote_type,omitempty" tfsdk:"remote_type"`
+	Type        *string            `json:"type,omitempty" url:"type,omitempty" tfsdk:"type"`
+	Values      []*PickValue       `json:"values,omitempty" url:"values,omitempty" tfsdk:"values"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (s *SchemaField) UnmarshalJSON(data []byte) error {
@@ -3536,9 +3537,9 @@ func (s *SchemaField) String() string {
 }
 
 type SchemaRecordsResponseEnvelope struct {
-	Data []map[string]interface{} `json:"data,omitempty" url:"data,omitempty"`
+	Data []map[string]interface{} `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (s *SchemaRecordsResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -3565,10 +3566,10 @@ func (s *SchemaRecordsResponseEnvelope) String() string {
 }
 
 type Source struct {
-	Field   string `json:"field" url:"field"`
-	ModelId string `json:"model_id" url:"model_id"`
+	Field   string `json:"field" url:"field" tfsdk:"field"`
+	ModelId string `json:"model_id" url:"model_id" tfsdk:"model_id"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (s *Source) UnmarshalJSON(data []byte) error {
@@ -3595,11 +3596,11 @@ func (s *Source) String() string {
 }
 
 type SourceMeta struct {
-	HasItems      *bool         `json:"has_items,omitempty" url:"has_items,omitempty"`
-	Items         []interface{} `json:"items,omitempty" url:"items,omitempty"`
-	RequiresOneOf []string      `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
+	HasItems      *bool         `json:"has_items,omitempty" url:"has_items,omitempty" tfsdk:"has_items"`
+	Items         []interface{} `json:"items,omitempty" url:"items,omitempty" tfsdk:"items"`
+	RequiresOneOf []string      `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty" tfsdk:"requires_one_of"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (s *SourceMeta) UnmarshalJSON(data []byte) error {
@@ -3626,9 +3627,9 @@ func (s *SourceMeta) String() string {
 }
 
 type StartModelSyncResponseEnvelope struct {
-	Data *StartModelSyncResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+	Data *StartModelSyncResponseSchema `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (s *StartModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -3655,18 +3656,18 @@ func (s *StartModelSyncResponseEnvelope) String() string {
 }
 
 type StartModelSyncResponseSchema struct {
-	CreatedAt *time.Time       `json:"created_at,omitempty" url:"created_at,omitempty"`
-	Id        *string          `json:"id,omitempty" url:"id,omitempty"`
-	Status    *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	CreatedAt *time.Time       `json:"created_at,omitempty" url:"created_at,omitempty" tfsdk:"created_at"`
+	Id        *string          `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Status    *ExecutionStatus `json:"status,omitempty" url:"status,omitempty" tfsdk:"status"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (s *StartModelSyncResponseSchema) UnmarshalJSON(data []byte) error {
 	type embed StartModelSyncResponseSchema
 	var unmarshaler = struct {
-		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		embed     `tfsdk:"embed"`
+		CreatedAt *core.DateTime `json:"created_at,omitempty" tfsdk:"created_at"`
 	}{
 		embed: embed(*s),
 	}
@@ -3682,8 +3683,8 @@ func (s *StartModelSyncResponseSchema) UnmarshalJSON(data []byte) error {
 func (s *StartModelSyncResponseSchema) MarshalJSON() ([]byte, error) {
 	type embed StartModelSyncResponseSchema
 	var marshaler = struct {
-		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		embed     `tfsdk:"embed"`
+		CreatedAt *core.DateTime `json:"created_at,omitempty" tfsdk:"created_at"`
 	}{
 		embed:     embed(*s),
 		CreatedAt: core.NewOptionalDateTime(s.CreatedAt),
@@ -3704,14 +3705,14 @@ func (s *StartModelSyncResponseSchema) String() string {
 }
 
 type SupportedMode struct {
-	Description           *string `json:"description,omitempty" url:"description,omitempty"`
-	Id                    *string `json:"id,omitempty" url:"id,omitempty"`
-	Label                 *string `json:"label,omitempty" url:"label,omitempty"`
-	RequiresIdentity      *bool   `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
-	SupportsFieldSyncMode *bool   `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
-	SupportsTargetFilters *bool   `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
+	Description           *string `json:"description,omitempty" url:"description,omitempty" tfsdk:"description"`
+	Id                    *string `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Label                 *string `json:"label,omitempty" url:"label,omitempty" tfsdk:"label"`
+	RequiresIdentity      *bool   `json:"requires_identity,omitempty" url:"requires_identity,omitempty" tfsdk:"requires_identity"`
+	SupportsFieldSyncMode *bool   `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty" tfsdk:"supports_field_sync_mode"`
+	SupportsTargetFilters *bool   `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty" tfsdk:"supports_target_filters"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (s *SupportedMode) UnmarshalJSON(data []byte) error {
@@ -3738,18 +3739,18 @@ func (s *SupportedMode) String() string {
 }
 
 type SyncDestinationProperties struct {
-	DoesNotReportOperationCounts *bool   `json:"does_not_report_operation_counts,omitempty" url:"does_not_report_operation_counts,omitempty"`
-	NewTargetLabel               *string `json:"new_target_label,omitempty" url:"new_target_label,omitempty"`
-	OptionalTargetMappings       *bool   `json:"optional_target_mappings,omitempty" url:"optional_target_mappings,omitempty"`
-	PrimaryMetadataObject        *string `json:"primary_metadata_object,omitempty" url:"primary_metadata_object,omitempty"`
-	RequiresConfiguration        *bool   `json:"requires_configuration,omitempty" url:"requires_configuration,omitempty"`
-	SupportsFieldCreation        *bool   `json:"supports_field_creation,omitempty" url:"supports_field_creation,omitempty"`
-	SupportsFieldTypeSelection   *bool   `json:"supports_field_type_selection,omitempty" url:"supports_field_type_selection,omitempty"`
-	SupportsTargetFilters        *bool   `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
-	TargetCreator                *bool   `json:"target_creator,omitempty" url:"target_creator,omitempty"`
-	UseFieldNamesAsLabels        *bool   `json:"use_field_names_as_labels,omitempty" url:"use_field_names_as_labels,omitempty"`
+	DoesNotReportOperationCounts *bool   `json:"does_not_report_operation_counts,omitempty" url:"does_not_report_operation_counts,omitempty" tfsdk:"does_not_report_operation_counts"`
+	NewTargetLabel               *string `json:"new_target_label,omitempty" url:"new_target_label,omitempty" tfsdk:"new_target_label"`
+	OptionalTargetMappings       *bool   `json:"optional_target_mappings,omitempty" url:"optional_target_mappings,omitempty" tfsdk:"optional_target_mappings"`
+	PrimaryMetadataObject        *string `json:"primary_metadata_object,omitempty" url:"primary_metadata_object,omitempty" tfsdk:"primary_metadata_object"`
+	RequiresConfiguration        *bool   `json:"requires_configuration,omitempty" url:"requires_configuration,omitempty" tfsdk:"requires_configuration"`
+	SupportsFieldCreation        *bool   `json:"supports_field_creation,omitempty" url:"supports_field_creation,omitempty" tfsdk:"supports_field_creation"`
+	SupportsFieldTypeSelection   *bool   `json:"supports_field_type_selection,omitempty" url:"supports_field_type_selection,omitempty" tfsdk:"supports_field_type_selection"`
+	SupportsTargetFilters        *bool   `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty" tfsdk:"supports_target_filters"`
+	TargetCreator                *bool   `json:"target_creator,omitempty" url:"target_creator,omitempty" tfsdk:"target_creator"`
+	UseFieldNamesAsLabels        *bool   `json:"use_field_names_as_labels,omitempty" url:"use_field_names_as_labels,omitempty" tfsdk:"use_field_names_as_labels"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (s *SyncDestinationProperties) UnmarshalJSON(data []byte) error {
@@ -3776,9 +3777,9 @@ func (s *SyncDestinationProperties) String() string {
 }
 
 type SyncStatusEnvelope struct {
-	Data *SyncStatusResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data *SyncStatusResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (s *SyncStatusEnvelope) UnmarshalJSON(data []byte) error {
@@ -3805,18 +3806,18 @@ func (s *SyncStatusEnvelope) String() string {
 }
 
 type SyncStatusResponse struct {
-	CurrentExecution  *GetExecutionResponseSchema `json:"current_execution,omitempty" url:"current_execution,omitempty"`
-	LastExecution     *GetExecutionResponseSchema `json:"last_execution,omitempty" url:"last_execution,omitempty"`
-	NextExecutionTime *time.Time                  `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty"`
+	CurrentExecution  *GetExecutionResponseSchema `json:"current_execution,omitempty" url:"current_execution,omitempty" tfsdk:"current_execution"`
+	LastExecution     *GetExecutionResponseSchema `json:"last_execution,omitempty" url:"last_execution,omitempty" tfsdk:"last_execution"`
+	NextExecutionTime *time.Time                  `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty" tfsdk:"next_execution_time"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (s *SyncStatusResponse) UnmarshalJSON(data []byte) error {
 	type embed SyncStatusResponse
 	var unmarshaler = struct {
-		embed
-		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty"`
+		embed             `tfsdk:"embed"`
+		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty" tfsdk:"next_execution_time"`
 	}{
 		embed: embed(*s),
 	}
@@ -3832,8 +3833,8 @@ func (s *SyncStatusResponse) UnmarshalJSON(data []byte) error {
 func (s *SyncStatusResponse) MarshalJSON() ([]byte, error) {
 	type embed SyncStatusResponse
 	var marshaler = struct {
-		embed
-		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty"`
+		embed             `tfsdk:"embed"`
+		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty" tfsdk:"next_execution_time"`
 	}{
 		embed:             embed(*s),
 		NextExecutionTime: core.NewOptionalDateTime(s.NextExecutionTime),
@@ -3854,14 +3855,14 @@ func (s *SyncStatusResponse) String() string {
 }
 
 type Target struct {
-	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionId  string                 `json:"connection_id" url:"connection_id"`
-	FilterLogic   *string                `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
-	NewName       *string                `json:"new_name,omitempty" url:"new_name,omitempty"`
-	Object        string                 `json:"object" url:"object"`
-	SearchValues  map[string]interface{} `json:"search_values,omitempty" url:"search_values,omitempty"`
+	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty" tfsdk:"configuration"`
+	ConnectionId  string                 `json:"connection_id" url:"connection_id" tfsdk:"connection_id"`
+	FilterLogic   *string                `json:"filter_logic,omitempty" url:"filter_logic,omitempty" tfsdk:"filter_logic"`
+	NewName       *string                `json:"new_name,omitempty" url:"new_name,omitempty" tfsdk:"new_name"`
+	Object        string                 `json:"object" url:"object" tfsdk:"object"`
+	SearchValues  map[string]interface{} `json:"search_values,omitempty" url:"search_values,omitempty" tfsdk:"search_values"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (t *Target) UnmarshalJSON(data []byte) error {
@@ -3888,20 +3889,20 @@ func (t *Target) String() string {
 }
 
 type TargetField struct {
-	Association       *bool               `json:"association,omitempty" url:"association,omitempty"`
-	Createable        *bool               `json:"createable,omitempty" url:"createable,omitempty"`
-	Description       *string             `json:"description,omitempty" url:"description,omitempty"`
-	Filterable        *bool               `json:"filterable,omitempty" url:"filterable,omitempty"`
-	Id                *string             `json:"id,omitempty" url:"id,omitempty"`
-	IdentityFunctions []*IdentityFunction `json:"identity_functions,omitempty" url:"identity_functions,omitempty"`
-	Name              *string             `json:"name,omitempty" url:"name,omitempty"`
-	Required          *bool               `json:"required,omitempty" url:"required,omitempty"`
-	SourceType        *string             `json:"source_type,omitempty" url:"source_type,omitempty"`
-	SupportsIdentity  *bool               `json:"supports_identity,omitempty" url:"supports_identity,omitempty"`
-	Type              *string             `json:"type,omitempty" url:"type,omitempty"`
-	Updateable        *bool               `json:"updateable,omitempty" url:"updateable,omitempty"`
+	Association       *bool               `json:"association,omitempty" url:"association,omitempty" tfsdk:"association"`
+	Createable        *bool               `json:"createable,omitempty" url:"createable,omitempty" tfsdk:"createable"`
+	Description       *string             `json:"description,omitempty" url:"description,omitempty" tfsdk:"description"`
+	Filterable        *bool               `json:"filterable,omitempty" url:"filterable,omitempty" tfsdk:"filterable"`
+	Id                *string             `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	IdentityFunctions []*IdentityFunction `json:"identity_functions,omitempty" url:"identity_functions,omitempty" tfsdk:"identity_functions"`
+	Name              *string             `json:"name,omitempty" url:"name,omitempty" tfsdk:"name"`
+	Required          *bool               `json:"required,omitempty" url:"required,omitempty" tfsdk:"required"`
+	SourceType        *string             `json:"source_type,omitempty" url:"source_type,omitempty" tfsdk:"source_type"`
+	SupportsIdentity  *bool               `json:"supports_identity,omitempty" url:"supports_identity,omitempty" tfsdk:"supports_identity"`
+	Type              *string             `json:"type,omitempty" url:"type,omitempty" tfsdk:"type"`
+	Updateable        *bool               `json:"updateable,omitempty" url:"updateable,omitempty" tfsdk:"updateable"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (t *TargetField) UnmarshalJSON(data []byte) error {
@@ -3928,21 +3929,21 @@ func (t *TargetField) String() string {
 }
 
 type TargetResponse struct {
-	Fields      []*TargetField             `json:"fields,omitempty" url:"fields,omitempty"`
-	Id          *string                    `json:"id,omitempty" url:"id,omitempty"`
-	Modes       []*Mode                    `json:"modes,omitempty" url:"modes,omitempty"`
-	Name        *string                    `json:"name,omitempty" url:"name,omitempty"`
-	Properties  *SyncDestinationProperties `json:"properties,omitempty" url:"properties,omitempty"`
-	RefreshedAt *time.Time                 `json:"refreshed_at,omitempty" url:"refreshed_at,omitempty"`
+	Fields      []*TargetField             `json:"fields,omitempty" url:"fields,omitempty" tfsdk:"fields"`
+	Id          *string                    `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	Modes       []*Mode                    `json:"modes,omitempty" url:"modes,omitempty" tfsdk:"modes"`
+	Name        *string                    `json:"name,omitempty" url:"name,omitempty" tfsdk:"name"`
+	Properties  *SyncDestinationProperties `json:"properties,omitempty" url:"properties,omitempty" tfsdk:"properties"`
+	RefreshedAt *time.Time                 `json:"refreshed_at,omitempty" url:"refreshed_at,omitempty" tfsdk:"refreshed_at"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (t *TargetResponse) UnmarshalJSON(data []byte) error {
 	type embed TargetResponse
 	var unmarshaler = struct {
-		embed
-		RefreshedAt *core.DateTime `json:"refreshed_at,omitempty"`
+		embed       `tfsdk:"embed"`
+		RefreshedAt *core.DateTime `json:"refreshed_at,omitempty" tfsdk:"refreshed_at"`
 	}{
 		embed: embed(*t),
 	}
@@ -3958,8 +3959,8 @@ func (t *TargetResponse) UnmarshalJSON(data []byte) error {
 func (t *TargetResponse) MarshalJSON() ([]byte, error) {
 	type embed TargetResponse
 	var marshaler = struct {
-		embed
-		RefreshedAt *core.DateTime `json:"refreshed_at,omitempty"`
+		embed       `tfsdk:"embed"`
+		RefreshedAt *core.DateTime `json:"refreshed_at,omitempty" tfsdk:"refreshed_at"`
 	}{
 		embed:       embed(*t),
 		RefreshedAt: core.NewOptionalDateTime(t.RefreshedAt),
@@ -3980,9 +3981,9 @@ func (t *TargetResponse) String() string {
 }
 
 type TargetResponseEnvelope struct {
-	Data *TargetResponse `json:"data,omitempty" url:"data,omitempty"`
+	Data *TargetResponse `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (t *TargetResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -4009,12 +4010,12 @@ func (t *TargetResponseEnvelope) String() string {
 }
 
 type User struct {
-	Email          *string `json:"email,omitempty" url:"email,omitempty"`
-	Id             *string `json:"id,omitempty" url:"id,omitempty"`
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Role           *string `json:"role,omitempty" url:"role,omitempty"`
+	Email          *string `json:"email,omitempty" url:"email,omitempty" tfsdk:"email"`
+	Id             *string `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty" tfsdk:"organization_id"`
+	Role           *string `json:"role,omitempty" url:"role,omitempty" tfsdk:"role"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (u *User) UnmarshalJSON(data []byte) error {
@@ -4041,9 +4042,9 @@ func (u *User) String() string {
 }
 
 type UserEnvelope struct {
-	Data *User `json:"data,omitempty" url:"data,omitempty"`
+	Data *User `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (u *UserEnvelope) UnmarshalJSON(data []byte) error {
@@ -4070,20 +4071,20 @@ func (u *UserEnvelope) String() string {
 }
 
 type Webhook struct {
-	CreatedAt      *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
-	Endpoint       *string    `json:"endpoint,omitempty" url:"endpoint,omitempty"`
-	Id             *string    `json:"id,omitempty" url:"id,omitempty"`
-	OrganizationId *string    `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Secret         *string    `json:"secret,omitempty" url:"secret,omitempty"`
+	CreatedAt      *time.Time `json:"created_at,omitempty" url:"created_at,omitempty" tfsdk:"created_at"`
+	Endpoint       *string    `json:"endpoint,omitempty" url:"endpoint,omitempty" tfsdk:"endpoint"`
+	Id             *string    `json:"id,omitempty" url:"id,omitempty" tfsdk:"id"`
+	OrganizationId *string    `json:"organization_id,omitempty" url:"organization_id,omitempty" tfsdk:"organization_id"`
+	Secret         *string    `json:"secret,omitempty" url:"secret,omitempty" tfsdk:"secret"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (w *Webhook) UnmarshalJSON(data []byte) error {
 	type embed Webhook
 	var unmarshaler = struct {
-		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		embed     `tfsdk:"embed"`
+		CreatedAt *core.DateTime `json:"created_at,omitempty" tfsdk:"created_at"`
 	}{
 		embed: embed(*w),
 	}
@@ -4099,8 +4100,8 @@ func (w *Webhook) UnmarshalJSON(data []byte) error {
 func (w *Webhook) MarshalJSON() ([]byte, error) {
 	type embed Webhook
 	var marshaler = struct {
-		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		embed     `tfsdk:"embed"`
+		CreatedAt *core.DateTime `json:"created_at,omitempty" tfsdk:"created_at"`
 	}{
 		embed:     embed(*w),
 		CreatedAt: core.NewOptionalDateTime(w.CreatedAt),
@@ -4121,9 +4122,9 @@ func (w *Webhook) String() string {
 }
 
 type WebhookEnvelope struct {
-	Data *Webhook `json:"data,omitempty" url:"data,omitempty"`
+	Data *Webhook `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (w *WebhookEnvelope) UnmarshalJSON(data []byte) error {
@@ -4150,9 +4151,9 @@ func (w *WebhookEnvelope) String() string {
 }
 
 type WebhookListEnvelope struct {
-	Data []*Webhook `json:"data,omitempty" url:"data,omitempty"`
+	Data []*Webhook `json:"data,omitempty" url:"data,omitempty" tfsdk:"data"`
 
-	_rawJSON json.RawMessage
+	_rawJSON json.RawMessage `tfsdk:"__raw_json"`
 }
 
 func (w *WebhookListEnvelope) UnmarshalJSON(data []byte) error {
@@ -4202,3 +4203,4 @@ func NewWorkTaskStatusFromString(s string) (WorkTaskStatus, error) {
 func (w WorkTaskStatus) Ptr() *WorkTaskStatus {
 	return &w
 }
+

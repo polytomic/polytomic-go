@@ -483,6 +483,9 @@ type RedshiftServerlessConnectionConfiguration struct {
 
 	IAMRoleARN string `json:"iam_role_arn,omitempty" mapstructure:"iam_role_arn" tfsdk:"iam_role_arn"`
 	ExternalID string `json:"external_id,omitempty" mapstructure:"external_id" tfsdk:"external_id"`
+
+	OverrideEndpoint bool   `json:"override_endpoint,omitempty" mapstructure:"override_endpoint" tfsdk:"override_endpoint"`
+	DataAPIEndpoint  string `json:"data_api_endpoint,omitempty" mapstructure:"data_api_endpoint" tfsdk:"data_api_endpoint"`
 }
 
 type SegmentConnectionConfiguration struct {

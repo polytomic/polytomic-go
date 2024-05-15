@@ -1363,14 +1363,16 @@ func (c *ConnectionResponseEnvelope) String() string {
 }
 
 type ConnectionResponseSchema struct {
-	Configuration  map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Id             *string                `json:"id,omitempty" url:"id,omitempty"`
-	Name           *string                `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies       []string               `json:"policies,omitempty" url:"policies,omitempty"`
-	Status         *string                `json:"status,omitempty" url:"status,omitempty"`
-	StatusError    *string                `json:"status_error,omitempty" url:"status_error,omitempty"`
-	Type           *ConnectionTypeSchema  `json:"type,omitempty" url:"type,omitempty"`
+	// API calls made to service in the last 24h (supported integrations only).
+	ApiCallsLast24Hours *int                   `json:"api_calls_last_24_hours,omitempty" url:"api_calls_last_24_hours,omitempty"`
+	Configuration       map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
+	Id                  *string                `json:"id,omitempty" url:"id,omitempty"`
+	Name                *string                `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId      *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies            []string               `json:"policies,omitempty" url:"policies,omitempty"`
+	Status              *string                `json:"status,omitempty" url:"status,omitempty"`
+	StatusError         *string                `json:"status_error,omitempty" url:"status_error,omitempty"`
+	Type                *ConnectionTypeSchema  `json:"type,omitempty" url:"type,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -1557,6 +1559,81 @@ func (c *CreateConnectionResponseSchema) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+type CreateModelRequest struct {
+	AdditionalFields []*ModelModelFieldRequest `json:"additional_fields,omitempty" url:"additional_fields,omitempty"`
+	Configuration    map[string]interface{}    `json:"configuration,omitempty" url:"configuration,omitempty"`
+	ConnectionId     string                    `json:"connection_id" url:"connection_id"`
+	Enricher         *Enrichment               `json:"enricher,omitempty" url:"enricher,omitempty"`
+	Fields           []string                  `json:"fields,omitempty" url:"fields,omitempty"`
+	Identifier       *string                   `json:"identifier,omitempty" url:"identifier,omitempty"`
+	Labels           []string                  `json:"labels,omitempty" url:"labels,omitempty"`
+	Name             string                    `json:"name" url:"name"`
+	OrganizationId   *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies         []string                  `json:"policies,omitempty" url:"policies,omitempty"`
+	Relations        []*ModelRelation          `json:"relations,omitempty" url:"relations,omitempty"`
+	TrackingColumns  []string                  `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *CreateModelRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateModelRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreateModelRequest(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateModelRequest) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type Enrichment struct {
+	Configuration *V2EnricherConfiguration `json:"configuration,omitempty" url:"configuration,omitempty"`
+	ConnectionId  *string                  `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	// Must be provided to update an existing enrichment
+	EnricherId *string `json:"enricher_id,omitempty" url:"enricher_id,omitempty"`
+	// If not provided, all fields will be enabled.
+	Fields   []*ModelField      `json:"fields,omitempty" url:"fields,omitempty"`
+	Mappings *V2EnricherMapping `json:"mappings,omitempty" url:"mappings,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (e *Enrichment) UnmarshalJSON(data []byte) error {
+	type unmarshaler Enrichment
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = Enrichment(value)
+	e._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *Enrichment) String() string {
+	if len(e._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(e._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
 }
 
 type Event struct {
@@ -2600,6 +2677,7 @@ func (m *ModelRelationTo) String() string {
 type ModelResponse struct {
 	Configuration   map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
 	ConnectionId    *string                `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	Enricher        *Enrichment            `json:"enricher,omitempty" url:"enricher,omitempty"`
 	Fields          []*ModelField          `json:"fields,omitempty" url:"fields,omitempty"`
 	Id              *string                `json:"id,omitempty" url:"id,omitempty"`
 	Identifier      *string                `json:"identifier,omitempty" url:"identifier,omitempty"`
@@ -4067,6 +4145,41 @@ func (u *UserEnvelope) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", u)
+}
+
+// Similar to a model configuration, this configures the enricher. For example, if you wanted to use Apollo to enrich people, you would send `{"object": "people"}` as the configuration. Each enricher configuration can be found in the connection configuration docs.
+type V2EnricherConfiguration = map[string]interface{}
+
+// A map of parent model Source Name to child model Source Name. For example, if your model has a field called `work_email` and the enricher accepts a field called `email`, you'd send a map of `{"work_email":"email"}`. The set of required input mappings varies based on the configuration of the enrichment. You can use the `enrichment/{connection_id}/inputfields` API to discover available input field combinations for a given configuration.
+type V2EnricherMapping = map[string]string
+
+type V2GetEnrichmentInputFieldsResponseEnvelope struct {
+	Data [][]string `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2GetEnrichmentInputFieldsResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2GetEnrichmentInputFieldsResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2GetEnrichmentInputFieldsResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2GetEnrichmentInputFieldsResponseEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
 }
 
 type Webhook struct {

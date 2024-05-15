@@ -7,6 +7,7 @@ import (
 	core "github.com/polytomic/polytomic-go/core"
 )
 
+// Bad Request
 type BadRequestError struct {
 	*core.APIError
 	Body *ApiError
@@ -30,6 +31,7 @@ func (b *BadRequestError) Unwrap() error {
 	return b.APIError
 }
 
+// Forbidden
 type ForbiddenError struct {
 	*core.APIError
 	Body *ApiError
@@ -53,6 +55,7 @@ func (f *ForbiddenError) Unwrap() error {
 	return f.APIError
 }
 
+// Internal Server Error
 type InternalServerError struct {
 	*core.APIError
 	Body *ApiError
@@ -76,6 +79,7 @@ func (i *InternalServerError) Unwrap() error {
 	return i.APIError
 }
 
+// Not Found
 type NotFoundError struct {
 	*core.APIError
 	Body *ApiError
@@ -99,6 +103,7 @@ func (n *NotFoundError) Unwrap() error {
 	return n.APIError
 }
 
+// Unauthorized
 type UnauthorizedError struct {
 	*core.APIError
 	Body *RestErrResponse
@@ -122,6 +127,7 @@ func (u *UnauthorizedError) Unwrap() error {
 	return u.APIError
 }
 
+// Unprocessable Entity
 type UnprocessableEntityError struct {
 	*core.APIError
 	Body *ApiError

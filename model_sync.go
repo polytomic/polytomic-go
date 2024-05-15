@@ -4,6 +4,7 @@ package polytomic
 
 type CreateModelSyncRequest struct {
 	Active         *bool             `json:"active,omitempty" url:"active,omitempty"`
+	Enricher       *Enrichment       `json:"enricher,omitempty" url:"enricher,omitempty"`
 	Fields         []*ModelSyncField `json:"fields,omitempty" url:"fields,omitempty"`
 	FilterLogic    *string           `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
 	Filters        []*Filter         `json:"filters,omitempty" url:"filters,omitempty"`
@@ -40,6 +41,7 @@ type StartModelSyncRequest struct {
 
 type UpdateModelSyncRequest struct {
 	Active         *bool             `json:"active,omitempty" url:"active,omitempty"`
+	Enricher       *Enrichment       `json:"enricher,omitempty" url:"enricher,omitempty"`
 	Fields         []*ModelSyncField `json:"fields,omitempty" url:"fields,omitempty"`
 	FilterLogic    *string           `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
 	Filters        []*Filter         `json:"filters,omitempty" url:"filters,omitempty"`

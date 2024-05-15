@@ -29,10 +29,10 @@ type Client struct {
 	Connections  *connections.Client
 	ModelSync    *modelsyncclient.Client
 	Schemas      *schemas.Client
+	Models       *models.Client
 	Events       *events.Client
 	Jobs         *jobs.Client
 	Identity     *identity.Client
-	Models       *models.Client
 	Organization *organization.Client
 	Users        *users.Client
 	Permissions  *permissionsclient.Client
@@ -54,10 +54,10 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Connections:  connections.NewClient(opts...),
 		ModelSync:    modelsyncclient.NewClient(opts...),
 		Schemas:      schemas.NewClient(opts...),
+		Models:       models.NewClient(opts...),
 		Events:       events.NewClient(opts...),
 		Jobs:         jobs.NewClient(opts...),
 		Identity:     identity.NewClient(opts...),
-		Models:       models.NewClient(opts...),
 		Organization: organization.NewClient(opts...),
 		Users:        users.NewClient(opts...),
 		Permissions:  permissionsclient.NewClient(opts...),

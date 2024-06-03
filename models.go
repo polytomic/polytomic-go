@@ -24,6 +24,10 @@ func (m *ModelsCreateRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(m.Body)
 }
 
+type ModelsGetRequest struct {
+	Async *bool `json:"-" url:"async,omitempty"`
+}
+
 type GetEnrichmentInputFieldsRequest struct {
 	Configuration *V2EnricherConfiguration `json:"configuration,omitempty" url:"configuration,omitempty"`
 }
@@ -44,6 +48,14 @@ func (m *ModelsPreviewRequest) UnmarshalJSON(data []byte) error {
 
 func (m *ModelsPreviewRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(m.Body)
+}
+
+type ModelsRemoveRequest struct {
+	Async *bool `json:"-" url:"async,omitempty"`
+}
+
+type ModelsSampleRequest struct {
+	Async *bool `json:"-" url:"async,omitempty"`
 }
 
 type UpdateModelRequest struct {

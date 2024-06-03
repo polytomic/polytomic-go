@@ -348,6 +348,7 @@ func (c *Client) Create(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.ModelsGetRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ModelResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -360,6 +361,14 @@ func (c *Client) Get(
 		baseURL = options.BaseURL
 	}
 	endpointURL := fmt.Sprintf(baseURL+"/"+"api/models/%v", id)
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -503,6 +512,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.ModelsRemoveRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -515,6 +525,14 @@ func (c *Client) Remove(
 		baseURL = options.BaseURL
 	}
 	endpointURL := fmt.Sprintf(baseURL+"/"+"api/models/%v", id)
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -572,4 +590,90 @@ func (c *Client) Remove(
 		return err
 	}
 	return nil
+}
+
+// Returns sample records from the model. The first ten records that the source provides will be returned after being enriched (if applicable). Synchronous requests must complete within 10s. If either querying or enrichment exceeds 10s, please use the async option.
+func (c *Client) Sample(
+	ctx context.Context,
+	id string,
+	request *polytomicgo.ModelsSampleRequest,
+	opts ...option.RequestOption,
+) (*polytomicgo.ModelSampleResponseEnvelope, error) {
+	options := core.NewRequestOptions(opts...)
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/models/%v/sample", id)
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 400:
+			value := new(polytomicgo.BadRequestError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *polytomicgo.ModelSampleResponseEnvelope
+	if err := c.caller.Call(
+		ctx,
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodGet,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
+		},
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
 }

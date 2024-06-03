@@ -12,12 +12,14 @@ type CreateModelSyncRequest struct {
 	Mode           string            `json:"mode" url:"mode"`
 	Name           string            `json:"name" url:"name"`
 	OrganizationId *string           `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Values to set as sync target fields.
 	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
-	Overrides      []*Override       `json:"overrides,omitempty" url:"overrides,omitempty"`
-	Policies       []string          `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule       *Schedule         `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SyncAllRecords *bool             `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
-	Target         *Target           `json:"target,omitempty" url:"target,omitempty"`
+	// Conditional value replacement for field mappings.
+	Overrides      []*Override `json:"overrides,omitempty" url:"overrides,omitempty"`
+	Policies       []string    `json:"policies,omitempty" url:"policies,omitempty"`
+	Schedule       *Schedule   `json:"schedule,omitempty" url:"schedule,omitempty"`
+	SyncAllRecords *bool       `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
+	Target         *Target     `json:"target,omitempty" url:"target,omitempty"`
 }
 
 type ModelSyncGetSourceRequest struct {
@@ -49,10 +51,12 @@ type UpdateModelSyncRequest struct {
 	Mode           string            `json:"mode" url:"mode"`
 	Name           string            `json:"name" url:"name"`
 	OrganizationId *string           `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Values to set as sync target fields.
 	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
-	Overrides      []*Override       `json:"overrides,omitempty" url:"overrides,omitempty"`
-	Policies       []string          `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule       *Schedule         `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SyncAllRecords *bool             `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
-	Target         *Target           `json:"target,omitempty" url:"target,omitempty"`
+	// Conditional value replacement for field mappings.
+	Overrides      []*Override `json:"overrides,omitempty" url:"overrides,omitempty"`
+	Policies       []string    `json:"policies,omitempty" url:"policies,omitempty"`
+	Schedule       *Schedule   `json:"schedule,omitempty" url:"schedule,omitempty"`
+	SyncAllRecords *bool       `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
+	Target         *Target     `json:"target,omitempty" url:"target,omitempty"`
 }

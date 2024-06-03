@@ -1903,12 +1903,15 @@ func (e ExecutionStatus) Ptr() *ExecutionStatus {
 	return &e
 }
 
+// Either `field` or `field_id` must be provided. If `field` is provided, `field_id` is ignored.
 type Filter struct {
-	FieldId   string      `json:"field_id" url:"field_id"`
-	FieldType string      `json:"field_type" url:"field_type"`
-	Function  string      `json:"function" url:"function"`
-	Label     *string     `json:"label,omitempty" url:"label,omitempty"`
-	Value     interface{} `json:"value,omitempty" url:"value,omitempty"`
+	Field *Source `json:"field,omitempty" url:"field,omitempty"`
+	// Model or Target field name to filter on.
+	FieldId   *string                   `json:"field_id,omitempty" url:"field_id,omitempty"`
+	FieldType *FilterFieldReferenceType `json:"field_type,omitempty" url:"field_type,omitempty"`
+	Function  FilterFunction            `json:"function,omitempty" url:"function,omitempty"`
+	Label     *string                   `json:"label,omitempty" url:"label,omitempty"`
+	Value     interface{}               `json:"value,omitempty" url:"value,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -1934,6 +1937,119 @@ func (f *Filter) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", f)
+}
+
+type FilterFieldReferenceType string
+
+const (
+	FilterFieldReferenceTypeModel  FilterFieldReferenceType = "Model"
+	FilterFieldReferenceTypeTarget FilterFieldReferenceType = "Target"
+)
+
+func NewFilterFieldReferenceTypeFromString(s string) (FilterFieldReferenceType, error) {
+	switch s {
+	case "Model":
+		return FilterFieldReferenceTypeModel, nil
+	case "Target":
+		return FilterFieldReferenceTypeTarget, nil
+	}
+	var t FilterFieldReferenceType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (f FilterFieldReferenceType) Ptr() *FilterFieldReferenceType {
+	return &f
+}
+
+type FilterFunction string
+
+const (
+	FilterFunctionEquality             FilterFunction = "Equality"
+	FilterFunctionInequality           FilterFunction = "Inequality"
+	FilterFunctionIsNull               FilterFunction = "IsNull"
+	FilterFunctionIsNotNull            FilterFunction = "IsNotNull"
+	FilterFunctionTrue                 FilterFunction = "True"
+	FilterFunctionFalse                FilterFunction = "False"
+	FilterFunctionOnOrAfter            FilterFunction = "OnOrAfter"
+	FilterFunctionOnOrBefore           FilterFunction = "OnOrBefore"
+	FilterFunctionGreaterThan          FilterFunction = "GreaterThan"
+	FilterFunctionGreaterThanEqual     FilterFunction = "GreaterThanEqual"
+	FilterFunctionLessThan             FilterFunction = "LessThan"
+	FilterFunctionLessThanEqual        FilterFunction = "LessThanEqual"
+	FilterFunctionStringContains       FilterFunction = "StringContains"
+	FilterFunctionStringEndsWith       FilterFunction = "StringEndsWith"
+	FilterFunctionStringDoesNotContain FilterFunction = "StringDoesNotContain"
+	FilterFunctionStringDoesNotEndWith FilterFunction = "StringDoesNotEndWith"
+	FilterFunctionStringOneOf          FilterFunction = "StringOneOf"
+	FilterFunctionStringNotOneOf       FilterFunction = "StringNotOneOf"
+	FilterFunctionBetween              FilterFunction = "Between"
+	FilterFunctionArrayContains        FilterFunction = "ArrayContains"
+	FilterFunctionArrayDoesNotContain  FilterFunction = "ArrayDoesNotContain"
+	FilterFunctionInTheLast            FilterFunction = "InTheLast"
+	FilterFunctionStringLike           FilterFunction = "StringLike"
+	FilterFunctionStringNotLike        FilterFunction = "StringNotLike"
+	FilterFunctionStringMatchesTrimmed FilterFunction = "StringMatchesTrimmed"
+)
+
+func NewFilterFunctionFromString(s string) (FilterFunction, error) {
+	switch s {
+	case "Equality":
+		return FilterFunctionEquality, nil
+	case "Inequality":
+		return FilterFunctionInequality, nil
+	case "IsNull":
+		return FilterFunctionIsNull, nil
+	case "IsNotNull":
+		return FilterFunctionIsNotNull, nil
+	case "True":
+		return FilterFunctionTrue, nil
+	case "False":
+		return FilterFunctionFalse, nil
+	case "OnOrAfter":
+		return FilterFunctionOnOrAfter, nil
+	case "OnOrBefore":
+		return FilterFunctionOnOrBefore, nil
+	case "GreaterThan":
+		return FilterFunctionGreaterThan, nil
+	case "GreaterThanEqual":
+		return FilterFunctionGreaterThanEqual, nil
+	case "LessThan":
+		return FilterFunctionLessThan, nil
+	case "LessThanEqual":
+		return FilterFunctionLessThanEqual, nil
+	case "StringContains":
+		return FilterFunctionStringContains, nil
+	case "StringEndsWith":
+		return FilterFunctionStringEndsWith, nil
+	case "StringDoesNotContain":
+		return FilterFunctionStringDoesNotContain, nil
+	case "StringDoesNotEndWith":
+		return FilterFunctionStringDoesNotEndWith, nil
+	case "StringOneOf":
+		return FilterFunctionStringOneOf, nil
+	case "StringNotOneOf":
+		return FilterFunctionStringNotOneOf, nil
+	case "Between":
+		return FilterFunctionBetween, nil
+	case "ArrayContains":
+		return FilterFunctionArrayContains, nil
+	case "ArrayDoesNotContain":
+		return FilterFunctionArrayDoesNotContain, nil
+	case "InTheLast":
+		return FilterFunctionInTheLast, nil
+	case "StringLike":
+		return FilterFunctionStringLike, nil
+	case "StringNotLike":
+		return FilterFunctionStringNotLike, nil
+	case "StringMatchesTrimmed":
+		return FilterFunctionStringMatchesTrimmed, nil
+	}
+	var t FilterFunction
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (f FilterFunction) Ptr() *FilterFunction {
+	return &f
 }
 
 type GetConnectionMetaEnvelope struct {
@@ -2152,11 +2268,11 @@ func (g *GetModelSyncSourceMetaEnvelope) String() string {
 }
 
 type Identity struct {
-	Function          string  `json:"function" url:"function"`
-	NewField          *bool   `json:"new_field,omitempty" url:"new_field,omitempty"`
-	RemoteFieldTypeId *string `json:"remote_field_type_id,omitempty" url:"remote_field_type_id,omitempty"`
-	Source            *Source `json:"source,omitempty" url:"source,omitempty"`
-	Target            string  `json:"target" url:"target"`
+	Function          SchemaIdentityFunction `json:"function,omitempty" url:"function,omitempty"`
+	NewField          *bool                  `json:"new_field,omitempty" url:"new_field,omitempty"`
+	RemoteFieldTypeId *string                `json:"remote_field_type_id,omitempty" url:"remote_field_type_id,omitempty"`
+	Source            *Source                `json:"source,omitempty" url:"source,omitempty"`
+	Target            string                 `json:"target" url:"target"`
 
 	_rawJSON json.RawMessage
 }
@@ -2491,6 +2607,7 @@ func (m *Mode) String() string {
 type ModelField struct {
 	Description *string     `json:"description,omitempty" url:"description,omitempty"`
 	Example     interface{} `json:"example,omitempty" url:"example,omitempty"`
+	Id          *string     `json:"id,omitempty" url:"id,omitempty"`
 	Label       *string     `json:"label,omitempty" url:"label,omitempty"`
 	Name        *string     `json:"name,omitempty" url:"name,omitempty"`
 	RemoteType  *string     `json:"remote_type,omitempty" url:"remote_type,omitempty"`
@@ -2746,6 +2863,66 @@ func (m *ModelResponseEnvelope) String() string {
 	return fmt.Sprintf("%#v", m)
 }
 
+type ModelSample struct {
+	Records  []V2SampleRecord `json:"records,omitempty" url:"records,omitempty"`
+	Warnings []string         `json:"warnings,omitempty" url:"warnings,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *ModelSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelSample(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelSample) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type ModelSampleResponseEnvelope struct {
+	Data *ModelSample `json:"data,omitempty" url:"data,omitempty"`
+	Job  *JobResponse `json:"job,omitempty" url:"job,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *ModelSampleResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelSampleResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelSampleResponseEnvelope(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelSampleResponseEnvelope) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
 type ModelSyncField struct {
 	New           *bool   `json:"new,omitempty" url:"new,omitempty"`
 	OverrideValue *string `json:"override_value,omitempty" url:"override_value,omitempty"`
@@ -2973,11 +3150,14 @@ func (o *OrganizationsEnvelope) String() string {
 	return fmt.Sprintf("%#v", o)
 }
 
+// Either `field` or `field_id` must be provided. If `field_id` is provided, `field` is ignored.
 type Override struct {
-	FieldId  *string     `json:"field_id,omitempty" url:"field_id,omitempty"`
-	Function *string     `json:"function,omitempty" url:"function,omitempty"`
-	Override interface{} `json:"override,omitempty" url:"override,omitempty"`
-	Value    interface{} `json:"value,omitempty" url:"value,omitempty"`
+	Field *Source `json:"field,omitempty" url:"field,omitempty"`
+	// Field ID of the model field to override.
+	FieldId  *string         `json:"field_id,omitempty" url:"field_id,omitempty"`
+	Function *FilterFunction `json:"function,omitempty" url:"function,omitempty"`
+	Override interface{}     `json:"override,omitempty" url:"override,omitempty"`
+	Value    interface{}     `json:"value,omitempty" url:"value,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -3344,15 +3524,15 @@ func (r *RunAfter) String() string {
 }
 
 type Schedule struct {
-	ConnectionId *string   `json:"connection_id,omitempty" url:"connection_id,omitempty"`
-	DayOfMonth   *string   `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
-	DayOfWeek    *string   `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
-	Frequency    *string   `json:"frequency,omitempty" url:"frequency,omitempty"`
-	Hour         *string   `json:"hour,omitempty" url:"hour,omitempty"`
-	JobId        *int      `json:"job_id,omitempty" url:"job_id,omitempty"`
-	Minute       *string   `json:"minute,omitempty" url:"minute,omitempty"`
-	Month        *string   `json:"month,omitempty" url:"month,omitempty"`
-	RunAfter     *RunAfter `json:"run_after,omitempty" url:"run_after,omitempty"`
+	ConnectionId *string            `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	DayOfMonth   *string            `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
+	DayOfWeek    *string            `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
+	Frequency    *ScheduleFrequency `json:"frequency,omitempty" url:"frequency,omitempty"`
+	Hour         *string            `json:"hour,omitempty" url:"hour,omitempty"`
+	JobId        *int               `json:"job_id,omitempty" url:"job_id,omitempty"`
+	Minute       *string            `json:"minute,omitempty" url:"minute,omitempty"`
+	Month        *string            `json:"month,omitempty" url:"month,omitempty"`
+	RunAfter     *RunAfter          `json:"run_after,omitempty" url:"run_after,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -3611,6 +3791,31 @@ func (s *SchemaField) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
+}
+
+type SchemaIdentityFunction string
+
+const (
+	SchemaIdentityFunctionEquality   SchemaIdentityFunction = "Equality"
+	SchemaIdentityFunctionISubstring SchemaIdentityFunction = "ISubstring"
+	SchemaIdentityFunctionOneOf      SchemaIdentityFunction = "OneOf"
+)
+
+func NewSchemaIdentityFunctionFromString(s string) (SchemaIdentityFunction, error) {
+	switch s {
+	case "Equality":
+		return SchemaIdentityFunctionEquality, nil
+	case "ISubstring":
+		return SchemaIdentityFunctionISubstring, nil
+	case "OneOf":
+		return SchemaIdentityFunctionOneOf, nil
+	}
+	var t SchemaIdentityFunction
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s SchemaIdentityFunction) Ptr() *SchemaIdentityFunction {
+	return &s
 }
 
 type SchemaRecordsResponseEnvelope struct {
@@ -4181,6 +4386,9 @@ func (v *V2GetEnrichmentInputFieldsResponseEnvelope) String() string {
 	}
 	return fmt.Sprintf("%#v", v)
 }
+
+// A map of `fieldSource` -> `fieldName: fieldValue`. Because there may be field name conflicts between the base model and enrichments, the base model fields are placed in a map under the model ID. Fields from enrichments are placed under the enricher ID.
+type V2SampleRecord = map[string]map[string]interface{}
 
 type Webhook struct {
 	CreatedAt      *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`

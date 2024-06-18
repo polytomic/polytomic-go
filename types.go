@@ -1746,6 +1746,7 @@ func (e *EventsEnvelope) String() string {
 }
 
 type ExecutionCounts struct {
+	Delete *int `json:"delete,omitempty" url:"delete,omitempty"`
 	Error  *int `json:"error,omitempty" url:"error,omitempty"`
 	Insert *int `json:"insert,omitempty" url:"insert,omitempty"`
 	Total  *int `json:"total,omitempty" url:"total,omitempty"`

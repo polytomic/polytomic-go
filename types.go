@@ -4524,3 +4524,174 @@ func NewWorkTaskStatusFromString(s string) (WorkTaskStatus, error) {
 func (w WorkTaskStatus) Ptr() *WorkTaskStatus {
 	return &w
 }
+
+type FieldConfiguration struct {
+	// Whether the field is enabled for syncing.
+	Enabled *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
+	Id      *string `json:"id,omitempty" url:"id,omitempty"`
+	// Whether the field should be obfuscated.
+	Obfuscate *bool `json:"obfuscate,omitempty" url:"obfuscate,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (f *FieldConfiguration) UnmarshalJSON(data []byte) error {
+	type unmarshaler FieldConfiguration
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*f = FieldConfiguration(value)
+	f._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (f *FieldConfiguration) String() string {
+	if len(f._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(f._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(f); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", f)
+}
+
+type SchemaConfiguration struct {
+	// Whether the schema is enabled for syncing.
+	Enabled       *bool                                                  `json:"enabled,omitempty" url:"enabled,omitempty"`
+	Fields        []*V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem `json:"fields,omitempty" url:"fields,omitempty"`
+	Id            *string                                                `json:"id,omitempty" url:"id,omitempty"`
+	PartitionKey  *string                                                `json:"partitionKey,omitempty" url:"partitionKey,omitempty"`
+	TrackingField *string                                                `json:"trackingField,omitempty" url:"trackingField,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SchemaConfiguration) UnmarshalJSON(data []byte) error {
+	type unmarshaler SchemaConfiguration
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SchemaConfiguration(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SchemaConfiguration) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type V2CreateBulkSyncRequestSchemasItemEnabledFieldsItem struct {
+	String             string
+	FieldConfiguration *FieldConfiguration
+}
+
+func NewV2CreateBulkSyncRequestSchemasItemEnabledFieldsItemFromString(value string) *V2CreateBulkSyncRequestSchemasItemEnabledFieldsItem {
+	return &V2CreateBulkSyncRequestSchemasItemEnabledFieldsItem{String: value}
+}
+
+func NewV2CreateBulkSyncRequestSchemasItemEnabledFieldsItemFromFieldConfiguration(value *FieldConfiguration) *V2CreateBulkSyncRequestSchemasItemEnabledFieldsItem {
+	return &V2CreateBulkSyncRequestSchemasItemEnabledFieldsItem{FieldConfiguration: value}
+}
+
+func (v *V2CreateBulkSyncRequestSchemasItemEnabledFieldsItem) UnmarshalJSON(data []byte) error {
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		v.String = valueString
+		return nil
+	}
+	valueFieldConfiguration := new(FieldConfiguration)
+	if err := json.Unmarshal(data, &valueFieldConfiguration); err == nil {
+		v.FieldConfiguration = valueFieldConfiguration
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, v)
+}
+
+func (v V2CreateBulkSyncRequestSchemasItemEnabledFieldsItem) MarshalJSON() ([]byte, error) {
+	if v.String != "" {
+		return json.Marshal(v.String)
+	}
+	if v.FieldConfiguration != nil {
+		return json.Marshal(v.FieldConfiguration)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", v)
+}
+
+type V2CreateBulkSyncRequestSchemasItemEnabledFieldsItemVisitor interface {
+	VisitString(string) error
+	VisitFieldConfiguration(*FieldConfiguration) error
+}
+
+func (v *V2CreateBulkSyncRequestSchemasItemEnabledFieldsItem) Accept(visitor V2CreateBulkSyncRequestSchemasItemEnabledFieldsItemVisitor) error {
+	if v.String != "" {
+		return visitor.VisitString(v.String)
+	}
+	if v.FieldConfiguration != nil {
+		return visitor.VisitFieldConfiguration(v.FieldConfiguration)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", v)
+}
+
+type V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem struct {
+	String             string
+	FieldConfiguration *FieldConfiguration
+}
+
+func NewV2UpdateBulkSyncRequestSchemasItemEnabledFieldsItemFromString(value string) *V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem {
+	return &V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem{String: value}
+}
+
+func NewV2UpdateBulkSyncRequestSchemasItemEnabledFieldsItemFromFieldConfiguration(value *FieldConfiguration) *V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem {
+	return &V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem{FieldConfiguration: value}
+}
+
+func (v *V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem) UnmarshalJSON(data []byte) error {
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		v.String = valueString
+		return nil
+	}
+	valueFieldConfiguration := new(FieldConfiguration)
+	if err := json.Unmarshal(data, &valueFieldConfiguration); err == nil {
+		v.FieldConfiguration = valueFieldConfiguration
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, v)
+}
+
+func (v V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem) MarshalJSON() ([]byte, error) {
+	if v.String != "" {
+		return json.Marshal(v.String)
+	}
+	if v.FieldConfiguration != nil {
+		return json.Marshal(v.FieldConfiguration)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", v)
+}
+
+type V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItemVisitor interface {
+	VisitString(string) error
+	VisitFieldConfiguration(*FieldConfiguration) error
+}
+
+func (v *V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem) Accept(visitor V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItemVisitor) error {
+	if v.String != "" {
+		return visitor.VisitString(v.String)
+	}
+	if v.FieldConfiguration != nil {
+		return visitor.VisitFieldConfiguration(v.FieldConfiguration)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", v)
+}

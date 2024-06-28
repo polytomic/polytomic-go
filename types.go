@@ -291,6 +291,38 @@ func (b *BulkField) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+type BulkFilter struct {
+	// Schema field ID to filter on.
+	FieldId  *string        `json:"field_id,omitempty" url:"field_id,omitempty"`
+	Function FilterFunction `json:"function,omitempty" url:"function,omitempty"`
+	Value    interface{}    `json:"value,omitempty" url:"value,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkFilter) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkFilter
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkFilter(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkFilter) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 type BulkItemizedSchedule struct {
 	Item     BulkSelectiveMode `json:"item,omitempty" url:"item,omitempty"`
 	Schedule *BulkSchedule     `json:"schedule,omitempty" url:"schedule,omitempty"`
@@ -323,7 +355,7 @@ func (b *BulkItemizedSchedule) String() string {
 
 type BulkMultiScheduleConfiguration struct {
 	Schedules []*BulkItemizedSchedule `json:"schedules,omitempty" url:"schedules,omitempty"`
-	Type      string                  `json:"type" url:"type"`
+	Type      *string                 `json:"type,omitempty" url:"type,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -387,11 +419,12 @@ func (b *BulkSchedule) String() string {
 }
 
 type BulkSchema struct {
-	Enabled      *bool        `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Fields       []*BulkField `json:"fields,omitempty" url:"fields,omitempty"`
-	Id           *string      `json:"id,omitempty" url:"id,omitempty"`
-	OutputName   *string      `json:"output_name,omitempty" url:"output_name,omitempty"`
-	PartitionKey *string      `json:"partition_key,omitempty" url:"partition_key,omitempty"`
+	Enabled      *bool         `json:"enabled,omitempty" url:"enabled,omitempty"`
+	Fields       []*BulkField  `json:"fields,omitempty" url:"fields,omitempty"`
+	Filters      []*BulkFilter `json:"filters,omitempty" url:"filters,omitempty"`
+	Id           *string       `json:"id,omitempty" url:"id,omitempty"`
+	OutputName   *string       `json:"output_name,omitempty" url:"output_name,omitempty"`
+	PartitionKey *string       `json:"partition_key,omitempty" url:"partition_key,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -1904,6 +1937,39 @@ func (e ExecutionStatus) Ptr() *ExecutionStatus {
 	return &e
 }
 
+type FieldConfiguration struct {
+	// Whether the field is enabled for syncing.
+	Enabled *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
+	Id      *string `json:"id,omitempty" url:"id,omitempty"`
+	// Whether the field should be obfuscated.
+	Obfuscate *bool `json:"obfuscate,omitempty" url:"obfuscate,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (f *FieldConfiguration) UnmarshalJSON(data []byte) error {
+	type unmarshaler FieldConfiguration
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*f = FieldConfiguration(value)
+	f._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (f *FieldConfiguration) String() string {
+	if len(f._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(f._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(f); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", f)
+}
+
 // Either `field` or `field_id` must be provided. If `field` is provided, `field_id` is ignored.
 type Filter struct {
 	Field *Source `json:"field,omitempty" url:"field,omitempty"`
@@ -3186,6 +3252,38 @@ func (o *Override) String() string {
 	return fmt.Sprintf("%#v", o)
 }
 
+type Pagination struct {
+	// URL to the next page of results, if available. This may be returned as a host relative path.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// URL to the previous page of results, if available. This may be returned as a host relative path.
+	Previous *string `json:"previous,omitempty" url:"previous,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *Pagination) UnmarshalJSON(data []byte) error {
+	type unmarshaler Pagination
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = Pagination(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *Pagination) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 type PickValue struct {
 	Label *string `json:"label,omitempty" url:"label,omitempty"`
 	Value *string `json:"value,omitempty" url:"value,omitempty"`
@@ -3749,6 +3847,41 @@ func (s *SchemaAssociation) UnmarshalJSON(data []byte) error {
 }
 
 func (s *SchemaAssociation) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SchemaConfiguration struct {
+	// Whether the schema is enabled for syncing.
+	Enabled       *bool                              `json:"enabled,omitempty" url:"enabled,omitempty"`
+	Fields        []*V2SchemaConfigurationFieldsItem `json:"fields,omitempty" url:"fields,omitempty"`
+	Filters       []*BulkFilter                      `json:"filters,omitempty" url:"filters,omitempty"`
+	Id            *string                            `json:"id,omitempty" url:"id,omitempty"`
+	PartitionKey  *string                            `json:"partitionKey,omitempty" url:"partitionKey,omitempty"`
+	TrackingField *string                            `json:"trackingField,omitempty" url:"trackingField,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SchemaConfiguration) UnmarshalJSON(data []byte) error {
+	type unmarshaler SchemaConfiguration
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SchemaConfiguration(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SchemaConfiguration) String() string {
 	if len(s._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
 			return value
@@ -4391,6 +4524,157 @@ func (v *V2GetEnrichmentInputFieldsResponseEnvelope) String() string {
 // A map of `fieldSource` -> `fieldName: fieldValue`. Because there may be field name conflicts between the base model and enrichments, the base model fields are placed in a map under the model ID. Fields from enrichments are placed under the enricher ID.
 type V2SampleRecord = map[string]map[string]interface{}
 
+type V2SchemaConfigurationFieldsItem struct {
+	String             string
+	FieldConfiguration *FieldConfiguration
+}
+
+func NewV2SchemaConfigurationFieldsItemFromString(value string) *V2SchemaConfigurationFieldsItem {
+	return &V2SchemaConfigurationFieldsItem{String: value}
+}
+
+func NewV2SchemaConfigurationFieldsItemFromFieldConfiguration(value *FieldConfiguration) *V2SchemaConfigurationFieldsItem {
+	return &V2SchemaConfigurationFieldsItem{FieldConfiguration: value}
+}
+
+func (v *V2SchemaConfigurationFieldsItem) UnmarshalJSON(data []byte) error {
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		v.String = valueString
+		return nil
+	}
+	valueFieldConfiguration := new(FieldConfiguration)
+	if err := json.Unmarshal(data, &valueFieldConfiguration); err == nil {
+		v.FieldConfiguration = valueFieldConfiguration
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, v)
+}
+
+func (v V2SchemaConfigurationFieldsItem) MarshalJSON() ([]byte, error) {
+	if v.String != "" {
+		return json.Marshal(v.String)
+	}
+	if v.FieldConfiguration != nil {
+		return json.Marshal(v.FieldConfiguration)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", v)
+}
+
+type V2SchemaConfigurationFieldsItemVisitor interface {
+	VisitString(string) error
+	VisitFieldConfiguration(*FieldConfiguration) error
+}
+
+func (v *V2SchemaConfigurationFieldsItem) Accept(visitor V2SchemaConfigurationFieldsItemVisitor) error {
+	if v.String != "" {
+		return visitor.VisitString(v.String)
+	}
+	if v.FieldConfiguration != nil {
+		return visitor.VisitFieldConfiguration(v.FieldConfiguration)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", v)
+}
+
+type V4QueryResultsEnvelope struct {
+	Data  *V4RunQueryResult `json:"data,omitempty" url:"data,omitempty"`
+	Links *Pagination       `json:"links,omitempty" url:"links,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V4QueryResultsEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4QueryResultsEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V4QueryResultsEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V4QueryResultsEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V4RunQueryEnvelope struct {
+	Data *V4RunQueryResult `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V4RunQueryEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4RunQueryEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V4RunQueryEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V4RunQueryEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V4RunQueryResult struct {
+	// The number of rows returned by the query. This will not be returned until the query completes.
+	Count *int    `json:"count,omitempty" url:"count,omitempty"`
+	Error *string `json:"error,omitempty" url:"error,omitempty"`
+	// The time at which the query will expire and be deleted. This will not be returned until the query completes.
+	Expires *string `json:"expires,omitempty" url:"expires,omitempty"`
+	// The names of the fields returned by the query. This will not be returned until the query completes.
+	Fields []string `json:"fields,omitempty" url:"fields,omitempty"`
+	// The ID of the query task.
+	Id *string `json:"id,omitempty" url:"id,omitempty"`
+	// The query results, returned as an array of objects.
+	Results []map[string]interface{} `json:"results,omitempty" url:"results,omitempty"`
+	Status  *WorkTaskStatus          `json:"status,omitempty" url:"status,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V4RunQueryResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4RunQueryResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V4RunQueryResult(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V4RunQueryResult) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
 type Webhook struct {
 	CreatedAt      *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
 	Endpoint       *string    `json:"endpoint,omitempty" url:"endpoint,omitempty"`
@@ -4503,6 +4787,7 @@ func (w *WebhookListEnvelope) String() string {
 type WorkTaskStatus string
 
 const (
+	WorkTaskStatusCreated WorkTaskStatus = "created"
 	WorkTaskStatusRunning WorkTaskStatus = "running"
 	WorkTaskStatusDone    WorkTaskStatus = "done"
 	WorkTaskStatusFailed  WorkTaskStatus = "failed"
@@ -4510,6 +4795,8 @@ const (
 
 func NewWorkTaskStatusFromString(s string) (WorkTaskStatus, error) {
 	switch s {
+	case "created":
+		return WorkTaskStatusCreated, nil
 	case "running":
 		return WorkTaskStatusRunning, nil
 	case "done":
@@ -4523,175 +4810,4 @@ func NewWorkTaskStatusFromString(s string) (WorkTaskStatus, error) {
 
 func (w WorkTaskStatus) Ptr() *WorkTaskStatus {
 	return &w
-}
-
-type FieldConfiguration struct {
-	// Whether the field is enabled for syncing.
-	Enabled *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Id      *string `json:"id,omitempty" url:"id,omitempty"`
-	// Whether the field should be obfuscated.
-	Obfuscate *bool `json:"obfuscate,omitempty" url:"obfuscate,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (f *FieldConfiguration) UnmarshalJSON(data []byte) error {
-	type unmarshaler FieldConfiguration
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*f = FieldConfiguration(value)
-	f._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (f *FieldConfiguration) String() string {
-	if len(f._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(f._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(f); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", f)
-}
-
-type SchemaConfiguration struct {
-	// Whether the schema is enabled for syncing.
-	Enabled       *bool                                                  `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Fields        []*V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem `json:"fields,omitempty" url:"fields,omitempty"`
-	Id            *string                                                `json:"id,omitempty" url:"id,omitempty"`
-	PartitionKey  *string                                                `json:"partitionKey,omitempty" url:"partitionKey,omitempty"`
-	TrackingField *string                                                `json:"trackingField,omitempty" url:"trackingField,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (s *SchemaConfiguration) UnmarshalJSON(data []byte) error {
-	type unmarshaler SchemaConfiguration
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*s = SchemaConfiguration(value)
-	s._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *SchemaConfiguration) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
-}
-
-type V2CreateBulkSyncRequestSchemasItemEnabledFieldsItem struct {
-	String             string
-	FieldConfiguration *FieldConfiguration
-}
-
-func NewV2CreateBulkSyncRequestSchemasItemEnabledFieldsItemFromString(value string) *V2CreateBulkSyncRequestSchemasItemEnabledFieldsItem {
-	return &V2CreateBulkSyncRequestSchemasItemEnabledFieldsItem{String: value}
-}
-
-func NewV2CreateBulkSyncRequestSchemasItemEnabledFieldsItemFromFieldConfiguration(value *FieldConfiguration) *V2CreateBulkSyncRequestSchemasItemEnabledFieldsItem {
-	return &V2CreateBulkSyncRequestSchemasItemEnabledFieldsItem{FieldConfiguration: value}
-}
-
-func (v *V2CreateBulkSyncRequestSchemasItemEnabledFieldsItem) UnmarshalJSON(data []byte) error {
-	var valueString string
-	if err := json.Unmarshal(data, &valueString); err == nil {
-		v.String = valueString
-		return nil
-	}
-	valueFieldConfiguration := new(FieldConfiguration)
-	if err := json.Unmarshal(data, &valueFieldConfiguration); err == nil {
-		v.FieldConfiguration = valueFieldConfiguration
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, v)
-}
-
-func (v V2CreateBulkSyncRequestSchemasItemEnabledFieldsItem) MarshalJSON() ([]byte, error) {
-	if v.String != "" {
-		return json.Marshal(v.String)
-	}
-	if v.FieldConfiguration != nil {
-		return json.Marshal(v.FieldConfiguration)
-	}
-	return nil, fmt.Errorf("type %T does not include a non-empty union type", v)
-}
-
-type V2CreateBulkSyncRequestSchemasItemEnabledFieldsItemVisitor interface {
-	VisitString(string) error
-	VisitFieldConfiguration(*FieldConfiguration) error
-}
-
-func (v *V2CreateBulkSyncRequestSchemasItemEnabledFieldsItem) Accept(visitor V2CreateBulkSyncRequestSchemasItemEnabledFieldsItemVisitor) error {
-	if v.String != "" {
-		return visitor.VisitString(v.String)
-	}
-	if v.FieldConfiguration != nil {
-		return visitor.VisitFieldConfiguration(v.FieldConfiguration)
-	}
-	return fmt.Errorf("type %T does not include a non-empty union type", v)
-}
-
-type V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem struct {
-	String             string
-	FieldConfiguration *FieldConfiguration
-}
-
-func NewV2UpdateBulkSyncRequestSchemasItemEnabledFieldsItemFromString(value string) *V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem {
-	return &V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem{String: value}
-}
-
-func NewV2UpdateBulkSyncRequestSchemasItemEnabledFieldsItemFromFieldConfiguration(value *FieldConfiguration) *V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem {
-	return &V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem{FieldConfiguration: value}
-}
-
-func (v *V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem) UnmarshalJSON(data []byte) error {
-	var valueString string
-	if err := json.Unmarshal(data, &valueString); err == nil {
-		v.String = valueString
-		return nil
-	}
-	valueFieldConfiguration := new(FieldConfiguration)
-	if err := json.Unmarshal(data, &valueFieldConfiguration); err == nil {
-		v.FieldConfiguration = valueFieldConfiguration
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, v)
-}
-
-func (v V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem) MarshalJSON() ([]byte, error) {
-	if v.String != "" {
-		return json.Marshal(v.String)
-	}
-	if v.FieldConfiguration != nil {
-		return json.Marshal(v.FieldConfiguration)
-	}
-	return nil, fmt.Errorf("type %T does not include a non-empty union type", v)
-}
-
-type V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItemVisitor interface {
-	VisitString(string) error
-	VisitFieldConfiguration(*FieldConfiguration) error
-}
-
-func (v *V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItem) Accept(visitor V2UpdateBulkSyncRequestSchemasItemEnabledFieldsItemVisitor) error {
-	if v.String != "" {
-		return visitor.VisitString(v.String)
-	}
-	if v.FieldConfiguration != nil {
-		return visitor.VisitFieldConfiguration(v.FieldConfiguration)
-	}
-	return fmt.Errorf("type %T does not include a non-empty union type", v)
 }

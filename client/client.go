@@ -14,6 +14,7 @@ import (
 	option "github.com/polytomic/polytomic-go/option"
 	organization "github.com/polytomic/polytomic-go/organization"
 	permissionsclient "github.com/polytomic/polytomic-go/permissions/client"
+	queryrunner "github.com/polytomic/polytomic-go/queryrunner"
 	schemas "github.com/polytomic/polytomic-go/schemas"
 	users "github.com/polytomic/polytomic-go/users"
 	webhooks "github.com/polytomic/polytomic-go/webhooks"
@@ -27,6 +28,7 @@ type Client struct {
 
 	BulkSync     *bulksyncclient.Client
 	Connections  *connections.Client
+	QueryRunner  *queryrunner.Client
 	ModelSync    *modelsyncclient.Client
 	Schemas      *schemas.Client
 	Models       *models.Client
@@ -52,6 +54,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		header:       options.ToHeader(),
 		BulkSync:     bulksyncclient.NewClient(opts...),
 		Connections:  connections.NewClient(opts...),
+		QueryRunner:  queryrunner.NewClient(opts...),
 		ModelSync:    modelsyncclient.NewClient(opts...),
 		Schemas:      schemas.NewClient(opts...),
 		Models:       models.NewClient(opts...),

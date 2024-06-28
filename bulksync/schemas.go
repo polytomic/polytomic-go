@@ -15,7 +15,8 @@ type BulkSyncSchemasRequest struct {
 }
 
 type UpdateBulkSchema struct {
-	Enabled      *bool                    `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Fields       []*polytomicgo.BulkField `json:"fields,omitempty" url:"fields,omitempty"`
-	PartitionKey *string                  `json:"partition_key,omitempty" url:"partition_key,omitempty"`
+	Enabled      *bool                     `json:"enabled,omitempty" url:"enabled,omitempty"`
+	Fields       []*polytomicgo.BulkField  `json:"fields,omitempty" url:"fields,omitempty"`
+	Filters      []*polytomicgo.BulkFilter `json:"filters,omitempty" url:"filters,omitempty"`
+	PartitionKey *string                   `json:"partition_key,omitempty" url:"partition_key,omitempty"`
 }

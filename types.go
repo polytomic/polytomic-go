@@ -694,6 +694,56 @@ func (b *BulkSyncExecutionEnvelope) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+type BulkSyncExecutionStatus struct {
+	NextExecutionTime *time.Time                       `json:"nextExecutionTime,omitempty" url:"nextExecutionTime,omitempty"`
+	Schemas           []*BulkSyncSchemaExecutionStatus `json:"schemas,omitempty" url:"schemas,omitempty"`
+	Status            *BulkExecutionStatus             `json:"status,omitempty" url:"status,omitempty"`
+	SyncId            *string                          `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncExecutionStatus) UnmarshalJSON(data []byte) error {
+	type embed BulkSyncExecutionStatus
+	var unmarshaler = struct {
+		embed
+		NextExecutionTime *core.DateTime `json:"nextExecutionTime,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BulkSyncExecutionStatus(unmarshaler.embed)
+	b.NextExecutionTime = unmarshaler.NextExecutionTime.TimePtr()
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncExecutionStatus) MarshalJSON() ([]byte, error) {
+	type embed BulkSyncExecutionStatus
+	var marshaler = struct {
+		embed
+		NextExecutionTime *core.DateTime `json:"nextExecutionTime,omitempty"`
+	}{
+		embed:             embed(*b),
+		NextExecutionTime: core.NewOptionalDateTime(b.NextExecutionTime),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (b *BulkSyncExecutionStatus) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 type BulkSyncListEnvelope struct {
 	Data []*BulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
 
@@ -838,6 +888,65 @@ func (b *BulkSyncSchemaExecution) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BulkSyncSchemaExecution) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncSchemaExecutionStatus struct {
+	CompletedAt *time.Time `json:"completed_at,omitempty" url:"completed_at,omitempty"`
+	ErrorCount  *int       `json:"error_count,omitempty" url:"error_count,omitempty"`
+	// ID of the most recent execution for the schema.
+	ExecutionId   *string                    `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	RecordCount   *int                       `json:"record_count,omitempty" url:"record_count,omitempty"`
+	Schema        *string                    `json:"schema,omitempty" url:"schema,omitempty"`
+	StartedAt     *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
+	Status        *BulkSchemaExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	StatusMessage *string                    `json:"status_message,omitempty" url:"status_message,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncSchemaExecutionStatus) UnmarshalJSON(data []byte) error {
+	type embed BulkSyncSchemaExecutionStatus
+	var unmarshaler = struct {
+		embed
+		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BulkSyncSchemaExecutionStatus(unmarshaler.embed)
+	b.CompletedAt = unmarshaler.CompletedAt.TimePtr()
+	b.StartedAt = unmarshaler.StartedAt.TimePtr()
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncSchemaExecutionStatus) MarshalJSON() ([]byte, error) {
+	type embed BulkSyncSchemaExecutionStatus
+	var marshaler = struct {
+		embed
+		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+	}{
+		embed:       embed(*b),
+		CompletedAt: core.NewOptionalDateTime(b.CompletedAt),
+		StartedAt:   core.NewOptionalDateTime(b.StartedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (b *BulkSyncSchemaExecutionStatus) String() string {
 	if len(b._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
 			return value
@@ -2492,6 +2601,35 @@ func (l *ListBulkSchema) String() string {
 	return fmt.Sprintf("%#v", l)
 }
 
+type ListBulkSyncExecutionStatusEnvelope struct {
+	Data []*BulkSyncExecutionStatus `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (l *ListBulkSyncExecutionStatusEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListBulkSyncExecutionStatusEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListBulkSyncExecutionStatusEnvelope(value)
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListBulkSyncExecutionStatusEnvelope) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
 type ListBulkSyncExecutionsEnvelope struct {
 	Data []*BulkSyncExecution `json:"data,omitempty" url:"data,omitempty"`
 
@@ -2991,11 +3129,15 @@ func (m *ModelSampleResponseEnvelope) String() string {
 }
 
 type ModelSyncField struct {
-	New           *bool   `json:"new,omitempty" url:"new,omitempty"`
+	// New is set to true if the target field should be created by Polytomic. This is not supported by all backends.
+	New *bool `json:"new,omitempty" url:"new,omitempty"`
+	// Value to set in the target field; if provided, 'source' is ignored.
 	OverrideValue *string `json:"override_value,omitempty" url:"override_value,omitempty"`
 	Source        *Source `json:"source,omitempty" url:"source,omitempty"`
-	SyncMode      *string `json:"sync_mode,omitempty" url:"sync_mode,omitempty"`
-	Target        string  `json:"target" url:"target"`
+	// Sync mode for the field; defaults to 'updateOrCreate'. If set to 'create', the field will not be synced if it already has a value. This is not supported by all backends.
+	SyncMode *string `json:"sync_mode,omitempty" url:"sync_mode,omitempty"`
+	// Target field ID the source field value will be written to.
+	Target string `json:"target" url:"target"`
 
 	_rawJSON json.RawMessage
 }

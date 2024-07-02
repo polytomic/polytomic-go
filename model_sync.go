@@ -3,8 +3,9 @@
 package polytomic
 
 type CreateModelSyncRequest struct {
-	Active         *bool             `json:"active,omitempty" url:"active,omitempty"`
-	Enricher       *Enrichment       `json:"enricher,omitempty" url:"enricher,omitempty"`
+	Active   *bool       `json:"active,omitempty" url:"active,omitempty"`
+	Enricher *Enrichment `json:"enricher,omitempty" url:"enricher,omitempty"`
+	// Fields to sync from source to target.
 	Fields         []*ModelSyncField `json:"fields,omitempty" url:"fields,omitempty"`
 	FilterLogic    *string           `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
 	Filters        []*Filter         `json:"filters,omitempty" url:"filters,omitempty"`
@@ -12,9 +13,9 @@ type CreateModelSyncRequest struct {
 	Mode           string            `json:"mode" url:"mode"`
 	Name           string            `json:"name" url:"name"`
 	OrganizationId *string           `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	// Values to set as sync target fields.
+	// Values to set in the target unconditionally.
 	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
-	// Conditional value replacement for field mappings.
+	// Conditional value replacement for fields.
 	Overrides      []*Override `json:"overrides,omitempty" url:"overrides,omitempty"`
 	Policies       []string    `json:"policies,omitempty" url:"policies,omitempty"`
 	Schedule       *Schedule   `json:"schedule,omitempty" url:"schedule,omitempty"`
@@ -42,8 +43,9 @@ type StartModelSyncRequest struct {
 }
 
 type UpdateModelSyncRequest struct {
-	Active         *bool             `json:"active,omitempty" url:"active,omitempty"`
-	Enricher       *Enrichment       `json:"enricher,omitempty" url:"enricher,omitempty"`
+	Active   *bool       `json:"active,omitempty" url:"active,omitempty"`
+	Enricher *Enrichment `json:"enricher,omitempty" url:"enricher,omitempty"`
+	// Fields to sync from source to target.
 	Fields         []*ModelSyncField `json:"fields,omitempty" url:"fields,omitempty"`
 	FilterLogic    *string           `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
 	Filters        []*Filter         `json:"filters,omitempty" url:"filters,omitempty"`
@@ -51,9 +53,9 @@ type UpdateModelSyncRequest struct {
 	Mode           string            `json:"mode" url:"mode"`
 	Name           string            `json:"name" url:"name"`
 	OrganizationId *string           `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	// Values to set as sync target fields.
+	// Values to set in the target unconditionally.
 	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
-	// Conditional value replacement for field mappings.
+	// Conditional value replacement for fields.
 	Overrides      []*Override `json:"overrides,omitempty" url:"overrides,omitempty"`
 	Policies       []string    `json:"policies,omitempty" url:"policies,omitempty"`
 	Schedule       *Schedule   `json:"schedule,omitempty" url:"schedule,omitempty"`

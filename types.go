@@ -543,6 +543,110 @@ func (b BulkSelectiveMode) Ptr() *BulkSelectiveMode {
 	return &b
 }
 
+type BulkSyncCanceledEvent struct {
+	DestinationConnectionId *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	ExecutionId             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	Name                    *string `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	SourceConnectionId      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncCanceledEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncCanceledEvent
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncCanceledEvent(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncCanceledEvent) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncCompletedEvent struct {
+	DestinationConnectionId *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	ExecutionId             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	Name                    *string `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	SourceConnectionId      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	TriggerSource           *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncCompletedEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncCompletedEvent
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncCompletedEvent(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncCompletedEvent) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncCompletedWithErrorEvent struct {
+	DestinationConnectionId *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	ExecutionId             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	Name                    *string `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	SourceConnectionId      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	TriggerSource           *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncCompletedWithErrorEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncCompletedWithErrorEvent
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncCompletedWithErrorEvent(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncCompletedWithErrorEvent) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 type BulkSyncDest struct {
 	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
 	Modes         []*SupportedMode       `json:"modes,omitempty" url:"modes,omitempty"`
@@ -744,6 +848,41 @@ func (b *BulkSyncExecutionStatus) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+type BulkSyncFailedEvent struct {
+	DestinationConnectionId *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	Error                   *string `json:"error,omitempty" url:"error,omitempty"`
+	ExecutionId             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	Name                    *string `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	SourceConnectionId      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncFailedEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncFailedEvent
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncFailedEvent(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncFailedEvent) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 type BulkSyncListEnvelope struct {
 	Data []*BulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
 
@@ -831,6 +970,40 @@ func (b *BulkSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 func (b *BulkSyncResponseEnvelope) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkSyncRunningEvent struct {
+	DestinationConnectionId *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	ExecutionId             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	Name                    *string `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	SourceConnectionId      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkSyncRunningEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncRunningEvent
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncRunningEvent(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncRunningEvent) String() string {
 	if len(b._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
 			return value
@@ -1779,11 +1952,11 @@ func (e *Enrichment) String() string {
 }
 
 type Event struct {
-	CreatedAt      *time.Time  `json:"created_at,omitempty" url:"created_at,omitempty"`
-	Event          interface{} `json:"event,omitempty" url:"event,omitempty"`
-	Id             *string     `json:"id,omitempty" url:"id,omitempty"`
-	OrganizationId *string     `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Type           *string     `json:"type,omitempty" url:"type,omitempty"`
+	CreatedAt      *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
+	Event          *EventBody `json:"event,omitempty" url:"event,omitempty"`
+	Id             *string    `json:"id,omitempty" url:"id,omitempty"`
+	OrganizationId *string    `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Type           *string    `json:"type,omitempty" url:"type,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -1827,6 +2000,194 @@ func (e *Event) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", e)
+}
+
+type EventBody struct {
+	SyncRunningEvent                *SyncRunningEvent
+	SyncCompletedEvent              *SyncCompletedEvent
+	SyncFailedEvent                 *SyncFailedEvent
+	SyncCanceledEvent               *SyncCanceledEvent
+	SyncCompletedWithErrorsEvent    *SyncCompletedWithErrorsEvent
+	BulkSyncRunningEvent            *BulkSyncRunningEvent
+	BulkSyncCompletedEvent          *BulkSyncCompletedEvent
+	BulkSyncCanceledEvent           *BulkSyncCanceledEvent
+	BulkSyncCompletedWithErrorEvent *BulkSyncCompletedWithErrorEvent
+	BulkSyncFailedEvent             *BulkSyncFailedEvent
+}
+
+func NewEventBodyFromSyncRunningEvent(value *SyncRunningEvent) *EventBody {
+	return &EventBody{SyncRunningEvent: value}
+}
+
+func NewEventBodyFromSyncCompletedEvent(value *SyncCompletedEvent) *EventBody {
+	return &EventBody{SyncCompletedEvent: value}
+}
+
+func NewEventBodyFromSyncFailedEvent(value *SyncFailedEvent) *EventBody {
+	return &EventBody{SyncFailedEvent: value}
+}
+
+func NewEventBodyFromSyncCanceledEvent(value *SyncCanceledEvent) *EventBody {
+	return &EventBody{SyncCanceledEvent: value}
+}
+
+func NewEventBodyFromSyncCompletedWithErrorsEvent(value *SyncCompletedWithErrorsEvent) *EventBody {
+	return &EventBody{SyncCompletedWithErrorsEvent: value}
+}
+
+func NewEventBodyFromBulkSyncRunningEvent(value *BulkSyncRunningEvent) *EventBody {
+	return &EventBody{BulkSyncRunningEvent: value}
+}
+
+func NewEventBodyFromBulkSyncCompletedEvent(value *BulkSyncCompletedEvent) *EventBody {
+	return &EventBody{BulkSyncCompletedEvent: value}
+}
+
+func NewEventBodyFromBulkSyncCanceledEvent(value *BulkSyncCanceledEvent) *EventBody {
+	return &EventBody{BulkSyncCanceledEvent: value}
+}
+
+func NewEventBodyFromBulkSyncCompletedWithErrorEvent(value *BulkSyncCompletedWithErrorEvent) *EventBody {
+	return &EventBody{BulkSyncCompletedWithErrorEvent: value}
+}
+
+func NewEventBodyFromBulkSyncFailedEvent(value *BulkSyncFailedEvent) *EventBody {
+	return &EventBody{BulkSyncFailedEvent: value}
+}
+
+func (e *EventBody) UnmarshalJSON(data []byte) error {
+	valueSyncRunningEvent := new(SyncRunningEvent)
+	if err := json.Unmarshal(data, &valueSyncRunningEvent); err == nil {
+		e.SyncRunningEvent = valueSyncRunningEvent
+		return nil
+	}
+	valueSyncCompletedEvent := new(SyncCompletedEvent)
+	if err := json.Unmarshal(data, &valueSyncCompletedEvent); err == nil {
+		e.SyncCompletedEvent = valueSyncCompletedEvent
+		return nil
+	}
+	valueSyncFailedEvent := new(SyncFailedEvent)
+	if err := json.Unmarshal(data, &valueSyncFailedEvent); err == nil {
+		e.SyncFailedEvent = valueSyncFailedEvent
+		return nil
+	}
+	valueSyncCanceledEvent := new(SyncCanceledEvent)
+	if err := json.Unmarshal(data, &valueSyncCanceledEvent); err == nil {
+		e.SyncCanceledEvent = valueSyncCanceledEvent
+		return nil
+	}
+	valueSyncCompletedWithErrorsEvent := new(SyncCompletedWithErrorsEvent)
+	if err := json.Unmarshal(data, &valueSyncCompletedWithErrorsEvent); err == nil {
+		e.SyncCompletedWithErrorsEvent = valueSyncCompletedWithErrorsEvent
+		return nil
+	}
+	valueBulkSyncRunningEvent := new(BulkSyncRunningEvent)
+	if err := json.Unmarshal(data, &valueBulkSyncRunningEvent); err == nil {
+		e.BulkSyncRunningEvent = valueBulkSyncRunningEvent
+		return nil
+	}
+	valueBulkSyncCompletedEvent := new(BulkSyncCompletedEvent)
+	if err := json.Unmarshal(data, &valueBulkSyncCompletedEvent); err == nil {
+		e.BulkSyncCompletedEvent = valueBulkSyncCompletedEvent
+		return nil
+	}
+	valueBulkSyncCanceledEvent := new(BulkSyncCanceledEvent)
+	if err := json.Unmarshal(data, &valueBulkSyncCanceledEvent); err == nil {
+		e.BulkSyncCanceledEvent = valueBulkSyncCanceledEvent
+		return nil
+	}
+	valueBulkSyncCompletedWithErrorEvent := new(BulkSyncCompletedWithErrorEvent)
+	if err := json.Unmarshal(data, &valueBulkSyncCompletedWithErrorEvent); err == nil {
+		e.BulkSyncCompletedWithErrorEvent = valueBulkSyncCompletedWithErrorEvent
+		return nil
+	}
+	valueBulkSyncFailedEvent := new(BulkSyncFailedEvent)
+	if err := json.Unmarshal(data, &valueBulkSyncFailedEvent); err == nil {
+		e.BulkSyncFailedEvent = valueBulkSyncFailedEvent
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, e)
+}
+
+func (e EventBody) MarshalJSON() ([]byte, error) {
+	if e.SyncRunningEvent != nil {
+		return json.Marshal(e.SyncRunningEvent)
+	}
+	if e.SyncCompletedEvent != nil {
+		return json.Marshal(e.SyncCompletedEvent)
+	}
+	if e.SyncFailedEvent != nil {
+		return json.Marshal(e.SyncFailedEvent)
+	}
+	if e.SyncCanceledEvent != nil {
+		return json.Marshal(e.SyncCanceledEvent)
+	}
+	if e.SyncCompletedWithErrorsEvent != nil {
+		return json.Marshal(e.SyncCompletedWithErrorsEvent)
+	}
+	if e.BulkSyncRunningEvent != nil {
+		return json.Marshal(e.BulkSyncRunningEvent)
+	}
+	if e.BulkSyncCompletedEvent != nil {
+		return json.Marshal(e.BulkSyncCompletedEvent)
+	}
+	if e.BulkSyncCanceledEvent != nil {
+		return json.Marshal(e.BulkSyncCanceledEvent)
+	}
+	if e.BulkSyncCompletedWithErrorEvent != nil {
+		return json.Marshal(e.BulkSyncCompletedWithErrorEvent)
+	}
+	if e.BulkSyncFailedEvent != nil {
+		return json.Marshal(e.BulkSyncFailedEvent)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", e)
+}
+
+type EventBodyVisitor interface {
+	VisitSyncRunningEvent(*SyncRunningEvent) error
+	VisitSyncCompletedEvent(*SyncCompletedEvent) error
+	VisitSyncFailedEvent(*SyncFailedEvent) error
+	VisitSyncCanceledEvent(*SyncCanceledEvent) error
+	VisitSyncCompletedWithErrorsEvent(*SyncCompletedWithErrorsEvent) error
+	VisitBulkSyncRunningEvent(*BulkSyncRunningEvent) error
+	VisitBulkSyncCompletedEvent(*BulkSyncCompletedEvent) error
+	VisitBulkSyncCanceledEvent(*BulkSyncCanceledEvent) error
+	VisitBulkSyncCompletedWithErrorEvent(*BulkSyncCompletedWithErrorEvent) error
+	VisitBulkSyncFailedEvent(*BulkSyncFailedEvent) error
+}
+
+func (e *EventBody) Accept(visitor EventBodyVisitor) error {
+	if e.SyncRunningEvent != nil {
+		return visitor.VisitSyncRunningEvent(e.SyncRunningEvent)
+	}
+	if e.SyncCompletedEvent != nil {
+		return visitor.VisitSyncCompletedEvent(e.SyncCompletedEvent)
+	}
+	if e.SyncFailedEvent != nil {
+		return visitor.VisitSyncFailedEvent(e.SyncFailedEvent)
+	}
+	if e.SyncCanceledEvent != nil {
+		return visitor.VisitSyncCanceledEvent(e.SyncCanceledEvent)
+	}
+	if e.SyncCompletedWithErrorsEvent != nil {
+		return visitor.VisitSyncCompletedWithErrorsEvent(e.SyncCompletedWithErrorsEvent)
+	}
+	if e.BulkSyncRunningEvent != nil {
+		return visitor.VisitBulkSyncRunningEvent(e.BulkSyncRunningEvent)
+	}
+	if e.BulkSyncCompletedEvent != nil {
+		return visitor.VisitBulkSyncCompletedEvent(e.BulkSyncCompletedEvent)
+	}
+	if e.BulkSyncCanceledEvent != nil {
+		return visitor.VisitBulkSyncCanceledEvent(e.BulkSyncCanceledEvent)
+	}
+	if e.BulkSyncCompletedWithErrorEvent != nil {
+		return visitor.VisitBulkSyncCompletedWithErrorEvent(e.BulkSyncCompletedWithErrorEvent)
+	}
+	if e.BulkSyncFailedEvent != nil {
+		return visitor.VisitBulkSyncFailedEvent(e.BulkSyncFailedEvent)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", e)
 }
 
 type EventTypesEnvelope struct {
@@ -4296,6 +4657,123 @@ func (s *SupportedMode) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+type SyncCanceledEvent struct {
+	ExecutionId        *string          `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	OrganizationId     *string          `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Status             *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	SyncId             *string          `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncName           *string          `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	TargetConnectionId *string          `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SyncCanceledEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler SyncCanceledEvent
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SyncCanceledEvent(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SyncCanceledEvent) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SyncCompletedEvent struct {
+	DeletedRecords     []string         `json:"deleted_records,omitempty" url:"deleted_records,omitempty"`
+	ErrorCount         *int             `json:"error_count,omitempty" url:"error_count,omitempty"`
+	ErroredRecords     []string         `json:"errored_records,omitempty" url:"errored_records,omitempty"`
+	ExecutionId        *string          `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	InsertedCount      *int             `json:"inserted_count,omitempty" url:"inserted_count,omitempty"`
+	InsertedRecords    []string         `json:"inserted_records,omitempty" url:"inserted_records,omitempty"`
+	Name               *string          `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId     *string          `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	RecordCount        *int             `json:"record_count,omitempty" url:"record_count,omitempty"`
+	Status             *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	SyncId             *string          `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	TargetConnectionId *string          `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
+	TotalRecords       []string         `json:"total_records,omitempty" url:"total_records,omitempty"`
+	Trigger            *string          `json:"trigger,omitempty" url:"trigger,omitempty"`
+	UpdatedCount       *int             `json:"updated_count,omitempty" url:"updated_count,omitempty"`
+	UpdatedRecords     []string         `json:"updated_records,omitempty" url:"updated_records,omitempty"`
+	UpsertedCount      *int             `json:"upserted_count,omitempty" url:"upserted_count,omitempty"`
+	WarningCount       *int             `json:"warning_count,omitempty" url:"warning_count,omitempty"`
+	Warnings           []string         `json:"warnings,omitempty" url:"warnings,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SyncCompletedEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler SyncCompletedEvent
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SyncCompletedEvent(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SyncCompletedEvent) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SyncCompletedWithErrorsEvent struct {
+	Error              *string `json:"error,omitempty" url:"error,omitempty"`
+	ExecutionId        *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	NumberOfErrors     *int    `json:"number_of_errors,omitempty" url:"number_of_errors,omitempty"`
+	NumberOfWarnings   *int    `json:"number_of_warnings,omitempty" url:"number_of_warnings,omitempty"`
+	OrganizationId     *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	SyncId             *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncName           *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	TargetConnectionId *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SyncCompletedWithErrorsEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler SyncCompletedWithErrorsEvent
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SyncCompletedWithErrorsEvent(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SyncCompletedWithErrorsEvent) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
 type SyncDestinationProperties struct {
 	DoesNotReportOperationCounts *bool   `json:"does_not_report_operation_counts,omitempty" url:"does_not_report_operation_counts,omitempty"`
 	NewTargetLabel               *string `json:"new_target_label,omitempty" url:"new_target_label,omitempty"`
@@ -4323,6 +4801,73 @@ func (s *SyncDestinationProperties) UnmarshalJSON(data []byte) error {
 }
 
 func (s *SyncDestinationProperties) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SyncFailedEvent struct {
+	Error              *string `json:"error,omitempty" url:"error,omitempty"`
+	ExecutionId        *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	OrganizationId     *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	SyncId             *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncName           *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	TargetConnectionId *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SyncFailedEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler SyncFailedEvent
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SyncFailedEvent(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SyncFailedEvent) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SyncRunningEvent struct {
+	ExecutionId        *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	Name               *string `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId     *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	SyncId             *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	TargetConnectionId *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SyncRunningEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler SyncRunningEvent
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SyncRunningEvent(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SyncRunningEvent) String() string {
 	if len(s._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
 			return value

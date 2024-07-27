@@ -9,6 +9,4 @@ type QueryRunnerGetQueryRequest struct {
 type V4RunQueryRequest struct {
 	// The query to execute against the connection.
 	Query *string `json:"-" url:"query,omitempty"`
-	// The query to execute against the connection.
-	V4RunQueryRequestQuery *string `json:"query,omitempty" url:"query,omitempty"`
 }

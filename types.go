@@ -649,7 +649,7 @@ func (b *BulkSyncCompletedWithErrorEvent) String() string {
 
 type BulkSyncDest struct {
 	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Modes         []*SupportedMode       `json:"modes,omitempty" url:"modes,omitempty"`
+	Modes         []*SupportedBulkMode   `json:"modes,omitempty" url:"modes,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -913,18 +913,22 @@ func (b *BulkSyncListEnvelope) String() string {
 }
 
 type BulkSyncResponse struct {
-	Active                   *bool                  `json:"active,omitempty" url:"active,omitempty"`
+	Active *bool `json:"active,omitempty" url:"active,omitempty"`
+	// Destination-specific bulk sync configuration. e.g. output schema name, s3 file format, etc.
 	DestinationConfiguration map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
 	DestinationConnectionId  *string                `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
 	Discover                 *bool                  `json:"discover,omitempty" url:"discover,omitempty"`
 	Id                       *string                `json:"id,omitempty" url:"id,omitempty"`
 	Mode                     *string                `json:"mode,omitempty" url:"mode,omitempty"`
-	Name                     *string                `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId           *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies                 []string               `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule                 *BulkSchedule          `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SourceConfiguration      map[string]interface{} `json:"source_configuration,omitempty" url:"source_configuration,omitempty"`
-	SourceConnectionId       *string                `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	// Name of the bulk sync
+	Name           *string `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// List of permissions policies applied to the bulk sync.
+	Policies []string      `json:"policies,omitempty" url:"policies,omitempty"`
+	Schedule *BulkSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
+	// Source-specific bulk sync configuration. e.g. replication slot name, sync lookback, etc.
+	SourceConfiguration map[string]interface{} `json:"source_configuration,omitempty" url:"source_configuration,omitempty"`
+	SourceConnectionId  *string                `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4623,13 +4627,48 @@ func (s *StartModelSyncResponseSchema) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+type SupportedBulkMode struct {
+	Description           *string   `json:"description,omitempty" url:"description,omitempty"`
+	Id                    *SyncMode `json:"id,omitempty" url:"id,omitempty"`
+	Label                 *string   `json:"label,omitempty" url:"label,omitempty"`
+	RequiresIdentity      *bool     `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
+	SupportsFieldSyncMode *bool     `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
+	SupportsTargetFilters *bool     `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SupportedBulkMode) UnmarshalJSON(data []byte) error {
+	type unmarshaler SupportedBulkMode
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SupportedBulkMode(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SupportedBulkMode) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
 type SupportedMode struct {
-	Description           *string `json:"description,omitempty" url:"description,omitempty"`
-	Id                    *string `json:"id,omitempty" url:"id,omitempty"`
-	Label                 *string `json:"label,omitempty" url:"label,omitempty"`
-	RequiresIdentity      *bool   `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
-	SupportsFieldSyncMode *bool   `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
-	SupportsTargetFilters *bool   `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
+	Id *SyncMode `json:"id,omitempty" url:"id,omitempty"`
+	// True if the sync mode requires an identity field mapping.
+	RequiresIdentity *bool `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
+	// True if the target supports per-field sync modes.
+	SupportsPerFieldMode *bool `json:"supports_per_field_mode,omitempty" url:"supports_per_field_mode,omitempty"`
+	// True if the sync mode supports target filters.
+	SupportsTargetFilters *bool `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4776,6 +4815,7 @@ func (s *SyncCompletedWithErrorsEvent) String() string {
 
 type SyncDestinationProperties struct {
 	DoesNotReportOperationCounts *bool   `json:"does_not_report_operation_counts,omitempty" url:"does_not_report_operation_counts,omitempty"`
+	MappingsNotRequired          *bool   `json:"mappings_not_required,omitempty" url:"mappings_not_required,omitempty"`
 	NewTargetLabel               *string `json:"new_target_label,omitempty" url:"new_target_label,omitempty"`
 	OptionalTargetMappings       *bool   `json:"optional_target_mappings,omitempty" url:"optional_target_mappings,omitempty"`
 	PrimaryMetadataObject        *string `json:"primary_metadata_object,omitempty" url:"primary_metadata_object,omitempty"`
@@ -4844,6 +4884,46 @@ func (s *SyncFailedEvent) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
+}
+
+type SyncMode string
+
+const (
+	SyncModeCreate         SyncMode = "create"
+	SyncModeUpdate         SyncMode = "update"
+	SyncModeUpdateOrCreate SyncMode = "updateOrCreate"
+	SyncModeReplace        SyncMode = "replace"
+	SyncModeAppend         SyncMode = "append"
+	SyncModeSnapshot       SyncMode = "snapshot"
+	SyncModeReplicate      SyncMode = "replicate"
+	SyncModeRemove         SyncMode = "remove"
+)
+
+func NewSyncModeFromString(s string) (SyncMode, error) {
+	switch s {
+	case "create":
+		return SyncModeCreate, nil
+	case "update":
+		return SyncModeUpdate, nil
+	case "updateOrCreate":
+		return SyncModeUpdateOrCreate, nil
+	case "replace":
+		return SyncModeReplace, nil
+	case "append":
+		return SyncModeAppend, nil
+	case "snapshot":
+		return SyncModeSnapshot, nil
+	case "replicate":
+		return SyncModeReplicate, nil
+	case "remove":
+		return SyncModeRemove, nil
+	}
+	var t SyncMode
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s SyncMode) Ptr() *SyncMode {
+	return &s
 }
 
 type SyncRunningEvent struct {
@@ -5020,6 +5100,38 @@ func (t *TargetField) UnmarshalJSON(data []byte) error {
 }
 
 func (t *TargetField) String() string {
+	if len(t._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+type TargetObject struct {
+	// The identifier of the target object.
+	Id *string `json:"id,omitempty" url:"id,omitempty"`
+	// The supported sync modes and their properties for the target object.
+	Modes []*SupportedMode `json:"modes,omitempty" url:"modes,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (t *TargetObject) UnmarshalJSON(data []byte) error {
+	type unmarshaler TargetObject
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TargetObject(value)
+	t._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TargetObject) String() string {
 	if len(t._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
 			return value
@@ -5351,6 +5463,35 @@ func (v *V4RunQueryResult) UnmarshalJSON(data []byte) error {
 }
 
 func (v *V4RunQueryResult) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V4TargetObjectsResponseEnvelope struct {
+	Data []*TargetObject `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V4TargetObjectsResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4TargetObjectsResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V4TargetObjectsResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V4TargetObjectsResponseEnvelope) String() string {
 	if len(v._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value

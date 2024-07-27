@@ -15,9 +15,8 @@ type CreateBulkSyncRequest struct {
 	DestinationConnectionId    string                 `json:"destination_connection_id" url:"destination_connection_id"`
 	DisableRecordTimestamps    *bool                  `json:"disable_record_timestamps,omitempty" url:"disable_record_timestamps,omitempty"`
 	// DEPRECATED: Use automatically_add_new_objects/automatically_add_new_fields instead
-	Discover *bool `json:"discover,omitempty" url:"discover,omitempty"`
-	// Either 'replicate' or 'snapshot'.
-	Mode           string        `json:"mode" url:"mode"`
+	Discover       *bool         `json:"discover,omitempty" url:"discover,omitempty"`
+	Mode           *SyncMode     `json:"mode,omitempty" url:"mode,omitempty"`
 	Name           string        `json:"name" url:"name"`
 	OrganizationId *string       `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Policies       []string      `json:"policies,omitempty" url:"policies,omitempty"`
@@ -54,9 +53,8 @@ type UpdateBulkSyncRequest struct {
 	DestinationConnectionId    string                 `json:"destination_connection_id" url:"destination_connection_id"`
 	DisableRecordTimestamps    *bool                  `json:"disable_record_timestamps,omitempty" url:"disable_record_timestamps,omitempty"`
 	// DEPRECATED: Use automatically_add_new_objects/automatically_add_new_fields instead
-	Discover *bool `json:"discover,omitempty" url:"discover,omitempty"`
-	// Either 'replicate' or 'snapshot'.
-	Mode           string        `json:"mode" url:"mode"`
+	Discover       *bool         `json:"discover,omitempty" url:"discover,omitempty"`
+	Mode           *SyncMode     `json:"mode,omitempty" url:"mode,omitempty"`
 	Name           string        `json:"name" url:"name"`
 	OrganizationId *string       `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Policies       []string      `json:"policies,omitempty" url:"policies,omitempty"`

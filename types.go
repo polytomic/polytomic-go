@@ -1027,6 +1027,7 @@ type BulkSyncSchemaExecution struct {
 	StartedAt     *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
 	Status        *BulkSchemaExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
 	StatusMessage *string                    `json:"status_message,omitempty" url:"status_message,omitempty"`
+	WarningCount  *int                       `json:"warning_count,omitempty" url:"warning_count,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -1086,6 +1087,7 @@ type BulkSyncSchemaExecutionStatus struct {
 	StartedAt     *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
 	Status        *BulkSchemaExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
 	StatusMessage *string                    `json:"status_message,omitempty" url:"status_message,omitempty"`
+	WarningCount  *int                       `json:"warning_count,omitempty" url:"warning_count,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4404,9 +4406,11 @@ type SchemaField struct {
 	Association *SchemaAssociation `json:"association,omitempty" url:"association,omitempty"`
 	Id          *string            `json:"id,omitempty" url:"id,omitempty"`
 	Name        *string            `json:"name,omitempty" url:"name,omitempty"`
-	RemoteType  *string            `json:"remote_type,omitempty" url:"remote_type,omitempty"`
-	Type        *string            `json:"type,omitempty" url:"type,omitempty"`
-	Values      []*PickValue       `json:"values,omitempty" url:"values,omitempty"`
+	// The type of the field from the remote system.
+	RemoteType *string        `json:"remote_type,omitempty" url:"remote_type,omitempty"`
+	Type       *UtilFieldType `json:"type,omitempty" url:"type,omitempty"`
+	TypeSpec   *TypesType     `json:"type_spec,omitempty" url:"type_spec,omitempty"`
+	Values     []*PickValue   `json:"values,omitempty" url:"values,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5224,6 +5228,8 @@ func (t *TargetResponseEnvelope) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
+type TypesType = interface{}
+
 type User struct {
 	Email          *string `json:"email,omitempty" url:"email,omitempty"`
 	Id             *string `json:"id,omitempty" url:"id,omitempty"`
@@ -5285,11 +5291,82 @@ func (u *UserEnvelope) String() string {
 	return fmt.Sprintf("%#v", u)
 }
 
+type UtilFieldType string
+
+const (
+	UtilFieldTypeUnknown  UtilFieldType = "unknown"
+	UtilFieldTypeString   UtilFieldType = "string"
+	UtilFieldTypeNumber   UtilFieldType = "number"
+	UtilFieldTypeBoolean  UtilFieldType = "boolean"
+	UtilFieldTypeDatetime UtilFieldType = "datetime"
+	UtilFieldTypeArray    UtilFieldType = "array"
+	UtilFieldTypeObject   UtilFieldType = "object"
+)
+
+func NewUtilFieldTypeFromString(s string) (UtilFieldType, error) {
+	switch s {
+	case "unknown":
+		return UtilFieldTypeUnknown, nil
+	case "string":
+		return UtilFieldTypeString, nil
+	case "number":
+		return UtilFieldTypeNumber, nil
+	case "boolean":
+		return UtilFieldTypeBoolean, nil
+	case "datetime":
+		return UtilFieldTypeDatetime, nil
+	case "array":
+		return UtilFieldTypeArray, nil
+	case "object":
+		return UtilFieldTypeObject, nil
+	}
+	var t UtilFieldType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (u UtilFieldType) Ptr() *UtilFieldType {
+	return &u
+}
+
 // Similar to a model configuration, this configures the enricher. For example, if you wanted to use Apollo to enrich people, you would send `{"object": "people"}` as the configuration. Each enricher configuration can be found in the connection configuration docs.
 type V2EnricherConfiguration = map[string]interface{}
 
 // A map of parent model Source Name to child model Source Name. For example, if your model has a field called `work_email` and the enricher accepts a field called `email`, you'd send a map of `{"work_email":"email"}`. The set of required input mappings varies based on the configuration of the enrichment. You can use the `enrichment/{connection_id}/inputfields` API to discover available input field combinations for a given configuration.
 type V2EnricherMapping = map[string]string
+
+type V2ExecutionLogType string
+
+const (
+	V2ExecutionLogTypeRecords  V2ExecutionLogType = "records"
+	V2ExecutionLogTypeErrors   V2ExecutionLogType = "errors"
+	V2ExecutionLogTypeWarnings V2ExecutionLogType = "warnings"
+	V2ExecutionLogTypeInserts  V2ExecutionLogType = "inserts"
+	V2ExecutionLogTypeUpdates  V2ExecutionLogType = "updates"
+	V2ExecutionLogTypeDeletes  V2ExecutionLogType = "deletes"
+)
+
+func NewV2ExecutionLogTypeFromString(s string) (V2ExecutionLogType, error) {
+	switch s {
+	case "records":
+		return V2ExecutionLogTypeRecords, nil
+	case "errors":
+		return V2ExecutionLogTypeErrors, nil
+	case "warnings":
+		return V2ExecutionLogTypeWarnings, nil
+	case "inserts":
+		return V2ExecutionLogTypeInserts, nil
+	case "updates":
+		return V2ExecutionLogTypeUpdates, nil
+	case "deletes":
+		return V2ExecutionLogTypeDeletes, nil
+	}
+	var t V2ExecutionLogType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (v V2ExecutionLogType) Ptr() *V2ExecutionLogType {
+	return &v
+}
 
 type V2GetEnrichmentInputFieldsResponseEnvelope struct {
 	Data [][]string `json:"data,omitempty" url:"data,omitempty"`
@@ -5373,6 +5450,96 @@ func (v *V2SchemaConfigurationFieldsItem) Accept(visitor V2SchemaConfigurationFi
 		return visitor.VisitFieldConfiguration(v.FieldConfiguration)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", v)
+}
+
+type V4BulkSyncExecutionLogs = map[string]interface{}
+
+type V4BulkSyncExecutionLogsEnvelope struct {
+	Data *V4BulkSyncExecutionLogs `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V4BulkSyncExecutionLogsEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4BulkSyncExecutionLogsEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V4BulkSyncExecutionLogsEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V4BulkSyncExecutionLogsEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V4ExportSyncLogsEnvelope struct {
+	Data *V4ExportSyncLogsResponse `json:"data,omitempty" url:"data,omitempty"`
+	Job  *JobResponse              `json:"job,omitempty" url:"job,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V4ExportSyncLogsEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4ExportSyncLogsEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V4ExportSyncLogsEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V4ExportSyncLogsEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V4ExportSyncLogsResponse struct {
+	Url *string `json:"url,omitempty" url:"url,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V4ExportSyncLogsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4ExportSyncLogsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V4ExportSyncLogsResponse(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V4ExportSyncLogsResponse) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
 }
 
 type V4QueryResultsEnvelope struct {

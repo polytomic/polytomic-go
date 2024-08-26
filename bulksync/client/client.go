@@ -44,6 +44,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 
 func (c *Client) List(
 	ctx context.Context,
+	request *polytomicgo.BulkSyncListRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncListEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -56,6 +57,14 @@ func (c *Client) List(
 		baseURL = options.BaseURL
 	}
 	endpointURL := baseURL + "/" + "api/bulk/syncs"
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 

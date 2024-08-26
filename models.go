@@ -28,6 +28,10 @@ type ModelsGetRequest struct {
 	Async *bool `json:"-" url:"async,omitempty"`
 }
 
+type ModelsGetEnrichmentSourceRequest struct {
+	Params map[string][]string `json:"-" url:"params,omitempty"`
+}
+
 type GetEnrichmentInputFieldsRequest struct {
 	Configuration *V2EnricherConfiguration `json:"configuration,omitempty" url:"configuration,omitempty"`
 }

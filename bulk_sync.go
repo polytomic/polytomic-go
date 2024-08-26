@@ -35,6 +35,10 @@ type BulkSyncGetSourceRequest struct {
 	IncludeFields *bool `json:"-" url:"include_fields,omitempty"`
 }
 
+type BulkSyncListRequest struct {
+	Active *bool `json:"-" url:"active,omitempty"`
+}
+
 type BulkSyncRemoveRequest struct {
 	RefreshSchemas *bool `json:"-" url:"refresh_schemas,omitempty"`
 }

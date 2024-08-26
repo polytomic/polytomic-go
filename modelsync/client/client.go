@@ -476,6 +476,7 @@ func (c *Client) GetTargetObjects(
 
 func (c *Client) List(
 	ctx context.Context,
+	request *polytomicgo.ModelSyncListRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ListModelSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -489,6 +490,14 @@ func (c *Client) List(
 	}
 	endpointURL := baseURL + "/" + "api/syncs"
 
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
@@ -499,6 +508,13 @@ func (c *Client) List(
 		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
 		decoder := json.NewDecoder(bytes.NewReader(raw))
 		switch statusCode {
+		case 400:
+			value := new(polytomicgo.BadRequestError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
 		case 401:
 			value := new(polytomicgo.UnauthorizedError)
 			value.APIError = apiError

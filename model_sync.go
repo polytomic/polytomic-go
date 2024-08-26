@@ -37,6 +37,12 @@ type ModelSyncGetTargetFieldsRequest struct {
 	Refresh *bool  `json:"-" url:"refresh,omitempty"`
 }
 
+type ModelSyncListRequest struct {
+	Active             *bool     `json:"-" url:"active,omitempty"`
+	Mode               *SyncMode `json:"-" url:"mode,omitempty"`
+	TargetConnectionId *string   `json:"-" url:"target_connection_id,omitempty"`
+}
+
 type StartModelSyncRequest struct {
 	Identities []string `json:"identities,omitempty" url:"identities,omitempty"`
 	Resync     *bool    `json:"resync,omitempty" url:"resync,omitempty"`

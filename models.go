@@ -74,6 +74,7 @@ type UpdateModelRequest struct {
 	Name             string                    `json:"name" url:"name"`
 	OrganizationId   *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Policies         []string                  `json:"policies,omitempty" url:"policies,omitempty"`
+	Refresh          *bool                     `json:"refresh,omitempty" url:"refresh,omitempty"`
 	Relations        []*ModelRelation          `json:"relations,omitempty" url:"relations,omitempty"`
 	TrackingColumns  []string                  `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
 }

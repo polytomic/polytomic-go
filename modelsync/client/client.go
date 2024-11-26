@@ -134,6 +134,7 @@ func (c *Client) GetSource(
 func (c *Client) GetSourceFields(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.ModelSyncGetSourceFieldsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ModelFieldResponse, error) {
 	options := core.NewRequestOptions(opts...)
@@ -146,6 +147,14 @@ func (c *Client) GetSourceFields(
 		baseURL = options.BaseURL
 	}
 	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/modelsync/source/fields", id)
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -1069,6 +1078,13 @@ func (c *Client) Start(
 			return value
 		case 404:
 			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 409:
+			value := new(polytomicgo.ConflictError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError

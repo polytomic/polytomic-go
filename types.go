@@ -156,9 +156,10 @@ func (a *ActivateSyncOutput) String() string {
 }
 
 type ApiError struct {
-	Message  *string     `json:"message,omitempty" url:"message,omitempty"`
-	Metadata interface{} `json:"metadata,omitempty" url:"metadata,omitempty"`
-	Status   *int        `json:"status,omitempty" url:"status,omitempty"`
+	Key      *string                `json:"key,omitempty" url:"key,omitempty"`
+	Message  *string                `json:"message,omitempty" url:"message,omitempty"`
+	Metadata map[string]interface{} `json:"metadata,omitempty" url:"metadata,omitempty"`
+	Status   *int                   `json:"status,omitempty" url:"status,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -419,25 +420,46 @@ func (b *BulkSchedule) String() string {
 }
 
 type BulkSchema struct {
-	Enabled      *bool         `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Fields       []*BulkField  `json:"fields,omitempty" url:"fields,omitempty"`
-	Filters      []*BulkFilter `json:"filters,omitempty" url:"filters,omitempty"`
-	Id           *string       `json:"id,omitempty" url:"id,omitempty"`
-	OutputName   *string       `json:"output_name,omitempty" url:"output_name,omitempty"`
-	PartitionKey *string       `json:"partition_key,omitempty" url:"partition_key,omitempty"`
+	DataCutoffTimestamp *time.Time    `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
+	DisableDataCutoff   *bool         `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
+	Enabled             *bool         `json:"enabled,omitempty" url:"enabled,omitempty"`
+	Fields              []*BulkField  `json:"fields,omitempty" url:"fields,omitempty"`
+	Filters             []*BulkFilter `json:"filters,omitempty" url:"filters,omitempty"`
+	Id                  *string       `json:"id,omitempty" url:"id,omitempty"`
+	OutputName          *string       `json:"output_name,omitempty" url:"output_name,omitempty"`
+	PartitionKey        *string       `json:"partition_key,omitempty" url:"partition_key,omitempty"`
+	TrackingField       *string       `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
 func (b *BulkSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkSchema
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed BulkSchema
+	var unmarshaler = struct {
+		embed
+		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*b = BulkSchema(value)
+	*b = BulkSchema(unmarshaler.embed)
+	b.DataCutoffTimestamp = unmarshaler.DataCutoffTimestamp.TimePtr()
 	b._rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (b *BulkSchema) MarshalJSON() ([]byte, error) {
+	type embed BulkSchema
+	var marshaler = struct {
+		embed
+		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
+	}{
+		embed:               embed(*b),
+		DataCutoffTimestamp: core.NewOptionalDateTime(b.DataCutoffTimestamp),
+	}
+	return json.Marshal(marshaler)
 }
 
 func (b *BulkSchema) String() string {
@@ -856,6 +878,7 @@ type BulkSyncFailedEvent struct {
 	OrganizationId          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	SourceConnectionId      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
 	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	TriggerSource           *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -913,13 +936,18 @@ func (b *BulkSyncListEnvelope) String() string {
 }
 
 type BulkSyncResponse struct {
-	Active *bool `json:"active,omitempty" url:"active,omitempty"`
+	Active                     *bool         `json:"active,omitempty" url:"active,omitempty"`
+	AutomaticallyAddNewFields  *BulkDiscover `json:"automatically_add_new_fields,omitempty" url:"automatically_add_new_fields,omitempty"`
+	AutomaticallyAddNewObjects *BulkDiscover `json:"automatically_add_new_objects,omitempty" url:"automatically_add_new_objects,omitempty"`
+	DataCutoffTimestamp        *time.Time    `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
 	// Destination-specific bulk sync configuration. e.g. output schema name, s3 file format, etc.
 	DestinationConfiguration map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
 	DestinationConnectionId  *string                `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
-	Discover                 *bool                  `json:"discover,omitempty" url:"discover,omitempty"`
-	Id                       *string                `json:"id,omitempty" url:"id,omitempty"`
-	Mode                     *string                `json:"mode,omitempty" url:"mode,omitempty"`
+	DisableRecordTimestamps  *bool                  `json:"disable_record_timestamps,omitempty" url:"disable_record_timestamps,omitempty"`
+	// DEPRECATED: Use automatically_add_new_objects/automatically_add_new_fields instead
+	Discover *bool   `json:"discover,omitempty" url:"discover,omitempty"`
+	Id       *string `json:"id,omitempty" url:"id,omitempty"`
+	Mode     *string `json:"mode,omitempty" url:"mode,omitempty"`
 	// Name of the bulk sync
 	Name           *string `json:"name,omitempty" url:"name,omitempty"`
 	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
@@ -934,14 +962,32 @@ type BulkSyncResponse struct {
 }
 
 func (b *BulkSyncResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkSyncResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed BulkSyncResponse
+	var unmarshaler = struct {
+		embed
+		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*b = BulkSyncResponse(value)
+	*b = BulkSyncResponse(unmarshaler.embed)
+	b.DataCutoffTimestamp = unmarshaler.DataCutoffTimestamp.TimePtr()
 	b._rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (b *BulkSyncResponse) MarshalJSON() ([]byte, error) {
+	type embed BulkSyncResponse
+	var marshaler = struct {
+		embed
+		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
+	}{
+		embed:               embed(*b),
+		DataCutoffTimestamp: core.NewOptionalDateTime(b.DataCutoffTimestamp),
+	}
+	return json.Marshal(marshaler)
 }
 
 func (b *BulkSyncResponse) String() string {
@@ -1383,6 +1429,37 @@ func (b *BulkSyncStatusResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
+}
+
+type CommonOutputActor struct {
+	Id   *string `json:"id,omitempty" url:"id,omitempty"`
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *CommonOutputActor) UnmarshalJSON(data []byte) error {
+	type unmarshaler CommonOutputActor
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CommonOutputActor(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CommonOutputActor) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
 }
 
 type ConfigurationValue struct {
@@ -2529,6 +2606,8 @@ const (
 	FilterFunctionArrayContains        FilterFunction = "ArrayContains"
 	FilterFunctionArrayDoesNotContain  FilterFunction = "ArrayDoesNotContain"
 	FilterFunctionInTheLast            FilterFunction = "InTheLast"
+	FilterFunctionRelativeOnOrBefore   FilterFunction = "RelativeOnOrBefore"
+	FilterFunctionRelativeOnOrAfter    FilterFunction = "RelativeOnOrAfter"
 	FilterFunctionStringLike           FilterFunction = "StringLike"
 	FilterFunctionStringNotLike        FilterFunction = "StringNotLike"
 	FilterFunctionStringMatchesTrimmed FilterFunction = "StringMatchesTrimmed"
@@ -2580,6 +2659,10 @@ func NewFilterFunctionFromString(s string) (FilterFunction, error) {
 		return FilterFunctionArrayDoesNotContain, nil
 	case "InTheLast":
 		return FilterFunctionInTheLast, nil
+	case "RelativeOnOrBefore":
+		return FilterFunctionRelativeOnOrBefore, nil
+	case "RelativeOnOrAfter":
+		return FilterFunctionRelativeOnOrAfter, nil
 	case "StringLike":
 		return FilterFunctionStringLike, nil
 	case "StringNotLike":
@@ -3366,6 +3449,8 @@ func (m *ModelRelationTo) String() string {
 type ModelResponse struct {
 	Configuration   map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
 	ConnectionId    *string                `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	CreatedAt       *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
+	CreatedBy       *CommonOutputActor     `json:"created_by,omitempty" url:"created_by,omitempty"`
 	Enricher        *Enrichment            `json:"enricher,omitempty" url:"enricher,omitempty"`
 	Fields          []*ModelField          `json:"fields,omitempty" url:"fields,omitempty"`
 	Id              *string                `json:"id,omitempty" url:"id,omitempty"`
@@ -3377,20 +3462,44 @@ type ModelResponse struct {
 	Relations       []*Relation            `json:"relations,omitempty" url:"relations,omitempty"`
 	TrackingColumns []string               `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
 	Type            *string                `json:"type,omitempty" url:"type,omitempty"`
+	UpdatedAt       *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	UpdatedBy       *CommonOutputActor     `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 	Version         *int                   `json:"version,omitempty" url:"version,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
 func (m *ModelResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ModelResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed ModelResponse
+	var unmarshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*m),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*m = ModelResponse(value)
+	*m = ModelResponse(unmarshaler.embed)
+	m.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	m.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 	m._rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (m *ModelResponse) MarshalJSON() ([]byte, error) {
+	type embed ModelResponse
+	var marshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:     embed(*m),
+		CreatedAt: core.NewOptionalDateTime(m.CreatedAt),
+		UpdatedAt: core.NewOptionalDateTime(m.UpdatedAt),
+	}
+	return json.Marshal(marshaler)
 }
 
 func (m *ModelResponse) String() string {
@@ -3533,34 +3642,60 @@ func (m *ModelSyncField) String() string {
 }
 
 type ModelSyncResponse struct {
-	Active         *bool             `json:"active,omitempty" url:"active,omitempty"`
-	Fields         []*ModelSyncField `json:"fields,omitempty" url:"fields,omitempty"`
-	FilterLogic    *string           `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
-	Filters        []*Filter         `json:"filters,omitempty" url:"filters,omitempty"`
-	Id             *string           `json:"id,omitempty" url:"id,omitempty"`
-	Identity       *Identity         `json:"identity,omitempty" url:"identity,omitempty"`
-	Mode           *string           `json:"mode,omitempty" url:"mode,omitempty"`
-	Name           *string           `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId *string           `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
-	Overrides      []*Override       `json:"overrides,omitempty" url:"overrides,omitempty"`
-	Policies       []string          `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule       *Schedule         `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SyncAllRecords *bool             `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
-	Target         *Target           `json:"target,omitempty" url:"target,omitempty"`
+	Active         *bool              `json:"active,omitempty" url:"active,omitempty"`
+	CreatedAt      *time.Time         `json:"created_at,omitempty" url:"created_at,omitempty"`
+	CreatedBy      *CommonOutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
+	Fields         []*ModelSyncField  `json:"fields,omitempty" url:"fields,omitempty"`
+	FilterLogic    *string            `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
+	Filters        []*Filter          `json:"filters,omitempty" url:"filters,omitempty"`
+	Id             *string            `json:"id,omitempty" url:"id,omitempty"`
+	Identity       *Identity          `json:"identity,omitempty" url:"identity,omitempty"`
+	Mode           *string            `json:"mode,omitempty" url:"mode,omitempty"`
+	Name           *string            `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId *string            `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OverrideFields []*ModelSyncField  `json:"override_fields,omitempty" url:"override_fields,omitempty"`
+	Overrides      []*Override        `json:"overrides,omitempty" url:"overrides,omitempty"`
+	Policies       []string           `json:"policies,omitempty" url:"policies,omitempty"`
+	Schedule       *Schedule          `json:"schedule,omitempty" url:"schedule,omitempty"`
+	SyncAllRecords *bool              `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
+	Target         *Target            `json:"target,omitempty" url:"target,omitempty"`
+	UpdatedAt      *time.Time         `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	UpdatedBy      *CommonOutputActor `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
 func (m *ModelSyncResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ModelSyncResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed ModelSyncResponse
+	var unmarshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*m),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*m = ModelSyncResponse(value)
+	*m = ModelSyncResponse(unmarshaler.embed)
+	m.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	m.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 	m._rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (m *ModelSyncResponse) MarshalJSON() ([]byte, error) {
+	type embed ModelSyncResponse
+	var marshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:     embed(*m),
+		CreatedAt: core.NewOptionalDateTime(m.CreatedAt),
+		UpdatedAt: core.NewOptionalDateTime(m.UpdatedAt),
+	}
+	return json.Marshal(marshaler)
 }
 
 func (m *ModelSyncResponse) String() string {
@@ -4141,6 +4276,8 @@ type Schedule struct {
 	Minute       *string            `json:"minute,omitempty" url:"minute,omitempty"`
 	Month        *string            `json:"month,omitempty" url:"month,omitempty"`
 	RunAfter     *RunAfter          `json:"run_after,omitempty" url:"run_after,omitempty"`
+	// If true, the sync will only run if the dependent syncs completed successfully.
+	RunAfterSuccessOnly *bool `json:"run_after_success_only,omitempty" url:"run_after_success_only,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4368,26 +4505,47 @@ func (s *SchemaAssociation) String() string {
 }
 
 type SchemaConfiguration struct {
+	DataCutoffTimestamp *time.Time `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
+	// Whether data cutoff is disabled for this schema.
+	DisableDataCutoff *bool `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
 	// Whether the schema is enabled for syncing.
 	Enabled       *bool                              `json:"enabled,omitempty" url:"enabled,omitempty"`
 	Fields        []*V2SchemaConfigurationFieldsItem `json:"fields,omitempty" url:"fields,omitempty"`
 	Filters       []*BulkFilter                      `json:"filters,omitempty" url:"filters,omitempty"`
 	Id            *string                            `json:"id,omitempty" url:"id,omitempty"`
-	PartitionKey  *string                            `json:"partitionKey,omitempty" url:"partitionKey,omitempty"`
-	TrackingField *string                            `json:"trackingField,omitempty" url:"trackingField,omitempty"`
+	PartitionKey  *string                            `json:"partition_key,omitempty" url:"partition_key,omitempty"`
+	TrackingField *string                            `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
 func (s *SchemaConfiguration) UnmarshalJSON(data []byte) error {
-	type unmarshaler SchemaConfiguration
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed SchemaConfiguration
+	var unmarshaler = struct {
+		embed
+		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
+	}{
+		embed: embed(*s),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*s = SchemaConfiguration(value)
+	*s = SchemaConfiguration(unmarshaler.embed)
+	s.DataCutoffTimestamp = unmarshaler.DataCutoffTimestamp.TimePtr()
 	s._rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (s *SchemaConfiguration) MarshalJSON() ([]byte, error) {
+	type embed SchemaConfiguration
+	var marshaler = struct {
+		embed
+		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
+	}{
+		embed:               embed(*s),
+		DataCutoffTimestamp: core.NewOptionalDateTime(s.DataCutoffTimestamp),
+	}
+	return json.Marshal(marshaler)
 }
 
 func (s *SchemaConfiguration) String() string {

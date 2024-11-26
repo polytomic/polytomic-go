@@ -27,6 +27,10 @@ type ModelSyncGetSourceRequest struct {
 	Params map[string][]string `json:"-" url:"params,omitempty"`
 }
 
+type ModelSyncGetSourceFieldsRequest struct {
+	Params map[string][]string `json:"-" url:"params,omitempty"`
+}
+
 type ModelSyncGetTargetRequest struct {
 	Type   *string `json:"-" url:"type,omitempty"`
 	Search *string `json:"-" url:"search,omitempty"`

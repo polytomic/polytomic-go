@@ -5,12 +5,15 @@ package polytomic
 import (
 	json "encoding/json"
 	fmt "fmt"
+	core "github.com/polytomic/polytomic-go/core"
+	time "time"
 )
 
 type CreateBulkSyncRequest struct {
 	Active                     *bool                  `json:"active,omitempty" url:"active,omitempty"`
 	AutomaticallyAddNewFields  *BulkDiscover          `json:"automatically_add_new_fields,omitempty" url:"automatically_add_new_fields,omitempty"`
 	AutomaticallyAddNewObjects *BulkDiscover          `json:"automatically_add_new_objects,omitempty" url:"automatically_add_new_objects,omitempty"`
+	DataCutoffTimestamp        *time.Time             `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
 	DestinationConfiguration   map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
 	DestinationConnectionId    string                 `json:"destination_connection_id" url:"destination_connection_id"`
 	DisableRecordTimestamps    *bool                  `json:"disable_record_timestamps,omitempty" url:"disable_record_timestamps,omitempty"`
@@ -25,6 +28,28 @@ type CreateBulkSyncRequest struct {
 	Schemas             []*V2CreateBulkSyncRequestSchemasItem `json:"schemas,omitempty" url:"schemas,omitempty"`
 	SourceConfiguration map[string]interface{}                `json:"source_configuration,omitempty" url:"source_configuration,omitempty"`
 	SourceConnectionId  string                                `json:"source_connection_id" url:"source_connection_id"`
+}
+
+func (c *CreateBulkSyncRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateBulkSyncRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreateBulkSyncRequest(body)
+	return nil
+}
+
+func (c *CreateBulkSyncRequest) MarshalJSON() ([]byte, error) {
+	type embed CreateBulkSyncRequest
+	var marshaler = struct {
+		embed
+		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
+	}{
+		embed:               embed(*c),
+		DataCutoffTimestamp: core.NewOptionalDateTime(c.DataCutoffTimestamp),
+	}
+	return json.Marshal(marshaler)
 }
 
 type BulkSyncGetRequest struct {
@@ -53,6 +78,7 @@ type UpdateBulkSyncRequest struct {
 	Active                     *bool                  `json:"active,omitempty" url:"active,omitempty"`
 	AutomaticallyAddNewFields  *BulkDiscover          `json:"automatically_add_new_fields,omitempty" url:"automatically_add_new_fields,omitempty"`
 	AutomaticallyAddNewObjects *BulkDiscover          `json:"automatically_add_new_objects,omitempty" url:"automatically_add_new_objects,omitempty"`
+	DataCutoffTimestamp        *time.Time             `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
 	DestinationConfiguration   map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
 	DestinationConnectionId    string                 `json:"destination_connection_id" url:"destination_connection_id"`
 	DisableRecordTimestamps    *bool                  `json:"disable_record_timestamps,omitempty" url:"disable_record_timestamps,omitempty"`
@@ -67,6 +93,28 @@ type UpdateBulkSyncRequest struct {
 	Schemas             []*V2UpdateBulkSyncRequestSchemasItem `json:"schemas,omitempty" url:"schemas,omitempty"`
 	SourceConfiguration map[string]interface{}                `json:"source_configuration,omitempty" url:"source_configuration,omitempty"`
 	SourceConnectionId  string                                `json:"source_connection_id" url:"source_connection_id"`
+}
+
+func (u *UpdateBulkSyncRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateBulkSyncRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UpdateBulkSyncRequest(body)
+	return nil
+}
+
+func (u *UpdateBulkSyncRequest) MarshalJSON() ([]byte, error) {
+	type embed UpdateBulkSyncRequest
+	var marshaler = struct {
+		embed
+		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
+	}{
+		embed:               embed(*u),
+		DataCutoffTimestamp: core.NewOptionalDateTime(u.DataCutoffTimestamp),
+	}
+	return json.Marshal(marshaler)
 }
 
 type V2CreateBulkSyncRequestSchemasItem struct {

@@ -568,10 +568,10 @@ func (b BulkSelectiveMode) Ptr() *BulkSelectiveMode {
 type BulkSyncCanceledEvent struct {
 	DestinationConnectionId *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
 	ExecutionId             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	Name                    *string `json:"name,omitempty" url:"name,omitempty"`
 	OrganizationId          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	SourceConnectionId      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
 	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -602,10 +602,10 @@ func (b *BulkSyncCanceledEvent) String() string {
 type BulkSyncCompletedEvent struct {
 	DestinationConnectionId *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
 	ExecutionId             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	Name                    *string `json:"name,omitempty" url:"name,omitempty"`
 	OrganizationId          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	SourceConnectionId      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
 	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	TriggerSource           *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -637,10 +637,10 @@ func (b *BulkSyncCompletedEvent) String() string {
 type BulkSyncCompletedWithErrorEvent struct {
 	DestinationConnectionId *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
 	ExecutionId             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	Name                    *string `json:"name,omitempty" url:"name,omitempty"`
 	OrganizationId          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	SourceConnectionId      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
 	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	TriggerSource           *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -874,10 +874,10 @@ type BulkSyncFailedEvent struct {
 	DestinationConnectionId *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
 	Error                   *string `json:"error,omitempty" url:"error,omitempty"`
 	ExecutionId             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	Name                    *string `json:"name,omitempty" url:"name,omitempty"`
 	OrganizationId          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	SourceConnectionId      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
 	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	TriggerSource           *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -1034,10 +1034,10 @@ func (b *BulkSyncResponseEnvelope) String() string {
 type BulkSyncRunningEvent struct {
 	DestinationConnectionId *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
 	ExecutionId             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	Name                    *string `json:"name,omitempty" url:"name,omitempty"`
 	OrganizationId          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	SourceConnectionId      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
 	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -3018,7 +3018,90 @@ func (j *JobResponseEnvelope) String() string {
 	return fmt.Sprintf("%#v", j)
 }
 
+type JsonschemaDefinitions = map[string]*JsonschemaSchema
+
 type JsonschemaForm = map[string]interface{}
+
+type JsonschemaSchema struct {
+	Anchor               *string                                             `json:"$anchor,omitempty" url:"$anchor,omitempty"`
+	Comment              *string                                             `json:"$comment,omitempty" url:"$comment,omitempty"`
+	Defs                 *JsonschemaDefinitions                              `json:"$defs,omitempty" url:"$defs,omitempty"`
+	DynamicRef           *string                                             `json:"$dynamicRef,omitempty" url:"$dynamicRef,omitempty"`
+	Id                   *string                                             `json:"$id,omitempty" url:"$id,omitempty"`
+	Ref                  *string                                             `json:"$ref,omitempty" url:"$ref,omitempty"`
+	Schema               *string                                             `json:"$schema,omitempty" url:"$schema,omitempty"`
+	AdditionalProperties *JsonschemaSchema                                   `json:"additionalProperties,omitempty" url:"additionalProperties,omitempty"`
+	AllOf                []*JsonschemaSchema                                 `json:"allOf,omitempty" url:"allOf,omitempty"`
+	AnyOf                []*JsonschemaSchema                                 `json:"anyOf,omitempty" url:"anyOf,omitempty"`
+	Const                interface{}                                         `json:"const,omitempty" url:"const,omitempty"`
+	Contains             *JsonschemaSchema                                   `json:"contains,omitempty" url:"contains,omitempty"`
+	ContentEncoding      *string                                             `json:"contentEncoding,omitempty" url:"contentEncoding,omitempty"`
+	ContentMediaType     *string                                             `json:"contentMediaType,omitempty" url:"contentMediaType,omitempty"`
+	ContentSchema        *JsonschemaSchema                                   `json:"contentSchema,omitempty" url:"contentSchema,omitempty"`
+	Default              interface{}                                         `json:"default,omitempty" url:"default,omitempty"`
+	DependentRequired    map[string][]string                                 `json:"dependentRequired,omitempty" url:"dependentRequired,omitempty"`
+	DependentSchemas     map[string]*JsonschemaSchema                        `json:"dependentSchemas,omitempty" url:"dependentSchemas,omitempty"`
+	Deprecated           *bool                                               `json:"deprecated,omitempty" url:"deprecated,omitempty"`
+	Description          *string                                             `json:"description,omitempty" url:"description,omitempty"`
+	Else                 *JsonschemaSchema                                   `json:"else,omitempty" url:"else,omitempty"`
+	Enum                 []interface{}                                       `json:"enum,omitempty" url:"enum,omitempty"`
+	Examples             []interface{}                                       `json:"examples,omitempty" url:"examples,omitempty"`
+	ExclusiveMaximum     *string                                             `json:"exclusiveMaximum,omitempty" url:"exclusiveMaximum,omitempty"`
+	ExclusiveMinimum     *string                                             `json:"exclusiveMinimum,omitempty" url:"exclusiveMinimum,omitempty"`
+	Format               *string                                             `json:"format,omitempty" url:"format,omitempty"`
+	If                   *JsonschemaSchema                                   `json:"if,omitempty" url:"if,omitempty"`
+	Items                *JsonschemaSchema                                   `json:"items,omitempty" url:"items,omitempty"`
+	MaxContains          *int                                                `json:"maxContains,omitempty" url:"maxContains,omitempty"`
+	MaxItems             *int                                                `json:"maxItems,omitempty" url:"maxItems,omitempty"`
+	MaxLength            *int                                                `json:"maxLength,omitempty" url:"maxLength,omitempty"`
+	MaxProperties        *int                                                `json:"maxProperties,omitempty" url:"maxProperties,omitempty"`
+	Maximum              *string                                             `json:"maximum,omitempty" url:"maximum,omitempty"`
+	MinContains          *int                                                `json:"minContains,omitempty" url:"minContains,omitempty"`
+	MinItems             *int                                                `json:"minItems,omitempty" url:"minItems,omitempty"`
+	MinLength            *int                                                `json:"minLength,omitempty" url:"minLength,omitempty"`
+	MinProperties        *int                                                `json:"minProperties,omitempty" url:"minProperties,omitempty"`
+	Minimum              *string                                             `json:"minimum,omitempty" url:"minimum,omitempty"`
+	MultipleOf           *string                                             `json:"multipleOf,omitempty" url:"multipleOf,omitempty"`
+	Not                  *JsonschemaSchema                                   `json:"not,omitempty" url:"not,omitempty"`
+	OneOf                []*JsonschemaSchema                                 `json:"oneOf,omitempty" url:"oneOf,omitempty"`
+	Pattern              *string                                             `json:"pattern,omitempty" url:"pattern,omitempty"`
+	PatternProperties    map[string]*JsonschemaSchema                        `json:"patternProperties,omitempty" url:"patternProperties,omitempty"`
+	PrefixItems          []*JsonschemaSchema                                 `json:"prefixItems,omitempty" url:"prefixItems,omitempty"`
+	Properties           *V2OrderedMapStringGithubComInvopopJsonschemaSchema `json:"properties,omitempty" url:"properties,omitempty"`
+	PropertyNames        *JsonschemaSchema                                   `json:"propertyNames,omitempty" url:"propertyNames,omitempty"`
+	ReadOnly             *bool                                               `json:"readOnly,omitempty" url:"readOnly,omitempty"`
+	Required             []string                                            `json:"required,omitempty" url:"required,omitempty"`
+	Then                 *JsonschemaSchema                                   `json:"then,omitempty" url:"then,omitempty"`
+	Title                *string                                             `json:"title,omitempty" url:"title,omitempty"`
+	Type                 *string                                             `json:"type,omitempty" url:"type,omitempty"`
+	UniqueItems          *bool                                               `json:"uniqueItems,omitempty" url:"uniqueItems,omitempty"`
+	WriteOnly            *bool                                               `json:"writeOnly,omitempty" url:"writeOnly,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (j *JsonschemaSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler JsonschemaSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*j = JsonschemaSchema(value)
+	j._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (j *JsonschemaSchema) String() string {
+	if len(j._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(j._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(j); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", j)
+}
 
 type LabelLabel = map[string]interface{}
 
@@ -4899,11 +4982,11 @@ type SyncCompletedEvent struct {
 	ExecutionId        *string          `json:"execution_id,omitempty" url:"execution_id,omitempty"`
 	InsertedCount      *int             `json:"inserted_count,omitempty" url:"inserted_count,omitempty"`
 	InsertedRecords    []string         `json:"inserted_records,omitempty" url:"inserted_records,omitempty"`
-	Name               *string          `json:"name,omitempty" url:"name,omitempty"`
 	OrganizationId     *string          `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	RecordCount        *int             `json:"record_count,omitempty" url:"record_count,omitempty"`
 	Status             *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
 	SyncId             *string          `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncName           *string          `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	TargetConnectionId *string          `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
 	TotalRecords       []string         `json:"total_records,omitempty" url:"total_records,omitempty"`
 	Trigger            *string          `json:"trigger,omitempty" url:"trigger,omitempty"`
@@ -5090,9 +5173,9 @@ func (s SyncMode) Ptr() *SyncMode {
 
 type SyncRunningEvent struct {
 	ExecutionId        *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	Name               *string `json:"name,omitempty" url:"name,omitempty"`
 	OrganizationId     *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	SyncId             *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncName           *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	TargetConnectionId *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -5554,6 +5637,8 @@ func (v *V2GetEnrichmentInputFieldsResponseEnvelope) String() string {
 	}
 	return fmt.Sprintf("%#v", v)
 }
+
+type V2OrderedMapStringGithubComInvopopJsonschemaSchema = map[string]interface{}
 
 // A map of `fieldSource` -> `fieldName: fieldValue`. Because there may be field name conflicts between the base model and enrichments, the base model fields are placed in a map under the model ID. Fields from enrichments are placed under the enricher ID.
 type V2SampleRecord = map[string]map[string]interface{}

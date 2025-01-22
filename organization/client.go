@@ -37,7 +37,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 
 // > 🚧 Requires partner key
 // >
-// > Organization endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/getting-started/obtaining-api-keys#partner-keys)
+// > Organization endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -101,7 +101,7 @@ func (c *Client) List(
 
 // > 🚧 Requires partner key
 // >
-// > Organization endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/getting-started/obtaining-api-keys#partner-keys)
+// > Organization endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) Create(
 	ctx context.Context,
 	request *polytomicgo.CreateOrganizationRequestSchema,
@@ -174,7 +174,7 @@ func (c *Client) Create(
 
 // > 🚧 Requires partner key
 // >
-// > Organization endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/getting-started/obtaining-api-keys#partner-keys)
+// > Organization endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
@@ -239,7 +239,7 @@ func (c *Client) Get(
 
 // > 🚧 Requires partner key
 // >
-// > Organization endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/getting-started/obtaining-api-keys#partner-keys)
+// > Organization endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
@@ -313,7 +313,7 @@ func (c *Client) Update(
 
 // > 🚧 Requires partner key
 // >
-// > Organization endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/getting-started/obtaining-api-keys#partner-keys)
+// > Organization endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,

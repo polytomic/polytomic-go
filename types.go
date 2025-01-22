@@ -261,6 +261,32 @@ func (b BulkExecutionStatus) Ptr() *BulkExecutionStatus {
 	return &b
 }
 
+// How the data is fetched. 'none' is normal operation for Polytomic. 'incremental' and 'full' apply to syncs from Salesforce. 'incremental' indicates the data is synced incrementally using record modification time. 'full' is necessary to catch up to the latest values for formula fields and rollup fields whose updates don't show up in incremental runs due to limitations in Salesforce.
+type BulkFetchMode string
+
+const (
+	BulkFetchModeNone        BulkFetchMode = "none"
+	BulkFetchModeIncremental BulkFetchMode = "incremental"
+	BulkFetchModeFull        BulkFetchMode = "full"
+)
+
+func NewBulkFetchModeFromString(s string) (BulkFetchMode, error) {
+	switch s {
+	case "none":
+		return BulkFetchModeNone, nil
+	case "incremental":
+		return BulkFetchModeIncremental, nil
+	case "full":
+		return BulkFetchModeFull, nil
+	}
+	var t BulkFetchMode
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BulkFetchMode) Ptr() *BulkFetchMode {
+	return &b
+}
+
 type BulkField struct {
 	Enabled    *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
 	Id         *string `json:"id,omitempty" url:"id,omitempty"`
@@ -731,6 +757,7 @@ func (b *BulkSyncDestEnvelope) String() string {
 type BulkSyncExecution struct {
 	CompletedAt *time.Time                 `json:"completed_at,omitempty" url:"completed_at,omitempty"`
 	CreatedAt   *time.Time                 `json:"created_at,omitempty" url:"created_at,omitempty"`
+	FetchMode   *BulkFetchMode             `json:"fetch_mode,omitempty" url:"fetch_mode,omitempty"`
 	Id          *string                    `json:"id,omitempty" url:"id,omitempty"`
 	IsResync    *bool                      `json:"is_resync,omitempty" url:"is_resync,omitempty"`
 	IsTest      *bool                      `json:"is_test,omitempty" url:"is_test,omitempty"`

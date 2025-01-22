@@ -69,9 +69,10 @@ type BulkSyncRemoveRequest struct {
 }
 
 type StartBulkSyncRequest struct {
-	Resync  *bool    `json:"resync,omitempty" url:"resync,omitempty"`
-	Schemas []string `json:"schemas,omitempty" url:"schemas,omitempty"`
-	Test    *bool    `json:"test,omitempty" url:"test,omitempty"`
+	FetchMode *BulkFetchMode `json:"fetch_mode,omitempty" url:"fetch_mode,omitempty"`
+	Resync    *bool          `json:"resync,omitempty" url:"resync,omitempty"`
+	Schemas   []string       `json:"schemas,omitempty" url:"schemas,omitempty"`
+	Test      *bool          `json:"test,omitempty" url:"test,omitempty"`
 }
 
 type UpdateBulkSyncRequest struct {

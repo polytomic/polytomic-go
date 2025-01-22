@@ -557,6 +557,13 @@ func (c *Client) Start(
 				return apiError
 			}
 			return value
+		case 409:
+			value := new(polytomicgo.ConflictError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
 		}
 		return apiError
 	}

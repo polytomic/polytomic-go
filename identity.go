@@ -38,13 +38,20 @@ func (g *GetIdentityResponseEnvelope) String() string {
 }
 
 type GetIdentityResponseSchema struct {
-	Email            *string `json:"email,omitempty" url:"email,omitempty"`
-	Id               *string `json:"id,omitempty" url:"id,omitempty"`
-	IsOrganization   *bool   `json:"is_organization,omitempty" url:"is_organization,omitempty"`
-	IsPartner        *bool   `json:"is_partner,omitempty" url:"is_partner,omitempty"`
-	IsSystem         *bool   `json:"is_system,omitempty" url:"is_system,omitempty"`
-	IsUser           *bool   `json:"is_user,omitempty" url:"is_user,omitempty"`
-	OrganizationId   *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// The email of the caller.
+	Email *string `json:"email,omitempty" url:"email,omitempty"`
+	// The ID of the caller; this will be omitted for non-user callers.
+	Id *string `json:"id,omitempty" url:"id,omitempty"`
+	// Whether the caller is using an organization key.
+	IsOrganization *bool `json:"is_organization,omitempty" url:"is_organization,omitempty"`
+	// Whether the caller is using a partner key.
+	IsPartner *bool `json:"is_partner,omitempty" url:"is_partner,omitempty"`
+	IsSystem  *bool `json:"is_system,omitempty" url:"is_system,omitempty"`
+	// Whether the caller is a user.
+	IsUser *bool `json:"is_user,omitempty" url:"is_user,omitempty"`
+	// The ID of the organization the caller belongs to.
+	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// The name of the organization the caller belongs to.
 	OrganizationName *string `json:"organization_name,omitempty" url:"organization_name,omitempty"`
 	Role             *string `json:"role,omitempty" url:"role,omitempty"`
 

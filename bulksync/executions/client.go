@@ -109,6 +109,7 @@ func (c *Client) ListStatus(
 func (c *Client) List(
 	ctx context.Context,
 	id string,
+	request *bulksync.ExecutionsListRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ListBulkSyncExecutionsEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -121,6 +122,14 @@ func (c *Client) List(
 		baseURL = options.BaseURL
 	}
 	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/executions", id)
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 

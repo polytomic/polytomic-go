@@ -129,19 +129,88 @@ func (a *ApiError) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+type BulkBulkSyncSchedule struct {
+	CreatedAt     *time.Time         `json:"createdAt,omitempty" url:"createdAt,omitempty"`
+	CreatedBy     *string            `json:"createdBy,omitempty" url:"createdBy,omitempty"`
+	DayOfMonth    *string            `json:"dayOfMonth,omitempty" url:"dayOfMonth,omitempty"`
+	DayOfWeek     *string            `json:"dayOfWeek,omitempty" url:"dayOfWeek,omitempty"`
+	DeletedAt     *time.Time         `json:"deletedAt,omitempty" url:"deletedAt,omitempty"`
+	DeletedBy     *string            `json:"deletedBy,omitempty" url:"deletedBy,omitempty"`
+	Frequency     ScheduleFrequency  `json:"frequency,omitempty" url:"frequency,omitempty"`
+	Hour          *string            `json:"hour,omitempty" url:"hour,omitempty"`
+	Minute        *string            `json:"minute,omitempty" url:"minute,omitempty"`
+	Month         *string            `json:"month,omitempty" url:"month,omitempty"`
+	SelectiveMode *BulkSelectiveMode `json:"selectiveMode,omitempty" url:"selectiveMode,omitempty"`
+	SyncId        *string            `json:"syncId,omitempty" url:"syncId,omitempty"`
+	UpdatedAt     *time.Time         `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
+	UpdatedBy     *string            `json:"updatedBy,omitempty" url:"updatedBy,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkBulkSyncSchedule) UnmarshalJSON(data []byte) error {
+	type embed BulkBulkSyncSchedule
+	var unmarshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"createdAt,omitempty"`
+		DeletedAt *core.DateTime `json:"deletedAt,omitempty"`
+		UpdatedAt *core.DateTime `json:"updatedAt,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BulkBulkSyncSchedule(unmarshaler.embed)
+	b.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	b.DeletedAt = unmarshaler.DeletedAt.TimePtr()
+	b.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkBulkSyncSchedule) MarshalJSON() ([]byte, error) {
+	type embed BulkBulkSyncSchedule
+	var marshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"createdAt,omitempty"`
+		DeletedAt *core.DateTime `json:"deletedAt,omitempty"`
+		UpdatedAt *core.DateTime `json:"updatedAt,omitempty"`
+	}{
+		embed:     embed(*b),
+		CreatedAt: core.NewOptionalDateTime(b.CreatedAt),
+		DeletedAt: core.NewOptionalDateTime(b.DeletedAt),
+		UpdatedAt: core.NewOptionalDateTime(b.UpdatedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (b *BulkBulkSyncSchedule) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 type BulkExecutionStatus string
 
 const (
-	BulkExecutionStatusCreated    BulkExecutionStatus = "created"
-	BulkExecutionStatusScheduled  BulkExecutionStatus = "scheduled"
-	BulkExecutionStatusRunning    BulkExecutionStatus = "running"
-	BulkExecutionStatusExporting  BulkExecutionStatus = "exporting"
-	BulkExecutionStatusCanceling  BulkExecutionStatus = "canceling"
-	BulkExecutionStatusCanceled   BulkExecutionStatus = "canceled"
-	BulkExecutionStatusCompleted  BulkExecutionStatus = "completed"
-	BulkExecutionStatusFailed     BulkExecutionStatus = "failed"
-	BulkExecutionStatusProcessing BulkExecutionStatus = "processing"
-	BulkExecutionStatusErrors     BulkExecutionStatus = "errors"
+	BulkExecutionStatusCreated     BulkExecutionStatus = "created"
+	BulkExecutionStatusScheduled   BulkExecutionStatus = "scheduled"
+	BulkExecutionStatusRunning     BulkExecutionStatus = "running"
+	BulkExecutionStatusExporting   BulkExecutionStatus = "exporting"
+	BulkExecutionStatusCanceling   BulkExecutionStatus = "canceling"
+	BulkExecutionStatusCanceled    BulkExecutionStatus = "canceled"
+	BulkExecutionStatusCompleted   BulkExecutionStatus = "completed"
+	BulkExecutionStatusFailed      BulkExecutionStatus = "failed"
+	BulkExecutionStatusProcessing  BulkExecutionStatus = "processing"
+	BulkExecutionStatusErrors      BulkExecutionStatus = "errors"
+	BulkExecutionStatusInterrupted BulkExecutionStatus = "interrupted"
 )
 
 func NewBulkExecutionStatusFromString(s string) (BulkExecutionStatus, error) {
@@ -166,6 +235,8 @@ func NewBulkExecutionStatusFromString(s string) (BulkExecutionStatus, error) {
 		return BulkExecutionStatusProcessing, nil
 	case "errors":
 		return BulkExecutionStatusErrors, nil
+	case "interrupted":
+		return BulkExecutionStatusInterrupted, nil
 	}
 	var t BulkExecutionStatus
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -202,9 +273,11 @@ func (b BulkFetchMode) Ptr() *BulkFetchMode {
 }
 
 type BulkField struct {
-	Enabled    *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Id         *string `json:"id,omitempty" url:"id,omitempty"`
-	Obfuscated *bool   `json:"obfuscated,omitempty" url:"obfuscated,omitempty"`
+	Enabled        *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
+	Id             *string `json:"id,omitempty" url:"id,omitempty"`
+	Obfuscated     *bool   `json:"obfuscated,omitempty" url:"obfuscated,omitempty"`
+	OutputName     *string `json:"output_name,omitempty" url:"output_name,omitempty"`
+	UserOutputName *string `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -274,6 +347,7 @@ type BulkSchema struct {
 	OutputName          *string       `json:"output_name,omitempty" url:"output_name,omitempty"`
 	PartitionKey        *string       `json:"partition_key,omitempty" url:"partition_key,omitempty"`
 	TrackingField       *string       `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
+	UserOutputName      *string       `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -351,13 +425,14 @@ func (b *BulkSchemaEnvelope) String() string {
 type BulkSchemaExecutionStatus string
 
 const (
-	BulkSchemaExecutionStatusCreated   BulkSchemaExecutionStatus = "created"
-	BulkSchemaExecutionStatusScheduled BulkSchemaExecutionStatus = "scheduled"
-	BulkSchemaExecutionStatusRunning   BulkSchemaExecutionStatus = "running"
-	BulkSchemaExecutionStatusExporting BulkSchemaExecutionStatus = "exporting"
-	BulkSchemaExecutionStatusCanceled  BulkSchemaExecutionStatus = "canceled"
-	BulkSchemaExecutionStatusCompleted BulkSchemaExecutionStatus = "completed"
-	BulkSchemaExecutionStatusFailed    BulkSchemaExecutionStatus = "failed"
+	BulkSchemaExecutionStatusCreated     BulkSchemaExecutionStatus = "created"
+	BulkSchemaExecutionStatusScheduled   BulkSchemaExecutionStatus = "scheduled"
+	BulkSchemaExecutionStatusRunning     BulkSchemaExecutionStatus = "running"
+	BulkSchemaExecutionStatusExporting   BulkSchemaExecutionStatus = "exporting"
+	BulkSchemaExecutionStatusCanceled    BulkSchemaExecutionStatus = "canceled"
+	BulkSchemaExecutionStatusCompleted   BulkSchemaExecutionStatus = "completed"
+	BulkSchemaExecutionStatusFailed      BulkSchemaExecutionStatus = "failed"
+	BulkSchemaExecutionStatusInterrupted BulkSchemaExecutionStatus = "interrupted"
 )
 
 func NewBulkSchemaExecutionStatusFromString(s string) (BulkSchemaExecutionStatus, error) {
@@ -376,6 +451,8 @@ func NewBulkSchemaExecutionStatusFromString(s string) (BulkSchemaExecutionStatus
 		return BulkSchemaExecutionStatusCompleted, nil
 	case "failed":
 		return BulkSchemaExecutionStatusFailed, nil
+	case "interrupted":
+		return BulkSchemaExecutionStatusInterrupted, nil
 	}
 	var t BulkSchemaExecutionStatus
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -385,17 +462,48 @@ func (b BulkSchemaExecutionStatus) Ptr() *BulkSchemaExecutionStatus {
 	return &b
 }
 
+type BulkSelectiveMode string
+
+const (
+	BulkSelectiveModeNone                 BulkSelectiveMode = "none"
+	BulkSelectiveModeIncrementalFields    BulkSelectiveMode = "incrementalFields"
+	BulkSelectiveModeNonincrementalFields BulkSelectiveMode = "nonincrementalFields"
+)
+
+func NewBulkSelectiveModeFromString(s string) (BulkSelectiveMode, error) {
+	switch s {
+	case "none":
+		return BulkSelectiveModeNone, nil
+	case "incrementalFields":
+		return BulkSelectiveModeIncrementalFields, nil
+	case "nonincrementalFields":
+		return BulkSelectiveModeNonincrementalFields, nil
+	}
+	var t BulkSelectiveMode
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BulkSelectiveMode) Ptr() *BulkSelectiveMode {
+	return &b
+}
+
 type BulkSyncExecution struct {
-	CompletedAt *time.Time                 `json:"completed_at,omitempty" url:"completed_at,omitempty"`
-	CreatedAt   *time.Time                 `json:"created_at,omitempty" url:"created_at,omitempty"`
-	FetchMode   *BulkFetchMode             `json:"fetch_mode,omitempty" url:"fetch_mode,omitempty"`
-	Id          *string                    `json:"id,omitempty" url:"id,omitempty"`
-	IsResync    *bool                      `json:"is_resync,omitempty" url:"is_resync,omitempty"`
-	IsTest      *bool                      `json:"is_test,omitempty" url:"is_test,omitempty"`
-	Schemas     []*BulkSyncSchemaExecution `json:"schemas,omitempty" url:"schemas,omitempty"`
-	StartedAt   *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status      *BulkExecutionStatus       `json:"status,omitempty" url:"status,omitempty"`
-	Type        *string                    `json:"type,omitempty" url:"type,omitempty"`
+	CompletedAt   *time.Time                 `json:"completed_at,omitempty" url:"completed_at,omitempty"`
+	CreatedAt     *time.Time                 `json:"created_at,omitempty" url:"created_at,omitempty"`
+	ErrorCount    *int                       `json:"error_count,omitempty" url:"error_count,omitempty"`
+	FetchMode     *BulkFetchMode             `json:"fetch_mode,omitempty" url:"fetch_mode,omitempty"`
+	Id            *string                    `json:"id,omitempty" url:"id,omitempty"`
+	IsPartial     *bool                      `json:"is_partial,omitempty" url:"is_partial,omitempty"`
+	IsResync      *bool                      `json:"is_resync,omitempty" url:"is_resync,omitempty"`
+	IsTest        *bool                      `json:"is_test,omitempty" url:"is_test,omitempty"`
+	RecordCount   *int                       `json:"record_count,omitempty" url:"record_count,omitempty"`
+	Schemas       []*BulkSyncSchemaExecution `json:"schemas,omitempty" url:"schemas,omitempty"`
+	StartedAt     *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
+	Status        *BulkExecutionStatus       `json:"status,omitempty" url:"status,omitempty"`
+	StatusMessage *string                    `json:"status_message,omitempty" url:"status_message,omitempty"`
+	Type          *string                    `json:"type,omitempty" url:"type,omitempty"`
+	UpdatedAt     *time.Time                 `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	WarningCount  *int                       `json:"warning_count,omitempty" url:"warning_count,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -407,6 +515,7 @@ func (b *BulkSyncExecution) UnmarshalJSON(data []byte) error {
 		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
 		CreatedAt   *core.DateTime `json:"created_at,omitempty"`
 		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+		UpdatedAt   *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed: embed(*b),
 	}
@@ -417,6 +526,7 @@ func (b *BulkSyncExecution) UnmarshalJSON(data []byte) error {
 	b.CompletedAt = unmarshaler.CompletedAt.TimePtr()
 	b.CreatedAt = unmarshaler.CreatedAt.TimePtr()
 	b.StartedAt = unmarshaler.StartedAt.TimePtr()
+	b.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 	b._rawJSON = json.RawMessage(data)
 	return nil
 }
@@ -428,11 +538,13 @@ func (b *BulkSyncExecution) MarshalJSON() ([]byte, error) {
 		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
 		CreatedAt   *core.DateTime `json:"created_at,omitempty"`
 		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+		UpdatedAt   *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed:       embed(*b),
 		CompletedAt: core.NewOptionalDateTime(b.CompletedAt),
 		CreatedAt:   core.NewOptionalDateTime(b.CreatedAt),
 		StartedAt:   core.NewOptionalDateTime(b.StartedAt),
+		UpdatedAt:   core.NewOptionalDateTime(b.UpdatedAt),
 	}
 	return json.Marshal(marshaler)
 }
@@ -530,12 +642,15 @@ func (b *BulkSyncExecutionStatus) String() string {
 
 type BulkSyncSchemaExecution struct {
 	CompletedAt   *time.Time                 `json:"completed_at,omitempty" url:"completed_at,omitempty"`
+	CreatedAt     *time.Time                 `json:"created_at,omitempty" url:"created_at,omitempty"`
 	ErrorCount    *int                       `json:"error_count,omitempty" url:"error_count,omitempty"`
+	OutputName    *string                    `json:"output_name,omitempty" url:"output_name,omitempty"`
 	RecordCount   *int                       `json:"record_count,omitempty" url:"record_count,omitempty"`
 	Schema        *string                    `json:"schema,omitempty" url:"schema,omitempty"`
 	StartedAt     *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
 	Status        *BulkSchemaExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
 	StatusMessage *string                    `json:"status_message,omitempty" url:"status_message,omitempty"`
+	UpdatedAt     *time.Time                 `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 	WarningCount  *int                       `json:"warning_count,omitempty" url:"warning_count,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -546,7 +661,9 @@ func (b *BulkSyncSchemaExecution) UnmarshalJSON(data []byte) error {
 	var unmarshaler = struct {
 		embed
 		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
+		CreatedAt   *core.DateTime `json:"created_at,omitempty"`
 		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+		UpdatedAt   *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed: embed(*b),
 	}
@@ -555,7 +672,9 @@ func (b *BulkSyncSchemaExecution) UnmarshalJSON(data []byte) error {
 	}
 	*b = BulkSyncSchemaExecution(unmarshaler.embed)
 	b.CompletedAt = unmarshaler.CompletedAt.TimePtr()
+	b.CreatedAt = unmarshaler.CreatedAt.TimePtr()
 	b.StartedAt = unmarshaler.StartedAt.TimePtr()
+	b.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 	b._rawJSON = json.RawMessage(data)
 	return nil
 }
@@ -565,11 +684,15 @@ func (b *BulkSyncSchemaExecution) MarshalJSON() ([]byte, error) {
 	var marshaler = struct {
 		embed
 		CompletedAt *core.DateTime `json:"completed_at,omitempty"`
+		CreatedAt   *core.DateTime `json:"created_at,omitempty"`
 		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+		UpdatedAt   *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed:       embed(*b),
 		CompletedAt: core.NewOptionalDateTime(b.CompletedAt),
+		CreatedAt:   core.NewOptionalDateTime(b.CreatedAt),
 		StartedAt:   core.NewOptionalDateTime(b.StartedAt),
+		UpdatedAt:   core.NewOptionalDateTime(b.UpdatedAt),
 	}
 	return json.Marshal(marshaler)
 }
@@ -707,47 +830,76 @@ func (c *ConfigurationValue) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-type Enrichment struct {
-	Configuration *V2EnricherConfiguration `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionId  *string                  `json:"connection_id,omitempty" url:"connection_id,omitempty"`
-	// Must be provided to update an existing enrichment
-	EnricherId *string `json:"enricher_id,omitempty" url:"enricher_id,omitempty"`
-	// If not provided, all fields will be enabled.
-	Fields   []*ModelField      `json:"fields,omitempty" url:"fields,omitempty"`
-	Mappings *V2EnricherMapping `json:"mappings,omitempty" url:"mappings,omitempty"`
+type ConnectionMeta struct {
+	HasItems      *bool         `json:"has_items,omitempty" url:"has_items,omitempty"`
+	Items         []interface{} `json:"items,omitempty" url:"items,omitempty"`
+	RequiresOneOf []string      `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (e *Enrichment) UnmarshalJSON(data []byte) error {
-	type unmarshaler Enrichment
+func (c *ConnectionMeta) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionMeta
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*e = Enrichment(value)
-	e._rawJSON = json.RawMessage(data)
+	*c = ConnectionMeta(value)
+	c._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (e *Enrichment) String() string {
-	if len(e._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(e._rawJSON); err == nil {
+func (c *ConnectionMeta) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(e); err == nil {
+	if value, err := core.StringifyJSON(c); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", e)
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConnectionMetaResponse struct {
+	Configuration map[string]*ConfigurationValue `json:"configuration,omitempty" url:"configuration,omitempty"`
+	Items         map[string]*ConnectionMeta     `json:"items,omitempty" url:"items,omitempty"`
+	RequiresOneOf []string                       `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ConnectionMetaResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionMetaResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionMetaResponse(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionMetaResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
 }
 
 type ExecutionCounts struct {
-	Delete *int `json:"delete,omitempty" url:"delete,omitempty"`
-	Error  *int `json:"error,omitempty" url:"error,omitempty"`
-	Insert *int `json:"insert,omitempty" url:"insert,omitempty"`
-	Total  *int `json:"total,omitempty" url:"total,omitempty"`
-	Update *int `json:"update,omitempty" url:"update,omitempty"`
+	Delete   *int `json:"delete,omitempty" url:"delete,omitempty"`
+	Error    *int `json:"error,omitempty" url:"error,omitempty"`
+	Insert   *int `json:"insert,omitempty" url:"insert,omitempty"`
+	Total    *int `json:"total,omitempty" url:"total,omitempty"`
+	Update   *int `json:"update,omitempty" url:"update,omitempty"`
+	Upserts  *int `json:"upserts,omitempty" url:"upserts,omitempty"`
+	Warnings *int `json:"warnings,omitempty" url:"warnings,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -904,33 +1056,35 @@ func (e ExecutionStatus) Ptr() *ExecutionStatus {
 type FilterFunction string
 
 const (
-	FilterFunctionEquality             FilterFunction = "Equality"
-	FilterFunctionInequality           FilterFunction = "Inequality"
-	FilterFunctionIsNull               FilterFunction = "IsNull"
-	FilterFunctionIsNotNull            FilterFunction = "IsNotNull"
-	FilterFunctionTrue                 FilterFunction = "True"
-	FilterFunctionFalse                FilterFunction = "False"
-	FilterFunctionOnOrAfter            FilterFunction = "OnOrAfter"
-	FilterFunctionOnOrBefore           FilterFunction = "OnOrBefore"
-	FilterFunctionGreaterThan          FilterFunction = "GreaterThan"
-	FilterFunctionGreaterThanEqual     FilterFunction = "GreaterThanEqual"
-	FilterFunctionLessThan             FilterFunction = "LessThan"
-	FilterFunctionLessThanEqual        FilterFunction = "LessThanEqual"
-	FilterFunctionStringContains       FilterFunction = "StringContains"
-	FilterFunctionStringEndsWith       FilterFunction = "StringEndsWith"
-	FilterFunctionStringDoesNotContain FilterFunction = "StringDoesNotContain"
-	FilterFunctionStringDoesNotEndWith FilterFunction = "StringDoesNotEndWith"
-	FilterFunctionStringOneOf          FilterFunction = "StringOneOf"
-	FilterFunctionStringNotOneOf       FilterFunction = "StringNotOneOf"
-	FilterFunctionBetween              FilterFunction = "Between"
-	FilterFunctionArrayContains        FilterFunction = "ArrayContains"
-	FilterFunctionArrayDoesNotContain  FilterFunction = "ArrayDoesNotContain"
-	FilterFunctionInTheLast            FilterFunction = "InTheLast"
-	FilterFunctionRelativeOnOrBefore   FilterFunction = "RelativeOnOrBefore"
-	FilterFunctionRelativeOnOrAfter    FilterFunction = "RelativeOnOrAfter"
-	FilterFunctionStringLike           FilterFunction = "StringLike"
-	FilterFunctionStringNotLike        FilterFunction = "StringNotLike"
-	FilterFunctionStringMatchesTrimmed FilterFunction = "StringMatchesTrimmed"
+	FilterFunctionEquality               FilterFunction = "Equality"
+	FilterFunctionInequality             FilterFunction = "Inequality"
+	FilterFunctionIsNull                 FilterFunction = "IsNull"
+	FilterFunctionIsNotNull              FilterFunction = "IsNotNull"
+	FilterFunctionTrue                   FilterFunction = "True"
+	FilterFunctionFalse                  FilterFunction = "False"
+	FilterFunctionOnOrAfter              FilterFunction = "OnOrAfter"
+	FilterFunctionOnOrBefore             FilterFunction = "OnOrBefore"
+	FilterFunctionGreaterThan            FilterFunction = "GreaterThan"
+	FilterFunctionGreaterThanEqual       FilterFunction = "GreaterThanEqual"
+	FilterFunctionLessThan               FilterFunction = "LessThan"
+	FilterFunctionLessThanEqual          FilterFunction = "LessThanEqual"
+	FilterFunctionStringContains         FilterFunction = "StringContains"
+	FilterFunctionStringStartsWith       FilterFunction = "StringStartsWith"
+	FilterFunctionStringEndsWith         FilterFunction = "StringEndsWith"
+	FilterFunctionStringDoesNotContain   FilterFunction = "StringDoesNotContain"
+	FilterFunctionStringDoesNotStartWith FilterFunction = "StringDoesNotStartWith"
+	FilterFunctionStringDoesNotEndWith   FilterFunction = "StringDoesNotEndWith"
+	FilterFunctionStringOneOf            FilterFunction = "StringOneOf"
+	FilterFunctionStringNotOneOf         FilterFunction = "StringNotOneOf"
+	FilterFunctionBetween                FilterFunction = "Between"
+	FilterFunctionArrayContains          FilterFunction = "ArrayContains"
+	FilterFunctionArrayDoesNotContain    FilterFunction = "ArrayDoesNotContain"
+	FilterFunctionInTheLast              FilterFunction = "InTheLast"
+	FilterFunctionRelativeOnOrBefore     FilterFunction = "RelativeOnOrBefore"
+	FilterFunctionRelativeOnOrAfter      FilterFunction = "RelativeOnOrAfter"
+	FilterFunctionStringLike             FilterFunction = "StringLike"
+	FilterFunctionStringNotLike          FilterFunction = "StringNotLike"
+	FilterFunctionStringMatchesTrimmed   FilterFunction = "StringMatchesTrimmed"
 )
 
 func NewFilterFunctionFromString(s string) (FilterFunction, error) {
@@ -961,10 +1115,14 @@ func NewFilterFunctionFromString(s string) (FilterFunction, error) {
 		return FilterFunctionLessThanEqual, nil
 	case "StringContains":
 		return FilterFunctionStringContains, nil
+	case "StringStartsWith":
+		return FilterFunctionStringStartsWith, nil
 	case "StringEndsWith":
 		return FilterFunctionStringEndsWith, nil
 	case "StringDoesNotContain":
 		return FilterFunctionStringDoesNotContain, nil
+	case "StringDoesNotStartWith":
+		return FilterFunctionStringDoesNotStartWith, nil
 	case "StringDoesNotEndWith":
 		return FilterFunctionStringDoesNotEndWith, nil
 	case "StringOneOf":
@@ -996,6 +1154,35 @@ func NewFilterFunctionFromString(s string) (FilterFunction, error) {
 
 func (f FilterFunction) Ptr() *FilterFunction {
 	return &f
+}
+
+type GetConnectionMetaEnvelope struct {
+	Data *ConnectionMetaResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GetConnectionMetaEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetConnectionMetaEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetConnectionMetaEnvelope(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetConnectionMetaEnvelope) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
 }
 
 type GetExecutionResponseEnvelope struct {
@@ -1118,6 +1305,36 @@ func (g *GetModelSyncSourceMetaEnvelope) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type IdentityFunction struct {
+	Id    *string `json:"id,omitempty" url:"id,omitempty"`
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (i *IdentityFunction) UnmarshalJSON(data []byte) error {
+	type unmarshaler IdentityFunction
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = IdentityFunction(value)
+	i._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *IdentityFunction) String() string {
+	if len(i._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(i._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
 type JobResponse struct {
 	Error  *string         `json:"error,omitempty" url:"error,omitempty"`
 	JobId  *string         `json:"job_id,omitempty" url:"job_id,omitempty"`
@@ -1210,7 +1427,8 @@ func (l *ListBulkSyncExecutionStatusEnvelope) String() string {
 }
 
 type ListBulkSyncExecutionsEnvelope struct {
-	Data []*BulkSyncExecution `json:"data,omitempty" url:"data,omitempty"`
+	Data       []*BulkSyncExecution `json:"data,omitempty" url:"data,omitempty"`
+	Pagination *PaginationDetails   `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -1239,7 +1457,8 @@ func (l *ListBulkSyncExecutionsEnvelope) String() string {
 }
 
 type ListExecutionResponseEnvelope struct {
-	Data []*GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+	Data       []*GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+	Pagination *PaginationDetails            `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -1296,29 +1515,88 @@ func (l *ListPoliciesResponseEnvelope) String() string {
 	return fmt.Sprintf("%#v", l)
 }
 
+type Mode struct {
+	Description           *string `json:"description,omitempty" url:"description,omitempty"`
+	Label                 *string `json:"label,omitempty" url:"label,omitempty"`
+	Mode                  *string `json:"mode,omitempty" url:"mode,omitempty"`
+	RequiresIdentity      *bool   `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
+	SupportsFieldSyncMode *bool   `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
+	SupportsTargetFilters *bool   `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *Mode) UnmarshalJSON(data []byte) error {
+	type unmarshaler Mode
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = Mode(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *Mode) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
 type ModelField struct {
-	Description *string     `json:"description,omitempty" url:"description,omitempty"`
-	Example     interface{} `json:"example,omitempty" url:"example,omitempty"`
-	Id          *string     `json:"id,omitempty" url:"id,omitempty"`
-	Label       *string     `json:"label,omitempty" url:"label,omitempty"`
-	Name        *string     `json:"name,omitempty" url:"name,omitempty"`
-	RemoteType  *string     `json:"remote_type,omitempty" url:"remote_type,omitempty"`
-	Type        *string     `json:"type,omitempty" url:"type,omitempty"`
-	Unique      *bool       `json:"unique,omitempty" url:"unique,omitempty"`
-	UserAdded   *bool       `json:"user_added,omitempty" url:"user_added,omitempty"`
+	CreatedAt   *time.Time         `json:"created_at,omitempty" url:"created_at,omitempty"`
+	CreatedBy   *CommonOutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
+	Description *string            `json:"description,omitempty" url:"description,omitempty"`
+	Example     interface{}        `json:"example,omitempty" url:"example,omitempty"`
+	Id          *string            `json:"id,omitempty" url:"id,omitempty"`
+	Label       *string            `json:"label,omitempty" url:"label,omitempty"`
+	Name        *string            `json:"name,omitempty" url:"name,omitempty"`
+	RemoteType  *string            `json:"remote_type,omitempty" url:"remote_type,omitempty"`
+	Type        *string            `json:"type,omitempty" url:"type,omitempty"`
+	Unique      *bool              `json:"unique,omitempty" url:"unique,omitempty"`
+	UpdatedAt   *time.Time         `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	UserAdded   *bool              `json:"user_added,omitempty" url:"user_added,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
 func (m *ModelField) UnmarshalJSON(data []byte) error {
-	type unmarshaler ModelField
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed ModelField
+	var unmarshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*m),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*m = ModelField(value)
+	*m = ModelField(unmarshaler.embed)
+	m.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	m.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 	m._rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (m *ModelField) MarshalJSON() ([]byte, error) {
+	type embed ModelField
+	var marshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:     embed(*m),
+		CreatedAt: core.NewOptionalDateTime(m.CreatedAt),
+		UpdatedAt: core.NewOptionalDateTime(m.UpdatedAt),
+	}
+	return json.Marshal(marshaler)
 }
 
 func (m *ModelField) String() string {
@@ -1331,6 +1609,40 @@ func (m *ModelField) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
+}
+
+type ModelSyncMode string
+
+const (
+	ModelSyncModeCreate         ModelSyncMode = "create"
+	ModelSyncModeUpdate         ModelSyncMode = "update"
+	ModelSyncModeUpdateOrCreate ModelSyncMode = "updateOrCreate"
+	ModelSyncModeReplace        ModelSyncMode = "replace"
+	ModelSyncModeAppend         ModelSyncMode = "append"
+	ModelSyncModeRemove         ModelSyncMode = "remove"
+)
+
+func NewModelSyncModeFromString(s string) (ModelSyncMode, error) {
+	switch s {
+	case "create":
+		return ModelSyncModeCreate, nil
+	case "update":
+		return ModelSyncModeUpdate, nil
+	case "updateOrCreate":
+		return ModelSyncModeUpdateOrCreate, nil
+	case "replace":
+		return ModelSyncModeReplace, nil
+	case "append":
+		return ModelSyncModeAppend, nil
+	case "remove":
+		return ModelSyncModeRemove, nil
+	}
+	var t ModelSyncMode
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m ModelSyncMode) Ptr() *ModelSyncMode {
+	return &m
 }
 
 type ModelSyncSourceMetaResponse struct {
@@ -1362,6 +1674,35 @@ func (m *ModelSyncSourceMetaResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
+}
+
+type PaginationDetails struct {
+	NextPageToken *string `json:"next_page_token,omitempty" url:"next_page_token,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *PaginationDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaginationDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PaginationDetails(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaginationDetails) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
 }
 
 type PickValue struct {
@@ -1612,6 +1953,35 @@ func (r *RoleResponseEnvelope) String() string {
 	return fmt.Sprintf("%#v", r)
 }
 
+type ScheduleEnvelope struct {
+	Data *BulkBulkSyncSchedule `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *ScheduleEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ScheduleEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = ScheduleEnvelope(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *ScheduleEnvelope) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
 type ScheduleFrequency string
 
 const (
@@ -1656,6 +2026,35 @@ func NewScheduleFrequencyFromString(s string) (ScheduleFrequency, error) {
 
 func (s ScheduleFrequency) Ptr() *ScheduleFrequency {
 	return &s
+}
+
+type SchedulesEnvelope struct {
+	Data []*BulkBulkSyncSchedule `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SchedulesEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler SchedulesEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SchedulesEnvelope(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SchedulesEnvelope) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
 }
 
 type Schema struct {
@@ -1788,47 +2187,335 @@ func (s *SourceMeta) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
-type SyncMode string
+type SupportedMode struct {
+	Id *ModelSyncMode `json:"id,omitempty" url:"id,omitempty"`
+	// True if the sync mode requires an identity field mapping.
+	RequiresIdentity *bool `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
+	// True if the target supports per-field sync modes.
+	SupportsPerFieldMode *bool `json:"supports_per_field_mode,omitempty" url:"supports_per_field_mode,omitempty"`
+	// True if the sync mode supports target filters.
+	SupportsTargetFilters *bool `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
 
-const (
-	SyncModeCreate         SyncMode = "create"
-	SyncModeUpdate         SyncMode = "update"
-	SyncModeUpdateOrCreate SyncMode = "updateOrCreate"
-	SyncModeReplace        SyncMode = "replace"
-	SyncModeAppend         SyncMode = "append"
-	SyncModeSnapshot       SyncMode = "snapshot"
-	SyncModeReplicate      SyncMode = "replicate"
-	SyncModeRemove         SyncMode = "remove"
-)
-
-func NewSyncModeFromString(s string) (SyncMode, error) {
-	switch s {
-	case "create":
-		return SyncModeCreate, nil
-	case "update":
-		return SyncModeUpdate, nil
-	case "updateOrCreate":
-		return SyncModeUpdateOrCreate, nil
-	case "replace":
-		return SyncModeReplace, nil
-	case "append":
-		return SyncModeAppend, nil
-	case "snapshot":
-		return SyncModeSnapshot, nil
-	case "replicate":
-		return SyncModeReplicate, nil
-	case "remove":
-		return SyncModeRemove, nil
-	}
-	var t SyncMode
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
+	_rawJSON json.RawMessage
 }
 
-func (s SyncMode) Ptr() *SyncMode {
-	return &s
+func (s *SupportedMode) UnmarshalJSON(data []byte) error {
+	type unmarshaler SupportedMode
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SupportedMode(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SupportedMode) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SyncDestinationProperties struct {
+	DoesNotReportOperationCounts  *bool   `json:"does_not_report_operation_counts,omitempty" url:"does_not_report_operation_counts,omitempty"`
+	MappingsNotRequired           *bool   `json:"mappings_not_required,omitempty" url:"mappings_not_required,omitempty"`
+	NewTargetLabel                *string `json:"new_target_label,omitempty" url:"new_target_label,omitempty"`
+	OptionalTargetMappings        *bool   `json:"optional_target_mappings,omitempty" url:"optional_target_mappings,omitempty"`
+	PrimaryMetadataObject         *string `json:"primary_metadata_object,omitempty" url:"primary_metadata_object,omitempty"`
+	RequiresConfiguration         *bool   `json:"requires_configuration,omitempty" url:"requires_configuration,omitempty"`
+	SupportsFieldCreation         *bool   `json:"supports_field_creation,omitempty" url:"supports_field_creation,omitempty"`
+	SupportsFieldEncryption       *bool   `json:"supports_field_encryption,omitempty" url:"supports_field_encryption,omitempty"`
+	SupportsFieldTypeSelection    *bool   `json:"supports_field_type_selection,omitempty" url:"supports_field_type_selection,omitempty"`
+	SupportsIdentityFieldCreation *bool   `json:"supports_identity_field_creation,omitempty" url:"supports_identity_field_creation,omitempty"`
+	SupportsTargetFilters         *bool   `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
+	TargetCreator                 *bool   `json:"target_creator,omitempty" url:"target_creator,omitempty"`
+	UseFieldNamesAsLabels         *bool   `json:"use_field_names_as_labels,omitempty" url:"use_field_names_as_labels,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SyncDestinationProperties) UnmarshalJSON(data []byte) error {
+	type unmarshaler SyncDestinationProperties
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SyncDestinationProperties(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SyncDestinationProperties) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type TargetCreateInput struct {
+	// True if the property is an enum.
+	Enum *bool `json:"enum,omitempty" url:"enum,omitempty"`
+	// The identifier of the target property.
+	Id *string `json:"id,omitempty" url:"id,omitempty"`
+	// A human readable title for the target property.
+	Title *string `json:"title,omitempty" url:"title,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (t *TargetCreateInput) UnmarshalJSON(data []byte) error {
+	type unmarshaler TargetCreateInput
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TargetCreateInput(value)
+	t._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TargetCreateInput) String() string {
+	if len(t._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+type TargetField struct {
+	Association       *bool               `json:"association,omitempty" url:"association,omitempty"`
+	Createable        *bool               `json:"createable,omitempty" url:"createable,omitempty"`
+	Description       *string             `json:"description,omitempty" url:"description,omitempty"`
+	Encryptable       *bool               `json:"encryptable,omitempty" url:"encryptable,omitempty"`
+	Filterable        *bool               `json:"filterable,omitempty" url:"filterable,omitempty"`
+	Id                *string             `json:"id,omitempty" url:"id,omitempty"`
+	IdentityFunctions []*IdentityFunction `json:"identity_functions,omitempty" url:"identity_functions,omitempty"`
+	Name              *string             `json:"name,omitempty" url:"name,omitempty"`
+	Required          *bool               `json:"required,omitempty" url:"required,omitempty"`
+	SourceType        *string             `json:"source_type,omitempty" url:"source_type,omitempty"`
+	SupportsIdentity  *bool               `json:"supports_identity,omitempty" url:"supports_identity,omitempty"`
+	Type              *string             `json:"type,omitempty" url:"type,omitempty"`
+	Updateable        *bool               `json:"updateable,omitempty" url:"updateable,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (t *TargetField) UnmarshalJSON(data []byte) error {
+	type unmarshaler TargetField
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TargetField(value)
+	t._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TargetField) String() string {
+	if len(t._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+type TargetObject struct {
+	// The identifier of the target object.
+	Id *string `json:"id,omitempty" url:"id,omitempty"`
+	// The supported sync modes and their properties for the target object.
+	Modes []*SupportedMode `json:"modes,omitempty" url:"modes,omitempty"`
+	// The name of the target object.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (t *TargetObject) UnmarshalJSON(data []byte) error {
+	type unmarshaler TargetObject
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TargetObject(value)
+	t._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TargetObject) String() string {
+	if len(t._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+type TargetResponse struct {
+	Fields      []*TargetField             `json:"fields,omitempty" url:"fields,omitempty"`
+	Id          *string                    `json:"id,omitempty" url:"id,omitempty"`
+	Modes       []*Mode                    `json:"modes,omitempty" url:"modes,omitempty"`
+	Name        *string                    `json:"name,omitempty" url:"name,omitempty"`
+	Properties  *SyncDestinationProperties `json:"properties,omitempty" url:"properties,omitempty"`
+	RefreshedAt *time.Time                 `json:"refreshed_at,omitempty" url:"refreshed_at,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (t *TargetResponse) UnmarshalJSON(data []byte) error {
+	type embed TargetResponse
+	var unmarshaler = struct {
+		embed
+		RefreshedAt *core.DateTime `json:"refreshed_at,omitempty"`
+	}{
+		embed: embed(*t),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*t = TargetResponse(unmarshaler.embed)
+	t.RefreshedAt = unmarshaler.RefreshedAt.TimePtr()
+	t._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TargetResponse) MarshalJSON() ([]byte, error) {
+	type embed TargetResponse
+	var marshaler = struct {
+		embed
+		RefreshedAt *core.DateTime `json:"refreshed_at,omitempty"`
+	}{
+		embed:       embed(*t),
+		RefreshedAt: core.NewOptionalDateTime(t.RefreshedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (t *TargetResponse) String() string {
+	if len(t._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+type TargetResponseEnvelope struct {
+	Data *TargetResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (t *TargetResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler TargetResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TargetResponseEnvelope(value)
+	t._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TargetResponseEnvelope) String() string {
+	if len(t._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
 }
 
 type TypesType = interface{}
+
+type UpdateBulkField struct {
+	Enabled        *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
+	Id             *string `json:"id,omitempty" url:"id,omitempty"`
+	Obfuscated     *bool   `json:"obfuscated,omitempty" url:"obfuscated,omitempty"`
+	UserOutputName *string `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (u *UpdateBulkField) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateBulkField
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateBulkField(value)
+	u._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateBulkField) String() string {
+	if len(u._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+type UtilEnumValue struct {
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	Value *string `json:"value,omitempty" url:"value,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (u *UtilEnumValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler UtilEnumValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UtilEnumValue(value)
+	u._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UtilEnumValue) String() string {
+	if len(u._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
 
 type UtilFieldType string
 
@@ -1869,12 +2556,6 @@ func NewUtilFieldTypeFromString(s string) (UtilFieldType, error) {
 func (u UtilFieldType) Ptr() *UtilFieldType {
 	return &u
 }
-
-// Similar to a model configuration, this configures the enricher. For example, if you wanted to use Apollo to enrich people, you would send `{"object": "people"}` as the configuration. Each enricher configuration can be found in the connection configuration docs.
-type V2EnricherConfiguration = map[string]interface{}
-
-// A map of parent model Source Name to child model Source Name. For example, if your model has a field called `work_email` and the enricher accepts a field called `email`, you'd send a map of `{"work_email":"email"}`. The set of required input mappings varies based on the configuration of the enrichment. You can use the `enrichment/{connection_id}/inputfields` API to discover available input field combinations for a given configuration.
-type V2EnricherMapping = map[string]string
 
 type V2ExecutionLogType string
 
@@ -1941,6 +2622,41 @@ func (v *V4BulkSyncExecutionLogsEnvelope) String() string {
 	return fmt.Sprintf("%#v", v)
 }
 
+type V4BulkSyncScheduleApi struct {
+	DayOfMonth    *string            `json:"dayOfMonth,omitempty" url:"dayOfMonth,omitempty"`
+	DayOfWeek     *string            `json:"dayOfWeek,omitempty" url:"dayOfWeek,omitempty"`
+	Frequency     ScheduleFrequency  `json:"frequency,omitempty" url:"frequency,omitempty"`
+	Hour          *string            `json:"hour,omitempty" url:"hour,omitempty"`
+	Minute        *string            `json:"minute,omitempty" url:"minute,omitempty"`
+	Month         *string            `json:"month,omitempty" url:"month,omitempty"`
+	SelectiveMode *BulkSelectiveMode `json:"selectiveMode,omitempty" url:"selectiveMode,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V4BulkSyncScheduleApi) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4BulkSyncScheduleApi
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V4BulkSyncScheduleApi(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V4BulkSyncScheduleApi) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
 type V4ExportSyncLogsEnvelope struct {
 	Data *V4ExportSyncLogsResponse `json:"data,omitempty" url:"data,omitempty"`
 	Job  *JobResponse              `json:"job,omitempty" url:"job,omitempty"`
@@ -1989,6 +2705,133 @@ func (v *V4ExportSyncLogsResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (v *V4ExportSyncLogsResponse) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V4TargetCreator struct {
+	// The properties that are required for target creation.
+	Properties []*TargetCreateInput `json:"properties,omitempty" url:"properties,omitempty"`
+	// True if the connection supports target creation.
+	Supported *bool `json:"supported,omitempty" url:"supported,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V4TargetCreator) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4TargetCreator
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V4TargetCreator(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V4TargetCreator) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V4TargetObjectsResponseEnvelope struct {
+	Data           []*TargetObject  `json:"data,omitempty" url:"data,omitempty"`
+	TargetCreation *V4TargetCreator `json:"target_creation,omitempty" url:"target_creation,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V4TargetObjectsResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4TargetObjectsResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V4TargetObjectsResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V4TargetObjectsResponseEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V4TargetPropertyValues struct {
+	// True if the property is an enum.
+	Enum *bool `json:"enum,omitempty" url:"enum,omitempty"`
+	// The identifier of the target property.
+	Id *string `json:"id,omitempty" url:"id,omitempty"`
+	// A human readable title for the target property.
+	Title *string `json:"title,omitempty" url:"title,omitempty"`
+	// Valid values for the target property.
+	Values []*UtilEnumValue `json:"values,omitempty" url:"values,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V4TargetPropertyValues) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4TargetPropertyValues
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V4TargetPropertyValues(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V4TargetPropertyValues) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V4TargetPropertyValuesEnvelope struct {
+	Data *V4TargetPropertyValues `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V4TargetPropertyValuesEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4TargetPropertyValuesEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V4TargetPropertyValuesEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V4TargetPropertyValuesEnvelope) String() string {
 	if len(v._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value

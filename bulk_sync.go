@@ -10,20 +10,25 @@ import (
 )
 
 type CreateBulkSyncRequest struct {
-	Active                     *bool                  `json:"active,omitempty" url:"active,omitempty"`
-	AutomaticallyAddNewFields  *BulkDiscover          `json:"automatically_add_new_fields,omitempty" url:"automatically_add_new_fields,omitempty"`
-	AutomaticallyAddNewObjects *BulkDiscover          `json:"automatically_add_new_objects,omitempty" url:"automatically_add_new_objects,omitempty"`
-	DataCutoffTimestamp        *time.Time             `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
-	DestinationConfiguration   map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
-	DestinationConnectionId    string                 `json:"destination_connection_id" url:"destination_connection_id"`
-	DisableRecordTimestamps    *bool                  `json:"disable_record_timestamps,omitempty" url:"disable_record_timestamps,omitempty"`
+	Active                     *bool         `json:"active,omitempty" url:"active,omitempty"`
+	AutomaticallyAddNewFields  *BulkDiscover `json:"automatically_add_new_fields,omitempty" url:"automatically_add_new_fields,omitempty"`
+	AutomaticallyAddNewObjects *BulkDiscover `json:"automatically_add_new_objects,omitempty" url:"automatically_add_new_objects,omitempty"`
+	// Override the default concurrency limit for this sync.
+	ConcurrencyLimit         *int                   `json:"concurrency_limit,omitempty" url:"concurrency_limit,omitempty"`
+	DataCutoffTimestamp      *time.Time             `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
+	DestinationConfiguration map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
+	DestinationConnectionId  string                 `json:"destination_connection_id" url:"destination_connection_id"`
+	DisableRecordTimestamps  *bool                  `json:"disable_record_timestamps,omitempty" url:"disable_record_timestamps,omitempty"`
 	// DEPRECATED: Use automatically_add_new_objects/automatically_add_new_fields instead
-	Discover       *bool         `json:"discover,omitempty" url:"discover,omitempty"`
-	Mode           *SyncMode     `json:"mode,omitempty" url:"mode,omitempty"`
-	Name           string        `json:"name" url:"name"`
-	OrganizationId *string       `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies       []string      `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule       *BulkSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
+	Discover       *bool               `json:"discover,omitempty" url:"discover,omitempty"`
+	Mode           *BulkSyncMode       `json:"mode,omitempty" url:"mode,omitempty"`
+	Name           string              `json:"name" url:"name"`
+	NormalizeNames *BulkNormalizeNames `json:"normalize_names,omitempty" url:"normalize_names,omitempty"`
+	OrganizationId *string             `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies       []string            `json:"policies,omitempty" url:"policies,omitempty"`
+	// Override the default resync concurrency limit for this sync.
+	ResyncConcurrencyLimit *int          `json:"resync_concurrency_limit,omitempty" url:"resync_concurrency_limit,omitempty"`
+	Schedule               *BulkSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
 	// List of schemas to sync; if omitted, all schemas will be selected for syncing.
 	Schemas             []*V2CreateBulkSyncRequestSchemasItem `json:"schemas,omitempty" url:"schemas,omitempty"`
 	SourceConfiguration map[string]interface{}                `json:"source_configuration,omitempty" url:"source_configuration,omitempty"`
@@ -76,20 +81,25 @@ type StartBulkSyncRequest struct {
 }
 
 type UpdateBulkSyncRequest struct {
-	Active                     *bool                  `json:"active,omitempty" url:"active,omitempty"`
-	AutomaticallyAddNewFields  *BulkDiscover          `json:"automatically_add_new_fields,omitempty" url:"automatically_add_new_fields,omitempty"`
-	AutomaticallyAddNewObjects *BulkDiscover          `json:"automatically_add_new_objects,omitempty" url:"automatically_add_new_objects,omitempty"`
-	DataCutoffTimestamp        *time.Time             `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
-	DestinationConfiguration   map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
-	DestinationConnectionId    string                 `json:"destination_connection_id" url:"destination_connection_id"`
-	DisableRecordTimestamps    *bool                  `json:"disable_record_timestamps,omitempty" url:"disable_record_timestamps,omitempty"`
+	Active                     *bool         `json:"active,omitempty" url:"active,omitempty"`
+	AutomaticallyAddNewFields  *BulkDiscover `json:"automatically_add_new_fields,omitempty" url:"automatically_add_new_fields,omitempty"`
+	AutomaticallyAddNewObjects *BulkDiscover `json:"automatically_add_new_objects,omitempty" url:"automatically_add_new_objects,omitempty"`
+	// Override the default concurrency limit for this sync.
+	ConcurrencyLimit         *int                   `json:"concurrency_limit,omitempty" url:"concurrency_limit,omitempty"`
+	DataCutoffTimestamp      *time.Time             `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
+	DestinationConfiguration map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
+	DestinationConnectionId  string                 `json:"destination_connection_id" url:"destination_connection_id"`
+	DisableRecordTimestamps  *bool                  `json:"disable_record_timestamps,omitempty" url:"disable_record_timestamps,omitempty"`
 	// DEPRECATED: Use automatically_add_new_objects/automatically_add_new_fields instead
-	Discover       *bool         `json:"discover,omitempty" url:"discover,omitempty"`
-	Mode           *SyncMode     `json:"mode,omitempty" url:"mode,omitempty"`
-	Name           string        `json:"name" url:"name"`
-	OrganizationId *string       `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies       []string      `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule       *BulkSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
+	Discover       *bool               `json:"discover,omitempty" url:"discover,omitempty"`
+	Mode           *BulkSyncMode       `json:"mode,omitempty" url:"mode,omitempty"`
+	Name           string              `json:"name" url:"name"`
+	NormalizeNames *BulkNormalizeNames `json:"normalize_names,omitempty" url:"normalize_names,omitempty"`
+	OrganizationId *string             `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies       []string            `json:"policies,omitempty" url:"policies,omitempty"`
+	// Override the default resync concurrency limit for this sync.
+	ResyncConcurrencyLimit *int          `json:"resync_concurrency_limit,omitempty" url:"resync_concurrency_limit,omitempty"`
+	Schedule               *BulkSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
 	// List of schemas to sync; if omitted, all schemas will be selected for syncing.
 	Schemas             []*V2UpdateBulkSyncRequestSchemasItem `json:"schemas,omitempty" url:"schemas,omitempty"`
 	SourceConfiguration map[string]interface{}                `json:"source_configuration,omitempty" url:"source_configuration,omitempty"`
@@ -206,6 +216,31 @@ func (b *BulkMultiScheduleConfiguration) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+type BulkNormalizeNames string
+
+const (
+	BulkNormalizeNamesEnabled  BulkNormalizeNames = "enabled"
+	BulkNormalizeNamesDisabled BulkNormalizeNames = "disabled"
+	BulkNormalizeNamesLegacy   BulkNormalizeNames = "legacy"
+)
+
+func NewBulkNormalizeNamesFromString(s string) (BulkNormalizeNames, error) {
+	switch s {
+	case "enabled":
+		return BulkNormalizeNamesEnabled, nil
+	case "disabled":
+		return BulkNormalizeNamesDisabled, nil
+	case "legacy":
+		return BulkNormalizeNamesLegacy, nil
+	}
+	var t BulkNormalizeNames
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BulkNormalizeNames) Ptr() *BulkNormalizeNames {
+	return &b
+}
+
 type BulkSchedule struct {
 	DayOfMonth *string                         `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
 	DayOfWeek  *string                         `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
@@ -239,31 +274,6 @@ func (b *BulkSchedule) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
-}
-
-type BulkSelectiveMode string
-
-const (
-	BulkSelectiveModeNone                 BulkSelectiveMode = "none"
-	BulkSelectiveModeIncrementalFields    BulkSelectiveMode = "incrementalFields"
-	BulkSelectiveModeNonincrementalFields BulkSelectiveMode = "nonincrementalFields"
-)
-
-func NewBulkSelectiveModeFromString(s string) (BulkSelectiveMode, error) {
-	switch s {
-	case "none":
-		return BulkSelectiveModeNone, nil
-	case "incrementalFields":
-		return BulkSelectiveModeIncrementalFields, nil
-	case "nonincrementalFields":
-		return BulkSelectiveModeNonincrementalFields, nil
-	}
-	var t BulkSelectiveMode
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (b BulkSelectiveMode) Ptr() *BulkSelectiveMode {
-	return &b
 }
 
 type BulkSyncDest struct {
@@ -354,28 +364,59 @@ func (b *BulkSyncListEnvelope) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+type BulkSyncMode string
+
+const (
+	BulkSyncModeSnapshot  BulkSyncMode = "snapshot"
+	BulkSyncModeReplicate BulkSyncMode = "replicate"
+)
+
+func NewBulkSyncModeFromString(s string) (BulkSyncMode, error) {
+	switch s {
+	case "snapshot":
+		return BulkSyncModeSnapshot, nil
+	case "replicate":
+		return BulkSyncModeReplicate, nil
+	}
+	var t BulkSyncMode
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BulkSyncMode) Ptr() *BulkSyncMode {
+	return &b
+}
+
 type BulkSyncResponse struct {
 	Active                     *bool         `json:"active,omitempty" url:"active,omitempty"`
 	AutomaticallyAddNewFields  *BulkDiscover `json:"automatically_add_new_fields,omitempty" url:"automatically_add_new_fields,omitempty"`
 	AutomaticallyAddNewObjects *BulkDiscover `json:"automatically_add_new_objects,omitempty" url:"automatically_add_new_objects,omitempty"`
-	DataCutoffTimestamp        *time.Time    `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
+	// Per-sync concurrency limit override.
+	ConcurrencyLimit    *int               `json:"concurrency_limit,omitempty" url:"concurrency_limit,omitempty"`
+	CreatedAt           *time.Time         `json:"created_at,omitempty" url:"created_at,omitempty"`
+	CreatedBy           *CommonOutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
+	DataCutoffTimestamp *time.Time         `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
 	// Destination-specific bulk sync configuration. e.g. output schema name, s3 file format, etc.
 	DestinationConfiguration map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
 	DestinationConnectionId  *string                `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
 	DisableRecordTimestamps  *bool                  `json:"disable_record_timestamps,omitempty" url:"disable_record_timestamps,omitempty"`
 	// DEPRECATED: Use automatically_add_new_objects/automatically_add_new_fields instead
-	Discover *bool   `json:"discover,omitempty" url:"discover,omitempty"`
-	Id       *string `json:"id,omitempty" url:"id,omitempty"`
-	Mode     *string `json:"mode,omitempty" url:"mode,omitempty"`
+	Discover *bool         `json:"discover,omitempty" url:"discover,omitempty"`
+	Id       *string       `json:"id,omitempty" url:"id,omitempty"`
+	Mode     *BulkSyncMode `json:"mode,omitempty" url:"mode,omitempty"`
 	// Name of the bulk sync
-	Name           *string `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Name           *string             `json:"name,omitempty" url:"name,omitempty"`
+	NormalizeNames *BulkNormalizeNames `json:"normalize_names,omitempty" url:"normalize_names,omitempty"`
+	OrganizationId *string             `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// List of permissions policies applied to the bulk sync.
-	Policies []string      `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule *BulkSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
+	Policies []string `json:"policies,omitempty" url:"policies,omitempty"`
+	// Per-sync resync concurrency limit override.
+	ResyncConcurrencyLimit *int          `json:"resync_concurrency_limit,omitempty" url:"resync_concurrency_limit,omitempty"`
+	Schedule               *BulkSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
 	// Source-specific bulk sync configuration. e.g. replication slot name, sync lookback, etc.
 	SourceConfiguration map[string]interface{} `json:"source_configuration,omitempty" url:"source_configuration,omitempty"`
 	SourceConnectionId  *string                `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	UpdatedAt           *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	UpdatedBy           *CommonOutputActor     `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -384,7 +425,9 @@ func (b *BulkSyncResponse) UnmarshalJSON(data []byte) error {
 	type embed BulkSyncResponse
 	var unmarshaler = struct {
 		embed
+		CreatedAt           *core.DateTime `json:"created_at,omitempty"`
 		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
+		UpdatedAt           *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed: embed(*b),
 	}
@@ -392,7 +435,9 @@ func (b *BulkSyncResponse) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*b = BulkSyncResponse(unmarshaler.embed)
+	b.CreatedAt = unmarshaler.CreatedAt.TimePtr()
 	b.DataCutoffTimestamp = unmarshaler.DataCutoffTimestamp.TimePtr()
+	b.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 	b._rawJSON = json.RawMessage(data)
 	return nil
 }
@@ -401,10 +446,14 @@ func (b *BulkSyncResponse) MarshalJSON() ([]byte, error) {
 	type embed BulkSyncResponse
 	var marshaler = struct {
 		embed
+		CreatedAt           *core.DateTime `json:"created_at,omitempty"`
 		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
+		UpdatedAt           *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed:               embed(*b),
+		CreatedAt:           core.NewOptionalDateTime(b.CreatedAt),
 		DataCutoffTimestamp: core.NewOptionalDateTime(b.DataCutoffTimestamp),
+		UpdatedAt:           core.NewOptionalDateTime(b.UpdatedAt),
 	}
 	return json.Marshal(marshaler)
 }
@@ -677,12 +726,12 @@ func (s *SchemaConfiguration) String() string {
 }
 
 type SupportedBulkMode struct {
-	Description           *string   `json:"description,omitempty" url:"description,omitempty"`
-	Id                    *SyncMode `json:"id,omitempty" url:"id,omitempty"`
-	Label                 *string   `json:"label,omitempty" url:"label,omitempty"`
-	RequiresIdentity      *bool     `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
-	SupportsFieldSyncMode *bool     `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
-	SupportsTargetFilters *bool     `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
+	Description           *string       `json:"description,omitempty" url:"description,omitempty"`
+	Id                    *BulkSyncMode `json:"id,omitempty" url:"id,omitempty"`
+	Label                 *string       `json:"label,omitempty" url:"label,omitempty"`
+	RequiresIdentity      *bool         `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
+	SupportsFieldSyncMode *bool         `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
+	SupportsTargetFilters *bool         `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
 
 	_rawJSON json.RawMessage
 }

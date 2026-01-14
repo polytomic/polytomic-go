@@ -34,6 +34,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 	}
 }
 
+// Returns information about the caller's identity.
 func (c *Client) Get(
 	ctx context.Context,
 	opts ...option.RequestOption,

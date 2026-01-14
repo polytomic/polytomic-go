@@ -29,9 +29,9 @@ type Client struct {
 	BulkSync     *bulksyncclient.Client
 	Connections  *connections.Client
 	QueryRunner  *queryrunner.Client
+	Schemas      *schemas.Client
 	Models       *models.Client
 	ModelSync    *modelsyncclient.Client
-	Schemas      *schemas.Client
 	Events       *events.Client
 	Jobs         *jobs.Client
 	Identity     *identity.Client
@@ -55,9 +55,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 		BulkSync:     bulksyncclient.NewClient(opts...),
 		Connections:  connections.NewClient(opts...),
 		QueryRunner:  queryrunner.NewClient(opts...),
+		Schemas:      schemas.NewClient(opts...),
 		Models:       models.NewClient(opts...),
 		ModelSync:    modelsyncclient.NewClient(opts...),
-		Schemas:      schemas.NewClient(opts...),
 		Events:       events.NewClient(opts...),
 		Jobs:         jobs.NewClient(opts...),
 		Identity:     identity.NewClient(opts...),

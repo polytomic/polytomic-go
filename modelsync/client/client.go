@@ -11,6 +11,7 @@ import (
 	polytomicgo "github.com/polytomic/polytomic-go"
 	core "github.com/polytomic/polytomic-go/core"
 	executions "github.com/polytomic/polytomic-go/modelsync/executions"
+	targets "github.com/polytomic/polytomic-go/modelsync/targets"
 	option "github.com/polytomic/polytomic-go/option"
 	io "io"
 	http "net/http"
@@ -21,6 +22,7 @@ type Client struct {
 	caller  *core.Caller
 	header  http.Header
 
+	Targets    *targets.Client
 	Executions *executions.Client
 }
 
@@ -35,6 +37,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 			},
 		),
 		header:     options.ToHeader(),
+		Targets:    targets.NewClient(opts...),
 		Executions: executions.NewClient(opts...),
 	}
 }
@@ -223,266 +226,6 @@ func (c *Client) GetSourceFields(
 	return response, nil
 }
 
-func (c *Client) GetTarget(
-	ctx context.Context,
-	id string,
-	request *polytomicgo.ModelSyncGetTargetRequest,
-	opts ...option.RequestOption,
-) (*polytomicgo.GetConnectionMetaEnvelope, error) {
-	options := core.NewRequestOptions(opts...)
-
-	baseURL := "https://app.polytomic.com"
-	if c.baseURL != "" {
-		baseURL = c.baseURL
-	}
-	if options.BaseURL != "" {
-		baseURL = options.BaseURL
-	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/modelsync/target", id)
-
-	queryParams, err := core.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
-
-	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
-
-	errorDecoder := func(statusCode int, body io.Reader) error {
-		raw, err := io.ReadAll(body)
-		if err != nil {
-			return err
-		}
-		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
-		decoder := json.NewDecoder(bytes.NewReader(raw))
-		switch statusCode {
-		case 400:
-			value := new(polytomicgo.BadRequestError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		case 401:
-			value := new(polytomicgo.UnauthorizedError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		case 403:
-			value := new(polytomicgo.ForbiddenError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		case 404:
-			value := new(polytomicgo.NotFoundError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		case 500:
-			value := new(polytomicgo.InternalServerError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		}
-		return apiError
-	}
-
-	var response *polytomicgo.GetConnectionMetaEnvelope
-	if err := c.caller.Call(
-		ctx,
-		&core.CallParams{
-			URL:          endpointURL,
-			Method:       http.MethodGet,
-			MaxAttempts:  options.MaxAttempts,
-			Headers:      headers,
-			Client:       options.HTTPClient,
-			Response:     &response,
-			ErrorDecoder: errorDecoder,
-		},
-	); err != nil {
-		return nil, err
-	}
-	return response, nil
-}
-
-func (c *Client) GetTargetFields(
-	ctx context.Context,
-	id string,
-	request *polytomicgo.ModelSyncGetTargetFieldsRequest,
-	opts ...option.RequestOption,
-) (*polytomicgo.TargetResponseEnvelope, error) {
-	options := core.NewRequestOptions(opts...)
-
-	baseURL := "https://app.polytomic.com"
-	if c.baseURL != "" {
-		baseURL = c.baseURL
-	}
-	if options.BaseURL != "" {
-		baseURL = options.BaseURL
-	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/modelsync/target/fields", id)
-
-	queryParams, err := core.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
-
-	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
-
-	errorDecoder := func(statusCode int, body io.Reader) error {
-		raw, err := io.ReadAll(body)
-		if err != nil {
-			return err
-		}
-		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
-		decoder := json.NewDecoder(bytes.NewReader(raw))
-		switch statusCode {
-		case 401:
-			value := new(polytomicgo.UnauthorizedError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		case 403:
-			value := new(polytomicgo.ForbiddenError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		case 404:
-			value := new(polytomicgo.NotFoundError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		case 500:
-			value := new(polytomicgo.InternalServerError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		}
-		return apiError
-	}
-
-	var response *polytomicgo.TargetResponseEnvelope
-	if err := c.caller.Call(
-		ctx,
-		&core.CallParams{
-			URL:          endpointURL,
-			Method:       http.MethodGet,
-			MaxAttempts:  options.MaxAttempts,
-			Headers:      headers,
-			Client:       options.HTTPClient,
-			Response:     &response,
-			ErrorDecoder: errorDecoder,
-		},
-	); err != nil {
-		return nil, err
-	}
-	return response, nil
-}
-
-func (c *Client) GetTargetObjects(
-	ctx context.Context,
-	id string,
-	opts ...option.RequestOption,
-) (*polytomicgo.V4TargetObjectsResponseEnvelope, error) {
-	options := core.NewRequestOptions(opts...)
-
-	baseURL := "https://app.polytomic.com"
-	if c.baseURL != "" {
-		baseURL = c.baseURL
-	}
-	if options.BaseURL != "" {
-		baseURL = options.BaseURL
-	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/modelsync/targetobjects", id)
-
-	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
-
-	errorDecoder := func(statusCode int, body io.Reader) error {
-		raw, err := io.ReadAll(body)
-		if err != nil {
-			return err
-		}
-		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
-		decoder := json.NewDecoder(bytes.NewReader(raw))
-		switch statusCode {
-		case 400:
-			value := new(polytomicgo.BadRequestError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		case 401:
-			value := new(polytomicgo.UnauthorizedError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		case 403:
-			value := new(polytomicgo.ForbiddenError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		case 404:
-			value := new(polytomicgo.NotFoundError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		case 500:
-			value := new(polytomicgo.InternalServerError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		}
-		return apiError
-	}
-
-	var response *polytomicgo.V4TargetObjectsResponseEnvelope
-	if err := c.caller.Call(
-		ctx,
-		&core.CallParams{
-			URL:          endpointURL,
-			Method:       http.MethodGet,
-			MaxAttempts:  options.MaxAttempts,
-			Headers:      headers,
-			Client:       options.HTTPClient,
-			Response:     &response,
-			ErrorDecoder: errorDecoder,
-		},
-	); err != nil {
-		return nil, err
-	}
-	return response, nil
-}
-
 func (c *Client) List(
 	ctx context.Context,
 	request *polytomicgo.ModelSyncListRequest,
@@ -567,6 +310,66 @@ func (c *Client) List(
 	return response, nil
 }
 
+// Create a new sync from one or more models to a destination.
+//
+// All of the functionality described in [the product
+// documentation](https://docs.polytomic.com/docs/sync-destinations) is
+// configurable via the API.
+//
+// Guides:
+//
+// - [Model sync (Reverse ETL) from Snowflake query to Salesforce](https://apidocs.polytomic.com/2024-02-08/guides/code-examples/model-sync-reverse-etl-from-snowflake-query-to-salesforce)
+// - [Joined model sync from Postgres, Airtable, and Stripe to Hubspot](https://apidocs.polytomic.com/2024-02-08/guides/code-examples/joined-model-sync-from-postgres-airtable-and-stripe-to-hubspot)
+//
+// ## Targets (Destinations)
+//
+// Polytomic refers to a model sync's destination as the "target object", or
+// target. Target objects are identified by a connection ID and an object ID. You
+// can retrieve a list of all target objects for a connection using the [Get Target
+// Objects](./targets/list) endpoint.
+//
+// The `target` object in the request specifies information about the sync destination.
+//
+// ```json
+//
+//	"target": {
+//	    "connection_id": "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "object": "Users",
+//	},
+//
+// ```
+//
+// Some connections support additional configuration for targets. For example,
+// [Salesforce
+// connections](https://apidocs.polytomic.com/2024-02-08/guides/configuring-your-connections/connections/salesforce#target)
+// support optionally specifying the ingestion API to use. The target specific
+// options are passed as `configuration`; consult the [integration
+// guides](https://apidocs.polytomic.com/2024-02-08/guides/configuring-your-connections/overview)
+// for details about specific connection configurations.
+//
+// ### Creating a new target
+//
+// Some integrations support creating a new target when creating a model sync. For
+// example, an ad audience or database table.
+//
+// When creating a new target, `object` is omitted and `create` is specified
+// instead. The `create` property is an object containing integration specific
+// configuration for the new target.
+//
+// ```json
+//
+//	"target": {
+//	    "connection_id": "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "create": {
+//	        "name": "New audience",
+//	        "type": "user_audience"
+//	    }
+//	},
+//
+// ```
+//
+// The [Get Target List](./targets/list) endpoint returns information about whether
+// a connection supports target creation.
 func (c *Client) Create(
 	ctx context.Context,
 	request *polytomicgo.CreateModelSyncRequest,

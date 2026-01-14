@@ -23,6 +23,7 @@ type UpdateWebhooksSchema struct {
 
 type Webhook struct {
 	CreatedAt      *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
+	Disabled       *bool      `json:"disabled,omitempty" url:"disabled,omitempty"`
 	Endpoint       *string    `json:"endpoint,omitempty" url:"endpoint,omitempty"`
 	Id             *string    `json:"id,omitempty" url:"id,omitempty"`
 	OrganizationId *string    `json:"organization_id,omitempty" url:"organization_id,omitempty"`

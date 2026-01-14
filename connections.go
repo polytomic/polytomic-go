@@ -6,22 +6,32 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	core "github.com/polytomic/polytomic-go/core"
+	time "time"
 )
 
 type ConnectCardRequest struct {
-	Connection     *string  `json:"connection,omitempty" url:"connection,omitempty"`
-	Name           string   `json:"name" url:"name"`
-	OrganizationId *string  `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	RedirectUrl    string   `json:"redirect_url" url:"redirect_url"`
-	Type           *string  `json:"type,omitempty" url:"type,omitempty"`
-	Whitelist      []string `json:"whitelist,omitempty" url:"whitelist,omitempty"`
+	// The id of an existing connection to update.
+	Connection *string `json:"connection,omitempty" url:"connection,omitempty"`
+	// Whether to use the dark theme for the Connect modal.
+	Dark *bool `json:"dark,omitempty" url:"dark,omitempty"`
+	// Name of the new connection. Must be unique per organization.
+	Name           string  `json:"name" url:"name"`
+	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// URL to redirect to after connection is created.
+	RedirectUrl string `json:"redirect_url" url:"redirect_url"`
+	// Connection type to create.
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
+	// List of connection types which are allowed to be created. Ignored if type is set.
+	Whitelist []string `json:"whitelist,omitempty" url:"whitelist,omitempty"`
 }
 
 type CreateConnectionRequestSchema struct {
-	Configuration  map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Name           string                 `json:"name" url:"name"`
-	OrganizationId *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies       []string               `json:"policies,omitempty" url:"policies,omitempty"`
+	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
+	// Override interval for connection health checking.
+	HealthcheckInterval *string  `json:"healthcheck_interval,omitempty" url:"healthcheck_interval,omitempty"`
+	Name                string   `json:"name" url:"name"`
+	OrganizationId      *string  `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies            []string `json:"policies,omitempty" url:"policies,omitempty"`
 	// URL to redirect to after completing OAuth flow.
 	RedirectUrl *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
 	Type        string  `json:"type" url:"type"`
@@ -33,18 +43,61 @@ type ConnectionsRemoveRequest struct {
 	Force *bool `json:"-" url:"force,omitempty"`
 }
 
+type TestConnectionRequest struct {
+	// Connection configuration to test.
+	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
+	// Optional existing connection ID to use as a base for testing. The provided configuration will be merged over the stored configuration for this connection before testing.
+	ConnectionId *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	// The type of connection to test.
+	Type string `json:"type" url:"type"`
+}
+
 type UpdateConnectionRequestSchema struct {
-	Configuration  map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Name           string                 `json:"name" url:"name"`
-	OrganizationId *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies       []string               `json:"policies,omitempty" url:"policies,omitempty"`
-	Reconnect      *bool                  `json:"reconnect,omitempty" url:"reconnect,omitempty"`
-	Type           *string                `json:"type,omitempty" url:"type,omitempty"`
+	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
+	// Override interval for connection health checking.
+	HealthcheckInterval *string  `json:"healthcheck_interval,omitempty" url:"healthcheck_interval,omitempty"`
+	Name                string   `json:"name" url:"name"`
+	OrganizationId      *string  `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies            []string `json:"policies,omitempty" url:"policies,omitempty"`
+	Reconnect           *bool    `json:"reconnect,omitempty" url:"reconnect,omitempty"`
+	Type                *string  `json:"type,omitempty" url:"type,omitempty"`
 	// Validate connection configuration.
 	Validate *bool `json:"validate,omitempty" url:"validate,omitempty"`
 }
 
+type BackendOAuthPrompt struct {
+	Key   *string `json:"key,omitempty" url:"key,omitempty"`
+	Value *string `json:"value,omitempty" url:"value,omitempty"`
+	When  *string `json:"when,omitempty" url:"when,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BackendOAuthPrompt) UnmarshalJSON(data []byte) error {
+	type unmarshaler BackendOAuthPrompt
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BackendOAuthPrompt(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BackendOAuthPrompt) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 type ConnectCardResponse struct {
+	// URL to redirect the user to in order to create the new connection.
 	RedirectUrl *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
 	Token       *string `json:"token,omitempty" url:"token,omitempty"`
 
@@ -254,26 +307,53 @@ type ConnectionResponseSchema struct {
 	// API calls made to service in the last 24h (supported integrations only).
 	ApiCallsLast24Hours *int                   `json:"api_calls_last_24_hours,omitempty" url:"api_calls_last_24_hours,omitempty"`
 	Configuration       map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
+	CreatedAt           *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
+	CreatedBy           *CommonOutputActor     `json:"created_by,omitempty" url:"created_by,omitempty"`
 	Id                  *string                `json:"id,omitempty" url:"id,omitempty"`
 	Name                *string                `json:"name,omitempty" url:"name,omitempty"`
 	OrganizationId      *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Policies            []string               `json:"policies,omitempty" url:"policies,omitempty"`
+	Saved               *bool                  `json:"saved,omitempty" url:"saved,omitempty"`
 	Status              *string                `json:"status,omitempty" url:"status,omitempty"`
 	StatusError         *string                `json:"status_error,omitempty" url:"status_error,omitempty"`
 	Type                *ConnectionTypeSchema  `json:"type,omitempty" url:"type,omitempty"`
+	UpdatedAt           *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	UpdatedBy           *CommonOutputActor     `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
 func (c *ConnectionResponseSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionResponseSchema
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed ConnectionResponseSchema
+	var unmarshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*c = ConnectionResponseSchema(value)
+	*c = ConnectionResponseSchema(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	c.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 	c._rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (c *ConnectionResponseSchema) MarshalJSON() ([]byte, error) {
+	type embed ConnectionResponseSchema
+	var marshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:     embed(*c),
+		CreatedAt: core.NewOptionalDateTime(c.CreatedAt),
+		UpdatedAt: core.NewOptionalDateTime(c.UpdatedAt),
+	}
+	return json.Marshal(marshaler)
 }
 
 func (c *ConnectionResponseSchema) String() string {
@@ -289,10 +369,14 @@ func (c *ConnectionResponseSchema) String() string {
 }
 
 type ConnectionType struct {
-	EnvConfig map[string]interface{} `json:"envConfig,omitempty" url:"envConfig,omitempty"`
-	Id        *string                `json:"id,omitempty" url:"id,omitempty"`
-	Name      *string                `json:"name,omitempty" url:"name,omitempty"`
-	UseOauth  *bool                  `json:"use_oauth,omitempty" url:"use_oauth,omitempty"`
+	ConfigurationForm    *V2ConnectionForm      `json:"configurationForm,omitempty" url:"configurationForm,omitempty"`
+	EnvConfig            map[string]interface{} `json:"envConfig,omitempty" url:"envConfig,omitempty"`
+	Id                   *string                `json:"id,omitempty" url:"id,omitempty"`
+	InitialConfiguration map[string]interface{} `json:"initialConfiguration,omitempty" url:"initialConfiguration,omitempty"`
+	LogoUrl              *string                `json:"logo_url,omitempty" url:"logo_url,omitempty"`
+	Name                 *string                `json:"name,omitempty" url:"name,omitempty"`
+	OauthPrompt          *BackendOAuthPrompt    `json:"oauth_prompt,omitempty" url:"oauth_prompt,omitempty"`
+	UseOauth             *bool                  `json:"use_oauth,omitempty" url:"use_oauth,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -351,6 +435,7 @@ func (c *ConnectionTypeResponseEnvelope) String() string {
 
 type ConnectionTypeSchema struct {
 	Id         *string  `json:"id,omitempty" url:"id,omitempty"`
+	LogoUrl    *string  `json:"logo_url,omitempty" url:"logo_url,omitempty"`
 	Name       *string  `json:"name,omitempty" url:"name,omitempty"`
 	Operations []string `json:"operations,omitempty" url:"operations,omitempty"`
 
@@ -413,15 +498,18 @@ type CreateConnectionResponseSchema struct {
 	// Code to enter in order to complete connection authentication.
 	AuthCode *string `json:"auth_code,omitempty" url:"auth_code,omitempty"`
 	// URL to visit to complete connection authentication.
-	AuthUrl        *string                `json:"auth_url,omitempty" url:"auth_url,omitempty"`
-	Configuration  map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Id             *string                `json:"id,omitempty" url:"id,omitempty"`
-	Name           *string                `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies       []string               `json:"policies,omitempty" url:"policies,omitempty"`
-	Status         *string                `json:"status,omitempty" url:"status,omitempty"`
-	StatusError    *string                `json:"status_error,omitempty" url:"status_error,omitempty"`
-	Type           *ConnectionTypeSchema  `json:"type,omitempty" url:"type,omitempty"`
+	AuthUrl       *string                `json:"auth_url,omitempty" url:"auth_url,omitempty"`
+	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
+	// Interval for connection health checking.
+	HealthcheckInterval *string               `json:"healthcheck_interval,omitempty" url:"healthcheck_interval,omitempty"`
+	Id                  *string               `json:"id,omitempty" url:"id,omitempty"`
+	Name                *string               `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId      *string               `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies            []string              `json:"policies,omitempty" url:"policies,omitempty"`
+	Saved               *bool                 `json:"saved,omitempty" url:"saved,omitempty"`
+	Status              *string               `json:"status,omitempty" url:"status,omitempty"`
+	StatusError         *string               `json:"status_error,omitempty" url:"status_error,omitempty"`
+	Type                *ConnectionTypeSchema `json:"type,omitempty" url:"type,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -530,6 +618,36 @@ func (j *JsonschemaSchema) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", j)
+}
+
+type V2ConnectionForm struct {
+	Jsonschema interface{} `json:"jsonschema,omitempty" url:"jsonschema,omitempty"`
+	Uischema   interface{} `json:"uischema,omitempty" url:"uischema,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ConnectionForm) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionForm
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionForm(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionForm) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
 }
 
 type V2OrderedMapStringGithubComInvopopJsonschemaSchema = map[string]interface{}

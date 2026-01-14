@@ -10,6 +10,7 @@ import (
 	fmt "fmt"
 	polytomicgo "github.com/polytomic/polytomic-go"
 	executions "github.com/polytomic/polytomic-go/bulksync/executions"
+	schedules "github.com/polytomic/polytomic-go/bulksync/schedules"
 	schemas "github.com/polytomic/polytomic-go/bulksync/schemas"
 	core "github.com/polytomic/polytomic-go/core"
 	option "github.com/polytomic/polytomic-go/option"
@@ -24,6 +25,7 @@ type Client struct {
 
 	Executions *executions.Client
 	Schemas    *schemas.Client
+	Schedules  *schedules.Client
 }
 
 func NewClient(opts ...option.RequestOption) *Client {
@@ -39,6 +41,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		header:     options.ToHeader(),
 		Executions: executions.NewClient(opts...),
 		Schemas:    schemas.NewClient(opts...),
+		Schedules:  schedules.NewClient(opts...),
 	}
 }
 
@@ -112,6 +115,32 @@ func (c *Client) List(
 	return response, nil
 }
 
+// Create a new Bulk Sync from a source to a destination (data warehouse, database, or cloud storage bucket like S3).
+//
+// Bulk Syncs are used for the ELT pattern (Extract, Load, and Transform), where you want to sync un-transformed data to your data warehouses, databases, or cloud storage buckets like S3.
+//
+// All of the functionality described in [the product
+// documentation](https://docs.polytomic.com/docs/bulk-syncs) is configurable via
+// the API.
+//
+// Sample code examples:
+//
+// - [Bulk sync (ELT) from Salesforce to S3](https://apidocs.polytomic.com/guides/code-examples/bulk-sync-elt-from-salesforce-to-s-3)
+// - [Bulk sync (ELT) from Salesforce to Snowflake](https://apidocs.polytomic.com/guides/code-examples/bulk-sync-elt-from-salesforce-to-snowflake)
+// - [Bulk sync (ELT) from HubSpot to PostgreSQL](https://apidocs.polytomic.com/guides/code-examples/bulk-sync-elt-from-hub-spot-to-postgre-sql)
+//
+// ## Connection specific configuration
+//
+// The `destination_configuration` is integration-specific configuration for the
+// selected bulk sync destination. This includes settings such as the output schema
+// and is required when creating a new sync.
+//
+// The `source_configuration` is optional. It allows configuration for how
+// Polytomic reads data from the source connection. This will not be available for
+// integrations that do not support additional configuration.
+//
+// Consult the [connection configurations](https://apidocs.polytomic.com/2024-02-08/guides/configuring-your-connections/overview)
+// to see configurations for particular integrations (for example, [here](https://apidocs.polytomic.com/2024-02-08/guides/configuring-your-connections/connections/postgre-sql#source-1) is the available source configuration for the PostgreSQL bulk sync source).
 func (c *Client) Create(
 	ctx context.Context,
 	request *polytomicgo.CreateBulkSyncRequest,

@@ -9,6 +9,10 @@ import (
 	time "time"
 )
 
+type UpsertSchemaFieldRequest struct {
+	Fields []*V4UserFieldRequest `json:"fields,omitempty" url:"fields,omitempty"`
+}
+
 type BulkSyncSourceSchemaEnvelope struct {
 	Data *Schema `json:"data,omitempty" url:"data,omitempty"`
 
@@ -147,4 +151,37 @@ func (s *SchemaRecordsResponseEnvelope) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
+}
+
+type V4UserFieldRequest struct {
+	Example interface{} `json:"example,omitempty" url:"example,omitempty"`
+	FieldId string      `json:"field_id" url:"field_id"`
+	Label   string      `json:"label" url:"label"`
+	Path    *string     `json:"path,omitempty" url:"path,omitempty"`
+	Type    string      `json:"type" url:"type"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V4UserFieldRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4UserFieldRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V4UserFieldRequest(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V4UserFieldRequest) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
 }

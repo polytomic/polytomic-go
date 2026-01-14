@@ -39,7 +39,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 // webhook may be created per organization. The webhook will be called for events
 // in that organization.
 //
-// Consult the [Events documentation](https://apidocs.polytomic.com/getting-started/events) for more information.
+// Consult the [Events documentation](https://apidocs.polytomic.com/guides/events) for more information.
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -105,7 +105,7 @@ func (c *Client) List(
 // webhook may be created per organization. The webhook will be called for events
 // in that organization.
 //
-// Consult the [Events documentation](https://apidocs.polytomic.com/getting-started/events) for more information.
+// Consult the [Events documentation](https://apidocs.polytomic.com/guides/events) for more information.
 func (c *Client) Create(
 	ctx context.Context,
 	request *polytomicgo.CreateWebhooksSchema,
@@ -180,7 +180,7 @@ func (c *Client) Create(
 // webhook may be created per organization. The webhook will be called for events
 // in that organization.
 //
-// Consult the [Events documentation](https://apidocs.polytomic.com/getting-started/events) for more information.
+// Consult the [Events documentation](https://apidocs.polytomic.com/guides/events) for more information.
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
@@ -247,7 +247,7 @@ func (c *Client) Get(
 // webhook may be created per organization. The webhook will be called for events
 // in that organization.
 //
-// Consult the [Events documentation](https://apidocs.polytomic.com/getting-started/events) for more information.
+// Consult the [Events documentation](https://apidocs.polytomic.com/guides/events) for more information.
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
@@ -384,4 +384,142 @@ func (c *Client) Remove(
 		return err
 	}
 	return nil
+}
+
+func (c *Client) Disable(
+	ctx context.Context,
+	id string,
+	opts ...option.RequestOption,
+) (*polytomicgo.WebhookEnvelope, error) {
+	options := core.NewRequestOptions(opts...)
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/webhooks/%v/disable", id)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *polytomicgo.WebhookEnvelope
+	if err := c.caller.Call(
+		ctx,
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodPost,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
+		},
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+func (c *Client) Enable(
+	ctx context.Context,
+	id string,
+	opts ...option.RequestOption,
+) (*polytomicgo.WebhookEnvelope, error) {
+	options := core.NewRequestOptions(opts...)
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/webhooks/%v/enable", id)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *polytomicgo.WebhookEnvelope
+	if err := c.caller.Call(
+		ctx,
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodPost,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
+		},
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
 }

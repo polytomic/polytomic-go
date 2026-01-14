@@ -7,6 +7,13 @@ type ExecutionsExportLogsRequest struct {
 	Notify *bool `json:"-" url:"notify,omitempty"`
 }
 
+type ExecutionsListRequest struct {
+	PageToken    *string `json:"-" url:"page_token,omitempty"`
+	OnlyTerminal *bool   `json:"-" url:"only_terminal,omitempty"`
+	Ascending    *bool   `json:"-" url:"ascending,omitempty"`
+	Limit        *int    `json:"-" url:"limit,omitempty"`
+}
+
 type ExecutionsListStatusRequest struct {
 	// Return the execution status of all syncs in the organization
 	All *bool `json:"-" url:"all,omitempty"`

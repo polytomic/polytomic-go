@@ -10,24 +10,34 @@ import (
 )
 
 type CreateModelSyncRequest struct {
-	Active   *bool       `json:"active,omitempty" url:"active,omitempty"`
-	Enricher *Enrichment `json:"enricher,omitempty" url:"enricher,omitempty"`
-	// Fields to sync from source to target.
-	Fields         []*ModelSyncField `json:"fields,omitempty" url:"fields,omitempty"`
-	FilterLogic    *string           `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
-	Filters        []*Filter         `json:"filters,omitempty" url:"filters,omitempty"`
-	Identity       *Identity         `json:"identity,omitempty" url:"identity,omitempty"`
-	Mode           string            `json:"mode" url:"mode"`
-	Name           string            `json:"name" url:"name"`
-	OrganizationId *string           `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Whether the sync is enabled and scheduled.
+	Active *bool `json:"active,omitempty" url:"active,omitempty"`
+	// Passphrase for encrypting the sync data.
+	EncryptionPassphrase *string `json:"encryption_passphrase,omitempty" url:"encryption_passphrase,omitempty"`
+	// Fields to sync from source to destination.
+	Fields []*ModelSyncField `json:"fields,omitempty" url:"fields,omitempty"`
+	// Logical expression to combine filters.
+	FilterLogic *string `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
+	// Filters to apply to the source data.
+	Filters  []*Filter     `json:"filters,omitempty" url:"filters,omitempty"`
+	Identity *Identity     `json:"identity,omitempty" url:"identity,omitempty"`
+	Mode     ModelSyncMode `json:"mode,omitempty" url:"mode,omitempty"`
+	Name     string        `json:"name" url:"name"`
+	// Whether to use enrichment models as a source of possible changes to sync. If true, only changes to the base models will cause a record to sync.
+	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
+	// Organization ID for the sync; read-only with a partner key.
+	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// Values to set in the target unconditionally.
 	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
 	// Conditional value replacement for fields.
-	Overrides      []*Override `json:"overrides,omitempty" url:"overrides,omitempty"`
-	Policies       []string    `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule       *Schedule   `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SyncAllRecords *bool       `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
-	Target         *Target     `json:"target,omitempty" url:"target,omitempty"`
+	Overrides []*Override `json:"overrides,omitempty" url:"overrides,omitempty"`
+	Policies  []string    `json:"policies,omitempty" url:"policies,omitempty"`
+	Schedule  *Schedule   `json:"schedule,omitempty" url:"schedule,omitempty"`
+	// Whether to skip the initial backfill of records; if true only records seen after the sync is enabled will be synced.
+	SkipInitialBackfill *bool `json:"skip_initial_backfill,omitempty" url:"skip_initial_backfill,omitempty"`
+	// Whether to sync all records from the source, regardless of whether they've changed since the previous execution.
+	SyncAllRecords *bool   `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
+	Target         *Target `json:"target,omitempty" url:"target,omitempty"`
 }
 
 type ModelSyncGetSourceRequest struct {
@@ -38,20 +48,10 @@ type ModelSyncGetSourceFieldsRequest struct {
 	Params map[string][]string `json:"-" url:"params,omitempty"`
 }
 
-type ModelSyncGetTargetRequest struct {
-	Type   *string `json:"-" url:"type,omitempty"`
-	Search *string `json:"-" url:"search,omitempty"`
-}
-
-type ModelSyncGetTargetFieldsRequest struct {
-	Target  string `json:"-" url:"target"`
-	Refresh *bool  `json:"-" url:"refresh,omitempty"`
-}
-
 type ModelSyncListRequest struct {
-	Active             *bool     `json:"-" url:"active,omitempty"`
-	Mode               *SyncMode `json:"-" url:"mode,omitempty"`
-	TargetConnectionId *string   `json:"-" url:"target_connection_id,omitempty"`
+	Active             *bool          `json:"-" url:"active,omitempty"`
+	Mode               *ModelSyncMode `json:"-" url:"mode,omitempty"`
+	TargetConnectionId *string        `json:"-" url:"target_connection_id,omitempty"`
 }
 
 type StartModelSyncRequest struct {
@@ -60,86 +60,34 @@ type StartModelSyncRequest struct {
 }
 
 type UpdateModelSyncRequest struct {
-	Active   *bool       `json:"active,omitempty" url:"active,omitempty"`
-	Enricher *Enrichment `json:"enricher,omitempty" url:"enricher,omitempty"`
-	// Fields to sync from source to target.
-	Fields         []*ModelSyncField `json:"fields,omitempty" url:"fields,omitempty"`
-	FilterLogic    *string           `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
-	Filters        []*Filter         `json:"filters,omitempty" url:"filters,omitempty"`
-	Identity       *Identity         `json:"identity,omitempty" url:"identity,omitempty"`
-	Mode           string            `json:"mode" url:"mode"`
-	Name           string            `json:"name" url:"name"`
-	OrganizationId *string           `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Whether the sync is enabled and scheduled.
+	Active *bool `json:"active,omitempty" url:"active,omitempty"`
+	// Passphrase for encrypting the sync data.
+	EncryptionPassphrase *string `json:"encryption_passphrase,omitempty" url:"encryption_passphrase,omitempty"`
+	// Fields to sync from source to destination.
+	Fields []*ModelSyncField `json:"fields,omitempty" url:"fields,omitempty"`
+	// Logical expression to combine filters.
+	FilterLogic *string `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
+	// Filters to apply to the source data.
+	Filters  []*Filter     `json:"filters,omitempty" url:"filters,omitempty"`
+	Identity *Identity     `json:"identity,omitempty" url:"identity,omitempty"`
+	Mode     ModelSyncMode `json:"mode,omitempty" url:"mode,omitempty"`
+	Name     string        `json:"name" url:"name"`
+	// Whether to use enrichment models as a source of possible changes to sync. If true, only changes to the base models will cause a record to sync.
+	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
+	// Organization ID for the sync; read-only with a partner key.
+	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// Values to set in the target unconditionally.
 	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
 	// Conditional value replacement for fields.
-	Overrides      []*Override `json:"overrides,omitempty" url:"overrides,omitempty"`
-	Policies       []string    `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule       *Schedule   `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SyncAllRecords *bool       `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
-	Target         *Target     `json:"target,omitempty" url:"target,omitempty"`
-}
-
-type ConnectionMeta struct {
-	HasItems      *bool         `json:"has_items,omitempty" url:"has_items,omitempty"`
-	Items         []interface{} `json:"items,omitempty" url:"items,omitempty"`
-	RequiresOneOf []string      `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *ConnectionMeta) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionMeta
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionMeta(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionMeta) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type ConnectionMetaResponse struct {
-	Configuration map[string]*ConfigurationValue `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Items         map[string]*ConnectionMeta     `json:"items,omitempty" url:"items,omitempty"`
-	RequiresOneOf []string                       `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *ConnectionMetaResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionMetaResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionMetaResponse(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionMetaResponse) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
+	Overrides []*Override `json:"overrides,omitempty" url:"overrides,omitempty"`
+	Policies  []string    `json:"policies,omitempty" url:"policies,omitempty"`
+	Schedule  *Schedule   `json:"schedule,omitempty" url:"schedule,omitempty"`
+	// Whether to skip the initial backfill of records; if true only records seen after the sync is enabled will be synced.
+	SkipInitialBackfill *bool `json:"skip_initial_backfill,omitempty" url:"skip_initial_backfill,omitempty"`
+	// Whether to sync all records from the source, regardless of whether they've changed since the previous execution.
+	SyncAllRecords *bool   `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
+	Target         *Target `json:"target,omitempty" url:"target,omitempty"`
 }
 
 // Either `field` or `field_id` must be provided. If `field` is provided, `field_id` is ignored.
@@ -200,35 +148,6 @@ func (f FilterFieldReferenceType) Ptr() *FilterFieldReferenceType {
 	return &f
 }
 
-type GetConnectionMetaEnvelope struct {
-	Data *ConnectionMetaResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (g *GetConnectionMetaEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetConnectionMetaEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetConnectionMetaEnvelope(value)
-	g._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetConnectionMetaEnvelope) String() string {
-	if len(g._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
 type Identity struct {
 	Function          SchemaIdentityFunction `json:"function,omitempty" url:"function,omitempty"`
 	NewField          *bool                  `json:"new_field,omitempty" url:"new_field,omitempty"`
@@ -251,36 +170,6 @@ func (i *Identity) UnmarshalJSON(data []byte) error {
 }
 
 func (i *Identity) String() string {
-	if len(i._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(i._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(i); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", i)
-}
-
-type IdentityFunction struct {
-	Id    *string `json:"id,omitempty" url:"id,omitempty"`
-	Label *string `json:"label,omitempty" url:"label,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (i *IdentityFunction) UnmarshalJSON(data []byte) error {
-	type unmarshaler IdentityFunction
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*i = IdentityFunction(value)
-	i._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (i *IdentityFunction) String() string {
 	if len(i._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(i._rawJSON); err == nil {
 			return value
@@ -323,40 +212,6 @@ func (l *ListModelSyncResponseEnvelope) String() string {
 	return fmt.Sprintf("%#v", l)
 }
 
-type Mode struct {
-	Description           *string `json:"description,omitempty" url:"description,omitempty"`
-	Label                 *string `json:"label,omitempty" url:"label,omitempty"`
-	Mode                  *string `json:"mode,omitempty" url:"mode,omitempty"`
-	RequiresIdentity      *bool   `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
-	SupportsFieldSyncMode *bool   `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
-	SupportsTargetFilters *bool   `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (m *Mode) UnmarshalJSON(data []byte) error {
-	type unmarshaler Mode
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*m = Mode(value)
-	m._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *Mode) String() string {
-	if len(m._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
-
 type ModelFieldResponse struct {
 	Data []*ModelField `json:"data,omitempty" url:"data,omitempty"`
 
@@ -387,6 +242,8 @@ func (m *ModelFieldResponse) String() string {
 }
 
 type ModelSyncField struct {
+	// Whether the field should be encrypted.
+	EncryptionEnabled *bool `json:"encryption_enabled,omitempty" url:"encryption_enabled,omitempty"`
 	// New is set to true if the target field should be created by Polytomic. This is not supported by all backends.
 	New *bool `json:"new,omitempty" url:"new,omitempty"`
 	// Value to set in the target field; if provided, 'source' is ignored.
@@ -424,25 +281,30 @@ func (m *ModelSyncField) String() string {
 }
 
 type ModelSyncResponse struct {
-	Active         *bool              `json:"active,omitempty" url:"active,omitempty"`
-	CreatedAt      *time.Time         `json:"created_at,omitempty" url:"created_at,omitempty"`
-	CreatedBy      *CommonOutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
-	Fields         []*ModelSyncField  `json:"fields,omitempty" url:"fields,omitempty"`
-	FilterLogic    *string            `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
-	Filters        []*Filter          `json:"filters,omitempty" url:"filters,omitempty"`
-	Id             *string            `json:"id,omitempty" url:"id,omitempty"`
-	Identity       *Identity          `json:"identity,omitempty" url:"identity,omitempty"`
-	Mode           *string            `json:"mode,omitempty" url:"mode,omitempty"`
-	Name           *string            `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId *string            `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	OverrideFields []*ModelSyncField  `json:"override_fields,omitempty" url:"override_fields,omitempty"`
-	Overrides      []*Override        `json:"overrides,omitempty" url:"overrides,omitempty"`
-	Policies       []string           `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule       *Schedule          `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SyncAllRecords *bool              `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
-	Target         *Target            `json:"target,omitempty" url:"target,omitempty"`
-	UpdatedAt      *time.Time         `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	UpdatedBy      *CommonOutputActor `json:"updated_by,omitempty" url:"updated_by,omitempty"`
+	Active               *bool              `json:"active,omitempty" url:"active,omitempty"`
+	CreatedAt            *time.Time         `json:"created_at,omitempty" url:"created_at,omitempty"`
+	CreatedBy            *CommonOutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
+	EncryptionPassphrase *string            `json:"encryption_passphrase,omitempty" url:"encryption_passphrase,omitempty"`
+	Fields               []*ModelSyncField  `json:"fields,omitempty" url:"fields,omitempty"`
+	FilterLogic          *string            `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
+	Filters              []*Filter          `json:"filters,omitempty" url:"filters,omitempty"`
+	Id                   *string            `json:"id,omitempty" url:"id,omitempty"`
+	Identity             *Identity          `json:"identity,omitempty" url:"identity,omitempty"`
+	Mode                 *ModelSyncMode     `json:"mode,omitempty" url:"mode,omitempty"`
+	// Model IDs used in the sync.
+	ModelIds            []string           `json:"model_ids,omitempty" url:"model_ids,omitempty"`
+	Name                *string            `json:"name,omitempty" url:"name,omitempty"`
+	OnlyEnrichUpdates   *bool              `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
+	OrganizationId      *string            `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OverrideFields      []*ModelSyncField  `json:"override_fields,omitempty" url:"override_fields,omitempty"`
+	Overrides           []*Override        `json:"overrides,omitempty" url:"overrides,omitempty"`
+	Policies            []string           `json:"policies,omitempty" url:"policies,omitempty"`
+	Schedule            *Schedule          `json:"schedule,omitempty" url:"schedule,omitempty"`
+	SkipInitialBackfill *bool              `json:"skip_initial_backfill,omitempty" url:"skip_initial_backfill,omitempty"`
+	SyncAllRecords      *bool              `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
+	Target              *Target            `json:"target,omitempty" url:"target,omitempty"`
+	UpdatedAt           *time.Time         `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	UpdatedBy           *CommonOutputActor `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -718,9 +580,11 @@ func (s *ScheduleScheduleOption) String() string {
 type SchemaIdentityFunction string
 
 const (
-	SchemaIdentityFunctionEquality   SchemaIdentityFunction = "Equality"
-	SchemaIdentityFunctionISubstring SchemaIdentityFunction = "ISubstring"
-	SchemaIdentityFunctionOneOf      SchemaIdentityFunction = "OneOf"
+	SchemaIdentityFunctionEquality      SchemaIdentityFunction = "Equality"
+	SchemaIdentityFunctionISubstring    SchemaIdentityFunction = "ISubstring"
+	SchemaIdentityFunctionOneOf         SchemaIdentityFunction = "OneOf"
+	SchemaIdentityFunctionDomainMatch   SchemaIdentityFunction = "DomainMatch"
+	SchemaIdentityFunctionHostnameMatch SchemaIdentityFunction = "HostnameMatch"
 )
 
 func NewSchemaIdentityFunctionFromString(s string) (SchemaIdentityFunction, error) {
@@ -731,6 +595,10 @@ func NewSchemaIdentityFunctionFromString(s string) (SchemaIdentityFunction, erro
 		return SchemaIdentityFunctionISubstring, nil
 	case "OneOf":
 		return SchemaIdentityFunctionOneOf, nil
+	case "DomainMatch":
+		return SchemaIdentityFunctionDomainMatch, nil
+	case "HostnameMatch":
+		return SchemaIdentityFunctionHostnameMatch, nil
 	}
 	var t SchemaIdentityFunction
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -800,9 +668,10 @@ func (s *StartModelSyncResponseEnvelope) String() string {
 }
 
 type StartModelSyncResponseSchema struct {
-	CreatedAt *time.Time       `json:"created_at,omitempty" url:"created_at,omitempty"`
-	Id        *string          `json:"id,omitempty" url:"id,omitempty"`
-	Status    *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Execution ID
+	Id     *string          `json:"id,omitempty" url:"id,omitempty"`
+	Status *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -837,81 +706,6 @@ func (s *StartModelSyncResponseSchema) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StartModelSyncResponseSchema) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
-}
-
-type SupportedMode struct {
-	Id *SyncMode `json:"id,omitempty" url:"id,omitempty"`
-	// True if the sync mode requires an identity field mapping.
-	RequiresIdentity *bool `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
-	// True if the target supports per-field sync modes.
-	SupportsPerFieldMode *bool `json:"supports_per_field_mode,omitempty" url:"supports_per_field_mode,omitempty"`
-	// True if the sync mode supports target filters.
-	SupportsTargetFilters *bool `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (s *SupportedMode) UnmarshalJSON(data []byte) error {
-	type unmarshaler SupportedMode
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*s = SupportedMode(value)
-	s._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *SupportedMode) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
-}
-
-type SyncDestinationProperties struct {
-	DoesNotReportOperationCounts  *bool   `json:"does_not_report_operation_counts,omitempty" url:"does_not_report_operation_counts,omitempty"`
-	MappingsNotRequired           *bool   `json:"mappings_not_required,omitempty" url:"mappings_not_required,omitempty"`
-	NewTargetLabel                *string `json:"new_target_label,omitempty" url:"new_target_label,omitempty"`
-	OptionalTargetMappings        *bool   `json:"optional_target_mappings,omitempty" url:"optional_target_mappings,omitempty"`
-	PrimaryMetadataObject         *string `json:"primary_metadata_object,omitempty" url:"primary_metadata_object,omitempty"`
-	RequiresConfiguration         *bool   `json:"requires_configuration,omitempty" url:"requires_configuration,omitempty"`
-	SupportsFieldCreation         *bool   `json:"supports_field_creation,omitempty" url:"supports_field_creation,omitempty"`
-	SupportsFieldTypeSelection    *bool   `json:"supports_field_type_selection,omitempty" url:"supports_field_type_selection,omitempty"`
-	SupportsIdentityFieldCreation *bool   `json:"supports_identity_field_creation,omitempty" url:"supports_identity_field_creation,omitempty"`
-	SupportsTargetFilters         *bool   `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
-	TargetCreator                 *bool   `json:"target_creator,omitempty" url:"target_creator,omitempty"`
-	UseFieldNamesAsLabels         *bool   `json:"use_field_names_as_labels,omitempty" url:"use_field_names_as_labels,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (s *SyncDestinationProperties) UnmarshalJSON(data []byte) error {
-	type unmarshaler SyncDestinationProperties
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*s = SyncDestinationProperties(value)
-	s._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *SyncDestinationProperties) String() string {
 	if len(s._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
 			return value
@@ -1004,10 +798,13 @@ func (s *SyncStatusResponse) String() string {
 type Target struct {
 	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
 	ConnectionId  string                 `json:"connection_id" url:"connection_id"`
-	FilterLogic   *string                `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
-	NewName       *string                `json:"new_name,omitempty" url:"new_name,omitempty"`
-	Object        string                 `json:"object" url:"object"`
-	SearchValues  map[string]interface{} `json:"search_values,omitempty" url:"search_values,omitempty"`
+	// Create a new target object with these properties.
+	Create      map[string]string `json:"create,omitempty" url:"create,omitempty"`
+	FilterLogic *string           `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
+	// Name for a new target object.
+	NewName      *string                `json:"new_name,omitempty" url:"new_name,omitempty"`
+	Object       *string                `json:"object,omitempty" url:"object,omitempty"`
+	SearchValues map[string]interface{} `json:"search_values,omitempty" url:"search_values,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -1033,188 +830,4 @@ func (t *Target) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", t)
-}
-
-type TargetField struct {
-	Association       *bool               `json:"association,omitempty" url:"association,omitempty"`
-	Createable        *bool               `json:"createable,omitempty" url:"createable,omitempty"`
-	Description       *string             `json:"description,omitempty" url:"description,omitempty"`
-	Filterable        *bool               `json:"filterable,omitempty" url:"filterable,omitempty"`
-	Id                *string             `json:"id,omitempty" url:"id,omitempty"`
-	IdentityFunctions []*IdentityFunction `json:"identity_functions,omitempty" url:"identity_functions,omitempty"`
-	Name              *string             `json:"name,omitempty" url:"name,omitempty"`
-	Required          *bool               `json:"required,omitempty" url:"required,omitempty"`
-	SourceType        *string             `json:"source_type,omitempty" url:"source_type,omitempty"`
-	SupportsIdentity  *bool               `json:"supports_identity,omitempty" url:"supports_identity,omitempty"`
-	Type              *string             `json:"type,omitempty" url:"type,omitempty"`
-	Updateable        *bool               `json:"updateable,omitempty" url:"updateable,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (t *TargetField) UnmarshalJSON(data []byte) error {
-	type unmarshaler TargetField
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*t = TargetField(value)
-	t._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (t *TargetField) String() string {
-	if len(t._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(t); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", t)
-}
-
-type TargetObject struct {
-	// The identifier of the target object.
-	Id *string `json:"id,omitempty" url:"id,omitempty"`
-	// The supported sync modes and their properties for the target object.
-	Modes []*SupportedMode `json:"modes,omitempty" url:"modes,omitempty"`
-	// The name of the target object.
-	Name *string `json:"name,omitempty" url:"name,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (t *TargetObject) UnmarshalJSON(data []byte) error {
-	type unmarshaler TargetObject
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*t = TargetObject(value)
-	t._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (t *TargetObject) String() string {
-	if len(t._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(t); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", t)
-}
-
-type TargetResponse struct {
-	Fields      []*TargetField             `json:"fields,omitempty" url:"fields,omitempty"`
-	Id          *string                    `json:"id,omitempty" url:"id,omitempty"`
-	Modes       []*Mode                    `json:"modes,omitempty" url:"modes,omitempty"`
-	Name        *string                    `json:"name,omitempty" url:"name,omitempty"`
-	Properties  *SyncDestinationProperties `json:"properties,omitempty" url:"properties,omitempty"`
-	RefreshedAt *time.Time                 `json:"refreshed_at,omitempty" url:"refreshed_at,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (t *TargetResponse) UnmarshalJSON(data []byte) error {
-	type embed TargetResponse
-	var unmarshaler = struct {
-		embed
-		RefreshedAt *core.DateTime `json:"refreshed_at,omitempty"`
-	}{
-		embed: embed(*t),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*t = TargetResponse(unmarshaler.embed)
-	t.RefreshedAt = unmarshaler.RefreshedAt.TimePtr()
-	t._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (t *TargetResponse) MarshalJSON() ([]byte, error) {
-	type embed TargetResponse
-	var marshaler = struct {
-		embed
-		RefreshedAt *core.DateTime `json:"refreshed_at,omitempty"`
-	}{
-		embed:       embed(*t),
-		RefreshedAt: core.NewOptionalDateTime(t.RefreshedAt),
-	}
-	return json.Marshal(marshaler)
-}
-
-func (t *TargetResponse) String() string {
-	if len(t._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(t); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", t)
-}
-
-type TargetResponseEnvelope struct {
-	Data *TargetResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (t *TargetResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler TargetResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*t = TargetResponseEnvelope(value)
-	t._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (t *TargetResponseEnvelope) String() string {
-	if len(t._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(t); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", t)
-}
-
-type V4TargetObjectsResponseEnvelope struct {
-	Data []*TargetObject `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *V4TargetObjectsResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V4TargetObjectsResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V4TargetObjectsResponseEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V4TargetObjectsResponseEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
 }

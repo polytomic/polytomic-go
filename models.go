@@ -122,6 +122,41 @@ func (c *CreateModelRequest) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type Enrichment struct {
+	Configuration *V2EnricherConfiguration `json:"configuration,omitempty" url:"configuration,omitempty"`
+	ConnectionId  *string                  `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	// Must be provided to update an existing enrichment
+	EnricherId *string `json:"enricher_id,omitempty" url:"enricher_id,omitempty"`
+	// If not provided, all fields will be enabled.
+	Fields   []*ModelField      `json:"fields,omitempty" url:"fields,omitempty"`
+	Mappings *V2EnricherMapping `json:"mappings,omitempty" url:"mappings,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (e *Enrichment) UnmarshalJSON(data []byte) error {
+	type unmarshaler Enrichment
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = Enrichment(value)
+	e._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *Enrichment) String() string {
+	if len(e._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(e._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
 type LabelLabel = map[string]interface{}
 
 type ModelListResponseEnvelope struct {
@@ -462,6 +497,12 @@ func (r *RelationTo) String() string {
 	}
 	return fmt.Sprintf("%#v", r)
 }
+
+// Similar to a model configuration, this configures the enricher. For example, if you wanted to use Apollo to enrich people, you would send `{"object": "people"}` as the configuration. Each enricher configuration can be found in the connection configuration docs.
+type V2EnricherConfiguration = map[string]interface{}
+
+// A map of parent model Source Name to child model Source Name. For example, if your model has a field called `work_email` and the enricher accepts a field called `email`, you'd send a map of `{"work_email":"email"}`. The set of required input mappings varies based on the configuration of the enrichment. You can use the `enrichment/{connection_id}/inputfields` API to discover available input field combinations for a given configuration.
+type V2EnricherMapping = map[string]string
 
 type V2GetEnrichmentInputFieldsResponseEnvelope struct {
 	Data [][]string `json:"data,omitempty" url:"data,omitempty"`

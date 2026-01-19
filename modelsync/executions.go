@@ -2,8 +2,16 @@
 
 package modelsync
 
+import (
+	polytomicgo "github.com/polytomic/polytomic-go"
+)
+
 type ExecutionsListRequest struct {
 	PageToken     *string `json:"-" url:"page_token,omitempty"`
 	OnlyCompleted *bool   `json:"-" url:"only_completed,omitempty"`
 	Ascending     *bool   `json:"-" url:"ascending,omitempty"`
+}
+
+type UpdateExecutionRequest struct {
+	Status polytomicgo.ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
 }

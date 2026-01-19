@@ -57,6 +57,7 @@ type ModelSyncListRequest struct {
 type StartModelSyncRequest struct {
 	Identities []string `json:"identities,omitempty" url:"identities,omitempty"`
 	Resync     *bool    `json:"resync,omitempty" url:"resync,omitempty"`
+	Test       *bool    `json:"test,omitempty" url:"test,omitempty"`
 }
 
 type UpdateModelSyncRequest struct {
@@ -88,6 +89,64 @@ type UpdateModelSyncRequest struct {
 	// Whether to sync all records from the source, regardless of whether they've changed since the previous execution.
 	SyncAllRecords *bool   `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
 	Target         *Target `json:"target,omitempty" url:"target,omitempty"`
+}
+
+type CancelModelSyncResponse struct {
+	Message *string `json:"message,omitempty" url:"message,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *CancelModelSyncResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler CancelModelSyncResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CancelModelSyncResponse(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CancelModelSyncResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CancelModelSyncResponseEnvelope struct {
+	Data *CancelModelSyncResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *CancelModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler CancelModelSyncResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CancelModelSyncResponseEnvelope(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CancelModelSyncResponseEnvelope) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
 }
 
 // Either `field` or `field_id` must be provided. If `field` is provided, `field_id` is ignored.

@@ -9,6 +9,10 @@ import (
 	time "time"
 )
 
+type SetPrimaryKeysRequest struct {
+	Fields []*SchemaPrimaryKeyOverrideInput `json:"fields,omitempty" url:"fields,omitempty"`
+}
+
 type UpsertSchemaFieldRequest struct {
 	Fields []*V4UserFieldRequest `json:"fields,omitempty" url:"fields,omitempty"`
 }
@@ -122,6 +126,36 @@ func (b *BulkSyncSourceStatusEnvelope) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
+}
+
+type SchemaPrimaryKeyOverrideInput struct {
+	FieldId      string `json:"field_id" url:"field_id"`
+	IsPrimaryKey bool   `json:"is_primary_key" url:"is_primary_key"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SchemaPrimaryKeyOverrideInput) UnmarshalJSON(data []byte) error {
+	type unmarshaler SchemaPrimaryKeyOverrideInput
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SchemaPrimaryKeyOverrideInput(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SchemaPrimaryKeyOverrideInput) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
 }
 
 type SchemaRecordsResponseEnvelope struct {

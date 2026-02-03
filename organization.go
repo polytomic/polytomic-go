@@ -8,111 +8,117 @@ import (
 	core "github.com/polytomic/polytomic-go/core"
 )
 
-type CreateOrganizationRequestSchema struct {
-	ClientId     *string `json:"client_id,omitempty" url:"client_id,omitempty"`
+type V2CreateOrganizationRequestSchema struct {
+	ClientID     *string `json:"client_id,omitempty" url:"client_id,omitempty"`
 	ClientSecret *string `json:"client_secret,omitempty" url:"client_secret,omitempty"`
 	Issuer       *string `json:"issuer,omitempty" url:"issuer,omitempty"`
 	Name         string  `json:"name" url:"name"`
-	SsoDomain    *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
-	SsoOrgId     *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
+	SSODomain    *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
+	SSOOrgID     *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
 }
 
-type UpdateOrganizationRequestSchema struct {
-	ClientId     *string `json:"client_id,omitempty" url:"client_id,omitempty"`
+type GetOrganizationRequest struct {
+}
+
+type RemoveOrganizationRequest struct {
+}
+
+type V2UpdateOrganizationRequestSchema struct {
+	ClientID     *string `json:"client_id,omitempty" url:"client_id,omitempty"`
 	ClientSecret *string `json:"client_secret,omitempty" url:"client_secret,omitempty"`
 	Issuer       *string `json:"issuer,omitempty" url:"issuer,omitempty"`
 	Name         string  `json:"name" url:"name"`
-	SsoDomain    *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
-	SsoOrgId     *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
+	SSODomain    *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
+	SSOOrgID     *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
 }
 
-type Organization struct {
-	Id        *string `json:"id,omitempty" url:"id,omitempty"`
+type V2Organization struct {
+	ID        *string `json:"id,omitempty" url:"id,omitempty"`
 	Issuer    *string `json:"issuer,omitempty" url:"issuer,omitempty"`
 	Name      *string `json:"name,omitempty" url:"name,omitempty"`
-	SsoDomain *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
-	SsoOrgId  *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
+	SSODomain *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
+	SSOOrgID  *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (o *Organization) UnmarshalJSON(data []byte) error {
-	type unmarshaler Organization
+func (v *V2Organization) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2Organization
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*o = Organization(value)
-	o._rawJSON = json.RawMessage(data)
+	*v = V2Organization(value)
+	v._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (o *Organization) String() string {
-	if len(o._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(o._rawJSON); err == nil {
+func (v *V2Organization) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(o); err == nil {
+	if value, err := core.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", o)
+	return fmt.Sprintf("%#v", v)
 }
 
-type OrganizationEnvelope struct {
-	Data *Organization `json:"data,omitempty" url:"data,omitempty"`
+type V2OrganizationEnvelope struct {
+	Data *V2Organization `json:"data,omitempty" url:"data,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (o *OrganizationEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler OrganizationEnvelope
+func (v *V2OrganizationEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2OrganizationEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*o = OrganizationEnvelope(value)
-	o._rawJSON = json.RawMessage(data)
+	*v = V2OrganizationEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (o *OrganizationEnvelope) String() string {
-	if len(o._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(o._rawJSON); err == nil {
+func (v *V2OrganizationEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(o); err == nil {
+	if value, err := core.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", o)
+	return fmt.Sprintf("%#v", v)
 }
 
-type OrganizationsEnvelope struct {
-	Data []*Organization `json:"data,omitempty" url:"data,omitempty"`
+type V2OrganizationsEnvelope struct {
+	Data []*V2Organization `json:"data,omitempty" url:"data,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (o *OrganizationsEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler OrganizationsEnvelope
+func (v *V2OrganizationsEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2OrganizationsEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*o = OrganizationsEnvelope(value)
-	o._rawJSON = json.RawMessage(data)
+	*v = V2OrganizationsEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (o *OrganizationsEnvelope) String() string {
-	if len(o._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(o._rawJSON); err == nil {
+func (v *V2OrganizationsEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(o); err == nil {
+	if value, err := core.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", o)
+	return fmt.Sprintf("%#v", v)
 }

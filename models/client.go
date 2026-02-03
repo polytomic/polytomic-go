@@ -38,9 +38,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) GetEnrichmentSource(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.ModelsGetEnrichmentSourceRequest,
+	request *polytomicgo.GetEnrichmentSourceModelsRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.GetModelSyncSourceMetaEnvelope, error) {
+) (*polytomicgo.V4GetSyncSourceMetaEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -109,7 +109,7 @@ func (c *Client) GetEnrichmentSource(
 		return apiError
 	}
 
-	var response *polytomicgo.GetModelSyncSourceMetaEnvelope
+	var response *polytomicgo.V4GetSyncSourceMetaEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -130,8 +130,8 @@ func (c *Client) GetEnrichmentSource(
 // For a given connection and enrichment configuration, provides the valid sets of input fields.
 func (c *Client) Post(
 	ctx context.Context,
-	connectionId string,
-	request *polytomicgo.GetEnrichmentInputFieldsRequest,
+	connectionID string,
+	request *polytomicgo.V2EnrichmentInputFieldsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.V2GetEnrichmentInputFieldsResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -143,7 +143,7 @@ func (c *Client) Post(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/enrichment/%v/inputfields", connectionId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/enrichment/%v/inputfields", connectionID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -208,9 +208,9 @@ func (c *Client) Post(
 
 func (c *Client) Preview(
 	ctx context.Context,
-	request *polytomicgo.ModelsPreviewRequest,
+	request *polytomicgo.PreviewModelsRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ModelResponseEnvelope, error) {
+) (*polytomicgo.V2ModelResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -272,7 +272,7 @@ func (c *Client) Preview(
 		return apiError
 	}
 
-	var response *polytomicgo.ModelResponseEnvelope
+	var response *polytomicgo.V2ModelResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -294,7 +294,7 @@ func (c *Client) Preview(
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomicgo.ModelListResponseEnvelope, error) {
+) (*polytomicgo.V2ModelListResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -334,7 +334,7 @@ func (c *Client) List(
 		return apiError
 	}
 
-	var response *polytomicgo.ModelListResponseEnvelope
+	var response *polytomicgo.V2ModelListResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -354,9 +354,9 @@ func (c *Client) List(
 
 func (c *Client) Create(
 	ctx context.Context,
-	request *polytomicgo.ModelsCreateRequest,
+	request *polytomicgo.CreateModelsRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ModelResponseEnvelope, error) {
+) (*polytomicgo.V2ModelResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -418,7 +418,7 @@ func (c *Client) Create(
 		return apiError
 	}
 
-	var response *polytomicgo.ModelResponseEnvelope
+	var response *polytomicgo.V2ModelResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -440,9 +440,9 @@ func (c *Client) Create(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.ModelsGetRequest,
+	request *polytomicgo.GetModelsRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ModelResponseEnvelope, error) {
+) (*polytomicgo.V2ModelResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -497,7 +497,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *polytomicgo.ModelResponseEnvelope
+	var response *polytomicgo.V2ModelResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -518,9 +518,9 @@ func (c *Client) Get(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.UpdateModelRequest,
+	request *polytomicgo.V2UpdateModelRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ModelResponseEnvelope, error) {
+) (*polytomicgo.V2ModelResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -582,7 +582,7 @@ func (c *Client) Update(
 		return apiError
 	}
 
-	var response *polytomicgo.ModelResponseEnvelope
+	var response *polytomicgo.V2ModelResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -604,7 +604,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.ModelsRemoveRequest,
+	request *polytomicgo.RemoveModelsRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -688,9 +688,9 @@ func (c *Client) Remove(
 func (c *Client) Sample(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.ModelsSampleRequest,
+	request *polytomicgo.SampleModelsRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ModelSampleResponseEnvelope, error) {
+) (*polytomicgo.V2ModelSampleResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -752,7 +752,7 @@ func (c *Client) Sample(
 		return apiError
 	}
 
-	var response *polytomicgo.ModelSampleResponseEnvelope
+	var response *polytomicgo.V2ModelSampleResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

@@ -9,127 +9,34 @@ import (
 	time "time"
 )
 
-type SetPrimaryKeysRequest struct {
+type DeleteFieldSchemasRequest struct {
+}
+
+type GetSchemasRequest struct {
+}
+
+type GetRecordsSchemasRequest struct {
+}
+
+type GetStatusSchemasRequest struct {
+}
+
+type RefreshSchemasRequest struct {
+}
+
+type ResetPrimaryKeysSchemasRequest struct {
+}
+
+type V4SetPrimaryKeysRequest struct {
 	Fields []*SchemaPrimaryKeyOverrideInput `json:"fields,omitempty" url:"fields,omitempty"`
 }
 
-type UpsertSchemaFieldRequest struct {
+type V4UpsertSchemaFieldRequest struct {
 	Fields []*V4UserFieldRequest `json:"fields,omitempty" url:"fields,omitempty"`
 }
 
-type BulkSyncSourceSchemaEnvelope struct {
-	Data *Schema `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (b *BulkSyncSourceSchemaEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkSyncSourceSchemaEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*b = BulkSyncSourceSchemaEnvelope(value)
-	b._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BulkSyncSourceSchemaEnvelope) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
-type BulkSyncSourceStatus struct {
-	CacheStatus         *string    `json:"cache_status,omitempty" url:"cache_status,omitempty"`
-	LastRefreshFinished *time.Time `json:"last_refresh_finished,omitempty" url:"last_refresh_finished,omitempty"`
-	LastRefreshStarted  *time.Time `json:"last_refresh_started,omitempty" url:"last_refresh_started,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (b *BulkSyncSourceStatus) UnmarshalJSON(data []byte) error {
-	type embed BulkSyncSourceStatus
-	var unmarshaler = struct {
-		embed
-		LastRefreshFinished *core.DateTime `json:"last_refresh_finished,omitempty"`
-		LastRefreshStarted  *core.DateTime `json:"last_refresh_started,omitempty"`
-	}{
-		embed: embed(*b),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*b = BulkSyncSourceStatus(unmarshaler.embed)
-	b.LastRefreshFinished = unmarshaler.LastRefreshFinished.TimePtr()
-	b.LastRefreshStarted = unmarshaler.LastRefreshStarted.TimePtr()
-	b._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BulkSyncSourceStatus) MarshalJSON() ([]byte, error) {
-	type embed BulkSyncSourceStatus
-	var marshaler = struct {
-		embed
-		LastRefreshFinished *core.DateTime `json:"last_refresh_finished,omitempty"`
-		LastRefreshStarted  *core.DateTime `json:"last_refresh_started,omitempty"`
-	}{
-		embed:               embed(*b),
-		LastRefreshFinished: core.NewOptionalDateTime(b.LastRefreshFinished),
-		LastRefreshStarted:  core.NewOptionalDateTime(b.LastRefreshStarted),
-	}
-	return json.Marshal(marshaler)
-}
-
-func (b *BulkSyncSourceStatus) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
-type BulkSyncSourceStatusEnvelope struct {
-	Data *BulkSyncSourceStatus `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (b *BulkSyncSourceStatusEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkSyncSourceStatusEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*b = BulkSyncSourceStatusEnvelope(value)
-	b._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BulkSyncSourceStatusEnvelope) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
 type SchemaPrimaryKeyOverrideInput struct {
-	FieldId      string `json:"field_id" url:"field_id"`
+	FieldID      string `json:"field_id" url:"field_id"`
 	IsPrimaryKey bool   `json:"is_primary_key" url:"is_primary_key"`
 
 	_rawJSON json.RawMessage
@@ -158,38 +65,149 @@ func (s *SchemaPrimaryKeyOverrideInput) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
-type SchemaRecordsResponseEnvelope struct {
+type V3BulkSyncSourceSchemaEnvelope struct {
+	Data *V3Schema `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V3BulkSyncSourceSchemaEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V3BulkSyncSourceSchemaEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V3BulkSyncSourceSchemaEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V3BulkSyncSourceSchemaEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V3BulkSyncSourceStatus struct {
+	CacheStatus         *string    `json:"cache_status,omitempty" url:"cache_status,omitempty"`
+	LastRefreshFinished *time.Time `json:"last_refresh_finished,omitempty" url:"last_refresh_finished,omitempty"`
+	LastRefreshStarted  *time.Time `json:"last_refresh_started,omitempty" url:"last_refresh_started,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V3BulkSyncSourceStatus) UnmarshalJSON(data []byte) error {
+	type embed V3BulkSyncSourceStatus
+	var unmarshaler = struct {
+		embed
+		LastRefreshFinished *core.DateTime `json:"last_refresh_finished,omitempty"`
+		LastRefreshStarted  *core.DateTime `json:"last_refresh_started,omitempty"`
+	}{
+		embed: embed(*v),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*v = V3BulkSyncSourceStatus(unmarshaler.embed)
+	v.LastRefreshFinished = unmarshaler.LastRefreshFinished.TimePtr()
+	v.LastRefreshStarted = unmarshaler.LastRefreshStarted.TimePtr()
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V3BulkSyncSourceStatus) MarshalJSON() ([]byte, error) {
+	type embed V3BulkSyncSourceStatus
+	var marshaler = struct {
+		embed
+		LastRefreshFinished *core.DateTime `json:"last_refresh_finished,omitempty"`
+		LastRefreshStarted  *core.DateTime `json:"last_refresh_started,omitempty"`
+	}{
+		embed:               embed(*v),
+		LastRefreshFinished: core.NewOptionalDateTime(v.LastRefreshFinished),
+		LastRefreshStarted:  core.NewOptionalDateTime(v.LastRefreshStarted),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (v *V3BulkSyncSourceStatus) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V3BulkSyncSourceStatusEnvelope struct {
+	Data *V3BulkSyncSourceStatus `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V3BulkSyncSourceStatusEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V3BulkSyncSourceStatusEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V3BulkSyncSourceStatusEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V3BulkSyncSourceStatusEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V3SchemaRecordsResponseEnvelope struct {
 	Data []map[string]interface{} `json:"data,omitempty" url:"data,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (s *SchemaRecordsResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler SchemaRecordsResponseEnvelope
+func (v *V3SchemaRecordsResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V3SchemaRecordsResponseEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*s = SchemaRecordsResponseEnvelope(value)
-	s._rawJSON = json.RawMessage(data)
+	*v = V3SchemaRecordsResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (s *SchemaRecordsResponseEnvelope) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+func (v *V3SchemaRecordsResponseEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := core.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", s)
+	return fmt.Sprintf("%#v", v)
 }
 
 type V4UserFieldRequest struct {
 	Example interface{} `json:"example,omitempty" url:"example,omitempty"`
-	FieldId string      `json:"field_id" url:"field_id"`
+	FieldID string      `json:"field_id" url:"field_id"`
 	Label   string      `json:"label" url:"label"`
 	Path    *string     `json:"path,omitempty" url:"path,omitempty"`
 	Type    string      `json:"type" url:"type"`

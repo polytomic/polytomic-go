@@ -47,9 +47,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 
 func (c *Client) List(
 	ctx context.Context,
-	request *polytomicgo.BulkSyncListRequest,
+	request *polytomicgo.ListBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.BulkSyncListEnvelope, error) {
+) (*polytomicgo.V2BulkSyncListEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -97,7 +97,7 @@ func (c *Client) List(
 		return apiError
 	}
 
-	var response *polytomicgo.BulkSyncListEnvelope
+	var response *polytomicgo.V2BulkSyncListEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -143,9 +143,9 @@ func (c *Client) List(
 // to see configurations for particular integrations (for example, [here](https://apidocs.polytomic.com/2024-02-08/guides/configuring-your-connections/connections/postgre-sql#source-1) is the available source configuration for the PostgreSQL bulk sync source).
 func (c *Client) Create(
 	ctx context.Context,
-	request *polytomicgo.CreateBulkSyncRequest,
+	request *polytomicgo.V2CreateBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.BulkSyncResponseEnvelope, error) {
+) (*polytomicgo.V2BulkSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -206,7 +206,7 @@ func (c *Client) Create(
 		return apiError
 	}
 
-	var response *polytomicgo.BulkSyncResponseEnvelope
+	var response *polytomicgo.V2BulkSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -228,9 +228,9 @@ func (c *Client) Create(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.BulkSyncGetRequest,
+	request *polytomicgo.GetBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.BulkSyncResponseEnvelope, error) {
+) (*polytomicgo.V2BulkSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -278,7 +278,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *polytomicgo.BulkSyncResponseEnvelope
+	var response *polytomicgo.V2BulkSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -302,9 +302,9 @@ func (c *Client) Get(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.UpdateBulkSyncRequest,
+	request *polytomicgo.V2UpdateBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.BulkSyncResponseEnvelope, error) {
+) (*polytomicgo.V2BulkSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -365,7 +365,7 @@ func (c *Client) Update(
 		return apiError
 	}
 
-	var response *polytomicgo.BulkSyncResponseEnvelope
+	var response *polytomicgo.V2BulkSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -387,7 +387,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.BulkSyncRemoveRequest,
+	request *polytomicgo.RemoveBulkSyncRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -470,9 +470,9 @@ func (c *Client) Remove(
 func (c *Client) Activate(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.ActivateSyncInput,
+	request *polytomicgo.ActivateBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ActivateSyncEnvelope, error) {
+) (*polytomicgo.V2ActivateSyncEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -526,7 +526,7 @@ func (c *Client) Activate(
 		return apiError
 	}
 
-	var response *polytomicgo.ActivateSyncEnvelope
+	var response *polytomicgo.V2ActivateSyncEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -548,9 +548,9 @@ func (c *Client) Activate(
 func (c *Client) Start(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.StartBulkSyncRequest,
+	request *polytomicgo.V3StartBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.BulkSyncExecutionEnvelope, error) {
+) (*polytomicgo.V3BulkSyncExecutionEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -597,7 +597,7 @@ func (c *Client) Start(
 		return apiError
 	}
 
-	var response *polytomicgo.BulkSyncExecutionEnvelope
+	var response *polytomicgo.V3BulkSyncExecutionEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -619,8 +619,9 @@ func (c *Client) Start(
 func (c *Client) GetStatus(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.GetStatusBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.BulkSyncStatusEnvelope, error) {
+) (*polytomicgo.V3BulkSyncStatusEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -667,7 +668,7 @@ func (c *Client) GetStatus(
 		return apiError
 	}
 
-	var response *polytomicgo.BulkSyncStatusEnvelope
+	var response *polytomicgo.V3BulkSyncStatusEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -688,9 +689,9 @@ func (c *Client) GetStatus(
 func (c *Client) GetSource(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.BulkSyncGetSourceRequest,
+	request *polytomicgo.GetSourceBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.BulkSyncSourceEnvelope, error) {
+) (*polytomicgo.V3BulkSyncSourceEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -752,7 +753,7 @@ func (c *Client) GetSource(
 		return apiError
 	}
 
-	var response *polytomicgo.BulkSyncSourceEnvelope
+	var response *polytomicgo.V3BulkSyncSourceEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -773,8 +774,9 @@ func (c *Client) GetSource(
 func (c *Client) GetDestination(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.GetDestinationBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.BulkSyncDestEnvelope, error) {
+) (*polytomicgo.V2BulkSyncDestEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -828,7 +830,7 @@ func (c *Client) GetDestination(
 		return apiError
 	}
 
-	var response *polytomicgo.BulkSyncDestEnvelope
+	var response *polytomicgo.V2BulkSyncDestEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

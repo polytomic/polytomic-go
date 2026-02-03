@@ -38,7 +38,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) GetTypes(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomicgo.ConnectionTypeResponseEnvelope, error) {
+) (*polytomicgo.V2ConnectionTypeResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -78,7 +78,7 @@ func (c *Client) GetTypes(
 		return apiError
 	}
 
-	var response *polytomicgo.ConnectionTypeResponseEnvelope
+	var response *polytomicgo.V2ConnectionTypeResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -99,6 +99,7 @@ func (c *Client) GetTypes(
 func (c *Client) GetConnectionTypeSchema(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.GetConnectionTypeSchemaConnectionsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.JsonschemaSchema, error) {
 	options := core.NewRequestOptions(opts...)
@@ -168,7 +169,7 @@ func (c *Client) GetConnectionTypeSchema(
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomicgo.ConnectionListResponseEnvelope, error) {
+) (*polytomicgo.V2ConnectionListResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -208,7 +209,7 @@ func (c *Client) List(
 		return apiError
 	}
 
-	var response *polytomicgo.ConnectionListResponseEnvelope
+	var response *polytomicgo.V2ConnectionListResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -228,9 +229,9 @@ func (c *Client) List(
 
 func (c *Client) Create(
 	ctx context.Context,
-	request *polytomicgo.CreateConnectionRequestSchema,
+	request *polytomicgo.V2CreateConnectionRequestSchema,
 	opts ...option.RequestOption,
-) (*polytomicgo.CreateConnectionResponseEnvelope, error) {
+) (*polytomicgo.V2CreateConnectionResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -291,7 +292,7 @@ func (c *Client) Create(
 		return apiError
 	}
 
-	var response *polytomicgo.CreateConnectionResponseEnvelope
+	var response *polytomicgo.V2CreateConnectionResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -321,9 +322,9 @@ func (c *Client) Create(
 // - [Embedding authentication](https://apidocs.polytomic.com/2024-02-08/guides/embedding-authentication), a guide to using Polytomic Connect.
 func (c *Client) Connect(
 	ctx context.Context,
-	request *polytomicgo.ConnectCardRequest,
+	request *polytomicgo.V3ConnectCardRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ConnectCardResponseEnvelope, error) {
+) (*polytomicgo.V3ConnectCardResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -377,7 +378,7 @@ func (c *Client) Connect(
 		return apiError
 	}
 
-	var response *polytomicgo.ConnectCardResponseEnvelope
+	var response *polytomicgo.V3ConnectCardResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -399,7 +400,7 @@ func (c *Client) Connect(
 // Tests a connection configuration.
 func (c *Client) TestConnection(
 	ctx context.Context,
-	request *polytomicgo.TestConnectionRequest,
+	request *polytomicgo.V4TestConnectionRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -475,8 +476,9 @@ func (c *Client) TestConnection(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.GetConnectionsRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ConnectionResponseEnvelope, error) {
+) (*polytomicgo.V2ConnectionResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -523,7 +525,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *polytomicgo.ConnectionResponseEnvelope
+	var response *polytomicgo.V2ConnectionResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -544,9 +546,9 @@ func (c *Client) Get(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.UpdateConnectionRequestSchema,
+	request *polytomicgo.V2UpdateConnectionRequestSchema,
 	opts ...option.RequestOption,
-) (*polytomicgo.CreateConnectionResponseEnvelope, error) {
+) (*polytomicgo.V2CreateConnectionResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -614,7 +616,7 @@ func (c *Client) Update(
 		return apiError
 	}
 
-	var response *polytomicgo.CreateConnectionResponseEnvelope
+	var response *polytomicgo.V2CreateConnectionResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -636,7 +638,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.ConnectionsRemoveRequest,
+	request *polytomicgo.RemoveConnectionsRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -726,8 +728,9 @@ func (c *Client) Remove(
 func (c *Client) GetParameterValues(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.GetParameterValuesConnectionsRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ConnectionParameterValuesResponseEnvelope, error) {
+) (*polytomicgo.V2ConnectionParameterValuesResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -774,7 +777,7 @@ func (c *Client) GetParameterValues(
 		return apiError
 	}
 
-	var response *polytomicgo.ConnectionParameterValuesResponseEnvelope
+	var response *polytomicgo.V2ConnectionParameterValuesResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

@@ -8,164 +8,173 @@ import (
 	core "github.com/polytomic/polytomic-go/core"
 )
 
-type CreateUserRequestSchema struct {
+type V2CreateUserRequestSchema struct {
 	Email string  `json:"email" url:"email"`
 	Role  *string `json:"role,omitempty" url:"role,omitempty"`
 }
 
-type UsersCreateApiKeyRequest struct {
+type CreateAPIKeyUsersRequest struct {
 	Force *bool `json:"-" url:"force,omitempty"`
 }
 
-type UpdateUserRequestSchema struct {
+type GetUsersRequest struct {
+}
+
+type ListUsersRequest struct {
+}
+
+type RemoveUsersRequest struct {
+}
+
+type V2UpdateUserRequestSchema struct {
 	Email string  `json:"email" url:"email"`
 	Role  *string `json:"role,omitempty" url:"role,omitempty"`
 }
 
-type ApiKeyResponse struct {
+type V2APIKeyResponse struct {
 	Value *string `json:"value,omitempty" url:"value,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (a *ApiKeyResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApiKeyResponse
+func (v *V2APIKeyResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2APIKeyResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*a = ApiKeyResponse(value)
-	a._rawJSON = json.RawMessage(data)
+	*v = V2APIKeyResponse(value)
+	v._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (a *ApiKeyResponse) String() string {
-	if len(a._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+func (v *V2APIKeyResponse) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(a); err == nil {
+	if value, err := core.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", a)
+	return fmt.Sprintf("%#v", v)
 }
 
-type ApiKeyResponseEnvelope struct {
-	Data *ApiKeyResponse `json:"data,omitempty" url:"data,omitempty"`
+type V2APIKeyResponseEnvelope struct {
+	Data *V2APIKeyResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (a *ApiKeyResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApiKeyResponseEnvelope
+func (v *V2APIKeyResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2APIKeyResponseEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*a = ApiKeyResponseEnvelope(value)
-	a._rawJSON = json.RawMessage(data)
+	*v = V2APIKeyResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (a *ApiKeyResponseEnvelope) String() string {
-	if len(a._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+func (v *V2APIKeyResponseEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(a); err == nil {
+	if value, err := core.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", a)
+	return fmt.Sprintf("%#v", v)
 }
 
-type ListUsersEnvelope struct {
-	Data []*User `json:"data,omitempty" url:"data,omitempty"`
+type V2ListUsersEnvelope struct {
+	Data []*V2User `json:"data,omitempty" url:"data,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (l *ListUsersEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ListUsersEnvelope
+func (v *V2ListUsersEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ListUsersEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*l = ListUsersEnvelope(value)
-	l._rawJSON = json.RawMessage(data)
+	*v = V2ListUsersEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (l *ListUsersEnvelope) String() string {
-	if len(l._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+func (v *V2ListUsersEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(l); err == nil {
+	if value, err := core.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", l)
+	return fmt.Sprintf("%#v", v)
 }
 
-type User struct {
+type V2User struct {
 	Email          *string `json:"email,omitempty" url:"email,omitempty"`
-	Id             *string `json:"id,omitempty" url:"id,omitempty"`
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	ID             *string `json:"id,omitempty" url:"id,omitempty"`
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Role           *string `json:"role,omitempty" url:"role,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (u *User) UnmarshalJSON(data []byte) error {
-	type unmarshaler User
+func (v *V2User) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2User
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = User(value)
-	u._rawJSON = json.RawMessage(data)
+	*v = V2User(value)
+	v._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (u *User) String() string {
-	if len(u._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
+func (v *V2User) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(u); err == nil {
+	if value, err := core.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", u)
+	return fmt.Sprintf("%#v", v)
 }
 
-type UserEnvelope struct {
-	Data *User `json:"data,omitempty" url:"data,omitempty"`
+type V2UserEnvelope struct {
+	Data *V2User `json:"data,omitempty" url:"data,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (u *UserEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler UserEnvelope
+func (v *V2UserEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2UserEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UserEnvelope(value)
-	u._rawJSON = json.RawMessage(data)
+	*v = V2UserEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (u *UserEnvelope) String() string {
-	if len(u._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
+func (v *V2UserEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(u); err == nil {
+	if value, err := core.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", u)
+	return fmt.Sprintf("%#v", v)
 }

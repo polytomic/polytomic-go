@@ -39,9 +39,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) List(
 	ctx context.Context,
 	id string,
-	request *bulksync.SchemasListRequest,
+	request *bulksync.ListSchemasRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ListBulkSchema, error) {
+) (*polytomicgo.V3ListBulkSchemaEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -89,7 +89,7 @@ func (c *Client) List(
 		return apiError
 	}
 
-	var response *polytomicgo.ListBulkSchema
+	var response *polytomicgo.V3ListBulkSchemaEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -110,9 +110,9 @@ func (c *Client) List(
 func (c *Client) Patch(
 	ctx context.Context,
 	id string,
-	request *bulksync.BulkSyncSchemasRequest,
+	request *bulksync.V3BulkSyncSchemasRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ListBulkSchema, error) {
+) (*polytomicgo.V3ListBulkSchemaEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -173,7 +173,7 @@ func (c *Client) Patch(
 		return apiError
 	}
 
-	var response *polytomicgo.ListBulkSchema
+	var response *polytomicgo.V3ListBulkSchemaEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -195,9 +195,10 @@ func (c *Client) Patch(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
-	schemaId string,
+	schemaID string,
+	request *bulksync.GetSchemasRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.BulkSchemaEnvelope, error) {
+) (*polytomicgo.V3BulkSchemaEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -207,7 +208,7 @@ func (c *Client) Get(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schemas/%v", id, schemaId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schemas/%v", id, schemaID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -237,7 +238,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *polytomicgo.BulkSchemaEnvelope
+	var response *polytomicgo.V3BulkSchemaEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -258,10 +259,10 @@ func (c *Client) Get(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	schemaId string,
-	request *bulksync.UpdateBulkSchema,
+	schemaID string,
+	request *bulksync.V3UpdateBulkSchema,
 	opts ...option.RequestOption,
-) (*polytomicgo.BulkSchemaEnvelope, error) {
+) (*polytomicgo.V3BulkSchemaEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -271,7 +272,7 @@ func (c *Client) Update(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schemas/%v", id, schemaId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schemas/%v", id, schemaID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -315,7 +316,7 @@ func (c *Client) Update(
 		return apiError
 	}
 
-	var response *polytomicgo.BulkSchemaEnvelope
+	var response *polytomicgo.V3BulkSchemaEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

@@ -36,9 +36,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 
 func (c *Client) List(
 	ctx context.Context,
-	request *polytomicgo.EventsListRequest,
+	request *polytomicgo.ListEventsRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.EventsEnvelope, error) {
+) (*polytomicgo.V2EventsEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -93,7 +93,7 @@ func (c *Client) List(
 		return apiError
 	}
 
-	var response *polytomicgo.EventsEnvelope
+	var response *polytomicgo.V2EventsEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -114,7 +114,7 @@ func (c *Client) List(
 func (c *Client) GetTypes(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomicgo.EventTypesEnvelope, error) {
+) (*polytomicgo.V2EventTypesEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -147,7 +147,7 @@ func (c *Client) GetTypes(
 		return apiError
 	}
 
-	var response *polytomicgo.EventTypesEnvelope
+	var response *polytomicgo.V2EventTypesEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

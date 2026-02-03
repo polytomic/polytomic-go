@@ -45,9 +45,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) GetSource(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.ModelSyncGetSourceRequest,
+	request *polytomicgo.GetSourceModelSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.GetModelSyncSourceMetaEnvelope, error) {
+) (*polytomicgo.V4GetSyncSourceMetaEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -116,7 +116,7 @@ func (c *Client) GetSource(
 		return apiError
 	}
 
-	var response *polytomicgo.GetModelSyncSourceMetaEnvelope
+	var response *polytomicgo.V4GetSyncSourceMetaEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -137,9 +137,9 @@ func (c *Client) GetSource(
 func (c *Client) GetSourceFields(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.ModelSyncGetSourceFieldsRequest,
+	request *polytomicgo.GetSourceFieldsModelSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ModelFieldResponse, error) {
+) (*polytomicgo.V2ModelFieldResponse, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -208,7 +208,7 @@ func (c *Client) GetSourceFields(
 		return apiError
 	}
 
-	var response *polytomicgo.ModelFieldResponse
+	var response *polytomicgo.V2ModelFieldResponse
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -228,9 +228,9 @@ func (c *Client) GetSourceFields(
 
 func (c *Client) List(
 	ctx context.Context,
-	request *polytomicgo.ModelSyncListRequest,
+	request *polytomicgo.ListModelSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ListModelSyncResponseEnvelope, error) {
+) (*polytomicgo.V2ListSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -292,7 +292,7 @@ func (c *Client) List(
 		return apiError
 	}
 
-	var response *polytomicgo.ListModelSyncResponseEnvelope
+	var response *polytomicgo.V2ListSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -372,9 +372,9 @@ func (c *Client) List(
 // a connection supports target creation.
 func (c *Client) Create(
 	ctx context.Context,
-	request *polytomicgo.CreateModelSyncRequest,
+	request *polytomicgo.V2CreateSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ModelSyncResponseEnvelope, error) {
+) (*polytomicgo.V2SyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -435,7 +435,7 @@ func (c *Client) Create(
 		return apiError
 	}
 
-	var response *polytomicgo.ModelSyncResponseEnvelope
+	var response *polytomicgo.V2SyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -457,7 +457,7 @@ func (c *Client) Create(
 func (c *Client) GetScheduleOptions(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomicgo.ScheduleOptionResponseEnvelope, error) {
+) (*polytomicgo.V2ScheduleOptionResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -497,7 +497,7 @@ func (c *Client) GetScheduleOptions(
 		return apiError
 	}
 
-	var response *polytomicgo.ScheduleOptionResponseEnvelope
+	var response *polytomicgo.V2ScheduleOptionResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -518,8 +518,9 @@ func (c *Client) GetScheduleOptions(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.GetModelSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ModelSyncResponseEnvelope, error) {
+) (*polytomicgo.V2SyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -566,7 +567,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *polytomicgo.ModelSyncResponseEnvelope
+	var response *polytomicgo.V2SyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -587,9 +588,9 @@ func (c *Client) Get(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.UpdateModelSyncRequest,
+	request *polytomicgo.V2UpdateSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ModelSyncResponseEnvelope, error) {
+) (*polytomicgo.V2SyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -657,7 +658,7 @@ func (c *Client) Update(
 		return apiError
 	}
 
-	var response *polytomicgo.ModelSyncResponseEnvelope
+	var response *polytomicgo.V2SyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -679,6 +680,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.RemoveModelSyncRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -760,9 +762,9 @@ func (c *Client) Remove(
 func (c *Client) Activate(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.ActivateSyncInput,
+	request *polytomicgo.ActivateModelSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ActivateSyncEnvelope, error) {
+) (*polytomicgo.V2ActivateSyncEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -816,7 +818,7 @@ func (c *Client) Activate(
 		return apiError
 	}
 
-	var response *polytomicgo.ActivateSyncEnvelope
+	var response *polytomicgo.V2ActivateSyncEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -839,8 +841,9 @@ func (c *Client) Cancel(
 	ctx context.Context,
 	// The active execution of this sync ID will be cancelled.
 	id string,
+	request *polytomicgo.CancelModelSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.CancelModelSyncResponseEnvelope, error) {
+) (*polytomicgo.V2CancelSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -894,7 +897,7 @@ func (c *Client) Cancel(
 		return apiError
 	}
 
-	var response *polytomicgo.CancelModelSyncResponseEnvelope
+	var response *polytomicgo.V2CancelSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -918,9 +921,9 @@ func (c *Client) Cancel(
 func (c *Client) Start(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.StartModelSyncRequest,
+	request *polytomicgo.V2StartSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.StartModelSyncResponseEnvelope, error) {
+) (*polytomicgo.V2StartSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -988,7 +991,7 @@ func (c *Client) Start(
 		return apiError
 	}
 
-	var response *polytomicgo.StartModelSyncResponseEnvelope
+	var response *polytomicgo.V2StartSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -1010,8 +1013,9 @@ func (c *Client) Start(
 func (c *Client) GetStatus(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.GetStatusModelSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.SyncStatusEnvelope, error) {
+) (*polytomicgo.V2SyncStatusEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -1058,7 +1062,7 @@ func (c *Client) GetStatus(
 		return apiError
 	}
 
-	var response *polytomicgo.SyncStatusEnvelope
+	var response *polytomicgo.V2SyncStatusEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

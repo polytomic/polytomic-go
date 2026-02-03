@@ -43,7 +43,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomicgo.WebhookListEnvelope, error) {
+) (*polytomicgo.V2WebhookListEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -83,7 +83,7 @@ func (c *Client) List(
 		return apiError
 	}
 
-	var response *polytomicgo.WebhookListEnvelope
+	var response *polytomicgo.V2WebhookListEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -108,9 +108,9 @@ func (c *Client) List(
 // Consult the [Events documentation](https://apidocs.polytomic.com/guides/events) for more information.
 func (c *Client) Create(
 	ctx context.Context,
-	request *polytomicgo.CreateWebhooksSchema,
+	request *polytomicgo.V2CreateWebhooksSchema,
 	opts ...option.RequestOption,
-) (*polytomicgo.WebhookEnvelope, error) {
+) (*polytomicgo.V2WebhookEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -157,7 +157,7 @@ func (c *Client) Create(
 		return apiError
 	}
 
-	var response *polytomicgo.WebhookEnvelope
+	var response *polytomicgo.V2WebhookEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -184,8 +184,9 @@ func (c *Client) Create(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.GetWebhooksRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.WebhookEnvelope, error) {
+) (*polytomicgo.V2WebhookEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -225,7 +226,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *polytomicgo.WebhookEnvelope
+	var response *polytomicgo.V2WebhookEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -251,9 +252,9 @@ func (c *Client) Get(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.UpdateWebhooksSchema,
+	request *polytomicgo.V2UpdateWebhooksSchema,
 	opts ...option.RequestOption,
-) (*polytomicgo.WebhookEnvelope, error) {
+) (*polytomicgo.V2WebhookEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -300,7 +301,7 @@ func (c *Client) Update(
 		return apiError
 	}
 
-	var response *polytomicgo.WebhookEnvelope
+	var response *polytomicgo.V2WebhookEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -322,6 +323,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.RemoveWebhooksRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -389,8 +391,9 @@ func (c *Client) Remove(
 func (c *Client) Disable(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.DisableWebhooksRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.WebhookEnvelope, error) {
+) (*polytomicgo.V2WebhookEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -437,7 +440,7 @@ func (c *Client) Disable(
 		return apiError
 	}
 
-	var response *polytomicgo.WebhookEnvelope
+	var response *polytomicgo.V2WebhookEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -458,8 +461,9 @@ func (c *Client) Disable(
 func (c *Client) Enable(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.EnableWebhooksRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.WebhookEnvelope, error) {
+) (*polytomicgo.V2WebhookEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -506,7 +510,7 @@ func (c *Client) Enable(
 		return apiError
 	}
 
-	var response *polytomicgo.WebhookEnvelope
+	var response *polytomicgo.V2WebhookEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

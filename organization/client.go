@@ -41,7 +41,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomicgo.OrganizationsEnvelope, error) {
+) (*polytomicgo.V2OrganizationsEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -81,7 +81,7 @@ func (c *Client) List(
 		return apiError
 	}
 
-	var response *polytomicgo.OrganizationsEnvelope
+	var response *polytomicgo.V2OrganizationsEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -104,9 +104,9 @@ func (c *Client) List(
 // > Organization endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) Create(
 	ctx context.Context,
-	request *polytomicgo.CreateOrganizationRequestSchema,
+	request *polytomicgo.V2CreateOrganizationRequestSchema,
 	opts ...option.RequestOption,
-) (*polytomicgo.OrganizationEnvelope, error) {
+) (*polytomicgo.V2OrganizationEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -160,7 +160,7 @@ func (c *Client) Create(
 		return apiError
 	}
 
-	var response *polytomicgo.OrganizationEnvelope
+	var response *polytomicgo.V2OrganizationEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -185,8 +185,9 @@ func (c *Client) Create(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.GetOrganizationRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.OrganizationEnvelope, error) {
+) (*polytomicgo.V2OrganizationEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -226,7 +227,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *polytomicgo.OrganizationEnvelope
+	var response *polytomicgo.V2OrganizationEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -250,9 +251,9 @@ func (c *Client) Get(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.UpdateOrganizationRequestSchema,
+	request *polytomicgo.V2UpdateOrganizationRequestSchema,
 	opts ...option.RequestOption,
-) (*polytomicgo.OrganizationEnvelope, error) {
+) (*polytomicgo.V2OrganizationEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -306,7 +307,7 @@ func (c *Client) Update(
 		return apiError
 	}
 
-	var response *polytomicgo.OrganizationEnvelope
+	var response *polytomicgo.V2OrganizationEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -331,6 +332,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.RemoveOrganizationRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)

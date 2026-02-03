@@ -9,43 +9,46 @@ import (
 	time "time"
 )
 
-type SchemasListRequest struct {
-	Filters map[string]*string `json:"-" url:"filters,omitempty"`
+type GetSchemasRequest struct {
 }
 
-type BulkSyncSchemasRequest struct {
-	Schemas []*polytomicgo.BulkSchema `json:"schemas,omitempty" url:"schemas,omitempty"`
+type ListSchemasRequest struct {
+	Filters map[string]string `json:"-" url:"filters,omitempty"`
 }
 
-type UpdateBulkSchema struct {
-	DataCutoffTimestamp *time.Time                     `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
-	DisableDataCutoff   *bool                          `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
-	Enabled             *bool                          `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Fields              []*polytomicgo.UpdateBulkField `json:"fields,omitempty" url:"fields,omitempty"`
-	Filters             []*polytomicgo.BulkFilter      `json:"filters,omitempty" url:"filters,omitempty"`
-	PartitionKey        *string                        `json:"partition_key,omitempty" url:"partition_key,omitempty"`
-	TrackingField       *string                        `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
-	UserOutputName      *string                        `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
+type V3BulkSyncSchemasRequest struct {
+	Schemas []*polytomicgo.V3BulkSchema `json:"schemas,omitempty" url:"schemas,omitempty"`
 }
 
-func (u *UpdateBulkSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler UpdateBulkSchema
+type V3UpdateBulkSchema struct {
+	DataCutoffTimestamp *time.Time                       `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
+	DisableDataCutoff   *bool                            `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
+	Enabled             *bool                            `json:"enabled,omitempty" url:"enabled,omitempty"`
+	Fields              []*polytomicgo.V3UpdateBulkField `json:"fields,omitempty" url:"fields,omitempty"`
+	Filters             []*polytomicgo.V3BulkFilter      `json:"filters,omitempty" url:"filters,omitempty"`
+	PartitionKey        *string                          `json:"partition_key,omitempty" url:"partition_key,omitempty"`
+	TrackingField       *string                          `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
+	UserOutputName      *string                          `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
+}
+
+func (v *V3UpdateBulkSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler V3UpdateBulkSchema
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*u = UpdateBulkSchema(body)
+	*v = V3UpdateBulkSchema(body)
 	return nil
 }
 
-func (u *UpdateBulkSchema) MarshalJSON() ([]byte, error) {
-	type embed UpdateBulkSchema
+func (v *V3UpdateBulkSchema) MarshalJSON() ([]byte, error) {
+	type embed V3UpdateBulkSchema
 	var marshaler = struct {
 		embed
 		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
 	}{
-		embed:               embed(*u),
-		DataCutoffTimestamp: core.NewOptionalDateTime(u.DataCutoffTimestamp),
+		embed:               embed(*v),
+		DataCutoffTimestamp: core.NewOptionalDateTime(v.DataCutoffTimestamp),
 	}
 	return json.Marshal(marshaler)
 }

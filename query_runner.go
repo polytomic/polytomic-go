@@ -8,7 +8,7 @@ import (
 	core "github.com/polytomic/polytomic-go/core"
 )
 
-type QueryRunnerGetQueryRequest struct {
+type GetQueryQueryRunnerRequest struct {
 	Page *string `json:"-" url:"page,omitempty"`
 }
 
@@ -17,41 +17,9 @@ type V4RunQueryRequest struct {
 	Query *string `json:"-" url:"query,omitempty"`
 }
 
-type Pagination struct {
-	// URL to the next page of results, if available. This may be returned as a host relative path.
-	Next *string `json:"next,omitempty" url:"next,omitempty"`
-	// URL to the previous page of results, if available. This may be returned as a host relative path.
-	Previous *string `json:"previous,omitempty" url:"previous,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (p *Pagination) UnmarshalJSON(data []byte) error {
-	type unmarshaler Pagination
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = Pagination(value)
-	p._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *Pagination) String() string {
-	if len(p._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
 type V4QueryResultsEnvelope struct {
-	Data  *V4RunQueryResult `json:"data,omitempty" url:"data,omitempty"`
-	Links *Pagination       `json:"links,omitempty" url:"links,omitempty"`
+	Data  *V4RunQueryResult     `json:"data,omitempty" url:"data,omitempty"`
+	Links *V4RunQueryPagination `json:"links,omitempty" url:"links,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -108,6 +76,38 @@ func (v *V4RunQueryEnvelope) String() string {
 	return fmt.Sprintf("%#v", v)
 }
 
+type V4RunQueryPagination struct {
+	// URL to the next page of results, if available. This may be returned as a host relative path.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// URL to the previous page of results, if available. This may be returned as a host relative path.
+	Previous *string `json:"previous,omitempty" url:"previous,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V4RunQueryPagination) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4RunQueryPagination
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V4RunQueryPagination(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V4RunQueryPagination) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
 type V4RunQueryResult struct {
 	// The number of rows returned by the query. This will not be returned until the query completes.
 	Count *int    `json:"count,omitempty" url:"count,omitempty"`
@@ -117,7 +117,7 @@ type V4RunQueryResult struct {
 	// The names of the fields returned by the query. This will not be returned until the query completes.
 	Fields []string `json:"fields,omitempty" url:"fields,omitempty"`
 	// The ID of the query task.
-	Id *string `json:"id,omitempty" url:"id,omitempty"`
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
 	// The query results, returned as an array of objects.
 	Results []map[string]interface{} `json:"results,omitempty" url:"results,omitempty"`
 	Status  *WorkTaskStatus          `json:"status,omitempty" url:"status,omitempty"`

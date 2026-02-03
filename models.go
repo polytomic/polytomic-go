@@ -9,184 +9,80 @@ import (
 	time "time"
 )
 
-type ModelsCreateRequest struct {
-	Async *bool               `json:"-" url:"async,omitempty"`
-	Body  *CreateModelRequest `json:"-" url:"-"`
+type CreateModelsRequest struct {
+	Async *bool                 `json:"-" url:"async,omitempty"`
+	Body  *V2CreateModelRequest `json:"-" url:"-"`
 }
 
-func (m *ModelsCreateRequest) UnmarshalJSON(data []byte) error {
-	body := new(CreateModelRequest)
+func (c *CreateModelsRequest) UnmarshalJSON(data []byte) error {
+	body := new(V2CreateModelRequest)
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	m.Body = body
+	c.Body = body
 	return nil
 }
 
-func (m *ModelsCreateRequest) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.Body)
+func (c *CreateModelsRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c.Body)
 }
 
-type ModelsGetRequest struct {
+type GetModelsRequest struct {
 	Async *bool `json:"-" url:"async,omitempty"`
 }
 
-type ModelsGetEnrichmentSourceRequest struct {
+type GetEnrichmentSourceModelsRequest struct {
 	Params map[string][]string `json:"-" url:"params,omitempty"`
 }
 
-type GetEnrichmentInputFieldsRequest struct {
+type V2EnrichmentInputFieldsRequest struct {
 	Configuration *V2EnricherConfiguration `json:"configuration,omitempty" url:"configuration,omitempty"`
 }
 
-type ModelsPreviewRequest struct {
-	Async *bool               `json:"-" url:"async,omitempty"`
-	Body  *CreateModelRequest `json:"-" url:"-"`
+type PreviewModelsRequest struct {
+	Async *bool                 `json:"-" url:"async,omitempty"`
+	Body  *V2CreateModelRequest `json:"-" url:"-"`
 }
 
-func (m *ModelsPreviewRequest) UnmarshalJSON(data []byte) error {
-	body := new(CreateModelRequest)
+func (p *PreviewModelsRequest) UnmarshalJSON(data []byte) error {
+	body := new(V2CreateModelRequest)
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	m.Body = body
+	p.Body = body
 	return nil
 }
 
-func (m *ModelsPreviewRequest) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.Body)
+func (p *PreviewModelsRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(p.Body)
 }
 
-type ModelsRemoveRequest struct {
+type RemoveModelsRequest struct {
 	Async *bool `json:"-" url:"async,omitempty"`
 }
 
-type ModelsSampleRequest struct {
+type SampleModelsRequest struct {
 	Async *bool `json:"-" url:"async,omitempty"`
 }
 
-type UpdateModelRequest struct {
+type V2UpdateModelRequest struct {
 	Async            *bool                     `json:"-" url:"async,omitempty"`
 	AdditionalFields []*ModelModelFieldRequest `json:"additional_fields,omitempty" url:"additional_fields,omitempty"`
 	Configuration    map[string]interface{}    `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionId     string                    `json:"connection_id" url:"connection_id"`
-	Enricher         *Enrichment               `json:"enricher,omitempty" url:"enricher,omitempty"`
+	ConnectionID     string                    `json:"connection_id" url:"connection_id"`
+	Enricher         *V2Enrichment             `json:"enricher,omitempty" url:"enricher,omitempty"`
 	Fields           []string                  `json:"fields,omitempty" url:"fields,omitempty"`
 	Identifier       *string                   `json:"identifier,omitempty" url:"identifier,omitempty"`
 	Labels           []string                  `json:"labels,omitempty" url:"labels,omitempty"`
 	Name             string                    `json:"name" url:"name"`
-	OrganizationId   *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID   *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Policies         []string                  `json:"policies,omitempty" url:"policies,omitempty"`
 	Refresh          *bool                     `json:"refresh,omitempty" url:"refresh,omitempty"`
 	Relations        []*ModelRelation          `json:"relations,omitempty" url:"relations,omitempty"`
 	TrackingColumns  []string                  `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
 }
 
-type CreateModelRequest struct {
-	AdditionalFields []*ModelModelFieldRequest `json:"additional_fields,omitempty" url:"additional_fields,omitempty"`
-	Configuration    map[string]interface{}    `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionId     string                    `json:"connection_id" url:"connection_id"`
-	Enricher         *Enrichment               `json:"enricher,omitempty" url:"enricher,omitempty"`
-	Fields           []string                  `json:"fields,omitempty" url:"fields,omitempty"`
-	Identifier       *string                   `json:"identifier,omitempty" url:"identifier,omitempty"`
-	Labels           []string                  `json:"labels,omitempty" url:"labels,omitempty"`
-	Name             string                    `json:"name" url:"name"`
-	OrganizationId   *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies         []string                  `json:"policies,omitempty" url:"policies,omitempty"`
-	Relations        []*ModelRelation          `json:"relations,omitempty" url:"relations,omitempty"`
-	TrackingColumns  []string                  `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *CreateModelRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateModelRequest
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CreateModelRequest(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CreateModelRequest) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type Enrichment struct {
-	Configuration *V2EnricherConfiguration `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionId  *string                  `json:"connection_id,omitempty" url:"connection_id,omitempty"`
-	// Must be provided to update an existing enrichment
-	EnricherId *string `json:"enricher_id,omitempty" url:"enricher_id,omitempty"`
-	// If not provided, all fields will be enabled.
-	Fields   []*ModelField      `json:"fields,omitempty" url:"fields,omitempty"`
-	Mappings *V2EnricherMapping `json:"mappings,omitempty" url:"mappings,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (e *Enrichment) UnmarshalJSON(data []byte) error {
-	type unmarshaler Enrichment
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*e = Enrichment(value)
-	e._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (e *Enrichment) String() string {
-	if len(e._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(e._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(e); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", e)
-}
-
 type LabelLabel = map[string]interface{}
-
-type ModelListResponseEnvelope struct {
-	Data []*ModelResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (m *ModelListResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ModelListResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*m = ModelListResponseEnvelope(value)
-	m._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *ModelListResponseEnvelope) String() string {
-	if len(m._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
 
 type ModelModelFieldRequest struct {
 	Example *string `json:"example,omitempty" url:"example,omitempty"`
@@ -252,7 +148,7 @@ func (m *ModelRelation) String() string {
 
 type ModelRelationTo struct {
 	Field   *string `json:"field,omitempty" url:"field,omitempty"`
-	ModelId *string `json:"model_id,omitempty" url:"model_id,omitempty"`
+	ModelID *string `json:"model_id,omitempty" url:"model_id,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -280,222 +176,44 @@ func (m *ModelRelationTo) String() string {
 	return fmt.Sprintf("%#v", m)
 }
 
-type ModelResponse struct {
-	Configuration   map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionId    *string                `json:"connection_id,omitempty" url:"connection_id,omitempty"`
-	CreatedAt       *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
-	CreatedBy       *CommonOutputActor     `json:"created_by,omitempty" url:"created_by,omitempty"`
-	Enricher        *Enrichment            `json:"enricher,omitempty" url:"enricher,omitempty"`
-	Fields          []*ModelField          `json:"fields,omitempty" url:"fields,omitempty"`
-	Id              *string                `json:"id,omitempty" url:"id,omitempty"`
-	Identifier      *string                `json:"identifier,omitempty" url:"identifier,omitempty"`
-	Labels          []LabelLabel           `json:"labels,omitempty" url:"labels,omitempty"`
-	Name            *string                `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId  *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies        []string               `json:"policies,omitempty" url:"policies,omitempty"`
-	Relations       []*Relation            `json:"relations,omitempty" url:"relations,omitempty"`
-	TrackingColumns []string               `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
-	Type            *string                `json:"type,omitempty" url:"type,omitempty"`
-	UpdatedAt       *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	UpdatedBy       *CommonOutputActor     `json:"updated_by,omitempty" url:"updated_by,omitempty"`
-	Version         *int                   `json:"version,omitempty" url:"version,omitempty"`
+type V2CreateModelRequest struct {
+	AdditionalFields []*ModelModelFieldRequest `json:"additional_fields,omitempty" url:"additional_fields,omitempty"`
+	Configuration    map[string]interface{}    `json:"configuration,omitempty" url:"configuration,omitempty"`
+	ConnectionID     string                    `json:"connection_id" url:"connection_id"`
+	Enricher         *V2Enrichment             `json:"enricher,omitempty" url:"enricher,omitempty"`
+	Fields           []string                  `json:"fields,omitempty" url:"fields,omitempty"`
+	Identifier       *string                   `json:"identifier,omitempty" url:"identifier,omitempty"`
+	Labels           []string                  `json:"labels,omitempty" url:"labels,omitempty"`
+	Name             string                    `json:"name" url:"name"`
+	OrganizationID   *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies         []string                  `json:"policies,omitempty" url:"policies,omitempty"`
+	Relations        []*ModelRelation          `json:"relations,omitempty" url:"relations,omitempty"`
+	TrackingColumns  []string                  `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (m *ModelResponse) UnmarshalJSON(data []byte) error {
-	type embed ModelResponse
-	var unmarshaler = struct {
-		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed: embed(*m),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*m = ModelResponse(unmarshaler.embed)
-	m.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	m.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	m._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *ModelResponse) MarshalJSON() ([]byte, error) {
-	type embed ModelResponse
-	var marshaler = struct {
-		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed:     embed(*m),
-		CreatedAt: core.NewOptionalDateTime(m.CreatedAt),
-		UpdatedAt: core.NewOptionalDateTime(m.UpdatedAt),
-	}
-	return json.Marshal(marshaler)
-}
-
-func (m *ModelResponse) String() string {
-	if len(m._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
-
-type ModelResponseEnvelope struct {
-	Data *ModelResponse `json:"data,omitempty" url:"data,omitempty"`
-	Job  *JobResponse   `json:"job,omitempty" url:"job,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (m *ModelResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ModelResponseEnvelope
+func (v *V2CreateModelRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2CreateModelRequest
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*m = ModelResponseEnvelope(value)
-	m._rawJSON = json.RawMessage(data)
+	*v = V2CreateModelRequest(value)
+	v._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (m *ModelResponseEnvelope) String() string {
-	if len(m._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+func (v *V2CreateModelRequest) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(m); err == nil {
+	if value, err := core.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", m)
-}
-
-type ModelSample struct {
-	Records  []V2SampleRecord `json:"records,omitempty" url:"records,omitempty"`
-	Warnings []string         `json:"warnings,omitempty" url:"warnings,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (m *ModelSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler ModelSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*m = ModelSample(value)
-	m._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *ModelSample) String() string {
-	if len(m._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
-
-type ModelSampleResponseEnvelope struct {
-	Data *ModelSample `json:"data,omitempty" url:"data,omitempty"`
-	Job  *JobResponse `json:"job,omitempty" url:"job,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (m *ModelSampleResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ModelSampleResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*m = ModelSampleResponseEnvelope(value)
-	m._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *ModelSampleResponseEnvelope) String() string {
-	if len(m._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
-
-type Relation struct {
-	From *string     `json:"from,omitempty" url:"from,omitempty"`
-	To   *RelationTo `json:"to,omitempty" url:"to,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (r *Relation) UnmarshalJSON(data []byte) error {
-	type unmarshaler Relation
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*r = Relation(value)
-	r._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (r *Relation) String() string {
-	if len(r._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(r); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", r)
-}
-
-type RelationTo struct {
-	Field   *string `json:"field,omitempty" url:"field,omitempty"`
-	ModelId *string `json:"model_id,omitempty" url:"model_id,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (r *RelationTo) UnmarshalJSON(data []byte) error {
-	type unmarshaler RelationTo
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*r = RelationTo(value)
-	r._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (r *RelationTo) String() string {
-	if len(r._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(r); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", r)
+	return fmt.Sprintf("%#v", v)
 }
 
 // Similar to a model configuration, this configures the enricher. For example, if you wanted to use Apollo to enrich people, you would send `{"object": "people"}` as the configuration. Each enricher configuration can be found in the connection configuration docs.
@@ -503,6 +221,41 @@ type V2EnricherConfiguration = map[string]interface{}
 
 // A map of parent model Source Name to child model Source Name. For example, if your model has a field called `work_email` and the enricher accepts a field called `email`, you'd send a map of `{"work_email":"email"}`. The set of required input mappings varies based on the configuration of the enrichment. You can use the `enrichment/{connection_id}/inputfields` API to discover available input field combinations for a given configuration.
 type V2EnricherMapping = map[string]string
+
+type V2Enrichment struct {
+	Configuration *V2EnricherConfiguration `json:"configuration,omitempty" url:"configuration,omitempty"`
+	ConnectionID  *string                  `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	// Must be provided to update an existing enrichment
+	EnricherID *string `json:"enricher_id,omitempty" url:"enricher_id,omitempty"`
+	// If not provided, all fields will be enabled.
+	Fields   []*V2ModelField    `json:"fields,omitempty" url:"fields,omitempty"`
+	Mappings *V2EnricherMapping `json:"mappings,omitempty" url:"mappings,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2Enrichment) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2Enrichment
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2Enrichment(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2Enrichment) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
 
 type V2GetEnrichmentInputFieldsResponseEnvelope struct {
 	Data [][]string `json:"data,omitempty" url:"data,omitempty"`
@@ -522,6 +275,253 @@ func (v *V2GetEnrichmentInputFieldsResponseEnvelope) UnmarshalJSON(data []byte) 
 }
 
 func (v *V2GetEnrichmentInputFieldsResponseEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ModelListResponseEnvelope struct {
+	Data []*V2ModelResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ModelListResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ModelListResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ModelListResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ModelListResponseEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ModelResponse struct {
+	Configuration   map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
+	ConnectionID    *string                `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	CreatedAt       *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
+	CreatedBy       *CommonOutputActor     `json:"created_by,omitempty" url:"created_by,omitempty"`
+	Enricher        *V2Enrichment          `json:"enricher,omitempty" url:"enricher,omitempty"`
+	Fields          []*V2ModelField        `json:"fields,omitempty" url:"fields,omitempty"`
+	ID              *string                `json:"id,omitempty" url:"id,omitempty"`
+	Identifier      *string                `json:"identifier,omitempty" url:"identifier,omitempty"`
+	Labels          []LabelLabel           `json:"labels,omitempty" url:"labels,omitempty"`
+	Name            *string                `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationID  *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies        []string               `json:"policies,omitempty" url:"policies,omitempty"`
+	Relations       []*V2Relation          `json:"relations,omitempty" url:"relations,omitempty"`
+	TrackingColumns []string               `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
+	Type            *string                `json:"type,omitempty" url:"type,omitempty"`
+	UpdatedAt       *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	UpdatedBy       *CommonOutputActor     `json:"updated_by,omitempty" url:"updated_by,omitempty"`
+	Version         *int                   `json:"version,omitempty" url:"version,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ModelResponse) UnmarshalJSON(data []byte) error {
+	type embed V2ModelResponse
+	var unmarshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*v),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*v = V2ModelResponse(unmarshaler.embed)
+	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	v.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ModelResponse) MarshalJSON() ([]byte, error) {
+	type embed V2ModelResponse
+	var marshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:     embed(*v),
+		CreatedAt: core.NewOptionalDateTime(v.CreatedAt),
+		UpdatedAt: core.NewOptionalDateTime(v.UpdatedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (v *V2ModelResponse) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ModelResponseEnvelope struct {
+	Data *V2ModelResponse `json:"data,omitempty" url:"data,omitempty"`
+	Job  *V2JobResponse   `json:"job,omitempty" url:"job,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ModelResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ModelResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ModelResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ModelResponseEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ModelSample struct {
+	Records  []V2SampleRecord `json:"records,omitempty" url:"records,omitempty"`
+	Warnings []string         `json:"warnings,omitempty" url:"warnings,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ModelSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ModelSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ModelSample(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ModelSample) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ModelSampleResponseEnvelope struct {
+	Data *V2ModelSample `json:"data,omitempty" url:"data,omitempty"`
+	Job  *V2JobResponse `json:"job,omitempty" url:"job,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ModelSampleResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ModelSampleResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ModelSampleResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ModelSampleResponseEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2Relation struct {
+	From *string       `json:"from,omitempty" url:"from,omitempty"`
+	To   *V2RelationTo `json:"to,omitempty" url:"to,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2Relation) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2Relation
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2Relation(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2Relation) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2RelationTo struct {
+	Field   *string `json:"field,omitempty" url:"field,omitempty"`
+	ModelID *string `json:"model_id,omitempty" url:"model_id,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2RelationTo) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2RelationTo
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2RelationTo(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2RelationTo) String() string {
 	if len(v._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value

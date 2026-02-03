@@ -38,7 +38,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) Get(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomicgo.GetIdentityResponseEnvelope, error) {
+) (*polytomicgo.V2GetIdentityResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -78,7 +78,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *polytomicgo.GetIdentityResponseEnvelope
+	var response *polytomicgo.V2GetIdentityResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

@@ -8,40 +8,40 @@ import (
 	core "github.com/polytomic/polytomic-go/core"
 )
 
-type GetIdentityResponseEnvelope struct {
-	Data *GetIdentityResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+type V2GetIdentityResponseEnvelope struct {
+	Data *V2GetIdentityResponseSchema `json:"data,omitempty" url:"data,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (g *GetIdentityResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetIdentityResponseEnvelope
+func (v *V2GetIdentityResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2GetIdentityResponseEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetIdentityResponseEnvelope(value)
-	g._rawJSON = json.RawMessage(data)
+	*v = V2GetIdentityResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetIdentityResponseEnvelope) String() string {
-	if len(g._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+func (v *V2GetIdentityResponseEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(g); err == nil {
+	if value, err := core.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", v)
 }
 
-type GetIdentityResponseSchema struct {
+type V2GetIdentityResponseSchema struct {
 	// The email of the caller.
 	Email *string `json:"email,omitempty" url:"email,omitempty"`
 	// The ID of the caller; this will be omitted for non-user callers.
-	Id *string `json:"id,omitempty" url:"id,omitempty"`
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
 	// Whether the caller is using an organization key.
 	IsOrganization *bool `json:"is_organization,omitempty" url:"is_organization,omitempty"`
 	// Whether the caller is using a partner key.
@@ -50,7 +50,7 @@ type GetIdentityResponseSchema struct {
 	// Whether the caller is a user.
 	IsUser *bool `json:"is_user,omitempty" url:"is_user,omitempty"`
 	// The ID of the organization the caller belongs to.
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// The name of the organization the caller belongs to.
 	OrganizationName *string `json:"organization_name,omitempty" url:"organization_name,omitempty"`
 	Role             *string `json:"role,omitempty" url:"role,omitempty"`
@@ -58,25 +58,25 @@ type GetIdentityResponseSchema struct {
 	_rawJSON json.RawMessage
 }
 
-func (g *GetIdentityResponseSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetIdentityResponseSchema
+func (v *V2GetIdentityResponseSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2GetIdentityResponseSchema
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetIdentityResponseSchema(value)
-	g._rawJSON = json.RawMessage(data)
+	*v = V2GetIdentityResponseSchema(value)
+	v._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetIdentityResponseSchema) String() string {
-	if len(g._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+func (v *V2GetIdentityResponseSchema) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(g); err == nil {
+	if value, err := core.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", v)
 }

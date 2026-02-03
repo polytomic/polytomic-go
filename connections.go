@@ -9,55 +9,64 @@ import (
 	time "time"
 )
 
-type ConnectCardRequest struct {
+type V3ConnectCardRequest struct {
 	// The id of an existing connection to update.
 	Connection *string `json:"connection,omitempty" url:"connection,omitempty"`
 	// Whether to use the dark theme for the Connect modal.
 	Dark *bool `json:"dark,omitempty" url:"dark,omitempty"`
 	// Name of the new connection. Must be unique per organization.
 	Name           string  `json:"name" url:"name"`
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// URL to redirect to after connection is created.
-	RedirectUrl string `json:"redirect_url" url:"redirect_url"`
+	RedirectURL string `json:"redirect_url" url:"redirect_url"`
 	// Connection type to create.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// List of connection types which are allowed to be created. Ignored if type is set.
 	Whitelist []string `json:"whitelist,omitempty" url:"whitelist,omitempty"`
 }
 
-type CreateConnectionRequestSchema struct {
+type V2CreateConnectionRequestSchema struct {
 	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
 	// Override interval for connection health checking.
 	HealthcheckInterval *string  `json:"healthcheck_interval,omitempty" url:"healthcheck_interval,omitempty"`
 	Name                string   `json:"name" url:"name"`
-	OrganizationId      *string  `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID      *string  `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Policies            []string `json:"policies,omitempty" url:"policies,omitempty"`
 	// URL to redirect to after completing OAuth flow.
-	RedirectUrl *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
+	RedirectURL *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
 	Type        string  `json:"type" url:"type"`
 	// Validate connection configuration.
 	Validate *bool `json:"validate,omitempty" url:"validate,omitempty"`
 }
 
-type ConnectionsRemoveRequest struct {
+type GetConnectionsRequest struct {
+}
+
+type GetConnectionTypeSchemaConnectionsRequest struct {
+}
+
+type GetParameterValuesConnectionsRequest struct {
+}
+
+type RemoveConnectionsRequest struct {
 	Force *bool `json:"-" url:"force,omitempty"`
 }
 
-type TestConnectionRequest struct {
+type V4TestConnectionRequest struct {
 	// Connection configuration to test.
 	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
 	// Optional existing connection ID to use as a base for testing. The provided configuration will be merged over the stored configuration for this connection before testing.
-	ConnectionId *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	ConnectionID *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
 	// The type of connection to test.
 	Type string `json:"type" url:"type"`
 }
 
-type UpdateConnectionRequestSchema struct {
+type V2UpdateConnectionRequestSchema struct {
 	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
 	// Override interval for connection health checking.
 	HealthcheckInterval *string  `json:"healthcheck_interval,omitempty" url:"healthcheck_interval,omitempty"`
 	Name                string   `json:"name" url:"name"`
-	OrganizationId      *string  `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID      *string  `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Policies            []string `json:"policies,omitempty" url:"policies,omitempty"`
 	Reconnect           *bool    `json:"reconnect,omitempty" url:"reconnect,omitempty"`
 	Type                *string  `json:"type,omitempty" url:"type,omitempty"`
@@ -128,448 +137,6 @@ func (b *BackendOAuthPrompt) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
-type ConnectCardResponse struct {
-	// URL to redirect the user to in order to create the new connection.
-	RedirectUrl *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
-	Token       *string `json:"token,omitempty" url:"token,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *ConnectCardResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectCardResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectCardResponse(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectCardResponse) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type ConnectCardResponseEnvelope struct {
-	Data *ConnectCardResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *ConnectCardResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectCardResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectCardResponseEnvelope(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectCardResponseEnvelope) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type ConnectionListResponseEnvelope struct {
-	Data []*ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *ConnectionListResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionListResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionListResponseEnvelope(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionListResponseEnvelope) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type ConnectionParameterValue struct {
-	Label *string     `json:"label,omitempty" url:"label,omitempty"`
-	Value interface{} `json:"value,omitempty" url:"value,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *ConnectionParameterValue) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionParameterValue
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionParameterValue(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionParameterValue) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type ConnectionParameterValuesResp struct {
-	AllowsCreation *bool                       `json:"allows_creation,omitempty" url:"allows_creation,omitempty"`
-	Values         []*ConnectionParameterValue `json:"values,omitempty" url:"values,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *ConnectionParameterValuesResp) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionParameterValuesResp
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionParameterValuesResp(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionParameterValuesResp) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type ConnectionParameterValuesResponseEnvelope struct {
-	Data map[string]*ConnectionParameterValuesResp `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *ConnectionParameterValuesResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionParameterValuesResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionParameterValuesResponseEnvelope(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionParameterValuesResponseEnvelope) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type ConnectionResponseEnvelope struct {
-	Data *ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *ConnectionResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionResponseEnvelope(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionResponseEnvelope) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type ConnectionResponseSchema struct {
-	// API calls made to service in the last 24h (supported integrations only).
-	ApiCallsLast24Hours *int                   `json:"api_calls_last_24_hours,omitempty" url:"api_calls_last_24_hours,omitempty"`
-	Configuration       map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	CreatedAt           *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
-	CreatedBy           *CommonOutputActor     `json:"created_by,omitempty" url:"created_by,omitempty"`
-	Id                  *string                `json:"id,omitempty" url:"id,omitempty"`
-	Name                *string                `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId      *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies            []string               `json:"policies,omitempty" url:"policies,omitempty"`
-	Saved               *bool                  `json:"saved,omitempty" url:"saved,omitempty"`
-	Status              *string                `json:"status,omitempty" url:"status,omitempty"`
-	StatusError         *string                `json:"status_error,omitempty" url:"status_error,omitempty"`
-	Type                *ConnectionTypeSchema  `json:"type,omitempty" url:"type,omitempty"`
-	UpdatedAt           *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	UpdatedBy           *CommonOutputActor     `json:"updated_by,omitempty" url:"updated_by,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *ConnectionResponseSchema) UnmarshalJSON(data []byte) error {
-	type embed ConnectionResponseSchema
-	var unmarshaler = struct {
-		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed: embed(*c),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*c = ConnectionResponseSchema(unmarshaler.embed)
-	c.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	c.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionResponseSchema) MarshalJSON() ([]byte, error) {
-	type embed ConnectionResponseSchema
-	var marshaler = struct {
-		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed:     embed(*c),
-		CreatedAt: core.NewOptionalDateTime(c.CreatedAt),
-		UpdatedAt: core.NewOptionalDateTime(c.UpdatedAt),
-	}
-	return json.Marshal(marshaler)
-}
-
-func (c *ConnectionResponseSchema) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type ConnectionType struct {
-	Capabilities         *BackendConnectionCapabilities `json:"capabilities,omitempty" url:"capabilities,omitempty"`
-	ConfigurationForm    *V2ConnectionForm              `json:"configurationForm,omitempty" url:"configurationForm,omitempty"`
-	EnvConfig            map[string]interface{}         `json:"envConfig,omitempty" url:"envConfig,omitempty"`
-	Id                   *string                        `json:"id,omitempty" url:"id,omitempty"`
-	InitialConfiguration map[string]interface{}         `json:"initialConfiguration,omitempty" url:"initialConfiguration,omitempty"`
-	LogoUrl              *string                        `json:"logo_url,omitempty" url:"logo_url,omitempty"`
-	Name                 *string                        `json:"name,omitempty" url:"name,omitempty"`
-	OauthPrompt          *BackendOAuthPrompt            `json:"oauth_prompt,omitempty" url:"oauth_prompt,omitempty"`
-	UseOauth             *bool                          `json:"use_oauth,omitempty" url:"use_oauth,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *ConnectionType) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionType
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionType(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionType) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type ConnectionTypeResponseEnvelope struct {
-	Data []*ConnectionType `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *ConnectionTypeResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionTypeResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionTypeResponseEnvelope(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionTypeResponseEnvelope) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type ConnectionTypeSchema struct {
-	Id         *string  `json:"id,omitempty" url:"id,omitempty"`
-	LogoUrl    *string  `json:"logo_url,omitempty" url:"logo_url,omitempty"`
-	Name       *string  `json:"name,omitempty" url:"name,omitempty"`
-	Operations []string `json:"operations,omitempty" url:"operations,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *ConnectionTypeSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionTypeSchema
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionTypeSchema(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionTypeSchema) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type CreateConnectionResponseEnvelope struct {
-	Data *CreateConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *CreateConnectionResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateConnectionResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CreateConnectionResponseEnvelope(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CreateConnectionResponseEnvelope) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type CreateConnectionResponseSchema struct {
-	// Code to enter in order to complete connection authentication.
-	AuthCode *string `json:"auth_code,omitempty" url:"auth_code,omitempty"`
-	// URL to visit to complete connection authentication.
-	AuthUrl       *string                `json:"auth_url,omitempty" url:"auth_url,omitempty"`
-	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	// Interval for connection health checking.
-	HealthcheckInterval *string               `json:"healthcheck_interval,omitempty" url:"healthcheck_interval,omitempty"`
-	Id                  *string               `json:"id,omitempty" url:"id,omitempty"`
-	Name                *string               `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId      *string               `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies            []string              `json:"policies,omitempty" url:"policies,omitempty"`
-	Saved               *bool                 `json:"saved,omitempty" url:"saved,omitempty"`
-	Status              *string               `json:"status,omitempty" url:"status,omitempty"`
-	StatusError         *string               `json:"status_error,omitempty" url:"status_error,omitempty"`
-	Type                *ConnectionTypeSchema `json:"type,omitempty" url:"type,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *CreateConnectionResponseSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateConnectionResponseSchema
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CreateConnectionResponseSchema(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CreateConnectionResponseSchema) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
 type JsonschemaDefinitions = map[string]*JsonschemaSchema
 
 type JsonschemaSchema struct {
@@ -577,7 +144,7 @@ type JsonschemaSchema struct {
 	Comment              *string                                             `json:"$comment,omitempty" url:"$comment,omitempty"`
 	Defs                 *JsonschemaDefinitions                              `json:"$defs,omitempty" url:"$defs,omitempty"`
 	DynamicRef           *string                                             `json:"$dynamicRef,omitempty" url:"$dynamicRef,omitempty"`
-	Id                   *string                                             `json:"$id,omitempty" url:"$id,omitempty"`
+	ID                   *string                                             `json:"$id,omitempty" url:"$id,omitempty"`
 	Ref                  *string                                             `json:"$ref,omitempty" url:"$ref,omitempty"`
 	Schema               *string                                             `json:"$schema,omitempty" url:"$schema,omitempty"`
 	AdditionalProperties *JsonschemaSchema                                   `json:"additionalProperties,omitempty" url:"additionalProperties,omitempty"`
@@ -683,4 +250,446 @@ func (v *V2ConnectionForm) String() string {
 	return fmt.Sprintf("%#v", v)
 }
 
+type V2ConnectionListResponseEnvelope struct {
+	Data []*V2ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ConnectionListResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionListResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionListResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionListResponseEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ConnectionParameterValue struct {
+	Label *string     `json:"label,omitempty" url:"label,omitempty"`
+	Value interface{} `json:"value,omitempty" url:"value,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ConnectionParameterValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionParameterValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionParameterValue(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionParameterValue) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ConnectionParameterValuesResp struct {
+	AllowsCreation *bool                         `json:"allows_creation,omitempty" url:"allows_creation,omitempty"`
+	Values         []*V2ConnectionParameterValue `json:"values,omitempty" url:"values,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ConnectionParameterValuesResp) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionParameterValuesResp
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionParameterValuesResp(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionParameterValuesResp) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ConnectionParameterValuesResponseEnvelope struct {
+	Data map[string]*V2ConnectionParameterValuesResp `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ConnectionParameterValuesResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionParameterValuesResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionParameterValuesResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionParameterValuesResponseEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ConnectionResponseEnvelope struct {
+	Data *V2ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ConnectionResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionResponseEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ConnectionResponseSchema struct {
+	// API calls made to service in the last 24h (supported integrations only).
+	APICallsLast24Hours *int                    `json:"api_calls_last_24_hours,omitempty" url:"api_calls_last_24_hours,omitempty"`
+	Configuration       map[string]interface{}  `json:"configuration,omitempty" url:"configuration,omitempty"`
+	CreatedAt           *time.Time              `json:"created_at,omitempty" url:"created_at,omitempty"`
+	CreatedBy           *CommonOutputActor      `json:"created_by,omitempty" url:"created_by,omitempty"`
+	ID                  *string                 `json:"id,omitempty" url:"id,omitempty"`
+	Name                *string                 `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationID      *string                 `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies            []string                `json:"policies,omitempty" url:"policies,omitempty"`
+	Saved               *bool                   `json:"saved,omitempty" url:"saved,omitempty"`
+	Status              *string                 `json:"status,omitempty" url:"status,omitempty"`
+	StatusError         *string                 `json:"status_error,omitempty" url:"status_error,omitempty"`
+	Type                *V2ConnectionTypeSchema `json:"type,omitempty" url:"type,omitempty"`
+	UpdatedAt           *time.Time              `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	UpdatedBy           *CommonOutputActor      `json:"updated_by,omitempty" url:"updated_by,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ConnectionResponseSchema) UnmarshalJSON(data []byte) error {
+	type embed V2ConnectionResponseSchema
+	var unmarshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*v),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*v = V2ConnectionResponseSchema(unmarshaler.embed)
+	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	v.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionResponseSchema) MarshalJSON() ([]byte, error) {
+	type embed V2ConnectionResponseSchema
+	var marshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:     embed(*v),
+		CreatedAt: core.NewOptionalDateTime(v.CreatedAt),
+		UpdatedAt: core.NewOptionalDateTime(v.UpdatedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (v *V2ConnectionResponseSchema) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ConnectionType struct {
+	Capabilities         *BackendConnectionCapabilities `json:"capabilities,omitempty" url:"capabilities,omitempty"`
+	ConfigurationForm    *V2ConnectionForm              `json:"configurationForm,omitempty" url:"configurationForm,omitempty"`
+	EnvConfig            map[string]interface{}         `json:"envConfig,omitempty" url:"envConfig,omitempty"`
+	ID                   *string                        `json:"id,omitempty" url:"id,omitempty"`
+	InitialConfiguration map[string]interface{}         `json:"initialConfiguration,omitempty" url:"initialConfiguration,omitempty"`
+	LogoURL              *string                        `json:"logo_url,omitempty" url:"logo_url,omitempty"`
+	Name                 *string                        `json:"name,omitempty" url:"name,omitempty"`
+	OauthPrompt          *BackendOAuthPrompt            `json:"oauth_prompt,omitempty" url:"oauth_prompt,omitempty"`
+	UseOauth             *bool                          `json:"use_oauth,omitempty" url:"use_oauth,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ConnectionType) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionType
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionType(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionType) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ConnectionTypeResponseEnvelope struct {
+	Data []*V2ConnectionType `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ConnectionTypeResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionTypeResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionTypeResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionTypeResponseEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ConnectionTypeSchema struct {
+	ID         *string  `json:"id,omitempty" url:"id,omitempty"`
+	LogoURL    *string  `json:"logo_url,omitempty" url:"logo_url,omitempty"`
+	Name       *string  `json:"name,omitempty" url:"name,omitempty"`
+	Operations []string `json:"operations,omitempty" url:"operations,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2ConnectionTypeSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionTypeSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionTypeSchema(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionTypeSchema) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2CreateConnectionResponseEnvelope struct {
+	Data *V2CreateConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2CreateConnectionResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2CreateConnectionResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2CreateConnectionResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2CreateConnectionResponseEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2CreateConnectionResponseSchema struct {
+	// Code to enter in order to complete connection authentication.
+	AuthCode *string `json:"auth_code,omitempty" url:"auth_code,omitempty"`
+	// URL to visit to complete connection authentication.
+	AuthURL       *string                `json:"auth_url,omitempty" url:"auth_url,omitempty"`
+	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
+	// Interval for connection health checking.
+	HealthcheckInterval *string                 `json:"healthcheck_interval,omitempty" url:"healthcheck_interval,omitempty"`
+	ID                  *string                 `json:"id,omitempty" url:"id,omitempty"`
+	Name                *string                 `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationID      *string                 `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies            []string                `json:"policies,omitempty" url:"policies,omitempty"`
+	Saved               *bool                   `json:"saved,omitempty" url:"saved,omitempty"`
+	Status              *string                 `json:"status,omitempty" url:"status,omitempty"`
+	StatusError         *string                 `json:"status_error,omitempty" url:"status_error,omitempty"`
+	Type                *V2ConnectionTypeSchema `json:"type,omitempty" url:"type,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2CreateConnectionResponseSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2CreateConnectionResponseSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2CreateConnectionResponseSchema(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2CreateConnectionResponseSchema) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
 type V2OrderedMapStringGithubComInvopopJsonschemaSchema = map[string]interface{}
+
+type V3ConnectCardResponse struct {
+	// URL to redirect the user to in order to create the new connection.
+	RedirectURL *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
+	Token       *string `json:"token,omitempty" url:"token,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V3ConnectCardResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler V3ConnectCardResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V3ConnectCardResponse(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V3ConnectCardResponse) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V3ConnectCardResponseEnvelope struct {
+	Data *V3ConnectCardResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V3ConnectCardResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V3ConnectCardResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V3ConnectCardResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V3ConnectCardResponseEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}

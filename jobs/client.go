@@ -37,10 +37,11 @@ func NewClient(opts ...option.RequestOption) *Client {
 
 func (c *Client) Get(
 	ctx context.Context,
-	id string,
 	type_ string,
+	id string,
+	request *polytomicgo.GetJobsRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.JobResponseEnvelope, error) {
+) (*polytomicgo.V2JobResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -94,7 +95,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *polytomicgo.JobResponseEnvelope
+	var response *polytomicgo.V2JobResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

@@ -39,7 +39,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomicgo.ListPoliciesResponseEnvelope, error) {
+) (*polytomicgo.V2ListPoliciesResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -79,7 +79,7 @@ func (c *Client) List(
 		return apiError
 	}
 
-	var response *polytomicgo.ListPoliciesResponseEnvelope
+	var response *polytomicgo.V2ListPoliciesResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -99,9 +99,9 @@ func (c *Client) List(
 
 func (c *Client) Create(
 	ctx context.Context,
-	request *permissions.CreatePolicyRequest,
+	request *permissions.V2CreatePolicyRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.PolicyResponseEnvelope, error) {
+) (*polytomicgo.V2PolicyResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -162,7 +162,7 @@ func (c *Client) Create(
 		return apiError
 	}
 
-	var response *polytomicgo.PolicyResponseEnvelope
+	var response *polytomicgo.V2PolicyResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -184,8 +184,9 @@ func (c *Client) Create(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
+	request *permissions.GetPoliciesRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.PolicyResponseEnvelope, error) {
+) (*polytomicgo.V2PolicyResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -232,7 +233,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *polytomicgo.PolicyResponseEnvelope
+	var response *polytomicgo.V2PolicyResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -253,9 +254,9 @@ func (c *Client) Get(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *permissions.UpdatePolicyRequest,
+	request *permissions.V2UpdatePolicyRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.PolicyResponseEnvelope, error) {
+) (*polytomicgo.V2PolicyResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -316,7 +317,7 @@ func (c *Client) Update(
 		return apiError
 	}
 
-	var response *polytomicgo.PolicyResponseEnvelope
+	var response *polytomicgo.V2PolicyResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -338,6 +339,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
+	request *permissions.RemovePoliciesRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)

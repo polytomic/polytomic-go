@@ -39,7 +39,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomicgo.RoleListResponseEnvelope, error) {
+) (*polytomicgo.V2RoleListResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -79,7 +79,7 @@ func (c *Client) List(
 		return apiError
 	}
 
-	var response *polytomicgo.RoleListResponseEnvelope
+	var response *polytomicgo.V2RoleListResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -99,9 +99,9 @@ func (c *Client) List(
 
 func (c *Client) Create(
 	ctx context.Context,
-	request *permissions.CreateRoleRequest,
+	request *permissions.V2CreateRoleRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.RoleResponseEnvelope, error) {
+) (*polytomicgo.V2RoleResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -162,7 +162,7 @@ func (c *Client) Create(
 		return apiError
 	}
 
-	var response *polytomicgo.RoleResponseEnvelope
+	var response *polytomicgo.V2RoleResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -184,8 +184,9 @@ func (c *Client) Create(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
+	request *permissions.GetRolesRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.RoleResponseEnvelope, error) {
+) (*polytomicgo.V2RoleResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -225,7 +226,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *polytomicgo.RoleResponseEnvelope
+	var response *polytomicgo.V2RoleResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -246,9 +247,9 @@ func (c *Client) Get(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *permissions.UpdateRoleRequest,
+	request *permissions.V2UpdateRoleRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.RoleResponseEnvelope, error) {
+) (*polytomicgo.V2RoleResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -309,7 +310,7 @@ func (c *Client) Update(
 		return apiError
 	}
 
-	var response *polytomicgo.RoleResponseEnvelope
+	var response *polytomicgo.V2RoleResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -331,6 +332,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
+	request *permissions.RemoveRolesRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)

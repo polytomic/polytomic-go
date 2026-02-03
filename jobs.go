@@ -8,31 +8,34 @@ import (
 	core "github.com/polytomic/polytomic-go/core"
 )
 
-type JobResponseEnvelope struct {
-	Data *JobResponse `json:"data,omitempty" url:"data,omitempty"`
+type GetJobsRequest struct {
+}
+
+type V2JobResponseEnvelope struct {
+	Data *V2JobResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (j *JobResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler JobResponseEnvelope
+func (v *V2JobResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2JobResponseEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*j = JobResponseEnvelope(value)
-	j._rawJSON = json.RawMessage(data)
+	*v = V2JobResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (j *JobResponseEnvelope) String() string {
-	if len(j._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(j._rawJSON); err == nil {
+func (v *V2JobResponseEnvelope) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(j); err == nil {
+	if value, err := core.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", j)
+	return fmt.Sprintf("%#v", v)
 }

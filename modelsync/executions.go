@@ -6,12 +6,21 @@ import (
 	polytomicgo "github.com/polytomic/polytomic-go"
 )
 
-type ExecutionsListRequest struct {
+type GetExecutionsRequest struct {
+}
+
+type GetLogURLsExecutionsRequest struct {
+}
+
+type GetLogsExecutionsRequest struct {
+}
+
+type ListExecutionsRequest struct {
 	PageToken     *string `json:"-" url:"page_token,omitempty"`
 	OnlyCompleted *bool   `json:"-" url:"only_completed,omitempty"`
 	Ascending     *bool   `json:"-" url:"ascending,omitempty"`
 }
 
-type UpdateExecutionRequest struct {
-	Status polytomicgo.ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+type V2UpdateExecutionRequest struct {
+	Status polytomicgo.UtilExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
 }

@@ -65,6 +65,38 @@ type UpdateConnectionRequestSchema struct {
 	Validate *bool `json:"validate,omitempty" url:"validate,omitempty"`
 }
 
+type BackendConnectionCapabilities struct {
+	Destination   *bool `json:"destination,omitempty" url:"destination,omitempty"`
+	Enrichment    *bool `json:"enrichment,omitempty" url:"enrichment,omitempty"`
+	Orchestration *bool `json:"orchestration,omitempty" url:"orchestration,omitempty"`
+	Source        *bool `json:"source,omitempty" url:"source,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BackendConnectionCapabilities) UnmarshalJSON(data []byte) error {
+	type unmarshaler BackendConnectionCapabilities
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BackendConnectionCapabilities(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BackendConnectionCapabilities) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 type BackendOAuthPrompt struct {
 	Key   *string `json:"key,omitempty" url:"key,omitempty"`
 	Value *string `json:"value,omitempty" url:"value,omitempty"`
@@ -369,14 +401,15 @@ func (c *ConnectionResponseSchema) String() string {
 }
 
 type ConnectionType struct {
-	ConfigurationForm    *V2ConnectionForm      `json:"configurationForm,omitempty" url:"configurationForm,omitempty"`
-	EnvConfig            map[string]interface{} `json:"envConfig,omitempty" url:"envConfig,omitempty"`
-	Id                   *string                `json:"id,omitempty" url:"id,omitempty"`
-	InitialConfiguration map[string]interface{} `json:"initialConfiguration,omitempty" url:"initialConfiguration,omitempty"`
-	LogoUrl              *string                `json:"logo_url,omitempty" url:"logo_url,omitempty"`
-	Name                 *string                `json:"name,omitempty" url:"name,omitempty"`
-	OauthPrompt          *BackendOAuthPrompt    `json:"oauth_prompt,omitempty" url:"oauth_prompt,omitempty"`
-	UseOauth             *bool                  `json:"use_oauth,omitempty" url:"use_oauth,omitempty"`
+	Capabilities         *BackendConnectionCapabilities `json:"capabilities,omitempty" url:"capabilities,omitempty"`
+	ConfigurationForm    *V2ConnectionForm              `json:"configurationForm,omitempty" url:"configurationForm,omitempty"`
+	EnvConfig            map[string]interface{}         `json:"envConfig,omitempty" url:"envConfig,omitempty"`
+	Id                   *string                        `json:"id,omitempty" url:"id,omitempty"`
+	InitialConfiguration map[string]interface{}         `json:"initialConfiguration,omitempty" url:"initialConfiguration,omitempty"`
+	LogoUrl              *string                        `json:"logo_url,omitempty" url:"logo_url,omitempty"`
+	Name                 *string                        `json:"name,omitempty" url:"name,omitempty"`
+	OauthPrompt          *BackendOAuthPrompt            `json:"oauth_prompt,omitempty" url:"oauth_prompt,omitempty"`
+	UseOauth             *bool                          `json:"use_oauth,omitempty" url:"use_oauth,omitempty"`
 
 	_rawJSON json.RawMessage
 }

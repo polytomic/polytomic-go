@@ -415,6 +415,7 @@ func (c *Client) Refresh(
 	return nil
 }
 
+// Polytomic periodically inspects the schemas for connections to discover new fields and update metadata. This endpoint returns the current inspection status.
 func (c *Client) GetStatus(
 	ctx context.Context,
 	id string,

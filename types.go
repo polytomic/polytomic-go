@@ -2123,7 +2123,9 @@ func (s *SchemaAssociation) String() string {
 type SchemaField struct {
 	Association *SchemaAssociation `json:"association,omitempty" url:"association,omitempty"`
 	Id          *string            `json:"id,omitempty" url:"id,omitempty"`
-	Name        *string            `json:"name,omitempty" url:"name,omitempty"`
+	// Whether this field is part of the schema's primary key.
+	IsPrimaryKey *bool   `json:"is_primary_key,omitempty" url:"is_primary_key,omitempty"`
+	Name         *string `json:"name,omitempty" url:"name,omitempty"`
 	// The type of the field from the remote system.
 	RemoteType *string        `json:"remote_type,omitempty" url:"remote_type,omitempty"`
 	Type       *UtilFieldType `json:"type,omitempty" url:"type,omitempty"`

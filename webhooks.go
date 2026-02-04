@@ -11,13 +11,25 @@ import (
 
 type CreateWebhooksSchema struct {
 	Endpoint       string  `json:"endpoint" url:"endpoint"`
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Secret         string  `json:"secret" url:"secret"`
+}
+
+type WebhooksDisableRequest struct {
+}
+
+type WebhooksEnableRequest struct {
+}
+
+type WebhooksGetRequest struct {
+}
+
+type WebhooksRemoveRequest struct {
 }
 
 type UpdateWebhooksSchema struct {
 	Endpoint       string  `json:"endpoint" url:"endpoint"`
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Secret         string  `json:"secret" url:"secret"`
 }
 
@@ -25,8 +37,8 @@ type Webhook struct {
 	CreatedAt      *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
 	Disabled       *bool      `json:"disabled,omitempty" url:"disabled,omitempty"`
 	Endpoint       *string    `json:"endpoint,omitempty" url:"endpoint,omitempty"`
-	Id             *string    `json:"id,omitempty" url:"id,omitempty"`
-	OrganizationId *string    `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	ID             *string    `json:"id,omitempty" url:"id,omitempty"`
+	OrganizationID *string    `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Secret         *string    `json:"secret,omitempty" url:"secret,omitempty"`
 
 	_rawJSON json.RawMessage

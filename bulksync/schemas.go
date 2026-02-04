@@ -9,8 +9,11 @@ import (
 	time "time"
 )
 
+type SchemasGetRequest struct {
+}
+
 type SchemasListRequest struct {
-	Filters map[string]*string `json:"-" url:"filters,omitempty"`
+	Filters map[string]string `json:"-" url:"filters,omitempty"`
 }
 
 type BulkSyncSchemasRequest struct {

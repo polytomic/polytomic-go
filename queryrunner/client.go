@@ -37,7 +37,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 
 func (c *Client) RunQuery(
 	ctx context.Context,
-	connectionId string,
+	connectionID string,
 	request *polytomicgo.V4RunQueryRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.V4RunQueryEnvelope, error) {
@@ -50,7 +50,7 @@ func (c *Client) RunQuery(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/query", connectionId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/query", connectionID)
 
 	queryParams, err := core.QueryValues(request)
 	if err != nil {

@@ -9,6 +9,26 @@ import (
 	time "time"
 )
 
+type ModelSyncActivateRequest struct {
+	Body *ActivateSyncInput `json:"-" url:"-"`
+}
+
+func (m *ModelSyncActivateRequest) UnmarshalJSON(data []byte) error {
+	body := new(ActivateSyncInput)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	m.Body = body
+	return nil
+}
+
+func (m *ModelSyncActivateRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(m.Body)
+}
+
+type ModelSyncCancelRequest struct {
+}
+
 type CreateModelSyncRequest struct {
 	// Whether the sync is enabled and scheduled.
 	Active *bool `json:"active,omitempty" url:"active,omitempty"`
@@ -26,7 +46,7 @@ type CreateModelSyncRequest struct {
 	// Whether to use enrichment models as a source of possible changes to sync. If true, only changes to the base models will cause a record to sync.
 	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
 	// Organization ID for the sync; read-only with a partner key.
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// Values to set in the target unconditionally.
 	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
 	// Conditional value replacement for fields.
@@ -40,6 +60,9 @@ type CreateModelSyncRequest struct {
 	Target         *Target `json:"target,omitempty" url:"target,omitempty"`
 }
 
+type ModelSyncGetRequest struct {
+}
+
 type ModelSyncGetSourceRequest struct {
 	Params map[string][]string `json:"-" url:"params,omitempty"`
 }
@@ -48,10 +71,16 @@ type ModelSyncGetSourceFieldsRequest struct {
 	Params map[string][]string `json:"-" url:"params,omitempty"`
 }
 
+type ModelSyncGetStatusRequest struct {
+}
+
 type ModelSyncListRequest struct {
 	Active             *bool          `json:"-" url:"active,omitempty"`
 	Mode               *ModelSyncMode `json:"-" url:"mode,omitempty"`
-	TargetConnectionId *string        `json:"-" url:"target_connection_id,omitempty"`
+	TargetConnectionID *string        `json:"-" url:"target_connection_id,omitempty"`
+}
+
+type ModelSyncRemoveRequest struct {
 }
 
 type StartModelSyncRequest struct {
@@ -77,7 +106,7 @@ type UpdateModelSyncRequest struct {
 	// Whether to use enrichment models as a source of possible changes to sync. If true, only changes to the base models will cause a record to sync.
 	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
 	// Organization ID for the sync; read-only with a partner key.
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// Values to set in the target unconditionally.
 	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
 	// Conditional value replacement for fields.
@@ -153,7 +182,7 @@ func (c *CancelModelSyncResponseEnvelope) String() string {
 type Filter struct {
 	Field *Source `json:"field,omitempty" url:"field,omitempty"`
 	// Model or Target field name to filter on.
-	FieldId   *string                   `json:"field_id,omitempty" url:"field_id,omitempty"`
+	FieldID   *string                   `json:"field_id,omitempty" url:"field_id,omitempty"`
 	FieldType *FilterFieldReferenceType `json:"field_type,omitempty" url:"field_type,omitempty"`
 	Function  FilterFunction            `json:"function,omitempty" url:"function,omitempty"`
 	Label     *string                   `json:"label,omitempty" url:"label,omitempty"`
@@ -210,7 +239,7 @@ func (f FilterFieldReferenceType) Ptr() *FilterFieldReferenceType {
 type Identity struct {
 	Function          SchemaIdentityFunction `json:"function,omitempty" url:"function,omitempty"`
 	NewField          *bool                  `json:"new_field,omitempty" url:"new_field,omitempty"`
-	RemoteFieldTypeId *string                `json:"remote_field_type_id,omitempty" url:"remote_field_type_id,omitempty"`
+	RemoteFieldTypeID *string                `json:"remote_field_type_id,omitempty" url:"remote_field_type_id,omitempty"`
 	Source            *Source                `json:"source,omitempty" url:"source,omitempty"`
 	Target            string                 `json:"target" url:"target"`
 
@@ -347,14 +376,14 @@ type ModelSyncResponse struct {
 	Fields               []*ModelSyncField  `json:"fields,omitempty" url:"fields,omitempty"`
 	FilterLogic          *string            `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
 	Filters              []*Filter          `json:"filters,omitempty" url:"filters,omitempty"`
-	Id                   *string            `json:"id,omitempty" url:"id,omitempty"`
+	ID                   *string            `json:"id,omitempty" url:"id,omitempty"`
 	Identity             *Identity          `json:"identity,omitempty" url:"identity,omitempty"`
 	Mode                 *ModelSyncMode     `json:"mode,omitempty" url:"mode,omitempty"`
 	// Model IDs used in the sync.
-	ModelIds            []string           `json:"model_ids,omitempty" url:"model_ids,omitempty"`
+	ModelIDs            []string           `json:"model_ids,omitempty" url:"model_ids,omitempty"`
 	Name                *string            `json:"name,omitempty" url:"name,omitempty"`
 	OnlyEnrichUpdates   *bool              `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
-	OrganizationId      *string            `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID      *string            `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	OverrideFields      []*ModelSyncField  `json:"override_fields,omitempty" url:"override_fields,omitempty"`
 	Overrides           []*Override        `json:"overrides,omitempty" url:"overrides,omitempty"`
 	Policies            []string           `json:"policies,omitempty" url:"policies,omitempty"`
@@ -446,7 +475,7 @@ func (m *ModelSyncResponseEnvelope) String() string {
 type Override struct {
 	Field *Source `json:"field,omitempty" url:"field,omitempty"`
 	// Field ID of the model field to override.
-	FieldId  *string         `json:"field_id,omitempty" url:"field_id,omitempty"`
+	FieldID  *string         `json:"field_id,omitempty" url:"field_id,omitempty"`
 	Function *FilterFunction `json:"function,omitempty" url:"function,omitempty"`
 	Override interface{}     `json:"override,omitempty" url:"override,omitempty"`
 	Value    interface{}     `json:"value,omitempty" url:"value,omitempty"`
@@ -478,8 +507,8 @@ func (o *Override) String() string {
 }
 
 type RunAfter struct {
-	BulkSyncIds []string `json:"bulk_sync_ids,omitempty" url:"bulk_sync_ids,omitempty"`
-	SyncIds     []string `json:"sync_ids,omitempty" url:"sync_ids,omitempty"`
+	BulkSyncIDs []string `json:"bulk_sync_ids,omitempty" url:"bulk_sync_ids,omitempty"`
+	SyncIDs     []string `json:"sync_ids,omitempty" url:"sync_ids,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -508,12 +537,12 @@ func (r *RunAfter) String() string {
 }
 
 type Schedule struct {
-	ConnectionId *string            `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	ConnectionID *string            `json:"connection_id,omitempty" url:"connection_id,omitempty"`
 	DayOfMonth   *string            `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
 	DayOfWeek    *string            `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
 	Frequency    *ScheduleFrequency `json:"frequency,omitempty" url:"frequency,omitempty"`
 	Hour         *string            `json:"hour,omitempty" url:"hour,omitempty"`
-	JobId        *int               `json:"job_id,omitempty" url:"job_id,omitempty"`
+	JobID        *int               `json:"job_id,omitempty" url:"job_id,omitempty"`
 	Minute       *string            `json:"minute,omitempty" url:"minute,omitempty"`
 	Month        *string            `json:"month,omitempty" url:"month,omitempty"`
 	RunAfter     *RunAfter          `json:"run_after,omitempty" url:"run_after,omitempty"`
@@ -669,7 +698,7 @@ func (s SchemaIdentityFunction) Ptr() *SchemaIdentityFunction {
 
 type Source struct {
 	Field   string `json:"field" url:"field"`
-	ModelId string `json:"model_id" url:"model_id"`
+	ModelID string `json:"model_id" url:"model_id"`
 
 	_rawJSON json.RawMessage
 }
@@ -729,7 +758,7 @@ func (s *StartModelSyncResponseEnvelope) String() string {
 type StartModelSyncResponseSchema struct {
 	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
 	// Execution ID
-	Id     *string          `json:"id,omitempty" url:"id,omitempty"`
+	ID     *string          `json:"id,omitempty" url:"id,omitempty"`
 	Status *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -856,7 +885,7 @@ func (s *SyncStatusResponse) String() string {
 
 type Target struct {
 	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionId  string                 `json:"connection_id" url:"connection_id"`
+	ConnectionID  string                 `json:"connection_id" url:"connection_id"`
 	// Create a new target object with these properties.
 	Create      map[string]string `json:"create,omitempty" url:"create,omitempty"`
 	FilterLogic *string           `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`

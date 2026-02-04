@@ -69,7 +69,7 @@ func (a *ActivateSyncInput) String() string {
 
 type ActivateSyncOutput struct {
 	Active *bool   `json:"active,omitempty" url:"active,omitempty"`
-	Id     *string `json:"id,omitempty" url:"id,omitempty"`
+	ID     *string `json:"id,omitempty" url:"id,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -97,7 +97,7 @@ func (a *ActivateSyncOutput) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-type ApiError struct {
+type APIError struct {
 	Key      *string                `json:"key,omitempty" url:"key,omitempty"`
 	Message  *string                `json:"message,omitempty" url:"message,omitempty"`
 	Metadata map[string]interface{} `json:"metadata,omitempty" url:"metadata,omitempty"`
@@ -106,18 +106,18 @@ type ApiError struct {
 	_rawJSON json.RawMessage
 }
 
-func (a *ApiError) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApiError
+func (a *APIError) UnmarshalJSON(data []byte) error {
+	type unmarshaler APIError
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*a = ApiError(value)
+	*a = APIError(value)
 	a._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (a *ApiError) String() string {
+func (a *APIError) String() string {
 	if len(a._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
 			return value
@@ -141,7 +141,7 @@ type BulkBulkSyncSchedule struct {
 	Minute        *string            `json:"minute,omitempty" url:"minute,omitempty"`
 	Month         *string            `json:"month,omitempty" url:"month,omitempty"`
 	SelectiveMode *BulkSelectiveMode `json:"selectiveMode,omitempty" url:"selectiveMode,omitempty"`
-	SyncId        *string            `json:"syncId,omitempty" url:"syncId,omitempty"`
+	SyncID        *string            `json:"syncId,omitempty" url:"syncId,omitempty"`
 	UpdatedAt     *time.Time         `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
 	UpdatedBy     *string            `json:"updatedBy,omitempty" url:"updatedBy,omitempty"`
 
@@ -274,7 +274,7 @@ func (b BulkFetchMode) Ptr() *BulkFetchMode {
 
 type BulkField struct {
 	Enabled        *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Id             *string `json:"id,omitempty" url:"id,omitempty"`
+	ID             *string `json:"id,omitempty" url:"id,omitempty"`
 	Obfuscated     *bool   `json:"obfuscated,omitempty" url:"obfuscated,omitempty"`
 	OutputName     *string `json:"output_name,omitempty" url:"output_name,omitempty"`
 	UserOutputName *string `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
@@ -307,7 +307,7 @@ func (b *BulkField) String() string {
 
 type BulkFilter struct {
 	// Schema field ID to filter on.
-	FieldId  *string        `json:"field_id,omitempty" url:"field_id,omitempty"`
+	FieldID  *string        `json:"field_id,omitempty" url:"field_id,omitempty"`
 	Function FilterFunction `json:"function,omitempty" url:"function,omitempty"`
 	Value    interface{}    `json:"value,omitempty" url:"value,omitempty"`
 
@@ -343,7 +343,7 @@ type BulkSchema struct {
 	Enabled             *bool         `json:"enabled,omitempty" url:"enabled,omitempty"`
 	Fields              []*BulkField  `json:"fields,omitempty" url:"fields,omitempty"`
 	Filters             []*BulkFilter `json:"filters,omitempty" url:"filters,omitempty"`
-	Id                  *string       `json:"id,omitempty" url:"id,omitempty"`
+	ID                  *string       `json:"id,omitempty" url:"id,omitempty"`
 	OutputName          *string       `json:"output_name,omitempty" url:"output_name,omitempty"`
 	PartitionKey        *string       `json:"partition_key,omitempty" url:"partition_key,omitempty"`
 	TrackingField       *string       `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
@@ -492,7 +492,7 @@ type BulkSyncExecution struct {
 	CreatedAt     *time.Time                 `json:"created_at,omitempty" url:"created_at,omitempty"`
 	ErrorCount    *int                       `json:"error_count,omitempty" url:"error_count,omitempty"`
 	FetchMode     *BulkFetchMode             `json:"fetch_mode,omitempty" url:"fetch_mode,omitempty"`
-	Id            *string                    `json:"id,omitempty" url:"id,omitempty"`
+	ID            *string                    `json:"id,omitempty" url:"id,omitempty"`
 	IsPartial     *bool                      `json:"is_partial,omitempty" url:"is_partial,omitempty"`
 	IsResync      *bool                      `json:"is_resync,omitempty" url:"is_resync,omitempty"`
 	IsTest        *bool                      `json:"is_test,omitempty" url:"is_test,omitempty"`
@@ -594,7 +594,7 @@ type BulkSyncExecutionStatus struct {
 	NextExecutionTime *time.Time                       `json:"nextExecutionTime,omitempty" url:"nextExecutionTime,omitempty"`
 	Schemas           []*BulkSyncSchemaExecutionStatus `json:"schemas,omitempty" url:"schemas,omitempty"`
 	Status            *BulkExecutionStatus             `json:"status,omitempty" url:"status,omitempty"`
-	SyncId            *string                          `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncID            *string                          `json:"sync_id,omitempty" url:"sync_id,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -713,7 +713,7 @@ type BulkSyncSchemaExecutionStatus struct {
 	CompletedAt *time.Time `json:"completed_at,omitempty" url:"completed_at,omitempty"`
 	ErrorCount  *int       `json:"error_count,omitempty" url:"error_count,omitempty"`
 	// ID of the most recent execution for the schema.
-	ExecutionId   *string                    `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	ExecutionID   *string                    `json:"execution_id,omitempty" url:"execution_id,omitempty"`
 	RecordCount   *int                       `json:"record_count,omitempty" url:"record_count,omitempty"`
 	Schema        *string                    `json:"schema,omitempty" url:"schema,omitempty"`
 	StartedAt     *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
@@ -770,7 +770,7 @@ func (b *BulkSyncSchemaExecutionStatus) String() string {
 }
 
 type CommonOutputActor struct {
-	Id   *string `json:"id,omitempty" url:"id,omitempty"`
+	ID   *string `json:"id,omitempty" url:"id,omitempty"`
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 
@@ -929,7 +929,7 @@ func (e *ExecutionCounts) String() string {
 
 type ExecutionLogResponse struct {
 	Expires *time.Time `json:"expires,omitempty" url:"expires,omitempty"`
-	Urls    []string   `json:"urls,omitempty" url:"urls,omitempty"`
+	URLs    []string   `json:"urls,omitempty" url:"urls,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -1219,7 +1219,7 @@ type GetExecutionResponseSchema struct {
 	Counts      *ExecutionCounts `json:"counts,omitempty" url:"counts,omitempty"`
 	CreatedAt   *time.Time       `json:"created_at,omitempty" url:"created_at,omitempty"`
 	Errors      []string         `json:"errors,omitempty" url:"errors,omitempty"`
-	Id          *string          `json:"id,omitempty" url:"id,omitempty"`
+	ID          *string          `json:"id,omitempty" url:"id,omitempty"`
 	StartedAt   *time.Time       `json:"started_at,omitempty" url:"started_at,omitempty"`
 	Status      *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
 	Type        *string          `json:"type,omitempty" url:"type,omitempty"`
@@ -1306,7 +1306,7 @@ func (g *GetModelSyncSourceMetaEnvelope) String() string {
 }
 
 type IdentityFunction struct {
-	Id    *string `json:"id,omitempty" url:"id,omitempty"`
+	ID    *string `json:"id,omitempty" url:"id,omitempty"`
 	Label *string `json:"label,omitempty" url:"label,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -1337,7 +1337,7 @@ func (i *IdentityFunction) String() string {
 
 type JobResponse struct {
 	Error  *string         `json:"error,omitempty" url:"error,omitempty"`
-	JobId  *string         `json:"job_id,omitempty" url:"job_id,omitempty"`
+	JobID  *string         `json:"job_id,omitempty" url:"job_id,omitempty"`
 	Result interface{}     `json:"result,omitempty" url:"result,omitempty"`
 	Status *WorkTaskStatus `json:"status,omitempty" url:"status,omitempty"`
 	Type   *string         `json:"type,omitempty" url:"type,omitempty"`
@@ -1554,7 +1554,7 @@ type ModelField struct {
 	CreatedBy   *CommonOutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
 	Description *string            `json:"description,omitempty" url:"description,omitempty"`
 	Example     interface{}        `json:"example,omitempty" url:"example,omitempty"`
-	Id          *string            `json:"id,omitempty" url:"id,omitempty"`
+	ID          *string            `json:"id,omitempty" url:"id,omitempty"`
 	Label       *string            `json:"label,omitempty" url:"label,omitempty"`
 	Name        *string            `json:"name,omitempty" url:"name,omitempty"`
 	RemoteType  *string            `json:"remote_type,omitempty" url:"remote_type,omitempty"`
@@ -1737,7 +1737,7 @@ func (p *PickValue) String() string {
 
 type PolicyAction struct {
 	Action  string   `json:"action" url:"action"`
-	RoleIds []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
+	RoleIDs []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -1766,9 +1766,9 @@ func (p *PolicyAction) String() string {
 }
 
 type PolicyResponse struct {
-	Id             *string         `json:"id,omitempty" url:"id,omitempty"`
+	ID             *string         `json:"id,omitempty" url:"id,omitempty"`
 	Name           *string         `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId *string         `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID *string         `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	PolicyActions  []*PolicyAction `json:"policy_actions,omitempty" url:"policy_actions,omitempty"`
 	System         *bool           `json:"system,omitempty" url:"system,omitempty"`
 
@@ -1893,9 +1893,9 @@ func (r *RoleListResponseEnvelope) String() string {
 }
 
 type RoleResponse struct {
-	Id             *string `json:"id,omitempty" url:"id,omitempty"`
+	ID             *string `json:"id,omitempty" url:"id,omitempty"`
 	Name           *string `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	System         *bool   `json:"system,omitempty" url:"system,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -2059,7 +2059,7 @@ func (s *SchedulesEnvelope) String() string {
 
 type Schema struct {
 	Fields []*SchemaField `json:"fields,omitempty" url:"fields,omitempty"`
-	Id     *string        `json:"id,omitempty" url:"id,omitempty"`
+	ID     *string        `json:"id,omitempty" url:"id,omitempty"`
 	Name   *string        `json:"name,omitempty" url:"name,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -2089,7 +2089,7 @@ func (s *Schema) String() string {
 }
 
 type SchemaAssociation struct {
-	Id              *string  `json:"id,omitempty" url:"id,omitempty"`
+	ID              *string  `json:"id,omitempty" url:"id,omitempty"`
 	Name            *string  `json:"name,omitempty" url:"name,omitempty"`
 	ReferenceTo     []string `json:"reference_to,omitempty" url:"reference_to,omitempty"`
 	ReferencedField *string  `json:"referenced_field,omitempty" url:"referenced_field,omitempty"`
@@ -2122,7 +2122,7 @@ func (s *SchemaAssociation) String() string {
 
 type SchemaField struct {
 	Association *SchemaAssociation `json:"association,omitempty" url:"association,omitempty"`
-	Id          *string            `json:"id,omitempty" url:"id,omitempty"`
+	ID          *string            `json:"id,omitempty" url:"id,omitempty"`
 	// Whether this field is part of the schema's primary key.
 	IsPrimaryKey *bool   `json:"is_primary_key,omitempty" url:"is_primary_key,omitempty"`
 	Name         *string `json:"name,omitempty" url:"name,omitempty"`
@@ -2190,7 +2190,7 @@ func (s *SourceMeta) String() string {
 }
 
 type SupportedMode struct {
-	Id *ModelSyncMode `json:"id,omitempty" url:"id,omitempty"`
+	ID *ModelSyncMode `json:"id,omitempty" url:"id,omitempty"`
 	// True if the sync mode requires an identity field mapping.
 	RequiresIdentity *bool `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
 	// True if the target supports per-field sync modes.
@@ -2269,7 +2269,7 @@ type TargetCreateInput struct {
 	// True if the property is an enum.
 	Enum *bool `json:"enum,omitempty" url:"enum,omitempty"`
 	// The identifier of the target property.
-	Id *string `json:"id,omitempty" url:"id,omitempty"`
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
 	// A human readable title for the target property.
 	Title *string `json:"title,omitempty" url:"title,omitempty"`
 
@@ -2305,7 +2305,7 @@ type TargetField struct {
 	Description       *string             `json:"description,omitempty" url:"description,omitempty"`
 	Encryptable       *bool               `json:"encryptable,omitempty" url:"encryptable,omitempty"`
 	Filterable        *bool               `json:"filterable,omitempty" url:"filterable,omitempty"`
-	Id                *string             `json:"id,omitempty" url:"id,omitempty"`
+	ID                *string             `json:"id,omitempty" url:"id,omitempty"`
 	IdentityFunctions []*IdentityFunction `json:"identity_functions,omitempty" url:"identity_functions,omitempty"`
 	Name              *string             `json:"name,omitempty" url:"name,omitempty"`
 	Required          *bool               `json:"required,omitempty" url:"required,omitempty"`
@@ -2342,7 +2342,7 @@ func (t *TargetField) String() string {
 
 type TargetObject struct {
 	// The identifier of the target object.
-	Id *string `json:"id,omitempty" url:"id,omitempty"`
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
 	// The supported sync modes and their properties for the target object.
 	Modes []*SupportedMode `json:"modes,omitempty" url:"modes,omitempty"`
 	// The name of the target object.
@@ -2376,7 +2376,7 @@ func (t *TargetObject) String() string {
 
 type TargetResponse struct {
 	Fields      []*TargetField             `json:"fields,omitempty" url:"fields,omitempty"`
-	Id          *string                    `json:"id,omitempty" url:"id,omitempty"`
+	ID          *string                    `json:"id,omitempty" url:"id,omitempty"`
 	Modes       []*Mode                    `json:"modes,omitempty" url:"modes,omitempty"`
 	Name        *string                    `json:"name,omitempty" url:"name,omitempty"`
 	Properties  *SyncDestinationProperties `json:"properties,omitempty" url:"properties,omitempty"`
@@ -2459,7 +2459,7 @@ type TypesType = interface{}
 
 type UpdateBulkField struct {
 	Enabled        *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Id             *string `json:"id,omitempty" url:"id,omitempty"`
+	ID             *string `json:"id,omitempty" url:"id,omitempty"`
 	Obfuscated     *bool   `json:"obfuscated,omitempty" url:"obfuscated,omitempty"`
 	UserOutputName *string `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
 
@@ -2624,7 +2624,7 @@ func (v *V4BulkSyncExecutionLogsEnvelope) String() string {
 	return fmt.Sprintf("%#v", v)
 }
 
-type V4BulkSyncScheduleApi struct {
+type V4BulkSyncScheduleAPI struct {
 	DayOfMonth    *string            `json:"dayOfMonth,omitempty" url:"dayOfMonth,omitempty"`
 	DayOfWeek     *string            `json:"dayOfWeek,omitempty" url:"dayOfWeek,omitempty"`
 	Frequency     ScheduleFrequency  `json:"frequency,omitempty" url:"frequency,omitempty"`
@@ -2636,18 +2636,18 @@ type V4BulkSyncScheduleApi struct {
 	_rawJSON json.RawMessage
 }
 
-func (v *V4BulkSyncScheduleApi) UnmarshalJSON(data []byte) error {
-	type unmarshaler V4BulkSyncScheduleApi
+func (v *V4BulkSyncScheduleAPI) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4BulkSyncScheduleAPI
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = V4BulkSyncScheduleApi(value)
+	*v = V4BulkSyncScheduleAPI(value)
 	v._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V4BulkSyncScheduleApi) String() string {
+func (v *V4BulkSyncScheduleAPI) String() string {
 	if len(v._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value
@@ -2690,7 +2690,7 @@ func (v *V4ExportSyncLogsEnvelope) String() string {
 }
 
 type V4ExportSyncLogsResponse struct {
-	Url *string `json:"url,omitempty" url:"url,omitempty"`
+	URL *string `json:"url,omitempty" url:"url,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -2784,7 +2784,7 @@ type V4TargetPropertyValues struct {
 	// True if the property is an enum.
 	Enum *bool `json:"enum,omitempty" url:"enum,omitempty"`
 	// The identifier of the target property.
-	Id *string `json:"id,omitempty" url:"id,omitempty"`
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
 	// A human readable title for the target property.
 	Title *string `json:"title,omitempty" url:"title,omitempty"`
 	// Valid values for the target property.

@@ -180,7 +180,8 @@ func (c *Client) List(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
-	execId string,
+	execID string,
+	request *bulksync.ExecutionsGetRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncExecutionEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -192,7 +193,7 @@ func (c *Client) Get(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/executions/%v", id, execId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/executions/%v", id, execID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -242,8 +243,9 @@ func (c *Client) Get(
 
 func (c *Client) GetLogs(
 	ctx context.Context,
-	syncId string,
-	executionId string,
+	syncID string,
+	executionID string,
+	request *bulksync.ExecutionsGetLogsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.V4BulkSyncExecutionLogsEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -255,7 +257,7 @@ func (c *Client) GetLogs(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/executions/%v/logs", syncId, executionId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/executions/%v/logs", syncID, executionID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -305,8 +307,8 @@ func (c *Client) GetLogs(
 
 func (c *Client) ExportLogs(
 	ctx context.Context,
-	syncId string,
-	executionId string,
+	syncID string,
+	executionID string,
 	request *bulksync.ExecutionsExportLogsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.V4ExportSyncLogsEnvelope, error) {
@@ -319,7 +321,7 @@ func (c *Client) ExportLogs(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/executions/%v/logs/export", syncId, executionId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/executions/%v/logs/export", syncID, executionID)
 
 	queryParams, err := core.QueryValues(request)
 	if err != nil {

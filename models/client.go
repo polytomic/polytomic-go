@@ -130,7 +130,7 @@ func (c *Client) GetEnrichmentSource(
 // For a given connection and enrichment configuration, provides the valid sets of input fields.
 func (c *Client) Post(
 	ctx context.Context,
-	connectionId string,
+	connectionID string,
 	request *polytomicgo.GetEnrichmentInputFieldsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.V2GetEnrichmentInputFieldsResponseEnvelope, error) {
@@ -143,7 +143,7 @@ func (c *Client) Post(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/enrichment/%v/inputfields", connectionId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/enrichment/%v/inputfields", connectionID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 

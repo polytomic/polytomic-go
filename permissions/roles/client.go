@@ -184,6 +184,7 @@ func (c *Client) Create(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
+	request *permissions.GetRolesRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.RoleResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -331,6 +332,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
+	request *permissions.RemoveRolesRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)

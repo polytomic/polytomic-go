@@ -47,7 +47,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 
 func (c *Client) List(
 	ctx context.Context,
-	request *polytomicgo.BulkSyncListRequest,
+	request *polytomicgo.ListBulkSyncRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncListEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -228,7 +228,7 @@ func (c *Client) Create(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.BulkSyncGetRequest,
+	request *polytomicgo.GetBulkSyncRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -387,7 +387,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.BulkSyncRemoveRequest,
+	request *polytomicgo.RemoveBulkSyncRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -470,7 +470,7 @@ func (c *Client) Remove(
 func (c *Client) Activate(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.ActivateSyncInput,
+	request *polytomicgo.ActivateBulkSyncRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ActivateSyncEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -619,6 +619,7 @@ func (c *Client) Start(
 func (c *Client) GetStatus(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.GetStatusBulkSyncRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncStatusEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -688,7 +689,7 @@ func (c *Client) GetStatus(
 func (c *Client) GetSource(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.BulkSyncGetSourceRequest,
+	request *polytomicgo.GetSourceBulkSyncRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncSourceEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -773,6 +774,7 @@ func (c *Client) GetSource(
 func (c *Client) GetDestination(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.GetDestinationBulkSyncRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncDestEnvelope, error) {
 	options := core.NewRequestOptions(opts...)

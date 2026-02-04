@@ -37,8 +37,8 @@ func NewClient(opts ...option.RequestOption) *Client {
 
 func (c *Client) UpsertField(
 	ctx context.Context,
-	connectionId string,
-	schemaId string,
+	connectionID string,
+	schemaID string,
 	request *polytomicgo.UpsertSchemaFieldRequest,
 	opts ...option.RequestOption,
 ) error {
@@ -51,7 +51,7 @@ func (c *Client) UpsertField(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/schemas/%v/fields", connectionId, schemaId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/schemas/%v/fields", connectionID, schemaID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -114,9 +114,10 @@ func (c *Client) UpsertField(
 
 func (c *Client) DeleteField(
 	ctx context.Context,
-	connectionId string,
-	schemaId string,
-	fieldId string,
+	connectionID string,
+	schemaID string,
+	fieldID string,
+	request *polytomicgo.DeleteFieldSchemasRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -128,7 +129,7 @@ func (c *Client) DeleteField(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/schemas/%v/fields/%v", connectionId, schemaId, fieldId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/schemas/%v/fields/%v", connectionID, schemaID, fieldID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -190,8 +191,8 @@ func (c *Client) DeleteField(
 
 func (c *Client) SetPrimaryKeys(
 	ctx context.Context,
-	connectionId string,
-	schemaId string,
+	connectionID string,
+	schemaID string,
 	request *polytomicgo.SetPrimaryKeysRequest,
 	opts ...option.RequestOption,
 ) error {
@@ -204,7 +205,7 @@ func (c *Client) SetPrimaryKeys(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/schemas/%v/primary_keys", connectionId, schemaId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/schemas/%v/primary_keys", connectionID, schemaID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -268,8 +269,9 @@ func (c *Client) SetPrimaryKeys(
 // Delete all primary key overrides for a schema. After this call the schema will use the primary keys detected from the source connection, if any.
 func (c *Client) ResetPrimaryKeys(
 	ctx context.Context,
-	connectionId string,
-	schemaId string,
+	connectionID string,
+	schemaID string,
+	request *polytomicgo.ResetPrimaryKeysSchemasRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -281,7 +283,7 @@ func (c *Client) ResetPrimaryKeys(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/schemas/%v/primary_keys", connectionId, schemaId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/schemas/%v/primary_keys", connectionID, schemaID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -344,6 +346,7 @@ func (c *Client) ResetPrimaryKeys(
 func (c *Client) Refresh(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.RefreshSchemasRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -419,6 +422,7 @@ func (c *Client) Refresh(
 func (c *Client) GetStatus(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.GetStatusSchemasRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncSourceStatusEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -495,7 +499,8 @@ func (c *Client) GetStatus(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
-	schemaId string,
+	schemaID string,
+	request *polytomicgo.GetSchemasRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncSourceSchemaEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -507,7 +512,7 @@ func (c *Client) Get(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/schemas/%v", id, schemaId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/schemas/%v", id, schemaID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -572,7 +577,8 @@ func (c *Client) Get(
 func (c *Client) GetRecords(
 	ctx context.Context,
 	id string,
-	schemaId string,
+	schemaID string,
+	request *polytomicgo.GetRecordsSchemasRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.SchemaRecordsResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -584,7 +590,7 @@ func (c *Client) GetRecords(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/schemas/%v/records", id, schemaId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/schemas/%v/records", id, schemaID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 

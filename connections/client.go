@@ -99,6 +99,7 @@ func (c *Client) GetTypes(
 func (c *Client) GetConnectionTypeSchema(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.GetConnectionTypeSchemaConnectionsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.JsonschemaSchema, error) {
 	options := core.NewRequestOptions(opts...)
@@ -475,6 +476,7 @@ func (c *Client) TestConnection(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.GetConnectionsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ConnectionResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -636,7 +638,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.ConnectionsRemoveRequest,
+	request *polytomicgo.RemoveConnectionsRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -726,6 +728,7 @@ func (c *Client) Remove(
 func (c *Client) GetParameterValues(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.GetParameterValuesConnectionsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ConnectionParameterValuesResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)

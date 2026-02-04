@@ -39,7 +39,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) List(
 	ctx context.Context,
 	id string,
-	request *bulksync.SchemasListRequest,
+	request *bulksync.ListSchemasRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ListBulkSchema, error) {
 	options := core.NewRequestOptions(opts...)
@@ -195,7 +195,8 @@ func (c *Client) Patch(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
-	schemaId string,
+	schemaID string,
+	request *bulksync.GetSchemasRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSchemaEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -207,7 +208,7 @@ func (c *Client) Get(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schemas/%v", id, schemaId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schemas/%v", id, schemaID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -258,7 +259,7 @@ func (c *Client) Get(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	schemaId string,
+	schemaID string,
 	request *bulksync.UpdateBulkSchema,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSchemaEnvelope, error) {
@@ -271,7 +272,7 @@ func (c *Client) Update(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schemas/%v", id, schemaId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schemas/%v", id, schemaID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 

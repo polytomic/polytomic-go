@@ -37,8 +37,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 
 func (c *Client) Get(
 	ctx context.Context,
-	id string,
 	type_ string,
+	id string,
+	request *polytomicgo.GetJobsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.JobResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)

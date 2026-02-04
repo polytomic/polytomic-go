@@ -10,11 +10,11 @@ import (
 // Bad Request
 type BadRequestError struct {
 	*core.APIError
-	Body *ApiError
+	Body *APIError
 }
 
 func (b *BadRequestError) UnmarshalJSON(data []byte) error {
-	var body *ApiError
+	var body *APIError
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -34,11 +34,11 @@ func (b *BadRequestError) Unwrap() error {
 // Conflict
 type ConflictError struct {
 	*core.APIError
-	Body *ApiError
+	Body *APIError
 }
 
 func (c *ConflictError) UnmarshalJSON(data []byte) error {
-	var body *ApiError
+	var body *APIError
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -58,11 +58,11 @@ func (c *ConflictError) Unwrap() error {
 // Forbidden
 type ForbiddenError struct {
 	*core.APIError
-	Body *ApiError
+	Body *APIError
 }
 
 func (f *ForbiddenError) UnmarshalJSON(data []byte) error {
-	var body *ApiError
+	var body *APIError
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -82,11 +82,11 @@ func (f *ForbiddenError) Unwrap() error {
 // Internal Server Error
 type InternalServerError struct {
 	*core.APIError
-	Body *ApiError
+	Body *APIError
 }
 
 func (i *InternalServerError) UnmarshalJSON(data []byte) error {
-	var body *ApiError
+	var body *APIError
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -106,11 +106,11 @@ func (i *InternalServerError) Unwrap() error {
 // Not Found
 type NotFoundError struct {
 	*core.APIError
-	Body *ApiError
+	Body *APIError
 }
 
 func (n *NotFoundError) UnmarshalJSON(data []byte) error {
-	var body *ApiError
+	var body *APIError
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -154,11 +154,11 @@ func (u *UnauthorizedError) Unwrap() error {
 // Unprocessable Entity
 type UnprocessableEntityError struct {
 	*core.APIError
-	Body *ApiError
+	Body *APIError
 }
 
 func (u *UnprocessableEntityError) UnmarshalJSON(data []byte) error {
-	var body *ApiError
+	var body *APIError
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}

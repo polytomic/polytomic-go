@@ -4,10 +4,16 @@ package permissions
 
 type CreateRoleRequest struct {
 	Name           string  `json:"name" url:"name"`
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+}
+
+type GetRolesRequest struct {
+}
+
+type RemoveRolesRequest struct {
 }
 
 type UpdateRoleRequest struct {
 	Name           string  `json:"name" url:"name"`
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 }

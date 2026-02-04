@@ -7,6 +7,12 @@ type ExecutionsExportLogsRequest struct {
 	Notify *bool `json:"-" url:"notify,omitempty"`
 }
 
+type ExecutionsGetRequest struct {
+}
+
+type ExecutionsGetLogsRequest struct {
+}
+
 type ExecutionsListRequest struct {
 	PageToken    *string `json:"-" url:"page_token,omitempty"`
 	OnlyTerminal *bool   `json:"-" url:"only_terminal,omitempty"`
@@ -20,5 +26,5 @@ type ExecutionsListStatusRequest struct {
 	// Return the execution status of all active syncs in the organization
 	Active *bool `json:"-" url:"active,omitempty"`
 	// Return the execution status of the specified sync; this may be supplied multiple times.
-	SyncId []*string `json:"-" url:"sync_id,omitempty"`
+	SyncID []*string `json:"-" url:"sync_id,omitempty"`
 }

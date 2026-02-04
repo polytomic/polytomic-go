@@ -185,6 +185,7 @@ func (c *Client) Create(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.OrganizationGetRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.OrganizationEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -331,6 +332,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.OrganizationRemoveRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)

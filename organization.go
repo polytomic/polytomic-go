@@ -9,29 +9,35 @@ import (
 )
 
 type CreateOrganizationRequestSchema struct {
-	ClientId     *string `json:"client_id,omitempty" url:"client_id,omitempty"`
+	ClientID     *string `json:"client_id,omitempty" url:"client_id,omitempty"`
 	ClientSecret *string `json:"client_secret,omitempty" url:"client_secret,omitempty"`
 	Issuer       *string `json:"issuer,omitempty" url:"issuer,omitempty"`
 	Name         string  `json:"name" url:"name"`
-	SsoDomain    *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
-	SsoOrgId     *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
+	SSODomain    *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
+	SSOOrgID     *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
+}
+
+type OrganizationGetRequest struct {
+}
+
+type OrganizationRemoveRequest struct {
 }
 
 type UpdateOrganizationRequestSchema struct {
-	ClientId     *string `json:"client_id,omitempty" url:"client_id,omitempty"`
+	ClientID     *string `json:"client_id,omitempty" url:"client_id,omitempty"`
 	ClientSecret *string `json:"client_secret,omitempty" url:"client_secret,omitempty"`
 	Issuer       *string `json:"issuer,omitempty" url:"issuer,omitempty"`
 	Name         string  `json:"name" url:"name"`
-	SsoDomain    *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
-	SsoOrgId     *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
+	SSODomain    *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
+	SSOOrgID     *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
 }
 
 type Organization struct {
-	Id        *string `json:"id,omitempty" url:"id,omitempty"`
+	ID        *string `json:"id,omitempty" url:"id,omitempty"`
 	Issuer    *string `json:"issuer,omitempty" url:"issuer,omitempty"`
 	Name      *string `json:"name,omitempty" url:"name,omitempty"`
-	SsoDomain *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
-	SsoOrgId  *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
+	SSODomain *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
+	SSOOrgID  *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
 
 	_rawJSON json.RawMessage
 }

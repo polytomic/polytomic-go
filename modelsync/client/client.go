@@ -518,6 +518,7 @@ func (c *Client) GetScheduleOptions(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.ModelSyncGetRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ModelSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -679,6 +680,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.ModelSyncRemoveRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -760,7 +762,7 @@ func (c *Client) Remove(
 func (c *Client) Activate(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.ActivateSyncInput,
+	request *polytomicgo.ModelSyncActivateRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ActivateSyncEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -839,6 +841,7 @@ func (c *Client) Cancel(
 	ctx context.Context,
 	// The active execution of this sync ID will be cancelled.
 	id string,
+	request *polytomicgo.ModelSyncCancelRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.CancelModelSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -1010,6 +1013,7 @@ func (c *Client) Start(
 func (c *Client) GetStatus(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.ModelSyncGetStatusRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.SyncStatusEnvelope, error) {
 	options := core.NewRequestOptions(opts...)

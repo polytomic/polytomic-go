@@ -117,7 +117,7 @@ type V4RunQueryResult struct {
 	// The names of the fields returned by the query. This will not be returned until the query completes.
 	Fields []string `json:"fields,omitempty" url:"fields,omitempty"`
 	// The ID of the query task.
-	Id *string `json:"id,omitempty" url:"id,omitempty"`
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
 	// The query results, returned as an array of objects.
 	Results []map[string]interface{} `json:"results,omitempty" url:"results,omitempty"`
 	Status  *WorkTaskStatus          `json:"status,omitempty" url:"status,omitempty"`

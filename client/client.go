@@ -11,7 +11,6 @@ import (
 	jobs "github.com/polytomic/polytomic-go/jobs"
 	models "github.com/polytomic/polytomic-go/models"
 	modelsyncclient "github.com/polytomic/polytomic-go/modelsync/client"
-	notifications "github.com/polytomic/polytomic-go/notifications"
 	option "github.com/polytomic/polytomic-go/option"
 	organization "github.com/polytomic/polytomic-go/organization"
 	permissionsclient "github.com/polytomic/polytomic-go/permissions/client"
@@ -27,20 +26,19 @@ type Client struct {
 	caller  *core.Caller
 	header  http.Header
 
-	BulkSync      *bulksyncclient.Client
-	Connections   *connections.Client
-	QueryRunner   *queryrunner.Client
-	Schemas       *schemas.Client
-	Models        *models.Client
-	ModelSync     *modelsyncclient.Client
-	Events        *events.Client
-	Jobs          *jobs.Client
-	Identity      *identity.Client
-	Notifications *notifications.Client
-	Organization  *organization.Client
-	Users         *users.Client
-	Webhooks      *webhooks.Client
-	Permissions   *permissionsclient.Client
+	BulkSync     *bulksyncclient.Client
+	Connections  *connections.Client
+	QueryRunner  *queryrunner.Client
+	Schemas      *schemas.Client
+	Models       *models.Client
+	ModelSync    *modelsyncclient.Client
+	Events       *events.Client
+	Jobs         *jobs.Client
+	Identity     *identity.Client
+	Organization *organization.Client
+	Users        *users.Client
+	Webhooks     *webhooks.Client
+	Permissions  *permissionsclient.Client
 }
 
 func NewClient(opts ...option.RequestOption) *Client {
@@ -53,20 +51,19 @@ func NewClient(opts ...option.RequestOption) *Client {
 				MaxAttempts: options.MaxAttempts,
 			},
 		),
-		header:        options.ToHeader(),
-		BulkSync:      bulksyncclient.NewClient(opts...),
-		Connections:   connections.NewClient(opts...),
-		QueryRunner:   queryrunner.NewClient(opts...),
-		Schemas:       schemas.NewClient(opts...),
-		Models:        models.NewClient(opts...),
-		ModelSync:     modelsyncclient.NewClient(opts...),
-		Events:        events.NewClient(opts...),
-		Jobs:          jobs.NewClient(opts...),
-		Identity:      identity.NewClient(opts...),
-		Notifications: notifications.NewClient(opts...),
-		Organization:  organization.NewClient(opts...),
-		Users:         users.NewClient(opts...),
-		Webhooks:      webhooks.NewClient(opts...),
-		Permissions:   permissionsclient.NewClient(opts...),
+		header:       options.ToHeader(),
+		BulkSync:     bulksyncclient.NewClient(opts...),
+		Connections:  connections.NewClient(opts...),
+		QueryRunner:  queryrunner.NewClient(opts...),
+		Schemas:      schemas.NewClient(opts...),
+		Models:       models.NewClient(opts...),
+		ModelSync:    modelsyncclient.NewClient(opts...),
+		Events:       events.NewClient(opts...),
+		Jobs:         jobs.NewClient(opts...),
+		Identity:     identity.NewClient(opts...),
+		Organization: organization.NewClient(opts...),
+		Users:        users.NewClient(opts...),
+		Webhooks:     webhooks.NewClient(opts...),
+		Permissions:  permissionsclient.NewClient(opts...),
 	}
 }

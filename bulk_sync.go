@@ -9,6 +9,23 @@ import (
 	time "time"
 )
 
+type BulkSyncActivateRequest struct {
+	Body *ActivateSyncInput `json:"-" url:"-"`
+}
+
+func (b *BulkSyncActivateRequest) UnmarshalJSON(data []byte) error {
+	body := new(ActivateSyncInput)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	b.Body = body
+	return nil
+}
+
+func (b *BulkSyncActivateRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(b.Body)
+}
+
 type CreateBulkSyncRequest struct {
 	Active                     *bool         `json:"active,omitempty" url:"active,omitempty"`
 	AutomaticallyAddNewFields  *BulkDiscover `json:"automatically_add_new_fields,omitempty" url:"automatically_add_new_fields,omitempty"`
@@ -17,14 +34,14 @@ type CreateBulkSyncRequest struct {
 	ConcurrencyLimit         *int                   `json:"concurrency_limit,omitempty" url:"concurrency_limit,omitempty"`
 	DataCutoffTimestamp      *time.Time             `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
 	DestinationConfiguration map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
-	DestinationConnectionId  string                 `json:"destination_connection_id" url:"destination_connection_id"`
+	DestinationConnectionID  string                 `json:"destination_connection_id" url:"destination_connection_id"`
 	DisableRecordTimestamps  *bool                  `json:"disable_record_timestamps,omitempty" url:"disable_record_timestamps,omitempty"`
 	// DEPRECATED: Use automatically_add_new_objects/automatically_add_new_fields instead
 	Discover       *bool               `json:"discover,omitempty" url:"discover,omitempty"`
 	Mode           *BulkSyncMode       `json:"mode,omitempty" url:"mode,omitempty"`
 	Name           string              `json:"name" url:"name"`
 	NormalizeNames *BulkNormalizeNames `json:"normalize_names,omitempty" url:"normalize_names,omitempty"`
-	OrganizationId *string             `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID *string             `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Policies       []string            `json:"policies,omitempty" url:"policies,omitempty"`
 	// Override the default resync concurrency limit for this sync.
 	ResyncConcurrencyLimit *int          `json:"resync_concurrency_limit,omitempty" url:"resync_concurrency_limit,omitempty"`
@@ -32,7 +49,7 @@ type CreateBulkSyncRequest struct {
 	// List of schemas to sync; if omitted, all schemas will be selected for syncing.
 	Schemas             []*V2CreateBulkSyncRequestSchemasItem `json:"schemas,omitempty" url:"schemas,omitempty"`
 	SourceConfiguration map[string]interface{}                `json:"source_configuration,omitempty" url:"source_configuration,omitempty"`
-	SourceConnectionId  string                                `json:"source_connection_id" url:"source_connection_id"`
+	SourceConnectionID  string                                `json:"source_connection_id" url:"source_connection_id"`
 }
 
 func (c *CreateBulkSyncRequest) UnmarshalJSON(data []byte) error {
@@ -61,8 +78,14 @@ type BulkSyncGetRequest struct {
 	RefreshSchemas *bool `json:"-" url:"refresh_schemas,omitempty"`
 }
 
+type BulkSyncGetDestinationRequest struct {
+}
+
 type BulkSyncGetSourceRequest struct {
 	IncludeFields *bool `json:"-" url:"include_fields,omitempty"`
+}
+
+type BulkSyncGetStatusRequest struct {
 }
 
 type BulkSyncListRequest struct {
@@ -88,14 +111,14 @@ type UpdateBulkSyncRequest struct {
 	ConcurrencyLimit         *int                   `json:"concurrency_limit,omitempty" url:"concurrency_limit,omitempty"`
 	DataCutoffTimestamp      *time.Time             `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
 	DestinationConfiguration map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
-	DestinationConnectionId  string                 `json:"destination_connection_id" url:"destination_connection_id"`
+	DestinationConnectionID  string                 `json:"destination_connection_id" url:"destination_connection_id"`
 	DisableRecordTimestamps  *bool                  `json:"disable_record_timestamps,omitempty" url:"disable_record_timestamps,omitempty"`
 	// DEPRECATED: Use automatically_add_new_objects/automatically_add_new_fields instead
 	Discover       *bool               `json:"discover,omitempty" url:"discover,omitempty"`
 	Mode           *BulkSyncMode       `json:"mode,omitempty" url:"mode,omitempty"`
 	Name           string              `json:"name" url:"name"`
 	NormalizeNames *BulkNormalizeNames `json:"normalize_names,omitempty" url:"normalize_names,omitempty"`
-	OrganizationId *string             `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID *string             `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Policies       []string            `json:"policies,omitempty" url:"policies,omitempty"`
 	// Override the default resync concurrency limit for this sync.
 	ResyncConcurrencyLimit *int          `json:"resync_concurrency_limit,omitempty" url:"resync_concurrency_limit,omitempty"`
@@ -103,7 +126,7 @@ type UpdateBulkSyncRequest struct {
 	// List of schemas to sync; if omitted, all schemas will be selected for syncing.
 	Schemas             []*V2UpdateBulkSyncRequestSchemasItem `json:"schemas,omitempty" url:"schemas,omitempty"`
 	SourceConfiguration map[string]interface{}                `json:"source_configuration,omitempty" url:"source_configuration,omitempty"`
-	SourceConnectionId  string                                `json:"source_connection_id" url:"source_connection_id"`
+	SourceConnectionID  string                                `json:"source_connection_id" url:"source_connection_id"`
 }
 
 func (u *UpdateBulkSyncRequest) UnmarshalJSON(data []byte) error {
@@ -397,16 +420,16 @@ type BulkSyncResponse struct {
 	DataCutoffTimestamp *time.Time         `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
 	// Destination-specific bulk sync configuration. e.g. output schema name, s3 file format, etc.
 	DestinationConfiguration map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
-	DestinationConnectionId  *string                `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	DestinationConnectionID  *string                `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
 	DisableRecordTimestamps  *bool                  `json:"disable_record_timestamps,omitempty" url:"disable_record_timestamps,omitempty"`
 	// DEPRECATED: Use automatically_add_new_objects/automatically_add_new_fields instead
 	Discover *bool         `json:"discover,omitempty" url:"discover,omitempty"`
-	Id       *string       `json:"id,omitempty" url:"id,omitempty"`
+	ID       *string       `json:"id,omitempty" url:"id,omitempty"`
 	Mode     *BulkSyncMode `json:"mode,omitempty" url:"mode,omitempty"`
 	// Name of the bulk sync
 	Name           *string             `json:"name,omitempty" url:"name,omitempty"`
 	NormalizeNames *BulkNormalizeNames `json:"normalize_names,omitempty" url:"normalize_names,omitempty"`
-	OrganizationId *string             `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID *string             `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// List of permissions policies applied to the bulk sync.
 	Policies []string `json:"policies,omitempty" url:"policies,omitempty"`
 	// Per-sync resync concurrency limit override.
@@ -414,7 +437,7 @@ type BulkSyncResponse struct {
 	Schedule               *BulkSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
 	// Source-specific bulk sync configuration. e.g. replication slot name, sync lookback, etc.
 	SourceConfiguration map[string]interface{} `json:"source_configuration,omitempty" url:"source_configuration,omitempty"`
-	SourceConnectionId  *string                `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	SourceConnectionID  *string                `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
 	UpdatedAt           *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 	UpdatedBy           *CommonOutputActor     `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 
@@ -639,7 +662,7 @@ func (b *BulkSyncStatusResponse) String() string {
 type FieldConfiguration struct {
 	// Whether the field is enabled for syncing.
 	Enabled *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Id      *string `json:"id,omitempty" url:"id,omitempty"`
+	ID      *string `json:"id,omitempty" url:"id,omitempty"`
 	// Whether the field should be obfuscated.
 	Obfuscate *bool `json:"obfuscate,omitempty" url:"obfuscate,omitempty"`
 
@@ -677,7 +700,7 @@ type SchemaConfiguration struct {
 	Enabled       *bool                              `json:"enabled,omitempty" url:"enabled,omitempty"`
 	Fields        []*V2SchemaConfigurationFieldsItem `json:"fields,omitempty" url:"fields,omitempty"`
 	Filters       []*BulkFilter                      `json:"filters,omitempty" url:"filters,omitempty"`
-	Id            *string                            `json:"id,omitempty" url:"id,omitempty"`
+	ID            *string                            `json:"id,omitempty" url:"id,omitempty"`
 	PartitionKey  *string                            `json:"partition_key,omitempty" url:"partition_key,omitempty"`
 	TrackingField *string                            `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
 
@@ -727,7 +750,7 @@ func (s *SchemaConfiguration) String() string {
 
 type SupportedBulkMode struct {
 	Description           *string       `json:"description,omitempty" url:"description,omitempty"`
-	Id                    *BulkSyncMode `json:"id,omitempty" url:"id,omitempty"`
+	ID                    *BulkSyncMode `json:"id,omitempty" url:"id,omitempty"`
 	Label                 *string       `json:"label,omitempty" url:"label,omitempty"`
 	RequiresIdentity      *bool         `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
 	SupportsFieldSyncMode *bool         `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`

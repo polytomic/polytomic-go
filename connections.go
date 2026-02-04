@@ -66,10 +66,10 @@ type UpdateConnectionRequestSchema struct {
 }
 
 type BackendConnectionCapabilities struct {
-	Destination   *bool `json:"destination,omitempty" url:"destination,omitempty"`
-	Enrichment    *bool `json:"enrichment,omitempty" url:"enrichment,omitempty"`
-	Orchestration *bool `json:"orchestration,omitempty" url:"orchestration,omitempty"`
-	Source        *bool `json:"source,omitempty" url:"source,omitempty"`
+	Destination   bool `json:"destination" url:"destination"`
+	Enrichment    bool `json:"enrichment" url:"enrichment"`
+	Orchestration bool `json:"orchestration" url:"orchestration"`
+	Source        bool `json:"source" url:"source"`
 
 	_rawJSON json.RawMessage
 }

@@ -2,23 +2,29 @@
 
 package bulksync
 
-type ExecutionsExportLogsRequest struct {
+type ExportLogsExecutionsRequest struct {
 	// Send a notification to the user when the logs are ready for download.
 	Notify *bool `json:"-" url:"notify,omitempty"`
 }
 
-type ExecutionsListRequest struct {
+type GetExecutionsRequest struct {
+}
+
+type GetLogsExecutionsRequest struct {
+}
+
+type ListExecutionsRequest struct {
 	PageToken    *string `json:"-" url:"page_token,omitempty"`
 	OnlyTerminal *bool   `json:"-" url:"only_terminal,omitempty"`
 	Ascending    *bool   `json:"-" url:"ascending,omitempty"`
 	Limit        *int    `json:"-" url:"limit,omitempty"`
 }
 
-type ExecutionsListStatusRequest struct {
+type ListStatusExecutionsRequest struct {
 	// Return the execution status of all syncs in the organization
 	All *bool `json:"-" url:"all,omitempty"`
 	// Return the execution status of all active syncs in the organization
 	Active *bool `json:"-" url:"active,omitempty"`
 	// Return the execution status of the specified sync; this may be supplied multiple times.
-	SyncId []*string `json:"-" url:"sync_id,omitempty"`
+	SyncID []*string `json:"-" url:"sync_id,omitempty"`
 }

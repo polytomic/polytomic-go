@@ -38,7 +38,8 @@ func NewClient(opts ...option.RequestOption) *Client {
 
 func (c *Client) List(
 	ctx context.Context,
-	syncId string,
+	syncID string,
+	request *bulksync.ListSchedulesRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.SchedulesEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -50,7 +51,7 @@ func (c *Client) List(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schedules", syncId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schedules", syncID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -114,7 +115,7 @@ func (c *Client) List(
 
 func (c *Client) Create(
 	ctx context.Context,
-	syncId string,
+	syncID string,
 	request *bulksync.CreateScheduleRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ScheduleEnvelope, error) {
@@ -127,7 +128,7 @@ func (c *Client) Create(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schedules", syncId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schedules", syncID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -199,8 +200,9 @@ func (c *Client) Create(
 
 func (c *Client) Get(
 	ctx context.Context,
-	syncId string,
-	scheduleId string,
+	syncID string,
+	scheduleID string,
+	request *bulksync.GetSchedulesRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ScheduleEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -212,7 +214,7 @@ func (c *Client) Get(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schedules/%v", syncId, scheduleId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schedules/%v", syncID, scheduleID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -276,8 +278,8 @@ func (c *Client) Get(
 
 func (c *Client) Update(
 	ctx context.Context,
-	syncId string,
-	scheduleId string,
+	syncID string,
+	scheduleID string,
 	request *bulksync.UpdateScheduleRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ScheduleEnvelope, error) {
@@ -290,7 +292,7 @@ func (c *Client) Update(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schedules/%v", syncId, scheduleId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schedules/%v", syncID, scheduleID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -362,8 +364,9 @@ func (c *Client) Update(
 
 func (c *Client) Delete(
 	ctx context.Context,
-	syncId string,
-	scheduleId string,
+	syncID string,
+	scheduleID string,
+	request *bulksync.DeleteSchedulesRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -375,7 +378,7 @@ func (c *Client) Delete(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schedules/%v", syncId, scheduleId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/schedules/%v", syncID, scheduleID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 

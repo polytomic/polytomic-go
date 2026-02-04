@@ -38,8 +38,8 @@ func NewClient(opts ...option.RequestOption) *Client {
 
 func (c *Client) List(
 	ctx context.Context,
-	syncId string,
-	request *modelsync.ExecutionsListRequest,
+	syncID string,
+	request *modelsync.ListExecutionsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ListExecutionResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -51,7 +51,7 @@ func (c *Client) List(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/syncs/%v/executions", syncId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/syncs/%v/executions", syncID)
 
 	queryParams, err := core.QueryValues(request)
 	if err != nil {
@@ -109,8 +109,9 @@ func (c *Client) List(
 
 func (c *Client) Get(
 	ctx context.Context,
-	syncId string,
+	syncID string,
 	id string,
+	request *modelsync.GetExecutionsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.GetExecutionResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -122,7 +123,7 @@ func (c *Client) Get(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/syncs/%v/executions/%v", syncId, id)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/syncs/%v/executions/%v", syncID, id)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -179,7 +180,7 @@ func (c *Client) Get(
 
 func (c *Client) Update(
 	ctx context.Context,
-	syncId string,
+	syncID string,
 	// The ID of the execution to update.
 	id string,
 	request *modelsync.UpdateExecutionRequest,
@@ -194,7 +195,7 @@ func (c *Client) Update(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/syncs/%v/executions/%v", syncId, id)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/syncs/%v/executions/%v", syncID, id)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -264,11 +265,12 @@ func (c *Client) Update(
 	return response, nil
 }
 
-func (c *Client) GetLogUrls(
+func (c *Client) GetLogURLs(
 	ctx context.Context,
-	syncId string,
+	syncID string,
 	id string,
 	type_ polytomicgo.V2ExecutionLogType,
+	request *modelsync.GetLogURLsExecutionsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ExecutionLogsResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -280,7 +282,7 @@ func (c *Client) GetLogUrls(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/syncs/%v/executions/%v/%v", syncId, id, type_)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/syncs/%v/executions/%v/%v", syncID, id, type_)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -344,10 +346,11 @@ func (c *Client) GetLogUrls(
 
 func (c *Client) GetLogs(
 	ctx context.Context,
-	syncId string,
+	syncID string,
 	id string,
 	type_ polytomicgo.V2ExecutionLogType,
 	filename string,
+	request *modelsync.GetLogsExecutionsRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -359,7 +362,7 @@ func (c *Client) GetLogs(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/syncs/%v/executions/%v/%v/%v", syncId, id, type_, filename)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/syncs/%v/executions/%v/%v/%v", syncID, id, type_, filename)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 

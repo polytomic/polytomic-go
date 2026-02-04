@@ -13,8 +13,17 @@ type CreateUserRequestSchema struct {
 	Role  *string `json:"role,omitempty" url:"role,omitempty"`
 }
 
-type UsersCreateApiKeyRequest struct {
+type CreateAPIKeyUsersRequest struct {
 	Force *bool `json:"-" url:"force,omitempty"`
+}
+
+type GetUsersRequest struct {
+}
+
+type ListUsersRequest struct {
+}
+
+type RemoveUsersRequest struct {
 }
 
 type UpdateUserRequestSchema struct {
@@ -22,24 +31,24 @@ type UpdateUserRequestSchema struct {
 	Role  *string `json:"role,omitempty" url:"role,omitempty"`
 }
 
-type ApiKeyResponse struct {
+type APIKeyResponse struct {
 	Value *string `json:"value,omitempty" url:"value,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (a *ApiKeyResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApiKeyResponse
+func (a *APIKeyResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler APIKeyResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*a = ApiKeyResponse(value)
+	*a = APIKeyResponse(value)
 	a._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (a *ApiKeyResponse) String() string {
+func (a *APIKeyResponse) String() string {
 	if len(a._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
 			return value
@@ -51,24 +60,24 @@ func (a *ApiKeyResponse) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-type ApiKeyResponseEnvelope struct {
-	Data *ApiKeyResponse `json:"data,omitempty" url:"data,omitempty"`
+type APIKeyResponseEnvelope struct {
+	Data *APIKeyResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (a *ApiKeyResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApiKeyResponseEnvelope
+func (a *APIKeyResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler APIKeyResponseEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*a = ApiKeyResponseEnvelope(value)
+	*a = APIKeyResponseEnvelope(value)
 	a._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (a *ApiKeyResponseEnvelope) String() string {
+func (a *APIKeyResponseEnvelope) String() string {
 	if len(a._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
 			return value
@@ -111,8 +120,8 @@ func (l *ListUsersEnvelope) String() string {
 
 type User struct {
 	Email          *string `json:"email,omitempty" url:"email,omitempty"`
-	Id             *string `json:"id,omitempty" url:"id,omitempty"`
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	ID             *string `json:"id,omitempty" url:"id,omitempty"`
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Role           *string `json:"role,omitempty" url:"role,omitempty"`
 
 	_rawJSON json.RawMessage

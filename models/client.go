@@ -38,7 +38,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) GetEnrichmentSource(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.ModelsGetEnrichmentSourceRequest,
+	request *polytomicgo.GetEnrichmentSourceModelsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.GetModelSyncSourceMetaEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -130,7 +130,7 @@ func (c *Client) GetEnrichmentSource(
 // For a given connection and enrichment configuration, provides the valid sets of input fields.
 func (c *Client) Post(
 	ctx context.Context,
-	connectionId string,
+	connectionID string,
 	request *polytomicgo.GetEnrichmentInputFieldsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.V2GetEnrichmentInputFieldsResponseEnvelope, error) {
@@ -143,7 +143,7 @@ func (c *Client) Post(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/enrichment/%v/inputfields", connectionId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/enrichment/%v/inputfields", connectionID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -208,7 +208,7 @@ func (c *Client) Post(
 
 func (c *Client) Preview(
 	ctx context.Context,
-	request *polytomicgo.ModelsPreviewRequest,
+	request *polytomicgo.PreviewModelsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ModelResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -354,7 +354,7 @@ func (c *Client) List(
 
 func (c *Client) Create(
 	ctx context.Context,
-	request *polytomicgo.ModelsCreateRequest,
+	request *polytomicgo.CreateModelsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ModelResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -440,7 +440,7 @@ func (c *Client) Create(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.ModelsGetRequest,
+	request *polytomicgo.GetModelsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ModelResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -604,7 +604,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.ModelsRemoveRequest,
+	request *polytomicgo.RemoveModelsRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -688,7 +688,7 @@ func (c *Client) Remove(
 func (c *Client) Sample(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.ModelsSampleRequest,
+	request *polytomicgo.SampleModelsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ModelSampleResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)

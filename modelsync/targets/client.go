@@ -39,7 +39,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) GetTarget(
 	ctx context.Context,
 	id string,
-	request *modelsync.TargetsGetTargetRequest,
+	request *modelsync.GetTargetTargetsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.GetConnectionMetaEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -131,7 +131,7 @@ func (c *Client) GetTarget(
 func (c *Client) GetTargetFields(
 	ctx context.Context,
 	id string,
-	request *modelsync.TargetsGetTargetFieldsRequest,
+	request *modelsync.GetTargetFieldsTargetsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.TargetResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -233,6 +233,7 @@ func (c *Client) GetTargetFields(
 func (c *Client) List(
 	ctx context.Context,
 	id string,
+	request *modelsync.ListTargetsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.V4TargetObjectsResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -349,6 +350,7 @@ func (c *Client) GetCreateProperty(
 	ctx context.Context,
 	id string,
 	property string,
+	request *modelsync.GetCreatePropertyTargetsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.V4TargetPropertyValuesEnvelope, error) {
 	options := core.NewRequestOptions(opts...)

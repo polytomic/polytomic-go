@@ -9,8 +9,8 @@ import (
 	time "time"
 )
 
-type EventsListRequest struct {
-	OrganizationId *string    `json:"-" url:"organization_id,omitempty"`
+type ListEventsRequest struct {
+	OrganizationID *string    `json:"-" url:"organization_id,omitempty"`
 	Type           *string    `json:"-" url:"type,omitempty"`
 	StartingAfter  *time.Time `json:"-" url:"starting_after,omitempty"`
 	EndingBefore   *time.Time `json:"-" url:"ending_before,omitempty"`
@@ -18,11 +18,11 @@ type EventsListRequest struct {
 }
 
 type BulkSyncCanceledEvent struct {
-	DestinationConnectionId *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
-	ExecutionId             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationId          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	SourceConnectionId      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	ExecutionID             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	OrganizationID          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	SourceConnectionID      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	SyncID                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
 	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -52,11 +52,11 @@ func (b *BulkSyncCanceledEvent) String() string {
 }
 
 type BulkSyncCompletedEvent struct {
-	DestinationConnectionId *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
-	ExecutionId             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationId          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	SourceConnectionId      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	ExecutionID             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	OrganizationID          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	SourceConnectionID      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	SyncID                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
 	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	TriggerSource           *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
 
@@ -87,11 +87,11 @@ func (b *BulkSyncCompletedEvent) String() string {
 }
 
 type BulkSyncCompletedWithErrorEvent struct {
-	DestinationConnectionId *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
-	ExecutionId             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationId          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	SourceConnectionId      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	ExecutionID             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	OrganizationID          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	SourceConnectionID      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	SyncID                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
 	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	TriggerSource           *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
 
@@ -122,12 +122,12 @@ func (b *BulkSyncCompletedWithErrorEvent) String() string {
 }
 
 type BulkSyncFailedEvent struct {
-	DestinationConnectionId *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
 	Error                   *string `json:"error,omitempty" url:"error,omitempty"`
-	ExecutionId             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationId          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	SourceConnectionId      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	ExecutionID             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	OrganizationID          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	SourceConnectionID      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	SyncID                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
 	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	TriggerSource           *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
 
@@ -158,11 +158,11 @@ func (b *BulkSyncFailedEvent) String() string {
 }
 
 type BulkSyncRunningEvent struct {
-	DestinationConnectionId *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
-	ExecutionId             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationId          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	SourceConnectionId      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	ExecutionID             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	OrganizationID          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	SourceConnectionID      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	SyncID                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
 	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -194,8 +194,8 @@ func (b *BulkSyncRunningEvent) String() string {
 type Event struct {
 	CreatedAt      *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
 	Event          *EventBody `json:"event,omitempty" url:"event,omitempty"`
-	Id             *string    `json:"id,omitempty" url:"id,omitempty"`
-	OrganizationId *string    `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	ID             *string    `json:"id,omitempty" url:"id,omitempty"`
+	OrganizationID *string    `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Type           *string    `json:"type,omitempty" url:"type,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -489,12 +489,12 @@ func (e *EventsEnvelope) String() string {
 }
 
 type SyncCanceledEvent struct {
-	ExecutionId        *string          `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationId     *string          `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	ExecutionID        *string          `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	OrganizationID     *string          `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Status             *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-	SyncId             *string          `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncID             *string          `json:"sync_id,omitempty" url:"sync_id,omitempty"`
 	SyncName           *string          `json:"sync_name,omitempty" url:"sync_name,omitempty"`
-	TargetConnectionId *string          `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
+	TargetConnectionID *string          `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -526,15 +526,15 @@ type SyncCompletedEvent struct {
 	DeletedRecords     []string         `json:"deleted_records,omitempty" url:"deleted_records,omitempty"`
 	ErrorCount         *int             `json:"error_count,omitempty" url:"error_count,omitempty"`
 	ErroredRecords     []string         `json:"errored_records,omitempty" url:"errored_records,omitempty"`
-	ExecutionId        *string          `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	ExecutionID        *string          `json:"execution_id,omitempty" url:"execution_id,omitempty"`
 	InsertedCount      *int             `json:"inserted_count,omitempty" url:"inserted_count,omitempty"`
 	InsertedRecords    []string         `json:"inserted_records,omitempty" url:"inserted_records,omitempty"`
-	OrganizationId     *string          `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID     *string          `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	RecordCount        *int             `json:"record_count,omitempty" url:"record_count,omitempty"`
 	Status             *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-	SyncId             *string          `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncID             *string          `json:"sync_id,omitempty" url:"sync_id,omitempty"`
 	SyncName           *string          `json:"sync_name,omitempty" url:"sync_name,omitempty"`
-	TargetConnectionId *string          `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
+	TargetConnectionID *string          `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
 	TotalRecords       []string         `json:"total_records,omitempty" url:"total_records,omitempty"`
 	Trigger            *string          `json:"trigger,omitempty" url:"trigger,omitempty"`
 	UpdatedCount       *int             `json:"updated_count,omitempty" url:"updated_count,omitempty"`
@@ -571,13 +571,13 @@ func (s *SyncCompletedEvent) String() string {
 
 type SyncCompletedWithErrorsEvent struct {
 	Error              *string `json:"error,omitempty" url:"error,omitempty"`
-	ExecutionId        *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	ExecutionID        *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
 	NumberOfErrors     *int    `json:"number_of_errors,omitempty" url:"number_of_errors,omitempty"`
 	NumberOfWarnings   *int    `json:"number_of_warnings,omitempty" url:"number_of_warnings,omitempty"`
-	OrganizationId     *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	SyncId             *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	OrganizationID     *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	SyncID             *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
 	SyncName           *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
-	TargetConnectionId *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
+	TargetConnectionID *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -607,11 +607,11 @@ func (s *SyncCompletedWithErrorsEvent) String() string {
 
 type SyncFailedEvent struct {
 	Error              *string `json:"error,omitempty" url:"error,omitempty"`
-	ExecutionId        *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationId     *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	SyncId             *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	ExecutionID        *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	OrganizationID     *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	SyncID             *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
 	SyncName           *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
-	TargetConnectionId *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
+	TargetConnectionID *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -640,11 +640,11 @@ func (s *SyncFailedEvent) String() string {
 }
 
 type SyncRunningEvent struct {
-	ExecutionId        *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationId     *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	SyncId             *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	ExecutionID        *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	OrganizationID     *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	SyncID             *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
 	SyncName           *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
-	TargetConnectionId *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
+	TargetConnectionID *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
 
 	_rawJSON json.RawMessage
 }

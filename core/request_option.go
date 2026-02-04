@@ -22,7 +22,7 @@ type RequestOptions struct {
 	HTTPHeader  http.Header
 	MaxAttempts uint
 	Token       string
-	Version     *string
+	Version     interface{}
 }
 
 // NewRequestOptions returns a new *RequestOptions value.
@@ -46,9 +46,7 @@ func (r *RequestOptions) ToHeader() http.Header {
 	if r.Token != "" {
 		header.Set("Authorization", "Bearer "+r.Token)
 	}
-	if r.Version != nil {
-		header.Set("X-Polytomic-Version", fmt.Sprintf("%v", *r.Version))
-	}
+	header.Set("X-Polytomic-Version", fmt.Sprintf("%v", r.Version))
 	return header
 }
 
@@ -56,7 +54,7 @@ func (r *RequestOptions) cloneHeader() http.Header {
 	headers := r.HTTPHeader.Clone()
 	headers.Set("X-Fern-Language", "Go")
 	headers.Set("X-Fern-SDK-Name", "github.com/polytomic/polytomic-go")
-	headers.Set("X-Fern-SDK-Version", "v1.12.2")
+	headers.Set("X-Fern-SDK-Version", "v0.0.111")
 	return headers
 }
 
@@ -107,7 +105,7 @@ func (t *TokenOption) applyRequestOptions(opts *RequestOptions) {
 
 // VersionOption implements the RequestOption interface.
 type VersionOption struct {
-	Version *string
+	Version interface{}
 }
 
 func (v *VersionOption) applyRequestOptions(opts *RequestOptions) {

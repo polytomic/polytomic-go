@@ -40,7 +40,8 @@ func NewClient(opts ...option.RequestOption) *Client {
 // > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) List(
 	ctx context.Context,
-	orgId string,
+	orgID string,
+	request *polytomicgo.ListUsersRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ListUsersEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -52,7 +53,7 @@ func (c *Client) List(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/organizations/%v/users", orgId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/organizations/%v/users", orgID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -105,7 +106,7 @@ func (c *Client) List(
 // > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) Create(
 	ctx context.Context,
-	orgId string,
+	orgID string,
 	request *polytomicgo.CreateUserRequestSchema,
 	opts ...option.RequestOption,
 ) (*polytomicgo.UserEnvelope, error) {
@@ -118,7 +119,7 @@ func (c *Client) Create(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/organizations/%v/users", orgId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/organizations/%v/users", orgID)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -179,8 +180,9 @@ func (c *Client) Create(
 // > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) Get(
 	ctx context.Context,
+	orgID string,
 	id string,
-	orgId string,
+	request *polytomicgo.GetUsersRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.UserEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -192,7 +194,7 @@ func (c *Client) Get(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/organizations/%v/users/%v", orgId, id)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/organizations/%v/users/%v", orgID, id)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -252,8 +254,8 @@ func (c *Client) Get(
 // > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) Update(
 	ctx context.Context,
+	orgID string,
 	id string,
-	orgId string,
 	request *polytomicgo.UpdateUserRequestSchema,
 	opts ...option.RequestOption,
 ) (*polytomicgo.UserEnvelope, error) {
@@ -266,7 +268,7 @@ func (c *Client) Update(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/organizations/%v/users/%v", orgId, id)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/organizations/%v/users/%v", orgID, id)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -327,8 +329,9 @@ func (c *Client) Update(
 // > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) Remove(
 	ctx context.Context,
+	orgID string,
 	id string,
-	orgId string,
+	request *polytomicgo.RemoveUsersRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.UserEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -340,7 +343,7 @@ func (c *Client) Remove(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/organizations/%v/users/%v", orgId, id)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/organizations/%v/users/%v", orgID, id)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -398,13 +401,13 @@ func (c *Client) Remove(
 // > 🚧 Requires partner key
 // >
 // > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
-func (c *Client) CreateApiKey(
+func (c *Client) CreateAPIKey(
 	ctx context.Context,
-	orgId string,
+	orgID string,
 	id string,
-	request *polytomicgo.UsersCreateApiKeyRequest,
+	request *polytomicgo.CreateAPIKeyUsersRequest,
 	opts ...option.RequestOption,
-) (*polytomicgo.ApiKeyResponseEnvelope, error) {
+) (*polytomicgo.APIKeyResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://app.polytomic.com"
@@ -414,7 +417,7 @@ func (c *Client) CreateApiKey(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"api/organizations/%v/users/%v/keys", orgId, id)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/organizations/%v/users/%v/keys", orgID, id)
 
 	queryParams, err := core.QueryValues(request)
 	if err != nil {
@@ -459,7 +462,7 @@ func (c *Client) CreateApiKey(
 		return apiError
 	}
 
-	var response *polytomicgo.ApiKeyResponseEnvelope
+	var response *polytomicgo.APIKeyResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

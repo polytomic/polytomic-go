@@ -36,7 +36,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 
 func (c *Client) List(
 	ctx context.Context,
-	request *polytomicgo.EventsListRequest,
+	request *polytomicgo.ListEventsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.EventsEnvelope, error) {
 	options := core.NewRequestOptions(opts...)

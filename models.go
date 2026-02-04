@@ -9,29 +9,29 @@ import (
 	time "time"
 )
 
-type ModelsCreateRequest struct {
+type CreateModelsRequest struct {
 	Async *bool               `json:"-" url:"async,omitempty"`
 	Body  *CreateModelRequest `json:"-" url:"-"`
 }
 
-func (m *ModelsCreateRequest) UnmarshalJSON(data []byte) error {
+func (c *CreateModelsRequest) UnmarshalJSON(data []byte) error {
 	body := new(CreateModelRequest)
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	m.Body = body
+	c.Body = body
 	return nil
 }
 
-func (m *ModelsCreateRequest) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.Body)
+func (c *CreateModelsRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c.Body)
 }
 
-type ModelsGetRequest struct {
+type GetModelsRequest struct {
 	Async *bool `json:"-" url:"async,omitempty"`
 }
 
-type ModelsGetEnrichmentSourceRequest struct {
+type GetEnrichmentSourceModelsRequest struct {
 	Params map[string][]string `json:"-" url:"params,omitempty"`
 }
 
@@ -39,29 +39,29 @@ type GetEnrichmentInputFieldsRequest struct {
 	Configuration *V2EnricherConfiguration `json:"configuration,omitempty" url:"configuration,omitempty"`
 }
 
-type ModelsPreviewRequest struct {
+type PreviewModelsRequest struct {
 	Async *bool               `json:"-" url:"async,omitempty"`
 	Body  *CreateModelRequest `json:"-" url:"-"`
 }
 
-func (m *ModelsPreviewRequest) UnmarshalJSON(data []byte) error {
+func (p *PreviewModelsRequest) UnmarshalJSON(data []byte) error {
 	body := new(CreateModelRequest)
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	m.Body = body
+	p.Body = body
 	return nil
 }
 
-func (m *ModelsPreviewRequest) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.Body)
+func (p *PreviewModelsRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(p.Body)
 }
 
-type ModelsRemoveRequest struct {
+type RemoveModelsRequest struct {
 	Async *bool `json:"-" url:"async,omitempty"`
 }
 
-type ModelsSampleRequest struct {
+type SampleModelsRequest struct {
 	Async *bool `json:"-" url:"async,omitempty"`
 }
 
@@ -69,13 +69,13 @@ type UpdateModelRequest struct {
 	Async            *bool                     `json:"-" url:"async,omitempty"`
 	AdditionalFields []*ModelModelFieldRequest `json:"additional_fields,omitempty" url:"additional_fields,omitempty"`
 	Configuration    map[string]interface{}    `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionId     string                    `json:"connection_id" url:"connection_id"`
+	ConnectionID     string                    `json:"connection_id" url:"connection_id"`
 	Enricher         *Enrichment               `json:"enricher,omitempty" url:"enricher,omitempty"`
 	Fields           []string                  `json:"fields,omitempty" url:"fields,omitempty"`
 	Identifier       *string                   `json:"identifier,omitempty" url:"identifier,omitempty"`
 	Labels           []string                  `json:"labels,omitempty" url:"labels,omitempty"`
 	Name             string                    `json:"name" url:"name"`
-	OrganizationId   *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID   *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Policies         []string                  `json:"policies,omitempty" url:"policies,omitempty"`
 	Refresh          *bool                     `json:"refresh,omitempty" url:"refresh,omitempty"`
 	Relations        []*ModelRelation          `json:"relations,omitempty" url:"relations,omitempty"`
@@ -85,13 +85,13 @@ type UpdateModelRequest struct {
 type CreateModelRequest struct {
 	AdditionalFields []*ModelModelFieldRequest `json:"additional_fields,omitempty" url:"additional_fields,omitempty"`
 	Configuration    map[string]interface{}    `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionId     string                    `json:"connection_id" url:"connection_id"`
+	ConnectionID     string                    `json:"connection_id" url:"connection_id"`
 	Enricher         *Enrichment               `json:"enricher,omitempty" url:"enricher,omitempty"`
 	Fields           []string                  `json:"fields,omitempty" url:"fields,omitempty"`
 	Identifier       *string                   `json:"identifier,omitempty" url:"identifier,omitempty"`
 	Labels           []string                  `json:"labels,omitempty" url:"labels,omitempty"`
 	Name             string                    `json:"name" url:"name"`
-	OrganizationId   *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID   *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Policies         []string                  `json:"policies,omitempty" url:"policies,omitempty"`
 	Relations        []*ModelRelation          `json:"relations,omitempty" url:"relations,omitempty"`
 	TrackingColumns  []string                  `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
@@ -124,9 +124,9 @@ func (c *CreateModelRequest) String() string {
 
 type Enrichment struct {
 	Configuration *V2EnricherConfiguration `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionId  *string                  `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	ConnectionID  *string                  `json:"connection_id,omitempty" url:"connection_id,omitempty"`
 	// Must be provided to update an existing enrichment
-	EnricherId *string `json:"enricher_id,omitempty" url:"enricher_id,omitempty"`
+	EnricherID *string `json:"enricher_id,omitempty" url:"enricher_id,omitempty"`
 	// If not provided, all fields will be enabled.
 	Fields   []*ModelField      `json:"fields,omitempty" url:"fields,omitempty"`
 	Mappings *V2EnricherMapping `json:"mappings,omitempty" url:"mappings,omitempty"`
@@ -252,7 +252,7 @@ func (m *ModelRelation) String() string {
 
 type ModelRelationTo struct {
 	Field   *string `json:"field,omitempty" url:"field,omitempty"`
-	ModelId *string `json:"model_id,omitempty" url:"model_id,omitempty"`
+	ModelID *string `json:"model_id,omitempty" url:"model_id,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -282,16 +282,16 @@ func (m *ModelRelationTo) String() string {
 
 type ModelResponse struct {
 	Configuration   map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionId    *string                `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	ConnectionID    *string                `json:"connection_id,omitempty" url:"connection_id,omitempty"`
 	CreatedAt       *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
 	CreatedBy       *CommonOutputActor     `json:"created_by,omitempty" url:"created_by,omitempty"`
 	Enricher        *Enrichment            `json:"enricher,omitempty" url:"enricher,omitempty"`
 	Fields          []*ModelField          `json:"fields,omitempty" url:"fields,omitempty"`
-	Id              *string                `json:"id,omitempty" url:"id,omitempty"`
+	ID              *string                `json:"id,omitempty" url:"id,omitempty"`
 	Identifier      *string                `json:"identifier,omitempty" url:"identifier,omitempty"`
 	Labels          []LabelLabel           `json:"labels,omitempty" url:"labels,omitempty"`
 	Name            *string                `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationId  *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID  *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Policies        []string               `json:"policies,omitempty" url:"policies,omitempty"`
 	Relations       []*Relation            `json:"relations,omitempty" url:"relations,omitempty"`
 	TrackingColumns []string               `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
@@ -470,7 +470,7 @@ func (r *Relation) String() string {
 
 type RelationTo struct {
 	Field   *string `json:"field,omitempty" url:"field,omitempty"`
-	ModelId *string `json:"model_id,omitempty" url:"model_id,omitempty"`
+	ModelID *string `json:"model_id,omitempty" url:"model_id,omitempty"`
 
 	_rawJSON json.RawMessage
 }

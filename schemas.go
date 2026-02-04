@@ -9,6 +9,24 @@ import (
 	time "time"
 )
 
+type DeleteFieldSchemasRequest struct {
+}
+
+type GetSchemasRequest struct {
+}
+
+type GetRecordsSchemasRequest struct {
+}
+
+type GetStatusSchemasRequest struct {
+}
+
+type RefreshSchemasRequest struct {
+}
+
+type ResetPrimaryKeysSchemasRequest struct {
+}
+
 type SetPrimaryKeysRequest struct {
 	Fields []*SchemaPrimaryKeyOverrideInput `json:"fields,omitempty" url:"fields,omitempty"`
 }
@@ -129,7 +147,7 @@ func (b *BulkSyncSourceStatusEnvelope) String() string {
 }
 
 type SchemaPrimaryKeyOverrideInput struct {
-	FieldId      string `json:"field_id" url:"field_id"`
+	FieldID      string `json:"field_id" url:"field_id"`
 	IsPrimaryKey bool   `json:"is_primary_key" url:"is_primary_key"`
 
 	_rawJSON json.RawMessage
@@ -189,7 +207,7 @@ func (s *SchemaRecordsResponseEnvelope) String() string {
 
 type V4UserFieldRequest struct {
 	Example interface{} `json:"example,omitempty" url:"example,omitempty"`
-	FieldId string      `json:"field_id" url:"field_id"`
+	FieldID string      `json:"field_id" url:"field_id"`
 	Label   string      `json:"label" url:"label"`
 	Path    *string     `json:"path,omitempty" url:"path,omitempty"`
 	Type    string      `json:"type" url:"type"`

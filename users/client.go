@@ -41,6 +41,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) List(
 	ctx context.Context,
 	orgId string,
+	request *polytomicgo.UsersListRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ListUsersEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -179,8 +180,9 @@ func (c *Client) Create(
 // > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) Get(
 	ctx context.Context,
-	id string,
 	orgId string,
+	id string,
+	request *polytomicgo.UsersGetRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.UserEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -252,8 +254,8 @@ func (c *Client) Get(
 // > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) Update(
 	ctx context.Context,
-	id string,
 	orgId string,
+	id string,
 	request *polytomicgo.UpdateUserRequestSchema,
 	opts ...option.RequestOption,
 ) (*polytomicgo.UserEnvelope, error) {
@@ -327,8 +329,9 @@ func (c *Client) Update(
 // > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) Remove(
 	ctx context.Context,
-	id string,
 	orgId string,
+	id string,
+	request *polytomicgo.UsersRemoveRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.UserEnvelope, error) {
 	options := core.NewRequestOptions(opts...)

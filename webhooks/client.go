@@ -184,6 +184,7 @@ func (c *Client) Create(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.WebhooksGetRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.WebhookEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -322,6 +323,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.WebhooksRemoveRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -389,6 +391,7 @@ func (c *Client) Remove(
 func (c *Client) Disable(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.WebhooksDisableRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.WebhookEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -458,6 +461,7 @@ func (c *Client) Disable(
 func (c *Client) Enable(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.WebhooksEnableRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.WebhookEnvelope, error) {
 	options := core.NewRequestOptions(opts...)

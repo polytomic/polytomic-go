@@ -181,6 +181,7 @@ func (c *Client) Get(
 	ctx context.Context,
 	id string,
 	execId string,
+	request *bulksync.ExecutionsGetRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncExecutionEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -244,6 +245,7 @@ func (c *Client) GetLogs(
 	ctx context.Context,
 	syncId string,
 	executionId string,
+	request *bulksync.ExecutionsGetLogsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.V4BulkSyncExecutionLogsEnvelope, error) {
 	options := core.NewRequestOptions(opts...)

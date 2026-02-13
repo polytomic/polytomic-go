@@ -39,6 +39,15 @@ type CreateConnectionRequestSchema struct {
 	Validate *bool `json:"validate,omitempty" url:"validate,omitempty"`
 }
 
+type ConnectionsGetRequest struct {
+}
+
+type ConnectionsGetConnectionTypeSchemaRequest struct {
+}
+
+type ConnectionsGetParameterValuesRequest struct {
+}
+
 type ConnectionsRemoveRequest struct {
 	Force *bool `json:"-" url:"force,omitempty"`
 }

@@ -9,8 +9,11 @@ import (
 	time "time"
 )
 
+type SchemasGetRequest struct {
+}
+
 type SchemasListRequest struct {
-	Filters map[string]*string `json:"-" url:"filters,omitempty"`
+	Filters map[string]string `json:"-" url:"filters,omitempty"`
 }
 
 type BulkSyncSchemasRequest struct {
@@ -22,7 +25,7 @@ type UpdateBulkSchema struct {
 	DisableDataCutoff   *bool                          `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
 	Enabled             *bool                          `json:"enabled,omitempty" url:"enabled,omitempty"`
 	Fields              []*polytomicgo.UpdateBulkField `json:"fields,omitempty" url:"fields,omitempty"`
-	Filters             []*polytomicgo.BulkFilter      `json:"filters,omitempty" url:"filters,omitempty"`
+	Filters             []*polytomicgo.BulkFilter2     `json:"filters,omitempty" url:"filters,omitempty"`
 	PartitionKey        *string                        `json:"partition_key,omitempty" url:"partition_key,omitempty"`
 	TrackingField       *string                        `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
 	UserOutputName      *string                        `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`

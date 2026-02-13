@@ -15,6 +15,18 @@ type CreateWebhooksSchema struct {
 	Secret         string  `json:"secret" url:"secret"`
 }
 
+type WebhooksDisableRequest struct {
+}
+
+type WebhooksEnableRequest struct {
+}
+
+type WebhooksGetRequest struct {
+}
+
+type WebhooksRemoveRequest struct {
+}
+
 type UpdateWebhooksSchema struct {
 	Endpoint       string  `json:"endpoint" url:"endpoint"`
 	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`

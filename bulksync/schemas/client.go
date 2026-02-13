@@ -196,6 +196,7 @@ func (c *Client) Get(
 	ctx context.Context,
 	id string,
 	schemaId string,
+	request *bulksync.SchemasGetRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSchemaEnvelope, error) {
 	options := core.NewRequestOptions(opts...)

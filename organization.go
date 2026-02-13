@@ -17,6 +17,12 @@ type CreateOrganizationRequestSchema struct {
 	SsoOrgId     *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
 }
 
+type OrganizationGetRequest struct {
+}
+
+type OrganizationRemoveRequest struct {
+}
+
 type UpdateOrganizationRequestSchema struct {
 	ClientId     *string `json:"client_id,omitempty" url:"client_id,omitempty"`
 	ClientSecret *string `json:"client_secret,omitempty" url:"client_secret,omitempty"`

@@ -2,6 +2,9 @@
 
 package modelsync
 
+type TargetsGetCreatePropertyRequest struct {
+}
+
 type TargetsGetTargetRequest struct {
 	Type   *string `json:"-" url:"type,omitempty"`
 	Search *string `json:"-" url:"search,omitempty"`
@@ -10,4 +13,7 @@ type TargetsGetTargetRequest struct {
 type TargetsGetTargetFieldsRequest struct {
 	Target  string `json:"-" url:"target"`
 	Refresh *bool  `json:"-" url:"refresh,omitempty"`
+}
+
+type TargetsListRequest struct {
 }

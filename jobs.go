@@ -8,6 +8,9 @@ import (
 	core "github.com/polytomic/polytomic-go/core"
 )
 
+type JobsGetRequest struct {
+}
+
 type JobResponseEnvelope struct {
 	Data *JobResponse `json:"data,omitempty" url:"data,omitempty"`
 

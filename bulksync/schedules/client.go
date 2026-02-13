@@ -39,6 +39,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) List(
 	ctx context.Context,
 	syncId string,
+	request *bulksync.SchedulesListRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.SchedulesEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -201,6 +202,7 @@ func (c *Client) Get(
 	ctx context.Context,
 	syncId string,
 	scheduleId string,
+	request *bulksync.SchedulesGetRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ScheduleEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -364,6 +366,7 @@ func (c *Client) Delete(
 	ctx context.Context,
 	syncId string,
 	scheduleId string,
+	request *bulksync.SchedulesDeleteRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)

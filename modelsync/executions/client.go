@@ -111,6 +111,7 @@ func (c *Client) Get(
 	ctx context.Context,
 	syncId string,
 	id string,
+	request *modelsync.ExecutionsGetRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.GetExecutionResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -269,6 +270,7 @@ func (c *Client) GetLogUrls(
 	syncId string,
 	id string,
 	type_ polytomicgo.V2ExecutionLogType,
+	request *modelsync.ExecutionsGetLogUrlsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ExecutionLogsResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -348,6 +350,7 @@ func (c *Client) GetLogs(
 	id string,
 	type_ polytomicgo.V2ExecutionLogType,
 	filename string,
+	request *modelsync.ExecutionsGetLogsRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)

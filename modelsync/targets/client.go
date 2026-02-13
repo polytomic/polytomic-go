@@ -233,6 +233,7 @@ func (c *Client) GetTargetFields(
 func (c *Client) List(
 	ctx context.Context,
 	id string,
+	request *modelsync.TargetsListRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.V4TargetObjectsResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -349,6 +350,7 @@ func (c *Client) GetCreateProperty(
 	ctx context.Context,
 	id string,
 	property string,
+	request *modelsync.TargetsGetCreatePropertyRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.V4TargetPropertyValuesEnvelope, error) {
 	options := core.NewRequestOptions(opts...)

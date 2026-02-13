@@ -12,6 +12,12 @@ type CreatePolicyRequest struct {
 	PolicyActions  []*polytomicgo.PolicyAction `json:"policy_actions,omitempty" url:"policy_actions,omitempty"`
 }
 
+type PoliciesGetRequest struct {
+}
+
+type PoliciesRemoveRequest struct {
+}
+
 type UpdatePolicyRequest struct {
 	Name           string                      `json:"name" url:"name"`
 	OrganizationId *string                     `json:"organization_id,omitempty" url:"organization_id,omitempty"`

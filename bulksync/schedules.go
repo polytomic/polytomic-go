@@ -10,6 +10,15 @@ type CreateScheduleRequest struct {
 	Schedule *polytomicgo.V4BulkSyncScheduleApi `json:"schedule,omitempty" url:"schedule,omitempty"`
 }
 
+type SchedulesDeleteRequest struct {
+}
+
+type SchedulesGetRequest struct {
+}
+
+type SchedulesListRequest struct {
+}
+
 type UpdateScheduleRequest struct {
 	Schedule *polytomicgo.V4BulkSyncScheduleApi `json:"schedule,omitempty" url:"schedule,omitempty"`
 }

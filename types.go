@@ -305,7 +305,7 @@ func (b *BulkField) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
-type BulkFilter struct {
+type BulkFilter2 struct {
 	// Schema field ID to filter on.
 	FieldId  *string        `json:"field_id,omitempty" url:"field_id,omitempty"`
 	Function FilterFunction `json:"function,omitempty" url:"function,omitempty"`
@@ -314,18 +314,18 @@ type BulkFilter struct {
 	_rawJSON json.RawMessage
 }
 
-func (b *BulkFilter) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkFilter
+func (b *BulkFilter2) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkFilter2
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*b = BulkFilter(value)
+	*b = BulkFilter2(value)
 	b._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (b *BulkFilter) String() string {
+func (b *BulkFilter2) String() string {
 	if len(b._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
 			return value
@@ -338,16 +338,16 @@ func (b *BulkFilter) String() string {
 }
 
 type BulkSchema struct {
-	DataCutoffTimestamp *time.Time    `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
-	DisableDataCutoff   *bool         `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
-	Enabled             *bool         `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Fields              []*BulkField  `json:"fields,omitempty" url:"fields,omitempty"`
-	Filters             []*BulkFilter `json:"filters,omitempty" url:"filters,omitempty"`
-	Id                  *string       `json:"id,omitempty" url:"id,omitempty"`
-	OutputName          *string       `json:"output_name,omitempty" url:"output_name,omitempty"`
-	PartitionKey        *string       `json:"partition_key,omitempty" url:"partition_key,omitempty"`
-	TrackingField       *string       `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
-	UserOutputName      *string       `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
+	DataCutoffTimestamp *time.Time     `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
+	DisableDataCutoff   *bool          `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
+	Enabled             *bool          `json:"enabled,omitempty" url:"enabled,omitempty"`
+	Fields              []*BulkField   `json:"fields,omitempty" url:"fields,omitempty"`
+	Filters             []*BulkFilter2 `json:"filters,omitempty" url:"filters,omitempty"`
+	Id                  *string        `json:"id,omitempty" url:"id,omitempty"`
+	OutputName          *string        `json:"output_name,omitempty" url:"output_name,omitempty"`
+	PartitionKey        *string        `json:"partition_key,omitempty" url:"partition_key,omitempty"`
+	TrackingField       *string        `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
+	UserOutputName      *string        `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -819,6 +819,36 @@ func (c *ConfigurationValue) UnmarshalJSON(data []byte) error {
 }
 
 func (c *ConfigurationValue) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConfigurationValue2 struct {
+	Items []interface{} `json:"items,omitempty" url:"items,omitempty"`
+	Type  *string       `json:"type,omitempty" url:"type,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ConfigurationValue2) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConfigurationValue2
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConfigurationValue2(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConfigurationValue2) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -1428,7 +1458,7 @@ func (l *ListBulkSyncExecutionStatusEnvelope) String() string {
 
 type ListBulkSyncExecutionsEnvelope struct {
 	Data       []*BulkSyncExecution `json:"data,omitempty" url:"data,omitempty"`
-	Pagination *PaginationDetails   `json:"pagination,omitempty" url:"pagination,omitempty"`
+	Pagination *PaginationDetails2  `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -1646,9 +1676,9 @@ func (m ModelSyncMode) Ptr() *ModelSyncMode {
 }
 
 type ModelSyncSourceMetaResponse struct {
-	Configuration map[string]*ConfigurationValue `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Items         map[string]*SourceMeta         `json:"items,omitempty" url:"items,omitempty"`
-	RequiresOneOf []string                       `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
+	Configuration map[string]*ConfigurationValue2 `json:"configuration,omitempty" url:"configuration,omitempty"`
+	Items         map[string]*SourceMeta          `json:"items,omitempty" url:"items,omitempty"`
+	RequiresOneOf []string                        `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -1694,6 +1724,35 @@ func (p *PaginationDetails) UnmarshalJSON(data []byte) error {
 }
 
 func (p *PaginationDetails) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PaginationDetails2 struct {
+	NextPageToken *string `json:"next_page_token,omitempty" url:"next_page_token,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *PaginationDetails2) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaginationDetails2
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PaginationDetails2(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaginationDetails2) String() string {
 	if len(p._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
 			return value

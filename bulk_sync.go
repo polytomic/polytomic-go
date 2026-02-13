@@ -9,6 +9,23 @@ import (
 	time "time"
 )
 
+type BulkSyncActivateRequest struct {
+	Body *ActivateSyncInput `json:"-" url:"-"`
+}
+
+func (b *BulkSyncActivateRequest) UnmarshalJSON(data []byte) error {
+	body := new(ActivateSyncInput)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	b.Body = body
+	return nil
+}
+
+func (b *BulkSyncActivateRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(b.Body)
+}
+
 type CreateBulkSyncRequest struct {
 	Active                     *bool         `json:"active,omitempty" url:"active,omitempty"`
 	AutomaticallyAddNewFields  *BulkDiscover `json:"automatically_add_new_fields,omitempty" url:"automatically_add_new_fields,omitempty"`
@@ -61,8 +78,14 @@ type BulkSyncGetRequest struct {
 	RefreshSchemas *bool `json:"-" url:"refresh_schemas,omitempty"`
 }
 
+type BulkSyncGetDestinationRequest struct {
+}
+
 type BulkSyncGetSourceRequest struct {
 	IncludeFields *bool `json:"-" url:"include_fields,omitempty"`
+}
+
+type BulkSyncGetStatusRequest struct {
 }
 
 type BulkSyncListRequest struct {
@@ -154,6 +177,38 @@ func NewBulkDiscoverFromString(s string) (BulkDiscover, error) {
 
 func (b BulkDiscover) Ptr() *BulkDiscover {
 	return &b
+}
+
+type BulkFilter struct {
+	// Schema field ID to filter on.
+	FieldId  *string        `json:"field_id,omitempty" url:"field_id,omitempty"`
+	Function FilterFunction `json:"function,omitempty" url:"function,omitempty"`
+	Value    interface{}    `json:"value,omitempty" url:"value,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BulkFilter) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkFilter
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkFilter(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkFilter) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
 }
 
 type BulkItemizedSchedule struct {

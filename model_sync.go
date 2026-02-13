@@ -9,6 +9,26 @@ import (
 	time "time"
 )
 
+type ModelSyncActivateRequest struct {
+	Body *ActivateSyncInput `json:"-" url:"-"`
+}
+
+func (m *ModelSyncActivateRequest) UnmarshalJSON(data []byte) error {
+	body := new(ActivateSyncInput)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	m.Body = body
+	return nil
+}
+
+func (m *ModelSyncActivateRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(m.Body)
+}
+
+type ModelSyncCancelRequest struct {
+}
+
 type CreateModelSyncRequest struct {
 	// Whether the sync is enabled and scheduled.
 	Active *bool `json:"active,omitempty" url:"active,omitempty"`
@@ -40,6 +60,9 @@ type CreateModelSyncRequest struct {
 	Target         *Target `json:"target,omitempty" url:"target,omitempty"`
 }
 
+type ModelSyncGetRequest struct {
+}
+
 type ModelSyncGetSourceRequest struct {
 	Params map[string][]string `json:"-" url:"params,omitempty"`
 }
@@ -48,10 +71,16 @@ type ModelSyncGetSourceFieldsRequest struct {
 	Params map[string][]string `json:"-" url:"params,omitempty"`
 }
 
+type ModelSyncGetStatusRequest struct {
+}
+
 type ModelSyncListRequest struct {
 	Active             *bool          `json:"-" url:"active,omitempty"`
 	Mode               *ModelSyncMode `json:"-" url:"mode,omitempty"`
 	TargetConnectionId *string        `json:"-" url:"target_connection_id,omitempty"`
+}
+
+type ModelSyncRemoveRequest struct {
 }
 
 type StartModelSyncRequest struct {

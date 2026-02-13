@@ -6,6 +6,15 @@ import (
 	polytomicgo "github.com/polytomic/polytomic-go"
 )
 
+type ExecutionsGetRequest struct {
+}
+
+type ExecutionsGetLogUrlsRequest struct {
+}
+
+type ExecutionsGetLogsRequest struct {
+}
+
 type ExecutionsListRequest struct {
 	PageToken     *string `json:"-" url:"page_token,omitempty"`
 	OnlyCompleted *bool   `json:"-" url:"only_completed,omitempty"`

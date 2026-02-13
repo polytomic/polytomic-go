@@ -117,6 +117,7 @@ func (c *Client) DeleteField(
 	connectionId string,
 	schemaId string,
 	fieldId string,
+	request *polytomicgo.SchemasDeleteFieldRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -270,6 +271,7 @@ func (c *Client) ResetPrimaryKeys(
 	ctx context.Context,
 	connectionId string,
 	schemaId string,
+	request *polytomicgo.SchemasResetPrimaryKeysRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -344,6 +346,7 @@ func (c *Client) ResetPrimaryKeys(
 func (c *Client) Refresh(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.SchemasRefreshRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -419,6 +422,7 @@ func (c *Client) Refresh(
 func (c *Client) GetStatus(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.SchemasGetStatusRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncSourceStatusEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -496,6 +500,7 @@ func (c *Client) Get(
 	ctx context.Context,
 	id string,
 	schemaId string,
+	request *polytomicgo.SchemasGetRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncSourceSchemaEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -573,6 +578,7 @@ func (c *Client) GetRecords(
 	ctx context.Context,
 	id string,
 	schemaId string,
+	request *polytomicgo.SchemasGetRecordsRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.SchemaRecordsResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)

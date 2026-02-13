@@ -17,6 +17,15 @@ type UsersCreateApiKeyRequest struct {
 	Force *bool `json:"-" url:"force,omitempty"`
 }
 
+type UsersGetRequest struct {
+}
+
+type UsersListRequest struct {
+}
+
+type UsersRemoveRequest struct {
+}
+
 type UpdateUserRequestSchema struct {
 	Email string  `json:"email" url:"email"`
 	Role  *string `json:"role,omitempty" url:"role,omitempty"`

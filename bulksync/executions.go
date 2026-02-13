@@ -7,6 +7,12 @@ type ExecutionsExportLogsRequest struct {
 	Notify *bool `json:"-" url:"notify,omitempty"`
 }
 
+type ExecutionsGetRequest struct {
+}
+
+type ExecutionsGetLogsRequest struct {
+}
+
 type ExecutionsListRequest struct {
 	PageToken    *string `json:"-" url:"page_token,omitempty"`
 	OnlyTerminal *bool   `json:"-" url:"only_terminal,omitempty"`

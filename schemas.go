@@ -9,6 +9,24 @@ import (
 	time "time"
 )
 
+type SchemasDeleteFieldRequest struct {
+}
+
+type SchemasGetRequest struct {
+}
+
+type SchemasGetRecordsRequest struct {
+}
+
+type SchemasGetStatusRequest struct {
+}
+
+type SchemasRefreshRequest struct {
+}
+
+type SchemasResetPrimaryKeysRequest struct {
+}
+
 type SetPrimaryKeysRequest struct {
 	Fields []*SchemaPrimaryKeyOverrideInput `json:"fields,omitempty" url:"fields,omitempty"`
 }

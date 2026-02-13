@@ -470,7 +470,7 @@ func (c *Client) Remove(
 func (c *Client) Activate(
 	ctx context.Context,
 	id string,
-	request *polytomicgo.ActivateSyncInput,
+	request *polytomicgo.BulkSyncActivateRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ActivateSyncEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -619,6 +619,7 @@ func (c *Client) Start(
 func (c *Client) GetStatus(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.BulkSyncGetStatusRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncStatusEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
@@ -773,6 +774,7 @@ func (c *Client) GetSource(
 func (c *Client) GetDestination(
 	ctx context.Context,
 	id string,
+	request *polytomicgo.BulkSyncGetDestinationRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncDestEnvelope, error) {
 	options := core.NewRequestOptions(opts...)

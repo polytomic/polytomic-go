@@ -5,39 +5,56 @@ package polytomic
 import (
 	json "encoding/json"
 	fmt "fmt"
-	core "github.com/polytomic/polytomic-go/core"
+	internal "github.com/polytomic/polytomic-go/internal"
 	time "time"
 )
 
+type ModelSyncActivateRequest struct {
+	Body *ActivateSyncInput `json:"-" url:"-"`
+}
+
+func (m *ModelSyncActivateRequest) UnmarshalJSON(data []byte) error {
+	body := new(ActivateSyncInput)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	m.Body = body
+	return nil
+}
+
+func (m *ModelSyncActivateRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(m.Body)
+}
+
 type CreateModelSyncRequest struct {
 	// Whether the sync is enabled and scheduled.
-	Active *bool `json:"active,omitempty" url:"active,omitempty"`
+	Active *bool `json:"active,omitempty" url:"-"`
 	// Passphrase for encrypting the sync data.
-	EncryptionPassphrase *string `json:"encryption_passphrase,omitempty" url:"encryption_passphrase,omitempty"`
+	EncryptionPassphrase *string `json:"encryption_passphrase,omitempty" url:"-"`
 	// Fields to sync from source to destination.
-	Fields []*ModelSyncField `json:"fields,omitempty" url:"fields,omitempty"`
+	Fields []*ModelSyncField `json:"fields,omitempty" url:"-"`
 	// Logical expression to combine filters.
-	FilterLogic *string `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
+	FilterLogic *string `json:"filter_logic,omitempty" url:"-"`
 	// Filters to apply to the source data.
-	Filters  []*Filter     `json:"filters,omitempty" url:"filters,omitempty"`
-	Identity *Identity     `json:"identity,omitempty" url:"identity,omitempty"`
-	Mode     ModelSyncMode `json:"mode,omitempty" url:"mode,omitempty"`
-	Name     string        `json:"name" url:"name"`
+	Filters  []*Filter     `json:"filters,omitempty" url:"-"`
+	Identity *Identity     `json:"identity,omitempty" url:"-"`
+	Mode     ModelSyncMode `json:"mode" url:"-"`
+	Name     string        `json:"name" url:"-"`
 	// Whether to use enrichment models as a source of possible changes to sync. If true, only changes to the base models will cause a record to sync.
-	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
+	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"-"`
 	// Organization ID for the sync; read-only with a partner key.
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationId *string `json:"organization_id,omitempty" url:"-"`
 	// Values to set in the target unconditionally.
-	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
+	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"-"`
 	// Conditional value replacement for fields.
-	Overrides []*Override `json:"overrides,omitempty" url:"overrides,omitempty"`
-	Policies  []string    `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule  *Schedule   `json:"schedule,omitempty" url:"schedule,omitempty"`
+	Overrides []*Override `json:"overrides,omitempty" url:"-"`
+	Policies  []string    `json:"policies,omitempty" url:"-"`
+	Schedule  *Schedule   `json:"schedule,omitempty" url:"-"`
 	// Whether to skip the initial backfill of records; if true only records seen after the sync is enabled will be synced.
-	SkipInitialBackfill *bool `json:"skip_initial_backfill,omitempty" url:"skip_initial_backfill,omitempty"`
+	SkipInitialBackfill *bool `json:"skip_initial_backfill,omitempty" url:"-"`
 	// Whether to sync all records from the source, regardless of whether they've changed since the previous execution.
-	SyncAllRecords *bool   `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
-	Target         *Target `json:"target,omitempty" url:"target,omitempty"`
+	SyncAllRecords *bool   `json:"sync_all_records,omitempty" url:"-"`
+	Target         *Target `json:"target,omitempty" url:"-"`
 }
 
 type ModelSyncGetSourceRequest struct {
@@ -55,46 +72,58 @@ type ModelSyncListRequest struct {
 }
 
 type StartModelSyncRequest struct {
-	Identities []string `json:"identities,omitempty" url:"identities,omitempty"`
-	Resync     *bool    `json:"resync,omitempty" url:"resync,omitempty"`
-	Test       *bool    `json:"test,omitempty" url:"test,omitempty"`
+	Identities []string `json:"identities,omitempty" url:"-"`
+	Resync     *bool    `json:"resync,omitempty" url:"-"`
+	Test       *bool    `json:"test,omitempty" url:"-"`
 }
 
 type UpdateModelSyncRequest struct {
 	// Whether the sync is enabled and scheduled.
-	Active *bool `json:"active,omitempty" url:"active,omitempty"`
+	Active *bool `json:"active,omitempty" url:"-"`
 	// Passphrase for encrypting the sync data.
-	EncryptionPassphrase *string `json:"encryption_passphrase,omitempty" url:"encryption_passphrase,omitempty"`
+	EncryptionPassphrase *string `json:"encryption_passphrase,omitempty" url:"-"`
 	// Fields to sync from source to destination.
-	Fields []*ModelSyncField `json:"fields,omitempty" url:"fields,omitempty"`
+	Fields []*ModelSyncField `json:"fields,omitempty" url:"-"`
 	// Logical expression to combine filters.
-	FilterLogic *string `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
+	FilterLogic *string `json:"filter_logic,omitempty" url:"-"`
 	// Filters to apply to the source data.
-	Filters  []*Filter     `json:"filters,omitempty" url:"filters,omitempty"`
-	Identity *Identity     `json:"identity,omitempty" url:"identity,omitempty"`
-	Mode     ModelSyncMode `json:"mode,omitempty" url:"mode,omitempty"`
-	Name     string        `json:"name" url:"name"`
+	Filters  []*Filter     `json:"filters,omitempty" url:"-"`
+	Identity *Identity     `json:"identity,omitempty" url:"-"`
+	Mode     ModelSyncMode `json:"mode" url:"-"`
+	Name     string        `json:"name" url:"-"`
 	// Whether to use enrichment models as a source of possible changes to sync. If true, only changes to the base models will cause a record to sync.
-	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
+	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"-"`
 	// Organization ID for the sync; read-only with a partner key.
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationId *string `json:"organization_id,omitempty" url:"-"`
 	// Values to set in the target unconditionally.
-	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
+	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"-"`
 	// Conditional value replacement for fields.
-	Overrides []*Override `json:"overrides,omitempty" url:"overrides,omitempty"`
-	Policies  []string    `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule  *Schedule   `json:"schedule,omitempty" url:"schedule,omitempty"`
+	Overrides []*Override `json:"overrides,omitempty" url:"-"`
+	Policies  []string    `json:"policies,omitempty" url:"-"`
+	Schedule  *Schedule   `json:"schedule,omitempty" url:"-"`
 	// Whether to skip the initial backfill of records; if true only records seen after the sync is enabled will be synced.
-	SkipInitialBackfill *bool `json:"skip_initial_backfill,omitempty" url:"skip_initial_backfill,omitempty"`
+	SkipInitialBackfill *bool `json:"skip_initial_backfill,omitempty" url:"-"`
 	// Whether to sync all records from the source, regardless of whether they've changed since the previous execution.
-	SyncAllRecords *bool   `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
-	Target         *Target `json:"target,omitempty" url:"target,omitempty"`
+	SyncAllRecords *bool   `json:"sync_all_records,omitempty" url:"-"`
+	Target         *Target `json:"target,omitempty" url:"-"`
 }
 
 type CancelModelSyncResponse struct {
 	Message *string `json:"message,omitempty" url:"message,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CancelModelSyncResponse) GetMessage() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Message
+}
+
+func (c *CancelModelSyncResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
 }
 
 func (c *CancelModelSyncResponse) UnmarshalJSON(data []byte) error {
@@ -104,17 +133,22 @@ func (c *CancelModelSyncResponse) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*c = CancelModelSyncResponse(value)
-	c._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (c *CancelModelSyncResponse) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(c); err == nil {
+	if value, err := internal.StringifyJSON(c); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
@@ -123,7 +157,19 @@ func (c *CancelModelSyncResponse) String() string {
 type CancelModelSyncResponseEnvelope struct {
 	Data *CancelModelSyncResponse `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CancelModelSyncResponseEnvelope) GetData() *CancelModelSyncResponse {
+	if c == nil {
+		return nil
+	}
+	return c.Data
+}
+
+func (c *CancelModelSyncResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
 }
 
 func (c *CancelModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -133,17 +179,22 @@ func (c *CancelModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*c = CancelModelSyncResponseEnvelope(value)
-	c._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (c *CancelModelSyncResponseEnvelope) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(c); err == nil {
+	if value, err := internal.StringifyJSON(c); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
@@ -155,11 +206,58 @@ type Filter struct {
 	// Model or Target field name to filter on.
 	FieldId   *string                   `json:"field_id,omitempty" url:"field_id,omitempty"`
 	FieldType *FilterFieldReferenceType `json:"field_type,omitempty" url:"field_type,omitempty"`
-	Function  FilterFunction            `json:"function,omitempty" url:"function,omitempty"`
+	Function  FilterFunction            `json:"function" url:"function"`
 	Label     *string                   `json:"label,omitempty" url:"label,omitempty"`
 	Value     interface{}               `json:"value,omitempty" url:"value,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (f *Filter) GetField() *Source {
+	if f == nil {
+		return nil
+	}
+	return f.Field
+}
+
+func (f *Filter) GetFieldId() *string {
+	if f == nil {
+		return nil
+	}
+	return f.FieldId
+}
+
+func (f *Filter) GetFieldType() *FilterFieldReferenceType {
+	if f == nil {
+		return nil
+	}
+	return f.FieldType
+}
+
+func (f *Filter) GetFunction() FilterFunction {
+	if f == nil {
+		return ""
+	}
+	return f.Function
+}
+
+func (f *Filter) GetLabel() *string {
+	if f == nil {
+		return nil
+	}
+	return f.Label
+}
+
+func (f *Filter) GetValue() interface{} {
+	if f == nil {
+		return nil
+	}
+	return f.Value
+}
+
+func (f *Filter) GetExtraProperties() map[string]interface{} {
+	return f.extraProperties
 }
 
 func (f *Filter) UnmarshalJSON(data []byte) error {
@@ -169,17 +267,22 @@ func (f *Filter) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*f = Filter(value)
-	f._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *f)
+	if err != nil {
+		return err
+	}
+	f.extraProperties = extraProperties
+	f.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (f *Filter) String() string {
-	if len(f._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(f._rawJSON); err == nil {
+	if len(f.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(f.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(f); err == nil {
+	if value, err := internal.StringifyJSON(f); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", f)
@@ -208,13 +311,53 @@ func (f FilterFieldReferenceType) Ptr() *FilterFieldReferenceType {
 }
 
 type Identity struct {
-	Function          SchemaIdentityFunction `json:"function,omitempty" url:"function,omitempty"`
+	Function          SchemaIdentityFunction `json:"function" url:"function"`
 	NewField          *bool                  `json:"new_field,omitempty" url:"new_field,omitempty"`
 	RemoteFieldTypeId *string                `json:"remote_field_type_id,omitempty" url:"remote_field_type_id,omitempty"`
 	Source            *Source                `json:"source,omitempty" url:"source,omitempty"`
 	Target            string                 `json:"target" url:"target"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *Identity) GetFunction() SchemaIdentityFunction {
+	if i == nil {
+		return ""
+	}
+	return i.Function
+}
+
+func (i *Identity) GetNewField() *bool {
+	if i == nil {
+		return nil
+	}
+	return i.NewField
+}
+
+func (i *Identity) GetRemoteFieldTypeId() *string {
+	if i == nil {
+		return nil
+	}
+	return i.RemoteFieldTypeId
+}
+
+func (i *Identity) GetSource() *Source {
+	if i == nil {
+		return nil
+	}
+	return i.Source
+}
+
+func (i *Identity) GetTarget() string {
+	if i == nil {
+		return ""
+	}
+	return i.Target
+}
+
+func (i *Identity) GetExtraProperties() map[string]interface{} {
+	return i.extraProperties
 }
 
 func (i *Identity) UnmarshalJSON(data []byte) error {
@@ -224,17 +367,22 @@ func (i *Identity) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*i = Identity(value)
-	i._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (i *Identity) String() string {
-	if len(i._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(i._rawJSON); err == nil {
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(i); err == nil {
+	if value, err := internal.StringifyJSON(i); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", i)
@@ -245,7 +393,19 @@ type JsonschemaForm = map[string]interface{}
 type ListModelSyncResponseEnvelope struct {
 	Data []*ModelSyncResponse `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListModelSyncResponseEnvelope) GetData() []*ModelSyncResponse {
+	if l == nil {
+		return nil
+	}
+	return l.Data
+}
+
+func (l *ListModelSyncResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
 }
 
 func (l *ListModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -255,17 +415,22 @@ func (l *ListModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*l = ListModelSyncResponseEnvelope(value)
-	l._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (l *ListModelSyncResponseEnvelope) String() string {
-	if len(l._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(l); err == nil {
+	if value, err := internal.StringifyJSON(l); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", l)
@@ -274,7 +439,19 @@ func (l *ListModelSyncResponseEnvelope) String() string {
 type ModelFieldResponse struct {
 	Data []*ModelField `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelFieldResponse) GetData() []*ModelField {
+	if m == nil {
+		return nil
+	}
+	return m.Data
+}
+
+func (m *ModelFieldResponse) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
 }
 
 func (m *ModelFieldResponse) UnmarshalJSON(data []byte) error {
@@ -284,17 +461,22 @@ func (m *ModelFieldResponse) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*m = ModelFieldResponse(value)
-	m._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (m *ModelFieldResponse) String() string {
-	if len(m._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(m); err == nil {
+	if value, err := internal.StringifyJSON(m); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
@@ -313,7 +495,54 @@ type ModelSyncField struct {
 	// Target field ID the source field value will be written to.
 	Target string `json:"target" url:"target"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelSyncField) GetEncryptionEnabled() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.EncryptionEnabled
+}
+
+func (m *ModelSyncField) GetNew() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.New
+}
+
+func (m *ModelSyncField) GetOverrideValue() *string {
+	if m == nil {
+		return nil
+	}
+	return m.OverrideValue
+}
+
+func (m *ModelSyncField) GetSource() *Source {
+	if m == nil {
+		return nil
+	}
+	return m.Source
+}
+
+func (m *ModelSyncField) GetSyncMode() *string {
+	if m == nil {
+		return nil
+	}
+	return m.SyncMode
+}
+
+func (m *ModelSyncField) GetTarget() string {
+	if m == nil {
+		return ""
+	}
+	return m.Target
+}
+
+func (m *ModelSyncField) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
 }
 
 func (m *ModelSyncField) UnmarshalJSON(data []byte) error {
@@ -323,17 +552,22 @@ func (m *ModelSyncField) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*m = ModelSyncField(value)
-	m._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (m *ModelSyncField) String() string {
-	if len(m._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(m); err == nil {
+	if value, err := internal.StringifyJSON(m); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
@@ -365,15 +599,181 @@ type ModelSyncResponse struct {
 	UpdatedAt           *time.Time         `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 	UpdatedBy           *CommonOutputActor `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelSyncResponse) GetActive() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.Active
+}
+
+func (m *ModelSyncResponse) GetCreatedAt() *time.Time {
+	if m == nil {
+		return nil
+	}
+	return m.CreatedAt
+}
+
+func (m *ModelSyncResponse) GetCreatedBy() *CommonOutputActor {
+	if m == nil {
+		return nil
+	}
+	return m.CreatedBy
+}
+
+func (m *ModelSyncResponse) GetEncryptionPassphrase() *string {
+	if m == nil {
+		return nil
+	}
+	return m.EncryptionPassphrase
+}
+
+func (m *ModelSyncResponse) GetFields() []*ModelSyncField {
+	if m == nil {
+		return nil
+	}
+	return m.Fields
+}
+
+func (m *ModelSyncResponse) GetFilterLogic() *string {
+	if m == nil {
+		return nil
+	}
+	return m.FilterLogic
+}
+
+func (m *ModelSyncResponse) GetFilters() []*Filter {
+	if m == nil {
+		return nil
+	}
+	return m.Filters
+}
+
+func (m *ModelSyncResponse) GetId() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Id
+}
+
+func (m *ModelSyncResponse) GetIdentity() *Identity {
+	if m == nil {
+		return nil
+	}
+	return m.Identity
+}
+
+func (m *ModelSyncResponse) GetMode() *ModelSyncMode {
+	if m == nil {
+		return nil
+	}
+	return m.Mode
+}
+
+func (m *ModelSyncResponse) GetModelIds() []string {
+	if m == nil {
+		return nil
+	}
+	return m.ModelIds
+}
+
+func (m *ModelSyncResponse) GetName() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Name
+}
+
+func (m *ModelSyncResponse) GetOnlyEnrichUpdates() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.OnlyEnrichUpdates
+}
+
+func (m *ModelSyncResponse) GetOrganizationId() *string {
+	if m == nil {
+		return nil
+	}
+	return m.OrganizationId
+}
+
+func (m *ModelSyncResponse) GetOverrideFields() []*ModelSyncField {
+	if m == nil {
+		return nil
+	}
+	return m.OverrideFields
+}
+
+func (m *ModelSyncResponse) GetOverrides() []*Override {
+	if m == nil {
+		return nil
+	}
+	return m.Overrides
+}
+
+func (m *ModelSyncResponse) GetPolicies() []string {
+	if m == nil {
+		return nil
+	}
+	return m.Policies
+}
+
+func (m *ModelSyncResponse) GetSchedule() *Schedule {
+	if m == nil {
+		return nil
+	}
+	return m.Schedule
+}
+
+func (m *ModelSyncResponse) GetSkipInitialBackfill() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.SkipInitialBackfill
+}
+
+func (m *ModelSyncResponse) GetSyncAllRecords() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.SyncAllRecords
+}
+
+func (m *ModelSyncResponse) GetTarget() *Target {
+	if m == nil {
+		return nil
+	}
+	return m.Target
+}
+
+func (m *ModelSyncResponse) GetUpdatedAt() *time.Time {
+	if m == nil {
+		return nil
+	}
+	return m.UpdatedAt
+}
+
+func (m *ModelSyncResponse) GetUpdatedBy() *CommonOutputActor {
+	if m == nil {
+		return nil
+	}
+	return m.UpdatedBy
+}
+
+func (m *ModelSyncResponse) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
 }
 
 func (m *ModelSyncResponse) UnmarshalJSON(data []byte) error {
 	type embed ModelSyncResponse
 	var unmarshaler = struct {
 		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed: embed(*m),
 	}
@@ -383,7 +783,12 @@ func (m *ModelSyncResponse) UnmarshalJSON(data []byte) error {
 	*m = ModelSyncResponse(unmarshaler.embed)
 	m.CreatedAt = unmarshaler.CreatedAt.TimePtr()
 	m.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	m._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
 	return nil
 }
 
@@ -391,23 +796,23 @@ func (m *ModelSyncResponse) MarshalJSON() ([]byte, error) {
 	type embed ModelSyncResponse
 	var marshaler = struct {
 		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed:     embed(*m),
-		CreatedAt: core.NewOptionalDateTime(m.CreatedAt),
-		UpdatedAt: core.NewOptionalDateTime(m.UpdatedAt),
+		CreatedAt: internal.NewOptionalDateTime(m.CreatedAt),
+		UpdatedAt: internal.NewOptionalDateTime(m.UpdatedAt),
 	}
 	return json.Marshal(marshaler)
 }
 
 func (m *ModelSyncResponse) String() string {
-	if len(m._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(m); err == nil {
+	if value, err := internal.StringifyJSON(m); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
@@ -416,7 +821,19 @@ func (m *ModelSyncResponse) String() string {
 type ModelSyncResponseEnvelope struct {
 	Data *ModelSyncResponse `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelSyncResponseEnvelope) GetData() *ModelSyncResponse {
+	if m == nil {
+		return nil
+	}
+	return m.Data
+}
+
+func (m *ModelSyncResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
 }
 
 func (m *ModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -426,17 +843,22 @@ func (m *ModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*m = ModelSyncResponseEnvelope(value)
-	m._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (m *ModelSyncResponseEnvelope) String() string {
-	if len(m._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(m); err == nil {
+	if value, err := internal.StringifyJSON(m); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
@@ -451,7 +873,47 @@ type Override struct {
 	Override interface{}     `json:"override,omitempty" url:"override,omitempty"`
 	Value    interface{}     `json:"value,omitempty" url:"value,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (o *Override) GetField() *Source {
+	if o == nil {
+		return nil
+	}
+	return o.Field
+}
+
+func (o *Override) GetFieldId() *string {
+	if o == nil {
+		return nil
+	}
+	return o.FieldId
+}
+
+func (o *Override) GetFunction() *FilterFunction {
+	if o == nil {
+		return nil
+	}
+	return o.Function
+}
+
+func (o *Override) GetOverride() interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.Override
+}
+
+func (o *Override) GetValue() interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.Value
+}
+
+func (o *Override) GetExtraProperties() map[string]interface{} {
+	return o.extraProperties
 }
 
 func (o *Override) UnmarshalJSON(data []byte) error {
@@ -461,17 +923,22 @@ func (o *Override) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*o = Override(value)
-	o._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *o)
+	if err != nil {
+		return err
+	}
+	o.extraProperties = extraProperties
+	o.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (o *Override) String() string {
-	if len(o._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(o._rawJSON); err == nil {
+	if len(o.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(o); err == nil {
+	if value, err := internal.StringifyJSON(o); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", o)
@@ -481,7 +948,26 @@ type RunAfter struct {
 	BulkSyncIds []string `json:"bulk_sync_ids,omitempty" url:"bulk_sync_ids,omitempty"`
 	SyncIds     []string `json:"sync_ids,omitempty" url:"sync_ids,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RunAfter) GetBulkSyncIds() []string {
+	if r == nil {
+		return nil
+	}
+	return r.BulkSyncIds
+}
+
+func (r *RunAfter) GetSyncIds() []string {
+	if r == nil {
+		return nil
+	}
+	return r.SyncIds
+}
+
+func (r *RunAfter) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
 }
 
 func (r *RunAfter) UnmarshalJSON(data []byte) error {
@@ -491,17 +977,22 @@ func (r *RunAfter) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*r = RunAfter(value)
-	r._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (r *RunAfter) String() string {
-	if len(r._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(r); err == nil {
+	if value, err := internal.StringifyJSON(r); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", r)
@@ -520,7 +1011,82 @@ type Schedule struct {
 	// If true, the sync will only run if the dependent syncs completed successfully.
 	RunAfterSuccessOnly *bool `json:"run_after_success_only,omitempty" url:"run_after_success_only,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *Schedule) GetConnectionId() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ConnectionId
+}
+
+func (s *Schedule) GetDayOfMonth() *string {
+	if s == nil {
+		return nil
+	}
+	return s.DayOfMonth
+}
+
+func (s *Schedule) GetDayOfWeek() *string {
+	if s == nil {
+		return nil
+	}
+	return s.DayOfWeek
+}
+
+func (s *Schedule) GetFrequency() *ScheduleFrequency {
+	if s == nil {
+		return nil
+	}
+	return s.Frequency
+}
+
+func (s *Schedule) GetHour() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Hour
+}
+
+func (s *Schedule) GetJobId() *int {
+	if s == nil {
+		return nil
+	}
+	return s.JobId
+}
+
+func (s *Schedule) GetMinute() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Minute
+}
+
+func (s *Schedule) GetMonth() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Month
+}
+
+func (s *Schedule) GetRunAfter() *RunAfter {
+	if s == nil {
+		return nil
+	}
+	return s.RunAfter
+}
+
+func (s *Schedule) GetRunAfterSuccessOnly() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.RunAfterSuccessOnly
+}
+
+func (s *Schedule) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
 }
 
 func (s *Schedule) UnmarshalJSON(data []byte) error {
@@ -530,17 +1096,22 @@ func (s *Schedule) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*s = Schedule(value)
-	s._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (s *Schedule) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
@@ -549,7 +1120,19 @@ func (s *Schedule) String() string {
 type ScheduleOptionResponse struct {
 	ScheduleOptions []*ScheduleScheduleOption `json:"schedule_options,omitempty" url:"schedule_options,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *ScheduleOptionResponse) GetScheduleOptions() []*ScheduleScheduleOption {
+	if s == nil {
+		return nil
+	}
+	return s.ScheduleOptions
+}
+
+func (s *ScheduleOptionResponse) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
 }
 
 func (s *ScheduleOptionResponse) UnmarshalJSON(data []byte) error {
@@ -559,17 +1142,22 @@ func (s *ScheduleOptionResponse) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*s = ScheduleOptionResponse(value)
-	s._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (s *ScheduleOptionResponse) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
@@ -578,7 +1166,19 @@ func (s *ScheduleOptionResponse) String() string {
 type ScheduleOptionResponseEnvelope struct {
 	Data *ScheduleOptionResponse `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *ScheduleOptionResponseEnvelope) GetData() *ScheduleOptionResponse {
+	if s == nil {
+		return nil
+	}
+	return s.Data
+}
+
+func (s *ScheduleOptionResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
 }
 
 func (s *ScheduleOptionResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -588,17 +1188,22 @@ func (s *ScheduleOptionResponseEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*s = ScheduleOptionResponseEnvelope(value)
-	s._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (s *ScheduleOptionResponseEnvelope) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
@@ -610,7 +1215,40 @@ type ScheduleScheduleOption struct {
 	Frequency     *ScheduleFrequency `json:"frequency,omitempty" url:"frequency,omitempty"`
 	Label         *string            `json:"label,omitempty" url:"label,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *ScheduleScheduleOption) GetConfiguration() *JsonschemaForm {
+	if s == nil {
+		return nil
+	}
+	return s.Configuration
+}
+
+func (s *ScheduleScheduleOption) GetDescription() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Description
+}
+
+func (s *ScheduleScheduleOption) GetFrequency() *ScheduleFrequency {
+	if s == nil {
+		return nil
+	}
+	return s.Frequency
+}
+
+func (s *ScheduleScheduleOption) GetLabel() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Label
+}
+
+func (s *ScheduleScheduleOption) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
 }
 
 func (s *ScheduleScheduleOption) UnmarshalJSON(data []byte) error {
@@ -620,17 +1258,22 @@ func (s *ScheduleScheduleOption) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*s = ScheduleScheduleOption(value)
-	s._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (s *ScheduleScheduleOption) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
@@ -671,7 +1314,26 @@ type Source struct {
 	Field   string `json:"field" url:"field"`
 	ModelId string `json:"model_id" url:"model_id"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *Source) GetField() string {
+	if s == nil {
+		return ""
+	}
+	return s.Field
+}
+
+func (s *Source) GetModelId() string {
+	if s == nil {
+		return ""
+	}
+	return s.ModelId
+}
+
+func (s *Source) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
 }
 
 func (s *Source) UnmarshalJSON(data []byte) error {
@@ -681,17 +1343,22 @@ func (s *Source) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*s = Source(value)
-	s._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (s *Source) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
@@ -700,7 +1367,19 @@ func (s *Source) String() string {
 type StartModelSyncResponseEnvelope struct {
 	Data *StartModelSyncResponseSchema `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *StartModelSyncResponseEnvelope) GetData() *StartModelSyncResponseSchema {
+	if s == nil {
+		return nil
+	}
+	return s.Data
+}
+
+func (s *StartModelSyncResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
 }
 
 func (s *StartModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -710,17 +1389,22 @@ func (s *StartModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*s = StartModelSyncResponseEnvelope(value)
-	s._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (s *StartModelSyncResponseEnvelope) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
@@ -732,14 +1416,40 @@ type StartModelSyncResponseSchema struct {
 	Id     *string          `json:"id,omitempty" url:"id,omitempty"`
 	Status *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *StartModelSyncResponseSchema) GetCreatedAt() *time.Time {
+	if s == nil {
+		return nil
+	}
+	return s.CreatedAt
+}
+
+func (s *StartModelSyncResponseSchema) GetId() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Id
+}
+
+func (s *StartModelSyncResponseSchema) GetStatus() *ExecutionStatus {
+	if s == nil {
+		return nil
+	}
+	return s.Status
+}
+
+func (s *StartModelSyncResponseSchema) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
 }
 
 func (s *StartModelSyncResponseSchema) UnmarshalJSON(data []byte) error {
 	type embed StartModelSyncResponseSchema
 	var unmarshaler = struct {
 		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
 	}{
 		embed: embed(*s),
 	}
@@ -748,7 +1458,12 @@ func (s *StartModelSyncResponseSchema) UnmarshalJSON(data []byte) error {
 	}
 	*s = StartModelSyncResponseSchema(unmarshaler.embed)
 	s.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	s._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
@@ -756,21 +1471,21 @@ func (s *StartModelSyncResponseSchema) MarshalJSON() ([]byte, error) {
 	type embed StartModelSyncResponseSchema
 	var marshaler = struct {
 		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
 	}{
 		embed:     embed(*s),
-		CreatedAt: core.NewOptionalDateTime(s.CreatedAt),
+		CreatedAt: internal.NewOptionalDateTime(s.CreatedAt),
 	}
 	return json.Marshal(marshaler)
 }
 
 func (s *StartModelSyncResponseSchema) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
@@ -779,7 +1494,19 @@ func (s *StartModelSyncResponseSchema) String() string {
 type SyncStatusEnvelope struct {
 	Data *SyncStatusResponse `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SyncStatusEnvelope) GetData() *SyncStatusResponse {
+	if s == nil {
+		return nil
+	}
+	return s.Data
+}
+
+func (s *SyncStatusEnvelope) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
 }
 
 func (s *SyncStatusEnvelope) UnmarshalJSON(data []byte) error {
@@ -789,17 +1516,22 @@ func (s *SyncStatusEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*s = SyncStatusEnvelope(value)
-	s._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (s *SyncStatusEnvelope) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
@@ -810,14 +1542,40 @@ type SyncStatusResponse struct {
 	LastExecution     *GetExecutionResponseSchema `json:"last_execution,omitempty" url:"last_execution,omitempty"`
 	NextExecutionTime *time.Time                  `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SyncStatusResponse) GetCurrentExecution() *GetExecutionResponseSchema {
+	if s == nil {
+		return nil
+	}
+	return s.CurrentExecution
+}
+
+func (s *SyncStatusResponse) GetLastExecution() *GetExecutionResponseSchema {
+	if s == nil {
+		return nil
+	}
+	return s.LastExecution
+}
+
+func (s *SyncStatusResponse) GetNextExecutionTime() *time.Time {
+	if s == nil {
+		return nil
+	}
+	return s.NextExecutionTime
+}
+
+func (s *SyncStatusResponse) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
 }
 
 func (s *SyncStatusResponse) UnmarshalJSON(data []byte) error {
 	type embed SyncStatusResponse
 	var unmarshaler = struct {
 		embed
-		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty"`
+		NextExecutionTime *internal.DateTime `json:"next_execution_time,omitempty"`
 	}{
 		embed: embed(*s),
 	}
@@ -826,7 +1584,12 @@ func (s *SyncStatusResponse) UnmarshalJSON(data []byte) error {
 	}
 	*s = SyncStatusResponse(unmarshaler.embed)
 	s.NextExecutionTime = unmarshaler.NextExecutionTime.TimePtr()
-	s._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
@@ -834,21 +1597,21 @@ func (s *SyncStatusResponse) MarshalJSON() ([]byte, error) {
 	type embed SyncStatusResponse
 	var marshaler = struct {
 		embed
-		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty"`
+		NextExecutionTime *internal.DateTime `json:"next_execution_time,omitempty"`
 	}{
 		embed:             embed(*s),
-		NextExecutionTime: core.NewOptionalDateTime(s.NextExecutionTime),
+		NextExecutionTime: internal.NewOptionalDateTime(s.NextExecutionTime),
 	}
 	return json.Marshal(marshaler)
 }
 
 func (s *SyncStatusResponse) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
@@ -865,7 +1628,61 @@ type Target struct {
 	Object       *string                `json:"object,omitempty" url:"object,omitempty"`
 	SearchValues map[string]interface{} `json:"search_values,omitempty" url:"search_values,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *Target) GetConfiguration() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.Configuration
+}
+
+func (t *Target) GetConnectionId() string {
+	if t == nil {
+		return ""
+	}
+	return t.ConnectionId
+}
+
+func (t *Target) GetCreate() map[string]string {
+	if t == nil {
+		return nil
+	}
+	return t.Create
+}
+
+func (t *Target) GetFilterLogic() *string {
+	if t == nil {
+		return nil
+	}
+	return t.FilterLogic
+}
+
+func (t *Target) GetNewName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.NewName
+}
+
+func (t *Target) GetObject() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Object
+}
+
+func (t *Target) GetSearchValues() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.SearchValues
+}
+
+func (t *Target) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
 }
 
 func (t *Target) UnmarshalJSON(data []byte) error {
@@ -875,17 +1692,22 @@ func (t *Target) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*t = Target(value)
-	t._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (t *Target) String() string {
-	if len(t._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(t); err == nil {
+	if value, err := internal.StringifyJSON(t); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", t)

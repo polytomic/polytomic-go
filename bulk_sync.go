@@ -5,34 +5,51 @@ package polytomic
 import (
 	json "encoding/json"
 	fmt "fmt"
-	core "github.com/polytomic/polytomic-go/core"
+	internal "github.com/polytomic/polytomic-go/internal"
 	time "time"
 )
 
+type BulkSyncActivateRequest struct {
+	Body *ActivateSyncInput `json:"-" url:"-"`
+}
+
+func (b *BulkSyncActivateRequest) UnmarshalJSON(data []byte) error {
+	body := new(ActivateSyncInput)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	b.Body = body
+	return nil
+}
+
+func (b *BulkSyncActivateRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(b.Body)
+}
+
 type CreateBulkSyncRequest struct {
-	Active                     *bool         `json:"active,omitempty" url:"active,omitempty"`
-	AutomaticallyAddNewFields  *BulkDiscover `json:"automatically_add_new_fields,omitempty" url:"automatically_add_new_fields,omitempty"`
-	AutomaticallyAddNewObjects *BulkDiscover `json:"automatically_add_new_objects,omitempty" url:"automatically_add_new_objects,omitempty"`
+	Active                     *bool         `json:"active,omitempty" url:"-"`
+	AutomaticallyAddNewFields  *BulkDiscover `json:"automatically_add_new_fields,omitempty" url:"-"`
+	AutomaticallyAddNewObjects *BulkDiscover `json:"automatically_add_new_objects,omitempty" url:"-"`
 	// Override the default concurrency limit for this sync.
-	ConcurrencyLimit         *int                   `json:"concurrency_limit,omitempty" url:"concurrency_limit,omitempty"`
-	DataCutoffTimestamp      *time.Time             `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
-	DestinationConfiguration map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
-	DestinationConnectionId  string                 `json:"destination_connection_id" url:"destination_connection_id"`
-	DisableRecordTimestamps  *bool                  `json:"disable_record_timestamps,omitempty" url:"disable_record_timestamps,omitempty"`
+	ConcurrencyLimit         *int                   `json:"concurrency_limit,omitempty" url:"-"`
+	DataCutoffTimestamp      *time.Time             `json:"data_cutoff_timestamp,omitempty" url:"-"`
+	DestinationConfiguration map[string]interface{} `json:"destination_configuration,omitempty" url:"-"`
+	DestinationConnectionId  string                 `json:"destination_connection_id" url:"-"`
+	DisableRecordTimestamps  *bool                  `json:"disable_record_timestamps,omitempty" url:"-"`
 	// DEPRECATED: Use automatically_add_new_objects/automatically_add_new_fields instead
-	Discover       *bool               `json:"discover,omitempty" url:"discover,omitempty"`
-	Mode           *BulkSyncMode       `json:"mode,omitempty" url:"mode,omitempty"`
-	Name           string              `json:"name" url:"name"`
-	NormalizeNames *BulkNormalizeNames `json:"normalize_names,omitempty" url:"normalize_names,omitempty"`
-	OrganizationId *string             `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies       []string            `json:"policies,omitempty" url:"policies,omitempty"`
+	Discover       *bool               `json:"discover,omitempty" url:"-"`
+	Mode           *BulkSyncMode       `json:"mode,omitempty" url:"-"`
+	Name           string              `json:"name" url:"-"`
+	NormalizeNames *BulkNormalizeNames `json:"normalize_names,omitempty" url:"-"`
+	OrganizationId *string             `json:"organization_id,omitempty" url:"-"`
+	Policies       []string            `json:"policies,omitempty" url:"-"`
 	// Override the default resync concurrency limit for this sync.
-	ResyncConcurrencyLimit *int          `json:"resync_concurrency_limit,omitempty" url:"resync_concurrency_limit,omitempty"`
-	Schedule               *BulkSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
+	ResyncConcurrencyLimit *int          `json:"resync_concurrency_limit,omitempty" url:"-"`
+	Schedule               *BulkSchedule `json:"schedule,omitempty" url:"-"`
 	// List of schemas to sync; if omitted, all schemas will be selected for syncing.
-	Schemas             []*V2CreateBulkSyncRequestSchemasItem `json:"schemas,omitempty" url:"schemas,omitempty"`
-	SourceConfiguration map[string]interface{}                `json:"source_configuration,omitempty" url:"source_configuration,omitempty"`
-	SourceConnectionId  string                                `json:"source_connection_id" url:"source_connection_id"`
+	Schemas             []*V2CreateBulkSyncRequestSchemasItem `json:"schemas,omitempty" url:"-"`
+	SourceConfiguration map[string]interface{}                `json:"source_configuration,omitempty" url:"-"`
+	SourceConnectionId  string                                `json:"source_connection_id" url:"-"`
 }
 
 func (c *CreateBulkSyncRequest) UnmarshalJSON(data []byte) error {
@@ -49,10 +66,10 @@ func (c *CreateBulkSyncRequest) MarshalJSON() ([]byte, error) {
 	type embed CreateBulkSyncRequest
 	var marshaler = struct {
 		embed
-		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
+		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
 	}{
 		embed:               embed(*c),
-		DataCutoffTimestamp: core.NewOptionalDateTime(c.DataCutoffTimestamp),
+		DataCutoffTimestamp: internal.NewOptionalDateTime(c.DataCutoffTimestamp),
 	}
 	return json.Marshal(marshaler)
 }
@@ -74,36 +91,36 @@ type BulkSyncRemoveRequest struct {
 }
 
 type StartBulkSyncRequest struct {
-	FetchMode *BulkFetchMode `json:"fetch_mode,omitempty" url:"fetch_mode,omitempty"`
-	Resync    *bool          `json:"resync,omitempty" url:"resync,omitempty"`
-	Schemas   []string       `json:"schemas,omitempty" url:"schemas,omitempty"`
-	Test      *bool          `json:"test,omitempty" url:"test,omitempty"`
+	FetchMode *BulkFetchMode `json:"fetch_mode,omitempty" url:"-"`
+	Resync    *bool          `json:"resync,omitempty" url:"-"`
+	Schemas   []string       `json:"schemas,omitempty" url:"-"`
+	Test      *bool          `json:"test,omitempty" url:"-"`
 }
 
 type UpdateBulkSyncRequest struct {
-	Active                     *bool         `json:"active,omitempty" url:"active,omitempty"`
-	AutomaticallyAddNewFields  *BulkDiscover `json:"automatically_add_new_fields,omitempty" url:"automatically_add_new_fields,omitempty"`
-	AutomaticallyAddNewObjects *BulkDiscover `json:"automatically_add_new_objects,omitempty" url:"automatically_add_new_objects,omitempty"`
+	Active                     *bool         `json:"active,omitempty" url:"-"`
+	AutomaticallyAddNewFields  *BulkDiscover `json:"automatically_add_new_fields,omitempty" url:"-"`
+	AutomaticallyAddNewObjects *BulkDiscover `json:"automatically_add_new_objects,omitempty" url:"-"`
 	// Override the default concurrency limit for this sync.
-	ConcurrencyLimit         *int                   `json:"concurrency_limit,omitempty" url:"concurrency_limit,omitempty"`
-	DataCutoffTimestamp      *time.Time             `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
-	DestinationConfiguration map[string]interface{} `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
-	DestinationConnectionId  string                 `json:"destination_connection_id" url:"destination_connection_id"`
-	DisableRecordTimestamps  *bool                  `json:"disable_record_timestamps,omitempty" url:"disable_record_timestamps,omitempty"`
+	ConcurrencyLimit         *int                   `json:"concurrency_limit,omitempty" url:"-"`
+	DataCutoffTimestamp      *time.Time             `json:"data_cutoff_timestamp,omitempty" url:"-"`
+	DestinationConfiguration map[string]interface{} `json:"destination_configuration,omitempty" url:"-"`
+	DestinationConnectionId  string                 `json:"destination_connection_id" url:"-"`
+	DisableRecordTimestamps  *bool                  `json:"disable_record_timestamps,omitempty" url:"-"`
 	// DEPRECATED: Use automatically_add_new_objects/automatically_add_new_fields instead
-	Discover       *bool               `json:"discover,omitempty" url:"discover,omitempty"`
-	Mode           *BulkSyncMode       `json:"mode,omitempty" url:"mode,omitempty"`
-	Name           string              `json:"name" url:"name"`
-	NormalizeNames *BulkNormalizeNames `json:"normalize_names,omitempty" url:"normalize_names,omitempty"`
-	OrganizationId *string             `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies       []string            `json:"policies,omitempty" url:"policies,omitempty"`
+	Discover       *bool               `json:"discover,omitempty" url:"-"`
+	Mode           *BulkSyncMode       `json:"mode,omitempty" url:"-"`
+	Name           string              `json:"name" url:"-"`
+	NormalizeNames *BulkNormalizeNames `json:"normalize_names,omitempty" url:"-"`
+	OrganizationId *string             `json:"organization_id,omitempty" url:"-"`
+	Policies       []string            `json:"policies,omitempty" url:"-"`
 	// Override the default resync concurrency limit for this sync.
-	ResyncConcurrencyLimit *int          `json:"resync_concurrency_limit,omitempty" url:"resync_concurrency_limit,omitempty"`
-	Schedule               *BulkSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
+	ResyncConcurrencyLimit *int          `json:"resync_concurrency_limit,omitempty" url:"-"`
+	Schedule               *BulkSchedule `json:"schedule,omitempty" url:"-"`
 	// List of schemas to sync; if omitted, all schemas will be selected for syncing.
-	Schemas             []*V2UpdateBulkSyncRequestSchemasItem `json:"schemas,omitempty" url:"schemas,omitempty"`
-	SourceConfiguration map[string]interface{}                `json:"source_configuration,omitempty" url:"source_configuration,omitempty"`
-	SourceConnectionId  string                                `json:"source_connection_id" url:"source_connection_id"`
+	Schemas             []*V2UpdateBulkSyncRequestSchemasItem `json:"schemas,omitempty" url:"-"`
+	SourceConfiguration map[string]interface{}                `json:"source_configuration,omitempty" url:"-"`
+	SourceConnectionId  string                                `json:"source_connection_id" url:"-"`
 }
 
 func (u *UpdateBulkSyncRequest) UnmarshalJSON(data []byte) error {
@@ -120,10 +137,10 @@ func (u *UpdateBulkSyncRequest) MarshalJSON() ([]byte, error) {
 	type embed UpdateBulkSyncRequest
 	var marshaler = struct {
 		embed
-		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
+		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
 	}{
 		embed:               embed(*u),
-		DataCutoffTimestamp: core.NewOptionalDateTime(u.DataCutoffTimestamp),
+		DataCutoffTimestamp: internal.NewOptionalDateTime(u.DataCutoffTimestamp),
 	}
 	return json.Marshal(marshaler)
 }
@@ -156,11 +173,93 @@ func (b BulkDiscover) Ptr() *BulkDiscover {
 	return &b
 }
 
+type BulkFilter struct {
+	// Schema field ID to filter on.
+	FieldId  *string        `json:"field_id,omitempty" url:"field_id,omitempty"`
+	Function FilterFunction `json:"function" url:"function"`
+	Value    interface{}    `json:"value,omitempty" url:"value,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkFilter) GetFieldId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.FieldId
+}
+
+func (b *BulkFilter) GetFunction() FilterFunction {
+	if b == nil {
+		return ""
+	}
+	return b.Function
+}
+
+func (b *BulkFilter) GetValue() interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.Value
+}
+
+func (b *BulkFilter) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BulkFilter) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkFilter
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkFilter(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkFilter) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 type BulkItemizedSchedule struct {
-	Item     BulkSelectiveMode `json:"item,omitempty" url:"item,omitempty"`
+	Item     BulkSelectiveMode `json:"item" url:"item"`
 	Schedule *BulkSchedule     `json:"schedule,omitempty" url:"schedule,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkItemizedSchedule) GetItem() BulkSelectiveMode {
+	if b == nil {
+		return ""
+	}
+	return b.Item
+}
+
+func (b *BulkItemizedSchedule) GetSchedule() *BulkSchedule {
+	if b == nil {
+		return nil
+	}
+	return b.Schedule
+}
+
+func (b *BulkItemizedSchedule) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
 }
 
 func (b *BulkItemizedSchedule) UnmarshalJSON(data []byte) error {
@@ -170,17 +269,22 @@ func (b *BulkItemizedSchedule) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*b = BulkItemizedSchedule(value)
-	b._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (b *BulkItemizedSchedule) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(b); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
@@ -190,7 +294,26 @@ type BulkMultiScheduleConfiguration struct {
 	Schedules []*BulkItemizedSchedule `json:"schedules,omitempty" url:"schedules,omitempty"`
 	Type      *string                 `json:"type,omitempty" url:"type,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkMultiScheduleConfiguration) GetSchedules() []*BulkItemizedSchedule {
+	if b == nil {
+		return nil
+	}
+	return b.Schedules
+}
+
+func (b *BulkMultiScheduleConfiguration) GetType() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Type
+}
+
+func (b *BulkMultiScheduleConfiguration) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
 }
 
 func (b *BulkMultiScheduleConfiguration) UnmarshalJSON(data []byte) error {
@@ -200,17 +323,22 @@ func (b *BulkMultiScheduleConfiguration) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*b = BulkMultiScheduleConfiguration(value)
-	b._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (b *BulkMultiScheduleConfiguration) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(b); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
@@ -244,13 +372,67 @@ func (b BulkNormalizeNames) Ptr() *BulkNormalizeNames {
 type BulkSchedule struct {
 	DayOfMonth *string                         `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
 	DayOfWeek  *string                         `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
-	Frequency  ScheduleFrequency               `json:"frequency,omitempty" url:"frequency,omitempty"`
+	Frequency  ScheduleFrequency               `json:"frequency" url:"frequency"`
 	Hour       *string                         `json:"hour,omitempty" url:"hour,omitempty"`
 	Minute     *string                         `json:"minute,omitempty" url:"minute,omitempty"`
 	Month      *string                         `json:"month,omitempty" url:"month,omitempty"`
 	Multi      *BulkMultiScheduleConfiguration `json:"multi,omitempty" url:"multi,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSchedule) GetDayOfMonth() *string {
+	if b == nil {
+		return nil
+	}
+	return b.DayOfMonth
+}
+
+func (b *BulkSchedule) GetDayOfWeek() *string {
+	if b == nil {
+		return nil
+	}
+	return b.DayOfWeek
+}
+
+func (b *BulkSchedule) GetFrequency() ScheduleFrequency {
+	if b == nil {
+		return ""
+	}
+	return b.Frequency
+}
+
+func (b *BulkSchedule) GetHour() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Hour
+}
+
+func (b *BulkSchedule) GetMinute() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Minute
+}
+
+func (b *BulkSchedule) GetMonth() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Month
+}
+
+func (b *BulkSchedule) GetMulti() *BulkMultiScheduleConfiguration {
+	if b == nil {
+		return nil
+	}
+	return b.Multi
+}
+
+func (b *BulkSchedule) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
 }
 
 func (b *BulkSchedule) UnmarshalJSON(data []byte) error {
@@ -260,17 +442,22 @@ func (b *BulkSchedule) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*b = BulkSchedule(value)
-	b._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (b *BulkSchedule) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(b); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
@@ -280,7 +467,26 @@ type BulkSyncDest struct {
 	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
 	Modes         []*SupportedBulkMode   `json:"modes,omitempty" url:"modes,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSyncDest) GetConfiguration() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.Configuration
+}
+
+func (b *BulkSyncDest) GetModes() []*SupportedBulkMode {
+	if b == nil {
+		return nil
+	}
+	return b.Modes
+}
+
+func (b *BulkSyncDest) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
 }
 
 func (b *BulkSyncDest) UnmarshalJSON(data []byte) error {
@@ -290,17 +496,22 @@ func (b *BulkSyncDest) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*b = BulkSyncDest(value)
-	b._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (b *BulkSyncDest) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(b); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
@@ -309,7 +520,19 @@ func (b *BulkSyncDest) String() string {
 type BulkSyncDestEnvelope struct {
 	Data *BulkSyncDest `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSyncDestEnvelope) GetData() *BulkSyncDest {
+	if b == nil {
+		return nil
+	}
+	return b.Data
+}
+
+func (b *BulkSyncDestEnvelope) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
 }
 
 func (b *BulkSyncDestEnvelope) UnmarshalJSON(data []byte) error {
@@ -319,17 +542,22 @@ func (b *BulkSyncDestEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*b = BulkSyncDestEnvelope(value)
-	b._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (b *BulkSyncDestEnvelope) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(b); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
@@ -338,7 +566,19 @@ func (b *BulkSyncDestEnvelope) String() string {
 type BulkSyncListEnvelope struct {
 	Data []*BulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSyncListEnvelope) GetData() []*BulkSyncResponse {
+	if b == nil {
+		return nil
+	}
+	return b.Data
+}
+
+func (b *BulkSyncListEnvelope) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
 }
 
 func (b *BulkSyncListEnvelope) UnmarshalJSON(data []byte) error {
@@ -348,17 +588,22 @@ func (b *BulkSyncListEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*b = BulkSyncListEnvelope(value)
-	b._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (b *BulkSyncListEnvelope) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(b); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
@@ -418,16 +663,182 @@ type BulkSyncResponse struct {
 	UpdatedAt           *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 	UpdatedBy           *CommonOutputActor     `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSyncResponse) GetActive() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.Active
+}
+
+func (b *BulkSyncResponse) GetAutomaticallyAddNewFields() *BulkDiscover {
+	if b == nil {
+		return nil
+	}
+	return b.AutomaticallyAddNewFields
+}
+
+func (b *BulkSyncResponse) GetAutomaticallyAddNewObjects() *BulkDiscover {
+	if b == nil {
+		return nil
+	}
+	return b.AutomaticallyAddNewObjects
+}
+
+func (b *BulkSyncResponse) GetConcurrencyLimit() *int {
+	if b == nil {
+		return nil
+	}
+	return b.ConcurrencyLimit
+}
+
+func (b *BulkSyncResponse) GetCreatedAt() *time.Time {
+	if b == nil {
+		return nil
+	}
+	return b.CreatedAt
+}
+
+func (b *BulkSyncResponse) GetCreatedBy() *CommonOutputActor {
+	if b == nil {
+		return nil
+	}
+	return b.CreatedBy
+}
+
+func (b *BulkSyncResponse) GetDataCutoffTimestamp() *time.Time {
+	if b == nil {
+		return nil
+	}
+	return b.DataCutoffTimestamp
+}
+
+func (b *BulkSyncResponse) GetDestinationConfiguration() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.DestinationConfiguration
+}
+
+func (b *BulkSyncResponse) GetDestinationConnectionId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.DestinationConnectionId
+}
+
+func (b *BulkSyncResponse) GetDisableRecordTimestamps() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.DisableRecordTimestamps
+}
+
+func (b *BulkSyncResponse) GetDiscover() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.Discover
+}
+
+func (b *BulkSyncResponse) GetId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Id
+}
+
+func (b *BulkSyncResponse) GetMode() *BulkSyncMode {
+	if b == nil {
+		return nil
+	}
+	return b.Mode
+}
+
+func (b *BulkSyncResponse) GetName() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Name
+}
+
+func (b *BulkSyncResponse) GetNormalizeNames() *BulkNormalizeNames {
+	if b == nil {
+		return nil
+	}
+	return b.NormalizeNames
+}
+
+func (b *BulkSyncResponse) GetOrganizationId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.OrganizationId
+}
+
+func (b *BulkSyncResponse) GetPolicies() []string {
+	if b == nil {
+		return nil
+	}
+	return b.Policies
+}
+
+func (b *BulkSyncResponse) GetResyncConcurrencyLimit() *int {
+	if b == nil {
+		return nil
+	}
+	return b.ResyncConcurrencyLimit
+}
+
+func (b *BulkSyncResponse) GetSchedule() *BulkSchedule {
+	if b == nil {
+		return nil
+	}
+	return b.Schedule
+}
+
+func (b *BulkSyncResponse) GetSourceConfiguration() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.SourceConfiguration
+}
+
+func (b *BulkSyncResponse) GetSourceConnectionId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.SourceConnectionId
+}
+
+func (b *BulkSyncResponse) GetUpdatedAt() *time.Time {
+	if b == nil {
+		return nil
+	}
+	return b.UpdatedAt
+}
+
+func (b *BulkSyncResponse) GetUpdatedBy() *CommonOutputActor {
+	if b == nil {
+		return nil
+	}
+	return b.UpdatedBy
+}
+
+func (b *BulkSyncResponse) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
 }
 
 func (b *BulkSyncResponse) UnmarshalJSON(data []byte) error {
 	type embed BulkSyncResponse
 	var unmarshaler = struct {
 		embed
-		CreatedAt           *core.DateTime `json:"created_at,omitempty"`
-		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
-		UpdatedAt           *core.DateTime `json:"updated_at,omitempty"`
+		CreatedAt           *internal.DateTime `json:"created_at,omitempty"`
+		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
+		UpdatedAt           *internal.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed: embed(*b),
 	}
@@ -438,7 +849,12 @@ func (b *BulkSyncResponse) UnmarshalJSON(data []byte) error {
 	b.CreatedAt = unmarshaler.CreatedAt.TimePtr()
 	b.DataCutoffTimestamp = unmarshaler.DataCutoffTimestamp.TimePtr()
 	b.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	b._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
 	return nil
 }
 
@@ -446,25 +862,25 @@ func (b *BulkSyncResponse) MarshalJSON() ([]byte, error) {
 	type embed BulkSyncResponse
 	var marshaler = struct {
 		embed
-		CreatedAt           *core.DateTime `json:"created_at,omitempty"`
-		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
-		UpdatedAt           *core.DateTime `json:"updated_at,omitempty"`
+		CreatedAt           *internal.DateTime `json:"created_at,omitempty"`
+		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
+		UpdatedAt           *internal.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed:               embed(*b),
-		CreatedAt:           core.NewOptionalDateTime(b.CreatedAt),
-		DataCutoffTimestamp: core.NewOptionalDateTime(b.DataCutoffTimestamp),
-		UpdatedAt:           core.NewOptionalDateTime(b.UpdatedAt),
+		CreatedAt:           internal.NewOptionalDateTime(b.CreatedAt),
+		DataCutoffTimestamp: internal.NewOptionalDateTime(b.DataCutoffTimestamp),
+		UpdatedAt:           internal.NewOptionalDateTime(b.UpdatedAt),
 	}
 	return json.Marshal(marshaler)
 }
 
 func (b *BulkSyncResponse) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(b); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
@@ -473,7 +889,19 @@ func (b *BulkSyncResponse) String() string {
 type BulkSyncResponseEnvelope struct {
 	Data *BulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSyncResponseEnvelope) GetData() *BulkSyncResponse {
+	if b == nil {
+		return nil
+	}
+	return b.Data
+}
+
+func (b *BulkSyncResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
 }
 
 func (b *BulkSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -483,17 +911,22 @@ func (b *BulkSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*b = BulkSyncResponseEnvelope(value)
-	b._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (b *BulkSyncResponseEnvelope) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(b); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
@@ -503,7 +936,26 @@ type BulkSyncSource struct {
 	Configuration interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
 	Schemas       []*Schema   `json:"schemas,omitempty" url:"schemas,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSyncSource) GetConfiguration() interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.Configuration
+}
+
+func (b *BulkSyncSource) GetSchemas() []*Schema {
+	if b == nil {
+		return nil
+	}
+	return b.Schemas
+}
+
+func (b *BulkSyncSource) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
 }
 
 func (b *BulkSyncSource) UnmarshalJSON(data []byte) error {
@@ -513,17 +965,22 @@ func (b *BulkSyncSource) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*b = BulkSyncSource(value)
-	b._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (b *BulkSyncSource) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(b); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
@@ -532,7 +989,19 @@ func (b *BulkSyncSource) String() string {
 type BulkSyncSourceEnvelope struct {
 	Data *BulkSyncSource `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSyncSourceEnvelope) GetData() *BulkSyncSource {
+	if b == nil {
+		return nil
+	}
+	return b.Data
+}
+
+func (b *BulkSyncSourceEnvelope) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
 }
 
 func (b *BulkSyncSourceEnvelope) UnmarshalJSON(data []byte) error {
@@ -542,17 +1011,22 @@ func (b *BulkSyncSourceEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*b = BulkSyncSourceEnvelope(value)
-	b._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (b *BulkSyncSourceEnvelope) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(b); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
@@ -561,7 +1035,19 @@ func (b *BulkSyncSourceEnvelope) String() string {
 type BulkSyncStatusEnvelope struct {
 	Data *BulkSyncStatusResponse `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSyncStatusEnvelope) GetData() *BulkSyncStatusResponse {
+	if b == nil {
+		return nil
+	}
+	return b.Data
+}
+
+func (b *BulkSyncStatusEnvelope) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
 }
 
 func (b *BulkSyncStatusEnvelope) UnmarshalJSON(data []byte) error {
@@ -571,17 +1057,22 @@ func (b *BulkSyncStatusEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*b = BulkSyncStatusEnvelope(value)
-	b._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (b *BulkSyncStatusEnvelope) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(b); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
@@ -592,14 +1083,40 @@ type BulkSyncStatusResponse struct {
 	LastExecution     *BulkSyncExecution `json:"last_execution,omitempty" url:"last_execution,omitempty"`
 	NextExecutionTime *time.Time         `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSyncStatusResponse) GetCurrentExecution() *BulkSyncExecution {
+	if b == nil {
+		return nil
+	}
+	return b.CurrentExecution
+}
+
+func (b *BulkSyncStatusResponse) GetLastExecution() *BulkSyncExecution {
+	if b == nil {
+		return nil
+	}
+	return b.LastExecution
+}
+
+func (b *BulkSyncStatusResponse) GetNextExecutionTime() *time.Time {
+	if b == nil {
+		return nil
+	}
+	return b.NextExecutionTime
+}
+
+func (b *BulkSyncStatusResponse) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
 }
 
 func (b *BulkSyncStatusResponse) UnmarshalJSON(data []byte) error {
 	type embed BulkSyncStatusResponse
 	var unmarshaler = struct {
 		embed
-		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty"`
+		NextExecutionTime *internal.DateTime `json:"next_execution_time,omitempty"`
 	}{
 		embed: embed(*b),
 	}
@@ -608,7 +1125,12 @@ func (b *BulkSyncStatusResponse) UnmarshalJSON(data []byte) error {
 	}
 	*b = BulkSyncStatusResponse(unmarshaler.embed)
 	b.NextExecutionTime = unmarshaler.NextExecutionTime.TimePtr()
-	b._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
 	return nil
 }
 
@@ -616,21 +1138,21 @@ func (b *BulkSyncStatusResponse) MarshalJSON() ([]byte, error) {
 	type embed BulkSyncStatusResponse
 	var marshaler = struct {
 		embed
-		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty"`
+		NextExecutionTime *internal.DateTime `json:"next_execution_time,omitempty"`
 	}{
 		embed:             embed(*b),
-		NextExecutionTime: core.NewOptionalDateTime(b.NextExecutionTime),
+		NextExecutionTime: internal.NewOptionalDateTime(b.NextExecutionTime),
 	}
 	return json.Marshal(marshaler)
 }
 
 func (b *BulkSyncStatusResponse) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(b); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
@@ -643,7 +1165,33 @@ type FieldConfiguration struct {
 	// Whether the field should be obfuscated.
 	Obfuscate *bool `json:"obfuscate,omitempty" url:"obfuscate,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (f *FieldConfiguration) GetEnabled() *bool {
+	if f == nil {
+		return nil
+	}
+	return f.Enabled
+}
+
+func (f *FieldConfiguration) GetId() *string {
+	if f == nil {
+		return nil
+	}
+	return f.Id
+}
+
+func (f *FieldConfiguration) GetObfuscate() *bool {
+	if f == nil {
+		return nil
+	}
+	return f.Obfuscate
+}
+
+func (f *FieldConfiguration) GetExtraProperties() map[string]interface{} {
+	return f.extraProperties
 }
 
 func (f *FieldConfiguration) UnmarshalJSON(data []byte) error {
@@ -653,17 +1201,22 @@ func (f *FieldConfiguration) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*f = FieldConfiguration(value)
-	f._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *f)
+	if err != nil {
+		return err
+	}
+	f.extraProperties = extraProperties
+	f.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (f *FieldConfiguration) String() string {
-	if len(f._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(f._rawJSON); err == nil {
+	if len(f.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(f.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(f); err == nil {
+	if value, err := internal.StringifyJSON(f); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", f)
@@ -681,14 +1234,75 @@ type SchemaConfiguration struct {
 	PartitionKey  *string                            `json:"partition_key,omitempty" url:"partition_key,omitempty"`
 	TrackingField *string                            `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SchemaConfiguration) GetDataCutoffTimestamp() *time.Time {
+	if s == nil {
+		return nil
+	}
+	return s.DataCutoffTimestamp
+}
+
+func (s *SchemaConfiguration) GetDisableDataCutoff() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.DisableDataCutoff
+}
+
+func (s *SchemaConfiguration) GetEnabled() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.Enabled
+}
+
+func (s *SchemaConfiguration) GetFields() []*V2SchemaConfigurationFieldsItem {
+	if s == nil {
+		return nil
+	}
+	return s.Fields
+}
+
+func (s *SchemaConfiguration) GetFilters() []*BulkFilter {
+	if s == nil {
+		return nil
+	}
+	return s.Filters
+}
+
+func (s *SchemaConfiguration) GetId() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Id
+}
+
+func (s *SchemaConfiguration) GetPartitionKey() *string {
+	if s == nil {
+		return nil
+	}
+	return s.PartitionKey
+}
+
+func (s *SchemaConfiguration) GetTrackingField() *string {
+	if s == nil {
+		return nil
+	}
+	return s.TrackingField
+}
+
+func (s *SchemaConfiguration) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
 }
 
 func (s *SchemaConfiguration) UnmarshalJSON(data []byte) error {
 	type embed SchemaConfiguration
 	var unmarshaler = struct {
 		embed
-		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
+		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
 	}{
 		embed: embed(*s),
 	}
@@ -697,7 +1311,12 @@ func (s *SchemaConfiguration) UnmarshalJSON(data []byte) error {
 	}
 	*s = SchemaConfiguration(unmarshaler.embed)
 	s.DataCutoffTimestamp = unmarshaler.DataCutoffTimestamp.TimePtr()
-	s._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
@@ -705,21 +1324,21 @@ func (s *SchemaConfiguration) MarshalJSON() ([]byte, error) {
 	type embed SchemaConfiguration
 	var marshaler = struct {
 		embed
-		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
+		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
 	}{
 		embed:               embed(*s),
-		DataCutoffTimestamp: core.NewOptionalDateTime(s.DataCutoffTimestamp),
+		DataCutoffTimestamp: internal.NewOptionalDateTime(s.DataCutoffTimestamp),
 	}
 	return json.Marshal(marshaler)
 }
 
 func (s *SchemaConfiguration) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
@@ -733,7 +1352,54 @@ type SupportedBulkMode struct {
 	SupportsFieldSyncMode *bool         `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
 	SupportsTargetFilters *bool         `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SupportedBulkMode) GetDescription() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Description
+}
+
+func (s *SupportedBulkMode) GetId() *BulkSyncMode {
+	if s == nil {
+		return nil
+	}
+	return s.Id
+}
+
+func (s *SupportedBulkMode) GetLabel() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Label
+}
+
+func (s *SupportedBulkMode) GetRequiresIdentity() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.RequiresIdentity
+}
+
+func (s *SupportedBulkMode) GetSupportsFieldSyncMode() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.SupportsFieldSyncMode
+}
+
+func (s *SupportedBulkMode) GetSupportsTargetFilters() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.SupportsTargetFilters
+}
+
+func (s *SupportedBulkMode) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
 }
 
 func (s *SupportedBulkMode) UnmarshalJSON(data []byte) error {
@@ -743,17 +1409,22 @@ func (s *SupportedBulkMode) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*s = SupportedBulkMode(value)
-	s._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (s *SupportedBulkMode) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
@@ -762,24 +1433,42 @@ func (s *SupportedBulkMode) String() string {
 type V2SchemaConfigurationFieldsItem struct {
 	String             string
 	FieldConfiguration *FieldConfiguration
+
+	typ string
 }
 
 func NewV2SchemaConfigurationFieldsItemFromString(value string) *V2SchemaConfigurationFieldsItem {
-	return &V2SchemaConfigurationFieldsItem{String: value}
+	return &V2SchemaConfigurationFieldsItem{typ: "String", String: value}
 }
 
 func NewV2SchemaConfigurationFieldsItemFromFieldConfiguration(value *FieldConfiguration) *V2SchemaConfigurationFieldsItem {
-	return &V2SchemaConfigurationFieldsItem{FieldConfiguration: value}
+	return &V2SchemaConfigurationFieldsItem{typ: "FieldConfiguration", FieldConfiguration: value}
+}
+
+func (v *V2SchemaConfigurationFieldsItem) GetString() string {
+	if v == nil {
+		return ""
+	}
+	return v.String
+}
+
+func (v *V2SchemaConfigurationFieldsItem) GetFieldConfiguration() *FieldConfiguration {
+	if v == nil {
+		return nil
+	}
+	return v.FieldConfiguration
 }
 
 func (v *V2SchemaConfigurationFieldsItem) UnmarshalJSON(data []byte) error {
 	var valueString string
 	if err := json.Unmarshal(data, &valueString); err == nil {
+		v.typ = "String"
 		v.String = valueString
 		return nil
 	}
 	valueFieldConfiguration := new(FieldConfiguration)
 	if err := json.Unmarshal(data, &valueFieldConfiguration); err == nil {
+		v.typ = "FieldConfiguration"
 		v.FieldConfiguration = valueFieldConfiguration
 		return nil
 	}
@@ -787,10 +1476,10 @@ func (v *V2SchemaConfigurationFieldsItem) UnmarshalJSON(data []byte) error {
 }
 
 func (v V2SchemaConfigurationFieldsItem) MarshalJSON() ([]byte, error) {
-	if v.String != "" {
+	if v.typ == "String" || v.String != "" {
 		return json.Marshal(v.String)
 	}
-	if v.FieldConfiguration != nil {
+	if v.typ == "FieldConfiguration" || v.FieldConfiguration != nil {
 		return json.Marshal(v.FieldConfiguration)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", v)
@@ -802,10 +1491,10 @@ type V2SchemaConfigurationFieldsItemVisitor interface {
 }
 
 func (v *V2SchemaConfigurationFieldsItem) Accept(visitor V2SchemaConfigurationFieldsItemVisitor) error {
-	if v.String != "" {
+	if v.typ == "String" || v.String != "" {
 		return visitor.VisitString(v.String)
 	}
-	if v.FieldConfiguration != nil {
+	if v.typ == "FieldConfiguration" || v.FieldConfiguration != nil {
 		return visitor.VisitFieldConfiguration(v.FieldConfiguration)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", v)
@@ -814,24 +1503,42 @@ func (v *V2SchemaConfigurationFieldsItem) Accept(visitor V2SchemaConfigurationFi
 type V2CreateBulkSyncRequestSchemasItem struct {
 	String              string
 	SchemaConfiguration *SchemaConfiguration
+
+	typ string
 }
 
 func NewV2CreateBulkSyncRequestSchemasItemFromString(value string) *V2CreateBulkSyncRequestSchemasItem {
-	return &V2CreateBulkSyncRequestSchemasItem{String: value}
+	return &V2CreateBulkSyncRequestSchemasItem{typ: "String", String: value}
 }
 
 func NewV2CreateBulkSyncRequestSchemasItemFromSchemaConfiguration(value *SchemaConfiguration) *V2CreateBulkSyncRequestSchemasItem {
-	return &V2CreateBulkSyncRequestSchemasItem{SchemaConfiguration: value}
+	return &V2CreateBulkSyncRequestSchemasItem{typ: "SchemaConfiguration", SchemaConfiguration: value}
+}
+
+func (v *V2CreateBulkSyncRequestSchemasItem) GetString() string {
+	if v == nil {
+		return ""
+	}
+	return v.String
+}
+
+func (v *V2CreateBulkSyncRequestSchemasItem) GetSchemaConfiguration() *SchemaConfiguration {
+	if v == nil {
+		return nil
+	}
+	return v.SchemaConfiguration
 }
 
 func (v *V2CreateBulkSyncRequestSchemasItem) UnmarshalJSON(data []byte) error {
 	var valueString string
 	if err := json.Unmarshal(data, &valueString); err == nil {
+		v.typ = "String"
 		v.String = valueString
 		return nil
 	}
 	valueSchemaConfiguration := new(SchemaConfiguration)
 	if err := json.Unmarshal(data, &valueSchemaConfiguration); err == nil {
+		v.typ = "SchemaConfiguration"
 		v.SchemaConfiguration = valueSchemaConfiguration
 		return nil
 	}
@@ -839,10 +1546,10 @@ func (v *V2CreateBulkSyncRequestSchemasItem) UnmarshalJSON(data []byte) error {
 }
 
 func (v V2CreateBulkSyncRequestSchemasItem) MarshalJSON() ([]byte, error) {
-	if v.String != "" {
+	if v.typ == "String" || v.String != "" {
 		return json.Marshal(v.String)
 	}
-	if v.SchemaConfiguration != nil {
+	if v.typ == "SchemaConfiguration" || v.SchemaConfiguration != nil {
 		return json.Marshal(v.SchemaConfiguration)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", v)
@@ -854,10 +1561,10 @@ type V2CreateBulkSyncRequestSchemasItemVisitor interface {
 }
 
 func (v *V2CreateBulkSyncRequestSchemasItem) Accept(visitor V2CreateBulkSyncRequestSchemasItemVisitor) error {
-	if v.String != "" {
+	if v.typ == "String" || v.String != "" {
 		return visitor.VisitString(v.String)
 	}
-	if v.SchemaConfiguration != nil {
+	if v.typ == "SchemaConfiguration" || v.SchemaConfiguration != nil {
 		return visitor.VisitSchemaConfiguration(v.SchemaConfiguration)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", v)
@@ -866,24 +1573,42 @@ func (v *V2CreateBulkSyncRequestSchemasItem) Accept(visitor V2CreateBulkSyncRequ
 type V2UpdateBulkSyncRequestSchemasItem struct {
 	String              string
 	SchemaConfiguration *SchemaConfiguration
+
+	typ string
 }
 
 func NewV2UpdateBulkSyncRequestSchemasItemFromString(value string) *V2UpdateBulkSyncRequestSchemasItem {
-	return &V2UpdateBulkSyncRequestSchemasItem{String: value}
+	return &V2UpdateBulkSyncRequestSchemasItem{typ: "String", String: value}
 }
 
 func NewV2UpdateBulkSyncRequestSchemasItemFromSchemaConfiguration(value *SchemaConfiguration) *V2UpdateBulkSyncRequestSchemasItem {
-	return &V2UpdateBulkSyncRequestSchemasItem{SchemaConfiguration: value}
+	return &V2UpdateBulkSyncRequestSchemasItem{typ: "SchemaConfiguration", SchemaConfiguration: value}
+}
+
+func (v *V2UpdateBulkSyncRequestSchemasItem) GetString() string {
+	if v == nil {
+		return ""
+	}
+	return v.String
+}
+
+func (v *V2UpdateBulkSyncRequestSchemasItem) GetSchemaConfiguration() *SchemaConfiguration {
+	if v == nil {
+		return nil
+	}
+	return v.SchemaConfiguration
 }
 
 func (v *V2UpdateBulkSyncRequestSchemasItem) UnmarshalJSON(data []byte) error {
 	var valueString string
 	if err := json.Unmarshal(data, &valueString); err == nil {
+		v.typ = "String"
 		v.String = valueString
 		return nil
 	}
 	valueSchemaConfiguration := new(SchemaConfiguration)
 	if err := json.Unmarshal(data, &valueSchemaConfiguration); err == nil {
+		v.typ = "SchemaConfiguration"
 		v.SchemaConfiguration = valueSchemaConfiguration
 		return nil
 	}
@@ -891,10 +1616,10 @@ func (v *V2UpdateBulkSyncRequestSchemasItem) UnmarshalJSON(data []byte) error {
 }
 
 func (v V2UpdateBulkSyncRequestSchemasItem) MarshalJSON() ([]byte, error) {
-	if v.String != "" {
+	if v.typ == "String" || v.String != "" {
 		return json.Marshal(v.String)
 	}
-	if v.SchemaConfiguration != nil {
+	if v.typ == "SchemaConfiguration" || v.SchemaConfiguration != nil {
 		return json.Marshal(v.SchemaConfiguration)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", v)
@@ -906,10 +1631,10 @@ type V2UpdateBulkSyncRequestSchemasItemVisitor interface {
 }
 
 func (v *V2UpdateBulkSyncRequestSchemasItem) Accept(visitor V2UpdateBulkSyncRequestSchemasItemVisitor) error {
-	if v.String != "" {
+	if v.typ == "String" || v.String != "" {
 		return visitor.VisitString(v.String)
 	}
-	if v.SchemaConfiguration != nil {
+	if v.typ == "SchemaConfiguration" || v.SchemaConfiguration != nil {
 		return visitor.VisitSchemaConfiguration(v.SchemaConfiguration)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", v)

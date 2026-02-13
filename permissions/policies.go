@@ -7,13 +7,13 @@ import (
 )
 
 type CreatePolicyRequest struct {
-	Name           string                      `json:"name" url:"name"`
-	OrganizationId *string                     `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	PolicyActions  []*polytomicgo.PolicyAction `json:"policy_actions,omitempty" url:"policy_actions,omitempty"`
+	Name           string                      `json:"name" url:"-"`
+	OrganizationId *string                     `json:"organization_id,omitempty" url:"-"`
+	PolicyActions  []*polytomicgo.PolicyAction `json:"policy_actions,omitempty" url:"-"`
 }
 
 type UpdatePolicyRequest struct {
-	Name           string                      `json:"name" url:"name"`
-	OrganizationId *string                     `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	PolicyActions  []*polytomicgo.PolicyAction `json:"policy_actions,omitempty" url:"policy_actions,omitempty"`
+	Name           string                      `json:"name" url:"-"`
+	OrganizationId *string                     `json:"organization_id,omitempty" url:"-"`
+	PolicyActions  []*polytomicgo.PolicyAction `json:"policy_actions,omitempty" url:"-"`
 }

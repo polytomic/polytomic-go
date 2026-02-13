@@ -7,9 +7,9 @@ import (
 )
 
 type CreateScheduleRequest struct {
-	Schedule *polytomicgo.V4BulkSyncScheduleApi `json:"schedule,omitempty" url:"schedule,omitempty"`
+	Schedule *polytomicgo.V4BulkSyncScheduleApi `json:"schedule,omitempty" url:"-"`
 }
 
 type UpdateScheduleRequest struct {
-	Schedule *polytomicgo.V4BulkSyncScheduleApi `json:"schedule,omitempty" url:"schedule,omitempty"`
+	Schedule *polytomicgo.V4BulkSyncScheduleApi `json:"schedule,omitempty" url:"-"`
 }

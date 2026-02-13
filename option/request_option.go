@@ -5,9 +5,10 @@ package option
 import (
 	core "github.com/polytomic/polytomic-go/core"
 	http "net/http"
+	url "net/url"
 )
 
-// RequestOption adapts the behavior of an indivdual request.
+// RequestOption adapts the behavior of an individual request.
 type RequestOption = core.RequestOption
 
 // WithBaseURL sets the base URL, overriding the default
@@ -33,6 +34,28 @@ func WithHTTPHeader(httpHeader http.Header) *core.HTTPHeaderOption {
 	}
 }
 
+// WithBodyProperties adds the given body properties to the request.
+func WithBodyProperties(bodyProperties map[string]interface{}) *core.BodyPropertiesOption {
+	copiedBodyProperties := make(map[string]interface{}, len(bodyProperties))
+	for key, value := range bodyProperties {
+		copiedBodyProperties[key] = value
+	}
+	return &core.BodyPropertiesOption{
+		BodyProperties: copiedBodyProperties,
+	}
+}
+
+// WithQueryParameters adds the given query parameters to the request.
+func WithQueryParameters(queryParameters url.Values) *core.QueryParametersOption {
+	copiedQueryParameters := make(url.Values, len(queryParameters))
+	for key, values := range queryParameters {
+		copiedQueryParameters[key] = values
+	}
+	return &core.QueryParametersOption{
+		QueryParameters: copiedQueryParameters,
+	}
+}
+
 // WithMaxAttempts configures the maximum number of retry attempts.
 func WithMaxAttempts(attempts uint) *core.MaxAttemptsOption {
 	return &core.MaxAttemptsOption{
@@ -48,7 +71,7 @@ func WithToken(token string) *core.TokenOption {
 }
 
 // WithVersion sets the version request header.
-func WithVersion(version *string) *core.VersionOption {
+func WithVersion(version interface{}) *core.VersionOption {
 	return &core.VersionOption{
 		Version: version,
 	}

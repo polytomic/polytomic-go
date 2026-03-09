@@ -130,20 +130,22 @@ func (a *ApiError) String() string {
 }
 
 type BulkBulkSyncSchedule struct {
-	CreatedAt     *time.Time         `json:"createdAt,omitempty" url:"createdAt,omitempty"`
-	CreatedBy     *string            `json:"createdBy,omitempty" url:"createdBy,omitempty"`
-	DayOfMonth    *string            `json:"dayOfMonth,omitempty" url:"dayOfMonth,omitempty"`
-	DayOfWeek     *string            `json:"dayOfWeek,omitempty" url:"dayOfWeek,omitempty"`
-	DeletedAt     *time.Time         `json:"deletedAt,omitempty" url:"deletedAt,omitempty"`
-	DeletedBy     *string            `json:"deletedBy,omitempty" url:"deletedBy,omitempty"`
-	Frequency     ScheduleFrequency  `json:"frequency,omitempty" url:"frequency,omitempty"`
-	Hour          *string            `json:"hour,omitempty" url:"hour,omitempty"`
-	Minute        *string            `json:"minute,omitempty" url:"minute,omitempty"`
-	Month         *string            `json:"month,omitempty" url:"month,omitempty"`
-	SelectiveMode *BulkSelectiveMode `json:"selectiveMode,omitempty" url:"selectiveMode,omitempty"`
-	SyncId        *string            `json:"syncId,omitempty" url:"syncId,omitempty"`
-	UpdatedAt     *time.Time         `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
-	UpdatedBy     *string            `json:"updatedBy,omitempty" url:"updatedBy,omitempty"`
+	CreatedAt     *time.Time            `json:"createdAt,omitempty" url:"createdAt,omitempty"`
+	CreatedBy     *string               `json:"createdBy,omitempty" url:"createdBy,omitempty"`
+	DayOfMonth    *string               `json:"dayOfMonth,omitempty" url:"dayOfMonth,omitempty"`
+	DayOfWeek     *string               `json:"dayOfWeek,omitempty" url:"dayOfWeek,omitempty"`
+	DeletedAt     *time.Time            `json:"deletedAt,omitempty" url:"deletedAt,omitempty"`
+	DeletedBy     *string               `json:"deletedBy,omitempty" url:"deletedBy,omitempty"`
+	Frequency     ScheduleFrequency     `json:"frequency,omitempty" url:"frequency,omitempty"`
+	Hour          *string               `json:"hour,omitempty" url:"hour,omitempty"`
+	Minute        *string               `json:"minute,omitempty" url:"minute,omitempty"`
+	Month         *string               `json:"month,omitempty" url:"month,omitempty"`
+	Schemas       []string              `json:"schemas,omitempty" url:"schemas,omitempty"`
+	SelectiveMode *BulkSelectiveMode    `json:"selectiveMode,omitempty" url:"selectiveMode,omitempty"`
+	SyncId        *string               `json:"syncId,omitempty" url:"syncId,omitempty"`
+	SyncMode      *BulkScheduleSyncMode `json:"syncMode,omitempty" url:"syncMode,omitempty"`
+	UpdatedAt     *time.Time            `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
+	UpdatedBy     *string               `json:"updatedBy,omitempty" url:"updatedBy,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -335,6 +337,34 @@ func (b *BulkFilter) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
+}
+
+type BulkScheduleSyncMode string
+
+const (
+	BulkScheduleSyncModeNormal  BulkScheduleSyncMode = "normal"
+	BulkScheduleSyncModeRefetch BulkScheduleSyncMode = "refetch"
+	BulkScheduleSyncModeResync  BulkScheduleSyncMode = "resync"
+	BulkScheduleSyncModeRebuild BulkScheduleSyncMode = "rebuild"
+)
+
+func NewBulkScheduleSyncModeFromString(s string) (BulkScheduleSyncMode, error) {
+	switch s {
+	case "normal":
+		return BulkScheduleSyncModeNormal, nil
+	case "refetch":
+		return BulkScheduleSyncModeRefetch, nil
+	case "resync":
+		return BulkScheduleSyncModeResync, nil
+	case "rebuild":
+		return BulkScheduleSyncModeRebuild, nil
+	}
+	var t BulkScheduleSyncMode
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BulkScheduleSyncMode) Ptr() *BulkScheduleSyncMode {
+	return &b
 }
 
 type BulkSchema struct {
@@ -767,6 +797,64 @@ func (b *BulkSyncSchemaExecutionStatus) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
+}
+
+type CancelBulkSyncResponse struct {
+	Message *string `json:"message,omitempty" url:"message,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *CancelBulkSyncResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler CancelBulkSyncResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CancelBulkSyncResponse(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CancelBulkSyncResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CancelBulkSyncResponseEnvelope struct {
+	Data *CancelBulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *CancelBulkSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler CancelBulkSyncResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CancelBulkSyncResponseEnvelope(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CancelBulkSyncResponseEnvelope) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
 }
 
 type CommonOutputActor struct {

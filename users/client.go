@@ -35,9 +35,6 @@ func NewClient(opts ...option.RequestOption) *Client {
 	}
 }
 
-// > 🚧 Requires partner key
-// >
-// > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) List(
 	ctx context.Context,
 	orgId string,
@@ -66,6 +63,13 @@ func (c *Client) List(
 		switch statusCode {
 		case 401:
 			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
@@ -100,9 +104,6 @@ func (c *Client) List(
 	return response, nil
 }
 
-// > 🚧 Requires partner key
-// >
-// > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) Create(
 	ctx context.Context,
 	orgId string,
@@ -132,6 +133,13 @@ func (c *Client) Create(
 		switch statusCode {
 		case 401:
 			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
@@ -174,9 +182,6 @@ func (c *Client) Create(
 	return response, nil
 }
 
-// > 🚧 Requires partner key
-// >
-// > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
@@ -206,6 +211,13 @@ func (c *Client) Get(
 		switch statusCode {
 		case 401:
 			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
@@ -247,9 +259,6 @@ func (c *Client) Get(
 	return response, nil
 }
 
-// > 🚧 Requires partner key
-// >
-// > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
@@ -280,6 +289,13 @@ func (c *Client) Update(
 		switch statusCode {
 		case 401:
 			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
@@ -322,9 +338,6 @@ func (c *Client) Update(
 	return response, nil
 }
 
-// > 🚧 Requires partner key
-// >
-// > User endpoints are only accessible using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
@@ -354,6 +367,13 @@ func (c *Client) Remove(
 		switch statusCode {
 		case 401:
 			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError

@@ -9,8 +9,9 @@ import (
 )
 
 type CreateUserRequestSchema struct {
-	Email string  `json:"email" url:"email"`
-	Role  *string `json:"role,omitempty" url:"role,omitempty"`
+	Email   string   `json:"email" url:"email"`
+	Role    *string  `json:"role,omitempty" url:"role,omitempty"`
+	RoleIds []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
 }
 
 type UsersCreateApiKeyRequest struct {
@@ -18,8 +19,9 @@ type UsersCreateApiKeyRequest struct {
 }
 
 type UpdateUserRequestSchema struct {
-	Email string  `json:"email" url:"email"`
-	Role  *string `json:"role,omitempty" url:"role,omitempty"`
+	Email   string   `json:"email" url:"email"`
+	Role    *string  `json:"role,omitempty" url:"role,omitempty"`
+	RoleIds []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
 }
 
 type ApiKeyResponse struct {
@@ -110,10 +112,11 @@ func (l *ListUsersEnvelope) String() string {
 }
 
 type User struct {
-	Email          *string `json:"email,omitempty" url:"email,omitempty"`
-	Id             *string `json:"id,omitempty" url:"id,omitempty"`
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Role           *string `json:"role,omitempty" url:"role,omitempty"`
+	Email          *string  `json:"email,omitempty" url:"email,omitempty"`
+	Id             *string  `json:"id,omitempty" url:"id,omitempty"`
+	OrganizationId *string  `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Role           *string  `json:"role,omitempty" url:"role,omitempty"`
+	RoleIds        []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
 
 	_rawJSON json.RawMessage
 }

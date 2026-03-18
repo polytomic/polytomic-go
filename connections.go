@@ -39,6 +39,13 @@ type CreateConnectionRequestSchema struct {
 	Validate *bool `json:"validate,omitempty" url:"validate,omitempty"`
 }
 
+type GetConnectionTypeParameterValuesRequestSchema struct {
+	ConnectionId *string                `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	Field        string                 `json:"field" url:"field"`
+	Parameters   map[string]interface{} `json:"parameters,omitempty" url:"parameters,omitempty"`
+	Query        *string                `json:"query,omitempty" url:"query,omitempty"`
+}
+
 type ConnectionsRemoveRequest struct {
 	Force *bool `json:"-" url:"force,omitempty"`
 }
@@ -63,6 +70,11 @@ type UpdateConnectionRequestSchema struct {
 	Type                *string  `json:"type,omitempty" url:"type,omitempty"`
 	// Validate connection configuration.
 	Validate *bool `json:"validate,omitempty" url:"validate,omitempty"`
+}
+
+type ApiRequest struct {
+	Name           *string `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationId string  `json:"organization_id" url:"organization_id"`
 }
 
 type BackendConnectionCapabilities struct {
@@ -344,13 +356,15 @@ type ConnectionResponseSchema struct {
 	Id                  *string                `json:"id,omitempty" url:"id,omitempty"`
 	Name                *string                `json:"name,omitempty" url:"name,omitempty"`
 	OrganizationId      *string                `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies            []string               `json:"policies,omitempty" url:"policies,omitempty"`
-	Saved               *bool                  `json:"saved,omitempty" url:"saved,omitempty"`
-	Status              *string                `json:"status,omitempty" url:"status,omitempty"`
-	StatusError         *string                `json:"status_error,omitempty" url:"status_error,omitempty"`
-	Type                *ConnectionTypeSchema  `json:"type,omitempty" url:"type,omitempty"`
-	UpdatedAt           *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	UpdatedBy           *CommonOutputActor     `json:"updated_by,omitempty" url:"updated_by,omitempty"`
+	// For shared connections, the ID of the parent connection.
+	ParentConnectionId *string               `json:"parent_connection_id,omitempty" url:"parent_connection_id,omitempty"`
+	Policies           []string              `json:"policies,omitempty" url:"policies,omitempty"`
+	Saved              *bool                 `json:"saved,omitempty" url:"saved,omitempty"`
+	Status             *string               `json:"status,omitempty" url:"status,omitempty"`
+	StatusError        *string               `json:"status_error,omitempty" url:"status_error,omitempty"`
+	Type               *ConnectionTypeSchema `json:"type,omitempty" url:"type,omitempty"`
+	UpdatedAt          *time.Time            `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	UpdatedBy          *CommonOutputActor    `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -570,6 +584,35 @@ func (c *CreateConnectionResponseSchema) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type CreateSharedConnectionResponseSchema struct {
+	Id *string `json:"id,omitempty" url:"id,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *CreateSharedConnectionResponseSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateSharedConnectionResponseSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreateSharedConnectionResponseSchema(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateSharedConnectionResponseSchema) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type JsonschemaDefinitions = map[string]*JsonschemaSchema
 
 type JsonschemaSchema struct {
@@ -672,6 +715,35 @@ func (v *V2ConnectionForm) UnmarshalJSON(data []byte) error {
 }
 
 func (v *V2ConnectionForm) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2CreateSharedConnectionResponseEnvelope struct {
+	Data *CreateSharedConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *V2CreateSharedConnectionResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2CreateSharedConnectionResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2CreateSharedConnectionResponseEnvelope(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2CreateSharedConnectionResponseEnvelope) String() string {
 	if len(v._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value

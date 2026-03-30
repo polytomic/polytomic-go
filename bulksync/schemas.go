@@ -5,27 +5,27 @@ package bulksync
 import (
 	json "encoding/json"
 	polytomicgo "github.com/polytomic/polytomic-go"
-	core "github.com/polytomic/polytomic-go/core"
+	internal "github.com/polytomic/polytomic-go/internal"
 	time "time"
 )
 
 type SchemasListRequest struct {
-	Filters map[string]*string `json:"-" url:"filters,omitempty"`
+	Filters map[string]string `json:"-" url:"filters,omitempty"`
 }
 
 type BulkSyncSchemasRequest struct {
-	Schemas []*polytomicgo.BulkSchema `json:"schemas,omitempty" url:"schemas,omitempty"`
+	Schemas []*polytomicgo.BulkSchema `json:"schemas,omitempty" url:"-"`
 }
 
 type UpdateBulkSchema struct {
-	DataCutoffTimestamp *time.Time                     `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
-	DisableDataCutoff   *bool                          `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
-	Enabled             *bool                          `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Fields              []*polytomicgo.UpdateBulkField `json:"fields,omitempty" url:"fields,omitempty"`
-	Filters             []*polytomicgo.BulkFilter      `json:"filters,omitempty" url:"filters,omitempty"`
-	PartitionKey        *string                        `json:"partition_key,omitempty" url:"partition_key,omitempty"`
-	TrackingField       *string                        `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
-	UserOutputName      *string                        `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
+	DataCutoffTimestamp *time.Time                     `json:"data_cutoff_timestamp,omitempty" url:"-"`
+	DisableDataCutoff   *bool                          `json:"disable_data_cutoff,omitempty" url:"-"`
+	Enabled             *bool                          `json:"enabled,omitempty" url:"-"`
+	Fields              []*polytomicgo.UpdateBulkField `json:"fields,omitempty" url:"-"`
+	Filters             []*polytomicgo.BulkFilter2     `json:"filters,omitempty" url:"-"`
+	PartitionKey        *string                        `json:"partition_key,omitempty" url:"-"`
+	TrackingField       *string                        `json:"tracking_field,omitempty" url:"-"`
+	UserOutputName      *string                        `json:"user_output_name,omitempty" url:"-"`
 }
 
 func (u *UpdateBulkSchema) UnmarshalJSON(data []byte) error {
@@ -42,10 +42,10 @@ func (u *UpdateBulkSchema) MarshalJSON() ([]byte, error) {
 	type embed UpdateBulkSchema
 	var marshaler = struct {
 		embed
-		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
+		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
 	}{
 		embed:               embed(*u),
-		DataCutoffTimestamp: core.NewOptionalDateTime(u.DataCutoffTimestamp),
+		DataCutoffTimestamp: internal.NewOptionalDateTime(u.DataCutoffTimestamp),
 	}
 	return json.Marshal(marshaler)
 }

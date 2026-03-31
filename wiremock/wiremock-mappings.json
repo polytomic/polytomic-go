@@ -1,0 +1,3663 @@
+{
+  "mappings": [
+    {
+      "id": "ba4af850-d701-4379-bf04-fd76d0e7aa79",
+      "name": "List Bulk Syncs - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs",
+        "method": "GET",
+        "queryParameters": {
+          "active": {
+            "equalTo": "true"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"active\": true,\n      \"automatically_add_new_fields\": \"all\",\n      \"automatically_add_new_objects\": \"all\",\n      \"concurrency_limit\": 50,\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"created_by\": {\n        \"id\": \"12345678-1234-1234-1234-123456789012\",\n        \"name\": \"John Doe\",\n        \"type\": \"user\"\n      },\n      \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n      \"destination_configuration\": {\n        \"schema\": \"my_schema\"\n      },\n      \"destination_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"disable_record_timestamps\": false,\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"mode\": \"snapshot\",\n      \"name\": \"My Bulk Sync\",\n      \"normalize_names\": \"enabled\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"policies\": [\n        \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      ],\n      \"resync_concurrency_limit\": 10,\n      \"schedule\": {\n        \"day_of_month\": \"1\",\n        \"day_of_week\": \"monday\",\n        \"frequency\": \"manual\",\n        \"hour\": \"0\",\n        \"minute\": \"0\",\n        \"month\": \"1\"\n      },\n      \"source_configuration\": {\n        \"replication_slot\": \"slot\"\n      },\n      \"source_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_by\": {\n        \"id\": \"12345678-1234-1234-1234-123456789012\",\n        \"name\": \"John Doe\",\n        \"type\": \"user\"\n      }\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ba4af850-d701-4379-bf04-fd76d0e7aa79",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "feb9bdd8-3dd8-441b-8025-a4c8ac03302a",
+      "name": "Create Bulk Sync - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs",
+        "method": "POST"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"active\": true,\n    \"automatically_add_new_fields\": \"all\",\n    \"automatically_add_new_objects\": \"all\",\n    \"concurrency_limit\": 50,\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    },\n    \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n    \"destination_configuration\": {\n      \"schema\": \"my_schema\"\n    },\n    \"destination_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"disable_record_timestamps\": false,\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"mode\": \"snapshot\",\n    \"name\": \"My Bulk Sync\",\n    \"normalize_names\": \"enabled\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"policies\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"resync_concurrency_limit\": 10,\n    \"schedule\": {\n      \"day_of_month\": \"1\",\n      \"day_of_week\": \"monday\",\n      \"frequency\": \"manual\",\n      \"hour\": \"0\",\n      \"minute\": \"0\",\n      \"month\": \"1\",\n      \"multi\": {\n        \"schedules\": null\n      }\n    },\n    \"source_configuration\": {\n      \"replication_slot\": \"slot\"\n    },\n    \"source_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    }\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "feb9bdd8-3dd8-441b-8025-a4c8ac03302a",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "c8b0868c-5529-4191-9e17-b25d20b06df1",
+      "name": "Get Bulk Sync - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{id}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "refresh_schemas": {
+            "equalTo": "true"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"active\": true,\n    \"automatically_add_new_fields\": \"all\",\n    \"automatically_add_new_objects\": \"all\",\n    \"concurrency_limit\": 50,\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    },\n    \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n    \"destination_configuration\": {\n      \"schema\": \"my_schema\"\n    },\n    \"destination_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"disable_record_timestamps\": false,\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"mode\": \"snapshot\",\n    \"name\": \"My Bulk Sync\",\n    \"normalize_names\": \"enabled\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"policies\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"resync_concurrency_limit\": 10,\n    \"schedule\": {\n      \"day_of_month\": \"1\",\n      \"day_of_week\": \"monday\",\n      \"frequency\": \"manual\",\n      \"hour\": \"0\",\n      \"minute\": \"0\",\n      \"month\": \"1\",\n      \"multi\": {\n        \"schedules\": null\n      }\n    },\n    \"source_configuration\": {\n      \"replication_slot\": \"slot\"\n    },\n    \"source_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    }\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "c8b0868c-5529-4191-9e17-b25d20b06df1",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "b6c9e982-f68b-458c-a206-a23d301e37f0",
+      "name": "Update Bulk Sync - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{id}",
+        "method": "PUT",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"active\": true,\n    \"automatically_add_new_fields\": \"all\",\n    \"automatically_add_new_objects\": \"all\",\n    \"concurrency_limit\": 50,\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    },\n    \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n    \"destination_configuration\": {\n      \"schema\": \"my_schema\"\n    },\n    \"destination_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"disable_record_timestamps\": false,\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"mode\": \"snapshot\",\n    \"name\": \"My Bulk Sync\",\n    \"normalize_names\": \"enabled\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"policies\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"resync_concurrency_limit\": 10,\n    \"schedule\": {\n      \"day_of_month\": \"1\",\n      \"day_of_week\": \"monday\",\n      \"frequency\": \"manual\",\n      \"hour\": \"0\",\n      \"minute\": \"0\",\n      \"month\": \"1\",\n      \"multi\": {\n        \"schedules\": null\n      }\n    },\n    \"source_configuration\": {\n      \"replication_slot\": \"slot\"\n    },\n    \"source_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    }\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "b6c9e982-f68b-458c-a206-a23d301e37f0",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "abfa2a4c-4de5-4b99-b664-cd001e87de38",
+      "name": "Remove Bulk Sync - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{id}",
+        "method": "DELETE",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "refresh_schemas": {
+            "equalTo": "true"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "abfa2a4c-4de5-4b99-b664-cd001e87de38",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "9df4e538-04fe-42ba-9dc7-fa1be751cbce",
+      "name": "Activate Bulk Sync - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{id}/activate",
+        "method": "POST",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"active\": true,\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "9df4e538-04fe-42ba-9dc7-fa1be751cbce",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "2e0f80e0-302b-4b27-9dd0-4115ab7830c0",
+      "name": "Cancel Bulk Sync - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{id}/cancel",
+        "method": "POST",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"message\": \"Cancellation requested\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "2e0f80e0-302b-4b27-9dd0-4115ab7830c0",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "4f0948df-fb3e-4fe8-a47d-d53773006c77",
+      "name": "Start Bulk Sync Execution - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{id}/executions",
+        "method": "POST",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"completed_at\": \"2023-04-25T12:00:00Z\",\n    \"created_at\": \"2023-04-25T12:00:00Z\",\n    \"error_count\": 0,\n    \"fetch_mode\": \"none\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"is_partial\": false,\n    \"is_resync\": false,\n    \"is_test\": false,\n    \"record_count\": 1000,\n    \"schemas\": [\n      {\n        \"completed_at\": \"2023-04-25T12:00:00Z\",\n        \"created_at\": \"2023-04-25T12:00:00Z\",\n        \"error_count\": 0,\n        \"output_name\": \"contact\",\n        \"record_count\": 1000,\n        \"schema\": \"contact\",\n        \"started_at\": \"2023-04-25T12:00:00Z\",\n        \"updated_at\": \"2023-04-25T12:00:00Z\",\n        \"warning_count\": 0\n      }\n    ],\n    \"started_at\": \"2023-04-25T12:00:00Z\",\n    \"status\": \"created\",\n    \"status_message\": \"status_message\",\n    \"type\": \"scheduled\",\n    \"updated_at\": \"2023-04-25T12:00:00Z\",\n    \"warning_count\": 0\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "4f0948df-fb3e-4fe8-a47d-d53773006c77",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "0c2c06ae-574b-4d3d-a986-3869420a5e06",
+      "name": "Get Bulk Sync Status - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{id}/status",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"current_execution\": {\n      \"completed_at\": \"2023-04-25T12:00:00Z\",\n      \"created_at\": \"2023-04-25T12:00:00Z\",\n      \"error_count\": 0,\n      \"fetch_mode\": \"none\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"is_partial\": false,\n      \"is_resync\": false,\n      \"is_test\": false,\n      \"record_count\": 1000,\n      \"schemas\": [\n        {\n          \"completed_at\": \"2023-04-25T12:00:00Z\",\n          \"created_at\": \"2023-04-25T12:00:00Z\",\n          \"error_count\": 0,\n          \"output_name\": \"contact\",\n          \"record_count\": 1000,\n          \"schema\": \"contact\",\n          \"started_at\": \"2023-04-25T12:00:00Z\",\n          \"updated_at\": \"2023-04-25T12:00:00Z\",\n          \"warning_count\": 0\n        }\n      ],\n      \"started_at\": \"2023-04-25T12:00:00Z\",\n      \"status\": \"created\",\n      \"status_message\": \"status_message\",\n      \"type\": \"scheduled\",\n      \"updated_at\": \"2023-04-25T12:00:00Z\",\n      \"warning_count\": 0\n    },\n    \"ingestion_status\": {\n      \"enabled\": true,\n      \"highwater_mark\": \"highwater_mark\",\n      \"is_running\": true,\n      \"position\": \"position\",\n      \"position_time\": \"2024-01-15T09:30:00Z\",\n      \"status\": \"ok\",\n      \"status_message\": \"status_message\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    },\n    \"last_execution\": {\n      \"completed_at\": \"2023-04-25T12:00:00Z\",\n      \"created_at\": \"2023-04-25T12:00:00Z\",\n      \"error_count\": 0,\n      \"fetch_mode\": \"none\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"is_partial\": false,\n      \"is_resync\": false,\n      \"is_test\": false,\n      \"record_count\": 1000,\n      \"schemas\": [\n        {\n          \"completed_at\": \"2023-04-25T12:00:00Z\",\n          \"created_at\": \"2023-04-25T12:00:00Z\",\n          \"error_count\": 0,\n          \"output_name\": \"contact\",\n          \"record_count\": 1000,\n          \"schema\": \"contact\",\n          \"started_at\": \"2023-04-25T12:00:00Z\",\n          \"updated_at\": \"2023-04-25T12:00:00Z\",\n          \"warning_count\": 0\n        }\n      ],\n      \"started_at\": \"2023-04-25T12:00:00Z\",\n      \"status\": \"created\",\n      \"status_message\": \"status_message\",\n      \"type\": \"scheduled\",\n      \"updated_at\": \"2023-04-25T12:00:00Z\",\n      \"warning_count\": 0\n    },\n    \"next_execution_time\": \"2023-04-25T12:00:00Z\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "0c2c06ae-574b-4d3d-a986-3869420a5e06",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "b5047850-684e-414d-840c-072ad729a633",
+      "name": "Get Bulk Source - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{id}/bulksync/source",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "include_fields": {
+            "equalTo": "true"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"configuration\": {\n      \"key\": \"value\"\n    },\n    \"schemas\": [\n      {\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"is_primary_key\": true,\n            \"name\": \"Email\",\n            \"remote_type\": \"varchar(255)\"\n          }\n        ],\n        \"id\": \"contact\",\n        \"name\": \"Contact\"\n      }\n    ]\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "b5047850-684e-414d-840c-072ad729a633",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "98b54fe5-e9a0-44d6-a34b-55b6e7839da9",
+      "name": "Get Bulk Destination - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{id}/bulksync/target",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"configuration\": {\n      \"advanced\": {\n        \"items\": {\n          \"truncate_existing\": {\n            \"default\": \"\",\n            \"required\": false\n          }\n        }\n      },\n      \"mirror_schemas\": {\n        \"default\": \"\",\n        \"required\": false\n      },\n      \"schema\": {\n        \"default\": \"\",\n        \"required\": false\n      }\n    },\n    \"modes\": [\n      {\n        \"description\": \"Replace all records\",\n        \"label\": \"Replace\",\n        \"requires_identity\": false,\n        \"supports_field_sync_mode\": false,\n        \"supports_target_filters\": false\n      }\n    ]\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "98b54fe5-e9a0-44d6-a34b-55b6e7839da9",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "41175612-1ee4-4e88-b0f7-0b2553209ec7",
+      "name": "Get Connection Types - default",
+      "request": {
+        "urlPathTemplate": "/api/connection_types",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"capabilities\": {\n        \"destination\": true,\n        \"enrichment\": false,\n        \"orchestration\": false,\n        \"source\": true\n      },\n      \"envConfig\": {\n        \"key\": \"value\"\n      },\n      \"id\": \"postgresql\",\n      \"initialConfiguration\": {\n        \"key\": \"value\"\n      },\n      \"logo_url\": \"https://connect-assets.polytomic.com/logos/postgresql.svg\",\n      \"name\": \"PostgreSQL\",\n      \"use_oauth\": true\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "41175612-1ee4-4e88-b0f7-0b2553209ec7",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "cc0c7481-6f39-4cbf-8b92-67a87a523d02",
+      "name": "Get Connection Type - default",
+      "request": {
+        "urlPathTemplate": "/api/connection_types/{id}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "postgresql"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"$anchor\": \"$anchor\",\n  \"$comment\": \"$comment\",\n  \"$dynamicRef\": \"$dynamicRef\",\n  \"$id\": \"$id\",\n  \"$ref\": \"$ref\",\n  \"$schema\": \"$schema\",\n  \"const\": {\n    \"key\": \"value\"\n  },\n  \"contentEncoding\": \"contentEncoding\",\n  \"contentMediaType\": \"contentMediaType\",\n  \"default\": {\n    \"key\": \"value\"\n  },\n  \"dependentRequired\": {\n    \"key\": [\n      \"value\"\n    ]\n  },\n  \"deprecated\": true,\n  \"description\": \"description\",\n  \"enum\": [\n    {\n      \"key\": \"value\"\n    }\n  ],\n  \"examples\": [\n    {\n      \"key\": \"value\"\n    }\n  ],\n  \"exclusiveMaximum\": \"exclusiveMaximum\",\n  \"exclusiveMinimum\": \"exclusiveMinimum\",\n  \"format\": \"format\",\n  \"maxContains\": 1,\n  \"maxItems\": 1,\n  \"maxLength\": 1,\n  \"maxProperties\": 1,\n  \"maximum\": \"maximum\",\n  \"minContains\": 1,\n  \"minItems\": 1,\n  \"minLength\": 1,\n  \"minProperties\": 1,\n  \"minimum\": \"minimum\",\n  \"multipleOf\": \"multipleOf\",\n  \"pattern\": \"pattern\",\n  \"properties\": {\n    \"key\": \"value\"\n  },\n  \"readOnly\": true,\n  \"required\": [\n    \"required\"\n  ],\n  \"title\": \"title\",\n  \"type\": \"type\",\n  \"uniqueItems\": true,\n  \"writeOnly\": true\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "cc0c7481-6f39-4cbf-8b92-67a87a523d02",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "63d7fea5-adff-4178-8cf2-f214c7c0115e",
+      "name": "Connection Type Parameter Values - default",
+      "request": {
+        "urlPathTemplate": "/api/connection_types/{type}/parameter_values",
+        "method": "POST",
+        "pathParameters": {
+          "type": {
+            "equalTo": "type"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"key\": {\n      \"allows_creation\": true,\n      \"values\": [\n        {\n          \"label\": \"Label\",\n          \"value\": \"value\"\n        }\n      ]\n    }\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "63d7fea5-adff-4178-8cf2-f214c7c0115e",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "a9b85fb1-3771-4037-86a8-8ef7dfe720fe",
+      "name": "List Connections - default",
+      "request": {
+        "urlPathTemplate": "/api/connections",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"api_calls_last_24_hours\": 2021,\n      \"configuration\": {\n        \"database\": \"example\",\n        \"hostname\": \"postgres.example.com\",\n        \"password\": \"********\",\n        \"port\": 5432,\n        \"username\": \"user\"\n      },\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"created_by\": {\n        \"id\": \"12345678-1234-1234-1234-123456789012\",\n        \"name\": \"John Doe\",\n        \"type\": \"user\"\n      },\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"name\": \"My Postgres Connection\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"parent_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"policies\": [\n        \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      ],\n      \"saved\": true,\n      \"status\": \"healthy\",\n      \"status_error\": \"error message\",\n      \"type\": {\n        \"id\": \"postgresql\",\n        \"logo_url\": \"https://connect-assets.polytomic.com/logos/postgresql.svg\",\n        \"name\": \"PostgreSQL\"\n      },\n      \"updated_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_by\": {\n        \"id\": \"12345678-1234-1234-1234-123456789012\",\n        \"name\": \"John Doe\",\n        \"type\": \"user\"\n      }\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "a9b85fb1-3771-4037-86a8-8ef7dfe720fe",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "ea3d8af8-86a9-4d51-867c-f63dd7e4c185",
+      "name": "Create Connection - default",
+      "request": {
+        "urlPathTemplate": "/api/connections",
+        "method": "POST"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"auth_code\": \"auth_code\",\n    \"auth_url\": \"auth_url\",\n    \"configuration\": {\n      \"database\": \"example\",\n      \"hostname\": \"postgres.example.com\",\n      \"password\": \"********\",\n      \"port\": 5432,\n      \"username\": \"user\"\n    },\n    \"healthcheck_interval\": \"3h30m\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"My Postgres Connection\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"policies\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"saved\": true,\n    \"status\": \"healthy\",\n    \"status_error\": \"error message\",\n    \"type\": {\n      \"id\": \"postgresql\",\n      \"logo_url\": \"https://connect-assets.polytomic.com/logos/postgresql.svg\",\n      \"name\": \"PostgreSQL\",\n      \"operations\": [\n        \"operations\"\n      ]\n    }\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ea3d8af8-86a9-4d51-867c-f63dd7e4c185",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "21c59dcf-e2df-499a-83ef-6abc4f8f1c14",
+      "name": "Connect - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/connect/",
+        "method": "POST"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"redirect_url\": \"https://app.polytomic.com/connect?type=salesforce&...\",\n    \"token\": \"token\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "21c59dcf-e2df-499a-83ef-6abc4f8f1c14",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "c67ab12b-7484-4a16-9511-4cdc6f750a26",
+      "name": "Test Connection - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/test",
+        "method": "POST"
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "c67ab12b-7484-4a16-9511-4cdc6f750a26",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "6fb9736e-69b0-4472-b417-aa2aa1f63423",
+      "name": "Get Connection - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{id}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"api_calls_last_24_hours\": 2021,\n    \"configuration\": {\n      \"database\": \"example\",\n      \"hostname\": \"postgres.example.com\",\n      \"password\": \"********\",\n      \"port\": 5432,\n      \"username\": \"user\"\n    },\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    },\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"My Postgres Connection\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"parent_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"policies\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"saved\": true,\n    \"status\": \"healthy\",\n    \"status_error\": \"error message\",\n    \"type\": {\n      \"id\": \"postgresql\",\n      \"logo_url\": \"https://connect-assets.polytomic.com/logos/postgresql.svg\",\n      \"name\": \"PostgreSQL\",\n      \"operations\": [\n        \"operations\"\n      ]\n    },\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    }\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "6fb9736e-69b0-4472-b417-aa2aa1f63423",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "96518131-ea9f-4906-811f-1ad92261d386",
+      "name": "Update Connection - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{id}",
+        "method": "PUT",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"auth_code\": \"auth_code\",\n    \"auth_url\": \"auth_url\",\n    \"configuration\": {\n      \"database\": \"example\",\n      \"hostname\": \"postgres.example.com\",\n      \"password\": \"********\",\n      \"port\": 5432,\n      \"username\": \"user\"\n    },\n    \"healthcheck_interval\": \"3h30m\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"My Postgres Connection\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"policies\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"saved\": true,\n    \"status\": \"healthy\",\n    \"status_error\": \"error message\",\n    \"type\": {\n      \"id\": \"postgresql\",\n      \"logo_url\": \"https://connect-assets.polytomic.com/logos/postgresql.svg\",\n      \"name\": \"PostgreSQL\",\n      \"operations\": [\n        \"operations\"\n      ]\n    }\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "96518131-ea9f-4906-811f-1ad92261d386",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "0bca7ee2-6f4c-440d-8fab-b86c69cd237c",
+      "name": "Remove Connection - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{id}",
+        "method": "DELETE",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "force": {
+            "equalTo": "true"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "0bca7ee2-6f4c-440d-8fab-b86c69cd237c",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "32703ede-0804-4da2-8005-75c112e5dd89",
+      "name": "Connection Parameter Values - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{id}/parameter_values",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"key\": {\n      \"allows_creation\": true,\n      \"values\": [\n        {\n          \"label\": \"Label\",\n          \"value\": \"value\"\n        }\n      ]\n    }\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "32703ede-0804-4da2-8005-75c112e5dd89",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "b32bc911-b185-41f6-91e3-0bd9b9aa0b67",
+      "name": "Create Shared Connection - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{parent_connection_id}/share",
+        "method": "POST",
+        "pathParameters": {
+          "parent_connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "b32bc911-b185-41f6-91e3-0bd9b9aa0b67",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "7cf736de-e162-43dd-9346-3247c75e91df",
+      "name": "List Shared Connections - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{parent_connection_id}/shared",
+        "method": "GET",
+        "pathParameters": {
+          "parent_connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"api_calls_last_24_hours\": 2021,\n      \"configuration\": {\n        \"database\": \"example\",\n        \"hostname\": \"postgres.example.com\",\n        \"password\": \"********\",\n        \"port\": 5432,\n        \"username\": \"user\"\n      },\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"created_by\": {\n        \"id\": \"12345678-1234-1234-1234-123456789012\",\n        \"name\": \"John Doe\",\n        \"type\": \"user\"\n      },\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"name\": \"My Postgres Connection\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"parent_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"policies\": [\n        \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      ],\n      \"saved\": true,\n      \"status\": \"healthy\",\n      \"status_error\": \"error message\",\n      \"type\": {\n        \"id\": \"postgresql\",\n        \"logo_url\": \"https://connect-assets.polytomic.com/logos/postgresql.svg\",\n        \"name\": \"PostgreSQL\"\n      },\n      \"updated_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_by\": {\n        \"id\": \"12345678-1234-1234-1234-123456789012\",\n        \"name\": \"John Doe\",\n        \"type\": \"user\"\n      }\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "7cf736de-e162-43dd-9346-3247c75e91df",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "2e5de047-3d18-45e7-b6fd-a0ad2f46a736",
+      "name": "Run Query - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{connection_id}/query",
+        "method": "POST",
+        "pathParameters": {
+          "connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "query": {
+            "equalTo": "SELECT * FROM table"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"count\": 10,\n    \"error\": \"error\",\n    \"expires\": \"2021-01-01T00:00:00Z\",\n    \"fields\": [\n      \"name\",\n      \"age\"\n    ],\n    \"id\": \"43d893ef-322b-47da-badb-3cf10d13a556\",\n    \"results\": [\n      {\n        \"key\": \"value\"\n      }\n    ],\n    \"status\": \"created\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "2e5de047-3d18-45e7-b6fd-a0ad2f46a736",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "94d089df-1a81-4944-88bc-c6cda6be7a9b",
+      "name": "Get Query Results - default",
+      "request": {
+        "urlPathTemplate": "/api/queries/{id}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "page": {
+            "equalTo": "page"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"count\": 10,\n    \"error\": \"error\",\n    \"expires\": \"2021-01-01T00:00:00Z\",\n    \"fields\": [\n      \"name\",\n      \"age\"\n    ],\n    \"id\": \"43d893ef-322b-47da-badb-3cf10d13a556\",\n    \"results\": [\n      {\n        \"key\": \"value\"\n      }\n    ],\n    \"status\": \"created\"\n  },\n  \"links\": {\n    \"next\": \"/api/queries/43d893ef-322b-47da-badb-3cf10d13a556?page=MQ%3D%3D\",\n    \"previous\": \"previous\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "94d089df-1a81-4944-88bc-c6cda6be7a9b",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "3483a416-e9d6-4754-9f47-f05ac079bcd6",
+      "name": "Upsert Schema Fields - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{connection_id}/schemas/{schema_id}/fields",
+        "method": "POST",
+        "pathParameters": {
+          "connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "schema_id": {
+            "equalTo": "public.users"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "3483a416-e9d6-4754-9f47-f05ac079bcd6",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "edc1d5b4-2302-4cc7-aa76-aff337a952e0",
+      "name": "Delete Schema Field - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{connection_id}/schemas/{schema_id}/fields/{field_id}",
+        "method": "DELETE",
+        "pathParameters": {
+          "connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "schema_id": {
+            "equalTo": "public.users"
+          },
+          "field_id": {
+            "equalTo": "first_name"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "edc1d5b4-2302-4cc7-aa76-aff337a952e0",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "e3381cbd-e6cc-483a-b909-2425401f0b48",
+      "name": "Set Primary Keys - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{connection_id}/schemas/{schema_id}/primary_keys",
+        "method": "PUT",
+        "pathParameters": {
+          "connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "schema_id": {
+            "equalTo": "public.users"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "e3381cbd-e6cc-483a-b909-2425401f0b48",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "a992c185-eafc-437c-8a16-5f6158d77faf",
+      "name": "Reset Primary Keys - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{connection_id}/schemas/{schema_id}/primary_keys",
+        "method": "DELETE",
+        "pathParameters": {
+          "connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "schema_id": {
+            "equalTo": "public.users"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "a992c185-eafc-437c-8a16-5f6158d77faf",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "d16048ce-f473-4d86-9231-ce5094126a54",
+      "name": "Refresh Connection Schema - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{id}/schemas/refresh",
+        "method": "POST",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "d16048ce-f473-4d86-9231-ce5094126a54",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "370f0d66-6625-4f81-b510-c7e2d0b66e39",
+      "name": "Get Schema Status - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{id}/schemas/status",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"cache_status\": \"cached\",\n    \"last_refresh_finished\": \"2023-04-25T12:00:00Z\",\n    \"last_refresh_started\": \"2023-04-25T12:00:00Z\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "370f0d66-6625-4f81-b510-c7e2d0b66e39",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "9f07b0cc-fd40-4103-a677-3f05b8ce9f94",
+      "name": "Get Schema - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{id}/schemas/{schema_id}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "schema_id": {
+            "equalTo": "public.users"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"fields\": [\n      {\n        \"id\": \"email\",\n        \"is_primary_key\": true,\n        \"name\": \"Email\",\n        \"remote_type\": \"varchar(255)\"\n      }\n    ],\n    \"id\": \"contact\",\n    \"name\": \"Contact\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "9f07b0cc-fd40-4103-a677-3f05b8ce9f94",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "63134b1b-49b1-4e8c-b935-c07b4e35b54f",
+      "name": "Get Schema Records - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{id}/schemas/{schema_id}/records",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "schema_id": {
+            "equalTo": "public.users"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"key\": \"value\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "63134b1b-49b1-4e8c-b935-c07b4e35b54f",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "2fa0ace6-0f66-4fc2-8b21-c4bd7b801d7c",
+      "name": "Get Enrichment Source - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{id}/modelsync/enrichment-source",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"configuration\": {\n      \"key\": {}\n    },\n    \"items\": {\n      \"key\": {}\n    },\n    \"requires_one_of\": [\n      \"requires_one_of\"\n    ]\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "2fa0ace6-0f66-4fc2-8b21-c4bd7b801d7c",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "2b87dd98-4f62-457e-afc4-9c15bc89ed3c",
+      "name": "Enrichment Fields - default",
+      "request": {
+        "urlPathTemplate": "/api/enrichment/{connection_id}/inputfields",
+        "method": "POST",
+        "pathParameters": {
+          "connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    [\n      \"data\"\n    ]\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "2b87dd98-4f62-457e-afc4-9c15bc89ed3c",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "edd62171-70f7-496b-b89e-e22aae4df508",
+      "name": "Preview Model - default",
+      "request": {
+        "urlPathTemplate": "/api/model-preview",
+        "method": "POST",
+        "queryParameters": {
+          "async": {
+            "equalTo": "true"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"configuration\": {\n      \"table\": \"public.contacts\"\n    },\n    \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    },\n    \"enricher\": {\n      \"configuration\": {\n        \"key\": \"value\"\n      },\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"enricher_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"fields\": [\n        {\n          \"created_by\": {\n            \"id\": \"12345678-1234-1234-1234-123456789012\",\n            \"name\": \"John Doe\",\n            \"type\": \"user\"\n          },\n          \"description\": \"Unique identifier\",\n          \"example\": 123,\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n          \"label\": \"ID\",\n          \"name\": \"phone_number\",\n          \"remote_type\": \"string\",\n          \"type\": \"string\",\n          \"unique\": true,\n          \"user_added\": false\n        }\n      ],\n      \"mappings\": {\n        \"key\": \"value\"\n      }\n    },\n    \"fields\": [\n      {\n        \"created_by\": {\n          \"id\": \"12345678-1234-1234-1234-123456789012\",\n          \"name\": \"John Doe\",\n          \"type\": \"user\"\n        },\n        \"description\": \"Unique identifier\",\n        \"example\": 123,\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"label\": \"ID\",\n        \"name\": \"id\",\n        \"remote_type\": \"string\",\n        \"type\": \"string\",\n        \"unique\": true,\n        \"user_added\": false\n      }\n    ],\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"identifier\": \"id\",\n    \"labels\": [\n      {\n        \"key\": \"value\"\n      }\n    ],\n    \"name\": \"Contacts\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"policies\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"relations\": [\n      {\n        \"from\": \"id\",\n        \"to\": {\n          \"field\": \"user_id\",\n          \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        }\n      }\n    ],\n    \"tracking_columns\": [\n      \"tracking_columns\"\n    ],\n    \"type\": \"postgresql\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    },\n    \"version\": 1\n  },\n  \"job\": {\n    \"error\": \"error message\",\n    \"job_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"result\": {\n      \"key\": \"value\"\n    },\n    \"status\": \"created\",\n    \"type\": \"createmodel\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "edd62171-70f7-496b-b89e-e22aae4df508",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "6cc0cb0f-9e74-4946-a9ff-cb93f0e0febb",
+      "name": "List Models - default",
+      "request": {
+        "urlPathTemplate": "/api/models",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"configuration\": {\n        \"table\": \"public.contacts\"\n      },\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"created_by\": {\n        \"id\": \"12345678-1234-1234-1234-123456789012\",\n        \"name\": \"John Doe\",\n        \"type\": \"user\"\n      },\n      \"enricher\": {\n        \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"enricher_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"fields\": [\n          {\n            \"created_by\": {\n              \"id\": \"12345678-1234-1234-1234-123456789012\",\n              \"name\": \"John Doe\",\n              \"type\": \"user\"\n            },\n            \"description\": \"Unique identifier\",\n            \"example\": 123,\n            \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n            \"label\": \"ID\",\n            \"name\": \"phone_number\",\n            \"remote_type\": \"string\",\n            \"type\": \"string\",\n            \"unique\": true,\n            \"user_added\": false\n          }\n        ]\n      },\n      \"fields\": [\n        {\n          \"created_by\": {\n            \"id\": \"12345678-1234-1234-1234-123456789012\",\n            \"name\": \"John Doe\",\n            \"type\": \"user\"\n          },\n          \"description\": \"Unique identifier\",\n          \"example\": 123,\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n          \"label\": \"ID\",\n          \"name\": \"id\",\n          \"remote_type\": \"string\",\n          \"type\": \"string\",\n          \"unique\": true,\n          \"user_added\": false\n        }\n      ],\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"identifier\": \"id\",\n      \"labels\": [\n        {\n          \"key\": \"value\"\n        }\n      ],\n      \"name\": \"Contacts\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"policies\": [\n        \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      ],\n      \"relations\": [\n        {\n          \"from\": \"id\",\n          \"to\": {\n            \"field\": \"user_id\",\n            \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n          }\n        }\n      ],\n      \"tracking_columns\": [\n        \"tracking_columns\"\n      ],\n      \"type\": \"postgresql\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_by\": {\n        \"id\": \"12345678-1234-1234-1234-123456789012\",\n        \"name\": \"John Doe\",\n        \"type\": \"user\"\n      },\n      \"version\": 1\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "6cc0cb0f-9e74-4946-a9ff-cb93f0e0febb",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "2b60a615-844d-499b-9bed-5f6c48a7e1f5",
+      "name": "Create Model - default",
+      "request": {
+        "urlPathTemplate": "/api/models",
+        "method": "POST",
+        "queryParameters": {
+          "async": {
+            "equalTo": "true"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"configuration\": {\n      \"table\": \"public.contacts\"\n    },\n    \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    },\n    \"enricher\": {\n      \"configuration\": {\n        \"key\": \"value\"\n      },\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"enricher_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"fields\": [\n        {\n          \"created_by\": {\n            \"id\": \"12345678-1234-1234-1234-123456789012\",\n            \"name\": \"John Doe\",\n            \"type\": \"user\"\n          },\n          \"description\": \"Unique identifier\",\n          \"example\": 123,\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n          \"label\": \"ID\",\n          \"name\": \"phone_number\",\n          \"remote_type\": \"string\",\n          \"type\": \"string\",\n          \"unique\": true,\n          \"user_added\": false\n        }\n      ],\n      \"mappings\": {\n        \"key\": \"value\"\n      }\n    },\n    \"fields\": [\n      {\n        \"created_by\": {\n          \"id\": \"12345678-1234-1234-1234-123456789012\",\n          \"name\": \"John Doe\",\n          \"type\": \"user\"\n        },\n        \"description\": \"Unique identifier\",\n        \"example\": 123,\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"label\": \"ID\",\n        \"name\": \"id\",\n        \"remote_type\": \"string\",\n        \"type\": \"string\",\n        \"unique\": true,\n        \"user_added\": false\n      }\n    ],\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"identifier\": \"id\",\n    \"labels\": [\n      {\n        \"key\": \"value\"\n      }\n    ],\n    \"name\": \"Contacts\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"policies\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"relations\": [\n      {\n        \"from\": \"id\",\n        \"to\": {\n          \"field\": \"user_id\",\n          \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        }\n      }\n    ],\n    \"tracking_columns\": [\n      \"tracking_columns\"\n    ],\n    \"type\": \"postgresql\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    },\n    \"version\": 1\n  },\n  \"job\": {\n    \"error\": \"error message\",\n    \"job_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"result\": {\n      \"key\": \"value\"\n    },\n    \"status\": \"created\",\n    \"type\": \"createmodel\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "2b60a615-844d-499b-9bed-5f6c48a7e1f5",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "d140049f-e8c3-4d70-a882-6fe90f0067a3",
+      "name": "Get Model - default",
+      "request": {
+        "urlPathTemplate": "/api/models/{id}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "async": {
+            "equalTo": "true"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"configuration\": {\n      \"table\": \"public.contacts\"\n    },\n    \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    },\n    \"enricher\": {\n      \"configuration\": {\n        \"key\": \"value\"\n      },\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"enricher_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"fields\": [\n        {\n          \"created_by\": {\n            \"id\": \"12345678-1234-1234-1234-123456789012\",\n            \"name\": \"John Doe\",\n            \"type\": \"user\"\n          },\n          \"description\": \"Unique identifier\",\n          \"example\": 123,\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n          \"label\": \"ID\",\n          \"name\": \"phone_number\",\n          \"remote_type\": \"string\",\n          \"type\": \"string\",\n          \"unique\": true,\n          \"user_added\": false\n        }\n      ],\n      \"mappings\": {\n        \"key\": \"value\"\n      }\n    },\n    \"fields\": [\n      {\n        \"created_by\": {\n          \"id\": \"12345678-1234-1234-1234-123456789012\",\n          \"name\": \"John Doe\",\n          \"type\": \"user\"\n        },\n        \"description\": \"Unique identifier\",\n        \"example\": 123,\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"label\": \"ID\",\n        \"name\": \"id\",\n        \"remote_type\": \"string\",\n        \"type\": \"string\",\n        \"unique\": true,\n        \"user_added\": false\n      }\n    ],\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"identifier\": \"id\",\n    \"labels\": [\n      {\n        \"key\": \"value\"\n      }\n    ],\n    \"name\": \"Contacts\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"policies\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"relations\": [\n      {\n        \"from\": \"id\",\n        \"to\": {\n          \"field\": \"user_id\",\n          \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        }\n      }\n    ],\n    \"tracking_columns\": [\n      \"tracking_columns\"\n    ],\n    \"type\": \"postgresql\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    },\n    \"version\": 1\n  },\n  \"job\": {\n    \"error\": \"error message\",\n    \"job_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"result\": {\n      \"key\": \"value\"\n    },\n    \"status\": \"created\",\n    \"type\": \"createmodel\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "d140049f-e8c3-4d70-a882-6fe90f0067a3",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "9d7c163f-5adb-4713-8e15-0c5a67bfd926",
+      "name": "Update Model - default",
+      "request": {
+        "urlPathTemplate": "/api/models/{id}",
+        "method": "PUT",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "async": {
+            "equalTo": "false"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"configuration\": {\n      \"table\": \"public.contacts\"\n    },\n    \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    },\n    \"enricher\": {\n      \"configuration\": {\n        \"key\": \"value\"\n      },\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"enricher_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"fields\": [\n        {\n          \"created_by\": {\n            \"id\": \"12345678-1234-1234-1234-123456789012\",\n            \"name\": \"John Doe\",\n            \"type\": \"user\"\n          },\n          \"description\": \"Unique identifier\",\n          \"example\": 123,\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n          \"label\": \"ID\",\n          \"name\": \"phone_number\",\n          \"remote_type\": \"string\",\n          \"type\": \"string\",\n          \"unique\": true,\n          \"user_added\": false\n        }\n      ],\n      \"mappings\": {\n        \"key\": \"value\"\n      }\n    },\n    \"fields\": [\n      {\n        \"created_by\": {\n          \"id\": \"12345678-1234-1234-1234-123456789012\",\n          \"name\": \"John Doe\",\n          \"type\": \"user\"\n        },\n        \"description\": \"Unique identifier\",\n        \"example\": 123,\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"label\": \"ID\",\n        \"name\": \"id\",\n        \"remote_type\": \"string\",\n        \"type\": \"string\",\n        \"unique\": true,\n        \"user_added\": false\n      }\n    ],\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"identifier\": \"id\",\n    \"labels\": [\n      {\n        \"key\": \"value\"\n      }\n    ],\n    \"name\": \"Contacts\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"policies\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"relations\": [\n      {\n        \"from\": \"id\",\n        \"to\": {\n          \"field\": \"user_id\",\n          \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        }\n      }\n    ],\n    \"tracking_columns\": [\n      \"tracking_columns\"\n    ],\n    \"type\": \"postgresql\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    },\n    \"version\": 1\n  },\n  \"job\": {\n    \"error\": \"error message\",\n    \"job_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"result\": {\n      \"key\": \"value\"\n    },\n    \"status\": \"created\",\n    \"type\": \"createmodel\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "9d7c163f-5adb-4713-8e15-0c5a67bfd926",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "e86d1700-efe4-4483-8975-7d6d8b2f06e8",
+      "name": "Remove Model - default",
+      "request": {
+        "urlPathTemplate": "/api/models/{id}",
+        "method": "DELETE",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "async": {
+            "equalTo": "true"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "e86d1700-efe4-4483-8975-7d6d8b2f06e8",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "3656a1f7-d952-40d2-b974-6848d6be6f9e",
+      "name": "Sample Records - default",
+      "request": {
+        "urlPathTemplate": "/api/models/{id}/sample",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "async": {
+            "equalTo": "true"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"records\": [\n      {\n        \"enricher-uuid\": {\n          \"name\": \"James\"\n        },\n        \"model-uuid\": {\n          \"name\": \"Jim\"\n        }\n      }\n    ],\n    \"warnings\": [\n      \"Enrichment failed for 4 records: you have ran out of credits\"\n    ]\n  },\n  \"job\": {\n    \"error\": \"error message\",\n    \"job_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"result\": {\n      \"key\": \"value\"\n    },\n    \"status\": \"created\",\n    \"type\": \"createmodel\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "3656a1f7-d952-40d2-b974-6848d6be6f9e",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "9d03312f-a430-4137-9ec6-e56c1b8a17c0",
+      "name": "Get Sync Source - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{id}/modelsync/source",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"configuration\": {\n      \"key\": {}\n    },\n    \"items\": {\n      \"key\": {}\n    },\n    \"requires_one_of\": [\n      \"requires_one_of\"\n    ]\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "9d03312f-a430-4137-9ec6-e56c1b8a17c0",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "27a64660-2f27-4f84-931f-8070c8a56e04",
+      "name": "Model Sync Field Query - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{id}/modelsync/source/fields",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"created_by\": {\n        \"id\": \"12345678-1234-1234-1234-123456789012\",\n        \"name\": \"John Doe\",\n        \"type\": \"user\"\n      },\n      \"description\": \"Unique identifier\",\n      \"example\": 123,\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"label\": \"ID\",\n      \"name\": \"id\",\n      \"remote_type\": \"string\",\n      \"type\": \"string\",\n      \"unique\": true,\n      \"updated_at\": \"2024-01-15T09:30:00Z\",\n      \"user_added\": false\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "27a64660-2f27-4f84-931f-8070c8a56e04",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "2e0f61fe-fa27-49d8-ba83-c6f72e0618d4",
+      "name": "List Syncs - default",
+      "request": {
+        "urlPathTemplate": "/api/syncs",
+        "method": "GET",
+        "queryParameters": {
+          "active": {
+            "equalTo": "true"
+          },
+          "mode": {
+            "equalTo": "create"
+          },
+          "target_connection_id": {
+            "equalTo": "0b155265-c537-44c9-9359-a3ceb468a4da"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"active\": true,\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"created_by\": {\n        \"id\": \"12345678-1234-1234-1234-123456789012\",\n        \"name\": \"John Doe\",\n        \"type\": \"user\"\n      },\n      \"encryption_passphrase\": \"encryption_passphrase\",\n      \"fields\": [\n        {\n          \"override_value\": \"fixed_value\",\n          \"source\": {\n            \"field\": \"id\",\n            \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n          },\n          \"sync_mode\": \"create\",\n          \"target\": \"name\"\n        }\n      ],\n      \"filter_logic\": \"filter_logic\",\n      \"filters\": [\n        {\n          \"field\": {\n            \"field\": \"id\",\n            \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n          },\n          \"field_id\": \"field1\",\n          \"function\": \"Equality\",\n          \"label\": \"A\",\n          \"value\": \"value\"\n        }\n      ],\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"identity\": {\n        \"function\": \"Equality\",\n        \"remote_field_type_id\": \"string\",\n        \"source\": {\n          \"field\": \"id\",\n          \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"target\": \"name\"\n      },\n      \"mode\": \"create\",\n      \"model_ids\": [\n        \"model_ids\"\n      ],\n      \"name\": \"Users Sync\",\n      \"only_enrich_updates\": false,\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"override_fields\": [\n        {\n          \"override_value\": \"fixed_value\",\n          \"source\": {\n            \"field\": \"id\",\n            \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n          },\n          \"sync_mode\": \"create\",\n          \"target\": \"name\"\n        }\n      ],\n      \"overrides\": [\n        {\n          \"field\": {\n            \"field\": \"id\",\n            \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n          },\n          \"field_id\": \"field1\",\n          \"override\": \"new_value\",\n          \"value\": \"value\"\n        }\n      ],\n      \"policies\": [\n        \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      ],\n      \"schedule\": {\n        \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"day_of_month\": \"1\",\n        \"day_of_week\": \"monday\",\n        \"hour\": \"12\",\n        \"minute\": \"30\",\n        \"month\": \"1\",\n        \"run_after\": {\n          \"bulk_sync_ids\": [\n            \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n          ],\n          \"sync_ids\": [\n            \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n          ]\n        }\n      },\n      \"skip_initial_backfill\": false,\n      \"sync_all_records\": false,\n      \"target\": {\n        \"configuration\": {\n          \"key\": \"value\"\n        },\n        \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"create\": {\n          \"name\": \"value\"\n        },\n        \"object\": \"Users\"\n      },\n      \"updated_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_by\": {\n        \"id\": \"12345678-1234-1234-1234-123456789012\",\n        \"name\": \"John Doe\",\n        \"type\": \"user\"\n      }\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "2e0f61fe-fa27-49d8-ba83-c6f72e0618d4",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "0cf47877-dcb1-4e25-9fa2-25c92bddbf91",
+      "name": "Create Sync - default",
+      "request": {
+        "urlPathTemplate": "/api/syncs",
+        "method": "POST"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"active\": true,\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    },\n    \"encryption_passphrase\": \"encryption_passphrase\",\n    \"fields\": [\n      {\n        \"override_value\": \"fixed_value\",\n        \"source\": {\n          \"field\": \"id\",\n          \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"sync_mode\": \"create\",\n        \"target\": \"name\"\n      }\n    ],\n    \"filter_logic\": \"filter_logic\",\n    \"filters\": [\n      {\n        \"field\": {\n          \"field\": \"id\",\n          \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"field_id\": \"field1\",\n        \"function\": \"Equality\",\n        \"label\": \"A\",\n        \"value\": \"value\"\n      }\n    ],\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"identity\": {\n      \"function\": \"Equality\",\n      \"new_field\": true,\n      \"remote_field_type_id\": \"string\",\n      \"source\": {\n        \"field\": \"id\",\n        \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"target\": \"name\"\n    },\n    \"mode\": \"create\",\n    \"model_ids\": [\n      \"model_ids\"\n    ],\n    \"name\": \"Users Sync\",\n    \"only_enrich_updates\": false,\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"override_fields\": [\n      {\n        \"override_value\": \"fixed_value\",\n        \"source\": {\n          \"field\": \"id\",\n          \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"sync_mode\": \"create\",\n        \"target\": \"name\"\n      }\n    ],\n    \"overrides\": [\n      {\n        \"field\": {\n          \"field\": \"id\",\n          \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"field_id\": \"field1\",\n        \"override\": \"new_value\",\n        \"value\": \"value\"\n      }\n    ],\n    \"policies\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"schedule\": {\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"day_of_month\": \"1\",\n      \"day_of_week\": \"monday\",\n      \"frequency\": \"manual\",\n      \"hour\": \"12\",\n      \"job_id\": 1,\n      \"minute\": \"30\",\n      \"month\": \"1\",\n      \"run_after\": {\n        \"bulk_sync_ids\": [\n          \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        ],\n        \"sync_ids\": [\n          \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        ]\n      },\n      \"run_after_success_only\": true\n    },\n    \"skip_initial_backfill\": false,\n    \"sync_all_records\": false,\n    \"target\": {\n      \"configuration\": {\n        \"key\": \"value\"\n      },\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"create\": {\n        \"name\": \"value\"\n      },\n      \"filter_logic\": \"filter_logic\",\n      \"object\": \"Users\"\n    },\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    }\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "0cf47877-dcb1-4e25-9fa2-25c92bddbf91",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "9aa637c6-ecb5-43ed-9d83-2b52f8df63ac",
+      "name": "Get Sync Schedule Options - default",
+      "request": {
+        "urlPathTemplate": "/api/syncs/schedules",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"schedule_options\": [\n      {\n        \"description\": \"Runs when manually triggered\",\n        \"label\": \"Manual\"\n      }\n    ]\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "9aa637c6-ecb5-43ed-9d83-2b52f8df63ac",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "c6e375bb-7b95-4b65-9073-50457ced57fa",
+      "name": "Get Sync - default",
+      "request": {
+        "urlPathTemplate": "/api/syncs/{id}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"active\": true,\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    },\n    \"encryption_passphrase\": \"encryption_passphrase\",\n    \"fields\": [\n      {\n        \"override_value\": \"fixed_value\",\n        \"source\": {\n          \"field\": \"id\",\n          \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"sync_mode\": \"create\",\n        \"target\": \"name\"\n      }\n    ],\n    \"filter_logic\": \"filter_logic\",\n    \"filters\": [\n      {\n        \"field\": {\n          \"field\": \"id\",\n          \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"field_id\": \"field1\",\n        \"function\": \"Equality\",\n        \"label\": \"A\",\n        \"value\": \"value\"\n      }\n    ],\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"identity\": {\n      \"function\": \"Equality\",\n      \"new_field\": true,\n      \"remote_field_type_id\": \"string\",\n      \"source\": {\n        \"field\": \"id\",\n        \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"target\": \"name\"\n    },\n    \"mode\": \"create\",\n    \"model_ids\": [\n      \"model_ids\"\n    ],\n    \"name\": \"Users Sync\",\n    \"only_enrich_updates\": false,\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"override_fields\": [\n      {\n        \"override_value\": \"fixed_value\",\n        \"source\": {\n          \"field\": \"id\",\n          \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"sync_mode\": \"create\",\n        \"target\": \"name\"\n      }\n    ],\n    \"overrides\": [\n      {\n        \"field\": {\n          \"field\": \"id\",\n          \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"field_id\": \"field1\",\n        \"override\": \"new_value\",\n        \"value\": \"value\"\n      }\n    ],\n    \"policies\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"schedule\": {\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"day_of_month\": \"1\",\n      \"day_of_week\": \"monday\",\n      \"frequency\": \"manual\",\n      \"hour\": \"12\",\n      \"job_id\": 1,\n      \"minute\": \"30\",\n      \"month\": \"1\",\n      \"run_after\": {\n        \"bulk_sync_ids\": [\n          \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        ],\n        \"sync_ids\": [\n          \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        ]\n      },\n      \"run_after_success_only\": true\n    },\n    \"skip_initial_backfill\": false,\n    \"sync_all_records\": false,\n    \"target\": {\n      \"configuration\": {\n        \"key\": \"value\"\n      },\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"create\": {\n        \"name\": \"value\"\n      },\n      \"filter_logic\": \"filter_logic\",\n      \"object\": \"Users\"\n    },\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    }\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "c6e375bb-7b95-4b65-9073-50457ced57fa",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "39dd656a-3094-4818-abef-13f49a26522e",
+      "name": "Update Sync - default",
+      "request": {
+        "urlPathTemplate": "/api/syncs/{id}",
+        "method": "PUT",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"active\": true,\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    },\n    \"encryption_passphrase\": \"encryption_passphrase\",\n    \"fields\": [\n      {\n        \"override_value\": \"fixed_value\",\n        \"source\": {\n          \"field\": \"id\",\n          \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"sync_mode\": \"create\",\n        \"target\": \"name\"\n      }\n    ],\n    \"filter_logic\": \"filter_logic\",\n    \"filters\": [\n      {\n        \"field\": {\n          \"field\": \"id\",\n          \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"field_id\": \"field1\",\n        \"function\": \"Equality\",\n        \"label\": \"A\",\n        \"value\": \"value\"\n      }\n    ],\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"identity\": {\n      \"function\": \"Equality\",\n      \"new_field\": true,\n      \"remote_field_type_id\": \"string\",\n      \"source\": {\n        \"field\": \"id\",\n        \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"target\": \"name\"\n    },\n    \"mode\": \"create\",\n    \"model_ids\": [\n      \"model_ids\"\n    ],\n    \"name\": \"Users Sync\",\n    \"only_enrich_updates\": false,\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"override_fields\": [\n      {\n        \"override_value\": \"fixed_value\",\n        \"source\": {\n          \"field\": \"id\",\n          \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"sync_mode\": \"create\",\n        \"target\": \"name\"\n      }\n    ],\n    \"overrides\": [\n      {\n        \"field\": {\n          \"field\": \"id\",\n          \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"field_id\": \"field1\",\n        \"override\": \"new_value\",\n        \"value\": \"value\"\n      }\n    ],\n    \"policies\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"schedule\": {\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"day_of_month\": \"1\",\n      \"day_of_week\": \"monday\",\n      \"frequency\": \"manual\",\n      \"hour\": \"12\",\n      \"job_id\": 1,\n      \"minute\": \"30\",\n      \"month\": \"1\",\n      \"run_after\": {\n        \"bulk_sync_ids\": [\n          \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        ],\n        \"sync_ids\": [\n          \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        ]\n      },\n      \"run_after_success_only\": true\n    },\n    \"skip_initial_backfill\": false,\n    \"sync_all_records\": false,\n    \"target\": {\n      \"configuration\": {\n        \"key\": \"value\"\n      },\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"create\": {\n        \"name\": \"value\"\n      },\n      \"filter_logic\": \"filter_logic\",\n      \"object\": \"Users\"\n    },\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    }\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "39dd656a-3094-4818-abef-13f49a26522e",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "ff1bde66-ac1b-400c-b189-be08e3e2172f",
+      "name": "Remove Sync - default",
+      "request": {
+        "urlPathTemplate": "/api/syncs/{id}",
+        "method": "DELETE",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ff1bde66-ac1b-400c-b189-be08e3e2172f",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "32c64dd6-e639-4dbe-a704-d3011cd2d32b",
+      "name": "Activate Sync - default",
+      "request": {
+        "urlPathTemplate": "/api/syncs/{id}/activate",
+        "method": "POST",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"active\": true,\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "32c64dd6-e639-4dbe-a704-d3011cd2d32b",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "da5983ce-d004-43f6-be49-370f74c92879",
+      "name": "Cancel Sync - default",
+      "request": {
+        "urlPathTemplate": "/api/syncs/{id}/cancel",
+        "method": "POST",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"message\": \"Cancellation requested\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "da5983ce-d004-43f6-be49-370f74c92879",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "6110cdfc-7964-4032-8801-daceb1d1f461",
+      "name": "Start Sync - default",
+      "request": {
+        "urlPathTemplate": "/api/syncs/{id}/executions",
+        "method": "POST",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"id\": \"7f3e9c2a-4b8d-4f1e-a9c3-6d5e2f8b1a7c\",\n    \"status\": \"created\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "6110cdfc-7964-4032-8801-daceb1d1f461",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "b7951ebf-219a-42d0-8f6f-da61e02f9f74",
+      "name": "Get Sync Status - default",
+      "request": {
+        "urlPathTemplate": "/api/syncs/{id}/status",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"current_execution\": {\n      \"completed_at\": \"2024-01-01T00:00:00Z\",\n      \"counts\": {\n        \"delete\": 42,\n        \"error\": 5,\n        \"insert\": 80,\n        \"total\": 100,\n        \"update\": 15,\n        \"upserts\": 10,\n        \"warnings\": 10\n      },\n      \"created_at\": \"2024-01-01T00:00:00Z\",\n      \"errors\": [\n        \"something went wrong\"\n      ],\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"started_at\": \"2024-01-01T00:00:00Z\",\n      \"status\": \"created\",\n      \"type\": \"scheduled\"\n    },\n    \"last_execution\": {\n      \"completed_at\": \"2024-01-01T00:00:00Z\",\n      \"counts\": {\n        \"delete\": 42,\n        \"error\": 5,\n        \"insert\": 80,\n        \"total\": 100,\n        \"update\": 15,\n        \"upserts\": 10,\n        \"warnings\": 10\n      },\n      \"created_at\": \"2024-01-01T00:00:00Z\",\n      \"errors\": [\n        \"something went wrong\"\n      ],\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"started_at\": \"2024-01-01T00:00:00Z\",\n      \"status\": \"created\",\n      \"type\": \"scheduled\"\n    },\n    \"next_execution_time\": \"2024-01-01T00:00:00Z\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "b7951ebf-219a-42d0-8f6f-da61e02f9f74",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "71fbb58f-0956-4520-85a4-6230afc099d7",
+      "name": "Get Events - default",
+      "request": {
+        "urlPathTemplate": "/api/events",
+        "method": "GET",
+        "queryParameters": {
+          "organization_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "type": {
+            "equalTo": "type"
+          },
+          "starting_after": {
+            "equalTo": "2020-01-01T00:00:00.000Z"
+          },
+          "ending_before": {
+            "equalTo": "2020-01-01T00:00:00.000Z"
+          },
+          "limit": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"created_at\": \"2024-01-01T00:00:00Z\",\n      \"event\": {\n        \"execution_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"sync_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"target_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"type\": \"sync.running\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "71fbb58f-0956-4520-85a4-6230afc099d7",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "3a04c383-735b-46a8-afb0-153a43bf7c2f",
+      "name": "Get Event Types - default",
+      "request": {
+        "urlPathTemplate": "/api/events_types",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    \"data\"\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "3a04c383-735b-46a8-afb0-153a43bf7c2f",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "2ed1820a-cfa0-4f72-9291-565870be8209",
+      "name": "Get Job - default",
+      "request": {
+        "urlPathTemplate": "/api/jobs/{type}/{id}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "type": {
+            "equalTo": "createmodel"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"error\": \"error message\",\n    \"job_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"result\": {\n      \"key\": \"value\"\n    },\n    \"status\": \"created\",\n    \"type\": \"createmodel\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "2ed1820a-cfa0-4f72-9291-565870be8209",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "c0931fab-6988-44ec-8fa7-2b56efdc3843",
+      "name": "Get Identity - default",
+      "request": {
+        "urlPathTemplate": "/api/me",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"email\": \"mail@example.com\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"is_organization\": false,\n    \"is_partner\": false,\n    \"is_system\": false,\n    \"is_user\": true,\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_name\": \"My Organization\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "c0931fab-6988-44ec-8fa7-2b56efdc3843",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "af739e52-c59f-4c3b-ae6a-2c96ccce44cb",
+      "name": "Get Global Error Subscribers - default",
+      "request": {
+        "urlPathTemplate": "/api/notifications/global-error-subscribers",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"emails\": [\n    \"emails\"\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "af739e52-c59f-4c3b-ae6a-2c96ccce44cb",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "c12b1b6e-9d57-4501-9151-755189c3c111",
+      "name": "Update Global Error Subscribers - default",
+      "request": {
+        "urlPathTemplate": "/api/notifications/global-error-subscribers",
+        "method": "PUT"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"emails\": [\n    \"emails\"\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "c12b1b6e-9d57-4501-9151-755189c3c111",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "97f77e25-baa6-476f-a48d-f303944a9ed2",
+      "name": "Get Organizations - default",
+      "request": {
+        "urlPathTemplate": "/api/organizations",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"id\": \"id\",\n      \"issuer\": \"https://example.com\",\n      \"name\": \"My Organization\",\n      \"sso_domain\": \"example.com\",\n      \"sso_org_id\": \"123456\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "97f77e25-baa6-476f-a48d-f303944a9ed2",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "8a1cfdbb-15bb-4c51-86a9-227eebc1a6a2",
+      "name": "Create Organization - default",
+      "request": {
+        "urlPathTemplate": "/api/organizations",
+        "method": "POST"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"id\": \"id\",\n    \"issuer\": \"https://example.com\",\n    \"name\": \"My Organization\",\n    \"sso_domain\": \"example.com\",\n    \"sso_org_id\": \"123456\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "8a1cfdbb-15bb-4c51-86a9-227eebc1a6a2",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "1950defd-4596-49c9-beb2-262a87f7f83a",
+      "name": "Get Organization - default",
+      "request": {
+        "urlPathTemplate": "/api/organizations/{id}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"id\": \"id\",\n    \"issuer\": \"https://example.com\",\n    \"name\": \"My Organization\",\n    \"sso_domain\": \"example.com\",\n    \"sso_org_id\": \"123456\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "1950defd-4596-49c9-beb2-262a87f7f83a",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "55ecbaac-415e-44a8-9165-1dcf3ff4c2d1",
+      "name": "Update Organization - default",
+      "request": {
+        "urlPathTemplate": "/api/organizations/{id}",
+        "method": "PUT",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"id\": \"id\",\n    \"issuer\": \"https://example.com\",\n    \"name\": \"My Organization\",\n    \"sso_domain\": \"example.com\",\n    \"sso_org_id\": \"123456\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "55ecbaac-415e-44a8-9165-1dcf3ff4c2d1",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "fa36e1a4-850d-43f5-b8f7-04cc961d1ae6",
+      "name": "Remove Organization - default",
+      "request": {
+        "urlPathTemplate": "/api/organizations/{id}",
+        "method": "DELETE",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "fa36e1a4-850d-43f5-b8f7-04cc961d1ae6",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "5406c098-45f8-4273-b2af-56fe4896c8c8",
+      "name": "List Users - default",
+      "request": {
+        "urlPathTemplate": "/api/organizations/{org_id}/users",
+        "method": "GET",
+        "pathParameters": {
+          "org_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"email\": \"mail@example.com\",\n      \"id\": \"id\",\n      \"organization_id\": \"organization_id\",\n      \"role_ids\": [\n        \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      ]\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "5406c098-45f8-4273-b2af-56fe4896c8c8",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "59d7a3f5-2d16-4e24-94f2-f3b01acf938a",
+      "name": "Create User - default",
+      "request": {
+        "urlPathTemplate": "/api/organizations/{org_id}/users",
+        "method": "POST",
+        "pathParameters": {
+          "org_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"email\": \"mail@example.com\",\n    \"id\": \"id\",\n    \"organization_id\": \"organization_id\",\n    \"role_ids\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ]\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "59d7a3f5-2d16-4e24-94f2-f3b01acf938a",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "3052f4e5-0931-4d1c-8694-54f79e1a1d9f",
+      "name": "Get User - default",
+      "request": {
+        "urlPathTemplate": "/api/organizations/{org_id}/users/{id}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "org_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"email\": \"mail@example.com\",\n    \"id\": \"id\",\n    \"organization_id\": \"organization_id\",\n    \"role_ids\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ]\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "3052f4e5-0931-4d1c-8694-54f79e1a1d9f",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "a3452e90-ed7f-4a43-9816-4ea2e0c8a877",
+      "name": "Update User - default",
+      "request": {
+        "urlPathTemplate": "/api/organizations/{org_id}/users/{id}",
+        "method": "PUT",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "org_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"email\": \"mail@example.com\",\n    \"id\": \"id\",\n    \"organization_id\": \"organization_id\",\n    \"role_ids\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ]\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "a3452e90-ed7f-4a43-9816-4ea2e0c8a877",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "95951ee5-09b6-4565-8ddc-1ba37115d0b5",
+      "name": "Remove User - default",
+      "request": {
+        "urlPathTemplate": "/api/organizations/{org_id}/users/{id}",
+        "method": "DELETE",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "org_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"email\": \"mail@example.com\",\n    \"id\": \"id\",\n    \"organization_id\": \"organization_id\",\n    \"role_ids\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ]\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "95951ee5-09b6-4565-8ddc-1ba37115d0b5",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "122d6570-28f2-4d63-9df1-c54194adcb74",
+      "name": "Create API Key - default",
+      "request": {
+        "urlPathTemplate": "/api/organizations/{org_id}/users/{id}/keys",
+        "method": "POST",
+        "pathParameters": {
+          "org_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "force": {
+            "equalTo": "true"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"value\": \"value\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "122d6570-28f2-4d63-9df1-c54194adcb74",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "03b8704a-7411-48f8-9782-f06d7b42d063",
+      "name": "List Webhooks - default",
+      "request": {
+        "urlPathTemplate": "/api/webhooks",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"created_at\": \"2024-01-01T00:00:00Z\",\n      \"disabled\": true,\n      \"endpoint\": \"https://example.com/webhook\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"secret\": \"secret\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "03b8704a-7411-48f8-9782-f06d7b42d063",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "3a3ab282-e129-4146-9ba7-068ab50daabc",
+      "name": "Create Webhook - default",
+      "request": {
+        "urlPathTemplate": "/api/webhooks",
+        "method": "POST"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"disabled\": true,\n    \"endpoint\": \"https://example.com/webhook\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"secret\": \"secret\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "3a3ab282-e129-4146-9ba7-068ab50daabc",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "5072f815-dd55-4867-876e-6e682bc4cbd9",
+      "name": "Get Webhook - default",
+      "request": {
+        "urlPathTemplate": "/api/webhooks/{id}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"disabled\": true,\n    \"endpoint\": \"https://example.com/webhook\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"secret\": \"secret\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "5072f815-dd55-4867-876e-6e682bc4cbd9",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "f94e9c99-cb5f-46dc-87ad-9b50775f026b",
+      "name": "Update Webhook - default",
+      "request": {
+        "urlPathTemplate": "/api/webhooks/{id}",
+        "method": "PUT",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"disabled\": true,\n    \"endpoint\": \"https://example.com/webhook\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"secret\": \"secret\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f94e9c99-cb5f-46dc-87ad-9b50775f026b",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "7f568e5e-9f7b-4b0c-85e0-82386879652a",
+      "name": "Delete Webhook - default",
+      "request": {
+        "urlPathTemplate": "/api/webhooks/{id}",
+        "method": "DELETE",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "7f568e5e-9f7b-4b0c-85e0-82386879652a",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "97d4c5e9-9cf6-4ecb-b9a3-3b60765b849a",
+      "name": "Disable Webhook - default",
+      "request": {
+        "urlPathTemplate": "/api/webhooks/{id}/disable",
+        "method": "POST",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"disabled\": true,\n    \"endpoint\": \"https://example.com/webhook\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"secret\": \"secret\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "97d4c5e9-9cf6-4ecb-b9a3-3b60765b849a",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "2b9330d7-9829-42b0-917b-7fd9dcf96806",
+      "name": "Enable Webhook - default",
+      "request": {
+        "urlPathTemplate": "/api/webhooks/{id}/enable",
+        "method": "POST",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"disabled\": true,\n    \"endpoint\": \"https://example.com/webhook\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"secret\": \"secret\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "2b9330d7-9829-42b0-917b-7fd9dcf96806",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "da512707-bb18-49aa-9c98-7b49cfc15075",
+      "name": "List Bulk Sync Execution Status - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/status",
+        "method": "GET",
+        "queryParameters": {
+          "all": {
+            "equalTo": "true"
+          },
+          "active": {
+            "equalTo": "true"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"nextExecutionTime\": \"2024-01-15T09:30:00Z\",\n      \"schemas\": [\n        {\n          \"completed_at\": \"2023-04-25T12:00:00Z\",\n          \"error_count\": 0,\n          \"execution_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n          \"record_count\": 1000,\n          \"schema\": \"contact\",\n          \"started_at\": \"2023-04-25T12:00:00Z\",\n          \"warning_count\": 0\n        }\n      ],\n      \"status\": \"created\",\n      \"sync_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "da512707-bb18-49aa-9c98-7b49cfc15075",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "e79cea21-2835-47b1-9dc2-7330793cc2ff",
+      "name": "List Bulk Sync Executions - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{id}/executions",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "page_token": {
+            "equalTo": "AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K=="
+          },
+          "only_terminal": {
+            "equalTo": "true"
+          },
+          "ascending": {
+            "equalTo": "true"
+          },
+          "limit": {
+            "equalTo": "100"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"completed_at\": \"2023-04-25T12:00:00Z\",\n      \"created_at\": \"2023-04-25T12:00:00Z\",\n      \"error_count\": 0,\n      \"fetch_mode\": \"none\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"is_partial\": false,\n      \"is_resync\": false,\n      \"is_test\": false,\n      \"record_count\": 1000,\n      \"schemas\": [\n        {\n          \"completed_at\": \"2023-04-25T12:00:00Z\",\n          \"created_at\": \"2023-04-25T12:00:00Z\",\n          \"error_count\": 0,\n          \"output_name\": \"contact\",\n          \"record_count\": 1000,\n          \"schema\": \"contact\",\n          \"started_at\": \"2023-04-25T12:00:00Z\",\n          \"updated_at\": \"2023-04-25T12:00:00Z\",\n          \"warning_count\": 0\n        }\n      ],\n      \"started_at\": \"2023-04-25T12:00:00Z\",\n      \"status\": \"created\",\n      \"status_message\": \"status_message\",\n      \"type\": \"scheduled\",\n      \"updated_at\": \"2023-04-25T12:00:00Z\",\n      \"warning_count\": 0\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "e79cea21-2835-47b1-9dc2-7330793cc2ff",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "e46aea3a-6275-49f5-ba97-a3adf88bb892",
+      "name": "Get Bulk Sync Execution - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{id}/executions/{exec_id}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "exec_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"completed_at\": \"2023-04-25T12:00:00Z\",\n    \"created_at\": \"2023-04-25T12:00:00Z\",\n    \"error_count\": 0,\n    \"fetch_mode\": \"none\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"is_partial\": false,\n    \"is_resync\": false,\n    \"is_test\": false,\n    \"record_count\": 1000,\n    \"schemas\": [\n      {\n        \"completed_at\": \"2023-04-25T12:00:00Z\",\n        \"created_at\": \"2023-04-25T12:00:00Z\",\n        \"error_count\": 0,\n        \"output_name\": \"contact\",\n        \"record_count\": 1000,\n        \"schema\": \"contact\",\n        \"started_at\": \"2023-04-25T12:00:00Z\",\n        \"updated_at\": \"2023-04-25T12:00:00Z\",\n        \"warning_count\": 0\n      }\n    ],\n    \"started_at\": \"2023-04-25T12:00:00Z\",\n    \"status\": \"created\",\n    \"status_message\": \"status_message\",\n    \"type\": \"scheduled\",\n    \"updated_at\": \"2023-04-25T12:00:00Z\",\n    \"warning_count\": 0\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "e46aea3a-6275-49f5-ba97-a3adf88bb892",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "f58ecfbe-2220-4859-a983-861b08fb75e1",
+      "name": "Cancel Bulk Sync Execution - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{id}/executions/{exec_id}/cancel",
+        "method": "POST",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "exec_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"message\": \"Cancellation requested\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f58ecfbe-2220-4859-a983-861b08fb75e1",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "2825a0f9-5afb-4223-8d8f-f119037ccaaa",
+      "name": "Get Bulk Sync Execution Logs - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{sync_id}/executions/{execution_id}/logs",
+        "method": "GET",
+        "pathParameters": {
+          "sync_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "execution_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"key\": \"value\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "2825a0f9-5afb-4223-8d8f-f119037ccaaa",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "e747822b-7a8b-45a7-947e-b7f9e395dfb2",
+      "name": "Export Sync Logs - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{sync_id}/executions/{execution_id}/logs/export",
+        "method": "POST",
+        "pathParameters": {
+          "sync_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "execution_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "notify": {
+            "equalTo": "true"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"url\": \"url\"\n  },\n  \"job\": {\n    \"error\": \"error message\",\n    \"job_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"result\": {\n      \"key\": \"value\"\n    },\n    \"status\": \"created\",\n    \"type\": \"createmodel\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "e747822b-7a8b-45a7-947e-b7f9e395dfb2",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "465f03ef-5028-45d1-a5b9-7b5527cfe918",
+      "name": "Get Bulk Sync Schemas - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{id}/schemas",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n      \"disable_data_cutoff\": false,\n      \"enabled\": true,\n      \"id\": \"Contact\",\n      \"output_name\": \"contact\",\n      \"partition_key\": \"email\",\n      \"tracking_field\": \"updated_at\",\n      \"user_output_name\": \"my_contact\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "465f03ef-5028-45d1-a5b9-7b5527cfe918",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "23c0d125-fe2c-4248-9651-f58ccd2de41f",
+      "name": "Update Bulk Sync Schemas - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{id}/schemas",
+        "method": "PATCH",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n      \"disable_data_cutoff\": false,\n      \"enabled\": true,\n      \"id\": \"Contact\",\n      \"output_name\": \"contact\",\n      \"partition_key\": \"email\",\n      \"tracking_field\": \"updated_at\",\n      \"user_output_name\": \"my_contact\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "23c0d125-fe2c-4248-9651-f58ccd2de41f",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "29803019-ab9d-411f-b309-fa54e39db5fb",
+      "name": "Get Bulk Sync Schema - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{id}/schemas/{schema_id}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "schema_id": {
+            "equalTo": "Contact"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n    \"disable_data_cutoff\": false,\n    \"enabled\": true,\n    \"id\": \"Contact\",\n    \"output_name\": \"contact\",\n    \"partition_key\": \"email\",\n    \"tracking_field\": \"updated_at\",\n    \"user_output_name\": \"my_contact\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "29803019-ab9d-411f-b309-fa54e39db5fb",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "19e1b6b4-990f-452c-8453-96b6c69db5a9",
+      "name": "Update Bulk Sync Schema - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{id}/schemas/{schema_id}",
+        "method": "PUT",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "schema_id": {
+            "equalTo": "contact"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n    \"disable_data_cutoff\": false,\n    \"enabled\": true,\n    \"id\": \"Contact\",\n    \"output_name\": \"contact\",\n    \"partition_key\": \"email\",\n    \"tracking_field\": \"updated_at\",\n    \"user_output_name\": \"my_contact\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "19e1b6b4-990f-452c-8453-96b6c69db5a9",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "7b801315-3ebd-44e8-91a4-afd4924eaf56",
+      "name": "Cancel Bulk Sync Schema - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{id}/schemas/{schema_id}/cancel",
+        "method": "POST",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "schema_id": {
+            "equalTo": "schema_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"message\": \"Cancellation requested\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "7b801315-3ebd-44e8-91a4-afd4924eaf56",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "684b9dae-dd79-485d-b94a-efda22c9e21f",
+      "name": "Get Bulk Sync Schedules - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{sync_id}/schedules",
+        "method": "GET",
+        "pathParameters": {
+          "sync_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"createdAt\": \"2024-01-15T09:30:00Z\",\n      \"createdBy\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"dayOfMonth\": \"dayOfMonth\",\n      \"dayOfWeek\": \"dayOfWeek\",\n      \"deletedAt\": \"2024-01-15T09:30:00Z\",\n      \"deletedBy\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"frequency\": \"manual\",\n      \"hour\": \"hour\",\n      \"minute\": \"minute\",\n      \"month\": \"month\",\n      \"schemas\": [\n        \"schemas\"\n      ],\n      \"selectiveMode\": \"none\",\n      \"syncId\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"syncMode\": \"normal\",\n      \"updatedAt\": \"2024-01-15T09:30:00Z\",\n      \"updatedBy\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "684b9dae-dd79-485d-b94a-efda22c9e21f",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "bc096c7a-4235-4126-b07a-0e165ca37f57",
+      "name": "Create Bulk Sync Schedule - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{sync_id}/schedules",
+        "method": "POST",
+        "pathParameters": {
+          "sync_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"createdAt\": \"2024-01-15T09:30:00Z\",\n    \"createdBy\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"dayOfMonth\": \"dayOfMonth\",\n    \"dayOfWeek\": \"dayOfWeek\",\n    \"deletedAt\": \"2024-01-15T09:30:00Z\",\n    \"deletedBy\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"frequency\": \"manual\",\n    \"hour\": \"hour\",\n    \"minute\": \"minute\",\n    \"month\": \"month\",\n    \"schemas\": [\n      \"schemas\"\n    ],\n    \"selectiveMode\": \"none\",\n    \"syncId\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"syncMode\": \"normal\",\n    \"updatedAt\": \"2024-01-15T09:30:00Z\",\n    \"updatedBy\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "bc096c7a-4235-4126-b07a-0e165ca37f57",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "5e612754-d73e-464e-abe7-9717f8ddc029",
+      "name": "Get Bulk Sync Schedule - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{sync_id}/schedules/{schedule_id}",
+        "method": "GET",
+        "pathParameters": {
+          "sync_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "schedule_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"createdAt\": \"2024-01-15T09:30:00Z\",\n    \"createdBy\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"dayOfMonth\": \"dayOfMonth\",\n    \"dayOfWeek\": \"dayOfWeek\",\n    \"deletedAt\": \"2024-01-15T09:30:00Z\",\n    \"deletedBy\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"frequency\": \"manual\",\n    \"hour\": \"hour\",\n    \"minute\": \"minute\",\n    \"month\": \"month\",\n    \"schemas\": [\n      \"schemas\"\n    ],\n    \"selectiveMode\": \"none\",\n    \"syncId\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"syncMode\": \"normal\",\n    \"updatedAt\": \"2024-01-15T09:30:00Z\",\n    \"updatedBy\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "5e612754-d73e-464e-abe7-9717f8ddc029",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "3c79bb6d-b59c-47af-8c0c-a117f39580bf",
+      "name": "Update Bulk Sync Schedule - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{sync_id}/schedules/{schedule_id}",
+        "method": "PUT",
+        "pathParameters": {
+          "sync_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "schedule_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"createdAt\": \"2024-01-15T09:30:00Z\",\n    \"createdBy\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"dayOfMonth\": \"dayOfMonth\",\n    \"dayOfWeek\": \"dayOfWeek\",\n    \"deletedAt\": \"2024-01-15T09:30:00Z\",\n    \"deletedBy\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"frequency\": \"manual\",\n    \"hour\": \"hour\",\n    \"minute\": \"minute\",\n    \"month\": \"month\",\n    \"schemas\": [\n      \"schemas\"\n    ],\n    \"selectiveMode\": \"none\",\n    \"syncId\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"syncMode\": \"normal\",\n    \"updatedAt\": \"2024-01-15T09:30:00Z\",\n    \"updatedBy\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "3c79bb6d-b59c-47af-8c0c-a117f39580bf",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "38d77a16-dbf1-4f19-a24a-5a5ee8554d78",
+      "name": "Delete Bulk Sync Schedule - default",
+      "request": {
+        "urlPathTemplate": "/api/bulk/syncs/{sync_id}/schedules/{schedule_id}",
+        "method": "DELETE",
+        "pathParameters": {
+          "sync_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "schedule_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "38d77a16-dbf1-4f19-a24a-5a5ee8554d78",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "e26885a3-9f26-4f85-87f4-5baf645b512d",
+      "name": "Get Sync Target - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{id}/modelsync/target",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "type": {
+            "equalTo": "type"
+          },
+          "search": {
+            "equalTo": "search"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"configuration\": {\n      \"key\": {}\n    },\n    \"items\": {\n      \"key\": {\n        \"has_items\": true\n      }\n    },\n    \"requires_one_of\": [\n      \"requires_one_of\"\n    ]\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "e26885a3-9f26-4f85-87f4-5baf645b512d",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "d3938841-c9e5-4d66-b14b-d01bd358d3ce",
+      "name": "Get Sync Target Fields - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{id}/modelsync/target/fields",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "target": {
+            "equalTo": "database.table"
+          },
+          "refresh": {
+            "equalTo": "false"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"fields\": [\n      {\n        \"association\": false,\n        \"createable\": true,\n        \"description\": \"Field description\",\n        \"encryptable\": false,\n        \"filterable\": true,\n        \"id\": \"field1\",\n        \"identity_functions\": [\n          {\n            \"id\": \"Equality\",\n            \"label\": \"Equality\"\n          }\n        ],\n        \"name\": \"Field\",\n        \"required\": true,\n        \"source_type\": \"string\",\n        \"supports_identity\": false,\n        \"type\": \"string\",\n        \"updateable\": true\n      }\n    ],\n    \"id\": \"database.table\",\n    \"modes\": [\n      {\n        \"description\": \"Create records when they don't exist; don't update existing ones\",\n        \"label\": \"Create\",\n        \"mode\": \"create\",\n        \"requires_identity\": true,\n        \"supports_field_sync_mode\": false,\n        \"supports_target_filters\": false\n      }\n    ],\n    \"name\": \"Table\",\n    \"properties\": {\n      \"does_not_report_operation_counts\": true,\n      \"mappings_not_required\": true,\n      \"new_target_label\": \"new_target_label\",\n      \"optional_target_mappings\": true,\n      \"primary_metadata_object\": \"primary_metadata_object\",\n      \"requires_configuration\": true,\n      \"supports_field_creation\": true,\n      \"supports_field_encryption\": true,\n      \"supports_field_type_selection\": true,\n      \"supports_identity_field_creation\": true,\n      \"supports_target_filters\": true,\n      \"target_creator\": true,\n      \"use_field_names_as_labels\": true\n    },\n    \"refreshed_at\": \"2024-01-01T00:00:00Z\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "d3938841-c9e5-4d66-b14b-d01bd358d3ce",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "4c6b8d2a-f447-4b03-8607-bcc935680495",
+      "name": "Get Target Objects - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{id}/modelsync/targetobjects",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"id\": \"system_object1\",\n      \"modes\": [\n        {\n          \"requires_identity\": true,\n          \"supports_per_field_mode\": true,\n          \"supports_target_filters\": true\n        }\n      ],\n      \"name\": \"Contact\"\n    }\n  ],\n  \"target_creation\": {\n    \"properties\": [\n      {\n        \"enum\": true,\n        \"id\": \"account\",\n        \"title\": \"Account ID\"\n      }\n    ],\n    \"supported\": true\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "4c6b8d2a-f447-4b03-8607-bcc935680495",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "a5c28e15-2654-4d94-a68d-a6f16fab496d",
+      "name": "Get Target Creation Property Values - default",
+      "request": {
+        "urlPathTemplate": "/api/connections/{id}/modelsync/targetobjects/properties/{property}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "property": {
+            "equalTo": "property"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"enum\": true,\n    \"id\": \"account\",\n    \"title\": \"Account ID\",\n    \"values\": [\n      {\n        \"label\": \"Account ID\",\n        \"value\": \"urn:li:organization:987654321\"\n      },\n      {\n        \"label\": \"Account ID\",\n        \"value\": \"urn:li:organization:987654321\"\n      }\n    ]\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "a5c28e15-2654-4d94-a68d-a6f16fab496d",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "a650364f-3123-48b5-b4d8-d1385fa672c8",
+      "name": "List Executions - default",
+      "request": {
+        "urlPathTemplate": "/api/syncs/{sync_id}/executions",
+        "method": "GET",
+        "pathParameters": {
+          "sync_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "page_token": {
+            "equalTo": "AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K=="
+          },
+          "only_completed": {
+            "equalTo": "true"
+          },
+          "ascending": {
+            "equalTo": "true"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"completed_at\": \"2024-01-01T00:00:00Z\",\n      \"counts\": {\n        \"delete\": 42,\n        \"error\": 5,\n        \"insert\": 80,\n        \"total\": 100,\n        \"update\": 15,\n        \"upserts\": 10,\n        \"warnings\": 10\n      },\n      \"created_at\": \"2024-01-01T00:00:00Z\",\n      \"errors\": [\n        \"something went wrong\"\n      ],\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"started_at\": \"2024-01-01T00:00:00Z\",\n      \"status\": \"created\",\n      \"type\": \"scheduled\"\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "a650364f-3123-48b5-b4d8-d1385fa672c8",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "80b51005-2496-4a72-a861-c108f0a84fe8",
+      "name": "Get Execution - default",
+      "request": {
+        "urlPathTemplate": "/api/syncs/{sync_id}/executions/{id}",
+        "method": "GET",
+        "pathParameters": {
+          "sync_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"completed_at\": \"2024-01-01T00:00:00Z\",\n    \"counts\": {\n      \"delete\": 42,\n      \"error\": 5,\n      \"insert\": 80,\n      \"total\": 100,\n      \"update\": 15,\n      \"upserts\": 10,\n      \"warnings\": 10\n    },\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"errors\": [\n      \"something went wrong\"\n    ],\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"started_at\": \"2024-01-01T00:00:00Z\",\n    \"status\": \"created\",\n    \"type\": \"scheduled\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "80b51005-2496-4a72-a861-c108f0a84fe8",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "420d3465-428f-41f8-a7cc-13a4a155b8ca",
+      "name": "Update Execution - default",
+      "request": {
+        "urlPathTemplate": "/api/syncs/{sync_id}/executions/{id}",
+        "method": "PUT",
+        "pathParameters": {
+          "sync_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"completed_at\": \"2024-01-01T00:00:00Z\",\n    \"counts\": {\n      \"delete\": 42,\n      \"error\": 5,\n      \"insert\": 80,\n      \"total\": 100,\n      \"update\": 15,\n      \"upserts\": 10,\n      \"warnings\": 10\n    },\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"errors\": [\n      \"something went wrong\"\n    ],\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"started_at\": \"2024-01-01T00:00:00Z\",\n    \"status\": \"created\",\n    \"type\": \"scheduled\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "420d3465-428f-41f8-a7cc-13a4a155b8ca",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "cd9e1ead-3b92-4c60-a3a3-471966017b7e",
+      "name": "Get Execution Log Urls - default",
+      "request": {
+        "urlPathTemplate": "/api/syncs/{sync_id}/executions/{id}/{type}",
+        "method": "GET",
+        "pathParameters": {
+          "sync_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "type": {
+            "equalTo": "records"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"expires\": \"2024-01-01T00:00:00Z\",\n    \"urls\": [\n      \"urls\"\n    ]\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "cd9e1ead-3b92-4c60-a3a3-471966017b7e",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "2c64337a-48c1-414c-9c95-6fe91f3d2fdc",
+      "name": "Get Execution Log - default",
+      "request": {
+        "urlPathTemplate": "/api/syncs/{sync_id}/executions/{id}/{type}/{filename}",
+        "method": "GET",
+        "pathParameters": {
+          "sync_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "id": {
+            "equalTo": "0ecd09c1-b901-4d27-9053-f0367c427254"
+          },
+          "type": {
+            "equalTo": "records"
+          },
+          "filename": {
+            "equalTo": "path/to/file.json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "2c64337a-48c1-414c-9c95-6fe91f3d2fdc",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "17845844-3c2a-4912-bfe9-45c251318ab2",
+      "name": "List Policies - default",
+      "request": {
+        "urlPathTemplate": "/api/permissions/policies",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"name\": \"Policy\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"policy_actions\": [\n        {\n          \"action\": \"read\",\n          \"role_ids\": [\n            \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n          ]\n        }\n      ],\n      \"system\": false\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "17845844-3c2a-4912-bfe9-45c251318ab2",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "aa157a7c-eb5e-4a68-b7df-6a1b3ed72be2",
+      "name": "Create Policy - default",
+      "request": {
+        "urlPathTemplate": "/api/permissions/policies",
+        "method": "POST"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"Policy\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"policy_actions\": [\n      {\n        \"action\": \"read\",\n        \"role_ids\": [\n          \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        ]\n      }\n    ],\n    \"system\": false\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "aa157a7c-eb5e-4a68-b7df-6a1b3ed72be2",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "1e238a51-0048-422b-8b76-533dd3b92042",
+      "name": "Get Policy - default",
+      "request": {
+        "urlPathTemplate": "/api/permissions/policies/{id}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"Policy\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"policy_actions\": [\n      {\n        \"action\": \"read\",\n        \"role_ids\": [\n          \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        ]\n      }\n    ],\n    \"system\": false\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "1e238a51-0048-422b-8b76-533dd3b92042",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "0db1678a-f06b-41c5-a1d1-7cfc73960fc5",
+      "name": "Update Policy - default",
+      "request": {
+        "urlPathTemplate": "/api/permissions/policies/{id}",
+        "method": "PUT",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"Policy\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"policy_actions\": [\n      {\n        \"action\": \"read\",\n        \"role_ids\": [\n          \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        ]\n      }\n    ],\n    \"system\": false\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "0db1678a-f06b-41c5-a1d1-7cfc73960fc5",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "03aaafe4-c72c-422d-aa17-a3fcb378860d",
+      "name": "Delete Policy - default",
+      "request": {
+        "urlPathTemplate": "/api/permissions/policies/{id}",
+        "method": "DELETE",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "03aaafe4-c72c-422d-aa17-a3fcb378860d",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "66fe0e98-3a80-4bfb-a73a-5eed258a1478",
+      "name": "List Roles - default",
+      "request": {
+        "urlPathTemplate": "/api/permissions/roles",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"name\": \"Custom\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"system\": false\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "66fe0e98-3a80-4bfb-a73a-5eed258a1478",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "cdb612af-0b4f-49d4-b5f0-2dab4c2d7ac7",
+      "name": "Create Role - default",
+      "request": {
+        "urlPathTemplate": "/api/permissions/roles",
+        "method": "POST"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"Custom\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"system\": false\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "cdb612af-0b4f-49d4-b5f0-2dab4c2d7ac7",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "759d52f1-c3ed-4d16-9858-75c4dd0efd3d",
+      "name": "Get Role - default",
+      "request": {
+        "urlPathTemplate": "/api/permissions/roles/{id}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"Custom\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"system\": false\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "759d52f1-c3ed-4d16-9858-75c4dd0efd3d",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "0c2c6712-23bc-44fe-ac17-772522cb478c",
+      "name": "Update Role - default",
+      "request": {
+        "urlPathTemplate": "/api/permissions/roles/{id}",
+        "method": "PUT",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"Custom\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"system\": false\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "0c2c6712-23bc-44fe-ac17-772522cb478c",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "02524d42-6630-4a58-ac59-369bbad28df2",
+      "name": "Delete Role - default",
+      "request": {
+        "urlPathTemplate": "/api/permissions/roles/{id}",
+        "method": "DELETE",
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "02524d42-6630-4a58-ac59-369bbad28df2",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    }
+  ],
+  "meta": {
+    "total": 114
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "cliVersion": "4.48.1",
+  "generatorName": "fernapi/fern-go-sdk",
+  "generatorVersion": "1.31.5",
+  "generatorConfig": {
+    "packageName": "polytomic"
+  },
+  "originGitCommit": "0238aeb1d4981fdded9426d8fe423238534c0633",
+  "sdkVersion": "v1.16.2"
+}

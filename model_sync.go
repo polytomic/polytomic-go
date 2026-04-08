@@ -5,184 +5,107 @@ package polytomic
 import (
 	json "encoding/json"
 	fmt "fmt"
-	core "github.com/polytomic/polytomic-go/core"
+	internal "github.com/polytomic/polytomic-go/internal"
 	time "time"
 )
 
-type CreateModelSyncRequest struct {
-	// Whether the sync is enabled and scheduled.
-	Active *bool `json:"active,omitempty" url:"active,omitempty"`
-	// Passphrase for encrypting the sync data.
-	EncryptionPassphrase *string `json:"encryption_passphrase,omitempty" url:"encryption_passphrase,omitempty"`
-	// Fields to sync from source to destination.
-	Fields []*ModelSyncField `json:"fields,omitempty" url:"fields,omitempty"`
-	// Logical expression to combine filters.
-	FilterLogic *string `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
-	// Filters to apply to the source data.
-	Filters  []*Filter     `json:"filters,omitempty" url:"filters,omitempty"`
-	Identity *Identity     `json:"identity,omitempty" url:"identity,omitempty"`
-	Mode     ModelSyncMode `json:"mode,omitempty" url:"mode,omitempty"`
-	Name     string        `json:"name" url:"name"`
-	// Whether to use enrichment models as a source of possible changes to sync. If true, only changes to the base models will cause a record to sync.
-	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
-	// Organization ID for the sync; read-only with a partner key.
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	// Values to set in the target unconditionally.
-	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
-	// Conditional value replacement for fields.
-	Overrides []*Override `json:"overrides,omitempty" url:"overrides,omitempty"`
-	Policies  []string    `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule  *Schedule   `json:"schedule,omitempty" url:"schedule,omitempty"`
-	// Whether to skip the initial backfill of records; if true only records seen after the sync is enabled will be synced.
-	SkipInitialBackfill *bool `json:"skip_initial_backfill,omitempty" url:"skip_initial_backfill,omitempty"`
-	// Whether to sync all records from the source, regardless of whether they've changed since the previous execution.
-	SyncAllRecords *bool   `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
-	Target         *Target `json:"target,omitempty" url:"target,omitempty"`
+type ActivateModelSyncRequest struct {
+	Body *V2ActivateSyncInput `json:"-" url:"-"`
 }
 
-type ModelSyncGetSourceRequest struct {
+func (a *ActivateModelSyncRequest) UnmarshalJSON(data []byte) error {
+	body := new(V2ActivateSyncInput)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	a.Body = body
+	return nil
+}
+
+func (a *ActivateModelSyncRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(a.Body)
+}
+
+type V2CreateSyncRequest struct {
+	// Whether the sync is enabled and scheduled.
+	Active *bool `json:"active,omitempty" url:"-"`
+	// Passphrase for encrypting the sync data.
+	EncryptionPassphrase *string `json:"encryption_passphrase,omitempty" url:"-"`
+	// Fields to sync from source to destination.
+	Fields []*V2SyncField `json:"fields,omitempty" url:"-"`
+	// Logical expression to combine filters.
+	FilterLogic *string `json:"filter_logic,omitempty" url:"-"`
+	// Filters to apply to the source data.
+	Filters  []*V2Filter             `json:"filters,omitempty" url:"-"`
+	Identity *V2Identity             `json:"identity,omitempty" url:"-"`
+	Mode     ModelsyncSyncTargetMode `json:"mode" url:"-"`
+	Name     string                  `json:"name" url:"-"`
+	// Whether to use enrichment models as a source of possible changes to sync. If true, only changes to the base models will cause a record to sync.
+	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"-"`
+	// Organization ID for the sync; read-only with a partner key.
+	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
+	// Values to set in the target unconditionally.
+	OverrideFields []*V2SyncField `json:"override_fields,omitempty" url:"-"`
+	// Conditional value replacement for fields.
+	Overrides []*V2Override `json:"overrides,omitempty" url:"-"`
+	Policies  []string      `json:"policies,omitempty" url:"-"`
+	Schedule  *Schedule     `json:"schedule,omitempty" url:"-"`
+	// Whether to skip the initial backfill of records; if true only records seen after the sync is enabled will be synced.
+	SkipInitialBackfill *bool `json:"skip_initial_backfill,omitempty" url:"-"`
+	// Whether to sync all records from the source, regardless of whether they've changed since the previous execution.
+	SyncAllRecords *bool     `json:"sync_all_records,omitempty" url:"-"`
+	Target         *V2Target `json:"target,omitempty" url:"-"`
+}
+
+type GetSourceModelSyncRequest struct {
 	Params map[string][]string `json:"-" url:"params,omitempty"`
 }
 
-type ModelSyncGetSourceFieldsRequest struct {
+type GetSourceFieldsModelSyncRequest struct {
 	Params map[string][]string `json:"-" url:"params,omitempty"`
 }
 
-type ModelSyncListRequest struct {
-	Active             *bool          `json:"-" url:"active,omitempty"`
-	Mode               *ModelSyncMode `json:"-" url:"mode,omitempty"`
-	TargetConnectionId *string        `json:"-" url:"target_connection_id,omitempty"`
+type ListModelSyncRequest struct {
+	Active             *bool                    `json:"-" url:"active,omitempty"`
+	Mode               *ModelsyncSyncTargetMode `json:"-" url:"mode,omitempty"`
+	TargetConnectionID *string                  `json:"-" url:"target_connection_id,omitempty"`
 }
 
-type StartModelSyncRequest struct {
-	Identities []string `json:"identities,omitempty" url:"identities,omitempty"`
-	Resync     *bool    `json:"resync,omitempty" url:"resync,omitempty"`
-	Test       *bool    `json:"test,omitempty" url:"test,omitempty"`
+type V2StartSyncRequest struct {
+	Identities []string `json:"identities,omitempty" url:"-"`
+	Resync     *bool    `json:"resync,omitempty" url:"-"`
+	Test       *bool    `json:"test,omitempty" url:"-"`
 }
 
-type UpdateModelSyncRequest struct {
+type V2UpdateSyncRequest struct {
 	// Whether the sync is enabled and scheduled.
-	Active *bool `json:"active,omitempty" url:"active,omitempty"`
+	Active *bool `json:"active,omitempty" url:"-"`
 	// Passphrase for encrypting the sync data.
-	EncryptionPassphrase *string `json:"encryption_passphrase,omitempty" url:"encryption_passphrase,omitempty"`
+	EncryptionPassphrase *string `json:"encryption_passphrase,omitempty" url:"-"`
 	// Fields to sync from source to destination.
-	Fields []*ModelSyncField `json:"fields,omitempty" url:"fields,omitempty"`
+	Fields []*V2SyncField `json:"fields,omitempty" url:"-"`
 	// Logical expression to combine filters.
-	FilterLogic *string `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
+	FilterLogic *string `json:"filter_logic,omitempty" url:"-"`
 	// Filters to apply to the source data.
-	Filters  []*Filter     `json:"filters,omitempty" url:"filters,omitempty"`
-	Identity *Identity     `json:"identity,omitempty" url:"identity,omitempty"`
-	Mode     ModelSyncMode `json:"mode,omitempty" url:"mode,omitempty"`
-	Name     string        `json:"name" url:"name"`
+	Filters  []*V2Filter             `json:"filters,omitempty" url:"-"`
+	Identity *V2Identity             `json:"identity,omitempty" url:"-"`
+	Mode     ModelsyncSyncTargetMode `json:"mode" url:"-"`
+	Name     string                  `json:"name" url:"-"`
 	// Whether to use enrichment models as a source of possible changes to sync. If true, only changes to the base models will cause a record to sync.
-	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
+	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"-"`
 	// Organization ID for the sync; read-only with a partner key.
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
 	// Values to set in the target unconditionally.
-	OverrideFields []*ModelSyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
+	OverrideFields []*V2SyncField `json:"override_fields,omitempty" url:"-"`
 	// Conditional value replacement for fields.
-	Overrides []*Override `json:"overrides,omitempty" url:"overrides,omitempty"`
-	Policies  []string    `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule  *Schedule   `json:"schedule,omitempty" url:"schedule,omitempty"`
+	Overrides []*V2Override `json:"overrides,omitempty" url:"-"`
+	Policies  []string      `json:"policies,omitempty" url:"-"`
+	Schedule  *Schedule     `json:"schedule,omitempty" url:"-"`
 	// Whether to skip the initial backfill of records; if true only records seen after the sync is enabled will be synced.
-	SkipInitialBackfill *bool `json:"skip_initial_backfill,omitempty" url:"skip_initial_backfill,omitempty"`
+	SkipInitialBackfill *bool `json:"skip_initial_backfill,omitempty" url:"-"`
 	// Whether to sync all records from the source, regardless of whether they've changed since the previous execution.
-	SyncAllRecords *bool   `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
-	Target         *Target `json:"target,omitempty" url:"target,omitempty"`
-}
-
-type CancelModelSyncResponse struct {
-	Message *string `json:"message,omitempty" url:"message,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *CancelModelSyncResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler CancelModelSyncResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CancelModelSyncResponse(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CancelModelSyncResponse) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type CancelModelSyncResponseEnvelope struct {
-	Data *CancelModelSyncResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *CancelModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler CancelModelSyncResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CancelModelSyncResponseEnvelope(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CancelModelSyncResponseEnvelope) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-// Either `field` or `field_id` must be provided. If `field` is provided, `field_id` is ignored.
-type Filter struct {
-	Field *Source `json:"field,omitempty" url:"field,omitempty"`
-	// Model or Target field name to filter on.
-	FieldId   *string                   `json:"field_id,omitempty" url:"field_id,omitempty"`
-	FieldType *FilterFieldReferenceType `json:"field_type,omitempty" url:"field_type,omitempty"`
-	Function  FilterFunction            `json:"function,omitempty" url:"function,omitempty"`
-	Label     *string                   `json:"label,omitempty" url:"label,omitempty"`
-	Value     interface{}               `json:"value,omitempty" url:"value,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (f *Filter) UnmarshalJSON(data []byte) error {
-	type unmarshaler Filter
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*f = Filter(value)
-	f._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (f *Filter) String() string {
-	if len(f._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(f._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(f); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", f)
+	SyncAllRecords *bool     `json:"sync_all_records,omitempty" url:"-"`
+	Target         *V2Target `json:"target,omitempty" url:"-"`
 }
 
 type FilterFieldReferenceType string
@@ -207,281 +130,32 @@ func (f FilterFieldReferenceType) Ptr() *FilterFieldReferenceType {
 	return &f
 }
 
-type Identity struct {
-	Function          SchemaIdentityFunction `json:"function,omitempty" url:"function,omitempty"`
-	NewField          *bool                  `json:"new_field,omitempty" url:"new_field,omitempty"`
-	RemoteFieldTypeId *string                `json:"remote_field_type_id,omitempty" url:"remote_field_type_id,omitempty"`
-	Source            *Source                `json:"source,omitempty" url:"source,omitempty"`
-	Target            string                 `json:"target" url:"target"`
-
-	_rawJSON json.RawMessage
-}
-
-func (i *Identity) UnmarshalJSON(data []byte) error {
-	type unmarshaler Identity
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*i = Identity(value)
-	i._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (i *Identity) String() string {
-	if len(i._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(i._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(i); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", i)
-}
-
 type JsonschemaForm = map[string]interface{}
 
-type ListModelSyncResponseEnvelope struct {
-	Data []*ModelSyncResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (l *ListModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ListModelSyncResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*l = ListModelSyncResponseEnvelope(value)
-	l._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (l *ListModelSyncResponseEnvelope) String() string {
-	if len(l._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(l); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", l)
-}
-
-type ModelFieldResponse struct {
-	Data []*ModelField `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (m *ModelFieldResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ModelFieldResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*m = ModelFieldResponse(value)
-	m._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *ModelFieldResponse) String() string {
-	if len(m._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
-
-type ModelSyncField struct {
-	// Whether the field should be encrypted.
-	EncryptionEnabled *bool `json:"encryption_enabled,omitempty" url:"encryption_enabled,omitempty"`
-	// New is set to true if the target field should be created by Polytomic. This is not supported by all backends.
-	New *bool `json:"new,omitempty" url:"new,omitempty"`
-	// Value to set in the target field; if provided, 'source' is ignored.
-	OverrideValue *string `json:"override_value,omitempty" url:"override_value,omitempty"`
-	Source        *Source `json:"source,omitempty" url:"source,omitempty"`
-	// Sync mode for the field; defaults to 'updateOrCreate'. If set to 'create', the field will not be synced if it already has a value. This is not supported by all backends.
-	SyncMode *string `json:"sync_mode,omitempty" url:"sync_mode,omitempty"`
-	// Target field ID the source field value will be written to.
-	Target string `json:"target" url:"target"`
-
-	_rawJSON json.RawMessage
-}
-
-func (m *ModelSyncField) UnmarshalJSON(data []byte) error {
-	type unmarshaler ModelSyncField
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*m = ModelSyncField(value)
-	m._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *ModelSyncField) String() string {
-	if len(m._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
-
-type ModelSyncResponse struct {
-	Active               *bool              `json:"active,omitempty" url:"active,omitempty"`
-	CreatedAt            *time.Time         `json:"created_at,omitempty" url:"created_at,omitempty"`
-	CreatedBy            *CommonOutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
-	EncryptionPassphrase *string            `json:"encryption_passphrase,omitempty" url:"encryption_passphrase,omitempty"`
-	Fields               []*ModelSyncField  `json:"fields,omitempty" url:"fields,omitempty"`
-	FilterLogic          *string            `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
-	Filters              []*Filter          `json:"filters,omitempty" url:"filters,omitempty"`
-	Id                   *string            `json:"id,omitempty" url:"id,omitempty"`
-	Identity             *Identity          `json:"identity,omitempty" url:"identity,omitempty"`
-	Mode                 *ModelSyncMode     `json:"mode,omitempty" url:"mode,omitempty"`
-	// Model IDs used in the sync.
-	ModelIds            []string           `json:"model_ids,omitempty" url:"model_ids,omitempty"`
-	Name                *string            `json:"name,omitempty" url:"name,omitempty"`
-	OnlyEnrichUpdates   *bool              `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
-	OrganizationId      *string            `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	OverrideFields      []*ModelSyncField  `json:"override_fields,omitempty" url:"override_fields,omitempty"`
-	Overrides           []*Override        `json:"overrides,omitempty" url:"overrides,omitempty"`
-	Policies            []string           `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule            *Schedule          `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SkipInitialBackfill *bool              `json:"skip_initial_backfill,omitempty" url:"skip_initial_backfill,omitempty"`
-	SyncAllRecords      *bool              `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
-	Target              *Target            `json:"target,omitempty" url:"target,omitempty"`
-	UpdatedAt           *time.Time         `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	UpdatedBy           *CommonOutputActor `json:"updated_by,omitempty" url:"updated_by,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (m *ModelSyncResponse) UnmarshalJSON(data []byte) error {
-	type embed ModelSyncResponse
-	var unmarshaler = struct {
-		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed: embed(*m),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*m = ModelSyncResponse(unmarshaler.embed)
-	m.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	m.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	m._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *ModelSyncResponse) MarshalJSON() ([]byte, error) {
-	type embed ModelSyncResponse
-	var marshaler = struct {
-		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed:     embed(*m),
-		CreatedAt: core.NewOptionalDateTime(m.CreatedAt),
-		UpdatedAt: core.NewOptionalDateTime(m.UpdatedAt),
-	}
-	return json.Marshal(marshaler)
-}
-
-func (m *ModelSyncResponse) String() string {
-	if len(m._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
-
-type ModelSyncResponseEnvelope struct {
-	Data *ModelSyncResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (m *ModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ModelSyncResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*m = ModelSyncResponseEnvelope(value)
-	m._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *ModelSyncResponseEnvelope) String() string {
-	if len(m._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
-
-// Either `field` or `field_id` must be provided. If `field_id` is provided, `field` is ignored.
-type Override struct {
-	Field *Source `json:"field,omitempty" url:"field,omitempty"`
-	// Field ID of the model field to override.
-	FieldId  *string         `json:"field_id,omitempty" url:"field_id,omitempty"`
-	Function *FilterFunction `json:"function,omitempty" url:"function,omitempty"`
-	Override interface{}     `json:"override,omitempty" url:"override,omitempty"`
-	Value    interface{}     `json:"value,omitempty" url:"value,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (o *Override) UnmarshalJSON(data []byte) error {
-	type unmarshaler Override
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*o = Override(value)
-	o._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (o *Override) String() string {
-	if len(o._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(o._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(o); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", o)
-}
-
 type RunAfter struct {
-	BulkSyncIds []string `json:"bulk_sync_ids,omitempty" url:"bulk_sync_ids,omitempty"`
-	SyncIds     []string `json:"sync_ids,omitempty" url:"sync_ids,omitempty"`
+	BulkSyncIDs []string `json:"bulk_sync_ids,omitempty" url:"bulk_sync_ids,omitempty"`
+	SyncIDs     []string `json:"sync_ids,omitempty" url:"sync_ids,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RunAfter) GetBulkSyncIDs() []string {
+	if r == nil {
+		return nil
+	}
+	return r.BulkSyncIDs
+}
+
+func (r *RunAfter) GetSyncIDs() []string {
+	if r == nil {
+		return nil
+	}
+	return r.SyncIDs
+}
+
+func (r *RunAfter) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
 }
 
 func (r *RunAfter) UnmarshalJSON(data []byte) error {
@@ -491,36 +165,116 @@ func (r *RunAfter) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*r = RunAfter(value)
-	r._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (r *RunAfter) String() string {
-	if len(r._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(r); err == nil {
+	if value, err := internal.StringifyJSON(r); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", r)
 }
 
 type Schedule struct {
-	ConnectionId *string            `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	ConnectionID *string            `json:"connection_id,omitempty" url:"connection_id,omitempty"`
 	DayOfMonth   *string            `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
 	DayOfWeek    *string            `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
 	Frequency    *ScheduleFrequency `json:"frequency,omitempty" url:"frequency,omitempty"`
 	Hour         *string            `json:"hour,omitempty" url:"hour,omitempty"`
-	JobId        *int               `json:"job_id,omitempty" url:"job_id,omitempty"`
+	JobID        *int               `json:"job_id,omitempty" url:"job_id,omitempty"`
 	Minute       *string            `json:"minute,omitempty" url:"minute,omitempty"`
 	Month        *string            `json:"month,omitempty" url:"month,omitempty"`
 	RunAfter     *RunAfter          `json:"run_after,omitempty" url:"run_after,omitempty"`
 	// If true, the sync will only run if the dependent syncs completed successfully.
 	RunAfterSuccessOnly *bool `json:"run_after_success_only,omitempty" url:"run_after_success_only,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *Schedule) GetConnectionID() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ConnectionID
+}
+
+func (s *Schedule) GetDayOfMonth() *string {
+	if s == nil {
+		return nil
+	}
+	return s.DayOfMonth
+}
+
+func (s *Schedule) GetDayOfWeek() *string {
+	if s == nil {
+		return nil
+	}
+	return s.DayOfWeek
+}
+
+func (s *Schedule) GetFrequency() *ScheduleFrequency {
+	if s == nil {
+		return nil
+	}
+	return s.Frequency
+}
+
+func (s *Schedule) GetHour() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Hour
+}
+
+func (s *Schedule) GetJobID() *int {
+	if s == nil {
+		return nil
+	}
+	return s.JobID
+}
+
+func (s *Schedule) GetMinute() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Minute
+}
+
+func (s *Schedule) GetMonth() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Month
+}
+
+func (s *Schedule) GetRunAfter() *RunAfter {
+	if s == nil {
+		return nil
+	}
+	return s.RunAfter
+}
+
+func (s *Schedule) GetRunAfterSuccessOnly() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.RunAfterSuccessOnly
+}
+
+func (s *Schedule) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
 }
 
 func (s *Schedule) UnmarshalJSON(data []byte) error {
@@ -530,75 +284,22 @@ func (s *Schedule) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*s = Schedule(value)
-	s._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (s *Schedule) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
-}
-
-type ScheduleOptionResponse struct {
-	ScheduleOptions []*ScheduleScheduleOption `json:"schedule_options,omitempty" url:"schedule_options,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (s *ScheduleOptionResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ScheduleOptionResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*s = ScheduleOptionResponse(value)
-	s._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *ScheduleOptionResponse) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
-}
-
-type ScheduleOptionResponseEnvelope struct {
-	Data *ScheduleOptionResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (s *ScheduleOptionResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ScheduleOptionResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*s = ScheduleOptionResponseEnvelope(value)
-	s._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *ScheduleOptionResponseEnvelope) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
@@ -610,7 +311,40 @@ type ScheduleScheduleOption struct {
 	Frequency     *ScheduleFrequency `json:"frequency,omitempty" url:"frequency,omitempty"`
 	Label         *string            `json:"label,omitempty" url:"label,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *ScheduleScheduleOption) GetConfiguration() *JsonschemaForm {
+	if s == nil {
+		return nil
+	}
+	return s.Configuration
+}
+
+func (s *ScheduleScheduleOption) GetDescription() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Description
+}
+
+func (s *ScheduleScheduleOption) GetFrequency() *ScheduleFrequency {
+	if s == nil {
+		return nil
+	}
+	return s.Frequency
+}
+
+func (s *ScheduleScheduleOption) GetLabel() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Label
+}
+
+func (s *ScheduleScheduleOption) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
 }
 
 func (s *ScheduleScheduleOption) UnmarshalJSON(data []byte) error {
@@ -620,17 +354,22 @@ func (s *ScheduleScheduleOption) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*s = ScheduleScheduleOption(value)
-	s._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (s *ScheduleScheduleOption) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
@@ -667,196 +406,1220 @@ func (s SchemaIdentityFunction) Ptr() *SchemaIdentityFunction {
 	return &s
 }
 
-type Source struct {
+type V2CancelSyncResponse struct {
+	Message *string `json:"message,omitempty" url:"message,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2CancelSyncResponse) GetMessage() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Message
+}
+
+func (v *V2CancelSyncResponse) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2CancelSyncResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2CancelSyncResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2CancelSyncResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2CancelSyncResponse) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2CancelSyncResponseEnvelope struct {
+	Data *V2CancelSyncResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2CancelSyncResponseEnvelope) GetData() *V2CancelSyncResponse {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2CancelSyncResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2CancelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2CancelSyncResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2CancelSyncResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2CancelSyncResponseEnvelope) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+// Either `field` or `field_id` must be provided. If `field` is provided, `field_id` is ignored.
+type V2Filter struct {
+	Field *V2Source `json:"field,omitempty" url:"field,omitempty"`
+	// Model or Target field name to filter on.
+	FieldID   *string                   `json:"field_id,omitempty" url:"field_id,omitempty"`
+	FieldType *FilterFieldReferenceType `json:"field_type,omitempty" url:"field_type,omitempty"`
+	Function  FilterFunction            `json:"function" url:"function"`
+	Label     *string                   `json:"label,omitempty" url:"label,omitempty"`
+	Value     interface{}               `json:"value,omitempty" url:"value,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2Filter) GetField() *V2Source {
+	if v == nil {
+		return nil
+	}
+	return v.Field
+}
+
+func (v *V2Filter) GetFieldID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.FieldID
+}
+
+func (v *V2Filter) GetFieldType() *FilterFieldReferenceType {
+	if v == nil {
+		return nil
+	}
+	return v.FieldType
+}
+
+func (v *V2Filter) GetFunction() FilterFunction {
+	if v == nil {
+		return ""
+	}
+	return v.Function
+}
+
+func (v *V2Filter) GetLabel() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Label
+}
+
+func (v *V2Filter) GetValue() interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.Value
+}
+
+func (v *V2Filter) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2Filter) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2Filter
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2Filter(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2Filter) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2Identity struct {
+	Function          SchemaIdentityFunction `json:"function" url:"function"`
+	NewField          *bool                  `json:"new_field,omitempty" url:"new_field,omitempty"`
+	RemoteFieldTypeID *string                `json:"remote_field_type_id,omitempty" url:"remote_field_type_id,omitempty"`
+	Source            *V2Source              `json:"source,omitempty" url:"source,omitempty"`
+	Target            string                 `json:"target" url:"target"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2Identity) GetFunction() SchemaIdentityFunction {
+	if v == nil {
+		return ""
+	}
+	return v.Function
+}
+
+func (v *V2Identity) GetNewField() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.NewField
+}
+
+func (v *V2Identity) GetRemoteFieldTypeID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.RemoteFieldTypeID
+}
+
+func (v *V2Identity) GetSource() *V2Source {
+	if v == nil {
+		return nil
+	}
+	return v.Source
+}
+
+func (v *V2Identity) GetTarget() string {
+	if v == nil {
+		return ""
+	}
+	return v.Target
+}
+
+func (v *V2Identity) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2Identity) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2Identity
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2Identity(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2Identity) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ListSyncResponseEnvelope struct {
+	Data []*V2SyncResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2ListSyncResponseEnvelope) GetData() []*V2SyncResponse {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2ListSyncResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2ListSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ListSyncResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ListSyncResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ListSyncResponseEnvelope) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ModelFieldResponse struct {
+	Data []*V2ModelField `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2ModelFieldResponse) GetData() []*V2ModelField {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2ModelFieldResponse) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2ModelFieldResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ModelFieldResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ModelFieldResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ModelFieldResponse) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+// Either `field` or `field_id` must be provided. If `field_id` is provided, `field` is ignored.
+type V2Override struct {
+	Field *V2Source `json:"field,omitempty" url:"field,omitempty"`
+	// Field ID of the model field to override.
+	FieldID  *string         `json:"field_id,omitempty" url:"field_id,omitempty"`
+	Function *FilterFunction `json:"function,omitempty" url:"function,omitempty"`
+	Override interface{}     `json:"override,omitempty" url:"override,omitempty"`
+	Value    interface{}     `json:"value,omitempty" url:"value,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2Override) GetField() *V2Source {
+	if v == nil {
+		return nil
+	}
+	return v.Field
+}
+
+func (v *V2Override) GetFieldID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.FieldID
+}
+
+func (v *V2Override) GetFunction() *FilterFunction {
+	if v == nil {
+		return nil
+	}
+	return v.Function
+}
+
+func (v *V2Override) GetOverride() interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.Override
+}
+
+func (v *V2Override) GetValue() interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.Value
+}
+
+func (v *V2Override) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2Override) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2Override
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2Override(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2Override) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ScheduleOptionResponse struct {
+	ScheduleOptions []*ScheduleScheduleOption `json:"schedule_options,omitempty" url:"schedule_options,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2ScheduleOptionResponse) GetScheduleOptions() []*ScheduleScheduleOption {
+	if v == nil {
+		return nil
+	}
+	return v.ScheduleOptions
+}
+
+func (v *V2ScheduleOptionResponse) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2ScheduleOptionResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ScheduleOptionResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ScheduleOptionResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ScheduleOptionResponse) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2ScheduleOptionResponseEnvelope struct {
+	Data *V2ScheduleOptionResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2ScheduleOptionResponseEnvelope) GetData() *V2ScheduleOptionResponse {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2ScheduleOptionResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2ScheduleOptionResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ScheduleOptionResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ScheduleOptionResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ScheduleOptionResponseEnvelope) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2Source struct {
 	Field   string `json:"field" url:"field"`
-	ModelId string `json:"model_id" url:"model_id"`
+	ModelID string `json:"model_id" url:"model_id"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
 }
 
-func (s *Source) UnmarshalJSON(data []byte) error {
-	type unmarshaler Source
+func (v *V2Source) GetField() string {
+	if v == nil {
+		return ""
+	}
+	return v.Field
+}
+
+func (v *V2Source) GetModelID() string {
+	if v == nil {
+		return ""
+	}
+	return v.ModelID
+}
+
+func (v *V2Source) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2Source) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2Source
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*s = Source(value)
-	s._rawJSON = json.RawMessage(data)
+	*v = V2Source(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (s *Source) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+func (v *V2Source) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", s)
+	return fmt.Sprintf("%#v", v)
 }
 
-type StartModelSyncResponseEnvelope struct {
-	Data *StartModelSyncResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+type V2StartSyncResponseEnvelope struct {
+	Data *V2StartSyncResponseSchema `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
 }
 
-func (s *StartModelSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler StartModelSyncResponseEnvelope
+func (v *V2StartSyncResponseEnvelope) GetData() *V2StartSyncResponseSchema {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2StartSyncResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2StartSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2StartSyncResponseEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*s = StartModelSyncResponseEnvelope(value)
-	s._rawJSON = json.RawMessage(data)
+	*v = V2StartSyncResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (s *StartModelSyncResponseEnvelope) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+func (v *V2StartSyncResponseEnvelope) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", s)
+	return fmt.Sprintf("%#v", v)
 }
 
-type StartModelSyncResponseSchema struct {
+type V2StartSyncResponseSchema struct {
 	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
 	// Execution ID
-	Id     *string          `json:"id,omitempty" url:"id,omitempty"`
-	Status *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	ID     *string              `json:"id,omitempty" url:"id,omitempty"`
+	Status *UtilExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
 }
 
-func (s *StartModelSyncResponseSchema) UnmarshalJSON(data []byte) error {
-	type embed StartModelSyncResponseSchema
+func (v *V2StartSyncResponseSchema) GetCreatedAt() *time.Time {
+	if v == nil {
+		return nil
+	}
+	return v.CreatedAt
+}
+
+func (v *V2StartSyncResponseSchema) GetID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ID
+}
+
+func (v *V2StartSyncResponseSchema) GetStatus() *UtilExecutionStatus {
+	if v == nil {
+		return nil
+	}
+	return v.Status
+}
+
+func (v *V2StartSyncResponseSchema) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2StartSyncResponseSchema) UnmarshalJSON(data []byte) error {
+	type embed V2StartSyncResponseSchema
 	var unmarshaler = struct {
 		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
 	}{
-		embed: embed(*s),
+		embed: embed(*v),
 	}
 	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*s = StartModelSyncResponseSchema(unmarshaler.embed)
-	s.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	s._rawJSON = json.RawMessage(data)
+	*v = V2StartSyncResponseSchema(unmarshaler.embed)
+	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (s *StartModelSyncResponseSchema) MarshalJSON() ([]byte, error) {
-	type embed StartModelSyncResponseSchema
+func (v *V2StartSyncResponseSchema) MarshalJSON() ([]byte, error) {
+	type embed V2StartSyncResponseSchema
 	var marshaler = struct {
 		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
 	}{
-		embed:     embed(*s),
-		CreatedAt: core.NewOptionalDateTime(s.CreatedAt),
+		embed:     embed(*v),
+		CreatedAt: internal.NewOptionalDateTime(v.CreatedAt),
 	}
 	return json.Marshal(marshaler)
 }
 
-func (s *StartModelSyncResponseSchema) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+func (v *V2StartSyncResponseSchema) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", s)
+	return fmt.Sprintf("%#v", v)
 }
 
-type SyncStatusEnvelope struct {
-	Data *SyncStatusResponse `json:"data,omitempty" url:"data,omitempty"`
+type V2SyncField struct {
+	// Whether the field should be encrypted.
+	EncryptionEnabled *bool `json:"encryption_enabled,omitempty" url:"encryption_enabled,omitempty"`
+	// New is set to true if the target field should be created by Polytomic. This is not supported by all backends.
+	New *bool `json:"new,omitempty" url:"new,omitempty"`
+	// Value to set in the target field; if provided, 'source' is ignored.
+	OverrideValue *string   `json:"override_value,omitempty" url:"override_value,omitempty"`
+	Source        *V2Source `json:"source,omitempty" url:"source,omitempty"`
+	// Sync mode for the field; defaults to 'updateOrCreate'. If set to 'create', the field will not be synced if it already has a value. This is not supported by all backends.
+	SyncMode *string `json:"sync_mode,omitempty" url:"sync_mode,omitempty"`
+	// Target field ID the source field value will be written to.
+	Target string `json:"target" url:"target"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
 }
 
-func (s *SyncStatusEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler SyncStatusEnvelope
+func (v *V2SyncField) GetEncryptionEnabled() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.EncryptionEnabled
+}
+
+func (v *V2SyncField) GetNew() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.New
+}
+
+func (v *V2SyncField) GetOverrideValue() *string {
+	if v == nil {
+		return nil
+	}
+	return v.OverrideValue
+}
+
+func (v *V2SyncField) GetSource() *V2Source {
+	if v == nil {
+		return nil
+	}
+	return v.Source
+}
+
+func (v *V2SyncField) GetSyncMode() *string {
+	if v == nil {
+		return nil
+	}
+	return v.SyncMode
+}
+
+func (v *V2SyncField) GetTarget() string {
+	if v == nil {
+		return ""
+	}
+	return v.Target
+}
+
+func (v *V2SyncField) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2SyncField) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2SyncField
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*s = SyncStatusEnvelope(value)
-	s._rawJSON = json.RawMessage(data)
+	*v = V2SyncField(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (s *SyncStatusEnvelope) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+func (v *V2SyncField) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", s)
+	return fmt.Sprintf("%#v", v)
 }
 
-type SyncStatusResponse struct {
-	CurrentExecution  *GetExecutionResponseSchema `json:"current_execution,omitempty" url:"current_execution,omitempty"`
-	LastExecution     *GetExecutionResponseSchema `json:"last_execution,omitempty" url:"last_execution,omitempty"`
-	NextExecutionTime *time.Time                  `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty"`
+type V2SyncResponse struct {
+	Active               *bool                    `json:"active,omitempty" url:"active,omitempty"`
+	CreatedAt            *time.Time               `json:"created_at,omitempty" url:"created_at,omitempty"`
+	CreatedBy            *OutputActor             `json:"created_by,omitempty" url:"created_by,omitempty"`
+	EncryptionPassphrase *string                  `json:"encryption_passphrase,omitempty" url:"encryption_passphrase,omitempty"`
+	Fields               []*V2SyncField           `json:"fields,omitempty" url:"fields,omitempty"`
+	FilterLogic          *string                  `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
+	Filters              []*V2Filter              `json:"filters,omitempty" url:"filters,omitempty"`
+	ID                   *string                  `json:"id,omitempty" url:"id,omitempty"`
+	Identity             *V2Identity              `json:"identity,omitempty" url:"identity,omitempty"`
+	Mode                 *ModelsyncSyncTargetMode `json:"mode,omitempty" url:"mode,omitempty"`
+	// Model IDs used in the sync.
+	ModelIDs            []string       `json:"model_ids,omitempty" url:"model_ids,omitempty"`
+	Name                *string        `json:"name,omitempty" url:"name,omitempty"`
+	OnlyEnrichUpdates   *bool          `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
+	OrganizationID      *string        `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OverrideFields      []*V2SyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
+	Overrides           []*V2Override  `json:"overrides,omitempty" url:"overrides,omitempty"`
+	Policies            []string       `json:"policies,omitempty" url:"policies,omitempty"`
+	Schedule            *Schedule      `json:"schedule,omitempty" url:"schedule,omitempty"`
+	SkipInitialBackfill *bool          `json:"skip_initial_backfill,omitempty" url:"skip_initial_backfill,omitempty"`
+	SyncAllRecords      *bool          `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
+	Target              *V2Target      `json:"target,omitempty" url:"target,omitempty"`
+	UpdatedAt           *time.Time     `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	UpdatedBy           *OutputActor   `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
 }
 
-func (s *SyncStatusResponse) UnmarshalJSON(data []byte) error {
-	type embed SyncStatusResponse
+func (v *V2SyncResponse) GetActive() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.Active
+}
+
+func (v *V2SyncResponse) GetCreatedAt() *time.Time {
+	if v == nil {
+		return nil
+	}
+	return v.CreatedAt
+}
+
+func (v *V2SyncResponse) GetCreatedBy() *OutputActor {
+	if v == nil {
+		return nil
+	}
+	return v.CreatedBy
+}
+
+func (v *V2SyncResponse) GetEncryptionPassphrase() *string {
+	if v == nil {
+		return nil
+	}
+	return v.EncryptionPassphrase
+}
+
+func (v *V2SyncResponse) GetFields() []*V2SyncField {
+	if v == nil {
+		return nil
+	}
+	return v.Fields
+}
+
+func (v *V2SyncResponse) GetFilterLogic() *string {
+	if v == nil {
+		return nil
+	}
+	return v.FilterLogic
+}
+
+func (v *V2SyncResponse) GetFilters() []*V2Filter {
+	if v == nil {
+		return nil
+	}
+	return v.Filters
+}
+
+func (v *V2SyncResponse) GetID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ID
+}
+
+func (v *V2SyncResponse) GetIdentity() *V2Identity {
+	if v == nil {
+		return nil
+	}
+	return v.Identity
+}
+
+func (v *V2SyncResponse) GetMode() *ModelsyncSyncTargetMode {
+	if v == nil {
+		return nil
+	}
+	return v.Mode
+}
+
+func (v *V2SyncResponse) GetModelIDs() []string {
+	if v == nil {
+		return nil
+	}
+	return v.ModelIDs
+}
+
+func (v *V2SyncResponse) GetName() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Name
+}
+
+func (v *V2SyncResponse) GetOnlyEnrichUpdates() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.OnlyEnrichUpdates
+}
+
+func (v *V2SyncResponse) GetOrganizationID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.OrganizationID
+}
+
+func (v *V2SyncResponse) GetOverrideFields() []*V2SyncField {
+	if v == nil {
+		return nil
+	}
+	return v.OverrideFields
+}
+
+func (v *V2SyncResponse) GetOverrides() []*V2Override {
+	if v == nil {
+		return nil
+	}
+	return v.Overrides
+}
+
+func (v *V2SyncResponse) GetPolicies() []string {
+	if v == nil {
+		return nil
+	}
+	return v.Policies
+}
+
+func (v *V2SyncResponse) GetSchedule() *Schedule {
+	if v == nil {
+		return nil
+	}
+	return v.Schedule
+}
+
+func (v *V2SyncResponse) GetSkipInitialBackfill() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.SkipInitialBackfill
+}
+
+func (v *V2SyncResponse) GetSyncAllRecords() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.SyncAllRecords
+}
+
+func (v *V2SyncResponse) GetTarget() *V2Target {
+	if v == nil {
+		return nil
+	}
+	return v.Target
+}
+
+func (v *V2SyncResponse) GetUpdatedAt() *time.Time {
+	if v == nil {
+		return nil
+	}
+	return v.UpdatedAt
+}
+
+func (v *V2SyncResponse) GetUpdatedBy() *OutputActor {
+	if v == nil {
+		return nil
+	}
+	return v.UpdatedBy
+}
+
+func (v *V2SyncResponse) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2SyncResponse) UnmarshalJSON(data []byte) error {
+	type embed V2SyncResponse
 	var unmarshaler = struct {
 		embed
-		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
 	}{
-		embed: embed(*s),
+		embed: embed(*v),
 	}
 	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*s = SyncStatusResponse(unmarshaler.embed)
-	s.NextExecutionTime = unmarshaler.NextExecutionTime.TimePtr()
-	s._rawJSON = json.RawMessage(data)
+	*v = V2SyncResponse(unmarshaler.embed)
+	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	v.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (s *SyncStatusResponse) MarshalJSON() ([]byte, error) {
-	type embed SyncStatusResponse
+func (v *V2SyncResponse) MarshalJSON() ([]byte, error) {
+	type embed V2SyncResponse
 	var marshaler = struct {
 		embed
-		NextExecutionTime *core.DateTime `json:"next_execution_time,omitempty"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
 	}{
-		embed:             embed(*s),
-		NextExecutionTime: core.NewOptionalDateTime(s.NextExecutionTime),
+		embed:     embed(*v),
+		CreatedAt: internal.NewOptionalDateTime(v.CreatedAt),
+		UpdatedAt: internal.NewOptionalDateTime(v.UpdatedAt),
 	}
 	return json.Marshal(marshaler)
 }
 
-func (s *SyncStatusResponse) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+func (v *V2SyncResponse) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", s)
+	return fmt.Sprintf("%#v", v)
 }
 
-type Target struct {
+type V2SyncResponseEnvelope struct {
+	Data *V2SyncResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2SyncResponseEnvelope) GetData() *V2SyncResponse {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2SyncResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2SyncResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2SyncResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2SyncResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2SyncResponseEnvelope) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2SyncStatusEnvelope struct {
+	Data *V2SyncStatusResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2SyncStatusEnvelope) GetData() *V2SyncStatusResponse {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2SyncStatusEnvelope) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2SyncStatusEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2SyncStatusEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2SyncStatusEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2SyncStatusEnvelope) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2SyncStatusResponse struct {
+	CurrentExecution  *V2GetExecutionResponseSchema `json:"current_execution,omitempty" url:"current_execution,omitempty"`
+	LastExecution     *V2GetExecutionResponseSchema `json:"last_execution,omitempty" url:"last_execution,omitempty"`
+	NextExecutionTime *time.Time                    `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2SyncStatusResponse) GetCurrentExecution() *V2GetExecutionResponseSchema {
+	if v == nil {
+		return nil
+	}
+	return v.CurrentExecution
+}
+
+func (v *V2SyncStatusResponse) GetLastExecution() *V2GetExecutionResponseSchema {
+	if v == nil {
+		return nil
+	}
+	return v.LastExecution
+}
+
+func (v *V2SyncStatusResponse) GetNextExecutionTime() *time.Time {
+	if v == nil {
+		return nil
+	}
+	return v.NextExecutionTime
+}
+
+func (v *V2SyncStatusResponse) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2SyncStatusResponse) UnmarshalJSON(data []byte) error {
+	type embed V2SyncStatusResponse
+	var unmarshaler = struct {
+		embed
+		NextExecutionTime *internal.DateTime `json:"next_execution_time,omitempty"`
+	}{
+		embed: embed(*v),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*v = V2SyncStatusResponse(unmarshaler.embed)
+	v.NextExecutionTime = unmarshaler.NextExecutionTime.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2SyncStatusResponse) MarshalJSON() ([]byte, error) {
+	type embed V2SyncStatusResponse
+	var marshaler = struct {
+		embed
+		NextExecutionTime *internal.DateTime `json:"next_execution_time,omitempty"`
+	}{
+		embed:             embed(*v),
+		NextExecutionTime: internal.NewOptionalDateTime(v.NextExecutionTime),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (v *V2SyncStatusResponse) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2Target struct {
 	Configuration map[string]interface{} `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionId  string                 `json:"connection_id" url:"connection_id"`
+	ConnectionID  string                 `json:"connection_id" url:"connection_id"`
 	// Create a new target object with these properties.
 	Create      map[string]string `json:"create,omitempty" url:"create,omitempty"`
 	FilterLogic *string           `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
@@ -865,28 +1628,87 @@ type Target struct {
 	Object       *string                `json:"object,omitempty" url:"object,omitempty"`
 	SearchValues map[string]interface{} `json:"search_values,omitempty" url:"search_values,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
 }
 
-func (t *Target) UnmarshalJSON(data []byte) error {
-	type unmarshaler Target
+func (v *V2Target) GetConfiguration() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.Configuration
+}
+
+func (v *V2Target) GetConnectionID() string {
+	if v == nil {
+		return ""
+	}
+	return v.ConnectionID
+}
+
+func (v *V2Target) GetCreate() map[string]string {
+	if v == nil {
+		return nil
+	}
+	return v.Create
+}
+
+func (v *V2Target) GetFilterLogic() *string {
+	if v == nil {
+		return nil
+	}
+	return v.FilterLogic
+}
+
+func (v *V2Target) GetNewName() *string {
+	if v == nil {
+		return nil
+	}
+	return v.NewName
+}
+
+func (v *V2Target) GetObject() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Object
+}
+
+func (v *V2Target) GetSearchValues() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.SearchValues
+}
+
+func (v *V2Target) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2Target) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2Target
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*t = Target(value)
-	t._rawJSON = json.RawMessage(data)
+	*v = V2Target(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (t *Target) String() string {
-	if len(t._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
+func (v *V2Target) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(t); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", t)
+	return fmt.Sprintf("%#v", v)
 }

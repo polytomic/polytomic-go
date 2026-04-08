@@ -6,10 +6,10 @@ import (
 	polytomicgo "github.com/polytomic/polytomic-go"
 )
 
-type CreateScheduleRequest struct {
-	Schedule *polytomicgo.V4BulkSyncScheduleApi `json:"schedule,omitempty" url:"schedule,omitempty"`
+type V4CreateScheduleRequest struct {
+	Schedule *polytomicgo.V4BulkSyncScheduleAPI `json:"schedule,omitempty" url:"-"`
 }
 
-type UpdateScheduleRequest struct {
-	Schedule *polytomicgo.V4BulkSyncScheduleApi `json:"schedule,omitempty" url:"schedule,omitempty"`
+type V4UpdateScheduleRequest struct {
+	Schedule *polytomicgo.V4BulkSyncScheduleAPI `json:"schedule,omitempty" url:"-"`
 }

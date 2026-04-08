@@ -5,170 +5,283 @@ package polytomic
 import (
 	json "encoding/json"
 	fmt "fmt"
-	core "github.com/polytomic/polytomic-go/core"
+	internal "github.com/polytomic/polytomic-go/internal"
 )
 
-type CreateUserRequestSchema struct {
-	Email   string   `json:"email" url:"email"`
-	Role    *string  `json:"role,omitempty" url:"role,omitempty"`
-	RoleIds []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
+type V2CreateUserRequestSchema struct {
+	Email   string   `json:"email" url:"-"`
+	Role    *string  `json:"role,omitempty" url:"-"`
+	RoleIDs []string `json:"role_ids,omitempty" url:"-"`
 }
 
-type UsersCreateApiKeyRequest struct {
+type CreateAPIKeyUsersRequest struct {
 	Force *bool `json:"-" url:"force,omitempty"`
 }
 
-type UpdateUserRequestSchema struct {
-	Email   string   `json:"email" url:"email"`
-	Role    *string  `json:"role,omitempty" url:"role,omitempty"`
-	RoleIds []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
+type V2UpdateUserRequestSchema struct {
+	Email   string   `json:"email" url:"-"`
+	Role    *string  `json:"role,omitempty" url:"-"`
+	RoleIDs []string `json:"role_ids,omitempty" url:"-"`
 }
 
-type ApiKeyResponse struct {
+type V2APIKeyResponse struct {
 	Value *string `json:"value,omitempty" url:"value,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
 }
 
-func (a *ApiKeyResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApiKeyResponse
+func (v *V2APIKeyResponse) GetValue() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Value
+}
+
+func (v *V2APIKeyResponse) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2APIKeyResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2APIKeyResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*a = ApiKeyResponse(value)
-	a._rawJSON = json.RawMessage(data)
+	*v = V2APIKeyResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (a *ApiKeyResponse) String() string {
-	if len(a._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+func (v *V2APIKeyResponse) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(a); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", a)
+	return fmt.Sprintf("%#v", v)
 }
 
-type ApiKeyResponseEnvelope struct {
-	Data *ApiKeyResponse `json:"data,omitempty" url:"data,omitempty"`
+type V2APIKeyResponseEnvelope struct {
+	Data *V2APIKeyResponse `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
 }
 
-func (a *ApiKeyResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApiKeyResponseEnvelope
+func (v *V2APIKeyResponseEnvelope) GetData() *V2APIKeyResponse {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2APIKeyResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2APIKeyResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2APIKeyResponseEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*a = ApiKeyResponseEnvelope(value)
-	a._rawJSON = json.RawMessage(data)
+	*v = V2APIKeyResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (a *ApiKeyResponseEnvelope) String() string {
-	if len(a._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+func (v *V2APIKeyResponseEnvelope) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(a); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", a)
+	return fmt.Sprintf("%#v", v)
 }
 
-type ListUsersEnvelope struct {
-	Data []*User `json:"data,omitempty" url:"data,omitempty"`
+type V2ListUsersEnvelope struct {
+	Data []*V2User `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
 }
 
-func (l *ListUsersEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ListUsersEnvelope
+func (v *V2ListUsersEnvelope) GetData() []*V2User {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2ListUsersEnvelope) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2ListUsersEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ListUsersEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*l = ListUsersEnvelope(value)
-	l._rawJSON = json.RawMessage(data)
+	*v = V2ListUsersEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (l *ListUsersEnvelope) String() string {
-	if len(l._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+func (v *V2ListUsersEnvelope) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(l); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", l)
+	return fmt.Sprintf("%#v", v)
 }
 
-type User struct {
+type V2User struct {
 	Email          *string  `json:"email,omitempty" url:"email,omitempty"`
-	Id             *string  `json:"id,omitempty" url:"id,omitempty"`
-	OrganizationId *string  `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	ID             *string  `json:"id,omitempty" url:"id,omitempty"`
+	OrganizationID *string  `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Role           *string  `json:"role,omitempty" url:"role,omitempty"`
-	RoleIds        []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
+	RoleIDs        []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
 }
 
-func (u *User) UnmarshalJSON(data []byte) error {
-	type unmarshaler User
+func (v *V2User) GetEmail() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Email
+}
+
+func (v *V2User) GetID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ID
+}
+
+func (v *V2User) GetOrganizationID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.OrganizationID
+}
+
+func (v *V2User) GetRole() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Role
+}
+
+func (v *V2User) GetRoleIDs() []string {
+	if v == nil {
+		return nil
+	}
+	return v.RoleIDs
+}
+
+func (v *V2User) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2User) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2User
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = User(value)
-	u._rawJSON = json.RawMessage(data)
+	*v = V2User(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (u *User) String() string {
-	if len(u._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
+func (v *V2User) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(u); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", u)
+	return fmt.Sprintf("%#v", v)
 }
 
-type UserEnvelope struct {
-	Data *User `json:"data,omitempty" url:"data,omitempty"`
+type V2UserEnvelope struct {
+	Data *V2User `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
 }
 
-func (u *UserEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler UserEnvelope
+func (v *V2UserEnvelope) GetData() *V2User {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2UserEnvelope) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2UserEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2UserEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UserEnvelope(value)
-	u._rawJSON = json.RawMessage(data)
+	*v = V2UserEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (u *UserEnvelope) String() string {
-	if len(u._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
+func (v *V2UserEnvelope) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(u); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", u)
+	return fmt.Sprintf("%#v", v)
 }

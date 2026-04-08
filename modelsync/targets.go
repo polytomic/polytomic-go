@@ -2,12 +2,12 @@
 
 package modelsync
 
-type TargetsGetTargetRequest struct {
+type GetTargetTargetsRequest struct {
 	Type   *string `json:"-" url:"type,omitempty"`
 	Search *string `json:"-" url:"search,omitempty"`
 }
 
-type TargetsGetTargetFieldsRequest struct {
+type GetTargetFieldsTargetsRequest struct {
 	Target  string `json:"-" url:"target"`
 	Refresh *bool  `json:"-" url:"refresh,omitempty"`
 }

@@ -5,43 +5,60 @@ package polytomic
 import (
 	json "encoding/json"
 	fmt "fmt"
-	core "github.com/polytomic/polytomic-go/core"
+	internal "github.com/polytomic/polytomic-go/internal"
 )
 
-type GetIdentityResponseEnvelope struct {
-	Data *GetIdentityResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+type V2GetIdentityResponseEnvelope struct {
+	Data *V2GetIdentityResponseSchema `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
 }
 
-func (g *GetIdentityResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetIdentityResponseEnvelope
+func (v *V2GetIdentityResponseEnvelope) GetData() *V2GetIdentityResponseSchema {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2GetIdentityResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2GetIdentityResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2GetIdentityResponseEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetIdentityResponseEnvelope(value)
-	g._rawJSON = json.RawMessage(data)
+	*v = V2GetIdentityResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetIdentityResponseEnvelope) String() string {
-	if len(g._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+func (v *V2GetIdentityResponseEnvelope) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", v)
 }
 
-type GetIdentityResponseSchema struct {
+type V2GetIdentityResponseSchema struct {
 	// The email of the caller.
 	Email *string `json:"email,omitempty" url:"email,omitempty"`
 	// The ID of the caller; this will be omitted for non-user callers.
-	Id *string `json:"id,omitempty" url:"id,omitempty"`
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
 	// Whether the caller is using an organization key.
 	IsOrganization *bool `json:"is_organization,omitempty" url:"is_organization,omitempty"`
 	// Whether the caller is using a partner key.
@@ -50,33 +67,106 @@ type GetIdentityResponseSchema struct {
 	// Whether the caller is a user.
 	IsUser *bool `json:"is_user,omitempty" url:"is_user,omitempty"`
 	// The ID of the organization the caller belongs to.
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// The name of the organization the caller belongs to.
 	OrganizationName *string `json:"organization_name,omitempty" url:"organization_name,omitempty"`
 	Role             *string `json:"role,omitempty" url:"role,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
 }
 
-func (g *GetIdentityResponseSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetIdentityResponseSchema
+func (v *V2GetIdentityResponseSchema) GetEmail() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Email
+}
+
+func (v *V2GetIdentityResponseSchema) GetID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ID
+}
+
+func (v *V2GetIdentityResponseSchema) GetIsOrganization() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.IsOrganization
+}
+
+func (v *V2GetIdentityResponseSchema) GetIsPartner() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.IsPartner
+}
+
+func (v *V2GetIdentityResponseSchema) GetIsSystem() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.IsSystem
+}
+
+func (v *V2GetIdentityResponseSchema) GetIsUser() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.IsUser
+}
+
+func (v *V2GetIdentityResponseSchema) GetOrganizationID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.OrganizationID
+}
+
+func (v *V2GetIdentityResponseSchema) GetOrganizationName() *string {
+	if v == nil {
+		return nil
+	}
+	return v.OrganizationName
+}
+
+func (v *V2GetIdentityResponseSchema) GetRole() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Role
+}
+
+func (v *V2GetIdentityResponseSchema) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2GetIdentityResponseSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2GetIdentityResponseSchema
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetIdentityResponseSchema(value)
-	g._rawJSON = json.RawMessage(data)
+	*v = V2GetIdentityResponseSchema(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetIdentityResponseSchema) String() string {
-	if len(g._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+func (v *V2GetIdentityResponseSchema) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", v)
 }

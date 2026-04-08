@@ -5,34 +5,51 @@ package polytomic
 import (
 	json "encoding/json"
 	fmt "fmt"
-	core "github.com/polytomic/polytomic-go/core"
+	internal "github.com/polytomic/polytomic-go/internal"
 )
 
-type JobResponseEnvelope struct {
-	Data *JobResponse `json:"data,omitempty" url:"data,omitempty"`
+type V2JobResponseEnvelope struct {
+	Data *V2JobResponse `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
 }
 
-func (j *JobResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler JobResponseEnvelope
+func (v *V2JobResponseEnvelope) GetData() *V2JobResponse {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2JobResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V2JobResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2JobResponseEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*j = JobResponseEnvelope(value)
-	j._rawJSON = json.RawMessage(data)
+	*v = V2JobResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (j *JobResponseEnvelope) String() string {
-	if len(j._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(j._rawJSON); err == nil {
+func (v *V2JobResponseEnvelope) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(j); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", j)
+	return fmt.Sprintf("%#v", v)
 }

@@ -5,10 +5,10 @@ package polytomic
 import (
 	json "encoding/json"
 	fmt "fmt"
-	core "github.com/polytomic/polytomic-go/core"
+	internal "github.com/polytomic/polytomic-go/internal"
 )
 
-type QueryRunnerGetQueryRequest struct {
+type GetQueryQueryRunnerRequest struct {
 	Page *string `json:"-" url:"page,omitempty"`
 }
 
@@ -17,43 +17,30 @@ type V4RunQueryRequest struct {
 	Query *string `json:"-" url:"query,omitempty"`
 }
 
-type Pagination struct {
-	// URL to the next page of results, if available. This may be returned as a host relative path.
-	Next *string `json:"next,omitempty" url:"next,omitempty"`
-	// URL to the previous page of results, if available. This may be returned as a host relative path.
-	Previous *string `json:"previous,omitempty" url:"previous,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (p *Pagination) UnmarshalJSON(data []byte) error {
-	type unmarshaler Pagination
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = Pagination(value)
-	p._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *Pagination) String() string {
-	if len(p._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
 type V4QueryResultsEnvelope struct {
-	Data  *V4RunQueryResult `json:"data,omitempty" url:"data,omitempty"`
-	Links *Pagination       `json:"links,omitempty" url:"links,omitempty"`
+	Data  *V4RunQueryResult     `json:"data,omitempty" url:"data,omitempty"`
+	Links *V4RunQueryPagination `json:"links,omitempty" url:"links,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V4QueryResultsEnvelope) GetData() *V4RunQueryResult {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V4QueryResultsEnvelope) GetLinks() *V4RunQueryPagination {
+	if v == nil {
+		return nil
+	}
+	return v.Links
+}
+
+func (v *V4QueryResultsEnvelope) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
 }
 
 func (v *V4QueryResultsEnvelope) UnmarshalJSON(data []byte) error {
@@ -63,17 +50,22 @@ func (v *V4QueryResultsEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*v = V4QueryResultsEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (v *V4QueryResultsEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(v); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", v)
@@ -82,7 +74,19 @@ func (v *V4QueryResultsEnvelope) String() string {
 type V4RunQueryEnvelope struct {
 	Data *V4RunQueryResult `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V4RunQueryEnvelope) GetData() *V4RunQueryResult {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V4RunQueryEnvelope) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
 }
 
 func (v *V4RunQueryEnvelope) UnmarshalJSON(data []byte) error {
@@ -92,17 +96,78 @@ func (v *V4RunQueryEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*v = V4RunQueryEnvelope(value)
-	v._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (v *V4RunQueryEnvelope) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(v); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V4RunQueryPagination struct {
+	// URL to the next page of results, if available. This may be returned as a host relative path.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// URL to the previous page of results, if available. This may be returned as a host relative path.
+	Previous *string `json:"previous,omitempty" url:"previous,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V4RunQueryPagination) GetNext() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Next
+}
+
+func (v *V4RunQueryPagination) GetPrevious() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Previous
+}
+
+func (v *V4RunQueryPagination) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *V4RunQueryPagination) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4RunQueryPagination
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V4RunQueryPagination(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V4RunQueryPagination) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", v)
@@ -116,13 +181,67 @@ type V4RunQueryResult struct {
 	Expires *string `json:"expires,omitempty" url:"expires,omitempty"`
 	// The names of the fields returned by the query. This will not be returned until the query completes.
 	Fields []string `json:"fields,omitempty" url:"fields,omitempty"`
-	// The ID of the query task.
-	Id *string `json:"id,omitempty" url:"id,omitempty"`
+	// The ID of the query task. Poll GET /api/queries/{id} until the task reaches done or failed to retrieve results.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
 	// The query results, returned as an array of objects.
 	Results []map[string]interface{} `json:"results,omitempty" url:"results,omitempty"`
 	Status  *WorkTaskStatus          `json:"status,omitempty" url:"status,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V4RunQueryResult) GetCount() *int {
+	if v == nil {
+		return nil
+	}
+	return v.Count
+}
+
+func (v *V4RunQueryResult) GetError() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Error
+}
+
+func (v *V4RunQueryResult) GetExpires() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Expires
+}
+
+func (v *V4RunQueryResult) GetFields() []string {
+	if v == nil {
+		return nil
+	}
+	return v.Fields
+}
+
+func (v *V4RunQueryResult) GetID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ID
+}
+
+func (v *V4RunQueryResult) GetResults() []map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.Results
+}
+
+func (v *V4RunQueryResult) GetStatus() *WorkTaskStatus {
+	if v == nil {
+		return nil
+	}
+	return v.Status
+}
+
+func (v *V4RunQueryResult) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
 }
 
 func (v *V4RunQueryResult) UnmarshalJSON(data []byte) error {
@@ -132,17 +251,22 @@ func (v *V4RunQueryResult) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*v = V4RunQueryResult(value)
-	v._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (v *V4RunQueryResult) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(v); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", v)

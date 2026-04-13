@@ -8,17 +8,21 @@ type ExecutionsExportLogsRequest struct {
 }
 
 type ExecutionsListRequest struct {
-	PageToken    *string `json:"-" url:"page_token,omitempty"`
-	OnlyTerminal *bool   `json:"-" url:"only_terminal,omitempty"`
-	Ascending    *bool   `json:"-" url:"ascending,omitempty"`
-	Limit        *int    `json:"-" url:"limit,omitempty"`
+	// Pagination cursor returned in the previous response. Omit on the first request.
+	PageToken *string `json:"-" url:"page_token,omitempty"`
+	// When true, only return executions that have finished. Terminal executions are ordered by updated_at.
+	OnlyTerminal *bool `json:"-" url:"only_terminal,omitempty"`
+	// When true, return executions from oldest to newest. Default is newest first.
+	Ascending *bool `json:"-" url:"ascending,omitempty"`
+	// Maximum number of executions to return. Capped at 100.
+	Limit *int `json:"-" url:"limit,omitempty"`
 }
 
 type ExecutionsListStatusRequest struct {
-	// Return the execution status of all syncs in the organization
+	// When true, return status for every sync in the caller's organization. Overrides any sync_id values.
 	All *bool `json:"-" url:"all,omitempty"`
-	// Return the execution status of all active syncs in the organization
+	// When true, return status only for active syncs in the caller's organization. Overrides any sync_id values.
 	Active *bool `json:"-" url:"active,omitempty"`
-	// Return the execution status of the specified sync; this may be supplied multiple times.
+	// Return status for the specified bulk sync. Repeat the parameter to target multiple syncs. Ignored if all or active is true.
 	SyncId []*string `json:"-" url:"sync_id,omitempty"`
 }

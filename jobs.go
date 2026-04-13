@@ -5,25 +5,13 @@ package polytomic
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/polytomic/polytomic-go/internal"
+	core "github.com/polytomic/polytomic-go/core"
 )
 
 type JobResponseEnvelope struct {
 	Data *JobResponse `json:"data,omitempty" url:"data,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (j *JobResponseEnvelope) GetData() *JobResponse {
-	if j == nil {
-		return nil
-	}
-	return j.Data
-}
-
-func (j *JobResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	return j.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (j *JobResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -33,22 +21,17 @@ func (j *JobResponseEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*j = JobResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *j)
-	if err != nil {
-		return err
-	}
-	j.extraProperties = extraProperties
-	j.rawJSON = json.RawMessage(data)
+	j._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (j *JobResponseEnvelope) String() string {
-	if len(j.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(j.rawJSON); err == nil {
+	if len(j._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(j._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(j); err == nil {
+	if value, err := core.StringifyJSON(j); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", j)

@@ -5,27 +5,36 @@ package bulksync
 import (
 	json "encoding/json"
 	polytomicgo "github.com/polytomic/polytomic-go"
-	internal "github.com/polytomic/polytomic-go/internal"
+	core "github.com/polytomic/polytomic-go/core"
 	time "time"
 )
 
 type SchemasListRequest struct {
+	// Optional filters applied to the returned schemas. Supports enabled=true to return only enabled schemas and enabled=false to return only disabled schemas.
 	Filters map[string]*string `json:"-" url:"filters,omitempty"`
 }
 
 type BulkSyncSchemasRequest struct {
-	Schemas []*polytomicgo.BulkSchema `json:"schemas,omitempty" url:"-"`
+	// Schemas to patch. Schemas are matched by id; only schemas present in this list are updated.
+	Schemas []*polytomicgo.BulkSchema `json:"schemas,omitempty" url:"schemas,omitempty"`
 }
 
 type UpdateBulkSchema struct {
-	DataCutoffTimestamp *time.Time                     `json:"data_cutoff_timestamp,omitempty" url:"-"`
-	DisableDataCutoff   *bool                          `json:"disable_data_cutoff,omitempty" url:"-"`
-	Enabled             *bool                          `json:"enabled,omitempty" url:"-"`
-	Fields              []*polytomicgo.UpdateBulkField `json:"fields,omitempty" url:"-"`
-	Filters             []*polytomicgo.BulkFilter      `json:"filters,omitempty" url:"-"`
-	PartitionKey        *string                        `json:"partition_key,omitempty" url:"-"`
-	TrackingField       *string                        `json:"tracking_field,omitempty" url:"-"`
-	UserOutputName      *string                        `json:"user_output_name,omitempty" url:"-"`
+	// Per-schema cutoff. Records older than this timestamp are excluded from sync runs.
+	DataCutoffTimestamp *time.Time `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
+	// When true, the sync ignores any configured data_cutoff_timestamp for this schema.
+	DisableDataCutoff *bool `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
+	// Whether this schema is included in sync runs.
+	Enabled *bool `json:"enabled,omitempty" url:"enabled,omitempty"`
+	// Field-level configuration. Supplying an empty list enables every field discovered on the source.
+	Fields []*polytomicgo.UpdateBulkField `json:"fields,omitempty" url:"fields,omitempty"`
+	// Row-level filters applied when reading from the source.
+	Filters []*polytomicgo.BulkFilter `json:"filters,omitempty" url:"filters,omitempty"`
+	// Source field used to partition rows when writing to the destination.
+	PartitionKey *string `json:"partition_key,omitempty" url:"partition_key,omitempty"`
+	// Source field used to detect changes between incremental sync runs.
+	TrackingField  *string `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
+	UserOutputName *string `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
 }
 
 func (u *UpdateBulkSchema) UnmarshalJSON(data []byte) error {
@@ -42,10 +51,10 @@ func (u *UpdateBulkSchema) MarshalJSON() ([]byte, error) {
 	type embed UpdateBulkSchema
 	var marshaler = struct {
 		embed
-		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
+		DataCutoffTimestamp *core.DateTime `json:"data_cutoff_timestamp,omitempty"`
 	}{
 		embed:               embed(*u),
-		DataCutoffTimestamp: internal.NewOptionalDateTime(u.DataCutoffTimestamp),
+		DataCutoffTimestamp: core.NewOptionalDateTime(u.DataCutoffTimestamp),
 	}
 	return json.Marshal(marshaler)
 }

@@ -5,16 +5,21 @@ package polytomic
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/polytomic/polytomic-go/internal"
+	core "github.com/polytomic/polytomic-go/core"
 	time "time"
 )
 
 type EventsListRequest struct {
-	OrganizationId *string    `json:"-" url:"organization_id,omitempty"`
-	Type           *string    `json:"-" url:"type,omitempty"`
-	StartingAfter  *time.Time `json:"-" url:"starting_after,omitempty"`
-	EndingBefore   *time.Time `json:"-" url:"ending_before,omitempty"`
-	Limit          *int       `json:"-" url:"limit,omitempty"`
+	// Organization to list events for. Only used by system callers; normal and partner callers are always scoped to their own organization.
+	OrganizationId *string `json:"-" url:"organization_id,omitempty"`
+	// Filter to a single event type. Use GET /api/events_types to list valid values.
+	Type *string `json:"-" url:"type,omitempty"`
+	// Return events created strictly after this timestamp.
+	StartingAfter *time.Time `json:"-" url:"starting_after,omitempty"`
+	// Return events created strictly before this timestamp.
+	EndingBefore *time.Time `json:"-" url:"ending_before,omitempty"`
+	// Maximum number of events to return. Default 10, maximum 100.
+	Limit *int `json:"-" url:"limit,omitempty"`
 }
 
 type BulkSyncCanceledEvent struct {
@@ -25,54 +30,7 @@ type BulkSyncCanceledEvent struct {
 	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
 	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BulkSyncCanceledEvent) GetDestinationConnectionId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.DestinationConnectionId
-}
-
-func (b *BulkSyncCanceledEvent) GetExecutionId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.ExecutionId
-}
-
-func (b *BulkSyncCanceledEvent) GetOrganizationId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.OrganizationId
-}
-
-func (b *BulkSyncCanceledEvent) GetSourceConnectionId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SourceConnectionId
-}
-
-func (b *BulkSyncCanceledEvent) GetSyncId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SyncId
-}
-
-func (b *BulkSyncCanceledEvent) GetSyncName() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SyncName
-}
-
-func (b *BulkSyncCanceledEvent) GetExtraProperties() map[string]interface{} {
-	return b.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (b *BulkSyncCanceledEvent) UnmarshalJSON(data []byte) error {
@@ -82,22 +40,17 @@ func (b *BulkSyncCanceledEvent) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*b = BulkSyncCanceledEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
+	b._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (b *BulkSyncCanceledEvent) String() string {
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(b); err == nil {
+	if value, err := core.StringifyJSON(b); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
@@ -112,61 +65,7 @@ type BulkSyncCompletedEvent struct {
 	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	TriggerSource           *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BulkSyncCompletedEvent) GetDestinationConnectionId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.DestinationConnectionId
-}
-
-func (b *BulkSyncCompletedEvent) GetExecutionId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.ExecutionId
-}
-
-func (b *BulkSyncCompletedEvent) GetOrganizationId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.OrganizationId
-}
-
-func (b *BulkSyncCompletedEvent) GetSourceConnectionId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SourceConnectionId
-}
-
-func (b *BulkSyncCompletedEvent) GetSyncId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SyncId
-}
-
-func (b *BulkSyncCompletedEvent) GetSyncName() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SyncName
-}
-
-func (b *BulkSyncCompletedEvent) GetTriggerSource() *string {
-	if b == nil {
-		return nil
-	}
-	return b.TriggerSource
-}
-
-func (b *BulkSyncCompletedEvent) GetExtraProperties() map[string]interface{} {
-	return b.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (b *BulkSyncCompletedEvent) UnmarshalJSON(data []byte) error {
@@ -176,22 +75,17 @@ func (b *BulkSyncCompletedEvent) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*b = BulkSyncCompletedEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
+	b._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (b *BulkSyncCompletedEvent) String() string {
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(b); err == nil {
+	if value, err := core.StringifyJSON(b); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
@@ -206,61 +100,7 @@ type BulkSyncCompletedWithErrorEvent struct {
 	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	TriggerSource           *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BulkSyncCompletedWithErrorEvent) GetDestinationConnectionId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.DestinationConnectionId
-}
-
-func (b *BulkSyncCompletedWithErrorEvent) GetExecutionId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.ExecutionId
-}
-
-func (b *BulkSyncCompletedWithErrorEvent) GetOrganizationId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.OrganizationId
-}
-
-func (b *BulkSyncCompletedWithErrorEvent) GetSourceConnectionId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SourceConnectionId
-}
-
-func (b *BulkSyncCompletedWithErrorEvent) GetSyncId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SyncId
-}
-
-func (b *BulkSyncCompletedWithErrorEvent) GetSyncName() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SyncName
-}
-
-func (b *BulkSyncCompletedWithErrorEvent) GetTriggerSource() *string {
-	if b == nil {
-		return nil
-	}
-	return b.TriggerSource
-}
-
-func (b *BulkSyncCompletedWithErrorEvent) GetExtraProperties() map[string]interface{} {
-	return b.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (b *BulkSyncCompletedWithErrorEvent) UnmarshalJSON(data []byte) error {
@@ -270,22 +110,17 @@ func (b *BulkSyncCompletedWithErrorEvent) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*b = BulkSyncCompletedWithErrorEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
+	b._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (b *BulkSyncCompletedWithErrorEvent) String() string {
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(b); err == nil {
+	if value, err := core.StringifyJSON(b); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
@@ -301,68 +136,7 @@ type BulkSyncFailedEvent struct {
 	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	TriggerSource           *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BulkSyncFailedEvent) GetDestinationConnectionId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.DestinationConnectionId
-}
-
-func (b *BulkSyncFailedEvent) GetError() *string {
-	if b == nil {
-		return nil
-	}
-	return b.Error
-}
-
-func (b *BulkSyncFailedEvent) GetExecutionId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.ExecutionId
-}
-
-func (b *BulkSyncFailedEvent) GetOrganizationId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.OrganizationId
-}
-
-func (b *BulkSyncFailedEvent) GetSourceConnectionId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SourceConnectionId
-}
-
-func (b *BulkSyncFailedEvent) GetSyncId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SyncId
-}
-
-func (b *BulkSyncFailedEvent) GetSyncName() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SyncName
-}
-
-func (b *BulkSyncFailedEvent) GetTriggerSource() *string {
-	if b == nil {
-		return nil
-	}
-	return b.TriggerSource
-}
-
-func (b *BulkSyncFailedEvent) GetExtraProperties() map[string]interface{} {
-	return b.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (b *BulkSyncFailedEvent) UnmarshalJSON(data []byte) error {
@@ -372,22 +146,17 @@ func (b *BulkSyncFailedEvent) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*b = BulkSyncFailedEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
+	b._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (b *BulkSyncFailedEvent) String() string {
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(b); err == nil {
+	if value, err := core.StringifyJSON(b); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
@@ -401,54 +170,7 @@ type BulkSyncRunningEvent struct {
 	SyncId                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
 	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BulkSyncRunningEvent) GetDestinationConnectionId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.DestinationConnectionId
-}
-
-func (b *BulkSyncRunningEvent) GetExecutionId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.ExecutionId
-}
-
-func (b *BulkSyncRunningEvent) GetOrganizationId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.OrganizationId
-}
-
-func (b *BulkSyncRunningEvent) GetSourceConnectionId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SourceConnectionId
-}
-
-func (b *BulkSyncRunningEvent) GetSyncId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SyncId
-}
-
-func (b *BulkSyncRunningEvent) GetSyncName() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SyncName
-}
-
-func (b *BulkSyncRunningEvent) GetExtraProperties() map[string]interface{} {
-	return b.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (b *BulkSyncRunningEvent) UnmarshalJSON(data []byte) error {
@@ -458,82 +180,41 @@ func (b *BulkSyncRunningEvent) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*b = BulkSyncRunningEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
+	b._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (b *BulkSyncRunningEvent) String() string {
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(b); err == nil {
+	if value, err := core.StringifyJSON(b); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
 }
 
 type Event struct {
-	CreatedAt      *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
-	Event          *EventBody `json:"event,omitempty" url:"event,omitempty"`
-	Id             *string    `json:"id,omitempty" url:"id,omitempty"`
-	OrganizationId *string    `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Type           *string    `json:"type,omitempty" url:"type,omitempty"`
+	// Timestamp the event was emitted.
+	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
+	Event     *EventBody `json:"event,omitempty" url:"event,omitempty"`
+	// Unique identifier of the event.
+	Id *string `json:"id,omitempty" url:"id,omitempty"`
+	// Organization the event belongs to.
+	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Event type identifier.
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (e *Event) GetCreatedAt() *time.Time {
-	if e == nil {
-		return nil
-	}
-	return e.CreatedAt
-}
-
-func (e *Event) GetEvent() *EventBody {
-	if e == nil {
-		return nil
-	}
-	return e.Event
-}
-
-func (e *Event) GetId() *string {
-	if e == nil {
-		return nil
-	}
-	return e.Id
-}
-
-func (e *Event) GetOrganizationId() *string {
-	if e == nil {
-		return nil
-	}
-	return e.OrganizationId
-}
-
-func (e *Event) GetType() *string {
-	if e == nil {
-		return nil
-	}
-	return e.Type
-}
-
-func (e *Event) GetExtraProperties() map[string]interface{} {
-	return e.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (e *Event) UnmarshalJSON(data []byte) error {
 	type embed Event
 	var unmarshaler = struct {
 		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
 	}{
 		embed: embed(*e),
 	}
@@ -542,12 +223,7 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 	}
 	*e = Event(unmarshaler.embed)
 	e.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *e)
-	if err != nil {
-		return err
-	}
-	e.extraProperties = extraProperties
-	e.rawJSON = json.RawMessage(data)
+	e._rawJSON = json.RawMessage(data)
 	return nil
 }
 
@@ -555,21 +231,21 @@ func (e *Event) MarshalJSON() ([]byte, error) {
 	type embed Event
 	var marshaler = struct {
 		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
 	}{
 		embed:     embed(*e),
-		CreatedAt: internal.NewOptionalDateTime(e.CreatedAt),
+		CreatedAt: core.NewOptionalDateTime(e.CreatedAt),
 	}
 	return json.Marshal(marshaler)
 }
 
 func (e *Event) String() string {
-	if len(e.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+	if len(e._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(e._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(e); err == nil {
+	if value, err := core.StringifyJSON(e); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", e)
@@ -586,178 +262,96 @@ type EventBody struct {
 	BulkSyncCanceledEvent           *BulkSyncCanceledEvent
 	BulkSyncCompletedWithErrorEvent *BulkSyncCompletedWithErrorEvent
 	BulkSyncFailedEvent             *BulkSyncFailedEvent
-
-	typ string
 }
 
 func NewEventBodyFromSyncRunningEvent(value *SyncRunningEvent) *EventBody {
-	return &EventBody{typ: "SyncRunningEvent", SyncRunningEvent: value}
+	return &EventBody{SyncRunningEvent: value}
 }
 
 func NewEventBodyFromSyncCompletedEvent(value *SyncCompletedEvent) *EventBody {
-	return &EventBody{typ: "SyncCompletedEvent", SyncCompletedEvent: value}
+	return &EventBody{SyncCompletedEvent: value}
 }
 
 func NewEventBodyFromSyncFailedEvent(value *SyncFailedEvent) *EventBody {
-	return &EventBody{typ: "SyncFailedEvent", SyncFailedEvent: value}
+	return &EventBody{SyncFailedEvent: value}
 }
 
 func NewEventBodyFromSyncCanceledEvent(value *SyncCanceledEvent) *EventBody {
-	return &EventBody{typ: "SyncCanceledEvent", SyncCanceledEvent: value}
+	return &EventBody{SyncCanceledEvent: value}
 }
 
 func NewEventBodyFromSyncCompletedWithErrorsEvent(value *SyncCompletedWithErrorsEvent) *EventBody {
-	return &EventBody{typ: "SyncCompletedWithErrorsEvent", SyncCompletedWithErrorsEvent: value}
+	return &EventBody{SyncCompletedWithErrorsEvent: value}
 }
 
 func NewEventBodyFromBulkSyncRunningEvent(value *BulkSyncRunningEvent) *EventBody {
-	return &EventBody{typ: "BulkSyncRunningEvent", BulkSyncRunningEvent: value}
+	return &EventBody{BulkSyncRunningEvent: value}
 }
 
 func NewEventBodyFromBulkSyncCompletedEvent(value *BulkSyncCompletedEvent) *EventBody {
-	return &EventBody{typ: "BulkSyncCompletedEvent", BulkSyncCompletedEvent: value}
+	return &EventBody{BulkSyncCompletedEvent: value}
 }
 
 func NewEventBodyFromBulkSyncCanceledEvent(value *BulkSyncCanceledEvent) *EventBody {
-	return &EventBody{typ: "BulkSyncCanceledEvent", BulkSyncCanceledEvent: value}
+	return &EventBody{BulkSyncCanceledEvent: value}
 }
 
 func NewEventBodyFromBulkSyncCompletedWithErrorEvent(value *BulkSyncCompletedWithErrorEvent) *EventBody {
-	return &EventBody{typ: "BulkSyncCompletedWithErrorEvent", BulkSyncCompletedWithErrorEvent: value}
+	return &EventBody{BulkSyncCompletedWithErrorEvent: value}
 }
 
 func NewEventBodyFromBulkSyncFailedEvent(value *BulkSyncFailedEvent) *EventBody {
-	return &EventBody{typ: "BulkSyncFailedEvent", BulkSyncFailedEvent: value}
-}
-
-func (e *EventBody) GetSyncRunningEvent() *SyncRunningEvent {
-	if e == nil {
-		return nil
-	}
-	return e.SyncRunningEvent
-}
-
-func (e *EventBody) GetSyncCompletedEvent() *SyncCompletedEvent {
-	if e == nil {
-		return nil
-	}
-	return e.SyncCompletedEvent
-}
-
-func (e *EventBody) GetSyncFailedEvent() *SyncFailedEvent {
-	if e == nil {
-		return nil
-	}
-	return e.SyncFailedEvent
-}
-
-func (e *EventBody) GetSyncCanceledEvent() *SyncCanceledEvent {
-	if e == nil {
-		return nil
-	}
-	return e.SyncCanceledEvent
-}
-
-func (e *EventBody) GetSyncCompletedWithErrorsEvent() *SyncCompletedWithErrorsEvent {
-	if e == nil {
-		return nil
-	}
-	return e.SyncCompletedWithErrorsEvent
-}
-
-func (e *EventBody) GetBulkSyncRunningEvent() *BulkSyncRunningEvent {
-	if e == nil {
-		return nil
-	}
-	return e.BulkSyncRunningEvent
-}
-
-func (e *EventBody) GetBulkSyncCompletedEvent() *BulkSyncCompletedEvent {
-	if e == nil {
-		return nil
-	}
-	return e.BulkSyncCompletedEvent
-}
-
-func (e *EventBody) GetBulkSyncCanceledEvent() *BulkSyncCanceledEvent {
-	if e == nil {
-		return nil
-	}
-	return e.BulkSyncCanceledEvent
-}
-
-func (e *EventBody) GetBulkSyncCompletedWithErrorEvent() *BulkSyncCompletedWithErrorEvent {
-	if e == nil {
-		return nil
-	}
-	return e.BulkSyncCompletedWithErrorEvent
-}
-
-func (e *EventBody) GetBulkSyncFailedEvent() *BulkSyncFailedEvent {
-	if e == nil {
-		return nil
-	}
-	return e.BulkSyncFailedEvent
+	return &EventBody{BulkSyncFailedEvent: value}
 }
 
 func (e *EventBody) UnmarshalJSON(data []byte) error {
 	valueSyncRunningEvent := new(SyncRunningEvent)
 	if err := json.Unmarshal(data, &valueSyncRunningEvent); err == nil {
-		e.typ = "SyncRunningEvent"
 		e.SyncRunningEvent = valueSyncRunningEvent
 		return nil
 	}
 	valueSyncCompletedEvent := new(SyncCompletedEvent)
 	if err := json.Unmarshal(data, &valueSyncCompletedEvent); err == nil {
-		e.typ = "SyncCompletedEvent"
 		e.SyncCompletedEvent = valueSyncCompletedEvent
 		return nil
 	}
 	valueSyncFailedEvent := new(SyncFailedEvent)
 	if err := json.Unmarshal(data, &valueSyncFailedEvent); err == nil {
-		e.typ = "SyncFailedEvent"
 		e.SyncFailedEvent = valueSyncFailedEvent
 		return nil
 	}
 	valueSyncCanceledEvent := new(SyncCanceledEvent)
 	if err := json.Unmarshal(data, &valueSyncCanceledEvent); err == nil {
-		e.typ = "SyncCanceledEvent"
 		e.SyncCanceledEvent = valueSyncCanceledEvent
 		return nil
 	}
 	valueSyncCompletedWithErrorsEvent := new(SyncCompletedWithErrorsEvent)
 	if err := json.Unmarshal(data, &valueSyncCompletedWithErrorsEvent); err == nil {
-		e.typ = "SyncCompletedWithErrorsEvent"
 		e.SyncCompletedWithErrorsEvent = valueSyncCompletedWithErrorsEvent
 		return nil
 	}
 	valueBulkSyncRunningEvent := new(BulkSyncRunningEvent)
 	if err := json.Unmarshal(data, &valueBulkSyncRunningEvent); err == nil {
-		e.typ = "BulkSyncRunningEvent"
 		e.BulkSyncRunningEvent = valueBulkSyncRunningEvent
 		return nil
 	}
 	valueBulkSyncCompletedEvent := new(BulkSyncCompletedEvent)
 	if err := json.Unmarshal(data, &valueBulkSyncCompletedEvent); err == nil {
-		e.typ = "BulkSyncCompletedEvent"
 		e.BulkSyncCompletedEvent = valueBulkSyncCompletedEvent
 		return nil
 	}
 	valueBulkSyncCanceledEvent := new(BulkSyncCanceledEvent)
 	if err := json.Unmarshal(data, &valueBulkSyncCanceledEvent); err == nil {
-		e.typ = "BulkSyncCanceledEvent"
 		e.BulkSyncCanceledEvent = valueBulkSyncCanceledEvent
 		return nil
 	}
 	valueBulkSyncCompletedWithErrorEvent := new(BulkSyncCompletedWithErrorEvent)
 	if err := json.Unmarshal(data, &valueBulkSyncCompletedWithErrorEvent); err == nil {
-		e.typ = "BulkSyncCompletedWithErrorEvent"
 		e.BulkSyncCompletedWithErrorEvent = valueBulkSyncCompletedWithErrorEvent
 		return nil
 	}
 	valueBulkSyncFailedEvent := new(BulkSyncFailedEvent)
 	if err := json.Unmarshal(data, &valueBulkSyncFailedEvent); err == nil {
-		e.typ = "BulkSyncFailedEvent"
 		e.BulkSyncFailedEvent = valueBulkSyncFailedEvent
 		return nil
 	}
@@ -765,34 +359,34 @@ func (e *EventBody) UnmarshalJSON(data []byte) error {
 }
 
 func (e EventBody) MarshalJSON() ([]byte, error) {
-	if e.typ == "SyncRunningEvent" || e.SyncRunningEvent != nil {
+	if e.SyncRunningEvent != nil {
 		return json.Marshal(e.SyncRunningEvent)
 	}
-	if e.typ == "SyncCompletedEvent" || e.SyncCompletedEvent != nil {
+	if e.SyncCompletedEvent != nil {
 		return json.Marshal(e.SyncCompletedEvent)
 	}
-	if e.typ == "SyncFailedEvent" || e.SyncFailedEvent != nil {
+	if e.SyncFailedEvent != nil {
 		return json.Marshal(e.SyncFailedEvent)
 	}
-	if e.typ == "SyncCanceledEvent" || e.SyncCanceledEvent != nil {
+	if e.SyncCanceledEvent != nil {
 		return json.Marshal(e.SyncCanceledEvent)
 	}
-	if e.typ == "SyncCompletedWithErrorsEvent" || e.SyncCompletedWithErrorsEvent != nil {
+	if e.SyncCompletedWithErrorsEvent != nil {
 		return json.Marshal(e.SyncCompletedWithErrorsEvent)
 	}
-	if e.typ == "BulkSyncRunningEvent" || e.BulkSyncRunningEvent != nil {
+	if e.BulkSyncRunningEvent != nil {
 		return json.Marshal(e.BulkSyncRunningEvent)
 	}
-	if e.typ == "BulkSyncCompletedEvent" || e.BulkSyncCompletedEvent != nil {
+	if e.BulkSyncCompletedEvent != nil {
 		return json.Marshal(e.BulkSyncCompletedEvent)
 	}
-	if e.typ == "BulkSyncCanceledEvent" || e.BulkSyncCanceledEvent != nil {
+	if e.BulkSyncCanceledEvent != nil {
 		return json.Marshal(e.BulkSyncCanceledEvent)
 	}
-	if e.typ == "BulkSyncCompletedWithErrorEvent" || e.BulkSyncCompletedWithErrorEvent != nil {
+	if e.BulkSyncCompletedWithErrorEvent != nil {
 		return json.Marshal(e.BulkSyncCompletedWithErrorEvent)
 	}
-	if e.typ == "BulkSyncFailedEvent" || e.BulkSyncFailedEvent != nil {
+	if e.BulkSyncFailedEvent != nil {
 		return json.Marshal(e.BulkSyncFailedEvent)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", e)
@@ -812,34 +406,34 @@ type EventBodyVisitor interface {
 }
 
 func (e *EventBody) Accept(visitor EventBodyVisitor) error {
-	if e.typ == "SyncRunningEvent" || e.SyncRunningEvent != nil {
+	if e.SyncRunningEvent != nil {
 		return visitor.VisitSyncRunningEvent(e.SyncRunningEvent)
 	}
-	if e.typ == "SyncCompletedEvent" || e.SyncCompletedEvent != nil {
+	if e.SyncCompletedEvent != nil {
 		return visitor.VisitSyncCompletedEvent(e.SyncCompletedEvent)
 	}
-	if e.typ == "SyncFailedEvent" || e.SyncFailedEvent != nil {
+	if e.SyncFailedEvent != nil {
 		return visitor.VisitSyncFailedEvent(e.SyncFailedEvent)
 	}
-	if e.typ == "SyncCanceledEvent" || e.SyncCanceledEvent != nil {
+	if e.SyncCanceledEvent != nil {
 		return visitor.VisitSyncCanceledEvent(e.SyncCanceledEvent)
 	}
-	if e.typ == "SyncCompletedWithErrorsEvent" || e.SyncCompletedWithErrorsEvent != nil {
+	if e.SyncCompletedWithErrorsEvent != nil {
 		return visitor.VisitSyncCompletedWithErrorsEvent(e.SyncCompletedWithErrorsEvent)
 	}
-	if e.typ == "BulkSyncRunningEvent" || e.BulkSyncRunningEvent != nil {
+	if e.BulkSyncRunningEvent != nil {
 		return visitor.VisitBulkSyncRunningEvent(e.BulkSyncRunningEvent)
 	}
-	if e.typ == "BulkSyncCompletedEvent" || e.BulkSyncCompletedEvent != nil {
+	if e.BulkSyncCompletedEvent != nil {
 		return visitor.VisitBulkSyncCompletedEvent(e.BulkSyncCompletedEvent)
 	}
-	if e.typ == "BulkSyncCanceledEvent" || e.BulkSyncCanceledEvent != nil {
+	if e.BulkSyncCanceledEvent != nil {
 		return visitor.VisitBulkSyncCanceledEvent(e.BulkSyncCanceledEvent)
 	}
-	if e.typ == "BulkSyncCompletedWithErrorEvent" || e.BulkSyncCompletedWithErrorEvent != nil {
+	if e.BulkSyncCompletedWithErrorEvent != nil {
 		return visitor.VisitBulkSyncCompletedWithErrorEvent(e.BulkSyncCompletedWithErrorEvent)
 	}
-	if e.typ == "BulkSyncFailedEvent" || e.BulkSyncFailedEvent != nil {
+	if e.BulkSyncFailedEvent != nil {
 		return visitor.VisitBulkSyncFailedEvent(e.BulkSyncFailedEvent)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", e)
@@ -848,19 +442,7 @@ func (e *EventBody) Accept(visitor EventBodyVisitor) error {
 type EventTypesEnvelope struct {
 	Data []string `json:"data,omitempty" url:"data,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (e *EventTypesEnvelope) GetData() []string {
-	if e == nil {
-		return nil
-	}
-	return e.Data
-}
-
-func (e *EventTypesEnvelope) GetExtraProperties() map[string]interface{} {
-	return e.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (e *EventTypesEnvelope) UnmarshalJSON(data []byte) error {
@@ -870,22 +452,17 @@ func (e *EventTypesEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*e = EventTypesEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *e)
-	if err != nil {
-		return err
-	}
-	e.extraProperties = extraProperties
-	e.rawJSON = json.RawMessage(data)
+	e._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (e *EventTypesEnvelope) String() string {
-	if len(e.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+	if len(e._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(e._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(e); err == nil {
+	if value, err := core.StringifyJSON(e); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", e)
@@ -894,19 +471,7 @@ func (e *EventTypesEnvelope) String() string {
 type EventsEnvelope struct {
 	Data []*Event `json:"data,omitempty" url:"data,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (e *EventsEnvelope) GetData() []*Event {
-	if e == nil {
-		return nil
-	}
-	return e.Data
-}
-
-func (e *EventsEnvelope) GetExtraProperties() map[string]interface{} {
-	return e.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (e *EventsEnvelope) UnmarshalJSON(data []byte) error {
@@ -916,22 +481,17 @@ func (e *EventsEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*e = EventsEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *e)
-	if err != nil {
-		return err
-	}
-	e.extraProperties = extraProperties
-	e.rawJSON = json.RawMessage(data)
+	e._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (e *EventsEnvelope) String() string {
-	if len(e.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+	if len(e._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(e._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(e); err == nil {
+	if value, err := core.StringifyJSON(e); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", e)
@@ -945,54 +505,7 @@ type SyncCanceledEvent struct {
 	SyncName           *string          `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	TargetConnectionId *string          `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (s *SyncCanceledEvent) GetExecutionId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.ExecutionId
-}
-
-func (s *SyncCanceledEvent) GetOrganizationId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.OrganizationId
-}
-
-func (s *SyncCanceledEvent) GetStatus() *ExecutionStatus {
-	if s == nil {
-		return nil
-	}
-	return s.Status
-}
-
-func (s *SyncCanceledEvent) GetSyncId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.SyncId
-}
-
-func (s *SyncCanceledEvent) GetSyncName() *string {
-	if s == nil {
-		return nil
-	}
-	return s.SyncName
-}
-
-func (s *SyncCanceledEvent) GetTargetConnectionId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.TargetConnectionId
-}
-
-func (s *SyncCanceledEvent) GetExtraProperties() map[string]interface{} {
-	return s.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (s *SyncCanceledEvent) UnmarshalJSON(data []byte) error {
@@ -1002,22 +515,17 @@ func (s *SyncCanceledEvent) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*s = SyncCanceledEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
-	if err != nil {
-		return err
-	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
+	s._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (s *SyncCanceledEvent) String() string {
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(s); err == nil {
+	if value, err := core.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
@@ -1044,145 +552,7 @@ type SyncCompletedEvent struct {
 	WarningCount       *int             `json:"warning_count,omitempty" url:"warning_count,omitempty"`
 	Warnings           []string         `json:"warnings,omitempty" url:"warnings,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (s *SyncCompletedEvent) GetDeletedRecords() []string {
-	if s == nil {
-		return nil
-	}
-	return s.DeletedRecords
-}
-
-func (s *SyncCompletedEvent) GetErrorCount() *int {
-	if s == nil {
-		return nil
-	}
-	return s.ErrorCount
-}
-
-func (s *SyncCompletedEvent) GetErroredRecords() []string {
-	if s == nil {
-		return nil
-	}
-	return s.ErroredRecords
-}
-
-func (s *SyncCompletedEvent) GetExecutionId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.ExecutionId
-}
-
-func (s *SyncCompletedEvent) GetInsertedCount() *int {
-	if s == nil {
-		return nil
-	}
-	return s.InsertedCount
-}
-
-func (s *SyncCompletedEvent) GetInsertedRecords() []string {
-	if s == nil {
-		return nil
-	}
-	return s.InsertedRecords
-}
-
-func (s *SyncCompletedEvent) GetOrganizationId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.OrganizationId
-}
-
-func (s *SyncCompletedEvent) GetRecordCount() *int {
-	if s == nil {
-		return nil
-	}
-	return s.RecordCount
-}
-
-func (s *SyncCompletedEvent) GetStatus() *ExecutionStatus {
-	if s == nil {
-		return nil
-	}
-	return s.Status
-}
-
-func (s *SyncCompletedEvent) GetSyncId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.SyncId
-}
-
-func (s *SyncCompletedEvent) GetSyncName() *string {
-	if s == nil {
-		return nil
-	}
-	return s.SyncName
-}
-
-func (s *SyncCompletedEvent) GetTargetConnectionId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.TargetConnectionId
-}
-
-func (s *SyncCompletedEvent) GetTotalRecords() []string {
-	if s == nil {
-		return nil
-	}
-	return s.TotalRecords
-}
-
-func (s *SyncCompletedEvent) GetTrigger() *string {
-	if s == nil {
-		return nil
-	}
-	return s.Trigger
-}
-
-func (s *SyncCompletedEvent) GetUpdatedCount() *int {
-	if s == nil {
-		return nil
-	}
-	return s.UpdatedCount
-}
-
-func (s *SyncCompletedEvent) GetUpdatedRecords() []string {
-	if s == nil {
-		return nil
-	}
-	return s.UpdatedRecords
-}
-
-func (s *SyncCompletedEvent) GetUpsertedCount() *int {
-	if s == nil {
-		return nil
-	}
-	return s.UpsertedCount
-}
-
-func (s *SyncCompletedEvent) GetWarningCount() *int {
-	if s == nil {
-		return nil
-	}
-	return s.WarningCount
-}
-
-func (s *SyncCompletedEvent) GetWarnings() []string {
-	if s == nil {
-		return nil
-	}
-	return s.Warnings
-}
-
-func (s *SyncCompletedEvent) GetExtraProperties() map[string]interface{} {
-	return s.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (s *SyncCompletedEvent) UnmarshalJSON(data []byte) error {
@@ -1192,22 +562,17 @@ func (s *SyncCompletedEvent) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*s = SyncCompletedEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
-	if err != nil {
-		return err
-	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
+	s._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (s *SyncCompletedEvent) String() string {
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(s); err == nil {
+	if value, err := core.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
@@ -1223,68 +588,7 @@ type SyncCompletedWithErrorsEvent struct {
 	SyncName           *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	TargetConnectionId *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (s *SyncCompletedWithErrorsEvent) GetError() *string {
-	if s == nil {
-		return nil
-	}
-	return s.Error
-}
-
-func (s *SyncCompletedWithErrorsEvent) GetExecutionId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.ExecutionId
-}
-
-func (s *SyncCompletedWithErrorsEvent) GetNumberOfErrors() *int {
-	if s == nil {
-		return nil
-	}
-	return s.NumberOfErrors
-}
-
-func (s *SyncCompletedWithErrorsEvent) GetNumberOfWarnings() *int {
-	if s == nil {
-		return nil
-	}
-	return s.NumberOfWarnings
-}
-
-func (s *SyncCompletedWithErrorsEvent) GetOrganizationId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.OrganizationId
-}
-
-func (s *SyncCompletedWithErrorsEvent) GetSyncId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.SyncId
-}
-
-func (s *SyncCompletedWithErrorsEvent) GetSyncName() *string {
-	if s == nil {
-		return nil
-	}
-	return s.SyncName
-}
-
-func (s *SyncCompletedWithErrorsEvent) GetTargetConnectionId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.TargetConnectionId
-}
-
-func (s *SyncCompletedWithErrorsEvent) GetExtraProperties() map[string]interface{} {
-	return s.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (s *SyncCompletedWithErrorsEvent) UnmarshalJSON(data []byte) error {
@@ -1294,22 +598,17 @@ func (s *SyncCompletedWithErrorsEvent) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*s = SyncCompletedWithErrorsEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
-	if err != nil {
-		return err
-	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
+	s._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (s *SyncCompletedWithErrorsEvent) String() string {
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(s); err == nil {
+	if value, err := core.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
@@ -1323,54 +622,7 @@ type SyncFailedEvent struct {
 	SyncName           *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	TargetConnectionId *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (s *SyncFailedEvent) GetError() *string {
-	if s == nil {
-		return nil
-	}
-	return s.Error
-}
-
-func (s *SyncFailedEvent) GetExecutionId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.ExecutionId
-}
-
-func (s *SyncFailedEvent) GetOrganizationId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.OrganizationId
-}
-
-func (s *SyncFailedEvent) GetSyncId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.SyncId
-}
-
-func (s *SyncFailedEvent) GetSyncName() *string {
-	if s == nil {
-		return nil
-	}
-	return s.SyncName
-}
-
-func (s *SyncFailedEvent) GetTargetConnectionId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.TargetConnectionId
-}
-
-func (s *SyncFailedEvent) GetExtraProperties() map[string]interface{} {
-	return s.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (s *SyncFailedEvent) UnmarshalJSON(data []byte) error {
@@ -1380,22 +632,17 @@ func (s *SyncFailedEvent) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*s = SyncFailedEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
-	if err != nil {
-		return err
-	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
+	s._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (s *SyncFailedEvent) String() string {
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(s); err == nil {
+	if value, err := core.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
@@ -1408,47 +655,7 @@ type SyncRunningEvent struct {
 	SyncName           *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	TargetConnectionId *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (s *SyncRunningEvent) GetExecutionId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.ExecutionId
-}
-
-func (s *SyncRunningEvent) GetOrganizationId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.OrganizationId
-}
-
-func (s *SyncRunningEvent) GetSyncId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.SyncId
-}
-
-func (s *SyncRunningEvent) GetSyncName() *string {
-	if s == nil {
-		return nil
-	}
-	return s.SyncName
-}
-
-func (s *SyncRunningEvent) GetTargetConnectionId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.TargetConnectionId
-}
-
-func (s *SyncRunningEvent) GetExtraProperties() map[string]interface{} {
-	return s.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (s *SyncRunningEvent) UnmarshalJSON(data []byte) error {
@@ -1458,22 +665,17 @@ func (s *SyncRunningEvent) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*s = SyncRunningEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
-	if err != nil {
-		return err
-	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
+	s._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (s *SyncRunningEvent) String() string {
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(s); err == nil {
+	if value, err := core.StringifyJSON(s); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)

@@ -3,20 +3,24 @@
 package client
 
 import (
+	bytes "bytes"
 	context "context"
+	json "encoding/json"
+	errors "errors"
+	fmt "fmt"
 	polytomicgo "github.com/polytomic/polytomic-go"
 	executions "github.com/polytomic/polytomic-go/bulksync/executions"
 	schedules "github.com/polytomic/polytomic-go/bulksync/schedules"
 	schemas "github.com/polytomic/polytomic-go/bulksync/schemas"
 	core "github.com/polytomic/polytomic-go/core"
-	internal "github.com/polytomic/polytomic-go/internal"
 	option "github.com/polytomic/polytomic-go/option"
+	io "io"
 	http "net/http"
 )
 
 type Client struct {
 	baseURL string
-	caller  *internal.Caller
+	caller  *core.Caller
 	header  http.Header
 
 	Executions *executions.Client
@@ -28,8 +32,8 @@ func NewClient(opts ...option.RequestOption) *Client {
 	options := core.NewRequestOptions(opts...)
 	return &Client{
 		baseURL: options.BaseURL,
-		caller: internal.NewCaller(
-			&internal.CallerParams{
+		caller: core.NewCaller(
+			&core.CallerParams{
 				Client:      options.HTTPClient,
 				MaxAttempts: options.MaxAttempts,
 			},
@@ -41,55 +45,81 @@ func NewClient(opts ...option.RequestOption) *Client {
 	}
 }
 
+// Lists bulk syncs in the caller's organization.
+//
+// Results are returned as a single `data` array. This version of the endpoint
+// supports the `active` filter but does not support cursor pagination, `limit`,
+// or `page_token` query parameters.
+//
+// If you need a cursor-paginated bulk sync list, use API version `2025-09-18` or
+// later.
+//
+// > 📘 To retrieve a specific sync, use
+// > [`GET /api/bulk/syncs/{id}`](../../../api-reference/bulk-sync/get)
+// > instead of filtering the list client-side.
 func (c *Client) List(
 	ctx context.Context,
 	request *polytomicgo.BulkSyncListRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncListEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := baseURL + "/api/bulk/syncs"
-	queryParams, err := internal.QueryValues(request)
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/" + "api/bulk/syncs"
+
+	queryParams, err := core.QueryValues(request)
 	if err != nil {
 		return nil, err
 	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.BulkSyncListEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodGet,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -97,9 +127,9 @@ func (c *Client) List(
 	return response, nil
 }
 
-// Create a new Bulk Sync from a source to a destination (data warehouse, database, or cloud storage bucket like S3).
+// Creates a new bulk sync from a source connection to a destination connection.
 //
-// Bulk Syncs are used for the ELT pattern (Extract, Load, and Transform), where you want to sync un-transformed data to your data warehouses, databases, or cloud storage buckets like S3.
+// Bulk syncs are used for the ELT pattern (Extract, Load, and Transform), where you want to sync un-transformed data to your data warehouses, databases, or cloud storage buckets like S3.
 //
 // All of the functionality described in [the product
 // documentation](https://docs.polytomic.com/docs/bulk-syncs) is configurable via
@@ -107,9 +137,9 @@ func (c *Client) List(
 //
 // Sample code examples:
 //
-// - [Bulk sync (ELT) from Salesforce to S3](https://apidocs.polytomic.com/guides/code-examples/bulk-sync-elt-from-salesforce-to-s-3)
-// - [Bulk sync (ELT) from Salesforce to Snowflake](https://apidocs.polytomic.com/guides/code-examples/bulk-sync-elt-from-salesforce-to-snowflake)
-// - [Bulk sync (ELT) from HubSpot to PostgreSQL](https://apidocs.polytomic.com/guides/code-examples/bulk-sync-elt-from-hub-spot-to-postgre-sql)
+// - [Bulk sync (ELT) from Salesforce to S3](../../../guides/code-examples/bulk-sync-elt-from-salesforce-to-s-3)
+// - [Bulk sync (ELT) from Salesforce to Snowflake](../../../guides/code-examples/bulk-sync-elt-from-salesforce-to-snowflake)
+// - [Bulk sync (ELT) from HubSpot to PostgreSQL](../../../guides/code-examples/bulk-sync-elt-from-hub-spot-to-postgre-sql)
 //
 // ## Connection specific configuration
 //
@@ -121,67 +151,101 @@ func (c *Client) List(
 // Polytomic reads data from the source connection. This will not be available for
 // integrations that do not support additional configuration.
 //
-// Consult the [connection configurations](https://apidocs.polytomic.com/2024-02-08/guides/configuring-your-connections/overview)
-// to see configurations for particular integrations (for example, [here](https://apidocs.polytomic.com/2024-02-08/guides/configuring-your-connections/connections/postgre-sql#source-1) is the available source configuration for the PostgreSQL bulk sync source).
+// Consult the [connection configurations](../../../guides/configuring-your-connections/overview)
+// to see configurations for particular integrations (for example, [here](../../../guides/configuring-your-connections/connections/postgre-sql#source-1) is the available source configuration for the PostgreSQL bulk sync source).
+//
+// ## Defaults and selection behavior
+//
+// If `schemas` is omitted, the sync is created with all available source schemas
+// selected. Pass `schemas` explicitly if you want the initial sync to include
+// only a subset of tables or objects.
+//
+// Schedule times are interpreted in UTC.
+//
+// When omitted, automatic discovery defaults are conservative:
+//
+//   - `automatically_add_new_objects` defaults to not enabling newly discovered
+//     source objects automatically.
+//   - `automatically_add_new_fields` defaults to enabling newly discovered fields
+//     on already selected objects.
+//   - `normalize_names` defaults to enabled.
 func (c *Client) Create(
 	ctx context.Context,
 	request *polytomicgo.CreateBulkSyncRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := baseURL + "/api/bulk/syncs"
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	headers.Set("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &polytomicgo.BadRequestError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/" + "api/bulk/syncs"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 400:
+			value := new(polytomicgo.BadRequestError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+			return value
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		403: func(apiError *core.APIError) error {
-			return &polytomicgo.ForbiddenError{
-				APIError: apiError,
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		422: func(apiError *core.APIError) error {
-			return &polytomicgo.UnprocessableEntityError{
-				APIError: apiError,
+			return value
+		case 422:
+			value := new(polytomicgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.BulkSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodPost,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Request:      request,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -189,6 +253,15 @@ func (c *Client) Create(
 	return response, nil
 }
 
+// Returns a single bulk sync by ID.
+//
+// The response includes the sync's top-level configuration — source, destination,
+// schedules, and discovery settings.
+//
+//   - To check whether the sync is running and see the most-recent execution result,
+//     use [`GET /api/bulk/syncs/{id}/status`](../../../../api-reference/bulk-sync/get-status).
+//   - To inspect which schemas are selected and how they are configured, use
+//     [`GET /api/bulk/syncs/{id}/schemas`](../../../../api-reference/bulk-sync/schemas/list).
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
@@ -196,52 +269,63 @@ func (c *Client) Get(
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/bulk/syncs/%v",
-		id,
-	)
-	queryParams, err := internal.QueryValues(request)
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v", id)
+
+	queryParams, err := core.QueryValues(request)
 	if err != nil {
 		return nil, err
 	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.BulkSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodGet,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -249,9 +333,41 @@ func (c *Client) Get(
 	return response, nil
 }
 
+// Updates an existing bulk sync's top-level configuration.
+//
+// Updating a bulk sync is a **full replacement** of the sync's top-level
+// configuration. Every field in the request body is written to the sync; any
+// field you omit is cleared or reset to its default value.
+//
+// To make a partial change — for example, toggling `active` or swapping a
+// schedule — fetch the current sync with
+// [`GET /api/bulk/syncs/{id}`](./get),
+// modify the fields you want to change, and send the complete object back in
+// the update request.
+//
+// Updates to `active`, `schedules`, and `policies` take effect immediately.
+// Changes to source or destination configuration take effect on the sync's
+// next execution.
+//
+// Because omitted fields are reset to their defaults, the discovery and
+// naming options behave the same as on create when left out:
+//
+//   - `automatically_add_new_objects` resets to not enabling newly discovered
+//     source objects automatically.
+//   - `automatically_add_new_fields` resets to enabling newly discovered
+//     fields on already selected objects.
+//   - `normalize_names` resets to enabled.
+//
+// Send the existing values explicitly if you want to preserve a non-default or
+// non-empty setting, including schema and field selections.
+//
 // > 📘 Updating schemas
 // >
-// > Schema updates can be performed using the [Update Bulk Sync Schemas](https://apidocs.polytomic.com/api-reference/bulk-sync/schemas/patch) endpoint.
+// > Schema updates are not performed through this endpoint. Use the
+// > [Update Bulk Sync Schemas](./schemas/patch)
+// > endpoint to change a subset of schemas, or
+// > [Update Bulk Sync Schema](./schemas/%7Bschema_id%7D/put)
+// > to replace a single schema's configuration.
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
@@ -259,62 +375,77 @@ func (c *Client) Update(
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/bulk/syncs/%v",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	headers.Set("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &polytomicgo.BadRequestError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v", id)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 400:
+			value := new(polytomicgo.BadRequestError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+			return value
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		403: func(apiError *core.APIError) error {
-			return &polytomicgo.ForbiddenError{
-				APIError: apiError,
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.BulkSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPut,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodPut,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Request:      request,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -322,6 +453,13 @@ func (c *Client) Update(
 	return response, nil
 }
 
+// Deletes a bulk sync, cancelling any running executions.
+//
+// Any execution that is currently running is cancelled before the sync record is
+// removed.
+//
+// > 🚧 All associated schedules, schema configurations, and execution history are
+// > deleted along with the sync.
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
@@ -329,60 +467,75 @@ func (c *Client) Remove(
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/bulk/syncs/%v",
-		id,
-	)
-	queryParams, err := internal.QueryValues(request)
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v", id)
+
+	queryParams, err := core.QueryValues(request)
 	if err != nil {
 		return err
 	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		403: func(apiError *core.APIError) error {
-			return &polytomicgo.ForbiddenError{
-				APIError: apiError,
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodDelete,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodDelete,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return err
@@ -390,6 +543,16 @@ func (c *Client) Remove(
 	return nil
 }
 
+// Sets whether a bulk sync is active.
+//
+// Only active syncs are eligible to execute on their configured schedule.
+// Deactivating a sync prevents future scheduled runs and requests cancellation of
+// any execution that is currently in progress.
+//
+// > 📘 To start or stop a running execution directly, use
+// > [`POST /api/bulk/syncs/{id}/executions`](../../../../../api-reference/bulk-sync/start)
+// > or
+// > [`POST /api/bulk/syncs/{id}/cancel`](../../../../../api-reference/bulk-sync/cancel).
 func (c *Client) Activate(
 	ctx context.Context,
 	id string,
@@ -397,57 +560,70 @@ func (c *Client) Activate(
 	opts ...option.RequestOption,
 ) (*polytomicgo.ActivateSyncEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/bulk/syncs/%v/activate",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	headers.Set("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/activate", id)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		403: func(apiError *core.APIError) error {
-			return &polytomicgo.ForbiddenError{
-				APIError: apiError,
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.ActivateSyncEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodPost,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Request:      request,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -455,6 +631,13 @@ func (c *Client) Activate(
 	return response, nil
 }
 
+// Requests cancellation of any running executions on a bulk sync.
+//
+// Cancellation is asynchronous. A successful response means the cancellation
+// signal has been queued; the running execution continues until the signal is
+// processed. Poll `GET /api/bulk/syncs/{id}/status` until the current execution
+// reaches a terminal state (`completed`, `canceled`, or `failed`) to confirm
+// cancellation has taken effect.
 func (c *Client) Cancel(
 	ctx context.Context,
 	// The active execution of this bulk sync ID will be cancelled.
@@ -462,55 +645,69 @@ func (c *Client) Cancel(
 	opts ...option.RequestOption,
 ) (*polytomicgo.CancelBulkSyncResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/bulk/syncs/%v/cancel",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/cancel", id)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		403: func(apiError *core.APIError) error {
-			return &polytomicgo.ForbiddenError{
-				APIError: apiError,
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.CancelBulkSyncResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodPost,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -518,59 +715,87 @@ func (c *Client) Cancel(
 	return response, nil
 }
 
+// Starts a new execution of a bulk sync.
+//
+// This endpoint returns the execution record immediately after the run is queued
+// or started. Use the execution ID with the bulk-sync execution endpoints if you
+// need to monitor progress in detail.
+//
+// ## Execution modes
+//
+// - Set `test=true` to validate the sync without writing to the destination.
+// - Use `resync_mode` for destructive or full-refresh style reruns.
+// - `test` and `resync_mode` are mutually exclusive.
+//
+// The legacy `resync` boolean is no longer accepted on this v5 endpoint. Send
+// `resync_mode` instead.
+//
+// If another execution is already running, the endpoint returns `409 Conflict`.
 func (c *Client) Start(
 	ctx context.Context,
+	// Unique identifier of the bulk sync.
 	id string,
 	request *polytomicgo.StartBulkSyncRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncExecutionEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/bulk/syncs/%v/executions",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	headers.Set("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &polytomicgo.BadRequestError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/executions", id)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 400:
+			value := new(polytomicgo.BadRequestError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+			return value
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		409: func(apiError *core.APIError) error {
-			return &polytomicgo.ConflictError{
-				APIError: apiError,
+			return value
+		case 409:
+			value := new(polytomicgo.ConflictError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.BulkSyncExecutionEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodPost,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Request:      request,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -578,56 +803,80 @@ func (c *Client) Start(
 	return response, nil
 }
 
+// Returns the current status of a bulk sync.
+//
+// The response includes the sync's current active/inactive state together with
+// information about the most recent execution — its status, start time, and any
+// errors — making this endpoint well-suited for health checks and monitoring
+// dashboards.
+//
+// For the complete execution history, use
+// [`GET /api/bulk/syncs/{id}/executions`](../../../../../api-reference/bulk-sync/executions/list).
+// For the full details of a specific run, including per-schema breakdowns, use
+// [`GET /api/bulk/syncs/{id}/executions/{exec_id}`](../../../../../api-reference/bulk-sync/executions/get).
 func (c *Client) GetStatus(
 	ctx context.Context,
+	// Unique identifier of the bulk sync.
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncStatusEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/bulk/syncs/%v/status",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/bulk/syncs/%v/status", id)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.BulkSyncStatusEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodGet,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -635,69 +884,99 @@ func (c *Client) GetStatus(
 	return response, nil
 }
 
+// Lists the schemas (tables or objects) available on a connection for use as a bulk sync source, optionally including per-schema field details.
+//
+// The response reflects what the
+// connection currently has cached; if the upstream source has changed, trigger
+// a refresh first with
+// [`POST /api/connections/{id}/schemas/refresh`](../../../../../api-reference/schemas/refresh).
+//
+// These are the schemas available for selection, not the schemas already
+// configured on any particular sync. To inspect schemas on a running sync, use
+// [`GET /api/bulk/syncs/{id}/schemas`](../../../../../api-reference/bulk-sync/schemas/list).
+//
+// Pass `include_fields=true` to receive per-schema field details in a single call.
+// Omit it when you only need the schema list, as field enumeration can be slow for
+// large sources.
 func (c *Client) GetSource(
 	ctx context.Context,
+	// Unique identifier of the connection.
 	id string,
 	request *polytomicgo.BulkSyncGetSourceRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncSourceEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/connections/%v/bulksync/source",
-		id,
-	)
-	queryParams, err := internal.QueryValues(request)
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/bulksync/source", id)
+
+	queryParams, err := core.QueryValues(request)
 	if err != nil {
 		return nil, err
 	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &polytomicgo.BadRequestError{
-				APIError: apiError,
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 400:
+			value := new(polytomicgo.BadRequestError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+			return value
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.BulkSyncSourceEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodGet,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -705,61 +984,86 @@ func (c *Client) GetSource(
 	return response, nil
 }
 
+// Describes the destination configuration schema a connection accepts when used as a bulk sync destination.
+//
+// The response is a JSON Schema object describing the shape of the
+// `destination_configuration` field you must supply when
+// [creating](../../../../../api-reference/bulk-sync/create) or
+// [updating](../../../../../api-reference/bulk-sync/update) a bulk sync that uses this
+// connection as its destination. Required fields vary by connection type.
+//
+// > 📘 Fetch this endpoint once per connection type rather than once per sync.
+// > The configuration schema is the same for all syncs sharing the same
+// > destination connection.
 func (c *Client) GetDestination(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomicgo.BulkSyncDestEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/connections/%v/bulksync/target",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &polytomicgo.BadRequestError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/bulksync/target", id)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 400:
+			value := new(polytomicgo.BadRequestError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+			return value
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		403: func(apiError *core.APIError) error {
-			return &polytomicgo.ForbiddenError{
-				APIError: apiError,
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.BulkSyncDestEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodGet,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err

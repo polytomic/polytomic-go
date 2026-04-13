@@ -3,17 +3,21 @@
 package connections
 
 import (
+	bytes "bytes"
 	context "context"
+	json "encoding/json"
+	errors "errors"
+	fmt "fmt"
 	polytomicgo "github.com/polytomic/polytomic-go"
 	core "github.com/polytomic/polytomic-go/core"
-	internal "github.com/polytomic/polytomic-go/internal"
 	option "github.com/polytomic/polytomic-go/option"
+	io "io"
 	http "net/http"
 )
 
 type Client struct {
 	baseURL string
-	caller  *internal.Caller
+	caller  *core.Caller
 	header  http.Header
 }
 
@@ -21,8 +25,8 @@ func NewClient(opts ...option.RequestOption) *Client {
 	options := core.NewRequestOptions(opts...)
 	return &Client{
 		baseURL: options.BaseURL,
-		caller: internal.NewCaller(
-			&internal.CallerParams{
+		caller: core.NewCaller(
+			&core.CallerParams{
 				Client:      options.HTTPClient,
 				MaxAttempts: options.MaxAttempts,
 			},
@@ -31,47 +35,68 @@ func NewClient(opts ...option.RequestOption) *Client {
 	}
 }
 
+// Lists all connection types supported by this deployment.
+//
+// Each entry includes per-type metadata:
+//
+// - The available operations the connection type supports.
+// - Its category.
+// - Whether the connection type is enabled for the caller's organization.
+// - Which modes (source, destination, enrichment) it can act as.
 func (c *Client) GetTypes(
 	ctx context.Context,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ConnectionTypeResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := baseURL + "/api/connection_types"
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/" + "api/connection_types"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.ConnectionTypeResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodGet,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -79,56 +104,77 @@ func (c *Client) GetTypes(
 	return response, nil
 }
 
+// Returns the JSON schema for a connection type.
+//
+// This schema is intended for building forms or validating configuration payloads
+// client-side. It describes the structure Polytomic expects when you create or
+// update a connection of the given type.
+//
+// The response is metadata about the shape of the configuration, not a live
+// connection instance and not a set of current credential values.
 func (c *Client) GetConnectionTypeSchema(
 	ctx context.Context,
+	// Connection type identifier (e.g. postgresql, salesforce, hubspot).
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomicgo.JsonschemaSchema, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/connection_types/%v",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connection_types/%v", id)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.JsonschemaSchema
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodGet,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -136,6 +182,15 @@ func (c *Client) GetConnectionTypeSchema(
 	return response, nil
 }
 
+// Returns completion values for parameter fields on a connection type.
+//
+// This endpoint is useful during connection setup, before a connection exists or
+// before you want to persist it. The supplied `parameters` are applied to a
+// temporary in-memory connection shape and used to resolve dependent options.
+//
+// When an endpoint requires upstream authorization before it can return values,
+// Polytomic returns an error instead of guessing. In that case, complete the
+// authorization flow first and call the endpoint again.
 func (c *Client) GetTypeParameterValues(
 	ctx context.Context,
 	type_ string,
@@ -143,57 +198,70 @@ func (c *Client) GetTypeParameterValues(
 	opts ...option.RequestOption,
 ) (*polytomicgo.ConnectionParameterValuesResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/connection_types/%v/parameter_values",
-		type_,
-	)
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	headers.Set("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &polytomicgo.BadRequestError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connection_types/%v/parameter_values", type_)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 400:
+			value := new(polytomicgo.BadRequestError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+			return value
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.ConnectionParameterValuesResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodPost,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Request:      request,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -201,47 +269,70 @@ func (c *Client) GetTypeParameterValues(
 	return response, nil
 }
 
+// Lists every connection in the caller's organization, with sensitive fields redacted.
+//
+// Sensitive configuration values — passwords, API tokens, private keys — are
+// redacted from all responses. To understand which fields a connection type
+// exposes, consult the parameter schema returned by
+// [`GET /api/connection_types`](../../api-reference/connections/get-types).
+//
+// To inspect the data objects available on a specific connection, use
+// [`POST /api/connections/{id}/schemas/refresh`](../../api-reference/schemas/refresh)
+// followed by [`GET /api/connections/{id}/schemas/status`](../../api-reference/schemas/get-status).
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ConnectionListResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := baseURL + "/api/connections"
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/" + "api/connections"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.ConnectionListResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodGet,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -249,65 +340,94 @@ func (c *Client) List(
 	return response, nil
 }
 
+// Creates a new connection of the specified type.
+//
+// Use [`GET /api/connection_types`](../../api-reference/connections/get-types) to retrieve the
+// list of available types and their parameter schemas. The `configuration`
+// object is type-specific; consult the [integration
+// guides](../../guides/configuring-your-connections/overview)
+// for the required and optional fields for each type.
+//
+// > 📘 Polytomic validates the connection against the upstream service
+// > immediately on creation. The request will fail if the credentials or
+// > endpoint cannot be reached.
 func (c *Client) Create(
 	ctx context.Context,
 	request *polytomicgo.CreateConnectionRequestSchema,
 	opts ...option.RequestOption,
 ) (*polytomicgo.CreateConnectionResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := baseURL + "/api/connections"
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	headers.Set("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &polytomicgo.BadRequestError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/" + "api/connections"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 400:
+			value := new(polytomicgo.BadRequestError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+			return value
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		403: func(apiError *core.APIError) error {
-			return &polytomicgo.ForbiddenError{
-				APIError: apiError,
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		422: func(apiError *core.APIError) error {
-			return &polytomicgo.UnprocessableEntityError{
-				APIError: apiError,
+			return value
+		case 422:
+			value := new(polytomicgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.CreateConnectionResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodPost,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Request:      request,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -315,69 +435,81 @@ func (c *Client) Create(
 	return response, nil
 }
 
-// Creates a new request for [Polytomic Connect](https://www.polytomic.com/connect).
-//
-// This endpoint configures a Polytomic Connect request and returns the URL to
-// redirect users to. This allows embedding Polytomic connection authorization in
-// other applications.
+// Creates a Polytomic Connect session and returns a redirect URL that embeds the Connect modal.
 //
 // See also:
 //
-// - [Embedding authentication](https://apidocs.polytomic.com/2024-02-08/guides/embedding-authentication), a guide to using Polytomic Connect.
+// - [Embedding authentication](../../../guides/embedding-authentication), a guide to using Polytomic Connect.
 func (c *Client) Connect(
 	ctx context.Context,
 	request *polytomicgo.ConnectCardRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ConnectCardResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := baseURL + "/api/connections/connect/"
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	headers.Set("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/" + "api/connections/connect/"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		403: func(apiError *core.APIError) error {
-			return &polytomicgo.ForbiddenError{
-				APIError: apiError,
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		422: func(apiError *core.APIError) error {
-			return &polytomicgo.UnprocessableEntityError{
-				APIError: apiError,
+			return value
+		case 422:
+			value := new(polytomicgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.ConnectCardResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodPost,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Request:      request,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -386,58 +518,85 @@ func (c *Client) Connect(
 }
 
 // Tests a connection configuration.
+//
+// This endpoint is useful for setup flows that want to verify credentials before
+// persisting them.
+//
+// If you provide `connection_id`, Polytomic starts from the saved configuration
+// for that connection and then applies the request's `configuration` values on
+// top. This lets callers test a partial change without resending every existing
+// field.
+//
+// The request does not persist any configuration changes even when validation
+// succeeds.
 func (c *Client) TestConnection(
 	ctx context.Context,
 	request *polytomicgo.TestConnectionRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := baseURL + "/api/connections/test"
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	headers.Set("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &polytomicgo.BadRequestError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/" + "api/connections/test"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 400:
+			value := new(polytomicgo.BadRequestError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+			return value
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodPost,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Request:      request,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return err
@@ -445,56 +604,74 @@ func (c *Client) TestConnection(
 	return nil
 }
 
+// Returns a single connection by ID, with sensitive fields redacted.
+//
+// To inspect the schemas available on this connection, trigger a refresh with
+// [`POST /api/connections/{id}/schemas/refresh`](./schemas/refresh/post) and
+// track progress via
+// [`GET /api/connections/{id}/schemas/status`](./schemas/status/get).
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ConnectionResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/connections/%v",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v", id)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.ConnectionResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodGet,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -502,6 +679,20 @@ func (c *Client) Get(
 	return response, nil
 }
 
+// Updates a connection's configuration.
+//
+// Updating a connection is a **full replacement** of its configuration. Any
+// `configuration` field you omit is cleared. To make a partial change, fetch
+// the current connection with
+// [`GET /api/connections/{id}`](./get), apply your edits, and send the
+// complete object back.
+//
+// > 📘 The connection is re-validated against the upstream service after every
+// > update. The request will fail if the new credentials or endpoint cannot be
+// > reached.
+//
+// Syncs that are already running when the update is submitted are not
+// interrupted; the updated configuration takes effect on their next execution.
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
@@ -509,67 +700,84 @@ func (c *Client) Update(
 	opts ...option.RequestOption,
 ) (*polytomicgo.CreateConnectionResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/connections/%v",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	headers.Set("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &polytomicgo.BadRequestError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v", id)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 400:
+			value := new(polytomicgo.BadRequestError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+			return value
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		403: func(apiError *core.APIError) error {
-			return &polytomicgo.ForbiddenError{
-				APIError: apiError,
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		422: func(apiError *core.APIError) error {
-			return &polytomicgo.UnprocessableEntityError{
-				APIError: apiError,
+			return value
+		case 422:
+			value := new(polytomicgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.CreateConnectionResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPut,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodPut,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Request:      request,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -577,6 +785,12 @@ func (c *Client) Update(
 	return response, nil
 }
 
+// Deletes a connection.
+//
+// > 🚧 Deleting a connection that is referenced by fieldsets, syncs, bulk
+// > syncs, or schedules returns `422 connection in use` unless you pass
+// > `force=true`. With `force=true`, the API deletes those dependent
+// > resources before removing the connection.
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
@@ -584,65 +798,82 @@ func (c *Client) Remove(
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/connections/%v",
-		id,
-	)
-	queryParams, err := internal.QueryValues(request)
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v", id)
+
+	queryParams, err := core.QueryValues(request)
 	if err != nil {
 		return err
 	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		403: func(apiError *core.APIError) error {
-			return &polytomicgo.ForbiddenError{
-				APIError: apiError,
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		422: func(apiError *core.APIError) error {
-			return &polytomicgo.UnprocessableEntityError{
-				APIError: apiError,
+			return value
+		case 422:
+			value := new(polytomicgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodDelete,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodDelete,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return err
@@ -650,56 +881,78 @@ func (c *Client) Remove(
 	return nil
 }
 
+// Returns completion values for parameter fields on a persisted connection.
+//
+// Use this endpoint when the available options for one parameter depend on the
+// connection's saved credentials or previously selected settings. For example,
+// after a connection is authorized, the upstream service may be able to return
+// lists of databases, schemas, or similar selectable values.
+//
+// For new setup flows, prefer
+// [`POST /api/connection_types/{type}/parameter_values`](./get-type-parameter-values),
+// which lets you resolve completions before the connection has been created.
 func (c *Client) GetParameterValues(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ConnectionParameterValuesResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/connections/%v/parameter_values",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/parameter_values", id)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.ConnectionParameterValuesResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodGet,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -707,9 +960,11 @@ func (c *Client) GetParameterValues(
 	return response, nil
 }
 
+// Shares a connection with another organization in the caller's partner account.
+//
 // > 🚧 Requires partner key
 // >
-// > Shared connections can only be created by using [partner keys](https://apidocs.polytomic.com/guides/obtaining-api-keys#partner-keys).
+// > Shared connections can only be created by using [partner keys](../../../../guides/obtaining-api-keys#partner-keys).
 func (c *Client) CreateSharedConnection(
 	ctx context.Context,
 	parentConnectionId string,
@@ -717,62 +972,77 @@ func (c *Client) CreateSharedConnection(
 	opts ...option.RequestOption,
 ) (*polytomicgo.V2CreateSharedConnectionResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/connections/%v/share",
-		parentConnectionId,
-	)
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	headers.Set("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/share", parentConnectionId)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		403: func(apiError *core.APIError) error {
-			return &polytomicgo.ForbiddenError{
-				APIError: apiError,
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		422: func(apiError *core.APIError) error {
-			return &polytomicgo.UnprocessableEntityError{
-				APIError: apiError,
+			return value
+		case 422:
+			value := new(polytomicgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.V2CreateSharedConnectionResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodPost,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Request:      request,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -780,66 +1050,83 @@ func (c *Client) CreateSharedConnection(
 	return response, nil
 }
 
+// Lists shared copies of a connection.
 func (c *Client) ListSharedConnections(
 	ctx context.Context,
 	parentConnectionId string,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ConnectionListResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/connections/%v/shared",
-		parentConnectionId,
-	)
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/connections/%v/shared", parentConnectionId)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		403: func(apiError *core.APIError) error {
-			return &polytomicgo.ForbiddenError{
-				APIError: apiError,
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		422: func(apiError *core.APIError) error {
-			return &polytomicgo.UnprocessableEntityError{
-				APIError: apiError,
+			return value
+		case 422:
+			value := new(polytomicgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.ConnectionListResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodGet,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err

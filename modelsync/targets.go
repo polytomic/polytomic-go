@@ -3,11 +3,15 @@
 package modelsync
 
 type TargetsGetTargetRequest struct {
-	Type   *string `json:"-" url:"type,omitempty"`
+	// Target object type to query (e.g. schema name). When supplied, the response is narrowed to objects matching this type.
+	Type *string `json:"-" url:"type,omitempty"`
+	// Substring filter applied to target object names. Combine with type to browse large schemas.
 	Search *string `json:"-" url:"search,omitempty"`
 }
 
 type TargetsGetTargetFieldsRequest struct {
-	Target  string `json:"-" url:"target"`
-	Refresh *bool  `json:"-" url:"refresh,omitempty"`
+	// Identifier of the target object (e.g. schema.table for a database destination, object name for a SaaS destination).
+	Target string `json:"-" url:"target"`
+	// When true, force a cache refresh of the target's schema before returning its fields.
+	Refresh *bool `json:"-" url:"refresh,omitempty"`
 }

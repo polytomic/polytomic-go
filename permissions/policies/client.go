@@ -3,18 +3,22 @@
 package policies
 
 import (
+	bytes "bytes"
 	context "context"
+	json "encoding/json"
+	errors "errors"
+	fmt "fmt"
 	polytomicgo "github.com/polytomic/polytomic-go"
 	core "github.com/polytomic/polytomic-go/core"
-	internal "github.com/polytomic/polytomic-go/internal"
 	option "github.com/polytomic/polytomic-go/option"
 	permissions "github.com/polytomic/polytomic-go/permissions"
+	io "io"
 	http "net/http"
 )
 
 type Client struct {
 	baseURL string
-	caller  *internal.Caller
+	caller  *core.Caller
 	header  http.Header
 }
 
@@ -22,8 +26,8 @@ func NewClient(opts ...option.RequestOption) *Client {
 	options := core.NewRequestOptions(opts...)
 	return &Client{
 		baseURL: options.BaseURL,
-		caller: internal.NewCaller(
-			&internal.CallerParams{
+		caller: core.NewCaller(
+			&core.CallerParams{
 				Client:      options.HTTPClient,
 				MaxAttempts: options.MaxAttempts,
 			},
@@ -32,47 +36,67 @@ func NewClient(opts ...option.RequestOption) *Client {
 	}
 }
 
+// Lists all policies in the caller's organization.
+//
+// Each policy binds one or more roles to a set of resources, controlling what
+// actions members with those roles can perform on those resources.
+//
+// To inspect a specific policy in detail, use
+// [`GET /api/permissions/policies/{id}`](./%7Bid%7D/get).
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
 ) (*polytomicgo.ListPoliciesResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := baseURL + "/api/permissions/policies"
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/" + "api/permissions/policies"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.ListPoliciesResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodGet,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -80,65 +104,89 @@ func (c *Client) List(
 	return response, nil
 }
 
+// Creates a new policy.
+//
+// A policy binds one or more roles to a set of resources, granting members who
+// hold those roles the actions defined by them. Roles must already exist before
+// they are referenced in a policy; create roles using
+// [`POST /api/permissions/roles`](../../../api-reference/permissions/roles/create).
 func (c *Client) Create(
 	ctx context.Context,
 	request *permissions.CreatePolicyRequest,
 	opts ...option.RequestOption,
 ) (*polytomicgo.PolicyResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := baseURL + "/api/permissions/policies"
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	headers.Set("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &polytomicgo.BadRequestError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/" + "api/permissions/policies"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 400:
+			value := new(polytomicgo.BadRequestError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+			return value
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		403: func(apiError *core.APIError) error {
-			return &polytomicgo.ForbiddenError{
-				APIError: apiError,
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.PolicyResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodPost,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Request:      request,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -146,56 +194,72 @@ func (c *Client) Create(
 	return response, nil
 }
 
+// Returns a single policy by ID, including all action/role bindings it defines.
+//
+// Returns the full set of action/role bindings defined by the policy, including
+// the resources it applies to.
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomicgo.PolicyResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/permissions/policies/%v",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/permissions/policies/%v", id)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.PolicyResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodGet,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -203,6 +267,13 @@ func (c *Client) Get(
 	return response, nil
 }
 
+// Updates an existing policy.
+//
+// The update is a **full replacement** of the policy's bindings. Any role or
+// resource binding not included in the request body is removed. To make a
+// partial change, fetch the current policy with
+// [`GET /api/permissions/policies/{id}`](./get), modify the relevant bindings,
+// and send the complete object back.
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
@@ -210,62 +281,77 @@ func (c *Client) Update(
 	opts ...option.RequestOption,
 ) (*polytomicgo.PolicyResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/permissions/policies/%v",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	headers.Set("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &polytomicgo.BadRequestError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/permissions/policies/%v", id)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 400:
+			value := new(polytomicgo.BadRequestError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+			return value
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		403: func(apiError *core.APIError) error {
-			return &polytomicgo.ForbiddenError{
-				APIError: apiError,
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.PolicyResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPut,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodPut,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Request:      request,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err
@@ -273,59 +359,77 @@ func (c *Client) Update(
 	return response, nil
 }
 
+// Deletes a policy.
+//
+// Deletion is permanent. Any access that was granted solely through this policy
+// is revoked immediately for all users who depended on it.
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/permissions/policies/%v",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"api/permissions/policies/%v", id)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		403: func(apiError *core.APIError) error {
-			return &polytomicgo.ForbiddenError{
-				APIError: apiError,
+			return value
+		case 403:
+			value := new(polytomicgo.ForbiddenError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		404: func(apiError *core.APIError) error {
-			return &polytomicgo.NotFoundError{
-				APIError: apiError,
+			return value
+		case 404:
+			value := new(polytomicgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodDelete,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodDelete,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return err

@@ -3,17 +3,20 @@
 package identity
 
 import (
+	bytes "bytes"
 	context "context"
+	json "encoding/json"
+	errors "errors"
 	polytomicgo "github.com/polytomic/polytomic-go"
 	core "github.com/polytomic/polytomic-go/core"
-	internal "github.com/polytomic/polytomic-go/internal"
 	option "github.com/polytomic/polytomic-go/option"
+	io "io"
 	http "net/http"
 )
 
 type Client struct {
 	baseURL string
-	caller  *internal.Caller
+	caller  *core.Caller
 	header  http.Header
 }
 
@@ -21,8 +24,8 @@ func NewClient(opts ...option.RequestOption) *Client {
 	options := core.NewRequestOptions(opts...)
 	return &Client{
 		baseURL: options.BaseURL,
-		caller: internal.NewCaller(
-			&internal.CallerParams{
+		caller: core.NewCaller(
+			&core.CallerParams{
 				Client:      options.HTTPClient,
 				MaxAttempts: options.MaxAttempts,
 			},
@@ -31,48 +34,71 @@ func NewClient(opts ...option.RequestOption) *Client {
 	}
 }
 
-// Returns information about the caller's identity.
+// Returns information about the authenticated caller and, if applicable, the organization they are scoped to.
+//
+// Use this endpoint to confirm which kind of credential is being used before
+// calling endpoints with stricter authorization rules.
+//
+// For user-scoped credentials, the response includes the resolved user and
+// organization details. For non-user keys, the response identifies the key class
+// with the corresponding boolean flags instead of impersonating a user.
+//
+// This endpoint is especially useful when debugging why a request is being
+// accepted or rejected by endpoints that are limited to particular caller types.
 func (c *Client) Get(
 	ctx context.Context,
 	opts ...option.RequestOption,
 ) (*polytomicgo.GetIdentityResponseEnvelope, error) {
 	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://app.polytomic.com",
-	)
-	endpointURL := baseURL + "/api/me"
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		401: func(apiError *core.APIError) error {
-			return &polytomicgo.UnauthorizedError{
-				APIError: apiError,
+
+	baseURL := "https://app.polytomic.com"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/" + "api/me"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 401:
+			value := new(polytomicgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &polytomicgo.InternalServerError{
-				APIError: apiError,
+			return value
+		case 500:
+			value := new(polytomicgo.InternalServerError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
 			}
-		},
+			return value
+		}
+		return apiError
 	}
 
 	var response *polytomicgo.GetIdentityResponseEnvelope
 	if err := c.caller.Call(
 		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		&core.CallParams{
+			URL:          endpointURL,
+			Method:       http.MethodGet,
+			MaxAttempts:  options.MaxAttempts,
+			Headers:      headers,
+			Client:       options.HTTPClient,
+			Response:     &response,
+			ErrorDecoder: errorDecoder,
 		},
 	); err != nil {
 		return nil, err

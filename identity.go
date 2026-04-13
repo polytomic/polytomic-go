@@ -5,25 +5,13 @@ package polytomic
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/polytomic/polytomic-go/internal"
+	core "github.com/polytomic/polytomic-go/core"
 )
 
 type GetIdentityResponseEnvelope struct {
 	Data *GetIdentityResponseSchema `json:"data,omitempty" url:"data,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetIdentityResponseEnvelope) GetData() *GetIdentityResponseSchema {
-	if g == nil {
-		return nil
-	}
-	return g.Data
-}
-
-func (g *GetIdentityResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (g *GetIdentityResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -33,22 +21,17 @@ func (g *GetIdentityResponseEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*g = GetIdentityResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	g._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (g *GetIdentityResponseEnvelope) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := core.StringifyJSON(g); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", g)
@@ -63,84 +46,18 @@ type GetIdentityResponseSchema struct {
 	IsOrganization *bool `json:"is_organization,omitempty" url:"is_organization,omitempty"`
 	// Whether the caller is using a partner key.
 	IsPartner *bool `json:"is_partner,omitempty" url:"is_partner,omitempty"`
-	IsSystem  *bool `json:"is_system,omitempty" url:"is_system,omitempty"`
+	// Whether the caller is a system actor.
+	IsSystem *bool `json:"is_system,omitempty" url:"is_system,omitempty"`
 	// Whether the caller is a user.
 	IsUser *bool `json:"is_user,omitempty" url:"is_user,omitempty"`
 	// The ID of the organization the caller belongs to.
 	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// The name of the organization the caller belongs to.
 	OrganizationName *string `json:"organization_name,omitempty" url:"organization_name,omitempty"`
-	Role             *string `json:"role,omitempty" url:"role,omitempty"`
+	// Deprecated legacy role name. Populated only for user callers.
+	Role *string `json:"role,omitempty" url:"role,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetIdentityResponseSchema) GetEmail() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Email
-}
-
-func (g *GetIdentityResponseSchema) GetId() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Id
-}
-
-func (g *GetIdentityResponseSchema) GetIsOrganization() *bool {
-	if g == nil {
-		return nil
-	}
-	return g.IsOrganization
-}
-
-func (g *GetIdentityResponseSchema) GetIsPartner() *bool {
-	if g == nil {
-		return nil
-	}
-	return g.IsPartner
-}
-
-func (g *GetIdentityResponseSchema) GetIsSystem() *bool {
-	if g == nil {
-		return nil
-	}
-	return g.IsSystem
-}
-
-func (g *GetIdentityResponseSchema) GetIsUser() *bool {
-	if g == nil {
-		return nil
-	}
-	return g.IsUser
-}
-
-func (g *GetIdentityResponseSchema) GetOrganizationId() *string {
-	if g == nil {
-		return nil
-	}
-	return g.OrganizationId
-}
-
-func (g *GetIdentityResponseSchema) GetOrganizationName() *string {
-	if g == nil {
-		return nil
-	}
-	return g.OrganizationName
-}
-
-func (g *GetIdentityResponseSchema) GetRole() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Role
-}
-
-func (g *GetIdentityResponseSchema) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (g *GetIdentityResponseSchema) UnmarshalJSON(data []byte) error {
@@ -150,22 +67,17 @@ func (g *GetIdentityResponseSchema) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*g = GetIdentityResponseSchema(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	g._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (g *GetIdentityResponseSchema) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := core.StringifyJSON(g); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", g)

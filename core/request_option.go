@@ -5,7 +5,6 @@ package core
 import (
 	fmt "fmt"
 	http "net/http"
-	url "net/url"
 )
 
 // RequestOption adapts the behavior of the client or an individual request.
@@ -18,14 +17,12 @@ type RequestOption interface {
 // This type is primarily used by the generated code and is not meant
 // to be used directly; use the option package instead.
 type RequestOptions struct {
-	BaseURL         string
-	HTTPClient      HTTPClient
-	HTTPHeader      http.Header
-	BodyProperties  map[string]interface{}
-	QueryParameters url.Values
-	MaxAttempts     uint
-	Token           string
-	Version         interface{}
+	BaseURL     string
+	HTTPClient  HTTPClient
+	HTTPHeader  http.Header
+	MaxAttempts uint
+	Token       string
+	Version     *string
 }
 
 // NewRequestOptions returns a new *RequestOptions value.
@@ -34,9 +31,7 @@ type RequestOptions struct {
 // to be used directly; use RequestOption instead.
 func NewRequestOptions(opts ...RequestOption) *RequestOptions {
 	options := &RequestOptions{
-		HTTPHeader:      make(http.Header),
-		BodyProperties:  make(map[string]interface{}),
-		QueryParameters: make(url.Values),
+		HTTPHeader: make(http.Header),
 	}
 	for _, opt := range opts {
 		opt.applyRequestOptions(options)
@@ -51,7 +46,9 @@ func (r *RequestOptions) ToHeader() http.Header {
 	if r.Token != "" {
 		header.Set("Authorization", "Bearer "+r.Token)
 	}
-	header.Set("X-Polytomic-Version", fmt.Sprintf("%v", r.Version))
+	if r.Version != nil {
+		header.Set("X-Polytomic-Version", fmt.Sprintf("%v", *r.Version))
+	}
 	return header
 }
 
@@ -59,8 +56,7 @@ func (r *RequestOptions) cloneHeader() http.Header {
 	headers := r.HTTPHeader.Clone()
 	headers.Set("X-Fern-Language", "Go")
 	headers.Set("X-Fern-SDK-Name", "github.com/polytomic/polytomic-go")
-	headers.Set("X-Fern-SDK-Version", "v1.17.0")
-	headers.Set("User-Agent", "github.com/polytomic/polytomic-go/1.17.0")
+	headers.Set("X-Fern-SDK-Version", "v1.17.1")
 	return headers
 }
 
@@ -91,24 +87,6 @@ func (h *HTTPHeaderOption) applyRequestOptions(opts *RequestOptions) {
 	opts.HTTPHeader = h.HTTPHeader
 }
 
-// BodyPropertiesOption implements the RequestOption interface.
-type BodyPropertiesOption struct {
-	BodyProperties map[string]interface{}
-}
-
-func (b *BodyPropertiesOption) applyRequestOptions(opts *RequestOptions) {
-	opts.BodyProperties = b.BodyProperties
-}
-
-// QueryParametersOption implements the RequestOption interface.
-type QueryParametersOption struct {
-	QueryParameters url.Values
-}
-
-func (q *QueryParametersOption) applyRequestOptions(opts *RequestOptions) {
-	opts.QueryParameters = q.QueryParameters
-}
-
 // MaxAttemptsOption implements the RequestOption interface.
 type MaxAttemptsOption struct {
 	MaxAttempts uint
@@ -129,7 +107,7 @@ func (t *TokenOption) applyRequestOptions(opts *RequestOptions) {
 
 // VersionOption implements the RequestOption interface.
 type VersionOption struct {
-	Version interface{}
+	Version *string
 }
 
 func (v *VersionOption) applyRequestOptions(opts *RequestOptions) {

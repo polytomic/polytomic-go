@@ -13,5 +13,5 @@ type ExecutionsListRequest struct {
 }
 
 type UpdateExecutionRequest struct {
-	Status polytomicgo.ExecutionStatus `json:"status" url:"-"`
+	Status polytomicgo.ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
 }

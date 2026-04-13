@@ -5,29 +5,19 @@ package polytomic
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/polytomic/polytomic-go/internal"
+	core "github.com/polytomic/polytomic-go/core"
 )
 
 type V4GlobalErrorSubscribersRequest struct {
-	Emails []string `json:"emails,omitempty" url:"-"`
+	// Email addresses to subscribe to global sync error notifications. Replaces the current subscriber list; pass an empty list to unsubscribe everyone.
+	Emails []string `json:"emails,omitempty" url:"emails,omitempty"`
 }
 
 type V4GlobalErrorSubscribersResponse struct {
+	// Email addresses subscribed to global sync error notifications for the organization.
 	Emails []string `json:"emails,omitempty" url:"emails,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V4GlobalErrorSubscribersResponse) GetEmails() []string {
-	if v == nil {
-		return nil
-	}
-	return v.Emails
-}
-
-func (v *V4GlobalErrorSubscribersResponse) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (v *V4GlobalErrorSubscribersResponse) UnmarshalJSON(data []byte) error {
@@ -37,22 +27,17 @@ func (v *V4GlobalErrorSubscribersResponse) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*v = V4GlobalErrorSubscribersResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
+	v._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (v *V4GlobalErrorSubscribersResponse) String() string {
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(v); err == nil {
+	if value, err := core.StringifyJSON(v); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", v)

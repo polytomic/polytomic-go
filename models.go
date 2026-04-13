@@ -5,7 +5,7 @@ package polytomic
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/polytomic/polytomic-go/internal"
+	core "github.com/polytomic/polytomic-go/core"
 	time "time"
 )
 
@@ -32,11 +32,12 @@ type ModelsGetRequest struct {
 }
 
 type ModelsGetEnrichmentSourceRequest struct {
+	// Query parameters used to incrementally refine a dependent source configuration. Keys correspond to configuration fields returned by previous calls to this endpoint.
 	Params map[string][]string `json:"-" url:"params,omitempty"`
 }
 
 type GetEnrichmentInputFieldsRequest struct {
-	Configuration *V2EnricherConfiguration `json:"configuration,omitempty" url:"-"`
+	Configuration *V2EnricherConfiguration `json:"configuration,omitempty" url:"configuration,omitempty"`
 }
 
 type ModelsPreviewRequest struct {
@@ -67,19 +68,19 @@ type ModelsSampleRequest struct {
 
 type UpdateModelRequest struct {
 	Async            *bool                     `json:"-" url:"async,omitempty"`
-	AdditionalFields []*ModelModelFieldRequest `json:"additional_fields,omitempty" url:"-"`
-	Configuration    map[string]interface{}    `json:"configuration,omitempty" url:"-"`
-	ConnectionId     string                    `json:"connection_id" url:"-"`
-	Enricher         *Enrichment               `json:"enricher,omitempty" url:"-"`
-	Fields           []string                  `json:"fields,omitempty" url:"-"`
-	Identifier       *string                   `json:"identifier,omitempty" url:"-"`
-	Labels           []string                  `json:"labels,omitempty" url:"-"`
-	Name             string                    `json:"name" url:"-"`
-	OrganizationId   *string                   `json:"organization_id,omitempty" url:"-"`
-	Policies         []string                  `json:"policies,omitempty" url:"-"`
-	Refresh          *bool                     `json:"refresh,omitempty" url:"-"`
-	Relations        []*ModelRelation          `json:"relations,omitempty" url:"-"`
-	TrackingColumns  []string                  `json:"tracking_columns,omitempty" url:"-"`
+	AdditionalFields []*ModelModelFieldRequest `json:"additional_fields,omitempty" url:"additional_fields,omitempty"`
+	Configuration    map[string]interface{}    `json:"configuration,omitempty" url:"configuration,omitempty"`
+	ConnectionId     string                    `json:"connection_id" url:"connection_id"`
+	Enricher         *Enrichment               `json:"enricher,omitempty" url:"enricher,omitempty"`
+	Fields           []string                  `json:"fields,omitempty" url:"fields,omitempty"`
+	Identifier       *string                   `json:"identifier,omitempty" url:"identifier,omitempty"`
+	Labels           []string                  `json:"labels,omitempty" url:"labels,omitempty"`
+	Name             string                    `json:"name" url:"name"`
+	OrganizationId   *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies         []string                  `json:"policies,omitempty" url:"policies,omitempty"`
+	Refresh          *bool                     `json:"refresh,omitempty" url:"refresh,omitempty"`
+	Relations        []*ModelRelation          `json:"relations,omitempty" url:"relations,omitempty"`
+	TrackingColumns  []string                  `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
 }
 
 type CreateModelRequest struct {
@@ -96,96 +97,7 @@ type CreateModelRequest struct {
 	Relations        []*ModelRelation          `json:"relations,omitempty" url:"relations,omitempty"`
 	TrackingColumns  []string                  `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *CreateModelRequest) GetAdditionalFields() []*ModelModelFieldRequest {
-	if c == nil {
-		return nil
-	}
-	return c.AdditionalFields
-}
-
-func (c *CreateModelRequest) GetConfiguration() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.Configuration
-}
-
-func (c *CreateModelRequest) GetConnectionId() string {
-	if c == nil {
-		return ""
-	}
-	return c.ConnectionId
-}
-
-func (c *CreateModelRequest) GetEnricher() *Enrichment {
-	if c == nil {
-		return nil
-	}
-	return c.Enricher
-}
-
-func (c *CreateModelRequest) GetFields() []string {
-	if c == nil {
-		return nil
-	}
-	return c.Fields
-}
-
-func (c *CreateModelRequest) GetIdentifier() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Identifier
-}
-
-func (c *CreateModelRequest) GetLabels() []string {
-	if c == nil {
-		return nil
-	}
-	return c.Labels
-}
-
-func (c *CreateModelRequest) GetName() string {
-	if c == nil {
-		return ""
-	}
-	return c.Name
-}
-
-func (c *CreateModelRequest) GetOrganizationId() *string {
-	if c == nil {
-		return nil
-	}
-	return c.OrganizationId
-}
-
-func (c *CreateModelRequest) GetPolicies() []string {
-	if c == nil {
-		return nil
-	}
-	return c.Policies
-}
-
-func (c *CreateModelRequest) GetRelations() []*ModelRelation {
-	if c == nil {
-		return nil
-	}
-	return c.Relations
-}
-
-func (c *CreateModelRequest) GetTrackingColumns() []string {
-	if c == nil {
-		return nil
-	}
-	return c.TrackingColumns
-}
-
-func (c *CreateModelRequest) GetExtraProperties() map[string]interface{} {
-	return c.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (c *CreateModelRequest) UnmarshalJSON(data []byte) error {
@@ -195,22 +107,17 @@ func (c *CreateModelRequest) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*c = CreateModelRequest(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
+	c._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (c *CreateModelRequest) String() string {
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(c); err == nil {
+	if value, err := core.StringifyJSON(c); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
@@ -225,47 +132,7 @@ type Enrichment struct {
 	Fields   []*ModelField      `json:"fields,omitempty" url:"fields,omitempty"`
 	Mappings *V2EnricherMapping `json:"mappings,omitempty" url:"mappings,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (e *Enrichment) GetConfiguration() *V2EnricherConfiguration {
-	if e == nil {
-		return nil
-	}
-	return e.Configuration
-}
-
-func (e *Enrichment) GetConnectionId() *string {
-	if e == nil {
-		return nil
-	}
-	return e.ConnectionId
-}
-
-func (e *Enrichment) GetEnricherId() *string {
-	if e == nil {
-		return nil
-	}
-	return e.EnricherId
-}
-
-func (e *Enrichment) GetFields() []*ModelField {
-	if e == nil {
-		return nil
-	}
-	return e.Fields
-}
-
-func (e *Enrichment) GetMappings() *V2EnricherMapping {
-	if e == nil {
-		return nil
-	}
-	return e.Mappings
-}
-
-func (e *Enrichment) GetExtraProperties() map[string]interface{} {
-	return e.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (e *Enrichment) UnmarshalJSON(data []byte) error {
@@ -275,22 +142,17 @@ func (e *Enrichment) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*e = Enrichment(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *e)
-	if err != nil {
-		return err
-	}
-	e.extraProperties = extraProperties
-	e.rawJSON = json.RawMessage(data)
+	e._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (e *Enrichment) String() string {
-	if len(e.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+	if len(e._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(e._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(e); err == nil {
+	if value, err := core.StringifyJSON(e); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", e)
@@ -301,19 +163,7 @@ type LabelLabel = map[string]interface{}
 type ModelListResponseEnvelope struct {
 	Data []*ModelResponse `json:"data,omitempty" url:"data,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (m *ModelListResponseEnvelope) GetData() []*ModelResponse {
-	if m == nil {
-		return nil
-	}
-	return m.Data
-}
-
-func (m *ModelListResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	return m.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (m *ModelListResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -323,22 +173,17 @@ func (m *ModelListResponseEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*m = ModelListResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
-	if err != nil {
-		return err
-	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
+	m._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (m *ModelListResponseEnvelope) String() string {
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(m); err == nil {
+	if value, err := core.StringifyJSON(m); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
@@ -350,40 +195,7 @@ type ModelModelFieldRequest struct {
 	Name    string  `json:"name" url:"name"`
 	Type    string  `json:"type" url:"type"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (m *ModelModelFieldRequest) GetExample() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Example
-}
-
-func (m *ModelModelFieldRequest) GetLabel() string {
-	if m == nil {
-		return ""
-	}
-	return m.Label
-}
-
-func (m *ModelModelFieldRequest) GetName() string {
-	if m == nil {
-		return ""
-	}
-	return m.Name
-}
-
-func (m *ModelModelFieldRequest) GetType() string {
-	if m == nil {
-		return ""
-	}
-	return m.Type
-}
-
-func (m *ModelModelFieldRequest) GetExtraProperties() map[string]interface{} {
-	return m.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (m *ModelModelFieldRequest) UnmarshalJSON(data []byte) error {
@@ -393,22 +205,17 @@ func (m *ModelModelFieldRequest) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*m = ModelModelFieldRequest(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
-	if err != nil {
-		return err
-	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
+	m._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (m *ModelModelFieldRequest) String() string {
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(m); err == nil {
+	if value, err := core.StringifyJSON(m); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
@@ -418,26 +225,7 @@ type ModelRelation struct {
 	From *string          `json:"from,omitempty" url:"from,omitempty"`
 	To   *ModelRelationTo `json:"to,omitempty" url:"to,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (m *ModelRelation) GetFrom() *string {
-	if m == nil {
-		return nil
-	}
-	return m.From
-}
-
-func (m *ModelRelation) GetTo() *ModelRelationTo {
-	if m == nil {
-		return nil
-	}
-	return m.To
-}
-
-func (m *ModelRelation) GetExtraProperties() map[string]interface{} {
-	return m.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (m *ModelRelation) UnmarshalJSON(data []byte) error {
@@ -447,22 +235,17 @@ func (m *ModelRelation) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*m = ModelRelation(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
-	if err != nil {
-		return err
-	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
+	m._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (m *ModelRelation) String() string {
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(m); err == nil {
+	if value, err := core.StringifyJSON(m); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
@@ -472,26 +255,7 @@ type ModelRelationTo struct {
 	Field   *string `json:"field,omitempty" url:"field,omitempty"`
 	ModelId *string `json:"model_id,omitempty" url:"model_id,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (m *ModelRelationTo) GetField() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Field
-}
-
-func (m *ModelRelationTo) GetModelId() *string {
-	if m == nil {
-		return nil
-	}
-	return m.ModelId
-}
-
-func (m *ModelRelationTo) GetExtraProperties() map[string]interface{} {
-	return m.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (m *ModelRelationTo) UnmarshalJSON(data []byte) error {
@@ -501,22 +265,17 @@ func (m *ModelRelationTo) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*m = ModelRelationTo(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
-	if err != nil {
-		return err
-	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
+	m._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (m *ModelRelationTo) String() string {
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(m); err == nil {
+	if value, err := core.StringifyJSON(m); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
@@ -542,146 +301,15 @@ type ModelResponse struct {
 	UpdatedBy       *OutputActor           `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 	Version         *int                   `json:"version,omitempty" url:"version,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (m *ModelResponse) GetConfiguration() map[string]interface{} {
-	if m == nil {
-		return nil
-	}
-	return m.Configuration
-}
-
-func (m *ModelResponse) GetConnectionId() *string {
-	if m == nil {
-		return nil
-	}
-	return m.ConnectionId
-}
-
-func (m *ModelResponse) GetCreatedAt() *time.Time {
-	if m == nil {
-		return nil
-	}
-	return m.CreatedAt
-}
-
-func (m *ModelResponse) GetCreatedBy() *OutputActor {
-	if m == nil {
-		return nil
-	}
-	return m.CreatedBy
-}
-
-func (m *ModelResponse) GetEnricher() *Enrichment {
-	if m == nil {
-		return nil
-	}
-	return m.Enricher
-}
-
-func (m *ModelResponse) GetFields() []*ModelField {
-	if m == nil {
-		return nil
-	}
-	return m.Fields
-}
-
-func (m *ModelResponse) GetId() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Id
-}
-
-func (m *ModelResponse) GetIdentifier() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Identifier
-}
-
-func (m *ModelResponse) GetLabels() []LabelLabel {
-	if m == nil {
-		return nil
-	}
-	return m.Labels
-}
-
-func (m *ModelResponse) GetName() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Name
-}
-
-func (m *ModelResponse) GetOrganizationId() *string {
-	if m == nil {
-		return nil
-	}
-	return m.OrganizationId
-}
-
-func (m *ModelResponse) GetPolicies() []string {
-	if m == nil {
-		return nil
-	}
-	return m.Policies
-}
-
-func (m *ModelResponse) GetRelations() []*Relation {
-	if m == nil {
-		return nil
-	}
-	return m.Relations
-}
-
-func (m *ModelResponse) GetTrackingColumns() []string {
-	if m == nil {
-		return nil
-	}
-	return m.TrackingColumns
-}
-
-func (m *ModelResponse) GetType() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Type
-}
-
-func (m *ModelResponse) GetUpdatedAt() *time.Time {
-	if m == nil {
-		return nil
-	}
-	return m.UpdatedAt
-}
-
-func (m *ModelResponse) GetUpdatedBy() *OutputActor {
-	if m == nil {
-		return nil
-	}
-	return m.UpdatedBy
-}
-
-func (m *ModelResponse) GetVersion() *int {
-	if m == nil {
-		return nil
-	}
-	return m.Version
-}
-
-func (m *ModelResponse) GetExtraProperties() map[string]interface{} {
-	return m.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (m *ModelResponse) UnmarshalJSON(data []byte) error {
 	type embed ModelResponse
 	var unmarshaler = struct {
 		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed: embed(*m),
 	}
@@ -691,12 +319,7 @@ func (m *ModelResponse) UnmarshalJSON(data []byte) error {
 	*m = ModelResponse(unmarshaler.embed)
 	m.CreatedAt = unmarshaler.CreatedAt.TimePtr()
 	m.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
-	if err != nil {
-		return err
-	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
+	m._rawJSON = json.RawMessage(data)
 	return nil
 }
 
@@ -704,23 +327,23 @@ func (m *ModelResponse) MarshalJSON() ([]byte, error) {
 	type embed ModelResponse
 	var marshaler = struct {
 		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed:     embed(*m),
-		CreatedAt: internal.NewOptionalDateTime(m.CreatedAt),
-		UpdatedAt: internal.NewOptionalDateTime(m.UpdatedAt),
+		CreatedAt: core.NewOptionalDateTime(m.CreatedAt),
+		UpdatedAt: core.NewOptionalDateTime(m.UpdatedAt),
 	}
 	return json.Marshal(marshaler)
 }
 
 func (m *ModelResponse) String() string {
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(m); err == nil {
+	if value, err := core.StringifyJSON(m); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
@@ -730,26 +353,7 @@ type ModelResponseEnvelope struct {
 	Data *ModelResponse `json:"data,omitempty" url:"data,omitempty"`
 	Job  *JobResponse   `json:"job,omitempty" url:"job,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (m *ModelResponseEnvelope) GetData() *ModelResponse {
-	if m == nil {
-		return nil
-	}
-	return m.Data
-}
-
-func (m *ModelResponseEnvelope) GetJob() *JobResponse {
-	if m == nil {
-		return nil
-	}
-	return m.Job
-}
-
-func (m *ModelResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	return m.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (m *ModelResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -759,22 +363,17 @@ func (m *ModelResponseEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*m = ModelResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
-	if err != nil {
-		return err
-	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
+	m._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (m *ModelResponseEnvelope) String() string {
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(m); err == nil {
+	if value, err := core.StringifyJSON(m); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
@@ -784,26 +383,7 @@ type ModelSample struct {
 	Records  []V2SampleRecord `json:"records,omitempty" url:"records,omitempty"`
 	Warnings []string         `json:"warnings,omitempty" url:"warnings,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (m *ModelSample) GetRecords() []V2SampleRecord {
-	if m == nil {
-		return nil
-	}
-	return m.Records
-}
-
-func (m *ModelSample) GetWarnings() []string {
-	if m == nil {
-		return nil
-	}
-	return m.Warnings
-}
-
-func (m *ModelSample) GetExtraProperties() map[string]interface{} {
-	return m.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (m *ModelSample) UnmarshalJSON(data []byte) error {
@@ -813,22 +393,17 @@ func (m *ModelSample) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*m = ModelSample(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
-	if err != nil {
-		return err
-	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
+	m._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (m *ModelSample) String() string {
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(m); err == nil {
+	if value, err := core.StringifyJSON(m); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
@@ -838,26 +413,7 @@ type ModelSampleResponseEnvelope struct {
 	Data *ModelSample `json:"data,omitempty" url:"data,omitempty"`
 	Job  *JobResponse `json:"job,omitempty" url:"job,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (m *ModelSampleResponseEnvelope) GetData() *ModelSample {
-	if m == nil {
-		return nil
-	}
-	return m.Data
-}
-
-func (m *ModelSampleResponseEnvelope) GetJob() *JobResponse {
-	if m == nil {
-		return nil
-	}
-	return m.Job
-}
-
-func (m *ModelSampleResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	return m.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (m *ModelSampleResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -867,22 +423,17 @@ func (m *ModelSampleResponseEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*m = ModelSampleResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
-	if err != nil {
-		return err
-	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
+	m._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (m *ModelSampleResponseEnvelope) String() string {
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(m); err == nil {
+	if value, err := core.StringifyJSON(m); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
@@ -892,26 +443,7 @@ type Relation struct {
 	From *string     `json:"from,omitempty" url:"from,omitempty"`
 	To   *RelationTo `json:"to,omitempty" url:"to,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (r *Relation) GetFrom() *string {
-	if r == nil {
-		return nil
-	}
-	return r.From
-}
-
-func (r *Relation) GetTo() *RelationTo {
-	if r == nil {
-		return nil
-	}
-	return r.To
-}
-
-func (r *Relation) GetExtraProperties() map[string]interface{} {
-	return r.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (r *Relation) UnmarshalJSON(data []byte) error {
@@ -921,22 +453,17 @@ func (r *Relation) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*r = Relation(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *r)
-	if err != nil {
-		return err
-	}
-	r.extraProperties = extraProperties
-	r.rawJSON = json.RawMessage(data)
+	r._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (r *Relation) String() string {
-	if len(r.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(r); err == nil {
+	if value, err := core.StringifyJSON(r); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", r)
@@ -946,26 +473,7 @@ type RelationTo struct {
 	Field   *string `json:"field,omitempty" url:"field,omitempty"`
 	ModelId *string `json:"model_id,omitempty" url:"model_id,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (r *RelationTo) GetField() *string {
-	if r == nil {
-		return nil
-	}
-	return r.Field
-}
-
-func (r *RelationTo) GetModelId() *string {
-	if r == nil {
-		return nil
-	}
-	return r.ModelId
-}
-
-func (r *RelationTo) GetExtraProperties() map[string]interface{} {
-	return r.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (r *RelationTo) UnmarshalJSON(data []byte) error {
@@ -975,22 +483,17 @@ func (r *RelationTo) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*r = RelationTo(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *r)
-	if err != nil {
-		return err
-	}
-	r.extraProperties = extraProperties
-	r.rawJSON = json.RawMessage(data)
+	r._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (r *RelationTo) String() string {
-	if len(r.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(r); err == nil {
+	if value, err := core.StringifyJSON(r); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", r)
@@ -1005,19 +508,7 @@ type V2EnricherMapping = map[string]string
 type V2GetEnrichmentInputFieldsResponseEnvelope struct {
 	Data [][]string `json:"data,omitempty" url:"data,omitempty"`
 
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2GetEnrichmentInputFieldsResponseEnvelope) GetData() [][]string {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V2GetEnrichmentInputFieldsResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
+	_rawJSON json.RawMessage
 }
 
 func (v *V2GetEnrichmentInputFieldsResponseEnvelope) UnmarshalJSON(data []byte) error {
@@ -1027,22 +518,17 @@ func (v *V2GetEnrichmentInputFieldsResponseEnvelope) UnmarshalJSON(data []byte) 
 		return err
 	}
 	*v = V2GetEnrichmentInputFieldsResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
+	v._rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (v *V2GetEnrichmentInputFieldsResponseEnvelope) String() string {
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(v); err == nil {
+	if value, err := core.StringifyJSON(v); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", v)

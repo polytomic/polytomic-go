@@ -5,37 +5,37 @@ package polytomic
 import (
 	json "encoding/json"
 	fmt "fmt"
-	core "github.com/polytomic/polytomic-go/core"
+	internal "github.com/polytomic/polytomic-go/internal"
 )
 
 type CreateOrganizationRequestSchema struct {
 	// OIDC client ID issued by the identity provider.
-	ClientId *string `json:"client_id,omitempty" url:"client_id,omitempty"`
+	ClientId *string `json:"client_id,omitempty" url:"-"`
 	// OIDC client secret issued by the identity provider. Write-only; never returned in responses.
-	ClientSecret *string `json:"client_secret,omitempty" url:"client_secret,omitempty"`
+	ClientSecret *string `json:"client_secret,omitempty" url:"-"`
 	// OIDC issuer URL for organizations using OpenID Connect single sign-on.
-	Issuer *string `json:"issuer,omitempty" url:"issuer,omitempty"`
+	Issuer *string `json:"issuer,omitempty" url:"-"`
 	// Human-readable name of the organization. Must be unique across the partner account.
-	Name string `json:"name" url:"name"`
+	Name string `json:"name" url:"-"`
 	// Email domain used to match users to this organization during SSO sign-in.
-	SsoDomain *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
+	SsoDomain *string `json:"sso_domain,omitempty" url:"-"`
 	// WorkOS organization identifier linking this organization to its SAML/SSO configuration.
-	SsoOrgId *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
+	SsoOrgId *string `json:"sso_org_id,omitempty" url:"-"`
 }
 
 type UpdateOrganizationRequestSchema struct {
 	// OIDC client ID issued by the identity provider.
-	ClientId *string `json:"client_id,omitempty" url:"client_id,omitempty"`
+	ClientId *string `json:"client_id,omitempty" url:"-"`
 	// OIDC client secret issued by the identity provider. Write-only; never returned in responses.
-	ClientSecret *string `json:"client_secret,omitempty" url:"client_secret,omitempty"`
+	ClientSecret *string `json:"client_secret,omitempty" url:"-"`
 	// OIDC issuer URL for organizations using OpenID Connect single sign-on.
-	Issuer *string `json:"issuer,omitempty" url:"issuer,omitempty"`
+	Issuer *string `json:"issuer,omitempty" url:"-"`
 	// Human-readable name of the organization. Must be unique across the partner account.
-	Name string `json:"name" url:"name"`
+	Name string `json:"name" url:"-"`
 	// Email domain used to match users to this organization during SSO sign-in.
-	SsoDomain *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
+	SsoDomain *string `json:"sso_domain,omitempty" url:"-"`
 	// WorkOS organization identifier linking this organization to its SAML/SSO configuration.
-	SsoOrgId *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
+	SsoOrgId *string `json:"sso_org_id,omitempty" url:"-"`
 }
 
 type Organization struct {
@@ -50,7 +50,47 @@ type Organization struct {
 	// WorkOS organization identifier linking this organization to its SAML/SSO configuration.
 	SsoOrgId *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (o *Organization) GetId() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Id
+}
+
+func (o *Organization) GetIssuer() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Issuer
+}
+
+func (o *Organization) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *Organization) GetSsoDomain() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SsoDomain
+}
+
+func (o *Organization) GetSsoOrgId() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SsoOrgId
+}
+
+func (o *Organization) GetExtraProperties() map[string]interface{} {
+	return o.extraProperties
 }
 
 func (o *Organization) UnmarshalJSON(data []byte) error {
@@ -60,17 +100,22 @@ func (o *Organization) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*o = Organization(value)
-	o._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *o)
+	if err != nil {
+		return err
+	}
+	o.extraProperties = extraProperties
+	o.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (o *Organization) String() string {
-	if len(o._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(o._rawJSON); err == nil {
+	if len(o.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(o); err == nil {
+	if value, err := internal.StringifyJSON(o); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", o)
@@ -79,7 +124,19 @@ func (o *Organization) String() string {
 type OrganizationEnvelope struct {
 	Data *Organization `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (o *OrganizationEnvelope) GetData() *Organization {
+	if o == nil {
+		return nil
+	}
+	return o.Data
+}
+
+func (o *OrganizationEnvelope) GetExtraProperties() map[string]interface{} {
+	return o.extraProperties
 }
 
 func (o *OrganizationEnvelope) UnmarshalJSON(data []byte) error {
@@ -89,17 +146,22 @@ func (o *OrganizationEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*o = OrganizationEnvelope(value)
-	o._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *o)
+	if err != nil {
+		return err
+	}
+	o.extraProperties = extraProperties
+	o.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (o *OrganizationEnvelope) String() string {
-	if len(o._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(o._rawJSON); err == nil {
+	if len(o.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(o); err == nil {
+	if value, err := internal.StringifyJSON(o); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", o)
@@ -108,7 +170,19 @@ func (o *OrganizationEnvelope) String() string {
 type OrganizationsEnvelope struct {
 	Data []*Organization `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (o *OrganizationsEnvelope) GetData() []*Organization {
+	if o == nil {
+		return nil
+	}
+	return o.Data
+}
+
+func (o *OrganizationsEnvelope) GetExtraProperties() map[string]interface{} {
+	return o.extraProperties
 }
 
 func (o *OrganizationsEnvelope) UnmarshalJSON(data []byte) error {
@@ -118,17 +192,22 @@ func (o *OrganizationsEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*o = OrganizationsEnvelope(value)
-	o._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *o)
+	if err != nil {
+		return err
+	}
+	o.extraProperties = extraProperties
+	o.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (o *OrganizationsEnvelope) String() string {
-	if len(o._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(o._rawJSON); err == nil {
+	if len(o.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(o); err == nil {
+	if value, err := internal.StringifyJSON(o); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", o)

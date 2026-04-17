@@ -5,20 +5,20 @@ package polytomic
 import (
 	json "encoding/json"
 	fmt "fmt"
-	core "github.com/polytomic/polytomic-go/core"
+	internal "github.com/polytomic/polytomic-go/internal"
 	time "time"
 )
 
 type CreateWebhooksSchema struct {
-	Endpoint       string  `json:"endpoint" url:"endpoint"`
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Secret         string  `json:"secret" url:"secret"`
+	Endpoint       string  `json:"endpoint" url:"-"`
+	OrganizationId *string `json:"organization_id,omitempty" url:"-"`
+	Secret         string  `json:"secret" url:"-"`
 }
 
 type UpdateWebhooksSchema struct {
-	Endpoint       string  `json:"endpoint" url:"endpoint"`
-	OrganizationId *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Secret         string  `json:"secret" url:"secret"`
+	Endpoint       string  `json:"endpoint" url:"-"`
+	OrganizationId *string `json:"organization_id,omitempty" url:"-"`
+	Secret         string  `json:"secret" url:"-"`
 }
 
 type Webhook struct {
@@ -29,14 +29,61 @@ type Webhook struct {
 	OrganizationId *string    `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	Secret         *string    `json:"secret,omitempty" url:"secret,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (w *Webhook) GetCreatedAt() *time.Time {
+	if w == nil {
+		return nil
+	}
+	return w.CreatedAt
+}
+
+func (w *Webhook) GetDisabled() *bool {
+	if w == nil {
+		return nil
+	}
+	return w.Disabled
+}
+
+func (w *Webhook) GetEndpoint() *string {
+	if w == nil {
+		return nil
+	}
+	return w.Endpoint
+}
+
+func (w *Webhook) GetId() *string {
+	if w == nil {
+		return nil
+	}
+	return w.Id
+}
+
+func (w *Webhook) GetOrganizationId() *string {
+	if w == nil {
+		return nil
+	}
+	return w.OrganizationId
+}
+
+func (w *Webhook) GetSecret() *string {
+	if w == nil {
+		return nil
+	}
+	return w.Secret
+}
+
+func (w *Webhook) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
 }
 
 func (w *Webhook) UnmarshalJSON(data []byte) error {
 	type embed Webhook
 	var unmarshaler = struct {
 		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
 	}{
 		embed: embed(*w),
 	}
@@ -45,7 +92,12 @@ func (w *Webhook) UnmarshalJSON(data []byte) error {
 	}
 	*w = Webhook(unmarshaler.embed)
 	w.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	w._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
 	return nil
 }
 
@@ -53,21 +105,21 @@ func (w *Webhook) MarshalJSON() ([]byte, error) {
 	type embed Webhook
 	var marshaler = struct {
 		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
 	}{
 		embed:     embed(*w),
-		CreatedAt: core.NewOptionalDateTime(w.CreatedAt),
+		CreatedAt: internal.NewOptionalDateTime(w.CreatedAt),
 	}
 	return json.Marshal(marshaler)
 }
 
 func (w *Webhook) String() string {
-	if len(w._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(w._rawJSON); err == nil {
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(w); err == nil {
+	if value, err := internal.StringifyJSON(w); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", w)
@@ -76,7 +128,19 @@ func (w *Webhook) String() string {
 type WebhookEnvelope struct {
 	Data *Webhook `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (w *WebhookEnvelope) GetData() *Webhook {
+	if w == nil {
+		return nil
+	}
+	return w.Data
+}
+
+func (w *WebhookEnvelope) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
 }
 
 func (w *WebhookEnvelope) UnmarshalJSON(data []byte) error {
@@ -86,17 +150,22 @@ func (w *WebhookEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*w = WebhookEnvelope(value)
-	w._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (w *WebhookEnvelope) String() string {
-	if len(w._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(w._rawJSON); err == nil {
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(w); err == nil {
+	if value, err := internal.StringifyJSON(w); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", w)
@@ -105,7 +174,19 @@ func (w *WebhookEnvelope) String() string {
 type WebhookListEnvelope struct {
 	Data []*Webhook `json:"data,omitempty" url:"data,omitempty"`
 
-	_rawJSON json.RawMessage
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (w *WebhookListEnvelope) GetData() []*Webhook {
+	if w == nil {
+		return nil
+	}
+	return w.Data
+}
+
+func (w *WebhookListEnvelope) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
 }
 
 func (w *WebhookListEnvelope) UnmarshalJSON(data []byte) error {
@@ -115,17 +196,22 @@ func (w *WebhookListEnvelope) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*w = WebhookListEnvelope(value)
-	w._rawJSON = json.RawMessage(data)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
 	return nil
 }
 
 func (w *WebhookListEnvelope) String() string {
-	if len(w._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(w._rawJSON); err == nil {
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := core.StringifyJSON(w); err == nil {
+	if value, err := internal.StringifyJSON(w); err == nil {
 		return value
 	}
 	return fmt.Sprintf("%#v", w)

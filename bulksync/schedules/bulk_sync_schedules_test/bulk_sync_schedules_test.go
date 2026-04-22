@@ -112,7 +112,7 @@ func TestBulkSyncSchedulesCreateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &bulksync.CreateScheduleRequest{
+	request := &bulksync.V4CreateScheduleRequest{
 		Schedule: &polytomic.V4BulkSyncScheduleAPI{
 			Frequency: polytomic.ScheduleFrequencyManual,
 		},
@@ -165,7 +165,7 @@ func TestBulkSyncSchedulesUpdateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &bulksync.UpdateScheduleRequest{
+	request := &bulksync.V4UpdateScheduleRequest{
 		Schedule: &polytomic.V4BulkSyncScheduleAPI{
 			Frequency: polytomic.ScheduleFrequencyManual,
 		},

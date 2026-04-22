@@ -10,9 +10,9 @@ import (
 	time "time"
 )
 
-func TestSettersCreateWebhooksSchema(t *testing.T) {
+func TestSettersV2CreateWebhooksSchema(t *testing.T) {
 	t.Run("SetEndpoint", func(t *testing.T) {
-		obj := &CreateWebhooksSchema{}
+		obj := &V2CreateWebhooksSchema{}
 		var fernTestValueEndpoint string
 		obj.SetEndpoint(fernTestValueEndpoint)
 		assert.Equal(t, fernTestValueEndpoint, obj.Endpoint)
@@ -20,7 +20,7 @@ func TestSettersCreateWebhooksSchema(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &CreateWebhooksSchema{}
+		obj := &V2CreateWebhooksSchema{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -28,7 +28,7 @@ func TestSettersCreateWebhooksSchema(t *testing.T) {
 	})
 
 	t.Run("SetSecret", func(t *testing.T) {
-		obj := &CreateWebhooksSchema{}
+		obj := &V2CreateWebhooksSchema{}
 		var fernTestValueSecret string
 		obj.SetSecret(fernTestValueSecret)
 		assert.Equal(t, fernTestValueSecret, obj.Secret)
@@ -37,11 +37,11 @@ func TestSettersCreateWebhooksSchema(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitCreateWebhooksSchema(t *testing.T) {
+func TestSettersMarkExplicitV2CreateWebhooksSchema(t *testing.T) {
 	t.Run("SetEndpoint_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateWebhooksSchema{}
+		obj := &V2CreateWebhooksSchema{}
 		var fernTestValueEndpoint string
 
 		// Act
@@ -72,7 +72,7 @@ func TestSettersMarkExplicitCreateWebhooksSchema(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateWebhooksSchema{}
+		obj := &V2CreateWebhooksSchema{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -103,7 +103,7 @@ func TestSettersMarkExplicitCreateWebhooksSchema(t *testing.T) {
 	t.Run("SetSecret_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateWebhooksSchema{}
+		obj := &V2CreateWebhooksSchema{}
 		var fernTestValueSecret string
 
 		// Act
@@ -133,9 +133,9 @@ func TestSettersMarkExplicitCreateWebhooksSchema(t *testing.T) {
 
 }
 
-func TestSettersUpdateWebhooksSchema(t *testing.T) {
+func TestSettersV2UpdateWebhooksSchema(t *testing.T) {
 	t.Run("SetEndpoint", func(t *testing.T) {
-		obj := &UpdateWebhooksSchema{}
+		obj := &V2UpdateWebhooksSchema{}
 		var fernTestValueEndpoint string
 		obj.SetEndpoint(fernTestValueEndpoint)
 		assert.Equal(t, fernTestValueEndpoint, obj.Endpoint)
@@ -143,7 +143,7 @@ func TestSettersUpdateWebhooksSchema(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &UpdateWebhooksSchema{}
+		obj := &V2UpdateWebhooksSchema{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -151,7 +151,7 @@ func TestSettersUpdateWebhooksSchema(t *testing.T) {
 	})
 
 	t.Run("SetSecret", func(t *testing.T) {
-		obj := &UpdateWebhooksSchema{}
+		obj := &V2UpdateWebhooksSchema{}
 		var fernTestValueSecret string
 		obj.SetSecret(fernTestValueSecret)
 		assert.Equal(t, fernTestValueSecret, obj.Secret)
@@ -160,11 +160,11 @@ func TestSettersUpdateWebhooksSchema(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitUpdateWebhooksSchema(t *testing.T) {
+func TestSettersMarkExplicitV2UpdateWebhooksSchema(t *testing.T) {
 	t.Run("SetEndpoint_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateWebhooksSchema{}
+		obj := &V2UpdateWebhooksSchema{}
 		var fernTestValueEndpoint string
 
 		// Act
@@ -195,7 +195,7 @@ func TestSettersMarkExplicitUpdateWebhooksSchema(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateWebhooksSchema{}
+		obj := &V2UpdateWebhooksSchema{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -226,7 +226,7 @@ func TestSettersMarkExplicitUpdateWebhooksSchema(t *testing.T) {
 	t.Run("SetSecret_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateWebhooksSchema{}
+		obj := &V2UpdateWebhooksSchema{}
 		var fernTestValueSecret string
 
 		// Act
@@ -256,9 +256,9 @@ func TestSettersMarkExplicitUpdateWebhooksSchema(t *testing.T) {
 
 }
 
-func TestSettersWebhook(t *testing.T) {
+func TestSettersV2Webhook(t *testing.T) {
 	t.Run("SetCreatedAt", func(t *testing.T) {
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var fernTestValueCreatedAt *time.Time
 		obj.SetCreatedAt(fernTestValueCreatedAt)
 		assert.Equal(t, fernTestValueCreatedAt, obj.CreatedAt)
@@ -266,7 +266,7 @@ func TestSettersWebhook(t *testing.T) {
 	})
 
 	t.Run("SetDisabled", func(t *testing.T) {
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var fernTestValueDisabled *bool
 		obj.SetDisabled(fernTestValueDisabled)
 		assert.Equal(t, fernTestValueDisabled, obj.Disabled)
@@ -274,7 +274,7 @@ func TestSettersWebhook(t *testing.T) {
 	})
 
 	t.Run("SetEndpoint", func(t *testing.T) {
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var fernTestValueEndpoint *string
 		obj.SetEndpoint(fernTestValueEndpoint)
 		assert.Equal(t, fernTestValueEndpoint, obj.Endpoint)
@@ -282,7 +282,7 @@ func TestSettersWebhook(t *testing.T) {
 	})
 
 	t.Run("SetID", func(t *testing.T) {
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var fernTestValueID *string
 		obj.SetID(fernTestValueID)
 		assert.Equal(t, fernTestValueID, obj.ID)
@@ -290,7 +290,7 @@ func TestSettersWebhook(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -298,7 +298,7 @@ func TestSettersWebhook(t *testing.T) {
 	})
 
 	t.Run("SetSecret", func(t *testing.T) {
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var fernTestValueSecret *string
 		obj.SetSecret(fernTestValueSecret)
 		assert.Equal(t, fernTestValueSecret, obj.Secret)
@@ -307,11 +307,11 @@ func TestSettersWebhook(t *testing.T) {
 
 }
 
-func TestGettersWebhook(t *testing.T) {
+func TestGettersV2Webhook(t *testing.T) {
 	t.Run("GetCreatedAt", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var expected *time.Time
 		obj.CreatedAt = expected
 
@@ -322,7 +322,7 @@ func TestGettersWebhook(t *testing.T) {
 	t.Run("GetCreatedAt_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		obj.CreatedAt = nil
 
 		// Act & Assert
@@ -331,7 +331,7 @@ func TestGettersWebhook(t *testing.T) {
 
 	t.Run("GetCreatedAt_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *Webhook
+		var obj *V2Webhook
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -344,7 +344,7 @@ func TestGettersWebhook(t *testing.T) {
 	t.Run("GetDisabled", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var expected *bool
 		obj.Disabled = expected
 
@@ -355,7 +355,7 @@ func TestGettersWebhook(t *testing.T) {
 	t.Run("GetDisabled_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		obj.Disabled = nil
 
 		// Act & Assert
@@ -364,7 +364,7 @@ func TestGettersWebhook(t *testing.T) {
 
 	t.Run("GetDisabled_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *Webhook
+		var obj *V2Webhook
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -377,7 +377,7 @@ func TestGettersWebhook(t *testing.T) {
 	t.Run("GetEndpoint", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var expected *string
 		obj.Endpoint = expected
 
@@ -388,7 +388,7 @@ func TestGettersWebhook(t *testing.T) {
 	t.Run("GetEndpoint_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		obj.Endpoint = nil
 
 		// Act & Assert
@@ -397,7 +397,7 @@ func TestGettersWebhook(t *testing.T) {
 
 	t.Run("GetEndpoint_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *Webhook
+		var obj *V2Webhook
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -410,7 +410,7 @@ func TestGettersWebhook(t *testing.T) {
 	t.Run("GetID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var expected *string
 		obj.ID = expected
 
@@ -421,7 +421,7 @@ func TestGettersWebhook(t *testing.T) {
 	t.Run("GetID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		obj.ID = nil
 
 		// Act & Assert
@@ -430,7 +430,7 @@ func TestGettersWebhook(t *testing.T) {
 
 	t.Run("GetID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *Webhook
+		var obj *V2Webhook
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -443,7 +443,7 @@ func TestGettersWebhook(t *testing.T) {
 	t.Run("GetOrganizationID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var expected *string
 		obj.OrganizationID = expected
 
@@ -454,7 +454,7 @@ func TestGettersWebhook(t *testing.T) {
 	t.Run("GetOrganizationID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		obj.OrganizationID = nil
 
 		// Act & Assert
@@ -463,7 +463,7 @@ func TestGettersWebhook(t *testing.T) {
 
 	t.Run("GetOrganizationID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *Webhook
+		var obj *V2Webhook
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -476,7 +476,7 @@ func TestGettersWebhook(t *testing.T) {
 	t.Run("GetSecret", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var expected *string
 		obj.Secret = expected
 
@@ -487,7 +487,7 @@ func TestGettersWebhook(t *testing.T) {
 	t.Run("GetSecret_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		obj.Secret = nil
 
 		// Act & Assert
@@ -496,7 +496,7 @@ func TestGettersWebhook(t *testing.T) {
 
 	t.Run("GetSecret_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *Webhook
+		var obj *V2Webhook
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -508,11 +508,11 @@ func TestGettersWebhook(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitWebhook(t *testing.T) {
+func TestSettersMarkExplicitV2Webhook(t *testing.T) {
 	t.Run("SetCreatedAt_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var fernTestValueCreatedAt *time.Time
 
 		// Act
@@ -543,7 +543,7 @@ func TestSettersMarkExplicitWebhook(t *testing.T) {
 	t.Run("SetDisabled_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var fernTestValueDisabled *bool
 
 		// Act
@@ -574,7 +574,7 @@ func TestSettersMarkExplicitWebhook(t *testing.T) {
 	t.Run("SetEndpoint_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var fernTestValueEndpoint *string
 
 		// Act
@@ -605,7 +605,7 @@ func TestSettersMarkExplicitWebhook(t *testing.T) {
 	t.Run("SetID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var fernTestValueID *string
 
 		// Act
@@ -636,7 +636,7 @@ func TestSettersMarkExplicitWebhook(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -667,7 +667,7 @@ func TestSettersMarkExplicitWebhook(t *testing.T) {
 	t.Run("SetSecret_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		var fernTestValueSecret *string
 
 		// Act
@@ -697,10 +697,10 @@ func TestSettersMarkExplicitWebhook(t *testing.T) {
 
 }
 
-func TestSettersWebhookEnvelope(t *testing.T) {
+func TestSettersV2WebhookEnvelope(t *testing.T) {
 	t.Run("SetData", func(t *testing.T) {
-		obj := &WebhookEnvelope{}
-		var fernTestValueData *Webhook
+		obj := &V2WebhookEnvelope{}
+		var fernTestValueData *V2Webhook
 		obj.SetData(fernTestValueData)
 		assert.Equal(t, fernTestValueData, obj.Data)
 		assert.NotNil(t, obj.explicitFields)
@@ -708,12 +708,12 @@ func TestSettersWebhookEnvelope(t *testing.T) {
 
 }
 
-func TestGettersWebhookEnvelope(t *testing.T) {
+func TestGettersV2WebhookEnvelope(t *testing.T) {
 	t.Run("GetData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &WebhookEnvelope{}
-		var expected *Webhook
+		obj := &V2WebhookEnvelope{}
+		var expected *V2Webhook
 		obj.Data = expected
 
 		// Act & Assert
@@ -723,7 +723,7 @@ func TestGettersWebhookEnvelope(t *testing.T) {
 	t.Run("GetData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &WebhookEnvelope{}
+		obj := &V2WebhookEnvelope{}
 		obj.Data = nil
 
 		// Act & Assert
@@ -732,7 +732,7 @@ func TestGettersWebhookEnvelope(t *testing.T) {
 
 	t.Run("GetData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *WebhookEnvelope
+		var obj *V2WebhookEnvelope
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -744,12 +744,12 @@ func TestGettersWebhookEnvelope(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitWebhookEnvelope(t *testing.T) {
+func TestSettersMarkExplicitV2WebhookEnvelope(t *testing.T) {
 	t.Run("SetData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &WebhookEnvelope{}
-		var fernTestValueData *Webhook
+		obj := &V2WebhookEnvelope{}
+		var fernTestValueData *V2Webhook
 
 		// Act
 		obj.SetData(fernTestValueData)
@@ -778,10 +778,10 @@ func TestSettersMarkExplicitWebhookEnvelope(t *testing.T) {
 
 }
 
-func TestSettersWebhookListEnvelope(t *testing.T) {
+func TestSettersV2WebhookListEnvelope(t *testing.T) {
 	t.Run("SetData", func(t *testing.T) {
-		obj := &WebhookListEnvelope{}
-		var fernTestValueData []*Webhook
+		obj := &V2WebhookListEnvelope{}
+		var fernTestValueData []*V2Webhook
 		obj.SetData(fernTestValueData)
 		assert.Equal(t, fernTestValueData, obj.Data)
 		assert.NotNil(t, obj.explicitFields)
@@ -789,12 +789,12 @@ func TestSettersWebhookListEnvelope(t *testing.T) {
 
 }
 
-func TestGettersWebhookListEnvelope(t *testing.T) {
+func TestGettersV2WebhookListEnvelope(t *testing.T) {
 	t.Run("GetData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &WebhookListEnvelope{}
-		var expected []*Webhook
+		obj := &V2WebhookListEnvelope{}
+		var expected []*V2Webhook
 		obj.Data = expected
 
 		// Act & Assert
@@ -804,7 +804,7 @@ func TestGettersWebhookListEnvelope(t *testing.T) {
 	t.Run("GetData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &WebhookListEnvelope{}
+		obj := &V2WebhookListEnvelope{}
 		obj.Data = nil
 
 		// Act & Assert
@@ -813,7 +813,7 @@ func TestGettersWebhookListEnvelope(t *testing.T) {
 
 	t.Run("GetData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *WebhookListEnvelope
+		var obj *V2WebhookListEnvelope
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -825,12 +825,12 @@ func TestGettersWebhookListEnvelope(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitWebhookListEnvelope(t *testing.T) {
+func TestSettersMarkExplicitV2WebhookListEnvelope(t *testing.T) {
 	t.Run("SetData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &WebhookListEnvelope{}
-		var fernTestValueData []*Webhook
+		obj := &V2WebhookListEnvelope{}
+		var fernTestValueData []*V2Webhook
 
 		// Act
 		obj.SetData(fernTestValueData)
@@ -859,11 +859,11 @@ func TestSettersMarkExplicitWebhookListEnvelope(t *testing.T) {
 
 }
 
-func TestJSONMarshalingWebhook(t *testing.T) {
+func TestJSONMarshalingV2Webhook(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -872,31 +872,31 @@ func TestJSONMarshalingWebhook(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled Webhook
+		var unmarshaled V2Webhook
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj Webhook
+		var obj V2Webhook
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj Webhook
+		var obj V2Webhook
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingWebhookEnvelope(t *testing.T) {
+func TestJSONMarshalingV2WebhookEnvelope(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &WebhookEnvelope{}
+		obj := &V2WebhookEnvelope{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -905,31 +905,31 @@ func TestJSONMarshalingWebhookEnvelope(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled WebhookEnvelope
+		var unmarshaled V2WebhookEnvelope
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj WebhookEnvelope
+		var obj V2WebhookEnvelope
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj WebhookEnvelope
+		var obj V2WebhookEnvelope
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingWebhookListEnvelope(t *testing.T) {
+func TestJSONMarshalingV2WebhookListEnvelope(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &WebhookListEnvelope{}
+		obj := &V2WebhookListEnvelope{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -938,78 +938,78 @@ func TestJSONMarshalingWebhookListEnvelope(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled WebhookListEnvelope
+		var unmarshaled V2WebhookListEnvelope
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj WebhookListEnvelope
+		var obj V2WebhookListEnvelope
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj WebhookListEnvelope
+		var obj V2WebhookListEnvelope
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestStringWebhook(t *testing.T) {
+func TestStringV2Webhook(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *Webhook
+		var obj *V2Webhook
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringWebhookEnvelope(t *testing.T) {
+func TestStringV2WebhookEnvelope(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &WebhookEnvelope{}
+		obj := &V2WebhookEnvelope{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *WebhookEnvelope
+		var obj *V2WebhookEnvelope
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringWebhookListEnvelope(t *testing.T) {
+func TestStringV2WebhookListEnvelope(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &WebhookListEnvelope{}
+		obj := &V2WebhookListEnvelope{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *WebhookListEnvelope
+		var obj *V2WebhookListEnvelope
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestExtraPropertiesWebhook(t *testing.T) {
+func TestExtraPropertiesV2Webhook(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &Webhook{}
+		obj := &V2Webhook{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -1023,16 +1023,16 @@ func TestExtraPropertiesWebhook(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *Webhook
+		var obj *V2Webhook
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesWebhookEnvelope(t *testing.T) {
+func TestExtraPropertiesV2WebhookEnvelope(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &WebhookEnvelope{}
+		obj := &V2WebhookEnvelope{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -1046,16 +1046,16 @@ func TestExtraPropertiesWebhookEnvelope(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *WebhookEnvelope
+		var obj *V2WebhookEnvelope
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesWebhookListEnvelope(t *testing.T) {
+func TestExtraPropertiesV2WebhookListEnvelope(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &WebhookListEnvelope{}
+		obj := &V2WebhookListEnvelope{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -1069,7 +1069,7 @@ func TestExtraPropertiesWebhookListEnvelope(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *WebhookListEnvelope
+		var obj *V2WebhookListEnvelope
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

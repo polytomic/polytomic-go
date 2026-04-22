@@ -43,9 +43,9 @@ func (c *Client) GetTarget(
 	ctx context.Context,
 	// Unique identifier of the connection.
 	id string,
-	request *modelsync.TargetsGetTargetRequest,
+	request *modelsync.GetTargetTargetsRequest,
 	opts ...option.RequestOption,
-) (*polytomic.GetConnectionMetaEnvelope, error) {
+) (*polytomic.V2GetConnectionMetaEnvelope, error) {
 	response, err := c.WithRawResponse.GetTarget(
 		ctx,
 		id,
@@ -75,9 +75,9 @@ func (c *Client) GetTargetFields(
 	ctx context.Context,
 	// Unique identifier of the connection.
 	id string,
-	request *modelsync.TargetsGetTargetFieldsRequest,
+	request *modelsync.GetTargetFieldsTargetsRequest,
 	opts ...option.RequestOption,
-) (*polytomic.TargetResponseEnvelope, error) {
+) (*polytomic.V2TargetResponseEnvelope, error) {
 	response, err := c.WithRawResponse.GetTargetFields(
 		ctx,
 		id,

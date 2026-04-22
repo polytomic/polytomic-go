@@ -133,7 +133,7 @@ func TestConnectionsGetTypeParameterValuesWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.GetConnectionTypeParameterValuesRequestSchema{
+	request := &polytomic.V2GetConnectionTypeParameterValuesRequestSchema{
 		Field: "field",
 	}
 	_, invocationErr := client.Connections.GetTypeParameterValues(
@@ -182,7 +182,7 @@ func TestConnectionsCreateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.CreateConnectionRequestSchema{
+	request := &polytomic.V2CreateConnectionRequestSchema{
 		Configuration: map[string]any{
 			"database": "example",
 			"hostname": "postgres.example.com",
@@ -216,7 +216,7 @@ func TestConnectionsConnectWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.ConnectCardRequest{
+	request := &polytomic.V3ConnectCardRequest{
 		Name:        "Salesforce Connection",
 		RedirectURL: "redirect_url",
 	}
@@ -243,7 +243,7 @@ func TestConnectionsTestConnectionWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.TestConnectionRequest{
+	request := &polytomic.V4TestConnectionRequest{
 		Configuration: map[string]any{
 			"database": "example",
 			"hostname": "postgres.example.com",
@@ -299,7 +299,7 @@ func TestConnectionsUpdateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.UpdateConnectionRequestSchema{
+	request := &polytomic.V2UpdateConnectionRequestSchema{
 		Configuration: map[string]any{
 			"database": "example",
 			"hostname": "postgres.example.com",
@@ -333,7 +333,7 @@ func TestConnectionsRemoveWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.ConnectionsRemoveRequest{
+	request := &polytomic.RemoveConnectionsRequest{
 		Force: polytomic.Bool(
 			true,
 		),
@@ -385,7 +385,7 @@ func TestConnectionsCreateSharedConnectionWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.APIRequest{
+	request := &polytomic.V2CreateSharedConnectionRequestSchema{
 		ChildOrganizationID: "248df4b7-aa70-47b8-a036-33ac447e668d",
 	}
 	_, invocationErr := client.Connections.CreateSharedConnection(

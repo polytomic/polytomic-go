@@ -11,10 +11,10 @@ import (
 )
 
 var (
-	schemasListRequestFieldFilters = big.NewInt(1 << 0)
+	listSchemasRequestFieldFilters = big.NewInt(1 << 0)
 )
 
-type SchemasListRequest struct {
+type ListSchemasRequest struct {
 	// Optional filters applied to the returned schemas. Supports enabled=true to return only enabled schemas and enabled=false to return only disabled schemas.
 	Filters map[string]*string `json:"-" url:"filters,omitempty"`
 
@@ -22,79 +22,79 @@ type SchemasListRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (s *SchemasListRequest) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (l *ListSchemasRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	s.explicitFields.Or(s.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetFilters sets the Filters field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SchemasListRequest) SetFilters(filters map[string]*string) {
-	s.Filters = filters
-	s.require(schemasListRequestFieldFilters)
+func (l *ListSchemasRequest) SetFilters(filters map[string]*string) {
+	l.Filters = filters
+	l.require(listSchemasRequestFieldFilters)
 }
 
 var (
-	bulkSyncSchemasRequestFieldSchemas = big.NewInt(1 << 0)
+	v3BulkSyncSchemasRequestFieldSchemas = big.NewInt(1 << 0)
 )
 
-type BulkSyncSchemasRequest struct {
+type V3BulkSyncSchemasRequest struct {
 	// Schemas to patch. Schemas are matched by id; only schemas present in this list are updated.
-	Schemas []*v24.BulkSchema `json:"schemas,omitempty" url:"-"`
+	Schemas []*v24.V3BulkSchema `json:"schemas,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BulkSyncSchemasRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (v *V3BulkSyncSchemasRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetSchemas sets the Schemas field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncSchemasRequest) SetSchemas(schemas []*v24.BulkSchema) {
-	b.Schemas = schemas
-	b.require(bulkSyncSchemasRequestFieldSchemas)
+func (v *V3BulkSyncSchemasRequest) SetSchemas(schemas []*v24.V3BulkSchema) {
+	v.Schemas = schemas
+	v.require(v3BulkSyncSchemasRequestFieldSchemas)
 }
 
-func (b *BulkSyncSchemasRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkSyncSchemasRequest
+func (v *V3BulkSyncSchemasRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler V3BulkSyncSchemasRequest
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*b = BulkSyncSchemasRequest(body)
+	*v = V3BulkSyncSchemasRequest(body)
 	return nil
 }
 
-func (b *BulkSyncSchemasRequest) MarshalJSON() ([]byte, error) {
-	type embed BulkSyncSchemasRequest
+func (v *V3BulkSyncSchemasRequest) MarshalJSON() ([]byte, error) {
+	type embed V3BulkSyncSchemasRequest
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*b),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	updateBulkSchemaFieldDataCutoffTimestamp = big.NewInt(1 << 0)
-	updateBulkSchemaFieldDisableDataCutoff   = big.NewInt(1 << 1)
-	updateBulkSchemaFieldEnabled             = big.NewInt(1 << 2)
-	updateBulkSchemaFieldFields              = big.NewInt(1 << 3)
-	updateBulkSchemaFieldFilters             = big.NewInt(1 << 4)
-	updateBulkSchemaFieldPartitionKey        = big.NewInt(1 << 5)
-	updateBulkSchemaFieldTrackingField       = big.NewInt(1 << 6)
-	updateBulkSchemaFieldUserOutputName      = big.NewInt(1 << 7)
+	v3UpdateBulkSchemaFieldDataCutoffTimestamp = big.NewInt(1 << 0)
+	v3UpdateBulkSchemaFieldDisableDataCutoff   = big.NewInt(1 << 1)
+	v3UpdateBulkSchemaFieldEnabled             = big.NewInt(1 << 2)
+	v3UpdateBulkSchemaFieldFields              = big.NewInt(1 << 3)
+	v3UpdateBulkSchemaFieldFilters             = big.NewInt(1 << 4)
+	v3UpdateBulkSchemaFieldPartitionKey        = big.NewInt(1 << 5)
+	v3UpdateBulkSchemaFieldTrackingField       = big.NewInt(1 << 6)
+	v3UpdateBulkSchemaFieldUserOutputName      = big.NewInt(1 << 7)
 )
 
-type UpdateBulkSchema struct {
+type V3UpdateBulkSchema struct {
 	// Per-schema cutoff. Records older than this timestamp are excluded from sync runs.
 	DataCutoffTimestamp *time.Time `json:"data_cutoff_timestamp,omitempty" url:"-"`
 	// When true, the sync ignores any configured data_cutoff_timestamp for this schema.
@@ -102,7 +102,7 @@ type UpdateBulkSchema struct {
 	// Whether this schema is included in sync runs.
 	Enabled *bool `json:"enabled,omitempty" url:"-"`
 	// Field-level configuration. Supplying an empty list enables every field discovered on the source.
-	Fields []*v24.UpdateBulkField `json:"fields,omitempty" url:"-"`
+	Fields []*v24.V3UpdateBulkField `json:"fields,omitempty" url:"-"`
 	// Row-level filters applied when reading from the source.
 	Filters []*v24.BulkFilter `json:"filters,omitempty" url:"-"`
 	// Source field used to partition rows when writing to the destination.
@@ -115,88 +115,88 @@ type UpdateBulkSchema struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (u *UpdateBulkSchema) require(field *big.Int) {
-	if u.explicitFields == nil {
-		u.explicitFields = big.NewInt(0)
+func (v *V3UpdateBulkSchema) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	u.explicitFields.Or(u.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetDataCutoffTimestamp sets the DataCutoffTimestamp field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSchema) SetDataCutoffTimestamp(dataCutoffTimestamp *time.Time) {
-	u.DataCutoffTimestamp = dataCutoffTimestamp
-	u.require(updateBulkSchemaFieldDataCutoffTimestamp)
+func (v *V3UpdateBulkSchema) SetDataCutoffTimestamp(dataCutoffTimestamp *time.Time) {
+	v.DataCutoffTimestamp = dataCutoffTimestamp
+	v.require(v3UpdateBulkSchemaFieldDataCutoffTimestamp)
 }
 
 // SetDisableDataCutoff sets the DisableDataCutoff field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSchema) SetDisableDataCutoff(disableDataCutoff *bool) {
-	u.DisableDataCutoff = disableDataCutoff
-	u.require(updateBulkSchemaFieldDisableDataCutoff)
+func (v *V3UpdateBulkSchema) SetDisableDataCutoff(disableDataCutoff *bool) {
+	v.DisableDataCutoff = disableDataCutoff
+	v.require(v3UpdateBulkSchemaFieldDisableDataCutoff)
 }
 
 // SetEnabled sets the Enabled field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSchema) SetEnabled(enabled *bool) {
-	u.Enabled = enabled
-	u.require(updateBulkSchemaFieldEnabled)
+func (v *V3UpdateBulkSchema) SetEnabled(enabled *bool) {
+	v.Enabled = enabled
+	v.require(v3UpdateBulkSchemaFieldEnabled)
 }
 
 // SetFields sets the Fields field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSchema) SetFields(fields []*v24.UpdateBulkField) {
-	u.Fields = fields
-	u.require(updateBulkSchemaFieldFields)
+func (v *V3UpdateBulkSchema) SetFields(fields []*v24.V3UpdateBulkField) {
+	v.Fields = fields
+	v.require(v3UpdateBulkSchemaFieldFields)
 }
 
 // SetFilters sets the Filters field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSchema) SetFilters(filters []*v24.BulkFilter) {
-	u.Filters = filters
-	u.require(updateBulkSchemaFieldFilters)
+func (v *V3UpdateBulkSchema) SetFilters(filters []*v24.BulkFilter) {
+	v.Filters = filters
+	v.require(v3UpdateBulkSchemaFieldFilters)
 }
 
 // SetPartitionKey sets the PartitionKey field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSchema) SetPartitionKey(partitionKey *string) {
-	u.PartitionKey = partitionKey
-	u.require(updateBulkSchemaFieldPartitionKey)
+func (v *V3UpdateBulkSchema) SetPartitionKey(partitionKey *string) {
+	v.PartitionKey = partitionKey
+	v.require(v3UpdateBulkSchemaFieldPartitionKey)
 }
 
 // SetTrackingField sets the TrackingField field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSchema) SetTrackingField(trackingField *string) {
-	u.TrackingField = trackingField
-	u.require(updateBulkSchemaFieldTrackingField)
+func (v *V3UpdateBulkSchema) SetTrackingField(trackingField *string) {
+	v.TrackingField = trackingField
+	v.require(v3UpdateBulkSchemaFieldTrackingField)
 }
 
 // SetUserOutputName sets the UserOutputName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSchema) SetUserOutputName(userOutputName *string) {
-	u.UserOutputName = userOutputName
-	u.require(updateBulkSchemaFieldUserOutputName)
+func (v *V3UpdateBulkSchema) SetUserOutputName(userOutputName *string) {
+	v.UserOutputName = userOutputName
+	v.require(v3UpdateBulkSchemaFieldUserOutputName)
 }
 
-func (u *UpdateBulkSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler UpdateBulkSchema
+func (v *V3UpdateBulkSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler V3UpdateBulkSchema
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*u = UpdateBulkSchema(body)
+	*v = V3UpdateBulkSchema(body)
 	return nil
 }
 
-func (u *UpdateBulkSchema) MarshalJSON() ([]byte, error) {
-	type embed UpdateBulkSchema
+func (v *V3UpdateBulkSchema) MarshalJSON() ([]byte, error) {
+	type embed V3UpdateBulkSchema
 	var marshaler = struct {
 		embed
 		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
 	}{
-		embed:               embed(*u),
-		DataCutoffTimestamp: internal.NewOptionalDateTime(u.DataCutoffTimestamp),
+		embed:               embed(*v),
+		DataCutoffTimestamp: internal.NewOptionalDateTime(v.DataCutoffTimestamp),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }

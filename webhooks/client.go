@@ -44,7 +44,7 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomic.WebhookListEnvelope, error) {
+) (*polytomic.V2WebhookListEnvelope, error) {
 	response, err := c.WithRawResponse.List(
 		ctx,
 		opts...,
@@ -65,9 +65,9 @@ func (c *Client) List(
 // > list of event types and payload shapes.
 func (c *Client) Create(
 	ctx context.Context,
-	request *polytomic.CreateWebhooksSchema,
+	request *polytomic.V2CreateWebhooksSchema,
 	opts ...option.RequestOption,
-) (*polytomic.WebhookEnvelope, error) {
+) (*polytomic.V2WebhookEnvelope, error) {
 	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
@@ -91,7 +91,7 @@ func (c *Client) Get(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.WebhookEnvelope, error) {
+) (*polytomic.V2WebhookEnvelope, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		id,
@@ -114,9 +114,9 @@ func (c *Client) Get(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *polytomic.UpdateWebhooksSchema,
+	request *polytomic.V2UpdateWebhooksSchema,
 	opts ...option.RequestOption,
-) (*polytomic.WebhookEnvelope, error) {
+) (*polytomic.V2WebhookEnvelope, error) {
 	response, err := c.WithRawResponse.Update(
 		ctx,
 		id,
@@ -174,7 +174,7 @@ func (c *Client) Disable(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.WebhookEnvelope, error) {
+) (*polytomic.V2WebhookEnvelope, error) {
 	response, err := c.WithRawResponse.Disable(
 		ctx,
 		id,
@@ -201,7 +201,7 @@ func (c *Client) Enable(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.WebhookEnvelope, error) {
+) (*polytomic.V2WebhookEnvelope, error) {
 	response, err := c.WithRawResponse.Enable(
 		ctx,
 		id,

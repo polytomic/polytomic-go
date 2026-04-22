@@ -49,7 +49,7 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomic.OrganizationsEnvelope, error) {
+) (*polytomic.V2OrganizationsEnvelope, error) {
 	response, err := c.WithRawResponse.List(
 		ctx,
 		opts...,
@@ -67,9 +67,9 @@ func (c *Client) List(
 // > This endpoint is only accessible using [partner keys](../../guides/obtaining-api-keys#partner-keys).
 func (c *Client) Create(
 	ctx context.Context,
-	request *polytomic.CreateOrganizationRequestSchema,
+	request *polytomic.V2CreateOrganizationRequestSchema,
 	opts ...option.RequestOption,
-) (*polytomic.OrganizationEnvelope, error) {
+) (*polytomic.V2OrganizationEnvelope, error) {
 	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
@@ -91,7 +91,7 @@ func (c *Client) Get(
 	// Unique identifier of the organization.
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.OrganizationEnvelope, error) {
+) (*polytomic.V2OrganizationEnvelope, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		id,
@@ -112,9 +112,9 @@ func (c *Client) Update(
 	ctx context.Context,
 	// Unique identifier of the organization to update.
 	id string,
-	request *polytomic.UpdateOrganizationRequestSchema,
+	request *polytomic.V2UpdateOrganizationRequestSchema,
 	opts ...option.RequestOption,
-) (*polytomic.OrganizationEnvelope, error) {
+) (*polytomic.V2OrganizationEnvelope, error) {
 	response, err := c.WithRawResponse.Update(
 		ctx,
 		id,

@@ -11,14 +11,14 @@ import (
 )
 
 var (
-	eventsListRequestFieldOrganizationID = big.NewInt(1 << 0)
-	eventsListRequestFieldType           = big.NewInt(1 << 1)
-	eventsListRequestFieldStartingAfter  = big.NewInt(1 << 2)
-	eventsListRequestFieldEndingBefore   = big.NewInt(1 << 3)
-	eventsListRequestFieldLimit          = big.NewInt(1 << 4)
+	listEventsRequestFieldOrganizationID = big.NewInt(1 << 0)
+	listEventsRequestFieldType           = big.NewInt(1 << 1)
+	listEventsRequestFieldStartingAfter  = big.NewInt(1 << 2)
+	listEventsRequestFieldEndingBefore   = big.NewInt(1 << 3)
+	listEventsRequestFieldLimit          = big.NewInt(1 << 4)
 )
 
-type EventsListRequest struct {
+type ListEventsRequest struct {
 	// Organization to list events for. Only used by system callers; normal and partner callers are always scoped to their own organization.
 	OrganizationID *string `json:"-" url:"organization_id,omitempty"`
 	// Filter to a single event type. Use GET /api/events_types to list valid values.
@@ -34,223 +34,223 @@ type EventsListRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (e *EventsListRequest) require(field *big.Int) {
+func (l *ListEventsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListEventsRequest) SetOrganizationID(organizationID *string) {
+	l.OrganizationID = organizationID
+	l.require(listEventsRequestFieldOrganizationID)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListEventsRequest) SetType(type_ *string) {
+	l.Type = type_
+	l.require(listEventsRequestFieldType)
+}
+
+// SetStartingAfter sets the StartingAfter field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListEventsRequest) SetStartingAfter(startingAfter *time.Time) {
+	l.StartingAfter = startingAfter
+	l.require(listEventsRequestFieldStartingAfter)
+}
+
+// SetEndingBefore sets the EndingBefore field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListEventsRequest) SetEndingBefore(endingBefore *time.Time) {
+	l.EndingBefore = endingBefore
+	l.require(listEventsRequestFieldEndingBefore)
+}
+
+// SetLimit sets the Limit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListEventsRequest) SetLimit(limit *int) {
+	l.Limit = limit
+	l.require(listEventsRequestFieldLimit)
+}
+
+var (
+	eventingBulkSyncCanceledEventFieldDestinationConnectionID = big.NewInt(1 << 0)
+	eventingBulkSyncCanceledEventFieldExecutionID             = big.NewInt(1 << 1)
+	eventingBulkSyncCanceledEventFieldOrganizationID          = big.NewInt(1 << 2)
+	eventingBulkSyncCanceledEventFieldSourceConnectionID      = big.NewInt(1 << 3)
+	eventingBulkSyncCanceledEventFieldSyncID                  = big.NewInt(1 << 4)
+	eventingBulkSyncCanceledEventFieldSyncName                = big.NewInt(1 << 5)
+)
+
+type EventingBulkSyncCanceledEvent struct {
+	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	ExecutionID             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	OrganizationID          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	SourceConnectionID      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	SyncID                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (e *EventingBulkSyncCanceledEvent) GetDestinationConnectionID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.DestinationConnectionID
+}
+
+func (e *EventingBulkSyncCanceledEvent) GetExecutionID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.ExecutionID
+}
+
+func (e *EventingBulkSyncCanceledEvent) GetOrganizationID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.OrganizationID
+}
+
+func (e *EventingBulkSyncCanceledEvent) GetSourceConnectionID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.SourceConnectionID
+}
+
+func (e *EventingBulkSyncCanceledEvent) GetSyncID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.SyncID
+}
+
+func (e *EventingBulkSyncCanceledEvent) GetSyncName() *string {
+	if e == nil {
+		return nil
+	}
+	return e.SyncName
+}
+
+func (e *EventingBulkSyncCanceledEvent) GetExtraProperties() map[string]interface{} {
+	if e == nil {
+		return nil
+	}
+	return e.extraProperties
+}
+
+func (e *EventingBulkSyncCanceledEvent) require(field *big.Int) {
 	if e.explicitFields == nil {
 		e.explicitFields = big.NewInt(0)
 	}
 	e.explicitFields.Or(e.explicitFields, field)
 }
 
+// SetDestinationConnectionID sets the DestinationConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingBulkSyncCanceledEvent) SetDestinationConnectionID(destinationConnectionID *string) {
+	e.DestinationConnectionID = destinationConnectionID
+	e.require(eventingBulkSyncCanceledEventFieldDestinationConnectionID)
+}
+
+// SetExecutionID sets the ExecutionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingBulkSyncCanceledEvent) SetExecutionID(executionID *string) {
+	e.ExecutionID = executionID
+	e.require(eventingBulkSyncCanceledEventFieldExecutionID)
+}
+
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *EventsListRequest) SetOrganizationID(organizationID *string) {
+func (e *EventingBulkSyncCanceledEvent) SetOrganizationID(organizationID *string) {
 	e.OrganizationID = organizationID
-	e.require(eventsListRequestFieldOrganizationID)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *EventsListRequest) SetType(type_ *string) {
-	e.Type = type_
-	e.require(eventsListRequestFieldType)
-}
-
-// SetStartingAfter sets the StartingAfter field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *EventsListRequest) SetStartingAfter(startingAfter *time.Time) {
-	e.StartingAfter = startingAfter
-	e.require(eventsListRequestFieldStartingAfter)
-}
-
-// SetEndingBefore sets the EndingBefore field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *EventsListRequest) SetEndingBefore(endingBefore *time.Time) {
-	e.EndingBefore = endingBefore
-	e.require(eventsListRequestFieldEndingBefore)
-}
-
-// SetLimit sets the Limit field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *EventsListRequest) SetLimit(limit *int) {
-	e.Limit = limit
-	e.require(eventsListRequestFieldLimit)
-}
-
-var (
-	bulkSyncCanceledEventFieldDestinationConnectionID = big.NewInt(1 << 0)
-	bulkSyncCanceledEventFieldExecutionID             = big.NewInt(1 << 1)
-	bulkSyncCanceledEventFieldOrganizationID          = big.NewInt(1 << 2)
-	bulkSyncCanceledEventFieldSourceConnectionID      = big.NewInt(1 << 3)
-	bulkSyncCanceledEventFieldSyncID                  = big.NewInt(1 << 4)
-	bulkSyncCanceledEventFieldSyncName                = big.NewInt(1 << 5)
-)
-
-type BulkSyncCanceledEvent struct {
-	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
-	ExecutionID             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationID          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	SourceConnectionID      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	SyncID                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BulkSyncCanceledEvent) GetDestinationConnectionID() *string {
-	if b == nil {
-		return nil
-	}
-	return b.DestinationConnectionID
-}
-
-func (b *BulkSyncCanceledEvent) GetExecutionID() *string {
-	if b == nil {
-		return nil
-	}
-	return b.ExecutionID
-}
-
-func (b *BulkSyncCanceledEvent) GetOrganizationID() *string {
-	if b == nil {
-		return nil
-	}
-	return b.OrganizationID
-}
-
-func (b *BulkSyncCanceledEvent) GetSourceConnectionID() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SourceConnectionID
-}
-
-func (b *BulkSyncCanceledEvent) GetSyncID() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SyncID
-}
-
-func (b *BulkSyncCanceledEvent) GetSyncName() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SyncName
-}
-
-func (b *BulkSyncCanceledEvent) GetExtraProperties() map[string]interface{} {
-	if b == nil {
-		return nil
-	}
-	return b.extraProperties
-}
-
-func (b *BulkSyncCanceledEvent) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetDestinationConnectionID sets the DestinationConnectionID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCanceledEvent) SetDestinationConnectionID(destinationConnectionID *string) {
-	b.DestinationConnectionID = destinationConnectionID
-	b.require(bulkSyncCanceledEventFieldDestinationConnectionID)
-}
-
-// SetExecutionID sets the ExecutionID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCanceledEvent) SetExecutionID(executionID *string) {
-	b.ExecutionID = executionID
-	b.require(bulkSyncCanceledEventFieldExecutionID)
-}
-
-// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCanceledEvent) SetOrganizationID(organizationID *string) {
-	b.OrganizationID = organizationID
-	b.require(bulkSyncCanceledEventFieldOrganizationID)
+	e.require(eventingBulkSyncCanceledEventFieldOrganizationID)
 }
 
 // SetSourceConnectionID sets the SourceConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCanceledEvent) SetSourceConnectionID(sourceConnectionID *string) {
-	b.SourceConnectionID = sourceConnectionID
-	b.require(bulkSyncCanceledEventFieldSourceConnectionID)
+func (e *EventingBulkSyncCanceledEvent) SetSourceConnectionID(sourceConnectionID *string) {
+	e.SourceConnectionID = sourceConnectionID
+	e.require(eventingBulkSyncCanceledEventFieldSourceConnectionID)
 }
 
 // SetSyncID sets the SyncID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCanceledEvent) SetSyncID(syncID *string) {
-	b.SyncID = syncID
-	b.require(bulkSyncCanceledEventFieldSyncID)
+func (e *EventingBulkSyncCanceledEvent) SetSyncID(syncID *string) {
+	e.SyncID = syncID
+	e.require(eventingBulkSyncCanceledEventFieldSyncID)
 }
 
 // SetSyncName sets the SyncName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCanceledEvent) SetSyncName(syncName *string) {
-	b.SyncName = syncName
-	b.require(bulkSyncCanceledEventFieldSyncName)
+func (e *EventingBulkSyncCanceledEvent) SetSyncName(syncName *string) {
+	e.SyncName = syncName
+	e.require(eventingBulkSyncCanceledEventFieldSyncName)
 }
 
-func (b *BulkSyncCanceledEvent) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkSyncCanceledEvent
+func (e *EventingBulkSyncCanceledEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler EventingBulkSyncCanceledEvent
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*b = BulkSyncCanceledEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	*e = EventingBulkSyncCanceledEvent(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
 	if err != nil {
 		return err
 	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (b *BulkSyncCanceledEvent) MarshalJSON() ([]byte, error) {
-	type embed BulkSyncCanceledEvent
+func (e *EventingBulkSyncCanceledEvent) MarshalJSON() ([]byte, error) {
+	type embed EventingBulkSyncCanceledEvent
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*b),
+		embed: embed(*e),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (b *BulkSyncCanceledEvent) String() string {
-	if b == nil {
+func (e *EventingBulkSyncCanceledEvent) String() string {
+	if e == nil {
 		return "<nil>"
 	}
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(e); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", b)
+	return fmt.Sprintf("%#v", e)
 }
 
 var (
-	bulkSyncCompletedEventFieldDestinationConnectionID = big.NewInt(1 << 0)
-	bulkSyncCompletedEventFieldExecutionID             = big.NewInt(1 << 1)
-	bulkSyncCompletedEventFieldOrganizationID          = big.NewInt(1 << 2)
-	bulkSyncCompletedEventFieldSourceConnectionID      = big.NewInt(1 << 3)
-	bulkSyncCompletedEventFieldSyncID                  = big.NewInt(1 << 4)
-	bulkSyncCompletedEventFieldSyncName                = big.NewInt(1 << 5)
-	bulkSyncCompletedEventFieldTriggerSource           = big.NewInt(1 << 6)
+	eventingBulkSyncCompletedEventFieldDestinationConnectionID = big.NewInt(1 << 0)
+	eventingBulkSyncCompletedEventFieldExecutionID             = big.NewInt(1 << 1)
+	eventingBulkSyncCompletedEventFieldOrganizationID          = big.NewInt(1 << 2)
+	eventingBulkSyncCompletedEventFieldSourceConnectionID      = big.NewInt(1 << 3)
+	eventingBulkSyncCompletedEventFieldSyncID                  = big.NewInt(1 << 4)
+	eventingBulkSyncCompletedEventFieldSyncName                = big.NewInt(1 << 5)
+	eventingBulkSyncCompletedEventFieldTriggerSource           = big.NewInt(1 << 6)
 )
 
-type BulkSyncCompletedEvent struct {
+type EventingBulkSyncCompletedEvent struct {
 	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
 	ExecutionID             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
 	OrganizationID          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
@@ -266,171 +266,171 @@ type BulkSyncCompletedEvent struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BulkSyncCompletedEvent) GetDestinationConnectionID() *string {
-	if b == nil {
+func (e *EventingBulkSyncCompletedEvent) GetDestinationConnectionID() *string {
+	if e == nil {
 		return nil
 	}
-	return b.DestinationConnectionID
+	return e.DestinationConnectionID
 }
 
-func (b *BulkSyncCompletedEvent) GetExecutionID() *string {
-	if b == nil {
+func (e *EventingBulkSyncCompletedEvent) GetExecutionID() *string {
+	if e == nil {
 		return nil
 	}
-	return b.ExecutionID
+	return e.ExecutionID
 }
 
-func (b *BulkSyncCompletedEvent) GetOrganizationID() *string {
-	if b == nil {
+func (e *EventingBulkSyncCompletedEvent) GetOrganizationID() *string {
+	if e == nil {
 		return nil
 	}
-	return b.OrganizationID
+	return e.OrganizationID
 }
 
-func (b *BulkSyncCompletedEvent) GetSourceConnectionID() *string {
-	if b == nil {
+func (e *EventingBulkSyncCompletedEvent) GetSourceConnectionID() *string {
+	if e == nil {
 		return nil
 	}
-	return b.SourceConnectionID
+	return e.SourceConnectionID
 }
 
-func (b *BulkSyncCompletedEvent) GetSyncID() *string {
-	if b == nil {
+func (e *EventingBulkSyncCompletedEvent) GetSyncID() *string {
+	if e == nil {
 		return nil
 	}
-	return b.SyncID
+	return e.SyncID
 }
 
-func (b *BulkSyncCompletedEvent) GetSyncName() *string {
-	if b == nil {
+func (e *EventingBulkSyncCompletedEvent) GetSyncName() *string {
+	if e == nil {
 		return nil
 	}
-	return b.SyncName
+	return e.SyncName
 }
 
-func (b *BulkSyncCompletedEvent) GetTriggerSource() *string {
-	if b == nil {
+func (e *EventingBulkSyncCompletedEvent) GetTriggerSource() *string {
+	if e == nil {
 		return nil
 	}
-	return b.TriggerSource
+	return e.TriggerSource
 }
 
-func (b *BulkSyncCompletedEvent) GetExtraProperties() map[string]interface{} {
-	if b == nil {
+func (e *EventingBulkSyncCompletedEvent) GetExtraProperties() map[string]interface{} {
+	if e == nil {
 		return nil
 	}
-	return b.extraProperties
+	return e.extraProperties
 }
 
-func (b *BulkSyncCompletedEvent) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (e *EventingBulkSyncCompletedEvent) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
+	e.explicitFields.Or(e.explicitFields, field)
 }
 
 // SetDestinationConnectionID sets the DestinationConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCompletedEvent) SetDestinationConnectionID(destinationConnectionID *string) {
-	b.DestinationConnectionID = destinationConnectionID
-	b.require(bulkSyncCompletedEventFieldDestinationConnectionID)
+func (e *EventingBulkSyncCompletedEvent) SetDestinationConnectionID(destinationConnectionID *string) {
+	e.DestinationConnectionID = destinationConnectionID
+	e.require(eventingBulkSyncCompletedEventFieldDestinationConnectionID)
 }
 
 // SetExecutionID sets the ExecutionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCompletedEvent) SetExecutionID(executionID *string) {
-	b.ExecutionID = executionID
-	b.require(bulkSyncCompletedEventFieldExecutionID)
+func (e *EventingBulkSyncCompletedEvent) SetExecutionID(executionID *string) {
+	e.ExecutionID = executionID
+	e.require(eventingBulkSyncCompletedEventFieldExecutionID)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCompletedEvent) SetOrganizationID(organizationID *string) {
-	b.OrganizationID = organizationID
-	b.require(bulkSyncCompletedEventFieldOrganizationID)
+func (e *EventingBulkSyncCompletedEvent) SetOrganizationID(organizationID *string) {
+	e.OrganizationID = organizationID
+	e.require(eventingBulkSyncCompletedEventFieldOrganizationID)
 }
 
 // SetSourceConnectionID sets the SourceConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCompletedEvent) SetSourceConnectionID(sourceConnectionID *string) {
-	b.SourceConnectionID = sourceConnectionID
-	b.require(bulkSyncCompletedEventFieldSourceConnectionID)
+func (e *EventingBulkSyncCompletedEvent) SetSourceConnectionID(sourceConnectionID *string) {
+	e.SourceConnectionID = sourceConnectionID
+	e.require(eventingBulkSyncCompletedEventFieldSourceConnectionID)
 }
 
 // SetSyncID sets the SyncID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCompletedEvent) SetSyncID(syncID *string) {
-	b.SyncID = syncID
-	b.require(bulkSyncCompletedEventFieldSyncID)
+func (e *EventingBulkSyncCompletedEvent) SetSyncID(syncID *string) {
+	e.SyncID = syncID
+	e.require(eventingBulkSyncCompletedEventFieldSyncID)
 }
 
 // SetSyncName sets the SyncName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCompletedEvent) SetSyncName(syncName *string) {
-	b.SyncName = syncName
-	b.require(bulkSyncCompletedEventFieldSyncName)
+func (e *EventingBulkSyncCompletedEvent) SetSyncName(syncName *string) {
+	e.SyncName = syncName
+	e.require(eventingBulkSyncCompletedEventFieldSyncName)
 }
 
 // SetTriggerSource sets the TriggerSource field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCompletedEvent) SetTriggerSource(triggerSource *string) {
-	b.TriggerSource = triggerSource
-	b.require(bulkSyncCompletedEventFieldTriggerSource)
+func (e *EventingBulkSyncCompletedEvent) SetTriggerSource(triggerSource *string) {
+	e.TriggerSource = triggerSource
+	e.require(eventingBulkSyncCompletedEventFieldTriggerSource)
 }
 
-func (b *BulkSyncCompletedEvent) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkSyncCompletedEvent
+func (e *EventingBulkSyncCompletedEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler EventingBulkSyncCompletedEvent
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*b = BulkSyncCompletedEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	*e = EventingBulkSyncCompletedEvent(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
 	if err != nil {
 		return err
 	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (b *BulkSyncCompletedEvent) MarshalJSON() ([]byte, error) {
-	type embed BulkSyncCompletedEvent
+func (e *EventingBulkSyncCompletedEvent) MarshalJSON() ([]byte, error) {
+	type embed EventingBulkSyncCompletedEvent
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*b),
+		embed: embed(*e),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (b *BulkSyncCompletedEvent) String() string {
-	if b == nil {
+func (e *EventingBulkSyncCompletedEvent) String() string {
+	if e == nil {
 		return "<nil>"
 	}
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(e); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", b)
+	return fmt.Sprintf("%#v", e)
 }
 
 var (
-	bulkSyncCompletedWithErrorEventFieldDestinationConnectionID = big.NewInt(1 << 0)
-	bulkSyncCompletedWithErrorEventFieldExecutionID             = big.NewInt(1 << 1)
-	bulkSyncCompletedWithErrorEventFieldOrganizationID          = big.NewInt(1 << 2)
-	bulkSyncCompletedWithErrorEventFieldSourceConnectionID      = big.NewInt(1 << 3)
-	bulkSyncCompletedWithErrorEventFieldSyncID                  = big.NewInt(1 << 4)
-	bulkSyncCompletedWithErrorEventFieldSyncName                = big.NewInt(1 << 5)
-	bulkSyncCompletedWithErrorEventFieldTriggerSource           = big.NewInt(1 << 6)
+	eventingBulkSyncCompletedWithErrorEventFieldDestinationConnectionID = big.NewInt(1 << 0)
+	eventingBulkSyncCompletedWithErrorEventFieldExecutionID             = big.NewInt(1 << 1)
+	eventingBulkSyncCompletedWithErrorEventFieldOrganizationID          = big.NewInt(1 << 2)
+	eventingBulkSyncCompletedWithErrorEventFieldSourceConnectionID      = big.NewInt(1 << 3)
+	eventingBulkSyncCompletedWithErrorEventFieldSyncID                  = big.NewInt(1 << 4)
+	eventingBulkSyncCompletedWithErrorEventFieldSyncName                = big.NewInt(1 << 5)
+	eventingBulkSyncCompletedWithErrorEventFieldTriggerSource           = big.NewInt(1 << 6)
 )
 
-type BulkSyncCompletedWithErrorEvent struct {
+type EventingBulkSyncCompletedWithErrorEvent struct {
 	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
 	ExecutionID             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
 	OrganizationID          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
@@ -446,172 +446,172 @@ type BulkSyncCompletedWithErrorEvent struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BulkSyncCompletedWithErrorEvent) GetDestinationConnectionID() *string {
-	if b == nil {
+func (e *EventingBulkSyncCompletedWithErrorEvent) GetDestinationConnectionID() *string {
+	if e == nil {
 		return nil
 	}
-	return b.DestinationConnectionID
+	return e.DestinationConnectionID
 }
 
-func (b *BulkSyncCompletedWithErrorEvent) GetExecutionID() *string {
-	if b == nil {
+func (e *EventingBulkSyncCompletedWithErrorEvent) GetExecutionID() *string {
+	if e == nil {
 		return nil
 	}
-	return b.ExecutionID
+	return e.ExecutionID
 }
 
-func (b *BulkSyncCompletedWithErrorEvent) GetOrganizationID() *string {
-	if b == nil {
+func (e *EventingBulkSyncCompletedWithErrorEvent) GetOrganizationID() *string {
+	if e == nil {
 		return nil
 	}
-	return b.OrganizationID
+	return e.OrganizationID
 }
 
-func (b *BulkSyncCompletedWithErrorEvent) GetSourceConnectionID() *string {
-	if b == nil {
+func (e *EventingBulkSyncCompletedWithErrorEvent) GetSourceConnectionID() *string {
+	if e == nil {
 		return nil
 	}
-	return b.SourceConnectionID
+	return e.SourceConnectionID
 }
 
-func (b *BulkSyncCompletedWithErrorEvent) GetSyncID() *string {
-	if b == nil {
+func (e *EventingBulkSyncCompletedWithErrorEvent) GetSyncID() *string {
+	if e == nil {
 		return nil
 	}
-	return b.SyncID
+	return e.SyncID
 }
 
-func (b *BulkSyncCompletedWithErrorEvent) GetSyncName() *string {
-	if b == nil {
+func (e *EventingBulkSyncCompletedWithErrorEvent) GetSyncName() *string {
+	if e == nil {
 		return nil
 	}
-	return b.SyncName
+	return e.SyncName
 }
 
-func (b *BulkSyncCompletedWithErrorEvent) GetTriggerSource() *string {
-	if b == nil {
+func (e *EventingBulkSyncCompletedWithErrorEvent) GetTriggerSource() *string {
+	if e == nil {
 		return nil
 	}
-	return b.TriggerSource
+	return e.TriggerSource
 }
 
-func (b *BulkSyncCompletedWithErrorEvent) GetExtraProperties() map[string]interface{} {
-	if b == nil {
+func (e *EventingBulkSyncCompletedWithErrorEvent) GetExtraProperties() map[string]interface{} {
+	if e == nil {
 		return nil
 	}
-	return b.extraProperties
+	return e.extraProperties
 }
 
-func (b *BulkSyncCompletedWithErrorEvent) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (e *EventingBulkSyncCompletedWithErrorEvent) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
+	e.explicitFields.Or(e.explicitFields, field)
 }
 
 // SetDestinationConnectionID sets the DestinationConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCompletedWithErrorEvent) SetDestinationConnectionID(destinationConnectionID *string) {
-	b.DestinationConnectionID = destinationConnectionID
-	b.require(bulkSyncCompletedWithErrorEventFieldDestinationConnectionID)
+func (e *EventingBulkSyncCompletedWithErrorEvent) SetDestinationConnectionID(destinationConnectionID *string) {
+	e.DestinationConnectionID = destinationConnectionID
+	e.require(eventingBulkSyncCompletedWithErrorEventFieldDestinationConnectionID)
 }
 
 // SetExecutionID sets the ExecutionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCompletedWithErrorEvent) SetExecutionID(executionID *string) {
-	b.ExecutionID = executionID
-	b.require(bulkSyncCompletedWithErrorEventFieldExecutionID)
+func (e *EventingBulkSyncCompletedWithErrorEvent) SetExecutionID(executionID *string) {
+	e.ExecutionID = executionID
+	e.require(eventingBulkSyncCompletedWithErrorEventFieldExecutionID)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCompletedWithErrorEvent) SetOrganizationID(organizationID *string) {
-	b.OrganizationID = organizationID
-	b.require(bulkSyncCompletedWithErrorEventFieldOrganizationID)
+func (e *EventingBulkSyncCompletedWithErrorEvent) SetOrganizationID(organizationID *string) {
+	e.OrganizationID = organizationID
+	e.require(eventingBulkSyncCompletedWithErrorEventFieldOrganizationID)
 }
 
 // SetSourceConnectionID sets the SourceConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCompletedWithErrorEvent) SetSourceConnectionID(sourceConnectionID *string) {
-	b.SourceConnectionID = sourceConnectionID
-	b.require(bulkSyncCompletedWithErrorEventFieldSourceConnectionID)
+func (e *EventingBulkSyncCompletedWithErrorEvent) SetSourceConnectionID(sourceConnectionID *string) {
+	e.SourceConnectionID = sourceConnectionID
+	e.require(eventingBulkSyncCompletedWithErrorEventFieldSourceConnectionID)
 }
 
 // SetSyncID sets the SyncID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCompletedWithErrorEvent) SetSyncID(syncID *string) {
-	b.SyncID = syncID
-	b.require(bulkSyncCompletedWithErrorEventFieldSyncID)
+func (e *EventingBulkSyncCompletedWithErrorEvent) SetSyncID(syncID *string) {
+	e.SyncID = syncID
+	e.require(eventingBulkSyncCompletedWithErrorEventFieldSyncID)
 }
 
 // SetSyncName sets the SyncName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCompletedWithErrorEvent) SetSyncName(syncName *string) {
-	b.SyncName = syncName
-	b.require(bulkSyncCompletedWithErrorEventFieldSyncName)
+func (e *EventingBulkSyncCompletedWithErrorEvent) SetSyncName(syncName *string) {
+	e.SyncName = syncName
+	e.require(eventingBulkSyncCompletedWithErrorEventFieldSyncName)
 }
 
 // SetTriggerSource sets the TriggerSource field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncCompletedWithErrorEvent) SetTriggerSource(triggerSource *string) {
-	b.TriggerSource = triggerSource
-	b.require(bulkSyncCompletedWithErrorEventFieldTriggerSource)
+func (e *EventingBulkSyncCompletedWithErrorEvent) SetTriggerSource(triggerSource *string) {
+	e.TriggerSource = triggerSource
+	e.require(eventingBulkSyncCompletedWithErrorEventFieldTriggerSource)
 }
 
-func (b *BulkSyncCompletedWithErrorEvent) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkSyncCompletedWithErrorEvent
+func (e *EventingBulkSyncCompletedWithErrorEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler EventingBulkSyncCompletedWithErrorEvent
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*b = BulkSyncCompletedWithErrorEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	*e = EventingBulkSyncCompletedWithErrorEvent(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
 	if err != nil {
 		return err
 	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (b *BulkSyncCompletedWithErrorEvent) MarshalJSON() ([]byte, error) {
-	type embed BulkSyncCompletedWithErrorEvent
+func (e *EventingBulkSyncCompletedWithErrorEvent) MarshalJSON() ([]byte, error) {
+	type embed EventingBulkSyncCompletedWithErrorEvent
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*b),
+		embed: embed(*e),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (b *BulkSyncCompletedWithErrorEvent) String() string {
-	if b == nil {
+func (e *EventingBulkSyncCompletedWithErrorEvent) String() string {
+	if e == nil {
 		return "<nil>"
 	}
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(e); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", b)
+	return fmt.Sprintf("%#v", e)
 }
 
 var (
-	bulkSyncFailedEventFieldDestinationConnectionID = big.NewInt(1 << 0)
-	bulkSyncFailedEventFieldError                   = big.NewInt(1 << 1)
-	bulkSyncFailedEventFieldExecutionID             = big.NewInt(1 << 2)
-	bulkSyncFailedEventFieldOrganizationID          = big.NewInt(1 << 3)
-	bulkSyncFailedEventFieldSourceConnectionID      = big.NewInt(1 << 4)
-	bulkSyncFailedEventFieldSyncID                  = big.NewInt(1 << 5)
-	bulkSyncFailedEventFieldSyncName                = big.NewInt(1 << 6)
-	bulkSyncFailedEventFieldTriggerSource           = big.NewInt(1 << 7)
+	eventingBulkSyncFailedEventFieldDestinationConnectionID = big.NewInt(1 << 0)
+	eventingBulkSyncFailedEventFieldError                   = big.NewInt(1 << 1)
+	eventingBulkSyncFailedEventFieldExecutionID             = big.NewInt(1 << 2)
+	eventingBulkSyncFailedEventFieldOrganizationID          = big.NewInt(1 << 3)
+	eventingBulkSyncFailedEventFieldSourceConnectionID      = big.NewInt(1 << 4)
+	eventingBulkSyncFailedEventFieldSyncID                  = big.NewInt(1 << 5)
+	eventingBulkSyncFailedEventFieldSyncName                = big.NewInt(1 << 6)
+	eventingBulkSyncFailedEventFieldTriggerSource           = big.NewInt(1 << 7)
 )
 
-type BulkSyncFailedEvent struct {
+type EventingBulkSyncFailedEvent struct {
 	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
 	Error                   *string `json:"error,omitempty" url:"error,omitempty"`
 	ExecutionID             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
@@ -628,184 +628,184 @@ type BulkSyncFailedEvent struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BulkSyncFailedEvent) GetDestinationConnectionID() *string {
-	if b == nil {
+func (e *EventingBulkSyncFailedEvent) GetDestinationConnectionID() *string {
+	if e == nil {
 		return nil
 	}
-	return b.DestinationConnectionID
+	return e.DestinationConnectionID
 }
 
-func (b *BulkSyncFailedEvent) GetError() *string {
-	if b == nil {
+func (e *EventingBulkSyncFailedEvent) GetError() *string {
+	if e == nil {
 		return nil
 	}
-	return b.Error
+	return e.Error
 }
 
-func (b *BulkSyncFailedEvent) GetExecutionID() *string {
-	if b == nil {
+func (e *EventingBulkSyncFailedEvent) GetExecutionID() *string {
+	if e == nil {
 		return nil
 	}
-	return b.ExecutionID
+	return e.ExecutionID
 }
 
-func (b *BulkSyncFailedEvent) GetOrganizationID() *string {
-	if b == nil {
+func (e *EventingBulkSyncFailedEvent) GetOrganizationID() *string {
+	if e == nil {
 		return nil
 	}
-	return b.OrganizationID
+	return e.OrganizationID
 }
 
-func (b *BulkSyncFailedEvent) GetSourceConnectionID() *string {
-	if b == nil {
+func (e *EventingBulkSyncFailedEvent) GetSourceConnectionID() *string {
+	if e == nil {
 		return nil
 	}
-	return b.SourceConnectionID
+	return e.SourceConnectionID
 }
 
-func (b *BulkSyncFailedEvent) GetSyncID() *string {
-	if b == nil {
+func (e *EventingBulkSyncFailedEvent) GetSyncID() *string {
+	if e == nil {
 		return nil
 	}
-	return b.SyncID
+	return e.SyncID
 }
 
-func (b *BulkSyncFailedEvent) GetSyncName() *string {
-	if b == nil {
+func (e *EventingBulkSyncFailedEvent) GetSyncName() *string {
+	if e == nil {
 		return nil
 	}
-	return b.SyncName
+	return e.SyncName
 }
 
-func (b *BulkSyncFailedEvent) GetTriggerSource() *string {
-	if b == nil {
+func (e *EventingBulkSyncFailedEvent) GetTriggerSource() *string {
+	if e == nil {
 		return nil
 	}
-	return b.TriggerSource
+	return e.TriggerSource
 }
 
-func (b *BulkSyncFailedEvent) GetExtraProperties() map[string]interface{} {
-	if b == nil {
+func (e *EventingBulkSyncFailedEvent) GetExtraProperties() map[string]interface{} {
+	if e == nil {
 		return nil
 	}
-	return b.extraProperties
+	return e.extraProperties
 }
 
-func (b *BulkSyncFailedEvent) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (e *EventingBulkSyncFailedEvent) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
+	e.explicitFields.Or(e.explicitFields, field)
 }
 
 // SetDestinationConnectionID sets the DestinationConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncFailedEvent) SetDestinationConnectionID(destinationConnectionID *string) {
-	b.DestinationConnectionID = destinationConnectionID
-	b.require(bulkSyncFailedEventFieldDestinationConnectionID)
+func (e *EventingBulkSyncFailedEvent) SetDestinationConnectionID(destinationConnectionID *string) {
+	e.DestinationConnectionID = destinationConnectionID
+	e.require(eventingBulkSyncFailedEventFieldDestinationConnectionID)
 }
 
 // SetError sets the Error field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncFailedEvent) SetError(error_ *string) {
-	b.Error = error_
-	b.require(bulkSyncFailedEventFieldError)
+func (e *EventingBulkSyncFailedEvent) SetError(error_ *string) {
+	e.Error = error_
+	e.require(eventingBulkSyncFailedEventFieldError)
 }
 
 // SetExecutionID sets the ExecutionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncFailedEvent) SetExecutionID(executionID *string) {
-	b.ExecutionID = executionID
-	b.require(bulkSyncFailedEventFieldExecutionID)
+func (e *EventingBulkSyncFailedEvent) SetExecutionID(executionID *string) {
+	e.ExecutionID = executionID
+	e.require(eventingBulkSyncFailedEventFieldExecutionID)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncFailedEvent) SetOrganizationID(organizationID *string) {
-	b.OrganizationID = organizationID
-	b.require(bulkSyncFailedEventFieldOrganizationID)
+func (e *EventingBulkSyncFailedEvent) SetOrganizationID(organizationID *string) {
+	e.OrganizationID = organizationID
+	e.require(eventingBulkSyncFailedEventFieldOrganizationID)
 }
 
 // SetSourceConnectionID sets the SourceConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncFailedEvent) SetSourceConnectionID(sourceConnectionID *string) {
-	b.SourceConnectionID = sourceConnectionID
-	b.require(bulkSyncFailedEventFieldSourceConnectionID)
+func (e *EventingBulkSyncFailedEvent) SetSourceConnectionID(sourceConnectionID *string) {
+	e.SourceConnectionID = sourceConnectionID
+	e.require(eventingBulkSyncFailedEventFieldSourceConnectionID)
 }
 
 // SetSyncID sets the SyncID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncFailedEvent) SetSyncID(syncID *string) {
-	b.SyncID = syncID
-	b.require(bulkSyncFailedEventFieldSyncID)
+func (e *EventingBulkSyncFailedEvent) SetSyncID(syncID *string) {
+	e.SyncID = syncID
+	e.require(eventingBulkSyncFailedEventFieldSyncID)
 }
 
 // SetSyncName sets the SyncName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncFailedEvent) SetSyncName(syncName *string) {
-	b.SyncName = syncName
-	b.require(bulkSyncFailedEventFieldSyncName)
+func (e *EventingBulkSyncFailedEvent) SetSyncName(syncName *string) {
+	e.SyncName = syncName
+	e.require(eventingBulkSyncFailedEventFieldSyncName)
 }
 
 // SetTriggerSource sets the TriggerSource field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncFailedEvent) SetTriggerSource(triggerSource *string) {
-	b.TriggerSource = triggerSource
-	b.require(bulkSyncFailedEventFieldTriggerSource)
+func (e *EventingBulkSyncFailedEvent) SetTriggerSource(triggerSource *string) {
+	e.TriggerSource = triggerSource
+	e.require(eventingBulkSyncFailedEventFieldTriggerSource)
 }
 
-func (b *BulkSyncFailedEvent) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkSyncFailedEvent
+func (e *EventingBulkSyncFailedEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler EventingBulkSyncFailedEvent
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*b = BulkSyncFailedEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	*e = EventingBulkSyncFailedEvent(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
 	if err != nil {
 		return err
 	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (b *BulkSyncFailedEvent) MarshalJSON() ([]byte, error) {
-	type embed BulkSyncFailedEvent
+func (e *EventingBulkSyncFailedEvent) MarshalJSON() ([]byte, error) {
+	type embed EventingBulkSyncFailedEvent
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*b),
+		embed: embed(*e),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (b *BulkSyncFailedEvent) String() string {
-	if b == nil {
+func (e *EventingBulkSyncFailedEvent) String() string {
+	if e == nil {
 		return "<nil>"
 	}
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(e); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", b)
+	return fmt.Sprintf("%#v", e)
 }
 
 var (
-	bulkSyncRunningEventFieldDestinationConnectionID = big.NewInt(1 << 0)
-	bulkSyncRunningEventFieldExecutionID             = big.NewInt(1 << 1)
-	bulkSyncRunningEventFieldOrganizationID          = big.NewInt(1 << 2)
-	bulkSyncRunningEventFieldSourceConnectionID      = big.NewInt(1 << 3)
-	bulkSyncRunningEventFieldSyncID                  = big.NewInt(1 << 4)
-	bulkSyncRunningEventFieldSyncName                = big.NewInt(1 << 5)
+	eventingBulkSyncRunningEventFieldDestinationConnectionID = big.NewInt(1 << 0)
+	eventingBulkSyncRunningEventFieldExecutionID             = big.NewInt(1 << 1)
+	eventingBulkSyncRunningEventFieldOrganizationID          = big.NewInt(1 << 2)
+	eventingBulkSyncRunningEventFieldSourceConnectionID      = big.NewInt(1 << 3)
+	eventingBulkSyncRunningEventFieldSyncID                  = big.NewInt(1 << 4)
+	eventingBulkSyncRunningEventFieldSyncName                = big.NewInt(1 << 5)
 )
 
-type BulkSyncRunningEvent struct {
+type EventingBulkSyncRunningEvent struct {
 	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
 	ExecutionID             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
 	OrganizationID          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
@@ -820,910 +820,162 @@ type BulkSyncRunningEvent struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BulkSyncRunningEvent) GetDestinationConnectionID() *string {
-	if b == nil {
-		return nil
-	}
-	return b.DestinationConnectionID
-}
-
-func (b *BulkSyncRunningEvent) GetExecutionID() *string {
-	if b == nil {
-		return nil
-	}
-	return b.ExecutionID
-}
-
-func (b *BulkSyncRunningEvent) GetOrganizationID() *string {
-	if b == nil {
-		return nil
-	}
-	return b.OrganizationID
-}
-
-func (b *BulkSyncRunningEvent) GetSourceConnectionID() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SourceConnectionID
-}
-
-func (b *BulkSyncRunningEvent) GetSyncID() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SyncID
-}
-
-func (b *BulkSyncRunningEvent) GetSyncName() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SyncName
-}
-
-func (b *BulkSyncRunningEvent) GetExtraProperties() map[string]interface{} {
-	if b == nil {
-		return nil
-	}
-	return b.extraProperties
-}
-
-func (b *BulkSyncRunningEvent) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetDestinationConnectionID sets the DestinationConnectionID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncRunningEvent) SetDestinationConnectionID(destinationConnectionID *string) {
-	b.DestinationConnectionID = destinationConnectionID
-	b.require(bulkSyncRunningEventFieldDestinationConnectionID)
-}
-
-// SetExecutionID sets the ExecutionID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncRunningEvent) SetExecutionID(executionID *string) {
-	b.ExecutionID = executionID
-	b.require(bulkSyncRunningEventFieldExecutionID)
-}
-
-// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncRunningEvent) SetOrganizationID(organizationID *string) {
-	b.OrganizationID = organizationID
-	b.require(bulkSyncRunningEventFieldOrganizationID)
-}
-
-// SetSourceConnectionID sets the SourceConnectionID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncRunningEvent) SetSourceConnectionID(sourceConnectionID *string) {
-	b.SourceConnectionID = sourceConnectionID
-	b.require(bulkSyncRunningEventFieldSourceConnectionID)
-}
-
-// SetSyncID sets the SyncID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncRunningEvent) SetSyncID(syncID *string) {
-	b.SyncID = syncID
-	b.require(bulkSyncRunningEventFieldSyncID)
-}
-
-// SetSyncName sets the SyncName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncRunningEvent) SetSyncName(syncName *string) {
-	b.SyncName = syncName
-	b.require(bulkSyncRunningEventFieldSyncName)
-}
-
-func (b *BulkSyncRunningEvent) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkSyncRunningEvent
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*b = BulkSyncRunningEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BulkSyncRunningEvent) MarshalJSON() ([]byte, error) {
-	type embed BulkSyncRunningEvent
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*b),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (b *BulkSyncRunningEvent) String() string {
-	if b == nil {
-		return "<nil>"
-	}
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
-var (
-	eventFieldCreatedAt      = big.NewInt(1 << 0)
-	eventFieldEvent          = big.NewInt(1 << 1)
-	eventFieldID             = big.NewInt(1 << 2)
-	eventFieldOrganizationID = big.NewInt(1 << 3)
-	eventFieldType           = big.NewInt(1 << 4)
-)
-
-type Event struct {
-	// Timestamp the event was emitted.
-	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
-	Event     *EventBody `json:"event,omitempty" url:"event,omitempty"`
-	// Unique identifier of the event.
-	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Organization the event belongs to.
-	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	// Event type identifier.
-	Type *string `json:"type,omitempty" url:"type,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (e *Event) GetCreatedAt() *time.Time {
+func (e *EventingBulkSyncRunningEvent) GetDestinationConnectionID() *string {
 	if e == nil {
 		return nil
 	}
-	return e.CreatedAt
+	return e.DestinationConnectionID
 }
 
-func (e *Event) GetEvent() *EventBody {
+func (e *EventingBulkSyncRunningEvent) GetExecutionID() *string {
 	if e == nil {
 		return nil
 	}
-	return e.Event
+	return e.ExecutionID
 }
 
-func (e *Event) GetID() *string {
-	if e == nil {
-		return nil
-	}
-	return e.ID
-}
-
-func (e *Event) GetOrganizationID() *string {
+func (e *EventingBulkSyncRunningEvent) GetOrganizationID() *string {
 	if e == nil {
 		return nil
 	}
 	return e.OrganizationID
 }
 
-func (e *Event) GetType() *string {
+func (e *EventingBulkSyncRunningEvent) GetSourceConnectionID() *string {
 	if e == nil {
 		return nil
 	}
-	return e.Type
+	return e.SourceConnectionID
 }
 
-func (e *Event) GetExtraProperties() map[string]interface{} {
+func (e *EventingBulkSyncRunningEvent) GetSyncID() *string {
 	if e == nil {
 		return nil
 	}
-	return e.extraProperties
+	return e.SyncID
 }
 
-func (e *Event) require(field *big.Int) {
-	if e.explicitFields == nil {
-		e.explicitFields = big.NewInt(0)
-	}
-	e.explicitFields.Or(e.explicitFields, field)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *Event) SetCreatedAt(createdAt *time.Time) {
-	e.CreatedAt = createdAt
-	e.require(eventFieldCreatedAt)
-}
-
-// SetEvent sets the Event field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *Event) SetEvent(event *EventBody) {
-	e.Event = event
-	e.require(eventFieldEvent)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *Event) SetID(id *string) {
-	e.ID = id
-	e.require(eventFieldID)
-}
-
-// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *Event) SetOrganizationID(organizationID *string) {
-	e.OrganizationID = organizationID
-	e.require(eventFieldOrganizationID)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *Event) SetType(type_ *string) {
-	e.Type = type_
-	e.require(eventFieldType)
-}
-
-func (e *Event) UnmarshalJSON(data []byte) error {
-	type embed Event
-	var unmarshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-	}{
-		embed: embed(*e),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*e = Event(unmarshaler.embed)
-	e.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *e)
-	if err != nil {
-		return err
-	}
-	e.extraProperties = extraProperties
-	e.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (e *Event) MarshalJSON() ([]byte, error) {
-	type embed Event
-	var marshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-	}{
-		embed:     embed(*e),
-		CreatedAt: internal.NewOptionalDateTime(e.CreatedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (e *Event) String() string {
-	if e == nil {
-		return "<nil>"
-	}
-	if len(e.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(e); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", e)
-}
-
-type EventBody struct {
-	SyncRunningEvent                *SyncRunningEvent
-	SyncCompletedEvent              *SyncCompletedEvent
-	SyncFailedEvent                 *SyncFailedEvent
-	SyncCanceledEvent               *SyncCanceledEvent
-	SyncCompletedWithErrorsEvent    *SyncCompletedWithErrorsEvent
-	BulkSyncRunningEvent            *BulkSyncRunningEvent
-	BulkSyncCompletedEvent          *BulkSyncCompletedEvent
-	BulkSyncCanceledEvent           *BulkSyncCanceledEvent
-	BulkSyncCompletedWithErrorEvent *BulkSyncCompletedWithErrorEvent
-	BulkSyncFailedEvent             *BulkSyncFailedEvent
-
-	typ string
-}
-
-func (e *EventBody) GetSyncRunningEvent() *SyncRunningEvent {
+func (e *EventingBulkSyncRunningEvent) GetSyncName() *string {
 	if e == nil {
 		return nil
 	}
-	return e.SyncRunningEvent
+	return e.SyncName
 }
 
-func (e *EventBody) GetSyncCompletedEvent() *SyncCompletedEvent {
-	if e == nil {
-		return nil
-	}
-	return e.SyncCompletedEvent
-}
-
-func (e *EventBody) GetSyncFailedEvent() *SyncFailedEvent {
-	if e == nil {
-		return nil
-	}
-	return e.SyncFailedEvent
-}
-
-func (e *EventBody) GetSyncCanceledEvent() *SyncCanceledEvent {
-	if e == nil {
-		return nil
-	}
-	return e.SyncCanceledEvent
-}
-
-func (e *EventBody) GetSyncCompletedWithErrorsEvent() *SyncCompletedWithErrorsEvent {
-	if e == nil {
-		return nil
-	}
-	return e.SyncCompletedWithErrorsEvent
-}
-
-func (e *EventBody) GetBulkSyncRunningEvent() *BulkSyncRunningEvent {
-	if e == nil {
-		return nil
-	}
-	return e.BulkSyncRunningEvent
-}
-
-func (e *EventBody) GetBulkSyncCompletedEvent() *BulkSyncCompletedEvent {
-	if e == nil {
-		return nil
-	}
-	return e.BulkSyncCompletedEvent
-}
-
-func (e *EventBody) GetBulkSyncCanceledEvent() *BulkSyncCanceledEvent {
-	if e == nil {
-		return nil
-	}
-	return e.BulkSyncCanceledEvent
-}
-
-func (e *EventBody) GetBulkSyncCompletedWithErrorEvent() *BulkSyncCompletedWithErrorEvent {
-	if e == nil {
-		return nil
-	}
-	return e.BulkSyncCompletedWithErrorEvent
-}
-
-func (e *EventBody) GetBulkSyncFailedEvent() *BulkSyncFailedEvent {
-	if e == nil {
-		return nil
-	}
-	return e.BulkSyncFailedEvent
-}
-
-func (e *EventBody) UnmarshalJSON(data []byte) error {
-	valueSyncRunningEvent := new(SyncRunningEvent)
-	if err := json.Unmarshal(data, &valueSyncRunningEvent); err == nil {
-		e.typ = "SyncRunningEvent"
-		e.SyncRunningEvent = valueSyncRunningEvent
-		return nil
-	}
-	valueSyncCompletedEvent := new(SyncCompletedEvent)
-	if err := json.Unmarshal(data, &valueSyncCompletedEvent); err == nil {
-		e.typ = "SyncCompletedEvent"
-		e.SyncCompletedEvent = valueSyncCompletedEvent
-		return nil
-	}
-	valueSyncFailedEvent := new(SyncFailedEvent)
-	if err := json.Unmarshal(data, &valueSyncFailedEvent); err == nil {
-		e.typ = "SyncFailedEvent"
-		e.SyncFailedEvent = valueSyncFailedEvent
-		return nil
-	}
-	valueSyncCanceledEvent := new(SyncCanceledEvent)
-	if err := json.Unmarshal(data, &valueSyncCanceledEvent); err == nil {
-		e.typ = "SyncCanceledEvent"
-		e.SyncCanceledEvent = valueSyncCanceledEvent
-		return nil
-	}
-	valueSyncCompletedWithErrorsEvent := new(SyncCompletedWithErrorsEvent)
-	if err := json.Unmarshal(data, &valueSyncCompletedWithErrorsEvent); err == nil {
-		e.typ = "SyncCompletedWithErrorsEvent"
-		e.SyncCompletedWithErrorsEvent = valueSyncCompletedWithErrorsEvent
-		return nil
-	}
-	valueBulkSyncRunningEvent := new(BulkSyncRunningEvent)
-	if err := json.Unmarshal(data, &valueBulkSyncRunningEvent); err == nil {
-		e.typ = "BulkSyncRunningEvent"
-		e.BulkSyncRunningEvent = valueBulkSyncRunningEvent
-		return nil
-	}
-	valueBulkSyncCompletedEvent := new(BulkSyncCompletedEvent)
-	if err := json.Unmarshal(data, &valueBulkSyncCompletedEvent); err == nil {
-		e.typ = "BulkSyncCompletedEvent"
-		e.BulkSyncCompletedEvent = valueBulkSyncCompletedEvent
-		return nil
-	}
-	valueBulkSyncCanceledEvent := new(BulkSyncCanceledEvent)
-	if err := json.Unmarshal(data, &valueBulkSyncCanceledEvent); err == nil {
-		e.typ = "BulkSyncCanceledEvent"
-		e.BulkSyncCanceledEvent = valueBulkSyncCanceledEvent
-		return nil
-	}
-	valueBulkSyncCompletedWithErrorEvent := new(BulkSyncCompletedWithErrorEvent)
-	if err := json.Unmarshal(data, &valueBulkSyncCompletedWithErrorEvent); err == nil {
-		e.typ = "BulkSyncCompletedWithErrorEvent"
-		e.BulkSyncCompletedWithErrorEvent = valueBulkSyncCompletedWithErrorEvent
-		return nil
-	}
-	valueBulkSyncFailedEvent := new(BulkSyncFailedEvent)
-	if err := json.Unmarshal(data, &valueBulkSyncFailedEvent); err == nil {
-		e.typ = "BulkSyncFailedEvent"
-		e.BulkSyncFailedEvent = valueBulkSyncFailedEvent
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, e)
-}
-
-func (e EventBody) MarshalJSON() ([]byte, error) {
-	if e.typ == "SyncRunningEvent" || e.SyncRunningEvent != nil {
-		return json.Marshal(e.SyncRunningEvent)
-	}
-	if e.typ == "SyncCompletedEvent" || e.SyncCompletedEvent != nil {
-		return json.Marshal(e.SyncCompletedEvent)
-	}
-	if e.typ == "SyncFailedEvent" || e.SyncFailedEvent != nil {
-		return json.Marshal(e.SyncFailedEvent)
-	}
-	if e.typ == "SyncCanceledEvent" || e.SyncCanceledEvent != nil {
-		return json.Marshal(e.SyncCanceledEvent)
-	}
-	if e.typ == "SyncCompletedWithErrorsEvent" || e.SyncCompletedWithErrorsEvent != nil {
-		return json.Marshal(e.SyncCompletedWithErrorsEvent)
-	}
-	if e.typ == "BulkSyncRunningEvent" || e.BulkSyncRunningEvent != nil {
-		return json.Marshal(e.BulkSyncRunningEvent)
-	}
-	if e.typ == "BulkSyncCompletedEvent" || e.BulkSyncCompletedEvent != nil {
-		return json.Marshal(e.BulkSyncCompletedEvent)
-	}
-	if e.typ == "BulkSyncCanceledEvent" || e.BulkSyncCanceledEvent != nil {
-		return json.Marshal(e.BulkSyncCanceledEvent)
-	}
-	if e.typ == "BulkSyncCompletedWithErrorEvent" || e.BulkSyncCompletedWithErrorEvent != nil {
-		return json.Marshal(e.BulkSyncCompletedWithErrorEvent)
-	}
-	if e.typ == "BulkSyncFailedEvent" || e.BulkSyncFailedEvent != nil {
-		return json.Marshal(e.BulkSyncFailedEvent)
-	}
-	return nil, fmt.Errorf("type %T does not include a non-empty union type", e)
-}
-
-type EventBodyVisitor interface {
-	VisitSyncRunningEvent(*SyncRunningEvent) error
-	VisitSyncCompletedEvent(*SyncCompletedEvent) error
-	VisitSyncFailedEvent(*SyncFailedEvent) error
-	VisitSyncCanceledEvent(*SyncCanceledEvent) error
-	VisitSyncCompletedWithErrorsEvent(*SyncCompletedWithErrorsEvent) error
-	VisitBulkSyncRunningEvent(*BulkSyncRunningEvent) error
-	VisitBulkSyncCompletedEvent(*BulkSyncCompletedEvent) error
-	VisitBulkSyncCanceledEvent(*BulkSyncCanceledEvent) error
-	VisitBulkSyncCompletedWithErrorEvent(*BulkSyncCompletedWithErrorEvent) error
-	VisitBulkSyncFailedEvent(*BulkSyncFailedEvent) error
-}
-
-func (e *EventBody) Accept(visitor EventBodyVisitor) error {
-	if e.typ == "SyncRunningEvent" || e.SyncRunningEvent != nil {
-		return visitor.VisitSyncRunningEvent(e.SyncRunningEvent)
-	}
-	if e.typ == "SyncCompletedEvent" || e.SyncCompletedEvent != nil {
-		return visitor.VisitSyncCompletedEvent(e.SyncCompletedEvent)
-	}
-	if e.typ == "SyncFailedEvent" || e.SyncFailedEvent != nil {
-		return visitor.VisitSyncFailedEvent(e.SyncFailedEvent)
-	}
-	if e.typ == "SyncCanceledEvent" || e.SyncCanceledEvent != nil {
-		return visitor.VisitSyncCanceledEvent(e.SyncCanceledEvent)
-	}
-	if e.typ == "SyncCompletedWithErrorsEvent" || e.SyncCompletedWithErrorsEvent != nil {
-		return visitor.VisitSyncCompletedWithErrorsEvent(e.SyncCompletedWithErrorsEvent)
-	}
-	if e.typ == "BulkSyncRunningEvent" || e.BulkSyncRunningEvent != nil {
-		return visitor.VisitBulkSyncRunningEvent(e.BulkSyncRunningEvent)
-	}
-	if e.typ == "BulkSyncCompletedEvent" || e.BulkSyncCompletedEvent != nil {
-		return visitor.VisitBulkSyncCompletedEvent(e.BulkSyncCompletedEvent)
-	}
-	if e.typ == "BulkSyncCanceledEvent" || e.BulkSyncCanceledEvent != nil {
-		return visitor.VisitBulkSyncCanceledEvent(e.BulkSyncCanceledEvent)
-	}
-	if e.typ == "BulkSyncCompletedWithErrorEvent" || e.BulkSyncCompletedWithErrorEvent != nil {
-		return visitor.VisitBulkSyncCompletedWithErrorEvent(e.BulkSyncCompletedWithErrorEvent)
-	}
-	if e.typ == "BulkSyncFailedEvent" || e.BulkSyncFailedEvent != nil {
-		return visitor.VisitBulkSyncFailedEvent(e.BulkSyncFailedEvent)
-	}
-	return fmt.Errorf("type %T does not include a non-empty union type", e)
-}
-
-var (
-	eventTypesEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type EventTypesEnvelope struct {
-	Data []string `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (e *EventTypesEnvelope) GetData() []string {
-	if e == nil {
-		return nil
-	}
-	return e.Data
-}
-
-func (e *EventTypesEnvelope) GetExtraProperties() map[string]interface{} {
+func (e *EventingBulkSyncRunningEvent) GetExtraProperties() map[string]interface{} {
 	if e == nil {
 		return nil
 	}
 	return e.extraProperties
 }
 
-func (e *EventTypesEnvelope) require(field *big.Int) {
+func (e *EventingBulkSyncRunningEvent) require(field *big.Int) {
 	if e.explicitFields == nil {
 		e.explicitFields = big.NewInt(0)
 	}
 	e.explicitFields.Or(e.explicitFields, field)
 }
 
-// SetData sets the Data field and marks it as non-optional;
+// SetDestinationConnectionID sets the DestinationConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *EventTypesEnvelope) SetData(data []string) {
-	e.Data = data
-	e.require(eventTypesEnvelopeFieldData)
-}
-
-func (e *EventTypesEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler EventTypesEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*e = EventTypesEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *e)
-	if err != nil {
-		return err
-	}
-	e.extraProperties = extraProperties
-	e.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (e *EventTypesEnvelope) MarshalJSON() ([]byte, error) {
-	type embed EventTypesEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*e),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (e *EventTypesEnvelope) String() string {
-	if e == nil {
-		return "<nil>"
-	}
-	if len(e.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(e); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", e)
-}
-
-var (
-	eventsEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type EventsEnvelope struct {
-	Data []*Event `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (e *EventsEnvelope) GetData() []*Event {
-	if e == nil {
-		return nil
-	}
-	return e.Data
-}
-
-func (e *EventsEnvelope) GetExtraProperties() map[string]interface{} {
-	if e == nil {
-		return nil
-	}
-	return e.extraProperties
-}
-
-func (e *EventsEnvelope) require(field *big.Int) {
-	if e.explicitFields == nil {
-		e.explicitFields = big.NewInt(0)
-	}
-	e.explicitFields.Or(e.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *EventsEnvelope) SetData(data []*Event) {
-	e.Data = data
-	e.require(eventsEnvelopeFieldData)
-}
-
-func (e *EventsEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler EventsEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*e = EventsEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *e)
-	if err != nil {
-		return err
-	}
-	e.extraProperties = extraProperties
-	e.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (e *EventsEnvelope) MarshalJSON() ([]byte, error) {
-	type embed EventsEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*e),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (e *EventsEnvelope) String() string {
-	if e == nil {
-		return "<nil>"
-	}
-	if len(e.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(e); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", e)
-}
-
-var (
-	syncCanceledEventFieldExecutionID        = big.NewInt(1 << 0)
-	syncCanceledEventFieldOrganizationID     = big.NewInt(1 << 1)
-	syncCanceledEventFieldStatus             = big.NewInt(1 << 2)
-	syncCanceledEventFieldSyncID             = big.NewInt(1 << 3)
-	syncCanceledEventFieldSyncName           = big.NewInt(1 << 4)
-	syncCanceledEventFieldTargetConnectionID = big.NewInt(1 << 5)
-)
-
-type SyncCanceledEvent struct {
-	ExecutionID        *string          `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationID     *string          `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Status             *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-	SyncID             *string          `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	SyncName           *string          `json:"sync_name,omitempty" url:"sync_name,omitempty"`
-	TargetConnectionID *string          `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (s *SyncCanceledEvent) GetExecutionID() *string {
-	if s == nil {
-		return nil
-	}
-	return s.ExecutionID
-}
-
-func (s *SyncCanceledEvent) GetOrganizationID() *string {
-	if s == nil {
-		return nil
-	}
-	return s.OrganizationID
-}
-
-func (s *SyncCanceledEvent) GetStatus() *ExecutionStatus {
-	if s == nil {
-		return nil
-	}
-	return s.Status
-}
-
-func (s *SyncCanceledEvent) GetSyncID() *string {
-	if s == nil {
-		return nil
-	}
-	return s.SyncID
-}
-
-func (s *SyncCanceledEvent) GetSyncName() *string {
-	if s == nil {
-		return nil
-	}
-	return s.SyncName
-}
-
-func (s *SyncCanceledEvent) GetTargetConnectionID() *string {
-	if s == nil {
-		return nil
-	}
-	return s.TargetConnectionID
-}
-
-func (s *SyncCanceledEvent) GetExtraProperties() map[string]interface{} {
-	if s == nil {
-		return nil
-	}
-	return s.extraProperties
-}
-
-func (s *SyncCanceledEvent) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
-	}
-	s.explicitFields.Or(s.explicitFields, field)
+func (e *EventingBulkSyncRunningEvent) SetDestinationConnectionID(destinationConnectionID *string) {
+	e.DestinationConnectionID = destinationConnectionID
+	e.require(eventingBulkSyncRunningEventFieldDestinationConnectionID)
 }
 
 // SetExecutionID sets the ExecutionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCanceledEvent) SetExecutionID(executionID *string) {
-	s.ExecutionID = executionID
-	s.require(syncCanceledEventFieldExecutionID)
+func (e *EventingBulkSyncRunningEvent) SetExecutionID(executionID *string) {
+	e.ExecutionID = executionID
+	e.require(eventingBulkSyncRunningEventFieldExecutionID)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCanceledEvent) SetOrganizationID(organizationID *string) {
-	s.OrganizationID = organizationID
-	s.require(syncCanceledEventFieldOrganizationID)
+func (e *EventingBulkSyncRunningEvent) SetOrganizationID(organizationID *string) {
+	e.OrganizationID = organizationID
+	e.require(eventingBulkSyncRunningEventFieldOrganizationID)
 }
 
-// SetStatus sets the Status field and marks it as non-optional;
+// SetSourceConnectionID sets the SourceConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCanceledEvent) SetStatus(status *ExecutionStatus) {
-	s.Status = status
-	s.require(syncCanceledEventFieldStatus)
+func (e *EventingBulkSyncRunningEvent) SetSourceConnectionID(sourceConnectionID *string) {
+	e.SourceConnectionID = sourceConnectionID
+	e.require(eventingBulkSyncRunningEventFieldSourceConnectionID)
 }
 
 // SetSyncID sets the SyncID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCanceledEvent) SetSyncID(syncID *string) {
-	s.SyncID = syncID
-	s.require(syncCanceledEventFieldSyncID)
+func (e *EventingBulkSyncRunningEvent) SetSyncID(syncID *string) {
+	e.SyncID = syncID
+	e.require(eventingBulkSyncRunningEventFieldSyncID)
 }
 
 // SetSyncName sets the SyncName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCanceledEvent) SetSyncName(syncName *string) {
-	s.SyncName = syncName
-	s.require(syncCanceledEventFieldSyncName)
+func (e *EventingBulkSyncRunningEvent) SetSyncName(syncName *string) {
+	e.SyncName = syncName
+	e.require(eventingBulkSyncRunningEventFieldSyncName)
 }
 
-// SetTargetConnectionID sets the TargetConnectionID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCanceledEvent) SetTargetConnectionID(targetConnectionID *string) {
-	s.TargetConnectionID = targetConnectionID
-	s.require(syncCanceledEventFieldTargetConnectionID)
-}
-
-func (s *SyncCanceledEvent) UnmarshalJSON(data []byte) error {
-	type unmarshaler SyncCanceledEvent
+func (e *EventingBulkSyncRunningEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler EventingBulkSyncRunningEvent
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*s = SyncCanceledEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	*e = EventingBulkSyncRunningEvent(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
 	if err != nil {
 		return err
 	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (s *SyncCanceledEvent) MarshalJSON() ([]byte, error) {
-	type embed SyncCanceledEvent
+func (e *EventingBulkSyncRunningEvent) MarshalJSON() ([]byte, error) {
+	type embed EventingBulkSyncRunningEvent
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*s),
+		embed: embed(*e),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (s *SyncCanceledEvent) String() string {
-	if s == nil {
+func (e *EventingBulkSyncRunningEvent) String() string {
+	if e == nil {
 		return "<nil>"
 	}
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(e); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", s)
+	return fmt.Sprintf("%#v", e)
 }
 
 var (
-	syncCompletedEventFieldDeletedRecords     = big.NewInt(1 << 0)
-	syncCompletedEventFieldErrorCount         = big.NewInt(1 << 1)
-	syncCompletedEventFieldErroredRecords     = big.NewInt(1 << 2)
-	syncCompletedEventFieldExecutionID        = big.NewInt(1 << 3)
-	syncCompletedEventFieldInsertedCount      = big.NewInt(1 << 4)
-	syncCompletedEventFieldInsertedRecords    = big.NewInt(1 << 5)
-	syncCompletedEventFieldOrganizationID     = big.NewInt(1 << 6)
-	syncCompletedEventFieldRecordCount        = big.NewInt(1 << 7)
-	syncCompletedEventFieldStatus             = big.NewInt(1 << 8)
-	syncCompletedEventFieldSyncID             = big.NewInt(1 << 9)
-	syncCompletedEventFieldSyncName           = big.NewInt(1 << 10)
-	syncCompletedEventFieldTargetConnectionID = big.NewInt(1 << 11)
-	syncCompletedEventFieldTotalRecords       = big.NewInt(1 << 12)
-	syncCompletedEventFieldTrigger            = big.NewInt(1 << 13)
-	syncCompletedEventFieldUpdatedCount       = big.NewInt(1 << 14)
-	syncCompletedEventFieldUpdatedRecords     = big.NewInt(1 << 15)
-	syncCompletedEventFieldUpsertedCount      = big.NewInt(1 << 16)
-	syncCompletedEventFieldWarningCount       = big.NewInt(1 << 17)
-	syncCompletedEventFieldWarnings           = big.NewInt(1 << 18)
+	eventingSyncCanceledEventFieldExecutionID        = big.NewInt(1 << 0)
+	eventingSyncCanceledEventFieldOrganizationID     = big.NewInt(1 << 1)
+	eventingSyncCanceledEventFieldStatus             = big.NewInt(1 << 2)
+	eventingSyncCanceledEventFieldSyncID             = big.NewInt(1 << 3)
+	eventingSyncCanceledEventFieldSyncName           = big.NewInt(1 << 4)
+	eventingSyncCanceledEventFieldTargetConnectionID = big.NewInt(1 << 5)
 )
 
-type SyncCompletedEvent struct {
-	DeletedRecords     []string         `json:"deleted_records,omitempty" url:"deleted_records,omitempty"`
-	ErrorCount         *int             `json:"error_count,omitempty" url:"error_count,omitempty"`
-	ErroredRecords     []string         `json:"errored_records,omitempty" url:"errored_records,omitempty"`
-	ExecutionID        *string          `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	InsertedCount      *int             `json:"inserted_count,omitempty" url:"inserted_count,omitempty"`
-	InsertedRecords    []string         `json:"inserted_records,omitempty" url:"inserted_records,omitempty"`
-	OrganizationID     *string          `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	RecordCount        *int             `json:"record_count,omitempty" url:"record_count,omitempty"`
-	Status             *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-	SyncID             *string          `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	SyncName           *string          `json:"sync_name,omitempty" url:"sync_name,omitempty"`
-	TargetConnectionID *string          `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
-	TotalRecords       []string         `json:"total_records,omitempty" url:"total_records,omitempty"`
-	Trigger            *string          `json:"trigger,omitempty" url:"trigger,omitempty"`
-	UpdatedCount       *int             `json:"updated_count,omitempty" url:"updated_count,omitempty"`
-	UpdatedRecords     []string         `json:"updated_records,omitempty" url:"updated_records,omitempty"`
-	UpsertedCount      *int             `json:"upserted_count,omitempty" url:"upserted_count,omitempty"`
-	WarningCount       *int             `json:"warning_count,omitempty" url:"warning_count,omitempty"`
-	Warnings           []string         `json:"warnings,omitempty" url:"warnings,omitempty"`
+type EventingSyncCanceledEvent struct {
+	ExecutionID        *string              `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	OrganizationID     *string              `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Status             *UtilExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	SyncID             *string              `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncName           *string              `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	TargetConnectionID *string              `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1732,340 +984,530 @@ type SyncCompletedEvent struct {
 	rawJSON         json.RawMessage
 }
 
-func (s *SyncCompletedEvent) GetDeletedRecords() []string {
-	if s == nil {
+func (e *EventingSyncCanceledEvent) GetExecutionID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.DeletedRecords
+	return e.ExecutionID
 }
 
-func (s *SyncCompletedEvent) GetErrorCount() *int {
-	if s == nil {
+func (e *EventingSyncCanceledEvent) GetOrganizationID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.ErrorCount
+	return e.OrganizationID
 }
 
-func (s *SyncCompletedEvent) GetErroredRecords() []string {
-	if s == nil {
+func (e *EventingSyncCanceledEvent) GetStatus() *UtilExecutionStatus {
+	if e == nil {
 		return nil
 	}
-	return s.ErroredRecords
+	return e.Status
 }
 
-func (s *SyncCompletedEvent) GetExecutionID() *string {
-	if s == nil {
+func (e *EventingSyncCanceledEvent) GetSyncID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.ExecutionID
+	return e.SyncID
 }
 
-func (s *SyncCompletedEvent) GetInsertedCount() *int {
-	if s == nil {
+func (e *EventingSyncCanceledEvent) GetSyncName() *string {
+	if e == nil {
 		return nil
 	}
-	return s.InsertedCount
+	return e.SyncName
 }
 
-func (s *SyncCompletedEvent) GetInsertedRecords() []string {
-	if s == nil {
+func (e *EventingSyncCanceledEvent) GetTargetConnectionID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.InsertedRecords
+	return e.TargetConnectionID
 }
 
-func (s *SyncCompletedEvent) GetOrganizationID() *string {
-	if s == nil {
+func (e *EventingSyncCanceledEvent) GetExtraProperties() map[string]interface{} {
+	if e == nil {
 		return nil
 	}
-	return s.OrganizationID
+	return e.extraProperties
 }
 
-func (s *SyncCompletedEvent) GetRecordCount() *int {
-	if s == nil {
+func (e *EventingSyncCanceledEvent) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetExecutionID sets the ExecutionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingSyncCanceledEvent) SetExecutionID(executionID *string) {
+	e.ExecutionID = executionID
+	e.require(eventingSyncCanceledEventFieldExecutionID)
+}
+
+// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingSyncCanceledEvent) SetOrganizationID(organizationID *string) {
+	e.OrganizationID = organizationID
+	e.require(eventingSyncCanceledEventFieldOrganizationID)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingSyncCanceledEvent) SetStatus(status *UtilExecutionStatus) {
+	e.Status = status
+	e.require(eventingSyncCanceledEventFieldStatus)
+}
+
+// SetSyncID sets the SyncID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingSyncCanceledEvent) SetSyncID(syncID *string) {
+	e.SyncID = syncID
+	e.require(eventingSyncCanceledEventFieldSyncID)
+}
+
+// SetSyncName sets the SyncName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingSyncCanceledEvent) SetSyncName(syncName *string) {
+	e.SyncName = syncName
+	e.require(eventingSyncCanceledEventFieldSyncName)
+}
+
+// SetTargetConnectionID sets the TargetConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingSyncCanceledEvent) SetTargetConnectionID(targetConnectionID *string) {
+	e.TargetConnectionID = targetConnectionID
+	e.require(eventingSyncCanceledEventFieldTargetConnectionID)
+}
+
+func (e *EventingSyncCanceledEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler EventingSyncCanceledEvent
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = EventingSyncCanceledEvent(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
+	if err != nil {
+		return err
+	}
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *EventingSyncCanceledEvent) MarshalJSON() ([]byte, error) {
+	type embed EventingSyncCanceledEvent
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*e),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (e *EventingSyncCanceledEvent) String() string {
+	if e == nil {
+		return "<nil>"
+	}
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+var (
+	eventingSyncCompletedEventFieldDeletedRecords     = big.NewInt(1 << 0)
+	eventingSyncCompletedEventFieldErrorCount         = big.NewInt(1 << 1)
+	eventingSyncCompletedEventFieldErroredRecords     = big.NewInt(1 << 2)
+	eventingSyncCompletedEventFieldExecutionID        = big.NewInt(1 << 3)
+	eventingSyncCompletedEventFieldInsertedCount      = big.NewInt(1 << 4)
+	eventingSyncCompletedEventFieldInsertedRecords    = big.NewInt(1 << 5)
+	eventingSyncCompletedEventFieldOrganizationID     = big.NewInt(1 << 6)
+	eventingSyncCompletedEventFieldRecordCount        = big.NewInt(1 << 7)
+	eventingSyncCompletedEventFieldStatus             = big.NewInt(1 << 8)
+	eventingSyncCompletedEventFieldSyncID             = big.NewInt(1 << 9)
+	eventingSyncCompletedEventFieldSyncName           = big.NewInt(1 << 10)
+	eventingSyncCompletedEventFieldTargetConnectionID = big.NewInt(1 << 11)
+	eventingSyncCompletedEventFieldTotalRecords       = big.NewInt(1 << 12)
+	eventingSyncCompletedEventFieldTrigger            = big.NewInt(1 << 13)
+	eventingSyncCompletedEventFieldUpdatedCount       = big.NewInt(1 << 14)
+	eventingSyncCompletedEventFieldUpdatedRecords     = big.NewInt(1 << 15)
+	eventingSyncCompletedEventFieldUpsertedCount      = big.NewInt(1 << 16)
+	eventingSyncCompletedEventFieldWarningCount       = big.NewInt(1 << 17)
+	eventingSyncCompletedEventFieldWarnings           = big.NewInt(1 << 18)
+)
+
+type EventingSyncCompletedEvent struct {
+	DeletedRecords     []string             `json:"deleted_records,omitempty" url:"deleted_records,omitempty"`
+	ErrorCount         *int                 `json:"error_count,omitempty" url:"error_count,omitempty"`
+	ErroredRecords     []string             `json:"errored_records,omitempty" url:"errored_records,omitempty"`
+	ExecutionID        *string              `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	InsertedCount      *int                 `json:"inserted_count,omitempty" url:"inserted_count,omitempty"`
+	InsertedRecords    []string             `json:"inserted_records,omitempty" url:"inserted_records,omitempty"`
+	OrganizationID     *string              `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	RecordCount        *int                 `json:"record_count,omitempty" url:"record_count,omitempty"`
+	Status             *UtilExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	SyncID             *string              `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncName           *string              `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	TargetConnectionID *string              `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
+	TotalRecords       []string             `json:"total_records,omitempty" url:"total_records,omitempty"`
+	Trigger            *string              `json:"trigger,omitempty" url:"trigger,omitempty"`
+	UpdatedCount       *int                 `json:"updated_count,omitempty" url:"updated_count,omitempty"`
+	UpdatedRecords     []string             `json:"updated_records,omitempty" url:"updated_records,omitempty"`
+	UpsertedCount      *int                 `json:"upserted_count,omitempty" url:"upserted_count,omitempty"`
+	WarningCount       *int                 `json:"warning_count,omitempty" url:"warning_count,omitempty"`
+	Warnings           []string             `json:"warnings,omitempty" url:"warnings,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (e *EventingSyncCompletedEvent) GetDeletedRecords() []string {
+	if e == nil {
 		return nil
 	}
-	return s.RecordCount
+	return e.DeletedRecords
 }
 
-func (s *SyncCompletedEvent) GetStatus() *ExecutionStatus {
-	if s == nil {
+func (e *EventingSyncCompletedEvent) GetErrorCount() *int {
+	if e == nil {
 		return nil
 	}
-	return s.Status
+	return e.ErrorCount
 }
 
-func (s *SyncCompletedEvent) GetSyncID() *string {
-	if s == nil {
+func (e *EventingSyncCompletedEvent) GetErroredRecords() []string {
+	if e == nil {
 		return nil
 	}
-	return s.SyncID
+	return e.ErroredRecords
 }
 
-func (s *SyncCompletedEvent) GetSyncName() *string {
-	if s == nil {
+func (e *EventingSyncCompletedEvent) GetExecutionID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.SyncName
+	return e.ExecutionID
 }
 
-func (s *SyncCompletedEvent) GetTargetConnectionID() *string {
-	if s == nil {
+func (e *EventingSyncCompletedEvent) GetInsertedCount() *int {
+	if e == nil {
 		return nil
 	}
-	return s.TargetConnectionID
+	return e.InsertedCount
 }
 
-func (s *SyncCompletedEvent) GetTotalRecords() []string {
-	if s == nil {
+func (e *EventingSyncCompletedEvent) GetInsertedRecords() []string {
+	if e == nil {
 		return nil
 	}
-	return s.TotalRecords
+	return e.InsertedRecords
 }
 
-func (s *SyncCompletedEvent) GetTrigger() *string {
-	if s == nil {
+func (e *EventingSyncCompletedEvent) GetOrganizationID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.Trigger
+	return e.OrganizationID
 }
 
-func (s *SyncCompletedEvent) GetUpdatedCount() *int {
-	if s == nil {
+func (e *EventingSyncCompletedEvent) GetRecordCount() *int {
+	if e == nil {
 		return nil
 	}
-	return s.UpdatedCount
+	return e.RecordCount
 }
 
-func (s *SyncCompletedEvent) GetUpdatedRecords() []string {
-	if s == nil {
+func (e *EventingSyncCompletedEvent) GetStatus() *UtilExecutionStatus {
+	if e == nil {
 		return nil
 	}
-	return s.UpdatedRecords
+	return e.Status
 }
 
-func (s *SyncCompletedEvent) GetUpsertedCount() *int {
-	if s == nil {
+func (e *EventingSyncCompletedEvent) GetSyncID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.UpsertedCount
+	return e.SyncID
 }
 
-func (s *SyncCompletedEvent) GetWarningCount() *int {
-	if s == nil {
+func (e *EventingSyncCompletedEvent) GetSyncName() *string {
+	if e == nil {
 		return nil
 	}
-	return s.WarningCount
+	return e.SyncName
 }
 
-func (s *SyncCompletedEvent) GetWarnings() []string {
-	if s == nil {
+func (e *EventingSyncCompletedEvent) GetTargetConnectionID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.Warnings
+	return e.TargetConnectionID
 }
 
-func (s *SyncCompletedEvent) GetExtraProperties() map[string]interface{} {
-	if s == nil {
+func (e *EventingSyncCompletedEvent) GetTotalRecords() []string {
+	if e == nil {
 		return nil
 	}
-	return s.extraProperties
+	return e.TotalRecords
 }
 
-func (s *SyncCompletedEvent) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (e *EventingSyncCompletedEvent) GetTrigger() *string {
+	if e == nil {
+		return nil
 	}
-	s.explicitFields.Or(s.explicitFields, field)
+	return e.Trigger
+}
+
+func (e *EventingSyncCompletedEvent) GetUpdatedCount() *int {
+	if e == nil {
+		return nil
+	}
+	return e.UpdatedCount
+}
+
+func (e *EventingSyncCompletedEvent) GetUpdatedRecords() []string {
+	if e == nil {
+		return nil
+	}
+	return e.UpdatedRecords
+}
+
+func (e *EventingSyncCompletedEvent) GetUpsertedCount() *int {
+	if e == nil {
+		return nil
+	}
+	return e.UpsertedCount
+}
+
+func (e *EventingSyncCompletedEvent) GetWarningCount() *int {
+	if e == nil {
+		return nil
+	}
+	return e.WarningCount
+}
+
+func (e *EventingSyncCompletedEvent) GetWarnings() []string {
+	if e == nil {
+		return nil
+	}
+	return e.Warnings
+}
+
+func (e *EventingSyncCompletedEvent) GetExtraProperties() map[string]interface{} {
+	if e == nil {
+		return nil
+	}
+	return e.extraProperties
+}
+
+func (e *EventingSyncCompletedEvent) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
 }
 
 // SetDeletedRecords sets the DeletedRecords field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetDeletedRecords(deletedRecords []string) {
-	s.DeletedRecords = deletedRecords
-	s.require(syncCompletedEventFieldDeletedRecords)
+func (e *EventingSyncCompletedEvent) SetDeletedRecords(deletedRecords []string) {
+	e.DeletedRecords = deletedRecords
+	e.require(eventingSyncCompletedEventFieldDeletedRecords)
 }
 
 // SetErrorCount sets the ErrorCount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetErrorCount(errorCount *int) {
-	s.ErrorCount = errorCount
-	s.require(syncCompletedEventFieldErrorCount)
+func (e *EventingSyncCompletedEvent) SetErrorCount(errorCount *int) {
+	e.ErrorCount = errorCount
+	e.require(eventingSyncCompletedEventFieldErrorCount)
 }
 
 // SetErroredRecords sets the ErroredRecords field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetErroredRecords(erroredRecords []string) {
-	s.ErroredRecords = erroredRecords
-	s.require(syncCompletedEventFieldErroredRecords)
+func (e *EventingSyncCompletedEvent) SetErroredRecords(erroredRecords []string) {
+	e.ErroredRecords = erroredRecords
+	e.require(eventingSyncCompletedEventFieldErroredRecords)
 }
 
 // SetExecutionID sets the ExecutionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetExecutionID(executionID *string) {
-	s.ExecutionID = executionID
-	s.require(syncCompletedEventFieldExecutionID)
+func (e *EventingSyncCompletedEvent) SetExecutionID(executionID *string) {
+	e.ExecutionID = executionID
+	e.require(eventingSyncCompletedEventFieldExecutionID)
 }
 
 // SetInsertedCount sets the InsertedCount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetInsertedCount(insertedCount *int) {
-	s.InsertedCount = insertedCount
-	s.require(syncCompletedEventFieldInsertedCount)
+func (e *EventingSyncCompletedEvent) SetInsertedCount(insertedCount *int) {
+	e.InsertedCount = insertedCount
+	e.require(eventingSyncCompletedEventFieldInsertedCount)
 }
 
 // SetInsertedRecords sets the InsertedRecords field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetInsertedRecords(insertedRecords []string) {
-	s.InsertedRecords = insertedRecords
-	s.require(syncCompletedEventFieldInsertedRecords)
+func (e *EventingSyncCompletedEvent) SetInsertedRecords(insertedRecords []string) {
+	e.InsertedRecords = insertedRecords
+	e.require(eventingSyncCompletedEventFieldInsertedRecords)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetOrganizationID(organizationID *string) {
-	s.OrganizationID = organizationID
-	s.require(syncCompletedEventFieldOrganizationID)
+func (e *EventingSyncCompletedEvent) SetOrganizationID(organizationID *string) {
+	e.OrganizationID = organizationID
+	e.require(eventingSyncCompletedEventFieldOrganizationID)
 }
 
 // SetRecordCount sets the RecordCount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetRecordCount(recordCount *int) {
-	s.RecordCount = recordCount
-	s.require(syncCompletedEventFieldRecordCount)
+func (e *EventingSyncCompletedEvent) SetRecordCount(recordCount *int) {
+	e.RecordCount = recordCount
+	e.require(eventingSyncCompletedEventFieldRecordCount)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetStatus(status *ExecutionStatus) {
-	s.Status = status
-	s.require(syncCompletedEventFieldStatus)
+func (e *EventingSyncCompletedEvent) SetStatus(status *UtilExecutionStatus) {
+	e.Status = status
+	e.require(eventingSyncCompletedEventFieldStatus)
 }
 
 // SetSyncID sets the SyncID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetSyncID(syncID *string) {
-	s.SyncID = syncID
-	s.require(syncCompletedEventFieldSyncID)
+func (e *EventingSyncCompletedEvent) SetSyncID(syncID *string) {
+	e.SyncID = syncID
+	e.require(eventingSyncCompletedEventFieldSyncID)
 }
 
 // SetSyncName sets the SyncName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetSyncName(syncName *string) {
-	s.SyncName = syncName
-	s.require(syncCompletedEventFieldSyncName)
+func (e *EventingSyncCompletedEvent) SetSyncName(syncName *string) {
+	e.SyncName = syncName
+	e.require(eventingSyncCompletedEventFieldSyncName)
 }
 
 // SetTargetConnectionID sets the TargetConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetTargetConnectionID(targetConnectionID *string) {
-	s.TargetConnectionID = targetConnectionID
-	s.require(syncCompletedEventFieldTargetConnectionID)
+func (e *EventingSyncCompletedEvent) SetTargetConnectionID(targetConnectionID *string) {
+	e.TargetConnectionID = targetConnectionID
+	e.require(eventingSyncCompletedEventFieldTargetConnectionID)
 }
 
 // SetTotalRecords sets the TotalRecords field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetTotalRecords(totalRecords []string) {
-	s.TotalRecords = totalRecords
-	s.require(syncCompletedEventFieldTotalRecords)
+func (e *EventingSyncCompletedEvent) SetTotalRecords(totalRecords []string) {
+	e.TotalRecords = totalRecords
+	e.require(eventingSyncCompletedEventFieldTotalRecords)
 }
 
 // SetTrigger sets the Trigger field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetTrigger(trigger *string) {
-	s.Trigger = trigger
-	s.require(syncCompletedEventFieldTrigger)
+func (e *EventingSyncCompletedEvent) SetTrigger(trigger *string) {
+	e.Trigger = trigger
+	e.require(eventingSyncCompletedEventFieldTrigger)
 }
 
 // SetUpdatedCount sets the UpdatedCount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetUpdatedCount(updatedCount *int) {
-	s.UpdatedCount = updatedCount
-	s.require(syncCompletedEventFieldUpdatedCount)
+func (e *EventingSyncCompletedEvent) SetUpdatedCount(updatedCount *int) {
+	e.UpdatedCount = updatedCount
+	e.require(eventingSyncCompletedEventFieldUpdatedCount)
 }
 
 // SetUpdatedRecords sets the UpdatedRecords field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetUpdatedRecords(updatedRecords []string) {
-	s.UpdatedRecords = updatedRecords
-	s.require(syncCompletedEventFieldUpdatedRecords)
+func (e *EventingSyncCompletedEvent) SetUpdatedRecords(updatedRecords []string) {
+	e.UpdatedRecords = updatedRecords
+	e.require(eventingSyncCompletedEventFieldUpdatedRecords)
 }
 
 // SetUpsertedCount sets the UpsertedCount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetUpsertedCount(upsertedCount *int) {
-	s.UpsertedCount = upsertedCount
-	s.require(syncCompletedEventFieldUpsertedCount)
+func (e *EventingSyncCompletedEvent) SetUpsertedCount(upsertedCount *int) {
+	e.UpsertedCount = upsertedCount
+	e.require(eventingSyncCompletedEventFieldUpsertedCount)
 }
 
 // SetWarningCount sets the WarningCount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetWarningCount(warningCount *int) {
-	s.WarningCount = warningCount
-	s.require(syncCompletedEventFieldWarningCount)
+func (e *EventingSyncCompletedEvent) SetWarningCount(warningCount *int) {
+	e.WarningCount = warningCount
+	e.require(eventingSyncCompletedEventFieldWarningCount)
 }
 
 // SetWarnings sets the Warnings field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedEvent) SetWarnings(warnings []string) {
-	s.Warnings = warnings
-	s.require(syncCompletedEventFieldWarnings)
+func (e *EventingSyncCompletedEvent) SetWarnings(warnings []string) {
+	e.Warnings = warnings
+	e.require(eventingSyncCompletedEventFieldWarnings)
 }
 
-func (s *SyncCompletedEvent) UnmarshalJSON(data []byte) error {
-	type unmarshaler SyncCompletedEvent
+func (e *EventingSyncCompletedEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler EventingSyncCompletedEvent
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*s = SyncCompletedEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	*e = EventingSyncCompletedEvent(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
 	if err != nil {
 		return err
 	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (s *SyncCompletedEvent) MarshalJSON() ([]byte, error) {
-	type embed SyncCompletedEvent
+func (e *EventingSyncCompletedEvent) MarshalJSON() ([]byte, error) {
+	type embed EventingSyncCompletedEvent
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*s),
+		embed: embed(*e),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (s *SyncCompletedEvent) String() string {
-	if s == nil {
+func (e *EventingSyncCompletedEvent) String() string {
+	if e == nil {
 		return "<nil>"
 	}
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(e); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", s)
+	return fmt.Sprintf("%#v", e)
 }
 
 var (
-	syncCompletedWithErrorsEventFieldError              = big.NewInt(1 << 0)
-	syncCompletedWithErrorsEventFieldExecutionID        = big.NewInt(1 << 1)
-	syncCompletedWithErrorsEventFieldNumberOfErrors     = big.NewInt(1 << 2)
-	syncCompletedWithErrorsEventFieldNumberOfWarnings   = big.NewInt(1 << 3)
-	syncCompletedWithErrorsEventFieldOrganizationID     = big.NewInt(1 << 4)
-	syncCompletedWithErrorsEventFieldSyncID             = big.NewInt(1 << 5)
-	syncCompletedWithErrorsEventFieldSyncName           = big.NewInt(1 << 6)
-	syncCompletedWithErrorsEventFieldTargetConnectionID = big.NewInt(1 << 7)
+	eventingSyncCompletedWithErrorsEventFieldError              = big.NewInt(1 << 0)
+	eventingSyncCompletedWithErrorsEventFieldExecutionID        = big.NewInt(1 << 1)
+	eventingSyncCompletedWithErrorsEventFieldNumberOfErrors     = big.NewInt(1 << 2)
+	eventingSyncCompletedWithErrorsEventFieldNumberOfWarnings   = big.NewInt(1 << 3)
+	eventingSyncCompletedWithErrorsEventFieldOrganizationID     = big.NewInt(1 << 4)
+	eventingSyncCompletedWithErrorsEventFieldSyncID             = big.NewInt(1 << 5)
+	eventingSyncCompletedWithErrorsEventFieldSyncName           = big.NewInt(1 << 6)
+	eventingSyncCompletedWithErrorsEventFieldTargetConnectionID = big.NewInt(1 << 7)
 )
 
-type SyncCompletedWithErrorsEvent struct {
+type EventingSyncCompletedWithErrorsEvent struct {
 	Error              *string `json:"error,omitempty" url:"error,omitempty"`
 	ExecutionID        *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
 	NumberOfErrors     *int    `json:"number_of_errors,omitempty" url:"number_of_errors,omitempty"`
@@ -2082,184 +1524,184 @@ type SyncCompletedWithErrorsEvent struct {
 	rawJSON         json.RawMessage
 }
 
-func (s *SyncCompletedWithErrorsEvent) GetError() *string {
-	if s == nil {
+func (e *EventingSyncCompletedWithErrorsEvent) GetError() *string {
+	if e == nil {
 		return nil
 	}
-	return s.Error
+	return e.Error
 }
 
-func (s *SyncCompletedWithErrorsEvent) GetExecutionID() *string {
-	if s == nil {
+func (e *EventingSyncCompletedWithErrorsEvent) GetExecutionID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.ExecutionID
+	return e.ExecutionID
 }
 
-func (s *SyncCompletedWithErrorsEvent) GetNumberOfErrors() *int {
-	if s == nil {
+func (e *EventingSyncCompletedWithErrorsEvent) GetNumberOfErrors() *int {
+	if e == nil {
 		return nil
 	}
-	return s.NumberOfErrors
+	return e.NumberOfErrors
 }
 
-func (s *SyncCompletedWithErrorsEvent) GetNumberOfWarnings() *int {
-	if s == nil {
+func (e *EventingSyncCompletedWithErrorsEvent) GetNumberOfWarnings() *int {
+	if e == nil {
 		return nil
 	}
-	return s.NumberOfWarnings
+	return e.NumberOfWarnings
 }
 
-func (s *SyncCompletedWithErrorsEvent) GetOrganizationID() *string {
-	if s == nil {
+func (e *EventingSyncCompletedWithErrorsEvent) GetOrganizationID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.OrganizationID
+	return e.OrganizationID
 }
 
-func (s *SyncCompletedWithErrorsEvent) GetSyncID() *string {
-	if s == nil {
+func (e *EventingSyncCompletedWithErrorsEvent) GetSyncID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.SyncID
+	return e.SyncID
 }
 
-func (s *SyncCompletedWithErrorsEvent) GetSyncName() *string {
-	if s == nil {
+func (e *EventingSyncCompletedWithErrorsEvent) GetSyncName() *string {
+	if e == nil {
 		return nil
 	}
-	return s.SyncName
+	return e.SyncName
 }
 
-func (s *SyncCompletedWithErrorsEvent) GetTargetConnectionID() *string {
-	if s == nil {
+func (e *EventingSyncCompletedWithErrorsEvent) GetTargetConnectionID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.TargetConnectionID
+	return e.TargetConnectionID
 }
 
-func (s *SyncCompletedWithErrorsEvent) GetExtraProperties() map[string]interface{} {
-	if s == nil {
+func (e *EventingSyncCompletedWithErrorsEvent) GetExtraProperties() map[string]interface{} {
+	if e == nil {
 		return nil
 	}
-	return s.extraProperties
+	return e.extraProperties
 }
 
-func (s *SyncCompletedWithErrorsEvent) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (e *EventingSyncCompletedWithErrorsEvent) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
 	}
-	s.explicitFields.Or(s.explicitFields, field)
+	e.explicitFields.Or(e.explicitFields, field)
 }
 
 // SetError sets the Error field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedWithErrorsEvent) SetError(error_ *string) {
-	s.Error = error_
-	s.require(syncCompletedWithErrorsEventFieldError)
+func (e *EventingSyncCompletedWithErrorsEvent) SetError(error_ *string) {
+	e.Error = error_
+	e.require(eventingSyncCompletedWithErrorsEventFieldError)
 }
 
 // SetExecutionID sets the ExecutionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedWithErrorsEvent) SetExecutionID(executionID *string) {
-	s.ExecutionID = executionID
-	s.require(syncCompletedWithErrorsEventFieldExecutionID)
+func (e *EventingSyncCompletedWithErrorsEvent) SetExecutionID(executionID *string) {
+	e.ExecutionID = executionID
+	e.require(eventingSyncCompletedWithErrorsEventFieldExecutionID)
 }
 
 // SetNumberOfErrors sets the NumberOfErrors field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedWithErrorsEvent) SetNumberOfErrors(numberOfErrors *int) {
-	s.NumberOfErrors = numberOfErrors
-	s.require(syncCompletedWithErrorsEventFieldNumberOfErrors)
+func (e *EventingSyncCompletedWithErrorsEvent) SetNumberOfErrors(numberOfErrors *int) {
+	e.NumberOfErrors = numberOfErrors
+	e.require(eventingSyncCompletedWithErrorsEventFieldNumberOfErrors)
 }
 
 // SetNumberOfWarnings sets the NumberOfWarnings field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedWithErrorsEvent) SetNumberOfWarnings(numberOfWarnings *int) {
-	s.NumberOfWarnings = numberOfWarnings
-	s.require(syncCompletedWithErrorsEventFieldNumberOfWarnings)
+func (e *EventingSyncCompletedWithErrorsEvent) SetNumberOfWarnings(numberOfWarnings *int) {
+	e.NumberOfWarnings = numberOfWarnings
+	e.require(eventingSyncCompletedWithErrorsEventFieldNumberOfWarnings)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedWithErrorsEvent) SetOrganizationID(organizationID *string) {
-	s.OrganizationID = organizationID
-	s.require(syncCompletedWithErrorsEventFieldOrganizationID)
+func (e *EventingSyncCompletedWithErrorsEvent) SetOrganizationID(organizationID *string) {
+	e.OrganizationID = organizationID
+	e.require(eventingSyncCompletedWithErrorsEventFieldOrganizationID)
 }
 
 // SetSyncID sets the SyncID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedWithErrorsEvent) SetSyncID(syncID *string) {
-	s.SyncID = syncID
-	s.require(syncCompletedWithErrorsEventFieldSyncID)
+func (e *EventingSyncCompletedWithErrorsEvent) SetSyncID(syncID *string) {
+	e.SyncID = syncID
+	e.require(eventingSyncCompletedWithErrorsEventFieldSyncID)
 }
 
 // SetSyncName sets the SyncName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedWithErrorsEvent) SetSyncName(syncName *string) {
-	s.SyncName = syncName
-	s.require(syncCompletedWithErrorsEventFieldSyncName)
+func (e *EventingSyncCompletedWithErrorsEvent) SetSyncName(syncName *string) {
+	e.SyncName = syncName
+	e.require(eventingSyncCompletedWithErrorsEventFieldSyncName)
 }
 
 // SetTargetConnectionID sets the TargetConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncCompletedWithErrorsEvent) SetTargetConnectionID(targetConnectionID *string) {
-	s.TargetConnectionID = targetConnectionID
-	s.require(syncCompletedWithErrorsEventFieldTargetConnectionID)
+func (e *EventingSyncCompletedWithErrorsEvent) SetTargetConnectionID(targetConnectionID *string) {
+	e.TargetConnectionID = targetConnectionID
+	e.require(eventingSyncCompletedWithErrorsEventFieldTargetConnectionID)
 }
 
-func (s *SyncCompletedWithErrorsEvent) UnmarshalJSON(data []byte) error {
-	type unmarshaler SyncCompletedWithErrorsEvent
+func (e *EventingSyncCompletedWithErrorsEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler EventingSyncCompletedWithErrorsEvent
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*s = SyncCompletedWithErrorsEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	*e = EventingSyncCompletedWithErrorsEvent(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
 	if err != nil {
 		return err
 	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (s *SyncCompletedWithErrorsEvent) MarshalJSON() ([]byte, error) {
-	type embed SyncCompletedWithErrorsEvent
+func (e *EventingSyncCompletedWithErrorsEvent) MarshalJSON() ([]byte, error) {
+	type embed EventingSyncCompletedWithErrorsEvent
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*s),
+		embed: embed(*e),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (s *SyncCompletedWithErrorsEvent) String() string {
-	if s == nil {
+func (e *EventingSyncCompletedWithErrorsEvent) String() string {
+	if e == nil {
 		return "<nil>"
 	}
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(e); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", s)
+	return fmt.Sprintf("%#v", e)
 }
 
 var (
-	syncFailedEventFieldError              = big.NewInt(1 << 0)
-	syncFailedEventFieldExecutionID        = big.NewInt(1 << 1)
-	syncFailedEventFieldOrganizationID     = big.NewInt(1 << 2)
-	syncFailedEventFieldSyncID             = big.NewInt(1 << 3)
-	syncFailedEventFieldSyncName           = big.NewInt(1 << 4)
-	syncFailedEventFieldTargetConnectionID = big.NewInt(1 << 5)
+	eventingSyncFailedEventFieldError              = big.NewInt(1 << 0)
+	eventingSyncFailedEventFieldExecutionID        = big.NewInt(1 << 1)
+	eventingSyncFailedEventFieldOrganizationID     = big.NewInt(1 << 2)
+	eventingSyncFailedEventFieldSyncID             = big.NewInt(1 << 3)
+	eventingSyncFailedEventFieldSyncName           = big.NewInt(1 << 4)
+	eventingSyncFailedEventFieldTargetConnectionID = big.NewInt(1 << 5)
 )
 
-type SyncFailedEvent struct {
+type EventingSyncFailedEvent struct {
 	Error              *string `json:"error,omitempty" url:"error,omitempty"`
 	ExecutionID        *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
 	OrganizationID     *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
@@ -2274,155 +1716,155 @@ type SyncFailedEvent struct {
 	rawJSON         json.RawMessage
 }
 
-func (s *SyncFailedEvent) GetError() *string {
-	if s == nil {
+func (e *EventingSyncFailedEvent) GetError() *string {
+	if e == nil {
 		return nil
 	}
-	return s.Error
+	return e.Error
 }
 
-func (s *SyncFailedEvent) GetExecutionID() *string {
-	if s == nil {
+func (e *EventingSyncFailedEvent) GetExecutionID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.ExecutionID
+	return e.ExecutionID
 }
 
-func (s *SyncFailedEvent) GetOrganizationID() *string {
-	if s == nil {
+func (e *EventingSyncFailedEvent) GetOrganizationID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.OrganizationID
+	return e.OrganizationID
 }
 
-func (s *SyncFailedEvent) GetSyncID() *string {
-	if s == nil {
+func (e *EventingSyncFailedEvent) GetSyncID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.SyncID
+	return e.SyncID
 }
 
-func (s *SyncFailedEvent) GetSyncName() *string {
-	if s == nil {
+func (e *EventingSyncFailedEvent) GetSyncName() *string {
+	if e == nil {
 		return nil
 	}
-	return s.SyncName
+	return e.SyncName
 }
 
-func (s *SyncFailedEvent) GetTargetConnectionID() *string {
-	if s == nil {
+func (e *EventingSyncFailedEvent) GetTargetConnectionID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.TargetConnectionID
+	return e.TargetConnectionID
 }
 
-func (s *SyncFailedEvent) GetExtraProperties() map[string]interface{} {
-	if s == nil {
+func (e *EventingSyncFailedEvent) GetExtraProperties() map[string]interface{} {
+	if e == nil {
 		return nil
 	}
-	return s.extraProperties
+	return e.extraProperties
 }
 
-func (s *SyncFailedEvent) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (e *EventingSyncFailedEvent) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
 	}
-	s.explicitFields.Or(s.explicitFields, field)
+	e.explicitFields.Or(e.explicitFields, field)
 }
 
 // SetError sets the Error field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncFailedEvent) SetError(error_ *string) {
-	s.Error = error_
-	s.require(syncFailedEventFieldError)
+func (e *EventingSyncFailedEvent) SetError(error_ *string) {
+	e.Error = error_
+	e.require(eventingSyncFailedEventFieldError)
 }
 
 // SetExecutionID sets the ExecutionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncFailedEvent) SetExecutionID(executionID *string) {
-	s.ExecutionID = executionID
-	s.require(syncFailedEventFieldExecutionID)
+func (e *EventingSyncFailedEvent) SetExecutionID(executionID *string) {
+	e.ExecutionID = executionID
+	e.require(eventingSyncFailedEventFieldExecutionID)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncFailedEvent) SetOrganizationID(organizationID *string) {
-	s.OrganizationID = organizationID
-	s.require(syncFailedEventFieldOrganizationID)
+func (e *EventingSyncFailedEvent) SetOrganizationID(organizationID *string) {
+	e.OrganizationID = organizationID
+	e.require(eventingSyncFailedEventFieldOrganizationID)
 }
 
 // SetSyncID sets the SyncID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncFailedEvent) SetSyncID(syncID *string) {
-	s.SyncID = syncID
-	s.require(syncFailedEventFieldSyncID)
+func (e *EventingSyncFailedEvent) SetSyncID(syncID *string) {
+	e.SyncID = syncID
+	e.require(eventingSyncFailedEventFieldSyncID)
 }
 
 // SetSyncName sets the SyncName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncFailedEvent) SetSyncName(syncName *string) {
-	s.SyncName = syncName
-	s.require(syncFailedEventFieldSyncName)
+func (e *EventingSyncFailedEvent) SetSyncName(syncName *string) {
+	e.SyncName = syncName
+	e.require(eventingSyncFailedEventFieldSyncName)
 }
 
 // SetTargetConnectionID sets the TargetConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncFailedEvent) SetTargetConnectionID(targetConnectionID *string) {
-	s.TargetConnectionID = targetConnectionID
-	s.require(syncFailedEventFieldTargetConnectionID)
+func (e *EventingSyncFailedEvent) SetTargetConnectionID(targetConnectionID *string) {
+	e.TargetConnectionID = targetConnectionID
+	e.require(eventingSyncFailedEventFieldTargetConnectionID)
 }
 
-func (s *SyncFailedEvent) UnmarshalJSON(data []byte) error {
-	type unmarshaler SyncFailedEvent
+func (e *EventingSyncFailedEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler EventingSyncFailedEvent
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*s = SyncFailedEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	*e = EventingSyncFailedEvent(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
 	if err != nil {
 		return err
 	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (s *SyncFailedEvent) MarshalJSON() ([]byte, error) {
-	type embed SyncFailedEvent
+func (e *EventingSyncFailedEvent) MarshalJSON() ([]byte, error) {
+	type embed EventingSyncFailedEvent
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*s),
+		embed: embed(*e),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (s *SyncFailedEvent) String() string {
-	if s == nil {
+func (e *EventingSyncFailedEvent) String() string {
+	if e == nil {
 		return "<nil>"
 	}
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(e); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", s)
+	return fmt.Sprintf("%#v", e)
 }
 
 var (
-	syncRunningEventFieldExecutionID        = big.NewInt(1 << 0)
-	syncRunningEventFieldOrganizationID     = big.NewInt(1 << 1)
-	syncRunningEventFieldSyncID             = big.NewInt(1 << 2)
-	syncRunningEventFieldSyncName           = big.NewInt(1 << 3)
-	syncRunningEventFieldTargetConnectionID = big.NewInt(1 << 4)
+	eventingSyncRunningEventFieldExecutionID        = big.NewInt(1 << 0)
+	eventingSyncRunningEventFieldOrganizationID     = big.NewInt(1 << 1)
+	eventingSyncRunningEventFieldSyncID             = big.NewInt(1 << 2)
+	eventingSyncRunningEventFieldSyncName           = big.NewInt(1 << 3)
+	eventingSyncRunningEventFieldTargetConnectionID = big.NewInt(1 << 4)
 )
 
-type SyncRunningEvent struct {
+type EventingSyncRunningEvent struct {
 	ExecutionID        *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
 	OrganizationID     *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	SyncID             *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
@@ -2436,128 +1878,686 @@ type SyncRunningEvent struct {
 	rawJSON         json.RawMessage
 }
 
-func (s *SyncRunningEvent) GetExecutionID() *string {
-	if s == nil {
+func (e *EventingSyncRunningEvent) GetExecutionID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.ExecutionID
+	return e.ExecutionID
 }
 
-func (s *SyncRunningEvent) GetOrganizationID() *string {
-	if s == nil {
+func (e *EventingSyncRunningEvent) GetOrganizationID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.OrganizationID
+	return e.OrganizationID
 }
 
-func (s *SyncRunningEvent) GetSyncID() *string {
-	if s == nil {
+func (e *EventingSyncRunningEvent) GetSyncID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.SyncID
+	return e.SyncID
 }
 
-func (s *SyncRunningEvent) GetSyncName() *string {
-	if s == nil {
+func (e *EventingSyncRunningEvent) GetSyncName() *string {
+	if e == nil {
 		return nil
 	}
-	return s.SyncName
+	return e.SyncName
 }
 
-func (s *SyncRunningEvent) GetTargetConnectionID() *string {
-	if s == nil {
+func (e *EventingSyncRunningEvent) GetTargetConnectionID() *string {
+	if e == nil {
 		return nil
 	}
-	return s.TargetConnectionID
+	return e.TargetConnectionID
 }
 
-func (s *SyncRunningEvent) GetExtraProperties() map[string]interface{} {
-	if s == nil {
+func (e *EventingSyncRunningEvent) GetExtraProperties() map[string]interface{} {
+	if e == nil {
 		return nil
 	}
-	return s.extraProperties
+	return e.extraProperties
 }
 
-func (s *SyncRunningEvent) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (e *EventingSyncRunningEvent) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
 	}
-	s.explicitFields.Or(s.explicitFields, field)
+	e.explicitFields.Or(e.explicitFields, field)
 }
 
 // SetExecutionID sets the ExecutionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncRunningEvent) SetExecutionID(executionID *string) {
-	s.ExecutionID = executionID
-	s.require(syncRunningEventFieldExecutionID)
+func (e *EventingSyncRunningEvent) SetExecutionID(executionID *string) {
+	e.ExecutionID = executionID
+	e.require(eventingSyncRunningEventFieldExecutionID)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncRunningEvent) SetOrganizationID(organizationID *string) {
-	s.OrganizationID = organizationID
-	s.require(syncRunningEventFieldOrganizationID)
+func (e *EventingSyncRunningEvent) SetOrganizationID(organizationID *string) {
+	e.OrganizationID = organizationID
+	e.require(eventingSyncRunningEventFieldOrganizationID)
 }
 
 // SetSyncID sets the SyncID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncRunningEvent) SetSyncID(syncID *string) {
-	s.SyncID = syncID
-	s.require(syncRunningEventFieldSyncID)
+func (e *EventingSyncRunningEvent) SetSyncID(syncID *string) {
+	e.SyncID = syncID
+	e.require(eventingSyncRunningEventFieldSyncID)
 }
 
 // SetSyncName sets the SyncName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncRunningEvent) SetSyncName(syncName *string) {
-	s.SyncName = syncName
-	s.require(syncRunningEventFieldSyncName)
+func (e *EventingSyncRunningEvent) SetSyncName(syncName *string) {
+	e.SyncName = syncName
+	e.require(eventingSyncRunningEventFieldSyncName)
 }
 
 // SetTargetConnectionID sets the TargetConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncRunningEvent) SetTargetConnectionID(targetConnectionID *string) {
-	s.TargetConnectionID = targetConnectionID
-	s.require(syncRunningEventFieldTargetConnectionID)
+func (e *EventingSyncRunningEvent) SetTargetConnectionID(targetConnectionID *string) {
+	e.TargetConnectionID = targetConnectionID
+	e.require(eventingSyncRunningEventFieldTargetConnectionID)
 }
 
-func (s *SyncRunningEvent) UnmarshalJSON(data []byte) error {
-	type unmarshaler SyncRunningEvent
+func (e *EventingSyncRunningEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler EventingSyncRunningEvent
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*s = SyncRunningEvent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	*e = EventingSyncRunningEvent(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
 	if err != nil {
 		return err
 	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (s *SyncRunningEvent) MarshalJSON() ([]byte, error) {
-	type embed SyncRunningEvent
+func (e *EventingSyncRunningEvent) MarshalJSON() ([]byte, error) {
+	type embed EventingSyncRunningEvent
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*s),
+		embed: embed(*e),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (s *SyncRunningEvent) String() string {
-	if s == nil {
+func (e *EventingSyncRunningEvent) String() string {
+	if e == nil {
 		return "<nil>"
 	}
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(e); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", s)
+	return fmt.Sprintf("%#v", e)
+}
+
+var (
+	v2EventFieldCreatedAt      = big.NewInt(1 << 0)
+	v2EventFieldEvent          = big.NewInt(1 << 1)
+	v2EventFieldID             = big.NewInt(1 << 2)
+	v2EventFieldOrganizationID = big.NewInt(1 << 3)
+	v2EventFieldType           = big.NewInt(1 << 4)
+)
+
+type V2Event struct {
+	// Timestamp the event was emitted.
+	CreatedAt *time.Time      `json:"created_at,omitempty" url:"created_at,omitempty"`
+	Event     *V2EventPayload `json:"event,omitempty" url:"event,omitempty"`
+	// Unique identifier of the event.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Organization the event belongs to.
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Event type identifier.
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2Event) GetCreatedAt() *time.Time {
+	if v == nil {
+		return nil
+	}
+	return v.CreatedAt
+}
+
+func (v *V2Event) GetEvent() *V2EventPayload {
+	if v == nil {
+		return nil
+	}
+	return v.Event
+}
+
+func (v *V2Event) GetID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ID
+}
+
+func (v *V2Event) GetOrganizationID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.OrganizationID
+}
+
+func (v *V2Event) GetType() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Type
+}
+
+func (v *V2Event) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2Event) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2Event) SetCreatedAt(createdAt *time.Time) {
+	v.CreatedAt = createdAt
+	v.require(v2EventFieldCreatedAt)
+}
+
+// SetEvent sets the Event field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2Event) SetEvent(event *V2EventPayload) {
+	v.Event = event
+	v.require(v2EventFieldEvent)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2Event) SetID(id *string) {
+	v.ID = id
+	v.require(v2EventFieldID)
+}
+
+// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2Event) SetOrganizationID(organizationID *string) {
+	v.OrganizationID = organizationID
+	v.require(v2EventFieldOrganizationID)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2Event) SetType(type_ *string) {
+	v.Type = type_
+	v.require(v2EventFieldType)
+}
+
+func (v *V2Event) UnmarshalJSON(data []byte) error {
+	type embed V2Event
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+	}{
+		embed: embed(*v),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*v = V2Event(unmarshaler.embed)
+	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2Event) MarshalJSON() ([]byte, error) {
+	type embed V2Event
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+	}{
+		embed:     embed(*v),
+		CreatedAt: internal.NewOptionalDateTime(v.CreatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2Event) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type V2EventPayload struct {
+	EventingSyncRunningEvent                *EventingSyncRunningEvent
+	EventingSyncCompletedEvent              *EventingSyncCompletedEvent
+	EventingSyncFailedEvent                 *EventingSyncFailedEvent
+	EventingSyncCanceledEvent               *EventingSyncCanceledEvent
+	EventingSyncCompletedWithErrorsEvent    *EventingSyncCompletedWithErrorsEvent
+	EventingBulkSyncRunningEvent            *EventingBulkSyncRunningEvent
+	EventingBulkSyncCompletedEvent          *EventingBulkSyncCompletedEvent
+	EventingBulkSyncCanceledEvent           *EventingBulkSyncCanceledEvent
+	EventingBulkSyncCompletedWithErrorEvent *EventingBulkSyncCompletedWithErrorEvent
+	EventingBulkSyncFailedEvent             *EventingBulkSyncFailedEvent
+
+	typ string
+}
+
+func (v *V2EventPayload) GetEventingSyncRunningEvent() *EventingSyncRunningEvent {
+	if v == nil {
+		return nil
+	}
+	return v.EventingSyncRunningEvent
+}
+
+func (v *V2EventPayload) GetEventingSyncCompletedEvent() *EventingSyncCompletedEvent {
+	if v == nil {
+		return nil
+	}
+	return v.EventingSyncCompletedEvent
+}
+
+func (v *V2EventPayload) GetEventingSyncFailedEvent() *EventingSyncFailedEvent {
+	if v == nil {
+		return nil
+	}
+	return v.EventingSyncFailedEvent
+}
+
+func (v *V2EventPayload) GetEventingSyncCanceledEvent() *EventingSyncCanceledEvent {
+	if v == nil {
+		return nil
+	}
+	return v.EventingSyncCanceledEvent
+}
+
+func (v *V2EventPayload) GetEventingSyncCompletedWithErrorsEvent() *EventingSyncCompletedWithErrorsEvent {
+	if v == nil {
+		return nil
+	}
+	return v.EventingSyncCompletedWithErrorsEvent
+}
+
+func (v *V2EventPayload) GetEventingBulkSyncRunningEvent() *EventingBulkSyncRunningEvent {
+	if v == nil {
+		return nil
+	}
+	return v.EventingBulkSyncRunningEvent
+}
+
+func (v *V2EventPayload) GetEventingBulkSyncCompletedEvent() *EventingBulkSyncCompletedEvent {
+	if v == nil {
+		return nil
+	}
+	return v.EventingBulkSyncCompletedEvent
+}
+
+func (v *V2EventPayload) GetEventingBulkSyncCanceledEvent() *EventingBulkSyncCanceledEvent {
+	if v == nil {
+		return nil
+	}
+	return v.EventingBulkSyncCanceledEvent
+}
+
+func (v *V2EventPayload) GetEventingBulkSyncCompletedWithErrorEvent() *EventingBulkSyncCompletedWithErrorEvent {
+	if v == nil {
+		return nil
+	}
+	return v.EventingBulkSyncCompletedWithErrorEvent
+}
+
+func (v *V2EventPayload) GetEventingBulkSyncFailedEvent() *EventingBulkSyncFailedEvent {
+	if v == nil {
+		return nil
+	}
+	return v.EventingBulkSyncFailedEvent
+}
+
+func (v *V2EventPayload) UnmarshalJSON(data []byte) error {
+	valueEventingSyncRunningEvent := new(EventingSyncRunningEvent)
+	if err := json.Unmarshal(data, &valueEventingSyncRunningEvent); err == nil {
+		v.typ = "EventingSyncRunningEvent"
+		v.EventingSyncRunningEvent = valueEventingSyncRunningEvent
+		return nil
+	}
+	valueEventingSyncCompletedEvent := new(EventingSyncCompletedEvent)
+	if err := json.Unmarshal(data, &valueEventingSyncCompletedEvent); err == nil {
+		v.typ = "EventingSyncCompletedEvent"
+		v.EventingSyncCompletedEvent = valueEventingSyncCompletedEvent
+		return nil
+	}
+	valueEventingSyncFailedEvent := new(EventingSyncFailedEvent)
+	if err := json.Unmarshal(data, &valueEventingSyncFailedEvent); err == nil {
+		v.typ = "EventingSyncFailedEvent"
+		v.EventingSyncFailedEvent = valueEventingSyncFailedEvent
+		return nil
+	}
+	valueEventingSyncCanceledEvent := new(EventingSyncCanceledEvent)
+	if err := json.Unmarshal(data, &valueEventingSyncCanceledEvent); err == nil {
+		v.typ = "EventingSyncCanceledEvent"
+		v.EventingSyncCanceledEvent = valueEventingSyncCanceledEvent
+		return nil
+	}
+	valueEventingSyncCompletedWithErrorsEvent := new(EventingSyncCompletedWithErrorsEvent)
+	if err := json.Unmarshal(data, &valueEventingSyncCompletedWithErrorsEvent); err == nil {
+		v.typ = "EventingSyncCompletedWithErrorsEvent"
+		v.EventingSyncCompletedWithErrorsEvent = valueEventingSyncCompletedWithErrorsEvent
+		return nil
+	}
+	valueEventingBulkSyncRunningEvent := new(EventingBulkSyncRunningEvent)
+	if err := json.Unmarshal(data, &valueEventingBulkSyncRunningEvent); err == nil {
+		v.typ = "EventingBulkSyncRunningEvent"
+		v.EventingBulkSyncRunningEvent = valueEventingBulkSyncRunningEvent
+		return nil
+	}
+	valueEventingBulkSyncCompletedEvent := new(EventingBulkSyncCompletedEvent)
+	if err := json.Unmarshal(data, &valueEventingBulkSyncCompletedEvent); err == nil {
+		v.typ = "EventingBulkSyncCompletedEvent"
+		v.EventingBulkSyncCompletedEvent = valueEventingBulkSyncCompletedEvent
+		return nil
+	}
+	valueEventingBulkSyncCanceledEvent := new(EventingBulkSyncCanceledEvent)
+	if err := json.Unmarshal(data, &valueEventingBulkSyncCanceledEvent); err == nil {
+		v.typ = "EventingBulkSyncCanceledEvent"
+		v.EventingBulkSyncCanceledEvent = valueEventingBulkSyncCanceledEvent
+		return nil
+	}
+	valueEventingBulkSyncCompletedWithErrorEvent := new(EventingBulkSyncCompletedWithErrorEvent)
+	if err := json.Unmarshal(data, &valueEventingBulkSyncCompletedWithErrorEvent); err == nil {
+		v.typ = "EventingBulkSyncCompletedWithErrorEvent"
+		v.EventingBulkSyncCompletedWithErrorEvent = valueEventingBulkSyncCompletedWithErrorEvent
+		return nil
+	}
+	valueEventingBulkSyncFailedEvent := new(EventingBulkSyncFailedEvent)
+	if err := json.Unmarshal(data, &valueEventingBulkSyncFailedEvent); err == nil {
+		v.typ = "EventingBulkSyncFailedEvent"
+		v.EventingBulkSyncFailedEvent = valueEventingBulkSyncFailedEvent
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, v)
+}
+
+func (v V2EventPayload) MarshalJSON() ([]byte, error) {
+	if v.typ == "EventingSyncRunningEvent" || v.EventingSyncRunningEvent != nil {
+		return json.Marshal(v.EventingSyncRunningEvent)
+	}
+	if v.typ == "EventingSyncCompletedEvent" || v.EventingSyncCompletedEvent != nil {
+		return json.Marshal(v.EventingSyncCompletedEvent)
+	}
+	if v.typ == "EventingSyncFailedEvent" || v.EventingSyncFailedEvent != nil {
+		return json.Marshal(v.EventingSyncFailedEvent)
+	}
+	if v.typ == "EventingSyncCanceledEvent" || v.EventingSyncCanceledEvent != nil {
+		return json.Marshal(v.EventingSyncCanceledEvent)
+	}
+	if v.typ == "EventingSyncCompletedWithErrorsEvent" || v.EventingSyncCompletedWithErrorsEvent != nil {
+		return json.Marshal(v.EventingSyncCompletedWithErrorsEvent)
+	}
+	if v.typ == "EventingBulkSyncRunningEvent" || v.EventingBulkSyncRunningEvent != nil {
+		return json.Marshal(v.EventingBulkSyncRunningEvent)
+	}
+	if v.typ == "EventingBulkSyncCompletedEvent" || v.EventingBulkSyncCompletedEvent != nil {
+		return json.Marshal(v.EventingBulkSyncCompletedEvent)
+	}
+	if v.typ == "EventingBulkSyncCanceledEvent" || v.EventingBulkSyncCanceledEvent != nil {
+		return json.Marshal(v.EventingBulkSyncCanceledEvent)
+	}
+	if v.typ == "EventingBulkSyncCompletedWithErrorEvent" || v.EventingBulkSyncCompletedWithErrorEvent != nil {
+		return json.Marshal(v.EventingBulkSyncCompletedWithErrorEvent)
+	}
+	if v.typ == "EventingBulkSyncFailedEvent" || v.EventingBulkSyncFailedEvent != nil {
+		return json.Marshal(v.EventingBulkSyncFailedEvent)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", v)
+}
+
+type V2EventPayloadVisitor interface {
+	VisitEventingSyncRunningEvent(*EventingSyncRunningEvent) error
+	VisitEventingSyncCompletedEvent(*EventingSyncCompletedEvent) error
+	VisitEventingSyncFailedEvent(*EventingSyncFailedEvent) error
+	VisitEventingSyncCanceledEvent(*EventingSyncCanceledEvent) error
+	VisitEventingSyncCompletedWithErrorsEvent(*EventingSyncCompletedWithErrorsEvent) error
+	VisitEventingBulkSyncRunningEvent(*EventingBulkSyncRunningEvent) error
+	VisitEventingBulkSyncCompletedEvent(*EventingBulkSyncCompletedEvent) error
+	VisitEventingBulkSyncCanceledEvent(*EventingBulkSyncCanceledEvent) error
+	VisitEventingBulkSyncCompletedWithErrorEvent(*EventingBulkSyncCompletedWithErrorEvent) error
+	VisitEventingBulkSyncFailedEvent(*EventingBulkSyncFailedEvent) error
+}
+
+func (v *V2EventPayload) Accept(visitor V2EventPayloadVisitor) error {
+	if v.typ == "EventingSyncRunningEvent" || v.EventingSyncRunningEvent != nil {
+		return visitor.VisitEventingSyncRunningEvent(v.EventingSyncRunningEvent)
+	}
+	if v.typ == "EventingSyncCompletedEvent" || v.EventingSyncCompletedEvent != nil {
+		return visitor.VisitEventingSyncCompletedEvent(v.EventingSyncCompletedEvent)
+	}
+	if v.typ == "EventingSyncFailedEvent" || v.EventingSyncFailedEvent != nil {
+		return visitor.VisitEventingSyncFailedEvent(v.EventingSyncFailedEvent)
+	}
+	if v.typ == "EventingSyncCanceledEvent" || v.EventingSyncCanceledEvent != nil {
+		return visitor.VisitEventingSyncCanceledEvent(v.EventingSyncCanceledEvent)
+	}
+	if v.typ == "EventingSyncCompletedWithErrorsEvent" || v.EventingSyncCompletedWithErrorsEvent != nil {
+		return visitor.VisitEventingSyncCompletedWithErrorsEvent(v.EventingSyncCompletedWithErrorsEvent)
+	}
+	if v.typ == "EventingBulkSyncRunningEvent" || v.EventingBulkSyncRunningEvent != nil {
+		return visitor.VisitEventingBulkSyncRunningEvent(v.EventingBulkSyncRunningEvent)
+	}
+	if v.typ == "EventingBulkSyncCompletedEvent" || v.EventingBulkSyncCompletedEvent != nil {
+		return visitor.VisitEventingBulkSyncCompletedEvent(v.EventingBulkSyncCompletedEvent)
+	}
+	if v.typ == "EventingBulkSyncCanceledEvent" || v.EventingBulkSyncCanceledEvent != nil {
+		return visitor.VisitEventingBulkSyncCanceledEvent(v.EventingBulkSyncCanceledEvent)
+	}
+	if v.typ == "EventingBulkSyncCompletedWithErrorEvent" || v.EventingBulkSyncCompletedWithErrorEvent != nil {
+		return visitor.VisitEventingBulkSyncCompletedWithErrorEvent(v.EventingBulkSyncCompletedWithErrorEvent)
+	}
+	if v.typ == "EventingBulkSyncFailedEvent" || v.EventingBulkSyncFailedEvent != nil {
+		return visitor.VisitEventingBulkSyncFailedEvent(v.EventingBulkSyncFailedEvent)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", v)
+}
+
+var (
+	v2EventTypesEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type V2EventTypesEnvelope struct {
+	Data []string `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2EventTypesEnvelope) GetData() []string {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2EventTypesEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2EventTypesEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2EventTypesEnvelope) SetData(data []string) {
+	v.Data = data
+	v.require(v2EventTypesEnvelopeFieldData)
+}
+
+func (v *V2EventTypesEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2EventTypesEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2EventTypesEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2EventTypesEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V2EventTypesEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2EventTypesEnvelope) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2EventsEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type V2EventsEnvelope struct {
+	Data []*V2Event `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2EventsEnvelope) GetData() []*V2Event {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2EventsEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2EventsEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2EventsEnvelope) SetData(data []*V2Event) {
+	v.Data = data
+	v.require(v2EventsEnvelopeFieldData)
+}
+
+func (v *V2EventsEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2EventsEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2EventsEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2EventsEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V2EventsEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2EventsEnvelope) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
 }

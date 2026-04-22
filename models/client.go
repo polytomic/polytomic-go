@@ -50,9 +50,9 @@ func (c *Client) GetEnrichmentSource(
 	ctx context.Context,
 	// Unique identifier of the connection.
 	id string,
-	request *polytomic.ModelsGetEnrichmentSourceRequest,
+	request *polytomic.GetEnrichmentSourceModelsRequest,
 	opts ...option.RequestOption,
-) (*polytomic.GetModelSyncSourceMetaEnvelope, error) {
+) (*polytomic.V4GetSyncSourceMetaEnvelope, error) {
 	response, err := c.WithRawResponse.GetEnrichmentSource(
 		ctx,
 		id,
@@ -75,7 +75,7 @@ func (c *Client) GetEnrichmentSource(
 func (c *Client) Post(
 	ctx context.Context,
 	connectionID string,
-	request *polytomic.GetEnrichmentInputFieldsRequest,
+	request *polytomic.V2EnrichmentInputFieldsRequest,
 	opts ...option.RequestOption,
 ) (*polytomic.V2GetEnrichmentInputFieldsResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Post(
@@ -98,9 +98,9 @@ func (c *Client) Post(
 // configuration before calling [`POST /api/models`](../../api-reference/models/create) to save it.
 func (c *Client) Preview(
 	ctx context.Context,
-	request *polytomic.ModelsPreviewRequest,
+	request *polytomic.PreviewModelsRequest,
 	opts ...option.RequestOption,
-) (*polytomic.ModelResponseEnvelope, error) {
+) (*polytomic.V2ModelResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Preview(
 		ctx,
 		request,
@@ -125,7 +125,7 @@ func (c *Client) Preview(
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomic.ModelListResponseEnvelope, error) {
+) (*polytomic.V2ModelListResponseEnvelope, error) {
 	response, err := c.WithRawResponse.List(
 		ctx,
 		opts...,
@@ -147,9 +147,9 @@ func (c *Client) List(
 // whether a connection type supports use as a source.
 func (c *Client) Create(
 	ctx context.Context,
-	request *polytomic.ModelsCreateRequest,
+	request *polytomic.CreateModelsRequest,
 	opts ...option.RequestOption,
-) (*polytomic.ModelResponseEnvelope, error) {
+) (*polytomic.V2ModelResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
@@ -169,9 +169,9 @@ func (c *Client) Create(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
-	request *polytomic.ModelsGetRequest,
+	request *polytomic.GetModelsRequest,
 	opts ...option.RequestOption,
-) (*polytomic.ModelResponseEnvelope, error) {
+) (*polytomic.V2ModelResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		id,
@@ -199,9 +199,9 @@ func (c *Client) Get(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *polytomic.UpdateModelRequest,
+	request *polytomic.V2UpdateModelRequest,
 	opts ...option.RequestOption,
-) (*polytomic.ModelResponseEnvelope, error) {
+) (*polytomic.V2ModelResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Update(
 		ctx,
 		id,
@@ -221,7 +221,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
-	request *polytomic.ModelsRemoveRequest,
+	request *polytomic.RemoveModelsRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.Remove(
@@ -244,9 +244,9 @@ func (c *Client) Remove(
 func (c *Client) Sample(
 	ctx context.Context,
 	id string,
-	request *polytomic.ModelsSampleRequest,
+	request *polytomic.SampleModelsRequest,
 	opts ...option.RequestOption,
-) (*polytomic.ModelSampleResponseEnvelope, error) {
+) (*polytomic.V2ModelSampleResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Sample(
 		ctx,
 		id,

@@ -110,7 +110,7 @@ func TestPermissionsRolesCreateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &permissions.CreateRoleRequest{
+	request := &permissions.V2CreateRoleRequest{
 		Name: "Custom",
 	}
 	_, invocationErr := client.Permissions.Roles.Create(
@@ -159,7 +159,7 @@ func TestPermissionsRolesUpdateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &permissions.UpdateRoleRequest{
+	request := &permissions.V2UpdateRoleRequest{
 		Name: "Custom",
 	}
 	_, invocationErr := client.Permissions.Roles.Update(

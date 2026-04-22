@@ -88,7 +88,7 @@ func TestModelSyncGetSourceWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.ModelSyncGetSourceRequest{}
+	request := &polytomic.GetSourceModelSyncRequest{}
 	_, invocationErr := client.ModelSync.GetSource(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -113,7 +113,7 @@ func TestModelSyncGetSourceFieldsWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.ModelSyncGetSourceFieldsRequest{}
+	request := &polytomic.GetSourceFieldsModelSyncRequest{}
 	_, invocationErr := client.ModelSync.GetSourceFields(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -138,11 +138,11 @@ func TestModelSyncListWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.ModelSyncListRequest{
+	request := &polytomic.ListModelSyncRequest{
 		Active: polytomic.Bool(
 			true,
 		),
-		Mode: polytomic.ModelSyncModeCreate.Ptr(),
+		Mode: polytomic.ModelsyncSyncTargetModeCreate.Ptr(),
 		TargetConnectionID: polytomic.String(
 			"0b155265-c537-44c9-9359-a3ceb468a4da",
 		),
@@ -170,16 +170,16 @@ func TestModelSyncCreateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.CreateModelSyncRequest{
-		Fields: []*polytomic.ModelSyncField{
-			&polytomic.ModelSyncField{
+	request := &polytomic.V2CreateSyncRequest{
+		Fields: []*polytomic.V2SyncField{
+			&polytomic.V2SyncField{
 				Target: "name",
 			},
 		},
-		Mode:     polytomic.ModelSyncModeCreate,
+		Mode:     polytomic.ModelsyncSyncTargetModeCreate,
 		Name:     "Users Sync",
 		Schedule: &polytomic.Schedule{},
-		Target: &polytomic.Target{
+		Target: &polytomic.V2Target{
 			ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
 		},
 	}
@@ -251,16 +251,16 @@ func TestModelSyncUpdateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.UpdateModelSyncRequest{
-		Fields: []*polytomic.ModelSyncField{
-			&polytomic.ModelSyncField{
+	request := &polytomic.V2UpdateSyncRequest{
+		Fields: []*polytomic.V2SyncField{
+			&polytomic.V2SyncField{
 				Target: "name",
 			},
 		},
-		Mode:     polytomic.ModelSyncModeCreate,
+		Mode:     polytomic.ModelsyncSyncTargetModeCreate,
 		Name:     "Users Sync",
 		Schedule: &polytomic.Schedule{},
-		Target: &polytomic.Target{
+		Target: &polytomic.V2Target{
 			ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
 		},
 	}
@@ -311,7 +311,7 @@ func TestModelSyncActivateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.ActivateSyncInput{
+	request := &polytomic.V2ActivateSyncInput{
 		Active: true,
 	}
 	_, invocationErr := client.ModelSync.Activate(
@@ -361,7 +361,7 @@ func TestModelSyncStartWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.StartModelSyncRequest{}
+	request := &polytomic.V2StartSyncRequest{}
 	_, invocationErr := client.ModelSync.Start(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",

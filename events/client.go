@@ -47,9 +47,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // > The log captures both user-initiated and API-initiated actions.
 func (c *Client) List(
 	ctx context.Context,
-	request *polytomic.EventsListRequest,
+	request *polytomic.ListEventsRequest,
 	opts ...option.RequestOption,
-) (*polytomic.EventsEnvelope, error) {
+) (*polytomic.V2EventsEnvelope, error) {
 	response, err := c.WithRawResponse.List(
 		ctx,
 		request,
@@ -68,7 +68,7 @@ func (c *Client) List(
 func (c *Client) GetTypes(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomic.EventTypesEnvelope, error) {
+) (*polytomic.V2EventTypesEnvelope, error) {
 	response, err := c.WithRawResponse.GetTypes(
 		ctx,
 		opts...,

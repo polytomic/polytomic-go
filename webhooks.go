@@ -11,12 +11,12 @@ import (
 )
 
 var (
-	createWebhooksSchemaFieldEndpoint       = big.NewInt(1 << 0)
-	createWebhooksSchemaFieldOrganizationID = big.NewInt(1 << 1)
-	createWebhooksSchemaFieldSecret         = big.NewInt(1 << 2)
+	v2CreateWebhooksSchemaFieldEndpoint       = big.NewInt(1 << 0)
+	v2CreateWebhooksSchemaFieldOrganizationID = big.NewInt(1 << 1)
+	v2CreateWebhooksSchemaFieldSecret         = big.NewInt(1 << 2)
 )
 
-type CreateWebhooksSchema struct {
+type V2CreateWebhooksSchema struct {
 	Endpoint       string  `json:"endpoint" url:"-"`
 	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
 	Secret         string  `json:"secret" url:"-"`
@@ -25,62 +25,62 @@ type CreateWebhooksSchema struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CreateWebhooksSchema) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *V2CreateWebhooksSchema) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetEndpoint sets the Endpoint field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateWebhooksSchema) SetEndpoint(endpoint string) {
-	c.Endpoint = endpoint
-	c.require(createWebhooksSchemaFieldEndpoint)
+func (v *V2CreateWebhooksSchema) SetEndpoint(endpoint string) {
+	v.Endpoint = endpoint
+	v.require(v2CreateWebhooksSchemaFieldEndpoint)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateWebhooksSchema) SetOrganizationID(organizationID *string) {
-	c.OrganizationID = organizationID
-	c.require(createWebhooksSchemaFieldOrganizationID)
+func (v *V2CreateWebhooksSchema) SetOrganizationID(organizationID *string) {
+	v.OrganizationID = organizationID
+	v.require(v2CreateWebhooksSchemaFieldOrganizationID)
 }
 
 // SetSecret sets the Secret field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateWebhooksSchema) SetSecret(secret string) {
-	c.Secret = secret
-	c.require(createWebhooksSchemaFieldSecret)
+func (v *V2CreateWebhooksSchema) SetSecret(secret string) {
+	v.Secret = secret
+	v.require(v2CreateWebhooksSchemaFieldSecret)
 }
 
-func (c *CreateWebhooksSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateWebhooksSchema
+func (v *V2CreateWebhooksSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2CreateWebhooksSchema
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*c = CreateWebhooksSchema(body)
+	*v = V2CreateWebhooksSchema(body)
 	return nil
 }
 
-func (c *CreateWebhooksSchema) MarshalJSON() ([]byte, error) {
-	type embed CreateWebhooksSchema
+func (v *V2CreateWebhooksSchema) MarshalJSON() ([]byte, error) {
+	type embed V2CreateWebhooksSchema
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*c),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	updateWebhooksSchemaFieldEndpoint       = big.NewInt(1 << 0)
-	updateWebhooksSchemaFieldOrganizationID = big.NewInt(1 << 1)
-	updateWebhooksSchemaFieldSecret         = big.NewInt(1 << 2)
+	v2UpdateWebhooksSchemaFieldEndpoint       = big.NewInt(1 << 0)
+	v2UpdateWebhooksSchemaFieldOrganizationID = big.NewInt(1 << 1)
+	v2UpdateWebhooksSchemaFieldSecret         = big.NewInt(1 << 2)
 )
 
-type UpdateWebhooksSchema struct {
+type V2UpdateWebhooksSchema struct {
 	Endpoint       string  `json:"endpoint" url:"-"`
 	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
 	Secret         string  `json:"secret" url:"-"`
@@ -89,65 +89,65 @@ type UpdateWebhooksSchema struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (u *UpdateWebhooksSchema) require(field *big.Int) {
-	if u.explicitFields == nil {
-		u.explicitFields = big.NewInt(0)
+func (v *V2UpdateWebhooksSchema) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	u.explicitFields.Or(u.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetEndpoint sets the Endpoint field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateWebhooksSchema) SetEndpoint(endpoint string) {
-	u.Endpoint = endpoint
-	u.require(updateWebhooksSchemaFieldEndpoint)
+func (v *V2UpdateWebhooksSchema) SetEndpoint(endpoint string) {
+	v.Endpoint = endpoint
+	v.require(v2UpdateWebhooksSchemaFieldEndpoint)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateWebhooksSchema) SetOrganizationID(organizationID *string) {
-	u.OrganizationID = organizationID
-	u.require(updateWebhooksSchemaFieldOrganizationID)
+func (v *V2UpdateWebhooksSchema) SetOrganizationID(organizationID *string) {
+	v.OrganizationID = organizationID
+	v.require(v2UpdateWebhooksSchemaFieldOrganizationID)
 }
 
 // SetSecret sets the Secret field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateWebhooksSchema) SetSecret(secret string) {
-	u.Secret = secret
-	u.require(updateWebhooksSchemaFieldSecret)
+func (v *V2UpdateWebhooksSchema) SetSecret(secret string) {
+	v.Secret = secret
+	v.require(v2UpdateWebhooksSchemaFieldSecret)
 }
 
-func (u *UpdateWebhooksSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler UpdateWebhooksSchema
+func (v *V2UpdateWebhooksSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2UpdateWebhooksSchema
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*u = UpdateWebhooksSchema(body)
+	*v = V2UpdateWebhooksSchema(body)
 	return nil
 }
 
-func (u *UpdateWebhooksSchema) MarshalJSON() ([]byte, error) {
-	type embed UpdateWebhooksSchema
+func (v *V2UpdateWebhooksSchema) MarshalJSON() ([]byte, error) {
+	type embed V2UpdateWebhooksSchema
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*u),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	webhookFieldCreatedAt      = big.NewInt(1 << 0)
-	webhookFieldDisabled       = big.NewInt(1 << 1)
-	webhookFieldEndpoint       = big.NewInt(1 << 2)
-	webhookFieldID             = big.NewInt(1 << 3)
-	webhookFieldOrganizationID = big.NewInt(1 << 4)
-	webhookFieldSecret         = big.NewInt(1 << 5)
+	v2WebhookFieldCreatedAt      = big.NewInt(1 << 0)
+	v2WebhookFieldDisabled       = big.NewInt(1 << 1)
+	v2WebhookFieldEndpoint       = big.NewInt(1 << 2)
+	v2WebhookFieldID             = big.NewInt(1 << 3)
+	v2WebhookFieldOrganizationID = big.NewInt(1 << 4)
+	v2WebhookFieldSecret         = big.NewInt(1 << 5)
 )
 
-type Webhook struct {
+type V2Webhook struct {
 	CreatedAt      *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
 	Disabled       *bool      `json:"disabled,omitempty" url:"disabled,omitempty"`
 	Endpoint       *string    `json:"endpoint,omitempty" url:"endpoint,omitempty"`
@@ -162,160 +162,160 @@ type Webhook struct {
 	rawJSON         json.RawMessage
 }
 
-func (w *Webhook) GetCreatedAt() *time.Time {
-	if w == nil {
+func (v *V2Webhook) GetCreatedAt() *time.Time {
+	if v == nil {
 		return nil
 	}
-	return w.CreatedAt
+	return v.CreatedAt
 }
 
-func (w *Webhook) GetDisabled() *bool {
-	if w == nil {
+func (v *V2Webhook) GetDisabled() *bool {
+	if v == nil {
 		return nil
 	}
-	return w.Disabled
+	return v.Disabled
 }
 
-func (w *Webhook) GetEndpoint() *string {
-	if w == nil {
+func (v *V2Webhook) GetEndpoint() *string {
+	if v == nil {
 		return nil
 	}
-	return w.Endpoint
+	return v.Endpoint
 }
 
-func (w *Webhook) GetID() *string {
-	if w == nil {
+func (v *V2Webhook) GetID() *string {
+	if v == nil {
 		return nil
 	}
-	return w.ID
+	return v.ID
 }
 
-func (w *Webhook) GetOrganizationID() *string {
-	if w == nil {
+func (v *V2Webhook) GetOrganizationID() *string {
+	if v == nil {
 		return nil
 	}
-	return w.OrganizationID
+	return v.OrganizationID
 }
 
-func (w *Webhook) GetSecret() *string {
-	if w == nil {
+func (v *V2Webhook) GetSecret() *string {
+	if v == nil {
 		return nil
 	}
-	return w.Secret
+	return v.Secret
 }
 
-func (w *Webhook) GetExtraProperties() map[string]interface{} {
-	if w == nil {
+func (v *V2Webhook) GetExtraProperties() map[string]interface{} {
+	if v == nil {
 		return nil
 	}
-	return w.extraProperties
+	return v.extraProperties
 }
 
-func (w *Webhook) require(field *big.Int) {
-	if w.explicitFields == nil {
-		w.explicitFields = big.NewInt(0)
+func (v *V2Webhook) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	w.explicitFields.Or(w.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *Webhook) SetCreatedAt(createdAt *time.Time) {
-	w.CreatedAt = createdAt
-	w.require(webhookFieldCreatedAt)
+func (v *V2Webhook) SetCreatedAt(createdAt *time.Time) {
+	v.CreatedAt = createdAt
+	v.require(v2WebhookFieldCreatedAt)
 }
 
 // SetDisabled sets the Disabled field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *Webhook) SetDisabled(disabled *bool) {
-	w.Disabled = disabled
-	w.require(webhookFieldDisabled)
+func (v *V2Webhook) SetDisabled(disabled *bool) {
+	v.Disabled = disabled
+	v.require(v2WebhookFieldDisabled)
 }
 
 // SetEndpoint sets the Endpoint field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *Webhook) SetEndpoint(endpoint *string) {
-	w.Endpoint = endpoint
-	w.require(webhookFieldEndpoint)
+func (v *V2Webhook) SetEndpoint(endpoint *string) {
+	v.Endpoint = endpoint
+	v.require(v2WebhookFieldEndpoint)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *Webhook) SetID(id *string) {
-	w.ID = id
-	w.require(webhookFieldID)
+func (v *V2Webhook) SetID(id *string) {
+	v.ID = id
+	v.require(v2WebhookFieldID)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *Webhook) SetOrganizationID(organizationID *string) {
-	w.OrganizationID = organizationID
-	w.require(webhookFieldOrganizationID)
+func (v *V2Webhook) SetOrganizationID(organizationID *string) {
+	v.OrganizationID = organizationID
+	v.require(v2WebhookFieldOrganizationID)
 }
 
 // SetSecret sets the Secret field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *Webhook) SetSecret(secret *string) {
-	w.Secret = secret
-	w.require(webhookFieldSecret)
+func (v *V2Webhook) SetSecret(secret *string) {
+	v.Secret = secret
+	v.require(v2WebhookFieldSecret)
 }
 
-func (w *Webhook) UnmarshalJSON(data []byte) error {
-	type embed Webhook
+func (v *V2Webhook) UnmarshalJSON(data []byte) error {
+	type embed V2Webhook
 	var unmarshaler = struct {
 		embed
 		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
 	}{
-		embed: embed(*w),
+		embed: embed(*v),
 	}
 	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*w = Webhook(unmarshaler.embed)
-	w.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *w)
+	*v = V2Webhook(unmarshaler.embed)
+	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
 	}
-	w.extraProperties = extraProperties
-	w.rawJSON = json.RawMessage(data)
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (w *Webhook) MarshalJSON() ([]byte, error) {
-	type embed Webhook
+func (v *V2Webhook) MarshalJSON() ([]byte, error) {
+	type embed V2Webhook
 	var marshaler = struct {
 		embed
 		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
 	}{
-		embed:     embed(*w),
-		CreatedAt: internal.NewOptionalDateTime(w.CreatedAt),
+		embed:     embed(*v),
+		CreatedAt: internal.NewOptionalDateTime(v.CreatedAt),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (w *Webhook) String() string {
-	if w == nil {
+func (v *V2Webhook) String() string {
+	if v == nil {
 		return "<nil>"
 	}
-	if len(w.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(w); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", w)
+	return fmt.Sprintf("%#v", v)
 }
 
 var (
-	webhookEnvelopeFieldData = big.NewInt(1 << 0)
+	v2WebhookEnvelopeFieldData = big.NewInt(1 << 0)
 )
 
-type WebhookEnvelope struct {
-	Data *Webhook `json:"data,omitempty" url:"data,omitempty"`
+type V2WebhookEnvelope struct {
+	Data *V2Webhook `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -324,82 +324,82 @@ type WebhookEnvelope struct {
 	rawJSON         json.RawMessage
 }
 
-func (w *WebhookEnvelope) GetData() *Webhook {
-	if w == nil {
+func (v *V2WebhookEnvelope) GetData() *V2Webhook {
+	if v == nil {
 		return nil
 	}
-	return w.Data
+	return v.Data
 }
 
-func (w *WebhookEnvelope) GetExtraProperties() map[string]interface{} {
-	if w == nil {
+func (v *V2WebhookEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
 		return nil
 	}
-	return w.extraProperties
+	return v.extraProperties
 }
 
-func (w *WebhookEnvelope) require(field *big.Int) {
-	if w.explicitFields == nil {
-		w.explicitFields = big.NewInt(0)
+func (v *V2WebhookEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	w.explicitFields.Or(w.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WebhookEnvelope) SetData(data *Webhook) {
-	w.Data = data
-	w.require(webhookEnvelopeFieldData)
+func (v *V2WebhookEnvelope) SetData(data *V2Webhook) {
+	v.Data = data
+	v.require(v2WebhookEnvelopeFieldData)
 }
 
-func (w *WebhookEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler WebhookEnvelope
+func (v *V2WebhookEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2WebhookEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*w = WebhookEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *w)
+	*v = V2WebhookEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
 	}
-	w.extraProperties = extraProperties
-	w.rawJSON = json.RawMessage(data)
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (w *WebhookEnvelope) MarshalJSON() ([]byte, error) {
-	type embed WebhookEnvelope
+func (v *V2WebhookEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V2WebhookEnvelope
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*w),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (w *WebhookEnvelope) String() string {
-	if w == nil {
+func (v *V2WebhookEnvelope) String() string {
+	if v == nil {
 		return "<nil>"
 	}
-	if len(w.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(w); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", w)
+	return fmt.Sprintf("%#v", v)
 }
 
 var (
-	webhookListEnvelopeFieldData = big.NewInt(1 << 0)
+	v2WebhookListEnvelopeFieldData = big.NewInt(1 << 0)
 )
 
-type WebhookListEnvelope struct {
-	Data []*Webhook `json:"data,omitempty" url:"data,omitempty"`
+type V2WebhookListEnvelope struct {
+	Data []*V2Webhook `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -408,72 +408,72 @@ type WebhookListEnvelope struct {
 	rawJSON         json.RawMessage
 }
 
-func (w *WebhookListEnvelope) GetData() []*Webhook {
-	if w == nil {
+func (v *V2WebhookListEnvelope) GetData() []*V2Webhook {
+	if v == nil {
 		return nil
 	}
-	return w.Data
+	return v.Data
 }
 
-func (w *WebhookListEnvelope) GetExtraProperties() map[string]interface{} {
-	if w == nil {
+func (v *V2WebhookListEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
 		return nil
 	}
-	return w.extraProperties
+	return v.extraProperties
 }
 
-func (w *WebhookListEnvelope) require(field *big.Int) {
-	if w.explicitFields == nil {
-		w.explicitFields = big.NewInt(0)
+func (v *V2WebhookListEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	w.explicitFields.Or(w.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WebhookListEnvelope) SetData(data []*Webhook) {
-	w.Data = data
-	w.require(webhookListEnvelopeFieldData)
+func (v *V2WebhookListEnvelope) SetData(data []*V2Webhook) {
+	v.Data = data
+	v.require(v2WebhookListEnvelopeFieldData)
 }
 
-func (w *WebhookListEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler WebhookListEnvelope
+func (v *V2WebhookListEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2WebhookListEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*w = WebhookListEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *w)
+	*v = V2WebhookListEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
 	}
-	w.extraProperties = extraProperties
-	w.rawJSON = json.RawMessage(data)
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (w *WebhookListEnvelope) MarshalJSON() ([]byte, error) {
-	type embed WebhookListEnvelope
+func (v *V2WebhookListEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V2WebhookListEnvelope
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*w),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (w *WebhookListEnvelope) String() string {
-	if w == nil {
+func (v *V2WebhookListEnvelope) String() string {
+	if v == nil {
 		return "<nil>"
 	}
-	if len(w.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(w); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", w)
+	return fmt.Sprintf("%#v", v)
 }

@@ -89,7 +89,7 @@ func TestBulkSyncExecutionsListStatusWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &bulksync.ExecutionsListStatusRequest{
+	request := &bulksync.ListStatusExecutionsRequest{
 		All: polytomic.Bool(
 			true,
 		),
@@ -125,7 +125,7 @@ func TestBulkSyncExecutionsListWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &bulksync.ExecutionsListRequest{
+	request := &bulksync.ListExecutionsRequest{
 		PageToken: polytomic.String(
 			"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==",
 		),
@@ -235,7 +235,7 @@ func TestBulkSyncExecutionsExportLogsWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &bulksync.ExecutionsExportLogsRequest{
+	request := &bulksync.ExportLogsExecutionsRequest{
 		Notify: polytomic.Bool(
 			true,
 		),

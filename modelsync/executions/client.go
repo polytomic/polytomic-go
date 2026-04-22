@@ -48,9 +48,9 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) List(
 	ctx context.Context,
 	syncID string,
-	request *modelsync.ExecutionsListRequest,
+	request *modelsync.ListExecutionsRequest,
 	opts ...option.RequestOption,
-) (*polytomic.ListExecutionResponseEnvelope, error) {
+) (*polytomic.V2ListExecutionResponseEnvelope, error) {
 	response, err := c.WithRawResponse.List(
 		ctx,
 		syncID,
@@ -73,7 +73,7 @@ func (c *Client) Get(
 	syncID string,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.GetExecutionResponseEnvelope, error) {
+) (*polytomic.V2GetExecutionResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		syncID,
@@ -92,9 +92,9 @@ func (c *Client) Update(
 	syncID string,
 	// The ID of the execution to update.
 	id string,
-	request *modelsync.UpdateExecutionRequest,
+	request *modelsync.V2UpdateExecutionRequest,
 	opts ...option.RequestOption,
-) (*polytomic.GetExecutionResponseEnvelope, error) {
+) (*polytomic.V2GetExecutionResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Update(
 		ctx,
 		syncID,
@@ -122,7 +122,7 @@ func (c *Client) GetLogURLs(
 	id string,
 	type_ *polytomic.V2ExecutionLogType,
 	opts ...option.RequestOption,
-) (*polytomic.ExecutionLogsResponseEnvelope, error) {
+) (*polytomic.V2ExecutionLogsResponseEnvelope, error) {
 	response, err := c.WithRawResponse.GetLogURLs(
 		ctx,
 		syncID,

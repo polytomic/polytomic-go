@@ -34,7 +34,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.WebhookListEnvelope], error) {
+) (*core.Response[*polytomic.V2WebhookListEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -46,7 +46,7 @@ func (r *RawClient) List(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.WebhookListEnvelope
+	var response *polytomic.V2WebhookListEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -64,7 +64,7 @@ func (r *RawClient) List(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.WebhookListEnvelope]{
+	return &core.Response[*polytomic.V2WebhookListEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -73,9 +73,9 @@ func (r *RawClient) List(
 
 func (r *RawClient) Create(
 	ctx context.Context,
-	request *polytomic.CreateWebhooksSchema,
+	request *polytomic.V2CreateWebhooksSchema,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.WebhookEnvelope], error) {
+) (*core.Response[*polytomic.V2WebhookEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -88,7 +88,7 @@ func (r *RawClient) Create(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.WebhookEnvelope
+	var response *polytomic.V2WebhookEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -107,7 +107,7 @@ func (r *RawClient) Create(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.WebhookEnvelope]{
+	return &core.Response[*polytomic.V2WebhookEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -118,7 +118,7 @@ func (r *RawClient) Get(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.WebhookEnvelope], error) {
+) (*core.Response[*polytomic.V2WebhookEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -133,7 +133,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.WebhookEnvelope
+	var response *polytomic.V2WebhookEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -151,7 +151,7 @@ func (r *RawClient) Get(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.WebhookEnvelope]{
+	return &core.Response[*polytomic.V2WebhookEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -161,9 +161,9 @@ func (r *RawClient) Get(
 func (r *RawClient) Update(
 	ctx context.Context,
 	id string,
-	request *polytomic.UpdateWebhooksSchema,
+	request *polytomic.V2UpdateWebhooksSchema,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.WebhookEnvelope], error) {
+) (*core.Response[*polytomic.V2WebhookEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -179,7 +179,7 @@ func (r *RawClient) Update(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.WebhookEnvelope
+	var response *polytomic.V2WebhookEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -198,7 +198,7 @@ func (r *RawClient) Update(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.WebhookEnvelope]{
+	return &core.Response[*polytomic.V2WebhookEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -251,7 +251,7 @@ func (r *RawClient) Disable(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.WebhookEnvelope], error) {
+) (*core.Response[*polytomic.V2WebhookEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -266,7 +266,7 @@ func (r *RawClient) Disable(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.WebhookEnvelope
+	var response *polytomic.V2WebhookEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -284,7 +284,7 @@ func (r *RawClient) Disable(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.WebhookEnvelope]{
+	return &core.Response[*polytomic.V2WebhookEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -295,7 +295,7 @@ func (r *RawClient) Enable(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.WebhookEnvelope], error) {
+) (*core.Response[*polytomic.V2WebhookEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -310,7 +310,7 @@ func (r *RawClient) Enable(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.WebhookEnvelope
+	var response *polytomic.V2WebhookEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -328,7 +328,7 @@ func (r *RawClient) Enable(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.WebhookEnvelope]{
+	return &core.Response[*polytomic.V2WebhookEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

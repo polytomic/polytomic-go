@@ -10,15 +10,15 @@ import (
 )
 
 var (
-	createOrganizationRequestSchemaFieldClientID     = big.NewInt(1 << 0)
-	createOrganizationRequestSchemaFieldClientSecret = big.NewInt(1 << 1)
-	createOrganizationRequestSchemaFieldIssuer       = big.NewInt(1 << 2)
-	createOrganizationRequestSchemaFieldName         = big.NewInt(1 << 3)
-	createOrganizationRequestSchemaFieldSSODomain    = big.NewInt(1 << 4)
-	createOrganizationRequestSchemaFieldSSOOrgID     = big.NewInt(1 << 5)
+	v2CreateOrganizationRequestSchemaFieldClientID     = big.NewInt(1 << 0)
+	v2CreateOrganizationRequestSchemaFieldClientSecret = big.NewInt(1 << 1)
+	v2CreateOrganizationRequestSchemaFieldIssuer       = big.NewInt(1 << 2)
+	v2CreateOrganizationRequestSchemaFieldName         = big.NewInt(1 << 3)
+	v2CreateOrganizationRequestSchemaFieldSSODomain    = big.NewInt(1 << 4)
+	v2CreateOrganizationRequestSchemaFieldSSOOrgID     = big.NewInt(1 << 5)
 )
 
-type CreateOrganizationRequestSchema struct {
+type V2CreateOrganizationRequestSchema struct {
 	// OIDC client ID issued by the identity provider.
 	ClientID *string `json:"client_id,omitempty" url:"-"`
 	// OIDC client secret issued by the identity provider. Write-only; never returned in responses.
@@ -36,86 +36,86 @@ type CreateOrganizationRequestSchema struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CreateOrganizationRequestSchema) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *V2CreateOrganizationRequestSchema) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetClientID sets the ClientID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateOrganizationRequestSchema) SetClientID(clientID *string) {
-	c.ClientID = clientID
-	c.require(createOrganizationRequestSchemaFieldClientID)
+func (v *V2CreateOrganizationRequestSchema) SetClientID(clientID *string) {
+	v.ClientID = clientID
+	v.require(v2CreateOrganizationRequestSchemaFieldClientID)
 }
 
 // SetClientSecret sets the ClientSecret field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateOrganizationRequestSchema) SetClientSecret(clientSecret *string) {
-	c.ClientSecret = clientSecret
-	c.require(createOrganizationRequestSchemaFieldClientSecret)
+func (v *V2CreateOrganizationRequestSchema) SetClientSecret(clientSecret *string) {
+	v.ClientSecret = clientSecret
+	v.require(v2CreateOrganizationRequestSchemaFieldClientSecret)
 }
 
 // SetIssuer sets the Issuer field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateOrganizationRequestSchema) SetIssuer(issuer *string) {
-	c.Issuer = issuer
-	c.require(createOrganizationRequestSchemaFieldIssuer)
+func (v *V2CreateOrganizationRequestSchema) SetIssuer(issuer *string) {
+	v.Issuer = issuer
+	v.require(v2CreateOrganizationRequestSchemaFieldIssuer)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateOrganizationRequestSchema) SetName(name string) {
-	c.Name = name
-	c.require(createOrganizationRequestSchemaFieldName)
+func (v *V2CreateOrganizationRequestSchema) SetName(name string) {
+	v.Name = name
+	v.require(v2CreateOrganizationRequestSchemaFieldName)
 }
 
 // SetSSODomain sets the SSODomain field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateOrganizationRequestSchema) SetSSODomain(ssoDomain *string) {
-	c.SSODomain = ssoDomain
-	c.require(createOrganizationRequestSchemaFieldSSODomain)
+func (v *V2CreateOrganizationRequestSchema) SetSSODomain(ssoDomain *string) {
+	v.SSODomain = ssoDomain
+	v.require(v2CreateOrganizationRequestSchemaFieldSSODomain)
 }
 
 // SetSSOOrgID sets the SSOOrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateOrganizationRequestSchema) SetSSOOrgID(ssoOrgID *string) {
-	c.SSOOrgID = ssoOrgID
-	c.require(createOrganizationRequestSchemaFieldSSOOrgID)
+func (v *V2CreateOrganizationRequestSchema) SetSSOOrgID(ssoOrgID *string) {
+	v.SSOOrgID = ssoOrgID
+	v.require(v2CreateOrganizationRequestSchemaFieldSSOOrgID)
 }
 
-func (c *CreateOrganizationRequestSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateOrganizationRequestSchema
+func (v *V2CreateOrganizationRequestSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2CreateOrganizationRequestSchema
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*c = CreateOrganizationRequestSchema(body)
+	*v = V2CreateOrganizationRequestSchema(body)
 	return nil
 }
 
-func (c *CreateOrganizationRequestSchema) MarshalJSON() ([]byte, error) {
-	type embed CreateOrganizationRequestSchema
+func (v *V2CreateOrganizationRequestSchema) MarshalJSON() ([]byte, error) {
+	type embed V2CreateOrganizationRequestSchema
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*c),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	updateOrganizationRequestSchemaFieldClientID     = big.NewInt(1 << 0)
-	updateOrganizationRequestSchemaFieldClientSecret = big.NewInt(1 << 1)
-	updateOrganizationRequestSchemaFieldIssuer       = big.NewInt(1 << 2)
-	updateOrganizationRequestSchemaFieldName         = big.NewInt(1 << 3)
-	updateOrganizationRequestSchemaFieldSSODomain    = big.NewInt(1 << 4)
-	updateOrganizationRequestSchemaFieldSSOOrgID     = big.NewInt(1 << 5)
+	v2UpdateOrganizationRequestSchemaFieldClientID     = big.NewInt(1 << 0)
+	v2UpdateOrganizationRequestSchemaFieldClientSecret = big.NewInt(1 << 1)
+	v2UpdateOrganizationRequestSchemaFieldIssuer       = big.NewInt(1 << 2)
+	v2UpdateOrganizationRequestSchemaFieldName         = big.NewInt(1 << 3)
+	v2UpdateOrganizationRequestSchemaFieldSSODomain    = big.NewInt(1 << 4)
+	v2UpdateOrganizationRequestSchemaFieldSSOOrgID     = big.NewInt(1 << 5)
 )
 
-type UpdateOrganizationRequestSchema struct {
+type V2UpdateOrganizationRequestSchema struct {
 	// OIDC client ID issued by the identity provider.
 	ClientID *string `json:"client_id,omitempty" url:"-"`
 	// OIDC client secret issued by the identity provider. Write-only; never returned in responses.
@@ -133,85 +133,85 @@ type UpdateOrganizationRequestSchema struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (u *UpdateOrganizationRequestSchema) require(field *big.Int) {
-	if u.explicitFields == nil {
-		u.explicitFields = big.NewInt(0)
+func (v *V2UpdateOrganizationRequestSchema) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	u.explicitFields.Or(u.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetClientID sets the ClientID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateOrganizationRequestSchema) SetClientID(clientID *string) {
-	u.ClientID = clientID
-	u.require(updateOrganizationRequestSchemaFieldClientID)
+func (v *V2UpdateOrganizationRequestSchema) SetClientID(clientID *string) {
+	v.ClientID = clientID
+	v.require(v2UpdateOrganizationRequestSchemaFieldClientID)
 }
 
 // SetClientSecret sets the ClientSecret field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateOrganizationRequestSchema) SetClientSecret(clientSecret *string) {
-	u.ClientSecret = clientSecret
-	u.require(updateOrganizationRequestSchemaFieldClientSecret)
+func (v *V2UpdateOrganizationRequestSchema) SetClientSecret(clientSecret *string) {
+	v.ClientSecret = clientSecret
+	v.require(v2UpdateOrganizationRequestSchemaFieldClientSecret)
 }
 
 // SetIssuer sets the Issuer field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateOrganizationRequestSchema) SetIssuer(issuer *string) {
-	u.Issuer = issuer
-	u.require(updateOrganizationRequestSchemaFieldIssuer)
+func (v *V2UpdateOrganizationRequestSchema) SetIssuer(issuer *string) {
+	v.Issuer = issuer
+	v.require(v2UpdateOrganizationRequestSchemaFieldIssuer)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateOrganizationRequestSchema) SetName(name string) {
-	u.Name = name
-	u.require(updateOrganizationRequestSchemaFieldName)
+func (v *V2UpdateOrganizationRequestSchema) SetName(name string) {
+	v.Name = name
+	v.require(v2UpdateOrganizationRequestSchemaFieldName)
 }
 
 // SetSSODomain sets the SSODomain field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateOrganizationRequestSchema) SetSSODomain(ssoDomain *string) {
-	u.SSODomain = ssoDomain
-	u.require(updateOrganizationRequestSchemaFieldSSODomain)
+func (v *V2UpdateOrganizationRequestSchema) SetSSODomain(ssoDomain *string) {
+	v.SSODomain = ssoDomain
+	v.require(v2UpdateOrganizationRequestSchemaFieldSSODomain)
 }
 
 // SetSSOOrgID sets the SSOOrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateOrganizationRequestSchema) SetSSOOrgID(ssoOrgID *string) {
-	u.SSOOrgID = ssoOrgID
-	u.require(updateOrganizationRequestSchemaFieldSSOOrgID)
+func (v *V2UpdateOrganizationRequestSchema) SetSSOOrgID(ssoOrgID *string) {
+	v.SSOOrgID = ssoOrgID
+	v.require(v2UpdateOrganizationRequestSchemaFieldSSOOrgID)
 }
 
-func (u *UpdateOrganizationRequestSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler UpdateOrganizationRequestSchema
+func (v *V2UpdateOrganizationRequestSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2UpdateOrganizationRequestSchema
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*u = UpdateOrganizationRequestSchema(body)
+	*v = V2UpdateOrganizationRequestSchema(body)
 	return nil
 }
 
-func (u *UpdateOrganizationRequestSchema) MarshalJSON() ([]byte, error) {
-	type embed UpdateOrganizationRequestSchema
+func (v *V2UpdateOrganizationRequestSchema) MarshalJSON() ([]byte, error) {
+	type embed V2UpdateOrganizationRequestSchema
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*u),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	organizationFieldID        = big.NewInt(1 << 0)
-	organizationFieldIssuer    = big.NewInt(1 << 1)
-	organizationFieldName      = big.NewInt(1 << 2)
-	organizationFieldSSODomain = big.NewInt(1 << 3)
-	organizationFieldSSOOrgID  = big.NewInt(1 << 4)
+	v2OrganizationFieldID        = big.NewInt(1 << 0)
+	v2OrganizationFieldIssuer    = big.NewInt(1 << 1)
+	v2OrganizationFieldName      = big.NewInt(1 << 2)
+	v2OrganizationFieldSSODomain = big.NewInt(1 << 3)
+	v2OrganizationFieldSSOOrgID  = big.NewInt(1 << 4)
 )
 
-type Organization struct {
+type V2Organization struct {
 	// Unique identifier of the organization.
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 	// OIDC issuer URL for organizations using OpenID Connect single sign-on.
@@ -230,138 +230,138 @@ type Organization struct {
 	rawJSON         json.RawMessage
 }
 
-func (o *Organization) GetID() *string {
-	if o == nil {
+func (v *V2Organization) GetID() *string {
+	if v == nil {
 		return nil
 	}
-	return o.ID
+	return v.ID
 }
 
-func (o *Organization) GetIssuer() *string {
-	if o == nil {
+func (v *V2Organization) GetIssuer() *string {
+	if v == nil {
 		return nil
 	}
-	return o.Issuer
+	return v.Issuer
 }
 
-func (o *Organization) GetName() *string {
-	if o == nil {
+func (v *V2Organization) GetName() *string {
+	if v == nil {
 		return nil
 	}
-	return o.Name
+	return v.Name
 }
 
-func (o *Organization) GetSSODomain() *string {
-	if o == nil {
+func (v *V2Organization) GetSSODomain() *string {
+	if v == nil {
 		return nil
 	}
-	return o.SSODomain
+	return v.SSODomain
 }
 
-func (o *Organization) GetSSOOrgID() *string {
-	if o == nil {
+func (v *V2Organization) GetSSOOrgID() *string {
+	if v == nil {
 		return nil
 	}
-	return o.SSOOrgID
+	return v.SSOOrgID
 }
 
-func (o *Organization) GetExtraProperties() map[string]interface{} {
-	if o == nil {
+func (v *V2Organization) GetExtraProperties() map[string]interface{} {
+	if v == nil {
 		return nil
 	}
-	return o.extraProperties
+	return v.extraProperties
 }
 
-func (o *Organization) require(field *big.Int) {
-	if o.explicitFields == nil {
-		o.explicitFields = big.NewInt(0)
+func (v *V2Organization) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	o.explicitFields.Or(o.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *Organization) SetID(id *string) {
-	o.ID = id
-	o.require(organizationFieldID)
+func (v *V2Organization) SetID(id *string) {
+	v.ID = id
+	v.require(v2OrganizationFieldID)
 }
 
 // SetIssuer sets the Issuer field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *Organization) SetIssuer(issuer *string) {
-	o.Issuer = issuer
-	o.require(organizationFieldIssuer)
+func (v *V2Organization) SetIssuer(issuer *string) {
+	v.Issuer = issuer
+	v.require(v2OrganizationFieldIssuer)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *Organization) SetName(name *string) {
-	o.Name = name
-	o.require(organizationFieldName)
+func (v *V2Organization) SetName(name *string) {
+	v.Name = name
+	v.require(v2OrganizationFieldName)
 }
 
 // SetSSODomain sets the SSODomain field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *Organization) SetSSODomain(ssoDomain *string) {
-	o.SSODomain = ssoDomain
-	o.require(organizationFieldSSODomain)
+func (v *V2Organization) SetSSODomain(ssoDomain *string) {
+	v.SSODomain = ssoDomain
+	v.require(v2OrganizationFieldSSODomain)
 }
 
 // SetSSOOrgID sets the SSOOrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *Organization) SetSSOOrgID(ssoOrgID *string) {
-	o.SSOOrgID = ssoOrgID
-	o.require(organizationFieldSSOOrgID)
+func (v *V2Organization) SetSSOOrgID(ssoOrgID *string) {
+	v.SSOOrgID = ssoOrgID
+	v.require(v2OrganizationFieldSSOOrgID)
 }
 
-func (o *Organization) UnmarshalJSON(data []byte) error {
-	type unmarshaler Organization
+func (v *V2Organization) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2Organization
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*o = Organization(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *o)
+	*v = V2Organization(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
 	}
-	o.extraProperties = extraProperties
-	o.rawJSON = json.RawMessage(data)
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (o *Organization) MarshalJSON() ([]byte, error) {
-	type embed Organization
+func (v *V2Organization) MarshalJSON() ([]byte, error) {
+	type embed V2Organization
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*o),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (o *Organization) String() string {
-	if o == nil {
+func (v *V2Organization) String() string {
+	if v == nil {
 		return "<nil>"
 	}
-	if len(o.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(o); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", o)
+	return fmt.Sprintf("%#v", v)
 }
 
 var (
-	organizationEnvelopeFieldData = big.NewInt(1 << 0)
+	v2OrganizationEnvelopeFieldData = big.NewInt(1 << 0)
 )
 
-type OrganizationEnvelope struct {
-	Data *Organization `json:"data,omitempty" url:"data,omitempty"`
+type V2OrganizationEnvelope struct {
+	Data *V2Organization `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -370,82 +370,82 @@ type OrganizationEnvelope struct {
 	rawJSON         json.RawMessage
 }
 
-func (o *OrganizationEnvelope) GetData() *Organization {
-	if o == nil {
+func (v *V2OrganizationEnvelope) GetData() *V2Organization {
+	if v == nil {
 		return nil
 	}
-	return o.Data
+	return v.Data
 }
 
-func (o *OrganizationEnvelope) GetExtraProperties() map[string]interface{} {
-	if o == nil {
+func (v *V2OrganizationEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
 		return nil
 	}
-	return o.extraProperties
+	return v.extraProperties
 }
 
-func (o *OrganizationEnvelope) require(field *big.Int) {
-	if o.explicitFields == nil {
-		o.explicitFields = big.NewInt(0)
+func (v *V2OrganizationEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	o.explicitFields.Or(o.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *OrganizationEnvelope) SetData(data *Organization) {
-	o.Data = data
-	o.require(organizationEnvelopeFieldData)
+func (v *V2OrganizationEnvelope) SetData(data *V2Organization) {
+	v.Data = data
+	v.require(v2OrganizationEnvelopeFieldData)
 }
 
-func (o *OrganizationEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler OrganizationEnvelope
+func (v *V2OrganizationEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2OrganizationEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*o = OrganizationEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *o)
+	*v = V2OrganizationEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
 	}
-	o.extraProperties = extraProperties
-	o.rawJSON = json.RawMessage(data)
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (o *OrganizationEnvelope) MarshalJSON() ([]byte, error) {
-	type embed OrganizationEnvelope
+func (v *V2OrganizationEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V2OrganizationEnvelope
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*o),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (o *OrganizationEnvelope) String() string {
-	if o == nil {
+func (v *V2OrganizationEnvelope) String() string {
+	if v == nil {
 		return "<nil>"
 	}
-	if len(o.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(o); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", o)
+	return fmt.Sprintf("%#v", v)
 }
 
 var (
-	organizationsEnvelopeFieldData = big.NewInt(1 << 0)
+	v2OrganizationsEnvelopeFieldData = big.NewInt(1 << 0)
 )
 
-type OrganizationsEnvelope struct {
-	Data []*Organization `json:"data,omitempty" url:"data,omitempty"`
+type V2OrganizationsEnvelope struct {
+	Data []*V2Organization `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -454,72 +454,72 @@ type OrganizationsEnvelope struct {
 	rawJSON         json.RawMessage
 }
 
-func (o *OrganizationsEnvelope) GetData() []*Organization {
-	if o == nil {
+func (v *V2OrganizationsEnvelope) GetData() []*V2Organization {
+	if v == nil {
 		return nil
 	}
-	return o.Data
+	return v.Data
 }
 
-func (o *OrganizationsEnvelope) GetExtraProperties() map[string]interface{} {
-	if o == nil {
+func (v *V2OrganizationsEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
 		return nil
 	}
-	return o.extraProperties
+	return v.extraProperties
 }
 
-func (o *OrganizationsEnvelope) require(field *big.Int) {
-	if o.explicitFields == nil {
-		o.explicitFields = big.NewInt(0)
+func (v *V2OrganizationsEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	o.explicitFields.Or(o.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *OrganizationsEnvelope) SetData(data []*Organization) {
-	o.Data = data
-	o.require(organizationsEnvelopeFieldData)
+func (v *V2OrganizationsEnvelope) SetData(data []*V2Organization) {
+	v.Data = data
+	v.require(v2OrganizationsEnvelopeFieldData)
 }
 
-func (o *OrganizationsEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler OrganizationsEnvelope
+func (v *V2OrganizationsEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2OrganizationsEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*o = OrganizationsEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *o)
+	*v = V2OrganizationsEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
 	}
-	o.extraProperties = extraProperties
-	o.rawJSON = json.RawMessage(data)
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (o *OrganizationsEnvelope) MarshalJSON() ([]byte, error) {
-	type embed OrganizationsEnvelope
+func (v *V2OrganizationsEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V2OrganizationsEnvelope
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*o),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (o *OrganizationsEnvelope) String() string {
-	if o == nil {
+func (v *V2OrganizationsEnvelope) String() string {
+	if v == nil {
 		return "<nil>"
 	}
-	if len(o.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(o); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", o)
+	return fmt.Sprintf("%#v", v)
 }

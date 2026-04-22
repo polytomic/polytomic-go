@@ -51,7 +51,7 @@ func (c *Client) Get(
 	// Unique identifier of the job (usually returned by whichever endpoint started the job).
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.JobResponseEnvelope, error) {
+) (*polytomic.V2JobResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		type_,

@@ -44,7 +44,7 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomic.ListPoliciesResponseEnvelope, error) {
+) (*polytomic.V2ListPoliciesResponseEnvelope, error) {
 	response, err := c.WithRawResponse.List(
 		ctx,
 		opts...,
@@ -63,9 +63,9 @@ func (c *Client) List(
 // [`POST /api/permissions/roles`](../../../api-reference/permissions/roles/create).
 func (c *Client) Create(
 	ctx context.Context,
-	request *permissions.CreatePolicyRequest,
+	request *permissions.V2CreatePolicyRequest,
 	opts ...option.RequestOption,
-) (*polytomic.PolicyResponseEnvelope, error) {
+) (*polytomic.V2PolicyResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
@@ -85,7 +85,7 @@ func (c *Client) Get(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.PolicyResponseEnvelope, error) {
+) (*polytomic.V2PolicyResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		id,
@@ -107,9 +107,9 @@ func (c *Client) Get(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *permissions.UpdatePolicyRequest,
+	request *permissions.V2UpdatePolicyRequest,
 	opts ...option.RequestOption,
-) (*polytomic.PolicyResponseEnvelope, error) {
+) (*polytomic.V2PolicyResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Update(
 		ctx,
 		id,

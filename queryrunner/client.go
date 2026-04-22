@@ -78,7 +78,7 @@ func (c *Client) GetQuery(
 	ctx context.Context,
 	// Unique identifier of the query task, as returned by POST /api/connections/{connection_id}/query.
 	id string,
-	request *polytomic.QueryRunnerGetQueryRequest,
+	request *polytomic.GetQueryQueryRunnerRequest,
 	opts ...option.RequestOption,
 ) (*polytomic.V4QueryResultsEnvelope, error) {
 	response, err := c.WithRawResponse.GetQuery(

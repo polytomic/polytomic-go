@@ -47,7 +47,7 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) Get(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomic.GetIdentityResponseEnvelope, error) {
+) (*polytomic.V2GetIdentityResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		opts...,

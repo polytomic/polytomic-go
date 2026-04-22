@@ -56,9 +56,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // > instead of filtering the list client-side.
 func (c *Client) List(
 	ctx context.Context,
-	request *polytomic.BulkSyncListRequest,
+	request *polytomic.ListBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomic.BulkSyncListEnvelope, error) {
+) (*polytomic.V2BulkSyncListEnvelope, error) {
 	response, err := c.WithRawResponse.List(
 		ctx,
 		request,
@@ -114,9 +114,9 @@ func (c *Client) List(
 //   - `normalize_names` defaults to enabled.
 func (c *Client) Create(
 	ctx context.Context,
-	request *polytomic.CreateBulkSyncRequest,
+	request *polytomic.V2CreateBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomic.BulkSyncResponseEnvelope, error) {
+) (*polytomic.V2BulkSyncResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
@@ -140,9 +140,9 @@ func (c *Client) Create(
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
-	request *polytomic.BulkSyncGetRequest,
+	request *polytomic.GetBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomic.BulkSyncResponseEnvelope, error) {
+) (*polytomic.V2BulkSyncResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		id,
@@ -193,9 +193,9 @@ func (c *Client) Get(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *polytomic.UpdateBulkSyncRequest,
+	request *polytomic.V2UpdateBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomic.BulkSyncResponseEnvelope, error) {
+) (*polytomic.V2BulkSyncResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Update(
 		ctx,
 		id,
@@ -218,7 +218,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
-	request *polytomic.BulkSyncRemoveRequest,
+	request *polytomic.RemoveBulkSyncRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.Remove(
@@ -246,9 +246,9 @@ func (c *Client) Remove(
 func (c *Client) Activate(
 	ctx context.Context,
 	id string,
-	request *polytomic.ActivateSyncInput,
+	request *polytomic.V2ActivateSyncInput,
 	opts ...option.RequestOption,
-) (*polytomic.ActivateSyncEnvelope, error) {
+) (*polytomic.V2ActivateSyncEnvelope, error) {
 	response, err := c.WithRawResponse.Activate(
 		ctx,
 		id,
@@ -273,7 +273,7 @@ func (c *Client) Cancel(
 	// The active execution of this bulk sync ID will be cancelled.
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.CancelBulkSyncResponseEnvelope, error) {
+) (*polytomic.V2CancelBulkSyncResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Cancel(
 		ctx,
 		id,
@@ -305,9 +305,9 @@ func (c *Client) Start(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
 	id string,
-	request *polytomic.StartBulkSyncRequest,
+	request *polytomic.V3StartBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomic.BulkSyncExecutionEnvelope, error) {
+) (*polytomic.V3BulkSyncExecutionEnvelope, error) {
 	response, err := c.WithRawResponse.Start(
 		ctx,
 		id,
@@ -336,7 +336,7 @@ func (c *Client) GetStatus(
 	// Unique identifier of the bulk sync.
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.BulkSyncStatusEnvelope, error) {
+) (*polytomic.V3BulkSyncStatusEnvelope, error) {
 	response, err := c.WithRawResponse.GetStatus(
 		ctx,
 		id,
@@ -366,9 +366,9 @@ func (c *Client) GetSource(
 	ctx context.Context,
 	// Unique identifier of the connection.
 	id string,
-	request *polytomic.BulkSyncGetSourceRequest,
+	request *polytomic.GetSourceBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomic.BulkSyncSourceEnvelope, error) {
+) (*polytomic.V3BulkSyncSourceEnvelope, error) {
 	response, err := c.WithRawResponse.GetSource(
 		ctx,
 		id,
@@ -396,7 +396,7 @@ func (c *Client) GetDestination(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.BulkSyncDestEnvelope, error) {
+) (*polytomic.V2BulkSyncDestEnvelope, error) {
 	response, err := c.WithRawResponse.GetDestination(
 		ctx,
 		id,

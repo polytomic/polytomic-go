@@ -33,9 +33,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) List(
 	ctx context.Context,
-	request *polytomic.BulkSyncListRequest,
+	request *polytomic.ListBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.BulkSyncListEnvelope], error) {
+) (*core.Response[*polytomic.V2BulkSyncListEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -54,7 +54,7 @@ func (r *RawClient) List(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.BulkSyncListEnvelope
+	var response *polytomic.V2BulkSyncListEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -72,7 +72,7 @@ func (r *RawClient) List(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.BulkSyncListEnvelope]{
+	return &core.Response[*polytomic.V2BulkSyncListEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -81,9 +81,9 @@ func (r *RawClient) List(
 
 func (r *RawClient) Create(
 	ctx context.Context,
-	request *polytomic.CreateBulkSyncRequest,
+	request *polytomic.V2CreateBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.BulkSyncResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2BulkSyncResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -96,7 +96,7 @@ func (r *RawClient) Create(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.BulkSyncResponseEnvelope
+	var response *polytomic.V2BulkSyncResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -115,7 +115,7 @@ func (r *RawClient) Create(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.BulkSyncResponseEnvelope]{
+	return &core.Response[*polytomic.V2BulkSyncResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -125,9 +125,9 @@ func (r *RawClient) Create(
 func (r *RawClient) Get(
 	ctx context.Context,
 	id string,
-	request *polytomic.BulkSyncGetRequest,
+	request *polytomic.GetBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.BulkSyncResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2BulkSyncResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -149,7 +149,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.BulkSyncResponseEnvelope
+	var response *polytomic.V2BulkSyncResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -167,7 +167,7 @@ func (r *RawClient) Get(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.BulkSyncResponseEnvelope]{
+	return &core.Response[*polytomic.V2BulkSyncResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -177,9 +177,9 @@ func (r *RawClient) Get(
 func (r *RawClient) Update(
 	ctx context.Context,
 	id string,
-	request *polytomic.UpdateBulkSyncRequest,
+	request *polytomic.V2UpdateBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.BulkSyncResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2BulkSyncResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -195,7 +195,7 @@ func (r *RawClient) Update(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.BulkSyncResponseEnvelope
+	var response *polytomic.V2BulkSyncResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -214,7 +214,7 @@ func (r *RawClient) Update(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.BulkSyncResponseEnvelope]{
+	return &core.Response[*polytomic.V2BulkSyncResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -224,7 +224,7 @@ func (r *RawClient) Update(
 func (r *RawClient) Remove(
 	ctx context.Context,
 	id string,
-	request *polytomic.BulkSyncRemoveRequest,
+	request *polytomic.RemoveBulkSyncRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -274,9 +274,9 @@ func (r *RawClient) Remove(
 func (r *RawClient) Activate(
 	ctx context.Context,
 	id string,
-	request *polytomic.ActivateSyncInput,
+	request *polytomic.V2ActivateSyncInput,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ActivateSyncEnvelope], error) {
+) (*core.Response[*polytomic.V2ActivateSyncEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -291,7 +291,7 @@ func (r *RawClient) Activate(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.ActivateSyncEnvelope
+	var response *polytomic.V2ActivateSyncEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -310,7 +310,7 @@ func (r *RawClient) Activate(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ActivateSyncEnvelope]{
+	return &core.Response[*polytomic.V2ActivateSyncEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -322,7 +322,7 @@ func (r *RawClient) Cancel(
 	// The active execution of this bulk sync ID will be cancelled.
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.CancelBulkSyncResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2CancelBulkSyncResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -337,7 +337,7 @@ func (r *RawClient) Cancel(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.CancelBulkSyncResponseEnvelope
+	var response *polytomic.V2CancelBulkSyncResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -355,7 +355,7 @@ func (r *RawClient) Cancel(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.CancelBulkSyncResponseEnvelope]{
+	return &core.Response[*polytomic.V2CancelBulkSyncResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -366,9 +366,9 @@ func (r *RawClient) Start(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
 	id string,
-	request *polytomic.StartBulkSyncRequest,
+	request *polytomic.V3StartBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.BulkSyncExecutionEnvelope], error) {
+) (*core.Response[*polytomic.V3BulkSyncExecutionEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -384,7 +384,7 @@ func (r *RawClient) Start(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.BulkSyncExecutionEnvelope
+	var response *polytomic.V3BulkSyncExecutionEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -403,7 +403,7 @@ func (r *RawClient) Start(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.BulkSyncExecutionEnvelope]{
+	return &core.Response[*polytomic.V3BulkSyncExecutionEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -415,7 +415,7 @@ func (r *RawClient) GetStatus(
 	// Unique identifier of the bulk sync.
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.BulkSyncStatusEnvelope], error) {
+) (*core.Response[*polytomic.V3BulkSyncStatusEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -430,7 +430,7 @@ func (r *RawClient) GetStatus(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.BulkSyncStatusEnvelope
+	var response *polytomic.V3BulkSyncStatusEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -448,7 +448,7 @@ func (r *RawClient) GetStatus(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.BulkSyncStatusEnvelope]{
+	return &core.Response[*polytomic.V3BulkSyncStatusEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -459,9 +459,9 @@ func (r *RawClient) GetSource(
 	ctx context.Context,
 	// Unique identifier of the connection.
 	id string,
-	request *polytomic.BulkSyncGetSourceRequest,
+	request *polytomic.GetSourceBulkSyncRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.BulkSyncSourceEnvelope], error) {
+) (*core.Response[*polytomic.V3BulkSyncSourceEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -483,7 +483,7 @@ func (r *RawClient) GetSource(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.BulkSyncSourceEnvelope
+	var response *polytomic.V3BulkSyncSourceEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -501,7 +501,7 @@ func (r *RawClient) GetSource(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.BulkSyncSourceEnvelope]{
+	return &core.Response[*polytomic.V3BulkSyncSourceEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -512,7 +512,7 @@ func (r *RawClient) GetDestination(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.BulkSyncDestEnvelope], error) {
+) (*core.Response[*polytomic.V2BulkSyncDestEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -527,7 +527,7 @@ func (r *RawClient) GetDestination(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.BulkSyncDestEnvelope
+	var response *polytomic.V2BulkSyncDestEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -545,7 +545,7 @@ func (r *RawClient) GetDestination(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.BulkSyncDestEnvelope]{
+	return &core.Response[*polytomic.V2BulkSyncDestEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

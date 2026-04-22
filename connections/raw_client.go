@@ -34,7 +34,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) GetTypes(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ConnectionTypeResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2ConnectionTypeResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -46,7 +46,7 @@ func (r *RawClient) GetTypes(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.ConnectionTypeResponseEnvelope
+	var response *polytomic.V2ConnectionTypeResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -64,7 +64,7 @@ func (r *RawClient) GetTypes(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ConnectionTypeResponseEnvelope]{
+	return &core.Response[*polytomic.V2ConnectionTypeResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -119,9 +119,9 @@ func (r *RawClient) GetConnectionTypeSchema(
 func (r *RawClient) GetTypeParameterValues(
 	ctx context.Context,
 	type_ string,
-	request *polytomic.GetConnectionTypeParameterValuesRequestSchema,
+	request *polytomic.V2GetConnectionTypeParameterValuesRequestSchema,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ConnectionParameterValuesResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2ConnectionParameterValuesResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -137,7 +137,7 @@ func (r *RawClient) GetTypeParameterValues(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.ConnectionParameterValuesResponseEnvelope
+	var response *polytomic.V2ConnectionParameterValuesResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -156,7 +156,7 @@ func (r *RawClient) GetTypeParameterValues(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ConnectionParameterValuesResponseEnvelope]{
+	return &core.Response[*polytomic.V2ConnectionParameterValuesResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -166,7 +166,7 @@ func (r *RawClient) GetTypeParameterValues(
 func (r *RawClient) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ConnectionListResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2ConnectionListResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -178,7 +178,7 @@ func (r *RawClient) List(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.ConnectionListResponseEnvelope
+	var response *polytomic.V2ConnectionListResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -196,7 +196,7 @@ func (r *RawClient) List(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ConnectionListResponseEnvelope]{
+	return &core.Response[*polytomic.V2ConnectionListResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -205,9 +205,9 @@ func (r *RawClient) List(
 
 func (r *RawClient) Create(
 	ctx context.Context,
-	request *polytomic.CreateConnectionRequestSchema,
+	request *polytomic.V2CreateConnectionRequestSchema,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.CreateConnectionResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2CreateConnectionResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -220,7 +220,7 @@ func (r *RawClient) Create(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.CreateConnectionResponseEnvelope
+	var response *polytomic.V2CreateConnectionResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -239,7 +239,7 @@ func (r *RawClient) Create(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.CreateConnectionResponseEnvelope]{
+	return &core.Response[*polytomic.V2CreateConnectionResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -248,9 +248,9 @@ func (r *RawClient) Create(
 
 func (r *RawClient) Connect(
 	ctx context.Context,
-	request *polytomic.ConnectCardRequest,
+	request *polytomic.V3ConnectCardRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ConnectCardResponseEnvelope], error) {
+) (*core.Response[*polytomic.V3ConnectCardResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -263,7 +263,7 @@ func (r *RawClient) Connect(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.ConnectCardResponseEnvelope
+	var response *polytomic.V3ConnectCardResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -282,7 +282,7 @@ func (r *RawClient) Connect(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ConnectCardResponseEnvelope]{
+	return &core.Response[*polytomic.V3ConnectCardResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -291,7 +291,7 @@ func (r *RawClient) Connect(
 
 func (r *RawClient) TestConnection(
 	ctx context.Context,
-	request *polytomic.TestConnectionRequest,
+	request *polytomic.V4TestConnectionRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -334,7 +334,7 @@ func (r *RawClient) Get(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ConnectionResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2ConnectionResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -349,7 +349,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.ConnectionResponseEnvelope
+	var response *polytomic.V2ConnectionResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -367,7 +367,7 @@ func (r *RawClient) Get(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ConnectionResponseEnvelope]{
+	return &core.Response[*polytomic.V2ConnectionResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -377,9 +377,9 @@ func (r *RawClient) Get(
 func (r *RawClient) Update(
 	ctx context.Context,
 	id string,
-	request *polytomic.UpdateConnectionRequestSchema,
+	request *polytomic.V2UpdateConnectionRequestSchema,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.CreateConnectionResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2CreateConnectionResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -395,7 +395,7 @@ func (r *RawClient) Update(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.CreateConnectionResponseEnvelope
+	var response *polytomic.V2CreateConnectionResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -414,7 +414,7 @@ func (r *RawClient) Update(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.CreateConnectionResponseEnvelope]{
+	return &core.Response[*polytomic.V2CreateConnectionResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -424,7 +424,7 @@ func (r *RawClient) Update(
 func (r *RawClient) Remove(
 	ctx context.Context,
 	id string,
-	request *polytomic.ConnectionsRemoveRequest,
+	request *polytomic.RemoveConnectionsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -475,7 +475,7 @@ func (r *RawClient) GetParameterValues(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ConnectionParameterValuesResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2ConnectionParameterValuesResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -490,7 +490,7 @@ func (r *RawClient) GetParameterValues(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.ConnectionParameterValuesResponseEnvelope
+	var response *polytomic.V2ConnectionParameterValuesResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -508,7 +508,7 @@ func (r *RawClient) GetParameterValues(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ConnectionParameterValuesResponseEnvelope]{
+	return &core.Response[*polytomic.V2ConnectionParameterValuesResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -518,7 +518,7 @@ func (r *RawClient) GetParameterValues(
 func (r *RawClient) CreateSharedConnection(
 	ctx context.Context,
 	parentConnectionID string,
-	request *polytomic.APIRequest,
+	request *polytomic.V2CreateSharedConnectionRequestSchema,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.V2CreateSharedConnectionResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
@@ -566,7 +566,7 @@ func (r *RawClient) ListSharedConnections(
 	ctx context.Context,
 	parentConnectionID string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ConnectionListResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2ConnectionListResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -581,7 +581,7 @@ func (r *RawClient) ListSharedConnections(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.ConnectionListResponseEnvelope
+	var response *polytomic.V2ConnectionListResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -599,7 +599,7 @@ func (r *RawClient) ListSharedConnections(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ConnectionListResponseEnvelope]{
+	return &core.Response[*polytomic.V2ConnectionListResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

@@ -11,9 +11,9 @@ import (
 	time "time"
 )
 
-func TestSettersSchemasListRequest(t *testing.T) {
+func TestSettersListSchemasRequest(t *testing.T) {
 	t.Run("SetFilters", func(t *testing.T) {
-		obj := &SchemasListRequest{}
+		obj := &ListSchemasRequest{}
 		var fernTestValueFilters map[string]*string
 		obj.SetFilters(fernTestValueFilters)
 		assert.Equal(t, fernTestValueFilters, obj.Filters)
@@ -22,11 +22,11 @@ func TestSettersSchemasListRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitSchemasListRequest(t *testing.T) {
+func TestSettersMarkExplicitListSchemasRequest(t *testing.T) {
 	t.Run("SetFilters_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemasListRequest{}
+		obj := &ListSchemasRequest{}
 		var fernTestValueFilters map[string]*string
 
 		// Act
@@ -56,10 +56,10 @@ func TestSettersMarkExplicitSchemasListRequest(t *testing.T) {
 
 }
 
-func TestSettersBulkSyncSchemasRequest(t *testing.T) {
+func TestSettersV3BulkSyncSchemasRequest(t *testing.T) {
 	t.Run("SetSchemas", func(t *testing.T) {
-		obj := &BulkSyncSchemasRequest{}
-		var fernTestValueSchemas []*v24.BulkSchema
+		obj := &V3BulkSyncSchemasRequest{}
+		var fernTestValueSchemas []*v24.V3BulkSchema
 		obj.SetSchemas(fernTestValueSchemas)
 		assert.Equal(t, fernTestValueSchemas, obj.Schemas)
 		assert.NotNil(t, obj.explicitFields)
@@ -67,12 +67,12 @@ func TestSettersBulkSyncSchemasRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitBulkSyncSchemasRequest(t *testing.T) {
+func TestSettersMarkExplicitV3BulkSyncSchemasRequest(t *testing.T) {
 	t.Run("SetSchemas_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncSchemasRequest{}
-		var fernTestValueSchemas []*v24.BulkSchema
+		obj := &V3BulkSyncSchemasRequest{}
+		var fernTestValueSchemas []*v24.V3BulkSchema
 
 		// Act
 		obj.SetSchemas(fernTestValueSchemas)
@@ -101,9 +101,9 @@ func TestSettersMarkExplicitBulkSyncSchemasRequest(t *testing.T) {
 
 }
 
-func TestSettersUpdateBulkSchema(t *testing.T) {
+func TestSettersV3UpdateBulkSchema(t *testing.T) {
 	t.Run("SetDataCutoffTimestamp", func(t *testing.T) {
-		obj := &UpdateBulkSchema{}
+		obj := &V3UpdateBulkSchema{}
 		var fernTestValueDataCutoffTimestamp *time.Time
 		obj.SetDataCutoffTimestamp(fernTestValueDataCutoffTimestamp)
 		assert.Equal(t, fernTestValueDataCutoffTimestamp, obj.DataCutoffTimestamp)
@@ -111,7 +111,7 @@ func TestSettersUpdateBulkSchema(t *testing.T) {
 	})
 
 	t.Run("SetDisableDataCutoff", func(t *testing.T) {
-		obj := &UpdateBulkSchema{}
+		obj := &V3UpdateBulkSchema{}
 		var fernTestValueDisableDataCutoff *bool
 		obj.SetDisableDataCutoff(fernTestValueDisableDataCutoff)
 		assert.Equal(t, fernTestValueDisableDataCutoff, obj.DisableDataCutoff)
@@ -119,7 +119,7 @@ func TestSettersUpdateBulkSchema(t *testing.T) {
 	})
 
 	t.Run("SetEnabled", func(t *testing.T) {
-		obj := &UpdateBulkSchema{}
+		obj := &V3UpdateBulkSchema{}
 		var fernTestValueEnabled *bool
 		obj.SetEnabled(fernTestValueEnabled)
 		assert.Equal(t, fernTestValueEnabled, obj.Enabled)
@@ -127,15 +127,15 @@ func TestSettersUpdateBulkSchema(t *testing.T) {
 	})
 
 	t.Run("SetFields", func(t *testing.T) {
-		obj := &UpdateBulkSchema{}
-		var fernTestValueFields []*v24.UpdateBulkField
+		obj := &V3UpdateBulkSchema{}
+		var fernTestValueFields []*v24.V3UpdateBulkField
 		obj.SetFields(fernTestValueFields)
 		assert.Equal(t, fernTestValueFields, obj.Fields)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
 	t.Run("SetFilters", func(t *testing.T) {
-		obj := &UpdateBulkSchema{}
+		obj := &V3UpdateBulkSchema{}
 		var fernTestValueFilters []*v24.BulkFilter
 		obj.SetFilters(fernTestValueFilters)
 		assert.Equal(t, fernTestValueFilters, obj.Filters)
@@ -143,7 +143,7 @@ func TestSettersUpdateBulkSchema(t *testing.T) {
 	})
 
 	t.Run("SetPartitionKey", func(t *testing.T) {
-		obj := &UpdateBulkSchema{}
+		obj := &V3UpdateBulkSchema{}
 		var fernTestValuePartitionKey *string
 		obj.SetPartitionKey(fernTestValuePartitionKey)
 		assert.Equal(t, fernTestValuePartitionKey, obj.PartitionKey)
@@ -151,7 +151,7 @@ func TestSettersUpdateBulkSchema(t *testing.T) {
 	})
 
 	t.Run("SetTrackingField", func(t *testing.T) {
-		obj := &UpdateBulkSchema{}
+		obj := &V3UpdateBulkSchema{}
 		var fernTestValueTrackingField *string
 		obj.SetTrackingField(fernTestValueTrackingField)
 		assert.Equal(t, fernTestValueTrackingField, obj.TrackingField)
@@ -159,7 +159,7 @@ func TestSettersUpdateBulkSchema(t *testing.T) {
 	})
 
 	t.Run("SetUserOutputName", func(t *testing.T) {
-		obj := &UpdateBulkSchema{}
+		obj := &V3UpdateBulkSchema{}
 		var fernTestValueUserOutputName *string
 		obj.SetUserOutputName(fernTestValueUserOutputName)
 		assert.Equal(t, fernTestValueUserOutputName, obj.UserOutputName)
@@ -168,11 +168,11 @@ func TestSettersUpdateBulkSchema(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitUpdateBulkSchema(t *testing.T) {
+func TestSettersMarkExplicitV3UpdateBulkSchema(t *testing.T) {
 	t.Run("SetDataCutoffTimestamp_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSchema{}
+		obj := &V3UpdateBulkSchema{}
 		var fernTestValueDataCutoffTimestamp *time.Time
 
 		// Act
@@ -203,7 +203,7 @@ func TestSettersMarkExplicitUpdateBulkSchema(t *testing.T) {
 	t.Run("SetDisableDataCutoff_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSchema{}
+		obj := &V3UpdateBulkSchema{}
 		var fernTestValueDisableDataCutoff *bool
 
 		// Act
@@ -234,7 +234,7 @@ func TestSettersMarkExplicitUpdateBulkSchema(t *testing.T) {
 	t.Run("SetEnabled_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSchema{}
+		obj := &V3UpdateBulkSchema{}
 		var fernTestValueEnabled *bool
 
 		// Act
@@ -265,8 +265,8 @@ func TestSettersMarkExplicitUpdateBulkSchema(t *testing.T) {
 	t.Run("SetFields_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSchema{}
-		var fernTestValueFields []*v24.UpdateBulkField
+		obj := &V3UpdateBulkSchema{}
+		var fernTestValueFields []*v24.V3UpdateBulkField
 
 		// Act
 		obj.SetFields(fernTestValueFields)
@@ -296,7 +296,7 @@ func TestSettersMarkExplicitUpdateBulkSchema(t *testing.T) {
 	t.Run("SetFilters_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSchema{}
+		obj := &V3UpdateBulkSchema{}
 		var fernTestValueFilters []*v24.BulkFilter
 
 		// Act
@@ -327,7 +327,7 @@ func TestSettersMarkExplicitUpdateBulkSchema(t *testing.T) {
 	t.Run("SetPartitionKey_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSchema{}
+		obj := &V3UpdateBulkSchema{}
 		var fernTestValuePartitionKey *string
 
 		// Act
@@ -358,7 +358,7 @@ func TestSettersMarkExplicitUpdateBulkSchema(t *testing.T) {
 	t.Run("SetTrackingField_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSchema{}
+		obj := &V3UpdateBulkSchema{}
 		var fernTestValueTrackingField *string
 
 		// Act
@@ -389,7 +389,7 @@ func TestSettersMarkExplicitUpdateBulkSchema(t *testing.T) {
 	t.Run("SetUserOutputName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSchema{}
+		obj := &V3UpdateBulkSchema{}
 		var fernTestValueUserOutputName *string
 
 		// Act

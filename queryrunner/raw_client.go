@@ -90,7 +90,7 @@ func (r *RawClient) GetQuery(
 	ctx context.Context,
 	// Unique identifier of the query task, as returned by POST /api/connections/{connection_id}/query.
 	id string,
-	request *polytomic.QueryRunnerGetQueryRequest,
+	request *polytomic.GetQueryQueryRunnerRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.V4QueryResultsEnvelope], error) {
 	options := core.NewRequestOptions(opts...)

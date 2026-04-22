@@ -10,9 +10,9 @@ import (
 	time "time"
 )
 
-func TestSettersCreateBulkSyncRequest(t *testing.T) {
+func TestSettersV2CreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetActive", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueActive *bool
 		obj.SetActive(fernTestValueActive)
 		assert.Equal(t, fernTestValueActive, obj.Active)
@@ -20,7 +20,7 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetAutomaticallyAddNewFields", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueAutomaticallyAddNewFields *BulkDiscover
 		obj.SetAutomaticallyAddNewFields(fernTestValueAutomaticallyAddNewFields)
 		assert.Equal(t, fernTestValueAutomaticallyAddNewFields, obj.AutomaticallyAddNewFields)
@@ -28,7 +28,7 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetAutomaticallyAddNewObjects", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueAutomaticallyAddNewObjects *BulkDiscover
 		obj.SetAutomaticallyAddNewObjects(fernTestValueAutomaticallyAddNewObjects)
 		assert.Equal(t, fernTestValueAutomaticallyAddNewObjects, obj.AutomaticallyAddNewObjects)
@@ -36,7 +36,7 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetConcurrencyLimit", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueConcurrencyLimit *int
 		obj.SetConcurrencyLimit(fernTestValueConcurrencyLimit)
 		assert.Equal(t, fernTestValueConcurrencyLimit, obj.ConcurrencyLimit)
@@ -44,7 +44,7 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetDataCutoffTimestamp", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueDataCutoffTimestamp *time.Time
 		obj.SetDataCutoffTimestamp(fernTestValueDataCutoffTimestamp)
 		assert.Equal(t, fernTestValueDataCutoffTimestamp, obj.DataCutoffTimestamp)
@@ -52,7 +52,7 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetDestinationConfiguration", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueDestinationConfiguration map[string]any
 		obj.SetDestinationConfiguration(fernTestValueDestinationConfiguration)
 		assert.Equal(t, fernTestValueDestinationConfiguration, obj.DestinationConfiguration)
@@ -60,7 +60,7 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetDestinationConnectionID", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueDestinationConnectionID string
 		obj.SetDestinationConnectionID(fernTestValueDestinationConnectionID)
 		assert.Equal(t, fernTestValueDestinationConnectionID, obj.DestinationConnectionID)
@@ -68,7 +68,7 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetDisableRecordTimestamps", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueDisableRecordTimestamps *bool
 		obj.SetDisableRecordTimestamps(fernTestValueDisableRecordTimestamps)
 		assert.Equal(t, fernTestValueDisableRecordTimestamps, obj.DisableRecordTimestamps)
@@ -76,7 +76,7 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetDiscover", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueDiscover *bool
 		obj.SetDiscover(fernTestValueDiscover)
 		assert.Equal(t, fernTestValueDiscover, obj.Discover)
@@ -84,15 +84,15 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetMode", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
-		var fernTestValueMode *BulkSyncMode
+		obj := &V2CreateBulkSyncRequest{}
+		var fernTestValueMode *BulkSyncTargetMode
 		obj.SetMode(fernTestValueMode)
 		assert.Equal(t, fernTestValueMode, obj.Mode)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
 	t.Run("SetName", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueName string
 		obj.SetName(fernTestValueName)
 		assert.Equal(t, fernTestValueName, obj.Name)
@@ -100,7 +100,7 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetNormalizeNames", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueNormalizeNames *BulkNormalizeNames
 		obj.SetNormalizeNames(fernTestValueNormalizeNames)
 		assert.Equal(t, fernTestValueNormalizeNames, obj.NormalizeNames)
@@ -108,7 +108,7 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -116,7 +116,7 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetPolicies", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValuePolicies []string
 		obj.SetPolicies(fernTestValuePolicies)
 		assert.Equal(t, fernTestValuePolicies, obj.Policies)
@@ -124,7 +124,7 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetResyncConcurrencyLimit", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueResyncConcurrencyLimit *int
 		obj.SetResyncConcurrencyLimit(fernTestValueResyncConcurrencyLimit)
 		assert.Equal(t, fernTestValueResyncConcurrencyLimit, obj.ResyncConcurrencyLimit)
@@ -132,7 +132,7 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetSchedule", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueSchedule *BulkSchedule
 		obj.SetSchedule(fernTestValueSchedule)
 		assert.Equal(t, fernTestValueSchedule, obj.Schedule)
@@ -140,7 +140,7 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetSchemas", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueSchemas []*V2CreateBulkSyncRequestSchemasItem
 		obj.SetSchemas(fernTestValueSchemas)
 		assert.Equal(t, fernTestValueSchemas, obj.Schemas)
@@ -148,7 +148,7 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetSourceConfiguration", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueSourceConfiguration map[string]any
 		obj.SetSourceConfiguration(fernTestValueSourceConfiguration)
 		assert.Equal(t, fernTestValueSourceConfiguration, obj.SourceConfiguration)
@@ -156,7 +156,7 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetSourceConnectionID", func(t *testing.T) {
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueSourceConnectionID string
 		obj.SetSourceConnectionID(fernTestValueSourceConnectionID)
 		assert.Equal(t, fernTestValueSourceConnectionID, obj.SourceConnectionID)
@@ -165,11 +165,11 @@ func TestSettersCreateBulkSyncRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
+func TestSettersMarkExplicitV2CreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetActive_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueActive *bool
 
 		// Act
@@ -200,7 +200,7 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetAutomaticallyAddNewFields_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueAutomaticallyAddNewFields *BulkDiscover
 
 		// Act
@@ -231,7 +231,7 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetAutomaticallyAddNewObjects_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueAutomaticallyAddNewObjects *BulkDiscover
 
 		// Act
@@ -262,7 +262,7 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetConcurrencyLimit_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueConcurrencyLimit *int
 
 		// Act
@@ -293,7 +293,7 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetDataCutoffTimestamp_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueDataCutoffTimestamp *time.Time
 
 		// Act
@@ -324,7 +324,7 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetDestinationConfiguration_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueDestinationConfiguration map[string]any
 
 		// Act
@@ -355,7 +355,7 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetDestinationConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueDestinationConnectionID string
 
 		// Act
@@ -386,7 +386,7 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetDisableRecordTimestamps_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueDisableRecordTimestamps *bool
 
 		// Act
@@ -417,7 +417,7 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetDiscover_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueDiscover *bool
 
 		// Act
@@ -448,8 +448,8 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetMode_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
-		var fernTestValueMode *BulkSyncMode
+		obj := &V2CreateBulkSyncRequest{}
+		var fernTestValueMode *BulkSyncTargetMode
 
 		// Act
 		obj.SetMode(fernTestValueMode)
@@ -479,7 +479,7 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueName string
 
 		// Act
@@ -510,7 +510,7 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetNormalizeNames_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueNormalizeNames *BulkNormalizeNames
 
 		// Act
@@ -541,7 +541,7 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -572,7 +572,7 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetPolicies_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValuePolicies []string
 
 		// Act
@@ -603,7 +603,7 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetResyncConcurrencyLimit_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueResyncConcurrencyLimit *int
 
 		// Act
@@ -634,7 +634,7 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetSchedule_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueSchedule *BulkSchedule
 
 		// Act
@@ -665,7 +665,7 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetSchemas_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueSchemas []*V2CreateBulkSyncRequestSchemasItem
 
 		// Act
@@ -696,7 +696,7 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetSourceConfiguration_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueSourceConfiguration map[string]any
 
 		// Act
@@ -727,7 +727,7 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 	t.Run("SetSourceConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateBulkSyncRequest{}
+		obj := &V2CreateBulkSyncRequest{}
 		var fernTestValueSourceConnectionID string
 
 		// Act
@@ -757,9 +757,9 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 
 }
 
-func TestSettersBulkSyncGetRequest(t *testing.T) {
+func TestSettersGetBulkSyncRequest(t *testing.T) {
 	t.Run("SetRefreshSchemas", func(t *testing.T) {
-		obj := &BulkSyncGetRequest{}
+		obj := &GetBulkSyncRequest{}
 		var fernTestValueRefreshSchemas *bool
 		obj.SetRefreshSchemas(fernTestValueRefreshSchemas)
 		assert.Equal(t, fernTestValueRefreshSchemas, obj.RefreshSchemas)
@@ -768,11 +768,11 @@ func TestSettersBulkSyncGetRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitBulkSyncGetRequest(t *testing.T) {
+func TestSettersMarkExplicitGetBulkSyncRequest(t *testing.T) {
 	t.Run("SetRefreshSchemas_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncGetRequest{}
+		obj := &GetBulkSyncRequest{}
 		var fernTestValueRefreshSchemas *bool
 
 		// Act
@@ -802,9 +802,9 @@ func TestSettersMarkExplicitBulkSyncGetRequest(t *testing.T) {
 
 }
 
-func TestSettersBulkSyncGetSourceRequest(t *testing.T) {
+func TestSettersGetSourceBulkSyncRequest(t *testing.T) {
 	t.Run("SetIncludeFields", func(t *testing.T) {
-		obj := &BulkSyncGetSourceRequest{}
+		obj := &GetSourceBulkSyncRequest{}
 		var fernTestValueIncludeFields *bool
 		obj.SetIncludeFields(fernTestValueIncludeFields)
 		assert.Equal(t, fernTestValueIncludeFields, obj.IncludeFields)
@@ -813,11 +813,11 @@ func TestSettersBulkSyncGetSourceRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitBulkSyncGetSourceRequest(t *testing.T) {
+func TestSettersMarkExplicitGetSourceBulkSyncRequest(t *testing.T) {
 	t.Run("SetIncludeFields_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncGetSourceRequest{}
+		obj := &GetSourceBulkSyncRequest{}
 		var fernTestValueIncludeFields *bool
 
 		// Act
@@ -847,9 +847,9 @@ func TestSettersMarkExplicitBulkSyncGetSourceRequest(t *testing.T) {
 
 }
 
-func TestSettersBulkSyncListRequest(t *testing.T) {
+func TestSettersListBulkSyncRequest(t *testing.T) {
 	t.Run("SetActive", func(t *testing.T) {
-		obj := &BulkSyncListRequest{}
+		obj := &ListBulkSyncRequest{}
 		var fernTestValueActive *bool
 		obj.SetActive(fernTestValueActive)
 		assert.Equal(t, fernTestValueActive, obj.Active)
@@ -858,11 +858,11 @@ func TestSettersBulkSyncListRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitBulkSyncListRequest(t *testing.T) {
+func TestSettersMarkExplicitListBulkSyncRequest(t *testing.T) {
 	t.Run("SetActive_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncListRequest{}
+		obj := &ListBulkSyncRequest{}
 		var fernTestValueActive *bool
 
 		// Act
@@ -892,9 +892,9 @@ func TestSettersMarkExplicitBulkSyncListRequest(t *testing.T) {
 
 }
 
-func TestSettersBulkSyncRemoveRequest(t *testing.T) {
+func TestSettersRemoveBulkSyncRequest(t *testing.T) {
 	t.Run("SetRefreshSchemas", func(t *testing.T) {
-		obj := &BulkSyncRemoveRequest{}
+		obj := &RemoveBulkSyncRequest{}
 		var fernTestValueRefreshSchemas *bool
 		obj.SetRefreshSchemas(fernTestValueRefreshSchemas)
 		assert.Equal(t, fernTestValueRefreshSchemas, obj.RefreshSchemas)
@@ -903,11 +903,11 @@ func TestSettersBulkSyncRemoveRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitBulkSyncRemoveRequest(t *testing.T) {
+func TestSettersMarkExplicitRemoveBulkSyncRequest(t *testing.T) {
 	t.Run("SetRefreshSchemas_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRemoveRequest{}
+		obj := &RemoveBulkSyncRequest{}
 		var fernTestValueRefreshSchemas *bool
 
 		// Act
@@ -937,17 +937,17 @@ func TestSettersMarkExplicitBulkSyncRemoveRequest(t *testing.T) {
 
 }
 
-func TestSettersStartBulkSyncRequest(t *testing.T) {
+func TestSettersV3StartBulkSyncRequest(t *testing.T) {
 	t.Run("SetFetchMode", func(t *testing.T) {
-		obj := &StartBulkSyncRequest{}
-		var fernTestValueFetchMode *BulkFetchMode
+		obj := &V3StartBulkSyncRequest{}
+		var fernTestValueFetchMode *V3BulkFetchMode
 		obj.SetFetchMode(fernTestValueFetchMode)
 		assert.Equal(t, fernTestValueFetchMode, obj.FetchMode)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
 	t.Run("SetResync", func(t *testing.T) {
-		obj := &StartBulkSyncRequest{}
+		obj := &V3StartBulkSyncRequest{}
 		var fernTestValueResync *bool
 		obj.SetResync(fernTestValueResync)
 		assert.Equal(t, fernTestValueResync, obj.Resync)
@@ -955,7 +955,7 @@ func TestSettersStartBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetResyncMode", func(t *testing.T) {
-		obj := &StartBulkSyncRequest{}
+		obj := &V3StartBulkSyncRequest{}
 		var fernTestValueResyncMode *BulkResyncMode
 		obj.SetResyncMode(fernTestValueResyncMode)
 		assert.Equal(t, fernTestValueResyncMode, obj.ResyncMode)
@@ -963,7 +963,7 @@ func TestSettersStartBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetSchemas", func(t *testing.T) {
-		obj := &StartBulkSyncRequest{}
+		obj := &V3StartBulkSyncRequest{}
 		var fernTestValueSchemas []string
 		obj.SetSchemas(fernTestValueSchemas)
 		assert.Equal(t, fernTestValueSchemas, obj.Schemas)
@@ -971,7 +971,7 @@ func TestSettersStartBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetTest", func(t *testing.T) {
-		obj := &StartBulkSyncRequest{}
+		obj := &V3StartBulkSyncRequest{}
 		var fernTestValueTest *bool
 		obj.SetTest(fernTestValueTest)
 		assert.Equal(t, fernTestValueTest, obj.Test)
@@ -980,12 +980,12 @@ func TestSettersStartBulkSyncRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitStartBulkSyncRequest(t *testing.T) {
+func TestSettersMarkExplicitV3StartBulkSyncRequest(t *testing.T) {
 	t.Run("SetFetchMode_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &StartBulkSyncRequest{}
-		var fernTestValueFetchMode *BulkFetchMode
+		obj := &V3StartBulkSyncRequest{}
+		var fernTestValueFetchMode *V3BulkFetchMode
 
 		// Act
 		obj.SetFetchMode(fernTestValueFetchMode)
@@ -1015,7 +1015,7 @@ func TestSettersMarkExplicitStartBulkSyncRequest(t *testing.T) {
 	t.Run("SetResync_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &StartBulkSyncRequest{}
+		obj := &V3StartBulkSyncRequest{}
 		var fernTestValueResync *bool
 
 		// Act
@@ -1046,7 +1046,7 @@ func TestSettersMarkExplicitStartBulkSyncRequest(t *testing.T) {
 	t.Run("SetResyncMode_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &StartBulkSyncRequest{}
+		obj := &V3StartBulkSyncRequest{}
 		var fernTestValueResyncMode *BulkResyncMode
 
 		// Act
@@ -1077,7 +1077,7 @@ func TestSettersMarkExplicitStartBulkSyncRequest(t *testing.T) {
 	t.Run("SetSchemas_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &StartBulkSyncRequest{}
+		obj := &V3StartBulkSyncRequest{}
 		var fernTestValueSchemas []string
 
 		// Act
@@ -1108,7 +1108,7 @@ func TestSettersMarkExplicitStartBulkSyncRequest(t *testing.T) {
 	t.Run("SetTest_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &StartBulkSyncRequest{}
+		obj := &V3StartBulkSyncRequest{}
 		var fernTestValueTest *bool
 
 		// Act
@@ -1138,9 +1138,9 @@ func TestSettersMarkExplicitStartBulkSyncRequest(t *testing.T) {
 
 }
 
-func TestSettersUpdateBulkSyncRequest(t *testing.T) {
+func TestSettersV2UpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetActive", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueActive *bool
 		obj.SetActive(fernTestValueActive)
 		assert.Equal(t, fernTestValueActive, obj.Active)
@@ -1148,7 +1148,7 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetAutomaticallyAddNewFields", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueAutomaticallyAddNewFields *BulkDiscover
 		obj.SetAutomaticallyAddNewFields(fernTestValueAutomaticallyAddNewFields)
 		assert.Equal(t, fernTestValueAutomaticallyAddNewFields, obj.AutomaticallyAddNewFields)
@@ -1156,7 +1156,7 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetAutomaticallyAddNewObjects", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueAutomaticallyAddNewObjects *BulkDiscover
 		obj.SetAutomaticallyAddNewObjects(fernTestValueAutomaticallyAddNewObjects)
 		assert.Equal(t, fernTestValueAutomaticallyAddNewObjects, obj.AutomaticallyAddNewObjects)
@@ -1164,7 +1164,7 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetConcurrencyLimit", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueConcurrencyLimit *int
 		obj.SetConcurrencyLimit(fernTestValueConcurrencyLimit)
 		assert.Equal(t, fernTestValueConcurrencyLimit, obj.ConcurrencyLimit)
@@ -1172,7 +1172,7 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetDataCutoffTimestamp", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueDataCutoffTimestamp *time.Time
 		obj.SetDataCutoffTimestamp(fernTestValueDataCutoffTimestamp)
 		assert.Equal(t, fernTestValueDataCutoffTimestamp, obj.DataCutoffTimestamp)
@@ -1180,7 +1180,7 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetDestinationConfiguration", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueDestinationConfiguration map[string]any
 		obj.SetDestinationConfiguration(fernTestValueDestinationConfiguration)
 		assert.Equal(t, fernTestValueDestinationConfiguration, obj.DestinationConfiguration)
@@ -1188,7 +1188,7 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetDestinationConnectionID", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueDestinationConnectionID string
 		obj.SetDestinationConnectionID(fernTestValueDestinationConnectionID)
 		assert.Equal(t, fernTestValueDestinationConnectionID, obj.DestinationConnectionID)
@@ -1196,7 +1196,7 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetDisableRecordTimestamps", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueDisableRecordTimestamps *bool
 		obj.SetDisableRecordTimestamps(fernTestValueDisableRecordTimestamps)
 		assert.Equal(t, fernTestValueDisableRecordTimestamps, obj.DisableRecordTimestamps)
@@ -1204,7 +1204,7 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetDiscover", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueDiscover *bool
 		obj.SetDiscover(fernTestValueDiscover)
 		assert.Equal(t, fernTestValueDiscover, obj.Discover)
@@ -1212,15 +1212,15 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetMode", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
-		var fernTestValueMode *BulkSyncMode
+		obj := &V2UpdateBulkSyncRequest{}
+		var fernTestValueMode *BulkSyncTargetMode
 		obj.SetMode(fernTestValueMode)
 		assert.Equal(t, fernTestValueMode, obj.Mode)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
 	t.Run("SetName", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueName string
 		obj.SetName(fernTestValueName)
 		assert.Equal(t, fernTestValueName, obj.Name)
@@ -1228,7 +1228,7 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetNormalizeNames", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueNormalizeNames *BulkNormalizeNames
 		obj.SetNormalizeNames(fernTestValueNormalizeNames)
 		assert.Equal(t, fernTestValueNormalizeNames, obj.NormalizeNames)
@@ -1236,7 +1236,7 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -1244,7 +1244,7 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetPolicies", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValuePolicies []string
 		obj.SetPolicies(fernTestValuePolicies)
 		assert.Equal(t, fernTestValuePolicies, obj.Policies)
@@ -1252,7 +1252,7 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetResyncConcurrencyLimit", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueResyncConcurrencyLimit *int
 		obj.SetResyncConcurrencyLimit(fernTestValueResyncConcurrencyLimit)
 		assert.Equal(t, fernTestValueResyncConcurrencyLimit, obj.ResyncConcurrencyLimit)
@@ -1260,7 +1260,7 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetSchedule", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueSchedule *BulkSchedule
 		obj.SetSchedule(fernTestValueSchedule)
 		assert.Equal(t, fernTestValueSchedule, obj.Schedule)
@@ -1268,7 +1268,7 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetSchemas", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueSchemas []*V2UpdateBulkSyncRequestSchemasItem
 		obj.SetSchemas(fernTestValueSchemas)
 		assert.Equal(t, fernTestValueSchemas, obj.Schemas)
@@ -1276,7 +1276,7 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetSourceConfiguration", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueSourceConfiguration map[string]any
 		obj.SetSourceConfiguration(fernTestValueSourceConfiguration)
 		assert.Equal(t, fernTestValueSourceConfiguration, obj.SourceConfiguration)
@@ -1284,7 +1284,7 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 	})
 
 	t.Run("SetSourceConnectionID", func(t *testing.T) {
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueSourceConnectionID string
 		obj.SetSourceConnectionID(fernTestValueSourceConnectionID)
 		assert.Equal(t, fernTestValueSourceConnectionID, obj.SourceConnectionID)
@@ -1293,11 +1293,11 @@ func TestSettersUpdateBulkSyncRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
+func TestSettersMarkExplicitV2UpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetActive_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueActive *bool
 
 		// Act
@@ -1328,7 +1328,7 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetAutomaticallyAddNewFields_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueAutomaticallyAddNewFields *BulkDiscover
 
 		// Act
@@ -1359,7 +1359,7 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetAutomaticallyAddNewObjects_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueAutomaticallyAddNewObjects *BulkDiscover
 
 		// Act
@@ -1390,7 +1390,7 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetConcurrencyLimit_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueConcurrencyLimit *int
 
 		// Act
@@ -1421,7 +1421,7 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetDataCutoffTimestamp_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueDataCutoffTimestamp *time.Time
 
 		// Act
@@ -1452,7 +1452,7 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetDestinationConfiguration_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueDestinationConfiguration map[string]any
 
 		// Act
@@ -1483,7 +1483,7 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetDestinationConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueDestinationConnectionID string
 
 		// Act
@@ -1514,7 +1514,7 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetDisableRecordTimestamps_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueDisableRecordTimestamps *bool
 
 		// Act
@@ -1545,7 +1545,7 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetDiscover_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueDiscover *bool
 
 		// Act
@@ -1576,8 +1576,8 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetMode_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
-		var fernTestValueMode *BulkSyncMode
+		obj := &V2UpdateBulkSyncRequest{}
+		var fernTestValueMode *BulkSyncTargetMode
 
 		// Act
 		obj.SetMode(fernTestValueMode)
@@ -1607,7 +1607,7 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueName string
 
 		// Act
@@ -1638,7 +1638,7 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetNormalizeNames_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueNormalizeNames *BulkNormalizeNames
 
 		// Act
@@ -1669,7 +1669,7 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -1700,7 +1700,7 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetPolicies_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValuePolicies []string
 
 		// Act
@@ -1731,7 +1731,7 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetResyncConcurrencyLimit_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueResyncConcurrencyLimit *int
 
 		// Act
@@ -1762,7 +1762,7 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetSchedule_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueSchedule *BulkSchedule
 
 		// Act
@@ -1793,7 +1793,7 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetSchemas_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueSchemas []*V2UpdateBulkSyncRequestSchemasItem
 
 		// Act
@@ -1824,7 +1824,7 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetSourceConfiguration_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueSourceConfiguration map[string]any
 
 		// Act
@@ -1855,7 +1855,7 @@ func TestSettersMarkExplicitUpdateBulkSyncRequest(t *testing.T) {
 	t.Run("SetSourceConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateBulkSyncRequest{}
+		obj := &V2UpdateBulkSyncRequest{}
 		var fernTestValueSourceConnectionID string
 
 		// Act
@@ -2684,9 +2684,9 @@ func TestSettersMarkExplicitBulkSchedule(t *testing.T) {
 
 }
 
-func TestSettersBulkSyncDest(t *testing.T) {
+func TestSettersV2BulkSyncDest(t *testing.T) {
 	t.Run("SetConfiguration", func(t *testing.T) {
-		obj := &BulkSyncDest{}
+		obj := &V2BulkSyncDest{}
 		var fernTestValueConfiguration map[string]any
 		obj.SetConfiguration(fernTestValueConfiguration)
 		assert.Equal(t, fernTestValueConfiguration, obj.Configuration)
@@ -2694,15 +2694,15 @@ func TestSettersBulkSyncDest(t *testing.T) {
 	})
 
 	t.Run("SetModes", func(t *testing.T) {
-		obj := &BulkSyncDest{}
-		var fernTestValueModes []*SupportedBulkMode
+		obj := &V2BulkSyncDest{}
+		var fernTestValueModes []*V2SupportedBulkMode
 		obj.SetModes(fernTestValueModes)
 		assert.Equal(t, fernTestValueModes, obj.Modes)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
 	t.Run("SetSupportedResyncModes", func(t *testing.T) {
-		obj := &BulkSyncDest{}
+		obj := &V2BulkSyncDest{}
 		var fernTestValueSupportedResyncModes []BulkResyncMode
 		obj.SetSupportedResyncModes(fernTestValueSupportedResyncModes)
 		assert.Equal(t, fernTestValueSupportedResyncModes, obj.SupportedResyncModes)
@@ -2711,11 +2711,11 @@ func TestSettersBulkSyncDest(t *testing.T) {
 
 }
 
-func TestGettersBulkSyncDest(t *testing.T) {
+func TestGettersV2BulkSyncDest(t *testing.T) {
 	t.Run("GetConfiguration", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncDest{}
+		obj := &V2BulkSyncDest{}
 		var expected map[string]any
 		obj.Configuration = expected
 
@@ -2726,7 +2726,7 @@ func TestGettersBulkSyncDest(t *testing.T) {
 	t.Run("GetConfiguration_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncDest{}
+		obj := &V2BulkSyncDest{}
 		obj.Configuration = nil
 
 		// Act & Assert
@@ -2735,7 +2735,7 @@ func TestGettersBulkSyncDest(t *testing.T) {
 
 	t.Run("GetConfiguration_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncDest
+		var obj *V2BulkSyncDest
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2748,8 +2748,8 @@ func TestGettersBulkSyncDest(t *testing.T) {
 	t.Run("GetModes", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncDest{}
-		var expected []*SupportedBulkMode
+		obj := &V2BulkSyncDest{}
+		var expected []*V2SupportedBulkMode
 		obj.Modes = expected
 
 		// Act & Assert
@@ -2759,7 +2759,7 @@ func TestGettersBulkSyncDest(t *testing.T) {
 	t.Run("GetModes_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncDest{}
+		obj := &V2BulkSyncDest{}
 		obj.Modes = nil
 
 		// Act & Assert
@@ -2768,7 +2768,7 @@ func TestGettersBulkSyncDest(t *testing.T) {
 
 	t.Run("GetModes_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncDest
+		var obj *V2BulkSyncDest
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2781,7 +2781,7 @@ func TestGettersBulkSyncDest(t *testing.T) {
 	t.Run("GetSupportedResyncModes", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncDest{}
+		obj := &V2BulkSyncDest{}
 		var expected []BulkResyncMode
 		obj.SupportedResyncModes = expected
 
@@ -2792,7 +2792,7 @@ func TestGettersBulkSyncDest(t *testing.T) {
 	t.Run("GetSupportedResyncModes_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncDest{}
+		obj := &V2BulkSyncDest{}
 		obj.SupportedResyncModes = nil
 
 		// Act & Assert
@@ -2801,7 +2801,7 @@ func TestGettersBulkSyncDest(t *testing.T) {
 
 	t.Run("GetSupportedResyncModes_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncDest
+		var obj *V2BulkSyncDest
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2813,11 +2813,11 @@ func TestGettersBulkSyncDest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitBulkSyncDest(t *testing.T) {
+func TestSettersMarkExplicitV2BulkSyncDest(t *testing.T) {
 	t.Run("SetConfiguration_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncDest{}
+		obj := &V2BulkSyncDest{}
 		var fernTestValueConfiguration map[string]any
 
 		// Act
@@ -2848,8 +2848,8 @@ func TestSettersMarkExplicitBulkSyncDest(t *testing.T) {
 	t.Run("SetModes_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncDest{}
-		var fernTestValueModes []*SupportedBulkMode
+		obj := &V2BulkSyncDest{}
+		var fernTestValueModes []*V2SupportedBulkMode
 
 		// Act
 		obj.SetModes(fernTestValueModes)
@@ -2879,7 +2879,7 @@ func TestSettersMarkExplicitBulkSyncDest(t *testing.T) {
 	t.Run("SetSupportedResyncModes_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncDest{}
+		obj := &V2BulkSyncDest{}
 		var fernTestValueSupportedResyncModes []BulkResyncMode
 
 		// Act
@@ -2909,10 +2909,10 @@ func TestSettersMarkExplicitBulkSyncDest(t *testing.T) {
 
 }
 
-func TestSettersBulkSyncDestEnvelope(t *testing.T) {
+func TestSettersV2BulkSyncDestEnvelope(t *testing.T) {
 	t.Run("SetData", func(t *testing.T) {
-		obj := &BulkSyncDestEnvelope{}
-		var fernTestValueData *BulkSyncDest
+		obj := &V2BulkSyncDestEnvelope{}
+		var fernTestValueData *V2BulkSyncDest
 		obj.SetData(fernTestValueData)
 		assert.Equal(t, fernTestValueData, obj.Data)
 		assert.NotNil(t, obj.explicitFields)
@@ -2920,12 +2920,12 @@ func TestSettersBulkSyncDestEnvelope(t *testing.T) {
 
 }
 
-func TestGettersBulkSyncDestEnvelope(t *testing.T) {
+func TestGettersV2BulkSyncDestEnvelope(t *testing.T) {
 	t.Run("GetData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncDestEnvelope{}
-		var expected *BulkSyncDest
+		obj := &V2BulkSyncDestEnvelope{}
+		var expected *V2BulkSyncDest
 		obj.Data = expected
 
 		// Act & Assert
@@ -2935,7 +2935,7 @@ func TestGettersBulkSyncDestEnvelope(t *testing.T) {
 	t.Run("GetData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncDestEnvelope{}
+		obj := &V2BulkSyncDestEnvelope{}
 		obj.Data = nil
 
 		// Act & Assert
@@ -2944,7 +2944,7 @@ func TestGettersBulkSyncDestEnvelope(t *testing.T) {
 
 	t.Run("GetData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncDestEnvelope
+		var obj *V2BulkSyncDestEnvelope
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2956,12 +2956,12 @@ func TestGettersBulkSyncDestEnvelope(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitBulkSyncDestEnvelope(t *testing.T) {
+func TestSettersMarkExplicitV2BulkSyncDestEnvelope(t *testing.T) {
 	t.Run("SetData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncDestEnvelope{}
-		var fernTestValueData *BulkSyncDest
+		obj := &V2BulkSyncDestEnvelope{}
+		var fernTestValueData *V2BulkSyncDest
 
 		// Act
 		obj.SetData(fernTestValueData)
@@ -2990,595 +2990,10 @@ func TestSettersMarkExplicitBulkSyncDestEnvelope(t *testing.T) {
 
 }
 
-func TestSettersBulkSyncIngestionStatus(t *testing.T) {
-	t.Run("SetEnabled", func(t *testing.T) {
-		obj := &BulkSyncIngestionStatus{}
-		var fernTestValueEnabled *bool
-		obj.SetEnabled(fernTestValueEnabled)
-		assert.Equal(t, fernTestValueEnabled, obj.Enabled)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetHighwaterMark", func(t *testing.T) {
-		obj := &BulkSyncIngestionStatus{}
-		var fernTestValueHighwaterMark *string
-		obj.SetHighwaterMark(fernTestValueHighwaterMark)
-		assert.Equal(t, fernTestValueHighwaterMark, obj.HighwaterMark)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetIsRunning", func(t *testing.T) {
-		obj := &BulkSyncIngestionStatus{}
-		var fernTestValueIsRunning *bool
-		obj.SetIsRunning(fernTestValueIsRunning)
-		assert.Equal(t, fernTestValueIsRunning, obj.IsRunning)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetPosition", func(t *testing.T) {
-		obj := &BulkSyncIngestionStatus{}
-		var fernTestValuePosition *string
-		obj.SetPosition(fernTestValuePosition)
-		assert.Equal(t, fernTestValuePosition, obj.Position)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetPositionTime", func(t *testing.T) {
-		obj := &BulkSyncIngestionStatus{}
-		var fernTestValuePositionTime *time.Time
-		obj.SetPositionTime(fernTestValuePositionTime)
-		assert.Equal(t, fernTestValuePositionTime, obj.PositionTime)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetStatus", func(t *testing.T) {
-		obj := &BulkSyncIngestionStatus{}
-		var fernTestValueStatus *IngestionStatusLevel
-		obj.SetStatus(fernTestValueStatus)
-		assert.Equal(t, fernTestValueStatus, obj.Status)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetStatusMessage", func(t *testing.T) {
-		obj := &BulkSyncIngestionStatus{}
-		var fernTestValueStatusMessage *string
-		obj.SetStatusMessage(fernTestValueStatusMessage)
-		assert.Equal(t, fernTestValueStatusMessage, obj.StatusMessage)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetUpdatedAt", func(t *testing.T) {
-		obj := &BulkSyncIngestionStatus{}
-		var fernTestValueUpdatedAt *time.Time
-		obj.SetUpdatedAt(fernTestValueUpdatedAt)
-		assert.Equal(t, fernTestValueUpdatedAt, obj.UpdatedAt)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-}
-
-func TestGettersBulkSyncIngestionStatus(t *testing.T) {
-	t.Run("GetEnabled", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		var expected *bool
-		obj.Enabled = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetEnabled(), "getter should return the property value")
-	})
-
-	t.Run("GetEnabled_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		obj.Enabled = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetEnabled(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetEnabled_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *BulkSyncIngestionStatus
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetEnabled() // Should return zero value
-	})
-
-	t.Run("GetHighwaterMark", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		var expected *string
-		obj.HighwaterMark = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetHighwaterMark(), "getter should return the property value")
-	})
-
-	t.Run("GetHighwaterMark_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		obj.HighwaterMark = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetHighwaterMark(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetHighwaterMark_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *BulkSyncIngestionStatus
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetHighwaterMark() // Should return zero value
-	})
-
-	t.Run("GetIsRunning", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		var expected *bool
-		obj.IsRunning = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetIsRunning(), "getter should return the property value")
-	})
-
-	t.Run("GetIsRunning_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		obj.IsRunning = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetIsRunning(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetIsRunning_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *BulkSyncIngestionStatus
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetIsRunning() // Should return zero value
-	})
-
-	t.Run("GetPosition", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		var expected *string
-		obj.Position = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetPosition(), "getter should return the property value")
-	})
-
-	t.Run("GetPosition_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		obj.Position = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetPosition(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetPosition_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *BulkSyncIngestionStatus
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetPosition() // Should return zero value
-	})
-
-	t.Run("GetPositionTime", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		var expected *time.Time
-		obj.PositionTime = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetPositionTime(), "getter should return the property value")
-	})
-
-	t.Run("GetPositionTime_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		obj.PositionTime = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetPositionTime(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetPositionTime_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *BulkSyncIngestionStatus
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetPositionTime() // Should return zero value
-	})
-
-	t.Run("GetStatus", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		var expected *IngestionStatusLevel
-		obj.Status = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetStatus(), "getter should return the property value")
-	})
-
-	t.Run("GetStatus_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		obj.Status = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetStatus(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetStatus_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *BulkSyncIngestionStatus
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetStatus() // Should return zero value
-	})
-
-	t.Run("GetStatusMessage", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		var expected *string
-		obj.StatusMessage = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetStatusMessage(), "getter should return the property value")
-	})
-
-	t.Run("GetStatusMessage_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		obj.StatusMessage = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetStatusMessage(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetStatusMessage_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *BulkSyncIngestionStatus
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetStatusMessage() // Should return zero value
-	})
-
-	t.Run("GetUpdatedAt", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		var expected *time.Time
-		obj.UpdatedAt = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetUpdatedAt(), "getter should return the property value")
-	})
-
-	t.Run("GetUpdatedAt_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		obj.UpdatedAt = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetUpdatedAt(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetUpdatedAt_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *BulkSyncIngestionStatus
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetUpdatedAt() // Should return zero value
-	})
-
-}
-
-func TestSettersMarkExplicitBulkSyncIngestionStatus(t *testing.T) {
-	t.Run("SetEnabled_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		var fernTestValueEnabled *bool
-
-		// Act
-		obj.SetEnabled(fernTestValueEnabled)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetHighwaterMark_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		var fernTestValueHighwaterMark *string
-
-		// Act
-		obj.SetHighwaterMark(fernTestValueHighwaterMark)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetIsRunning_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		var fernTestValueIsRunning *bool
-
-		// Act
-		obj.SetIsRunning(fernTestValueIsRunning)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetPosition_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		var fernTestValuePosition *string
-
-		// Act
-		obj.SetPosition(fernTestValuePosition)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetPositionTime_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		var fernTestValuePositionTime *time.Time
-
-		// Act
-		obj.SetPositionTime(fernTestValuePositionTime)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetStatus_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		var fernTestValueStatus *IngestionStatusLevel
-
-		// Act
-		obj.SetStatus(fernTestValueStatus)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetStatusMessage_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		var fernTestValueStatusMessage *string
-
-		// Act
-		obj.SetStatusMessage(fernTestValueStatusMessage)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetUpdatedAt_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncIngestionStatus{}
-		var fernTestValueUpdatedAt *time.Time
-
-		// Act
-		obj.SetUpdatedAt(fernTestValueUpdatedAt)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-}
-
-func TestSettersBulkSyncListEnvelope(t *testing.T) {
+func TestSettersV2BulkSyncListEnvelope(t *testing.T) {
 	t.Run("SetData", func(t *testing.T) {
-		obj := &BulkSyncListEnvelope{}
-		var fernTestValueData []*BulkSyncResponse
+		obj := &V2BulkSyncListEnvelope{}
+		var fernTestValueData []*V2BulkSyncResponse
 		obj.SetData(fernTestValueData)
 		assert.Equal(t, fernTestValueData, obj.Data)
 		assert.NotNil(t, obj.explicitFields)
@@ -3586,12 +3001,12 @@ func TestSettersBulkSyncListEnvelope(t *testing.T) {
 
 }
 
-func TestGettersBulkSyncListEnvelope(t *testing.T) {
+func TestGettersV2BulkSyncListEnvelope(t *testing.T) {
 	t.Run("GetData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncListEnvelope{}
-		var expected []*BulkSyncResponse
+		obj := &V2BulkSyncListEnvelope{}
+		var expected []*V2BulkSyncResponse
 		obj.Data = expected
 
 		// Act & Assert
@@ -3601,7 +3016,7 @@ func TestGettersBulkSyncListEnvelope(t *testing.T) {
 	t.Run("GetData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncListEnvelope{}
+		obj := &V2BulkSyncListEnvelope{}
 		obj.Data = nil
 
 		// Act & Assert
@@ -3610,7 +3025,7 @@ func TestGettersBulkSyncListEnvelope(t *testing.T) {
 
 	t.Run("GetData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncListEnvelope
+		var obj *V2BulkSyncListEnvelope
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -3622,12 +3037,12 @@ func TestGettersBulkSyncListEnvelope(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitBulkSyncListEnvelope(t *testing.T) {
+func TestSettersMarkExplicitV2BulkSyncListEnvelope(t *testing.T) {
 	t.Run("SetData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncListEnvelope{}
-		var fernTestValueData []*BulkSyncResponse
+		obj := &V2BulkSyncListEnvelope{}
+		var fernTestValueData []*V2BulkSyncResponse
 
 		// Act
 		obj.SetData(fernTestValueData)
@@ -3656,9 +3071,9 @@ func TestSettersMarkExplicitBulkSyncListEnvelope(t *testing.T) {
 
 }
 
-func TestSettersBulkSyncResponse(t *testing.T) {
+func TestSettersV2BulkSyncResponse(t *testing.T) {
 	t.Run("SetActive", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueActive *bool
 		obj.SetActive(fernTestValueActive)
 		assert.Equal(t, fernTestValueActive, obj.Active)
@@ -3666,7 +3081,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetAutomaticallyAddNewFields", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueAutomaticallyAddNewFields *BulkDiscover
 		obj.SetAutomaticallyAddNewFields(fernTestValueAutomaticallyAddNewFields)
 		assert.Equal(t, fernTestValueAutomaticallyAddNewFields, obj.AutomaticallyAddNewFields)
@@ -3674,7 +3089,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetAutomaticallyAddNewObjects", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueAutomaticallyAddNewObjects *BulkDiscover
 		obj.SetAutomaticallyAddNewObjects(fernTestValueAutomaticallyAddNewObjects)
 		assert.Equal(t, fernTestValueAutomaticallyAddNewObjects, obj.AutomaticallyAddNewObjects)
@@ -3682,7 +3097,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetConcurrencyLimit", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueConcurrencyLimit *int
 		obj.SetConcurrencyLimit(fernTestValueConcurrencyLimit)
 		assert.Equal(t, fernTestValueConcurrencyLimit, obj.ConcurrencyLimit)
@@ -3690,7 +3105,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetCreatedAt", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueCreatedAt *time.Time
 		obj.SetCreatedAt(fernTestValueCreatedAt)
 		assert.Equal(t, fernTestValueCreatedAt, obj.CreatedAt)
@@ -3698,7 +3113,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetCreatedBy", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueCreatedBy *OutputActor
 		obj.SetCreatedBy(fernTestValueCreatedBy)
 		assert.Equal(t, fernTestValueCreatedBy, obj.CreatedBy)
@@ -3706,7 +3121,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetDataCutoffTimestamp", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueDataCutoffTimestamp *time.Time
 		obj.SetDataCutoffTimestamp(fernTestValueDataCutoffTimestamp)
 		assert.Equal(t, fernTestValueDataCutoffTimestamp, obj.DataCutoffTimestamp)
@@ -3714,7 +3129,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetDestinationConfiguration", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueDestinationConfiguration map[string]any
 		obj.SetDestinationConfiguration(fernTestValueDestinationConfiguration)
 		assert.Equal(t, fernTestValueDestinationConfiguration, obj.DestinationConfiguration)
@@ -3722,7 +3137,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetDestinationConnectionID", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueDestinationConnectionID *string
 		obj.SetDestinationConnectionID(fernTestValueDestinationConnectionID)
 		assert.Equal(t, fernTestValueDestinationConnectionID, obj.DestinationConnectionID)
@@ -3730,7 +3145,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetDisableRecordTimestamps", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueDisableRecordTimestamps *bool
 		obj.SetDisableRecordTimestamps(fernTestValueDisableRecordTimestamps)
 		assert.Equal(t, fernTestValueDisableRecordTimestamps, obj.DisableRecordTimestamps)
@@ -3738,7 +3153,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetDiscover", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueDiscover *bool
 		obj.SetDiscover(fernTestValueDiscover)
 		assert.Equal(t, fernTestValueDiscover, obj.Discover)
@@ -3746,7 +3161,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetID", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueID *string
 		obj.SetID(fernTestValueID)
 		assert.Equal(t, fernTestValueID, obj.ID)
@@ -3754,15 +3169,15 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetMode", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
-		var fernTestValueMode *BulkSyncMode
+		obj := &V2BulkSyncResponse{}
+		var fernTestValueMode *BulkSyncTargetMode
 		obj.SetMode(fernTestValueMode)
 		assert.Equal(t, fernTestValueMode, obj.Mode)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
 	t.Run("SetName", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueName *string
 		obj.SetName(fernTestValueName)
 		assert.Equal(t, fernTestValueName, obj.Name)
@@ -3770,7 +3185,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetNormalizeNames", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueNormalizeNames *BulkNormalizeNames
 		obj.SetNormalizeNames(fernTestValueNormalizeNames)
 		assert.Equal(t, fernTestValueNormalizeNames, obj.NormalizeNames)
@@ -3778,7 +3193,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -3786,7 +3201,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetPolicies", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValuePolicies []string
 		obj.SetPolicies(fernTestValuePolicies)
 		assert.Equal(t, fernTestValuePolicies, obj.Policies)
@@ -3794,7 +3209,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetResyncConcurrencyLimit", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueResyncConcurrencyLimit *int
 		obj.SetResyncConcurrencyLimit(fernTestValueResyncConcurrencyLimit)
 		assert.Equal(t, fernTestValueResyncConcurrencyLimit, obj.ResyncConcurrencyLimit)
@@ -3802,7 +3217,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetSchedule", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueSchedule *BulkSchedule
 		obj.SetSchedule(fernTestValueSchedule)
 		assert.Equal(t, fernTestValueSchedule, obj.Schedule)
@@ -3810,7 +3225,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetSourceConfiguration", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueSourceConfiguration map[string]any
 		obj.SetSourceConfiguration(fernTestValueSourceConfiguration)
 		assert.Equal(t, fernTestValueSourceConfiguration, obj.SourceConfiguration)
@@ -3818,7 +3233,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetSourceConnectionID", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueSourceConnectionID *string
 		obj.SetSourceConnectionID(fernTestValueSourceConnectionID)
 		assert.Equal(t, fernTestValueSourceConnectionID, obj.SourceConnectionID)
@@ -3826,7 +3241,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetUpdatedAt", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueUpdatedAt *time.Time
 		obj.SetUpdatedAt(fernTestValueUpdatedAt)
 		assert.Equal(t, fernTestValueUpdatedAt, obj.UpdatedAt)
@@ -3834,7 +3249,7 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 	})
 
 	t.Run("SetUpdatedBy", func(t *testing.T) {
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueUpdatedBy *OutputActor
 		obj.SetUpdatedBy(fernTestValueUpdatedBy)
 		assert.Equal(t, fernTestValueUpdatedBy, obj.UpdatedBy)
@@ -3843,11 +3258,11 @@ func TestSettersBulkSyncResponse(t *testing.T) {
 
 }
 
-func TestGettersBulkSyncResponse(t *testing.T) {
+func TestGettersV2BulkSyncResponse(t *testing.T) {
 	t.Run("GetActive", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *bool
 		obj.Active = expected
 
@@ -3858,7 +3273,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetActive_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.Active = nil
 
 		// Act & Assert
@@ -3867,7 +3282,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetActive_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -3880,7 +3295,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetAutomaticallyAddNewFields", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *BulkDiscover
 		obj.AutomaticallyAddNewFields = expected
 
@@ -3891,7 +3306,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetAutomaticallyAddNewFields_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.AutomaticallyAddNewFields = nil
 
 		// Act & Assert
@@ -3900,7 +3315,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetAutomaticallyAddNewFields_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -3913,7 +3328,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetAutomaticallyAddNewObjects", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *BulkDiscover
 		obj.AutomaticallyAddNewObjects = expected
 
@@ -3924,7 +3339,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetAutomaticallyAddNewObjects_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.AutomaticallyAddNewObjects = nil
 
 		// Act & Assert
@@ -3933,7 +3348,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetAutomaticallyAddNewObjects_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -3946,7 +3361,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetConcurrencyLimit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *int
 		obj.ConcurrencyLimit = expected
 
@@ -3957,7 +3372,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetConcurrencyLimit_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.ConcurrencyLimit = nil
 
 		// Act & Assert
@@ -3966,7 +3381,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetConcurrencyLimit_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -3979,7 +3394,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetCreatedAt", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *time.Time
 		obj.CreatedAt = expected
 
@@ -3990,7 +3405,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetCreatedAt_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.CreatedAt = nil
 
 		// Act & Assert
@@ -3999,7 +3414,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetCreatedAt_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4012,7 +3427,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetCreatedBy", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *OutputActor
 		obj.CreatedBy = expected
 
@@ -4023,7 +3438,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetCreatedBy_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.CreatedBy = nil
 
 		// Act & Assert
@@ -4032,7 +3447,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetCreatedBy_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4045,7 +3460,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetDataCutoffTimestamp", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *time.Time
 		obj.DataCutoffTimestamp = expected
 
@@ -4056,7 +3471,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetDataCutoffTimestamp_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.DataCutoffTimestamp = nil
 
 		// Act & Assert
@@ -4065,7 +3480,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetDataCutoffTimestamp_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4078,7 +3493,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetDestinationConfiguration", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected map[string]any
 		obj.DestinationConfiguration = expected
 
@@ -4089,7 +3504,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetDestinationConfiguration_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.DestinationConfiguration = nil
 
 		// Act & Assert
@@ -4098,7 +3513,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetDestinationConfiguration_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4111,7 +3526,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetDestinationConnectionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *string
 		obj.DestinationConnectionID = expected
 
@@ -4122,7 +3537,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetDestinationConnectionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.DestinationConnectionID = nil
 
 		// Act & Assert
@@ -4131,7 +3546,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetDestinationConnectionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4144,7 +3559,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetDisableRecordTimestamps", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *bool
 		obj.DisableRecordTimestamps = expected
 
@@ -4155,7 +3570,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetDisableRecordTimestamps_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.DisableRecordTimestamps = nil
 
 		// Act & Assert
@@ -4164,7 +3579,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetDisableRecordTimestamps_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4177,7 +3592,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetDiscover", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *bool
 		obj.Discover = expected
 
@@ -4188,7 +3603,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetDiscover_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.Discover = nil
 
 		// Act & Assert
@@ -4197,7 +3612,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetDiscover_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4210,7 +3625,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *string
 		obj.ID = expected
 
@@ -4221,7 +3636,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.ID = nil
 
 		// Act & Assert
@@ -4230,7 +3645,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4243,8 +3658,8 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetMode", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
-		var expected *BulkSyncMode
+		obj := &V2BulkSyncResponse{}
+		var expected *BulkSyncTargetMode
 		obj.Mode = expected
 
 		// Act & Assert
@@ -4254,7 +3669,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetMode_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.Mode = nil
 
 		// Act & Assert
@@ -4263,7 +3678,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetMode_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4276,7 +3691,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetName", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *string
 		obj.Name = expected
 
@@ -4287,7 +3702,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetName_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.Name = nil
 
 		// Act & Assert
@@ -4296,7 +3711,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetName_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4309,7 +3724,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetNormalizeNames", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *BulkNormalizeNames
 		obj.NormalizeNames = expected
 
@@ -4320,7 +3735,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetNormalizeNames_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.NormalizeNames = nil
 
 		// Act & Assert
@@ -4329,7 +3744,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetNormalizeNames_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4342,7 +3757,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetOrganizationID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *string
 		obj.OrganizationID = expected
 
@@ -4353,7 +3768,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetOrganizationID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.OrganizationID = nil
 
 		// Act & Assert
@@ -4362,7 +3777,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetOrganizationID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4375,7 +3790,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetPolicies", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected []string
 		obj.Policies = expected
 
@@ -4386,7 +3801,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetPolicies_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.Policies = nil
 
 		// Act & Assert
@@ -4395,7 +3810,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetPolicies_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4408,7 +3823,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetResyncConcurrencyLimit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *int
 		obj.ResyncConcurrencyLimit = expected
 
@@ -4419,7 +3834,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetResyncConcurrencyLimit_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.ResyncConcurrencyLimit = nil
 
 		// Act & Assert
@@ -4428,7 +3843,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetResyncConcurrencyLimit_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4441,7 +3856,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetSchedule", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *BulkSchedule
 		obj.Schedule = expected
 
@@ -4452,7 +3867,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetSchedule_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.Schedule = nil
 
 		// Act & Assert
@@ -4461,7 +3876,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetSchedule_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4474,7 +3889,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetSourceConfiguration", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected map[string]any
 		obj.SourceConfiguration = expected
 
@@ -4485,7 +3900,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetSourceConfiguration_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.SourceConfiguration = nil
 
 		// Act & Assert
@@ -4494,7 +3909,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetSourceConfiguration_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4507,7 +3922,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetSourceConnectionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *string
 		obj.SourceConnectionID = expected
 
@@ -4518,7 +3933,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetSourceConnectionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.SourceConnectionID = nil
 
 		// Act & Assert
@@ -4527,7 +3942,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetSourceConnectionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4540,7 +3955,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetUpdatedAt", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *time.Time
 		obj.UpdatedAt = expected
 
@@ -4551,7 +3966,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetUpdatedAt_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.UpdatedAt = nil
 
 		// Act & Assert
@@ -4560,7 +3975,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetUpdatedAt_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4573,7 +3988,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetUpdatedBy", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var expected *OutputActor
 		obj.UpdatedBy = expected
 
@@ -4584,7 +3999,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 	t.Run("GetUpdatedBy_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		obj.UpdatedBy = nil
 
 		// Act & Assert
@@ -4593,7 +4008,7 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetUpdatedBy_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4605,11 +4020,11 @@ func TestGettersBulkSyncResponse(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
+func TestSettersMarkExplicitV2BulkSyncResponse(t *testing.T) {
 	t.Run("SetActive_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueActive *bool
 
 		// Act
@@ -4640,7 +4055,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetAutomaticallyAddNewFields_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueAutomaticallyAddNewFields *BulkDiscover
 
 		// Act
@@ -4671,7 +4086,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetAutomaticallyAddNewObjects_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueAutomaticallyAddNewObjects *BulkDiscover
 
 		// Act
@@ -4702,7 +4117,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetConcurrencyLimit_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueConcurrencyLimit *int
 
 		// Act
@@ -4733,7 +4148,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetCreatedAt_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueCreatedAt *time.Time
 
 		// Act
@@ -4764,7 +4179,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetCreatedBy_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueCreatedBy *OutputActor
 
 		// Act
@@ -4795,7 +4210,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetDataCutoffTimestamp_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueDataCutoffTimestamp *time.Time
 
 		// Act
@@ -4826,7 +4241,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetDestinationConfiguration_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueDestinationConfiguration map[string]any
 
 		// Act
@@ -4857,7 +4272,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetDestinationConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueDestinationConnectionID *string
 
 		// Act
@@ -4888,7 +4303,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetDisableRecordTimestamps_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueDisableRecordTimestamps *bool
 
 		// Act
@@ -4919,7 +4334,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetDiscover_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueDiscover *bool
 
 		// Act
@@ -4950,7 +4365,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueID *string
 
 		// Act
@@ -4981,8 +4396,8 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetMode_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
-		var fernTestValueMode *BulkSyncMode
+		obj := &V2BulkSyncResponse{}
+		var fernTestValueMode *BulkSyncTargetMode
 
 		// Act
 		obj.SetMode(fernTestValueMode)
@@ -5012,7 +4427,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueName *string
 
 		// Act
@@ -5043,7 +4458,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetNormalizeNames_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueNormalizeNames *BulkNormalizeNames
 
 		// Act
@@ -5074,7 +4489,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -5105,7 +4520,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetPolicies_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValuePolicies []string
 
 		// Act
@@ -5136,7 +4551,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetResyncConcurrencyLimit_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueResyncConcurrencyLimit *int
 
 		// Act
@@ -5167,7 +4582,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetSchedule_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueSchedule *BulkSchedule
 
 		// Act
@@ -5198,7 +4613,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetSourceConfiguration_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueSourceConfiguration map[string]any
 
 		// Act
@@ -5229,7 +4644,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetSourceConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueSourceConnectionID *string
 
 		// Act
@@ -5260,7 +4675,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetUpdatedAt_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueUpdatedAt *time.Time
 
 		// Act
@@ -5291,7 +4706,7 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 	t.Run("SetUpdatedBy_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponse{}
 		var fernTestValueUpdatedBy *OutputActor
 
 		// Act
@@ -5321,10 +4736,10 @@ func TestSettersMarkExplicitBulkSyncResponse(t *testing.T) {
 
 }
 
-func TestSettersBulkSyncResponseEnvelope(t *testing.T) {
+func TestSettersV2BulkSyncResponseEnvelope(t *testing.T) {
 	t.Run("SetData", func(t *testing.T) {
-		obj := &BulkSyncResponseEnvelope{}
-		var fernTestValueData *BulkSyncResponse
+		obj := &V2BulkSyncResponseEnvelope{}
+		var fernTestValueData *V2BulkSyncResponse
 		obj.SetData(fernTestValueData)
 		assert.Equal(t, fernTestValueData, obj.Data)
 		assert.NotNil(t, obj.explicitFields)
@@ -5332,12 +4747,12 @@ func TestSettersBulkSyncResponseEnvelope(t *testing.T) {
 
 }
 
-func TestGettersBulkSyncResponseEnvelope(t *testing.T) {
+func TestGettersV2BulkSyncResponseEnvelope(t *testing.T) {
 	t.Run("GetData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponseEnvelope{}
-		var expected *BulkSyncResponse
+		obj := &V2BulkSyncResponseEnvelope{}
+		var expected *V2BulkSyncResponse
 		obj.Data = expected
 
 		// Act & Assert
@@ -5347,7 +4762,7 @@ func TestGettersBulkSyncResponseEnvelope(t *testing.T) {
 	t.Run("GetData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponseEnvelope{}
+		obj := &V2BulkSyncResponseEnvelope{}
 		obj.Data = nil
 
 		// Act & Assert
@@ -5356,7 +4771,7 @@ func TestGettersBulkSyncResponseEnvelope(t *testing.T) {
 
 	t.Run("GetData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponseEnvelope
+		var obj *V2BulkSyncResponseEnvelope
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -5368,12 +4783,12 @@ func TestGettersBulkSyncResponseEnvelope(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitBulkSyncResponseEnvelope(t *testing.T) {
+func TestSettersMarkExplicitV2BulkSyncResponseEnvelope(t *testing.T) {
 	t.Run("SetData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponseEnvelope{}
-		var fernTestValueData *BulkSyncResponse
+		obj := &V2BulkSyncResponseEnvelope{}
+		var fernTestValueData *V2BulkSyncResponse
 
 		// Act
 		obj.SetData(fernTestValueData)
@@ -5402,683 +4817,9 @@ func TestSettersMarkExplicitBulkSyncResponseEnvelope(t *testing.T) {
 
 }
 
-func TestSettersBulkSyncSource(t *testing.T) {
-	t.Run("SetCapabilities", func(t *testing.T) {
-		obj := &BulkSyncSource{}
-		var fernTestValueCapabilities *V3BulkSyncSourceCapabilities
-		obj.SetCapabilities(fernTestValueCapabilities)
-		assert.Equal(t, fernTestValueCapabilities, obj.Capabilities)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetConfiguration", func(t *testing.T) {
-		obj := &BulkSyncSource{}
-		var fernTestValueConfiguration any
-		obj.SetConfiguration(fernTestValueConfiguration)
-		assert.Equal(t, fernTestValueConfiguration, obj.Configuration)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetSchemas", func(t *testing.T) {
-		obj := &BulkSyncSource{}
-		var fernTestValueSchemas []*Schema
-		obj.SetSchemas(fernTestValueSchemas)
-		assert.Equal(t, fernTestValueSchemas, obj.Schemas)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-}
-
-func TestGettersBulkSyncSource(t *testing.T) {
-	t.Run("GetCapabilities", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncSource{}
-		var expected *V3BulkSyncSourceCapabilities
-		obj.Capabilities = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetCapabilities(), "getter should return the property value")
-	})
-
-	t.Run("GetCapabilities_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncSource{}
-		obj.Capabilities = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetCapabilities(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetCapabilities_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *BulkSyncSource
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetCapabilities() // Should return zero value
-	})
-
-	t.Run("GetConfiguration", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncSource{}
-		var expected any
-		obj.Configuration = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetConfiguration(), "getter should return the property value")
-	})
-
-	t.Run("GetConfiguration_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *BulkSyncSource
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetConfiguration() // Should return zero value
-	})
-
-	t.Run("GetSchemas", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncSource{}
-		var expected []*Schema
-		obj.Schemas = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetSchemas(), "getter should return the property value")
-	})
-
-	t.Run("GetSchemas_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncSource{}
-		obj.Schemas = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetSchemas(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetSchemas_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *BulkSyncSource
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetSchemas() // Should return zero value
-	})
-
-}
-
-func TestSettersMarkExplicitBulkSyncSource(t *testing.T) {
-	t.Run("SetCapabilities_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncSource{}
-		var fernTestValueCapabilities *V3BulkSyncSourceCapabilities
-
-		// Act
-		obj.SetCapabilities(fernTestValueCapabilities)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetConfiguration_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncSource{}
-		var fernTestValueConfiguration any
-
-		// Act
-		obj.SetConfiguration(fernTestValueConfiguration)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetSchemas_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncSource{}
-		var fernTestValueSchemas []*Schema
-
-		// Act
-		obj.SetSchemas(fernTestValueSchemas)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-}
-
-func TestSettersBulkSyncSourceEnvelope(t *testing.T) {
-	t.Run("SetData", func(t *testing.T) {
-		obj := &BulkSyncSourceEnvelope{}
-		var fernTestValueData *BulkSyncSource
-		obj.SetData(fernTestValueData)
-		assert.Equal(t, fernTestValueData, obj.Data)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-}
-
-func TestGettersBulkSyncSourceEnvelope(t *testing.T) {
-	t.Run("GetData", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncSourceEnvelope{}
-		var expected *BulkSyncSource
-		obj.Data = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetData(), "getter should return the property value")
-	})
-
-	t.Run("GetData_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncSourceEnvelope{}
-		obj.Data = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetData(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetData_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *BulkSyncSourceEnvelope
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetData() // Should return zero value
-	})
-
-}
-
-func TestSettersMarkExplicitBulkSyncSourceEnvelope(t *testing.T) {
-	t.Run("SetData_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncSourceEnvelope{}
-		var fernTestValueData *BulkSyncSource
-
-		// Act
-		obj.SetData(fernTestValueData)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-}
-
-func TestSettersBulkSyncStatusEnvelope(t *testing.T) {
-	t.Run("SetData", func(t *testing.T) {
-		obj := &BulkSyncStatusEnvelope{}
-		var fernTestValueData *BulkSyncStatusResponse
-		obj.SetData(fernTestValueData)
-		assert.Equal(t, fernTestValueData, obj.Data)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-}
-
-func TestGettersBulkSyncStatusEnvelope(t *testing.T) {
-	t.Run("GetData", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncStatusEnvelope{}
-		var expected *BulkSyncStatusResponse
-		obj.Data = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetData(), "getter should return the property value")
-	})
-
-	t.Run("GetData_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncStatusEnvelope{}
-		obj.Data = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetData(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetData_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *BulkSyncStatusEnvelope
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetData() // Should return zero value
-	})
-
-}
-
-func TestSettersMarkExplicitBulkSyncStatusEnvelope(t *testing.T) {
-	t.Run("SetData_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncStatusEnvelope{}
-		var fernTestValueData *BulkSyncStatusResponse
-
-		// Act
-		obj.SetData(fernTestValueData)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-}
-
-func TestSettersBulkSyncStatusResponse(t *testing.T) {
-	t.Run("SetCurrentExecution", func(t *testing.T) {
-		obj := &BulkSyncStatusResponse{}
-		var fernTestValueCurrentExecution *BulkSyncExecution
-		obj.SetCurrentExecution(fernTestValueCurrentExecution)
-		assert.Equal(t, fernTestValueCurrentExecution, obj.CurrentExecution)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetIngestionStatus", func(t *testing.T) {
-		obj := &BulkSyncStatusResponse{}
-		var fernTestValueIngestionStatus *BulkSyncIngestionStatus
-		obj.SetIngestionStatus(fernTestValueIngestionStatus)
-		assert.Equal(t, fernTestValueIngestionStatus, obj.IngestionStatus)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetLastExecution", func(t *testing.T) {
-		obj := &BulkSyncStatusResponse{}
-		var fernTestValueLastExecution *BulkSyncExecution
-		obj.SetLastExecution(fernTestValueLastExecution)
-		assert.Equal(t, fernTestValueLastExecution, obj.LastExecution)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetNextExecutionTime", func(t *testing.T) {
-		obj := &BulkSyncStatusResponse{}
-		var fernTestValueNextExecutionTime *time.Time
-		obj.SetNextExecutionTime(fernTestValueNextExecutionTime)
-		assert.Equal(t, fernTestValueNextExecutionTime, obj.NextExecutionTime)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-}
-
-func TestGettersBulkSyncStatusResponse(t *testing.T) {
-	t.Run("GetCurrentExecution", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncStatusResponse{}
-		var expected *BulkSyncExecution
-		obj.CurrentExecution = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetCurrentExecution(), "getter should return the property value")
-	})
-
-	t.Run("GetCurrentExecution_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncStatusResponse{}
-		obj.CurrentExecution = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetCurrentExecution(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetCurrentExecution_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *BulkSyncStatusResponse
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetCurrentExecution() // Should return zero value
-	})
-
-	t.Run("GetIngestionStatus", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncStatusResponse{}
-		var expected *BulkSyncIngestionStatus
-		obj.IngestionStatus = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetIngestionStatus(), "getter should return the property value")
-	})
-
-	t.Run("GetIngestionStatus_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncStatusResponse{}
-		obj.IngestionStatus = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetIngestionStatus(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetIngestionStatus_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *BulkSyncStatusResponse
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetIngestionStatus() // Should return zero value
-	})
-
-	t.Run("GetLastExecution", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncStatusResponse{}
-		var expected *BulkSyncExecution
-		obj.LastExecution = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetLastExecution(), "getter should return the property value")
-	})
-
-	t.Run("GetLastExecution_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncStatusResponse{}
-		obj.LastExecution = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetLastExecution(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetLastExecution_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *BulkSyncStatusResponse
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetLastExecution() // Should return zero value
-	})
-
-	t.Run("GetNextExecutionTime", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncStatusResponse{}
-		var expected *time.Time
-		obj.NextExecutionTime = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetNextExecutionTime(), "getter should return the property value")
-	})
-
-	t.Run("GetNextExecutionTime_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncStatusResponse{}
-		obj.NextExecutionTime = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetNextExecutionTime(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetNextExecutionTime_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *BulkSyncStatusResponse
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetNextExecutionTime() // Should return zero value
-	})
-
-}
-
-func TestSettersMarkExplicitBulkSyncStatusResponse(t *testing.T) {
-	t.Run("SetCurrentExecution_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncStatusResponse{}
-		var fernTestValueCurrentExecution *BulkSyncExecution
-
-		// Act
-		obj.SetCurrentExecution(fernTestValueCurrentExecution)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetIngestionStatus_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncStatusResponse{}
-		var fernTestValueIngestionStatus *BulkSyncIngestionStatus
-
-		// Act
-		obj.SetIngestionStatus(fernTestValueIngestionStatus)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetLastExecution_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncStatusResponse{}
-		var fernTestValueLastExecution *BulkSyncExecution
-
-		// Act
-		obj.SetLastExecution(fernTestValueLastExecution)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetNextExecutionTime_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncStatusResponse{}
-		var fernTestValueNextExecutionTime *time.Time
-
-		// Act
-		obj.SetNextExecutionTime(fernTestValueNextExecutionTime)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-}
-
-func TestSettersFieldConfiguration(t *testing.T) {
+func TestSettersV2FieldConfiguration(t *testing.T) {
 	t.Run("SetEnabled", func(t *testing.T) {
-		obj := &FieldConfiguration{}
+		obj := &V2FieldConfiguration{}
 		var fernTestValueEnabled *bool
 		obj.SetEnabled(fernTestValueEnabled)
 		assert.Equal(t, fernTestValueEnabled, obj.Enabled)
@@ -6086,7 +4827,7 @@ func TestSettersFieldConfiguration(t *testing.T) {
 	})
 
 	t.Run("SetID", func(t *testing.T) {
-		obj := &FieldConfiguration{}
+		obj := &V2FieldConfiguration{}
 		var fernTestValueID *string
 		obj.SetID(fernTestValueID)
 		assert.Equal(t, fernTestValueID, obj.ID)
@@ -6094,7 +4835,7 @@ func TestSettersFieldConfiguration(t *testing.T) {
 	})
 
 	t.Run("SetObfuscate", func(t *testing.T) {
-		obj := &FieldConfiguration{}
+		obj := &V2FieldConfiguration{}
 		var fernTestValueObfuscate *bool
 		obj.SetObfuscate(fernTestValueObfuscate)
 		assert.Equal(t, fernTestValueObfuscate, obj.Obfuscate)
@@ -6103,11 +4844,11 @@ func TestSettersFieldConfiguration(t *testing.T) {
 
 }
 
-func TestGettersFieldConfiguration(t *testing.T) {
+func TestGettersV2FieldConfiguration(t *testing.T) {
 	t.Run("GetEnabled", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &FieldConfiguration{}
+		obj := &V2FieldConfiguration{}
 		var expected *bool
 		obj.Enabled = expected
 
@@ -6118,7 +4859,7 @@ func TestGettersFieldConfiguration(t *testing.T) {
 	t.Run("GetEnabled_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &FieldConfiguration{}
+		obj := &V2FieldConfiguration{}
 		obj.Enabled = nil
 
 		// Act & Assert
@@ -6127,7 +4868,7 @@ func TestGettersFieldConfiguration(t *testing.T) {
 
 	t.Run("GetEnabled_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *FieldConfiguration
+		var obj *V2FieldConfiguration
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6140,7 +4881,7 @@ func TestGettersFieldConfiguration(t *testing.T) {
 	t.Run("GetID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &FieldConfiguration{}
+		obj := &V2FieldConfiguration{}
 		var expected *string
 		obj.ID = expected
 
@@ -6151,7 +4892,7 @@ func TestGettersFieldConfiguration(t *testing.T) {
 	t.Run("GetID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &FieldConfiguration{}
+		obj := &V2FieldConfiguration{}
 		obj.ID = nil
 
 		// Act & Assert
@@ -6160,7 +4901,7 @@ func TestGettersFieldConfiguration(t *testing.T) {
 
 	t.Run("GetID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *FieldConfiguration
+		var obj *V2FieldConfiguration
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6173,7 +4914,7 @@ func TestGettersFieldConfiguration(t *testing.T) {
 	t.Run("GetObfuscate", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &FieldConfiguration{}
+		obj := &V2FieldConfiguration{}
 		var expected *bool
 		obj.Obfuscate = expected
 
@@ -6184,7 +4925,7 @@ func TestGettersFieldConfiguration(t *testing.T) {
 	t.Run("GetObfuscate_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &FieldConfiguration{}
+		obj := &V2FieldConfiguration{}
 		obj.Obfuscate = nil
 
 		// Act & Assert
@@ -6193,7 +4934,7 @@ func TestGettersFieldConfiguration(t *testing.T) {
 
 	t.Run("GetObfuscate_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *FieldConfiguration
+		var obj *V2FieldConfiguration
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6205,11 +4946,11 @@ func TestGettersFieldConfiguration(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitFieldConfiguration(t *testing.T) {
+func TestSettersMarkExplicitV2FieldConfiguration(t *testing.T) {
 	t.Run("SetEnabled_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &FieldConfiguration{}
+		obj := &V2FieldConfiguration{}
 		var fernTestValueEnabled *bool
 
 		// Act
@@ -6240,7 +4981,7 @@ func TestSettersMarkExplicitFieldConfiguration(t *testing.T) {
 	t.Run("SetID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &FieldConfiguration{}
+		obj := &V2FieldConfiguration{}
 		var fernTestValueID *string
 
 		// Act
@@ -6271,7 +5012,7 @@ func TestSettersMarkExplicitFieldConfiguration(t *testing.T) {
 	t.Run("SetObfuscate_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &FieldConfiguration{}
+		obj := &V2FieldConfiguration{}
 		var fernTestValueObfuscate *bool
 
 		// Act
@@ -6301,9 +5042,9 @@ func TestSettersMarkExplicitFieldConfiguration(t *testing.T) {
 
 }
 
-func TestSettersSchemaConfiguration(t *testing.T) {
+func TestSettersV2SchemaConfiguration(t *testing.T) {
 	t.Run("SetDataCutoffTimestamp", func(t *testing.T) {
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var fernTestValueDataCutoffTimestamp *time.Time
 		obj.SetDataCutoffTimestamp(fernTestValueDataCutoffTimestamp)
 		assert.Equal(t, fernTestValueDataCutoffTimestamp, obj.DataCutoffTimestamp)
@@ -6311,7 +5052,7 @@ func TestSettersSchemaConfiguration(t *testing.T) {
 	})
 
 	t.Run("SetDisableDataCutoff", func(t *testing.T) {
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var fernTestValueDisableDataCutoff *bool
 		obj.SetDisableDataCutoff(fernTestValueDisableDataCutoff)
 		assert.Equal(t, fernTestValueDisableDataCutoff, obj.DisableDataCutoff)
@@ -6319,7 +5060,7 @@ func TestSettersSchemaConfiguration(t *testing.T) {
 	})
 
 	t.Run("SetEnabled", func(t *testing.T) {
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var fernTestValueEnabled *bool
 		obj.SetEnabled(fernTestValueEnabled)
 		assert.Equal(t, fernTestValueEnabled, obj.Enabled)
@@ -6327,7 +5068,7 @@ func TestSettersSchemaConfiguration(t *testing.T) {
 	})
 
 	t.Run("SetFields", func(t *testing.T) {
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var fernTestValueFields []*V2SchemaConfigurationFieldsItem
 		obj.SetFields(fernTestValueFields)
 		assert.Equal(t, fernTestValueFields, obj.Fields)
@@ -6335,7 +5076,7 @@ func TestSettersSchemaConfiguration(t *testing.T) {
 	})
 
 	t.Run("SetFilters", func(t *testing.T) {
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var fernTestValueFilters []*BulkFilter
 		obj.SetFilters(fernTestValueFilters)
 		assert.Equal(t, fernTestValueFilters, obj.Filters)
@@ -6343,7 +5084,7 @@ func TestSettersSchemaConfiguration(t *testing.T) {
 	})
 
 	t.Run("SetID", func(t *testing.T) {
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var fernTestValueID *string
 		obj.SetID(fernTestValueID)
 		assert.Equal(t, fernTestValueID, obj.ID)
@@ -6351,7 +5092,7 @@ func TestSettersSchemaConfiguration(t *testing.T) {
 	})
 
 	t.Run("SetPartitionKey", func(t *testing.T) {
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var fernTestValuePartitionKey *string
 		obj.SetPartitionKey(fernTestValuePartitionKey)
 		assert.Equal(t, fernTestValuePartitionKey, obj.PartitionKey)
@@ -6359,7 +5100,7 @@ func TestSettersSchemaConfiguration(t *testing.T) {
 	})
 
 	t.Run("SetTrackingField", func(t *testing.T) {
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var fernTestValueTrackingField *string
 		obj.SetTrackingField(fernTestValueTrackingField)
 		assert.Equal(t, fernTestValueTrackingField, obj.TrackingField)
@@ -6368,11 +5109,11 @@ func TestSettersSchemaConfiguration(t *testing.T) {
 
 }
 
-func TestGettersSchemaConfiguration(t *testing.T) {
+func TestGettersV2SchemaConfiguration(t *testing.T) {
 	t.Run("GetDataCutoffTimestamp", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var expected *time.Time
 		obj.DataCutoffTimestamp = expected
 
@@ -6383,7 +5124,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 	t.Run("GetDataCutoffTimestamp_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		obj.DataCutoffTimestamp = nil
 
 		// Act & Assert
@@ -6392,7 +5133,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 
 	t.Run("GetDataCutoffTimestamp_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SchemaConfiguration
+		var obj *V2SchemaConfiguration
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6405,7 +5146,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 	t.Run("GetDisableDataCutoff", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var expected *bool
 		obj.DisableDataCutoff = expected
 
@@ -6416,7 +5157,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 	t.Run("GetDisableDataCutoff_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		obj.DisableDataCutoff = nil
 
 		// Act & Assert
@@ -6425,7 +5166,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 
 	t.Run("GetDisableDataCutoff_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SchemaConfiguration
+		var obj *V2SchemaConfiguration
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6438,7 +5179,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 	t.Run("GetEnabled", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var expected *bool
 		obj.Enabled = expected
 
@@ -6449,7 +5190,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 	t.Run("GetEnabled_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		obj.Enabled = nil
 
 		// Act & Assert
@@ -6458,7 +5199,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 
 	t.Run("GetEnabled_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SchemaConfiguration
+		var obj *V2SchemaConfiguration
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6471,7 +5212,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 	t.Run("GetFields", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var expected []*V2SchemaConfigurationFieldsItem
 		obj.Fields = expected
 
@@ -6482,7 +5223,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 	t.Run("GetFields_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		obj.Fields = nil
 
 		// Act & Assert
@@ -6491,7 +5232,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 
 	t.Run("GetFields_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SchemaConfiguration
+		var obj *V2SchemaConfiguration
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6504,7 +5245,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 	t.Run("GetFilters", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var expected []*BulkFilter
 		obj.Filters = expected
 
@@ -6515,7 +5256,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 	t.Run("GetFilters_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		obj.Filters = nil
 
 		// Act & Assert
@@ -6524,7 +5265,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 
 	t.Run("GetFilters_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SchemaConfiguration
+		var obj *V2SchemaConfiguration
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6537,7 +5278,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 	t.Run("GetID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var expected *string
 		obj.ID = expected
 
@@ -6548,7 +5289,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 	t.Run("GetID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		obj.ID = nil
 
 		// Act & Assert
@@ -6557,7 +5298,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 
 	t.Run("GetID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SchemaConfiguration
+		var obj *V2SchemaConfiguration
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6570,7 +5311,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 	t.Run("GetPartitionKey", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var expected *string
 		obj.PartitionKey = expected
 
@@ -6581,7 +5322,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 	t.Run("GetPartitionKey_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		obj.PartitionKey = nil
 
 		// Act & Assert
@@ -6590,7 +5331,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 
 	t.Run("GetPartitionKey_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SchemaConfiguration
+		var obj *V2SchemaConfiguration
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6603,7 +5344,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 	t.Run("GetTrackingField", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var expected *string
 		obj.TrackingField = expected
 
@@ -6614,7 +5355,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 	t.Run("GetTrackingField_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		obj.TrackingField = nil
 
 		// Act & Assert
@@ -6623,7 +5364,7 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 
 	t.Run("GetTrackingField_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SchemaConfiguration
+		var obj *V2SchemaConfiguration
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6635,11 +5376,11 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitSchemaConfiguration(t *testing.T) {
+func TestSettersMarkExplicitV2SchemaConfiguration(t *testing.T) {
 	t.Run("SetDataCutoffTimestamp_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var fernTestValueDataCutoffTimestamp *time.Time
 
 		// Act
@@ -6670,7 +5411,7 @@ func TestSettersMarkExplicitSchemaConfiguration(t *testing.T) {
 	t.Run("SetDisableDataCutoff_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var fernTestValueDisableDataCutoff *bool
 
 		// Act
@@ -6701,7 +5442,7 @@ func TestSettersMarkExplicitSchemaConfiguration(t *testing.T) {
 	t.Run("SetEnabled_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var fernTestValueEnabled *bool
 
 		// Act
@@ -6732,7 +5473,7 @@ func TestSettersMarkExplicitSchemaConfiguration(t *testing.T) {
 	t.Run("SetFields_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var fernTestValueFields []*V2SchemaConfigurationFieldsItem
 
 		// Act
@@ -6763,7 +5504,7 @@ func TestSettersMarkExplicitSchemaConfiguration(t *testing.T) {
 	t.Run("SetFilters_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var fernTestValueFilters []*BulkFilter
 
 		// Act
@@ -6794,7 +5535,7 @@ func TestSettersMarkExplicitSchemaConfiguration(t *testing.T) {
 	t.Run("SetID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var fernTestValueID *string
 
 		// Act
@@ -6825,7 +5566,7 @@ func TestSettersMarkExplicitSchemaConfiguration(t *testing.T) {
 	t.Run("SetPartitionKey_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var fernTestValuePartitionKey *string
 
 		// Act
@@ -6856,452 +5597,11 @@ func TestSettersMarkExplicitSchemaConfiguration(t *testing.T) {
 	t.Run("SetTrackingField_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SchemaConfiguration{}
+		obj := &V2SchemaConfiguration{}
 		var fernTestValueTrackingField *string
 
 		// Act
 		obj.SetTrackingField(fernTestValueTrackingField)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-}
-
-func TestSettersSupportedBulkMode(t *testing.T) {
-	t.Run("SetDescription", func(t *testing.T) {
-		obj := &SupportedBulkMode{}
-		var fernTestValueDescription *string
-		obj.SetDescription(fernTestValueDescription)
-		assert.Equal(t, fernTestValueDescription, obj.Description)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetID", func(t *testing.T) {
-		obj := &SupportedBulkMode{}
-		var fernTestValueID *BulkSyncMode
-		obj.SetID(fernTestValueID)
-		assert.Equal(t, fernTestValueID, obj.ID)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetLabel", func(t *testing.T) {
-		obj := &SupportedBulkMode{}
-		var fernTestValueLabel *string
-		obj.SetLabel(fernTestValueLabel)
-		assert.Equal(t, fernTestValueLabel, obj.Label)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetRequiresIdentity", func(t *testing.T) {
-		obj := &SupportedBulkMode{}
-		var fernTestValueRequiresIdentity *bool
-		obj.SetRequiresIdentity(fernTestValueRequiresIdentity)
-		assert.Equal(t, fernTestValueRequiresIdentity, obj.RequiresIdentity)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetSupportsFieldSyncMode", func(t *testing.T) {
-		obj := &SupportedBulkMode{}
-		var fernTestValueSupportsFieldSyncMode *bool
-		obj.SetSupportsFieldSyncMode(fernTestValueSupportsFieldSyncMode)
-		assert.Equal(t, fernTestValueSupportsFieldSyncMode, obj.SupportsFieldSyncMode)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetSupportsTargetFilters", func(t *testing.T) {
-		obj := &SupportedBulkMode{}
-		var fernTestValueSupportsTargetFilters *bool
-		obj.SetSupportsTargetFilters(fernTestValueSupportsTargetFilters)
-		assert.Equal(t, fernTestValueSupportsTargetFilters, obj.SupportsTargetFilters)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-}
-
-func TestGettersSupportedBulkMode(t *testing.T) {
-	t.Run("GetDescription", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		var expected *string
-		obj.Description = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetDescription(), "getter should return the property value")
-	})
-
-	t.Run("GetDescription_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		obj.Description = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetDescription(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetDescription_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *SupportedBulkMode
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetDescription() // Should return zero value
-	})
-
-	t.Run("GetID", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		var expected *BulkSyncMode
-		obj.ID = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetID(), "getter should return the property value")
-	})
-
-	t.Run("GetID_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		obj.ID = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetID(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetID_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *SupportedBulkMode
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetID() // Should return zero value
-	})
-
-	t.Run("GetLabel", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		var expected *string
-		obj.Label = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetLabel(), "getter should return the property value")
-	})
-
-	t.Run("GetLabel_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		obj.Label = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetLabel(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetLabel_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *SupportedBulkMode
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetLabel() // Should return zero value
-	})
-
-	t.Run("GetRequiresIdentity", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		var expected *bool
-		obj.RequiresIdentity = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetRequiresIdentity(), "getter should return the property value")
-	})
-
-	t.Run("GetRequiresIdentity_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		obj.RequiresIdentity = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetRequiresIdentity(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetRequiresIdentity_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *SupportedBulkMode
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetRequiresIdentity() // Should return zero value
-	})
-
-	t.Run("GetSupportsFieldSyncMode", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		var expected *bool
-		obj.SupportsFieldSyncMode = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetSupportsFieldSyncMode(), "getter should return the property value")
-	})
-
-	t.Run("GetSupportsFieldSyncMode_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		obj.SupportsFieldSyncMode = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetSupportsFieldSyncMode(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetSupportsFieldSyncMode_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *SupportedBulkMode
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetSupportsFieldSyncMode() // Should return zero value
-	})
-
-	t.Run("GetSupportsTargetFilters", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		var expected *bool
-		obj.SupportsTargetFilters = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetSupportsTargetFilters(), "getter should return the property value")
-	})
-
-	t.Run("GetSupportsTargetFilters_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		obj.SupportsTargetFilters = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetSupportsTargetFilters(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetSupportsTargetFilters_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *SupportedBulkMode
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetSupportsTargetFilters() // Should return zero value
-	})
-
-}
-
-func TestSettersMarkExplicitSupportedBulkMode(t *testing.T) {
-	t.Run("SetDescription_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		var fernTestValueDescription *string
-
-		// Act
-		obj.SetDescription(fernTestValueDescription)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetID_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		var fernTestValueID *BulkSyncMode
-
-		// Act
-		obj.SetID(fernTestValueID)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetLabel_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		var fernTestValueLabel *string
-
-		// Act
-		obj.SetLabel(fernTestValueLabel)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetRequiresIdentity_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		var fernTestValueRequiresIdentity *bool
-
-		// Act
-		obj.SetRequiresIdentity(fernTestValueRequiresIdentity)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetSupportsFieldSyncMode_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		var fernTestValueSupportsFieldSyncMode *bool
-
-		// Act
-		obj.SetSupportsFieldSyncMode(fernTestValueSupportsFieldSyncMode)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetSupportsTargetFilters_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-		var fernTestValueSupportsTargetFilters *bool
-
-		// Act
-		obj.SetSupportsTargetFilters(fernTestValueSupportsTargetFilters)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -7351,28 +5651,28 @@ func TestGettersV2SchemaConfigurationFieldsItem(t *testing.T) {
 		_ = obj.GetString() // Should return zero value
 	})
 
-	t.Run("GetFieldConfiguration", func(t *testing.T) {
+	t.Run("GetV2FieldConfiguration", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &V2SchemaConfigurationFieldsItem{}
-		var expected *FieldConfiguration
-		obj.FieldConfiguration = expected
+		var expected *V2FieldConfiguration
+		obj.V2FieldConfiguration = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetFieldConfiguration(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetV2FieldConfiguration(), "getter should return the property value")
 	})
 
-	t.Run("GetFieldConfiguration_NilValue", func(t *testing.T) {
+	t.Run("GetV2FieldConfiguration_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &V2SchemaConfigurationFieldsItem{}
-		obj.FieldConfiguration = nil
+		obj.V2FieldConfiguration = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetFieldConfiguration(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetV2FieldConfiguration(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetFieldConfiguration_NilReceiver", func(t *testing.T) {
+	t.Run("GetV2FieldConfiguration_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *V2SchemaConfigurationFieldsItem
 		// Should not panic - getters should handle nil receiver gracefully
@@ -7381,7 +5681,1248 @@ func TestGettersV2SchemaConfigurationFieldsItem(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetFieldConfiguration() // Should return zero value
+		_ = obj.GetV2FieldConfiguration() // Should return zero value
+	})
+
+}
+
+func TestSettersV2SupportedBulkMode(t *testing.T) {
+	t.Run("SetDescription", func(t *testing.T) {
+		obj := &V2SupportedBulkMode{}
+		var fernTestValueDescription *string
+		obj.SetDescription(fernTestValueDescription)
+		assert.Equal(t, fernTestValueDescription, obj.Description)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetID", func(t *testing.T) {
+		obj := &V2SupportedBulkMode{}
+		var fernTestValueID *BulkSyncTargetMode
+		obj.SetID(fernTestValueID)
+		assert.Equal(t, fernTestValueID, obj.ID)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetLabel", func(t *testing.T) {
+		obj := &V2SupportedBulkMode{}
+		var fernTestValueLabel *string
+		obj.SetLabel(fernTestValueLabel)
+		assert.Equal(t, fernTestValueLabel, obj.Label)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetRequiresIdentity", func(t *testing.T) {
+		obj := &V2SupportedBulkMode{}
+		var fernTestValueRequiresIdentity *bool
+		obj.SetRequiresIdentity(fernTestValueRequiresIdentity)
+		assert.Equal(t, fernTestValueRequiresIdentity, obj.RequiresIdentity)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetSupportsFieldSyncMode", func(t *testing.T) {
+		obj := &V2SupportedBulkMode{}
+		var fernTestValueSupportsFieldSyncMode *bool
+		obj.SetSupportsFieldSyncMode(fernTestValueSupportsFieldSyncMode)
+		assert.Equal(t, fernTestValueSupportsFieldSyncMode, obj.SupportsFieldSyncMode)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetSupportsTargetFilters", func(t *testing.T) {
+		obj := &V2SupportedBulkMode{}
+		var fernTestValueSupportsTargetFilters *bool
+		obj.SetSupportsTargetFilters(fernTestValueSupportsTargetFilters)
+		assert.Equal(t, fernTestValueSupportsTargetFilters, obj.SupportsTargetFilters)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+}
+
+func TestGettersV2SupportedBulkMode(t *testing.T) {
+	t.Run("GetDescription", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		var expected *string
+		obj.Description = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetDescription(), "getter should return the property value")
+	})
+
+	t.Run("GetDescription_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		obj.Description = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetDescription(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetDescription_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2SupportedBulkMode
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetDescription() // Should return zero value
+	})
+
+	t.Run("GetID", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		var expected *BulkSyncTargetMode
+		obj.ID = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetID(), "getter should return the property value")
+	})
+
+	t.Run("GetID_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		obj.ID = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetID(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetID_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2SupportedBulkMode
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetID() // Should return zero value
+	})
+
+	t.Run("GetLabel", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		var expected *string
+		obj.Label = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetLabel(), "getter should return the property value")
+	})
+
+	t.Run("GetLabel_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		obj.Label = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetLabel(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetLabel_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2SupportedBulkMode
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetLabel() // Should return zero value
+	})
+
+	t.Run("GetRequiresIdentity", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		var expected *bool
+		obj.RequiresIdentity = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetRequiresIdentity(), "getter should return the property value")
+	})
+
+	t.Run("GetRequiresIdentity_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		obj.RequiresIdentity = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetRequiresIdentity(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetRequiresIdentity_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2SupportedBulkMode
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetRequiresIdentity() // Should return zero value
+	})
+
+	t.Run("GetSupportsFieldSyncMode", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		var expected *bool
+		obj.SupportsFieldSyncMode = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetSupportsFieldSyncMode(), "getter should return the property value")
+	})
+
+	t.Run("GetSupportsFieldSyncMode_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		obj.SupportsFieldSyncMode = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetSupportsFieldSyncMode(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetSupportsFieldSyncMode_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2SupportedBulkMode
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetSupportsFieldSyncMode() // Should return zero value
+	})
+
+	t.Run("GetSupportsTargetFilters", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		var expected *bool
+		obj.SupportsTargetFilters = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetSupportsTargetFilters(), "getter should return the property value")
+	})
+
+	t.Run("GetSupportsTargetFilters_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		obj.SupportsTargetFilters = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetSupportsTargetFilters(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetSupportsTargetFilters_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2SupportedBulkMode
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetSupportsTargetFilters() // Should return zero value
+	})
+
+}
+
+func TestSettersMarkExplicitV2SupportedBulkMode(t *testing.T) {
+	t.Run("SetDescription_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		var fernTestValueDescription *string
+
+		// Act
+		obj.SetDescription(fernTestValueDescription)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetID_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		var fernTestValueID *BulkSyncTargetMode
+
+		// Act
+		obj.SetID(fernTestValueID)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetLabel_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		var fernTestValueLabel *string
+
+		// Act
+		obj.SetLabel(fernTestValueLabel)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetRequiresIdentity_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		var fernTestValueRequiresIdentity *bool
+
+		// Act
+		obj.SetRequiresIdentity(fernTestValueRequiresIdentity)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetSupportsFieldSyncMode_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		var fernTestValueSupportsFieldSyncMode *bool
+
+		// Act
+		obj.SetSupportsFieldSyncMode(fernTestValueSupportsFieldSyncMode)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetSupportsTargetFilters_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2SupportedBulkMode{}
+		var fernTestValueSupportsTargetFilters *bool
+
+		// Act
+		obj.SetSupportsTargetFilters(fernTestValueSupportsTargetFilters)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+}
+
+func TestSettersV3BulkSyncIngestionStatus(t *testing.T) {
+	t.Run("SetEnabled", func(t *testing.T) {
+		obj := &V3BulkSyncIngestionStatus{}
+		var fernTestValueEnabled *bool
+		obj.SetEnabled(fernTestValueEnabled)
+		assert.Equal(t, fernTestValueEnabled, obj.Enabled)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetHighwaterMark", func(t *testing.T) {
+		obj := &V3BulkSyncIngestionStatus{}
+		var fernTestValueHighwaterMark *string
+		obj.SetHighwaterMark(fernTestValueHighwaterMark)
+		assert.Equal(t, fernTestValueHighwaterMark, obj.HighwaterMark)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetIsRunning", func(t *testing.T) {
+		obj := &V3BulkSyncIngestionStatus{}
+		var fernTestValueIsRunning *bool
+		obj.SetIsRunning(fernTestValueIsRunning)
+		assert.Equal(t, fernTestValueIsRunning, obj.IsRunning)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetPosition", func(t *testing.T) {
+		obj := &V3BulkSyncIngestionStatus{}
+		var fernTestValuePosition *string
+		obj.SetPosition(fernTestValuePosition)
+		assert.Equal(t, fernTestValuePosition, obj.Position)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetPositionTime", func(t *testing.T) {
+		obj := &V3BulkSyncIngestionStatus{}
+		var fernTestValuePositionTime *time.Time
+		obj.SetPositionTime(fernTestValuePositionTime)
+		assert.Equal(t, fernTestValuePositionTime, obj.PositionTime)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetStatus", func(t *testing.T) {
+		obj := &V3BulkSyncIngestionStatus{}
+		var fernTestValueStatus *V3IngestionStatusLevel
+		obj.SetStatus(fernTestValueStatus)
+		assert.Equal(t, fernTestValueStatus, obj.Status)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetStatusMessage", func(t *testing.T) {
+		obj := &V3BulkSyncIngestionStatus{}
+		var fernTestValueStatusMessage *string
+		obj.SetStatusMessage(fernTestValueStatusMessage)
+		assert.Equal(t, fernTestValueStatusMessage, obj.StatusMessage)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetUpdatedAt", func(t *testing.T) {
+		obj := &V3BulkSyncIngestionStatus{}
+		var fernTestValueUpdatedAt *time.Time
+		obj.SetUpdatedAt(fernTestValueUpdatedAt)
+		assert.Equal(t, fernTestValueUpdatedAt, obj.UpdatedAt)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+}
+
+func TestGettersV3BulkSyncIngestionStatus(t *testing.T) {
+	t.Run("GetEnabled", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		var expected *bool
+		obj.Enabled = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetEnabled(), "getter should return the property value")
+	})
+
+	t.Run("GetEnabled_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		obj.Enabled = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetEnabled(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetEnabled_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncIngestionStatus
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetEnabled() // Should return zero value
+	})
+
+	t.Run("GetHighwaterMark", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		var expected *string
+		obj.HighwaterMark = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetHighwaterMark(), "getter should return the property value")
+	})
+
+	t.Run("GetHighwaterMark_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		obj.HighwaterMark = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetHighwaterMark(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetHighwaterMark_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncIngestionStatus
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetHighwaterMark() // Should return zero value
+	})
+
+	t.Run("GetIsRunning", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		var expected *bool
+		obj.IsRunning = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetIsRunning(), "getter should return the property value")
+	})
+
+	t.Run("GetIsRunning_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		obj.IsRunning = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetIsRunning(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetIsRunning_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncIngestionStatus
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetIsRunning() // Should return zero value
+	})
+
+	t.Run("GetPosition", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		var expected *string
+		obj.Position = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetPosition(), "getter should return the property value")
+	})
+
+	t.Run("GetPosition_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		obj.Position = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetPosition(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetPosition_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncIngestionStatus
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetPosition() // Should return zero value
+	})
+
+	t.Run("GetPositionTime", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		var expected *time.Time
+		obj.PositionTime = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetPositionTime(), "getter should return the property value")
+	})
+
+	t.Run("GetPositionTime_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		obj.PositionTime = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetPositionTime(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetPositionTime_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncIngestionStatus
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetPositionTime() // Should return zero value
+	})
+
+	t.Run("GetStatus", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		var expected *V3IngestionStatusLevel
+		obj.Status = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetStatus(), "getter should return the property value")
+	})
+
+	t.Run("GetStatus_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		obj.Status = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetStatus(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetStatus_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncIngestionStatus
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetStatus() // Should return zero value
+	})
+
+	t.Run("GetStatusMessage", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		var expected *string
+		obj.StatusMessage = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetStatusMessage(), "getter should return the property value")
+	})
+
+	t.Run("GetStatusMessage_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		obj.StatusMessage = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetStatusMessage(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetStatusMessage_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncIngestionStatus
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetStatusMessage() // Should return zero value
+	})
+
+	t.Run("GetUpdatedAt", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		var expected *time.Time
+		obj.UpdatedAt = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetUpdatedAt(), "getter should return the property value")
+	})
+
+	t.Run("GetUpdatedAt_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		obj.UpdatedAt = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetUpdatedAt(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetUpdatedAt_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncIngestionStatus
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetUpdatedAt() // Should return zero value
+	})
+
+}
+
+func TestSettersMarkExplicitV3BulkSyncIngestionStatus(t *testing.T) {
+	t.Run("SetEnabled_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		var fernTestValueEnabled *bool
+
+		// Act
+		obj.SetEnabled(fernTestValueEnabled)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetHighwaterMark_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		var fernTestValueHighwaterMark *string
+
+		// Act
+		obj.SetHighwaterMark(fernTestValueHighwaterMark)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetIsRunning_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		var fernTestValueIsRunning *bool
+
+		// Act
+		obj.SetIsRunning(fernTestValueIsRunning)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetPosition_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		var fernTestValuePosition *string
+
+		// Act
+		obj.SetPosition(fernTestValuePosition)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetPositionTime_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		var fernTestValuePositionTime *time.Time
+
+		// Act
+		obj.SetPositionTime(fernTestValuePositionTime)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetStatus_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		var fernTestValueStatus *V3IngestionStatusLevel
+
+		// Act
+		obj.SetStatus(fernTestValueStatus)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetStatusMessage_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		var fernTestValueStatusMessage *string
+
+		// Act
+		obj.SetStatusMessage(fernTestValueStatusMessage)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetUpdatedAt_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncIngestionStatus{}
+		var fernTestValueUpdatedAt *time.Time
+
+		// Act
+		obj.SetUpdatedAt(fernTestValueUpdatedAt)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+}
+
+func TestSettersV3BulkSyncSource(t *testing.T) {
+	t.Run("SetCapabilities", func(t *testing.T) {
+		obj := &V3BulkSyncSource{}
+		var fernTestValueCapabilities *V3BulkSyncSourceCapabilities
+		obj.SetCapabilities(fernTestValueCapabilities)
+		assert.Equal(t, fernTestValueCapabilities, obj.Capabilities)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetConfiguration", func(t *testing.T) {
+		obj := &V3BulkSyncSource{}
+		var fernTestValueConfiguration any
+		obj.SetConfiguration(fernTestValueConfiguration)
+		assert.Equal(t, fernTestValueConfiguration, obj.Configuration)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetSchemas", func(t *testing.T) {
+		obj := &V3BulkSyncSource{}
+		var fernTestValueSchemas []*V3Schema
+		obj.SetSchemas(fernTestValueSchemas)
+		assert.Equal(t, fernTestValueSchemas, obj.Schemas)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+}
+
+func TestGettersV3BulkSyncSource(t *testing.T) {
+	t.Run("GetCapabilities", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncSource{}
+		var expected *V3BulkSyncSourceCapabilities
+		obj.Capabilities = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetCapabilities(), "getter should return the property value")
+	})
+
+	t.Run("GetCapabilities_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncSource{}
+		obj.Capabilities = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCapabilities(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetCapabilities_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncSource
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetCapabilities() // Should return zero value
+	})
+
+	t.Run("GetConfiguration", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncSource{}
+		var expected any
+		obj.Configuration = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetConfiguration(), "getter should return the property value")
+	})
+
+	t.Run("GetConfiguration_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncSource
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetConfiguration() // Should return zero value
+	})
+
+	t.Run("GetSchemas", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncSource{}
+		var expected []*V3Schema
+		obj.Schemas = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetSchemas(), "getter should return the property value")
+	})
+
+	t.Run("GetSchemas_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncSource{}
+		obj.Schemas = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetSchemas(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetSchemas_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncSource
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetSchemas() // Should return zero value
+	})
+
+}
+
+func TestSettersMarkExplicitV3BulkSyncSource(t *testing.T) {
+	t.Run("SetCapabilities_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncSource{}
+		var fernTestValueCapabilities *V3BulkSyncSourceCapabilities
+
+		// Act
+		obj.SetCapabilities(fernTestValueCapabilities)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetConfiguration_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncSource{}
+		var fernTestValueConfiguration any
+
+		// Act
+		obj.SetConfiguration(fernTestValueConfiguration)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetSchemas_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncSource{}
+		var fernTestValueSchemas []*V3Schema
+
+		// Act
+		obj.SetSchemas(fernTestValueSchemas)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
 }
@@ -7467,6 +7008,465 @@ func TestSettersMarkExplicitV3BulkSyncSourceCapabilities(t *testing.T) {
 
 }
 
+func TestSettersV3BulkSyncSourceEnvelope(t *testing.T) {
+	t.Run("SetData", func(t *testing.T) {
+		obj := &V3BulkSyncSourceEnvelope{}
+		var fernTestValueData *V3BulkSyncSource
+		obj.SetData(fernTestValueData)
+		assert.Equal(t, fernTestValueData, obj.Data)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+}
+
+func TestGettersV3BulkSyncSourceEnvelope(t *testing.T) {
+	t.Run("GetData", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncSourceEnvelope{}
+		var expected *V3BulkSyncSource
+		obj.Data = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetData(), "getter should return the property value")
+	})
+
+	t.Run("GetData_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncSourceEnvelope{}
+		obj.Data = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetData(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetData_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncSourceEnvelope
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetData() // Should return zero value
+	})
+
+}
+
+func TestSettersMarkExplicitV3BulkSyncSourceEnvelope(t *testing.T) {
+	t.Run("SetData_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncSourceEnvelope{}
+		var fernTestValueData *V3BulkSyncSource
+
+		// Act
+		obj.SetData(fernTestValueData)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+}
+
+func TestSettersV3BulkSyncStatusEnvelope(t *testing.T) {
+	t.Run("SetData", func(t *testing.T) {
+		obj := &V3BulkSyncStatusEnvelope{}
+		var fernTestValueData *V3BulkSyncStatusResponse
+		obj.SetData(fernTestValueData)
+		assert.Equal(t, fernTestValueData, obj.Data)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+}
+
+func TestGettersV3BulkSyncStatusEnvelope(t *testing.T) {
+	t.Run("GetData", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncStatusEnvelope{}
+		var expected *V3BulkSyncStatusResponse
+		obj.Data = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetData(), "getter should return the property value")
+	})
+
+	t.Run("GetData_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncStatusEnvelope{}
+		obj.Data = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetData(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetData_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncStatusEnvelope
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetData() // Should return zero value
+	})
+
+}
+
+func TestSettersMarkExplicitV3BulkSyncStatusEnvelope(t *testing.T) {
+	t.Run("SetData_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncStatusEnvelope{}
+		var fernTestValueData *V3BulkSyncStatusResponse
+
+		// Act
+		obj.SetData(fernTestValueData)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+}
+
+func TestSettersV3BulkSyncStatusResponse(t *testing.T) {
+	t.Run("SetCurrentExecution", func(t *testing.T) {
+		obj := &V3BulkSyncStatusResponse{}
+		var fernTestValueCurrentExecution *V3BulkSyncExecution
+		obj.SetCurrentExecution(fernTestValueCurrentExecution)
+		assert.Equal(t, fernTestValueCurrentExecution, obj.CurrentExecution)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetIngestionStatus", func(t *testing.T) {
+		obj := &V3BulkSyncStatusResponse{}
+		var fernTestValueIngestionStatus *V3BulkSyncIngestionStatus
+		obj.SetIngestionStatus(fernTestValueIngestionStatus)
+		assert.Equal(t, fernTestValueIngestionStatus, obj.IngestionStatus)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetLastExecution", func(t *testing.T) {
+		obj := &V3BulkSyncStatusResponse{}
+		var fernTestValueLastExecution *V3BulkSyncExecution
+		obj.SetLastExecution(fernTestValueLastExecution)
+		assert.Equal(t, fernTestValueLastExecution, obj.LastExecution)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetNextExecutionTime", func(t *testing.T) {
+		obj := &V3BulkSyncStatusResponse{}
+		var fernTestValueNextExecutionTime *time.Time
+		obj.SetNextExecutionTime(fernTestValueNextExecutionTime)
+		assert.Equal(t, fernTestValueNextExecutionTime, obj.NextExecutionTime)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+}
+
+func TestGettersV3BulkSyncStatusResponse(t *testing.T) {
+	t.Run("GetCurrentExecution", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncStatusResponse{}
+		var expected *V3BulkSyncExecution
+		obj.CurrentExecution = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetCurrentExecution(), "getter should return the property value")
+	})
+
+	t.Run("GetCurrentExecution_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncStatusResponse{}
+		obj.CurrentExecution = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCurrentExecution(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetCurrentExecution_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncStatusResponse
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetCurrentExecution() // Should return zero value
+	})
+
+	t.Run("GetIngestionStatus", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncStatusResponse{}
+		var expected *V3BulkSyncIngestionStatus
+		obj.IngestionStatus = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetIngestionStatus(), "getter should return the property value")
+	})
+
+	t.Run("GetIngestionStatus_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncStatusResponse{}
+		obj.IngestionStatus = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetIngestionStatus(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetIngestionStatus_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncStatusResponse
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetIngestionStatus() // Should return zero value
+	})
+
+	t.Run("GetLastExecution", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncStatusResponse{}
+		var expected *V3BulkSyncExecution
+		obj.LastExecution = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetLastExecution(), "getter should return the property value")
+	})
+
+	t.Run("GetLastExecution_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncStatusResponse{}
+		obj.LastExecution = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetLastExecution(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetLastExecution_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncStatusResponse
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetLastExecution() // Should return zero value
+	})
+
+	t.Run("GetNextExecutionTime", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncStatusResponse{}
+		var expected *time.Time
+		obj.NextExecutionTime = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetNextExecutionTime(), "getter should return the property value")
+	})
+
+	t.Run("GetNextExecutionTime_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncStatusResponse{}
+		obj.NextExecutionTime = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetNextExecutionTime(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetNextExecutionTime_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncStatusResponse
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetNextExecutionTime() // Should return zero value
+	})
+
+}
+
+func TestSettersMarkExplicitV3BulkSyncStatusResponse(t *testing.T) {
+	t.Run("SetCurrentExecution_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncStatusResponse{}
+		var fernTestValueCurrentExecution *V3BulkSyncExecution
+
+		// Act
+		obj.SetCurrentExecution(fernTestValueCurrentExecution)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetIngestionStatus_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncStatusResponse{}
+		var fernTestValueIngestionStatus *V3BulkSyncIngestionStatus
+
+		// Act
+		obj.SetIngestionStatus(fernTestValueIngestionStatus)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetLastExecution_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncStatusResponse{}
+		var fernTestValueLastExecution *V3BulkSyncExecution
+
+		// Act
+		obj.SetLastExecution(fernTestValueLastExecution)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetNextExecutionTime_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncStatusResponse{}
+		var fernTestValueNextExecutionTime *time.Time
+
+		// Act
+		obj.SetNextExecutionTime(fernTestValueNextExecutionTime)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+}
+
 func TestGettersV2CreateBulkSyncRequestSchemasItem(t *testing.T) {
 	t.Run("GetString", func(t *testing.T) {
 		t.Parallel()
@@ -7491,28 +7491,28 @@ func TestGettersV2CreateBulkSyncRequestSchemasItem(t *testing.T) {
 		_ = obj.GetString() // Should return zero value
 	})
 
-	t.Run("GetSchemaConfiguration", func(t *testing.T) {
+	t.Run("GetV2SchemaConfiguration", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &V2CreateBulkSyncRequestSchemasItem{}
-		var expected *SchemaConfiguration
-		obj.SchemaConfiguration = expected
+		var expected *V2SchemaConfiguration
+		obj.V2SchemaConfiguration = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetSchemaConfiguration(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetV2SchemaConfiguration(), "getter should return the property value")
 	})
 
-	t.Run("GetSchemaConfiguration_NilValue", func(t *testing.T) {
+	t.Run("GetV2SchemaConfiguration_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &V2CreateBulkSyncRequestSchemasItem{}
-		obj.SchemaConfiguration = nil
+		obj.V2SchemaConfiguration = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetSchemaConfiguration(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetV2SchemaConfiguration(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetSchemaConfiguration_NilReceiver", func(t *testing.T) {
+	t.Run("GetV2SchemaConfiguration_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *V2CreateBulkSyncRequestSchemasItem
 		// Should not panic - getters should handle nil receiver gracefully
@@ -7521,7 +7521,7 @@ func TestGettersV2CreateBulkSyncRequestSchemasItem(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetSchemaConfiguration() // Should return zero value
+		_ = obj.GetV2SchemaConfiguration() // Should return zero value
 	})
 
 }
@@ -7550,28 +7550,28 @@ func TestGettersV2UpdateBulkSyncRequestSchemasItem(t *testing.T) {
 		_ = obj.GetString() // Should return zero value
 	})
 
-	t.Run("GetSchemaConfiguration", func(t *testing.T) {
+	t.Run("GetV2SchemaConfiguration", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &V2UpdateBulkSyncRequestSchemasItem{}
-		var expected *SchemaConfiguration
-		obj.SchemaConfiguration = expected
+		var expected *V2SchemaConfiguration
+		obj.V2SchemaConfiguration = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetSchemaConfiguration(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetV2SchemaConfiguration(), "getter should return the property value")
 	})
 
-	t.Run("GetSchemaConfiguration_NilValue", func(t *testing.T) {
+	t.Run("GetV2SchemaConfiguration_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &V2UpdateBulkSyncRequestSchemasItem{}
-		obj.SchemaConfiguration = nil
+		obj.V2SchemaConfiguration = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetSchemaConfiguration(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetV2SchemaConfiguration(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetSchemaConfiguration_NilReceiver", func(t *testing.T) {
+	t.Run("GetV2SchemaConfiguration_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *V2UpdateBulkSyncRequestSchemasItem
 		// Should not panic - getters should handle nil receiver gracefully
@@ -7580,7 +7580,7 @@ func TestGettersV2UpdateBulkSyncRequestSchemasItem(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetSchemaConfiguration() // Should return zero value
+		_ = obj.GetV2SchemaConfiguration() // Should return zero value
 	})
 
 }
@@ -7684,11 +7684,11 @@ func TestJSONMarshalingBulkSchedule(t *testing.T) {
 	})
 }
 
-func TestJSONMarshalingBulkSyncDest(t *testing.T) {
+func TestJSONMarshalingV2BulkSyncDest(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncDest{}
+		obj := &V2BulkSyncDest{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -7697,31 +7697,31 @@ func TestJSONMarshalingBulkSyncDest(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled BulkSyncDest
+		var unmarshaled V2BulkSyncDest
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncDest
+		var obj V2BulkSyncDest
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncDest
+		var obj V2BulkSyncDest
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingBulkSyncDestEnvelope(t *testing.T) {
+func TestJSONMarshalingV2BulkSyncDestEnvelope(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncDestEnvelope{}
+		obj := &V2BulkSyncDestEnvelope{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -7730,31 +7730,31 @@ func TestJSONMarshalingBulkSyncDestEnvelope(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled BulkSyncDestEnvelope
+		var unmarshaled V2BulkSyncDestEnvelope
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncDestEnvelope
+		var obj V2BulkSyncDestEnvelope
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncDestEnvelope
+		var obj V2BulkSyncDestEnvelope
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingBulkSyncIngestionStatus(t *testing.T) {
+func TestJSONMarshalingV2BulkSyncListEnvelope(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncIngestionStatus{}
+		obj := &V2BulkSyncListEnvelope{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -7763,31 +7763,31 @@ func TestJSONMarshalingBulkSyncIngestionStatus(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled BulkSyncIngestionStatus
+		var unmarshaled V2BulkSyncListEnvelope
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncIngestionStatus
+		var obj V2BulkSyncListEnvelope
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncIngestionStatus
+		var obj V2BulkSyncListEnvelope
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingBulkSyncListEnvelope(t *testing.T) {
+func TestJSONMarshalingV2BulkSyncResponse(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncListEnvelope{}
+		obj := &V2BulkSyncResponse{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -7796,31 +7796,31 @@ func TestJSONMarshalingBulkSyncListEnvelope(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled BulkSyncListEnvelope
+		var unmarshaled V2BulkSyncResponse
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncListEnvelope
+		var obj V2BulkSyncResponse
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncListEnvelope
+		var obj V2BulkSyncResponse
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingBulkSyncResponse(t *testing.T) {
+func TestJSONMarshalingV2BulkSyncResponseEnvelope(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponseEnvelope{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -7829,31 +7829,31 @@ func TestJSONMarshalingBulkSyncResponse(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled BulkSyncResponse
+		var unmarshaled V2BulkSyncResponseEnvelope
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncResponse
+		var obj V2BulkSyncResponseEnvelope
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncResponse
+		var obj V2BulkSyncResponseEnvelope
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingBulkSyncResponseEnvelope(t *testing.T) {
+func TestJSONMarshalingV2FieldConfiguration(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncResponseEnvelope{}
+		obj := &V2FieldConfiguration{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -7862,31 +7862,31 @@ func TestJSONMarshalingBulkSyncResponseEnvelope(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled BulkSyncResponseEnvelope
+		var unmarshaled V2FieldConfiguration
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncResponseEnvelope
+		var obj V2FieldConfiguration
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncResponseEnvelope
+		var obj V2FieldConfiguration
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingBulkSyncSource(t *testing.T) {
+func TestJSONMarshalingV2SchemaConfiguration(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncSource{}
+		obj := &V2SchemaConfiguration{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -7895,31 +7895,31 @@ func TestJSONMarshalingBulkSyncSource(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled BulkSyncSource
+		var unmarshaled V2SchemaConfiguration
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncSource
+		var obj V2SchemaConfiguration
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncSource
+		var obj V2SchemaConfiguration
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingBulkSyncSourceEnvelope(t *testing.T) {
+func TestJSONMarshalingV2SupportedBulkMode(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncSourceEnvelope{}
+		obj := &V2SupportedBulkMode{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -7928,31 +7928,31 @@ func TestJSONMarshalingBulkSyncSourceEnvelope(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled BulkSyncSourceEnvelope
+		var unmarshaled V2SupportedBulkMode
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncSourceEnvelope
+		var obj V2SupportedBulkMode
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncSourceEnvelope
+		var obj V2SupportedBulkMode
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingBulkSyncStatusEnvelope(t *testing.T) {
+func TestJSONMarshalingV3BulkSyncIngestionStatus(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncStatusEnvelope{}
+		obj := &V3BulkSyncIngestionStatus{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -7961,31 +7961,31 @@ func TestJSONMarshalingBulkSyncStatusEnvelope(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled BulkSyncStatusEnvelope
+		var unmarshaled V3BulkSyncIngestionStatus
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncStatusEnvelope
+		var obj V3BulkSyncIngestionStatus
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncStatusEnvelope
+		var obj V3BulkSyncIngestionStatus
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingBulkSyncStatusResponse(t *testing.T) {
+func TestJSONMarshalingV3BulkSyncSource(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncStatusResponse{}
+		obj := &V3BulkSyncSource{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -7994,120 +7994,21 @@ func TestJSONMarshalingBulkSyncStatusResponse(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled BulkSyncStatusResponse
+		var unmarshaled V3BulkSyncSource
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncStatusResponse
+		var obj V3BulkSyncSource
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncStatusResponse
-		err := json.Unmarshal([]byte(`{}`), &obj)
-		assert.NoError(t, err, "unmarshaling empty object should succeed")
-	})
-}
-
-func TestJSONMarshalingFieldConfiguration(t *testing.T) {
-	t.Run("MarshalUnmarshal", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &FieldConfiguration{}
-
-		// Act - Marshal to JSON
-		data, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed")
-		assert.NotNil(t, data, "marshaled data should not be nil")
-		assert.NotEmpty(t, data, "marshaled data should not be empty")
-
-		// Unmarshal back and verify round-trip
-		var unmarshaled FieldConfiguration
-		err = json.Unmarshal(data, &unmarshaled)
-		assert.NoError(t, err, "round-trip unmarshal should succeed")
-	})
-
-	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
-		t.Parallel()
-		var obj FieldConfiguration
-		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
-		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
-	})
-
-	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
-		t.Parallel()
-		var obj FieldConfiguration
-		err := json.Unmarshal([]byte(`{}`), &obj)
-		assert.NoError(t, err, "unmarshaling empty object should succeed")
-	})
-}
-
-func TestJSONMarshalingSchemaConfiguration(t *testing.T) {
-	t.Run("MarshalUnmarshal", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SchemaConfiguration{}
-
-		// Act - Marshal to JSON
-		data, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed")
-		assert.NotNil(t, data, "marshaled data should not be nil")
-		assert.NotEmpty(t, data, "marshaled data should not be empty")
-
-		// Unmarshal back and verify round-trip
-		var unmarshaled SchemaConfiguration
-		err = json.Unmarshal(data, &unmarshaled)
-		assert.NoError(t, err, "round-trip unmarshal should succeed")
-	})
-
-	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
-		t.Parallel()
-		var obj SchemaConfiguration
-		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
-		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
-	})
-
-	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
-		t.Parallel()
-		var obj SchemaConfiguration
-		err := json.Unmarshal([]byte(`{}`), &obj)
-		assert.NoError(t, err, "unmarshaling empty object should succeed")
-	})
-}
-
-func TestJSONMarshalingSupportedBulkMode(t *testing.T) {
-	t.Run("MarshalUnmarshal", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SupportedBulkMode{}
-
-		// Act - Marshal to JSON
-		data, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed")
-		assert.NotNil(t, data, "marshaled data should not be nil")
-		assert.NotEmpty(t, data, "marshaled data should not be empty")
-
-		// Unmarshal back and verify round-trip
-		var unmarshaled SupportedBulkMode
-		err = json.Unmarshal(data, &unmarshaled)
-		assert.NoError(t, err, "round-trip unmarshal should succeed")
-	})
-
-	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
-		t.Parallel()
-		var obj SupportedBulkMode
-		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
-		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
-	})
-
-	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
-		t.Parallel()
-		var obj SupportedBulkMode
+		var obj V3BulkSyncSource
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
@@ -8141,6 +8042,105 @@ func TestJSONMarshalingV3BulkSyncSourceCapabilities(t *testing.T) {
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
 		var obj V3BulkSyncSourceCapabilities
+		err := json.Unmarshal([]byte(`{}`), &obj)
+		assert.NoError(t, err, "unmarshaling empty object should succeed")
+	})
+}
+
+func TestJSONMarshalingV3BulkSyncSourceEnvelope(t *testing.T) {
+	t.Run("MarshalUnmarshal", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncSourceEnvelope{}
+
+		// Act - Marshal to JSON
+		data, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed")
+		assert.NotNil(t, data, "marshaled data should not be nil")
+		assert.NotEmpty(t, data, "marshaled data should not be empty")
+
+		// Unmarshal back and verify round-trip
+		var unmarshaled V3BulkSyncSourceEnvelope
+		err = json.Unmarshal(data, &unmarshaled)
+		assert.NoError(t, err, "round-trip unmarshal should succeed")
+	})
+
+	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
+		t.Parallel()
+		var obj V3BulkSyncSourceEnvelope
+		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
+		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
+	})
+
+	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
+		t.Parallel()
+		var obj V3BulkSyncSourceEnvelope
+		err := json.Unmarshal([]byte(`{}`), &obj)
+		assert.NoError(t, err, "unmarshaling empty object should succeed")
+	})
+}
+
+func TestJSONMarshalingV3BulkSyncStatusEnvelope(t *testing.T) {
+	t.Run("MarshalUnmarshal", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncStatusEnvelope{}
+
+		// Act - Marshal to JSON
+		data, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed")
+		assert.NotNil(t, data, "marshaled data should not be nil")
+		assert.NotEmpty(t, data, "marshaled data should not be empty")
+
+		// Unmarshal back and verify round-trip
+		var unmarshaled V3BulkSyncStatusEnvelope
+		err = json.Unmarshal(data, &unmarshaled)
+		assert.NoError(t, err, "round-trip unmarshal should succeed")
+	})
+
+	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
+		t.Parallel()
+		var obj V3BulkSyncStatusEnvelope
+		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
+		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
+	})
+
+	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
+		t.Parallel()
+		var obj V3BulkSyncStatusEnvelope
+		err := json.Unmarshal([]byte(`{}`), &obj)
+		assert.NoError(t, err, "unmarshaling empty object should succeed")
+	})
+}
+
+func TestJSONMarshalingV3BulkSyncStatusResponse(t *testing.T) {
+	t.Run("MarshalUnmarshal", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V3BulkSyncStatusResponse{}
+
+		// Act - Marshal to JSON
+		data, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed")
+		assert.NotNil(t, data, "marshaled data should not be nil")
+		assert.NotEmpty(t, data, "marshaled data should not be empty")
+
+		// Unmarshal back and verify round-trip
+		var unmarshaled V3BulkSyncStatusResponse
+		err = json.Unmarshal(data, &unmarshaled)
+		assert.NoError(t, err, "round-trip unmarshal should succeed")
+	})
+
+	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
+		t.Parallel()
+		var obj V3BulkSyncStatusResponse
+		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
+		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
+	})
+
+	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
+		t.Parallel()
+		var obj V3BulkSyncStatusResponse
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
@@ -8194,209 +8194,161 @@ func TestStringBulkSchedule(t *testing.T) {
 	})
 }
 
-func TestStringBulkSyncDest(t *testing.T) {
+func TestStringV2BulkSyncDest(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncDest{}
+		obj := &V2BulkSyncDest{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncDest
+		var obj *V2BulkSyncDest
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringBulkSyncDestEnvelope(t *testing.T) {
+func TestStringV2BulkSyncDestEnvelope(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncDestEnvelope{}
+		obj := &V2BulkSyncDestEnvelope{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncDestEnvelope
+		var obj *V2BulkSyncDestEnvelope
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringBulkSyncIngestionStatus(t *testing.T) {
+func TestStringV2BulkSyncListEnvelope(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncIngestionStatus{}
+		obj := &V2BulkSyncListEnvelope{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncIngestionStatus
+		var obj *V2BulkSyncListEnvelope
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringBulkSyncListEnvelope(t *testing.T) {
+func TestStringV2BulkSyncResponse(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncListEnvelope{}
+		obj := &V2BulkSyncResponse{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncListEnvelope
+		var obj *V2BulkSyncResponse
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringBulkSyncResponse(t *testing.T) {
+func TestStringV2BulkSyncResponseEnvelope(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponseEnvelope{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponseEnvelope
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringBulkSyncResponseEnvelope(t *testing.T) {
+func TestStringV2FieldConfiguration(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncResponseEnvelope{}
+		obj := &V2FieldConfiguration{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponseEnvelope
+		var obj *V2FieldConfiguration
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringBulkSyncSource(t *testing.T) {
+func TestStringV2SchemaConfiguration(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncSource{}
+		obj := &V2SchemaConfiguration{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncSource
+		var obj *V2SchemaConfiguration
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringBulkSyncSourceEnvelope(t *testing.T) {
+func TestStringV2SupportedBulkMode(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncSourceEnvelope{}
+		obj := &V2SupportedBulkMode{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncSourceEnvelope
+		var obj *V2SupportedBulkMode
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringBulkSyncStatusEnvelope(t *testing.T) {
+func TestStringV3BulkSyncIngestionStatus(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncStatusEnvelope{}
+		obj := &V3BulkSyncIngestionStatus{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncStatusEnvelope
+		var obj *V3BulkSyncIngestionStatus
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringBulkSyncStatusResponse(t *testing.T) {
+func TestStringV3BulkSyncSource(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncStatusResponse{}
+		obj := &V3BulkSyncSource{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncStatusResponse
-		result := obj.String()
-		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
-	})
-}
-
-func TestStringFieldConfiguration(t *testing.T) {
-	t.Run("StringMethod", func(t *testing.T) {
-		t.Parallel()
-		obj := &FieldConfiguration{}
-		result := obj.String()
-		assert.NotEmpty(t, result, "String() should return a non-empty representation")
-	})
-
-	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *FieldConfiguration
-		result := obj.String()
-		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
-	})
-}
-
-func TestStringSchemaConfiguration(t *testing.T) {
-	t.Run("StringMethod", func(t *testing.T) {
-		t.Parallel()
-		obj := &SchemaConfiguration{}
-		result := obj.String()
-		assert.NotEmpty(t, result, "String() should return a non-empty representation")
-	})
-
-	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *SchemaConfiguration
-		result := obj.String()
-		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
-	})
-}
-
-func TestStringSupportedBulkMode(t *testing.T) {
-	t.Run("StringMethod", func(t *testing.T) {
-		t.Parallel()
-		obj := &SupportedBulkMode{}
-		result := obj.String()
-		assert.NotEmpty(t, result, "String() should return a non-empty representation")
-	})
-
-	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *SupportedBulkMode
+		var obj *V3BulkSyncSource
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
@@ -8413,6 +8365,54 @@ func TestStringV3BulkSyncSourceCapabilities(t *testing.T) {
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *V3BulkSyncSourceCapabilities
+		result := obj.String()
+		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
+	})
+}
+
+func TestStringV3BulkSyncSourceEnvelope(t *testing.T) {
+	t.Run("StringMethod", func(t *testing.T) {
+		t.Parallel()
+		obj := &V3BulkSyncSourceEnvelope{}
+		result := obj.String()
+		assert.NotEmpty(t, result, "String() should return a non-empty representation")
+	})
+
+	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncSourceEnvelope
+		result := obj.String()
+		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
+	})
+}
+
+func TestStringV3BulkSyncStatusEnvelope(t *testing.T) {
+	t.Run("StringMethod", func(t *testing.T) {
+		t.Parallel()
+		obj := &V3BulkSyncStatusEnvelope{}
+		result := obj.String()
+		assert.NotEmpty(t, result, "String() should return a non-empty representation")
+	})
+
+	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncStatusEnvelope
+		result := obj.String()
+		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
+	})
+}
+
+func TestStringV3BulkSyncStatusResponse(t *testing.T) {
+	t.Run("StringMethod", func(t *testing.T) {
+		t.Parallel()
+		obj := &V3BulkSyncStatusResponse{}
+		result := obj.String()
+		assert.NotEmpty(t, result, "String() should return a non-empty representation")
+	})
+
+	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncStatusResponse
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
@@ -8533,28 +8533,28 @@ func TestEnumBulkResyncMode(t *testing.T) {
 	})
 }
 
-func TestEnumBulkSyncMode(t *testing.T) {
+func TestEnumBulkSyncTargetMode(t *testing.T) {
 	t.Run("NewFromString_snapshot", func(t *testing.T) {
 		t.Parallel()
-		val, err := NewBulkSyncModeFromString("snapshot")
+		val, err := NewBulkSyncTargetModeFromString("snapshot")
 		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, BulkSyncMode("snapshot"), val, "enum value should match expected wire value")
+		assert.Equal(t, BulkSyncTargetMode("snapshot"), val, "enum value should match expected wire value")
 	})
 
 	t.Run("NewFromString_replicate", func(t *testing.T) {
 		t.Parallel()
-		val, err := NewBulkSyncModeFromString("replicate")
+		val, err := NewBulkSyncTargetModeFromString("replicate")
 		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, BulkSyncMode("replicate"), val, "enum value should match expected wire value")
+		assert.Equal(t, BulkSyncTargetMode("replicate"), val, "enum value should match expected wire value")
 	})
 
 	t.Run("NewFromString_Invalid", func(t *testing.T) {
-		_, err := NewBulkSyncModeFromString("invalid_value_that_does_not_exist")
+		_, err := NewBulkSyncTargetModeFromString("invalid_value_that_does_not_exist")
 		assert.Error(t, err)
 	})
 
 	t.Run("Ptr", func(t *testing.T) {
-		val, err := NewBulkSyncModeFromString("snapshot")
+		val, err := NewBulkSyncTargetModeFromString("snapshot")
 		assert.NoError(t, err)
 		ptr := val.Ptr()
 		assert.NotNil(t, ptr)
@@ -8562,35 +8562,35 @@ func TestEnumBulkSyncMode(t *testing.T) {
 	})
 }
 
-func TestEnumIngestionStatusLevel(t *testing.T) {
+func TestEnumV3IngestionStatusLevel(t *testing.T) {
 	t.Run("NewFromString_ok", func(t *testing.T) {
 		t.Parallel()
-		val, err := NewIngestionStatusLevelFromString("ok")
+		val, err := NewV3IngestionStatusLevelFromString("ok")
 		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, IngestionStatusLevel("ok"), val, "enum value should match expected wire value")
+		assert.Equal(t, V3IngestionStatusLevel("ok"), val, "enum value should match expected wire value")
 	})
 
 	t.Run("NewFromString_warning", func(t *testing.T) {
 		t.Parallel()
-		val, err := NewIngestionStatusLevelFromString("warning")
+		val, err := NewV3IngestionStatusLevelFromString("warning")
 		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, IngestionStatusLevel("warning"), val, "enum value should match expected wire value")
+		assert.Equal(t, V3IngestionStatusLevel("warning"), val, "enum value should match expected wire value")
 	})
 
 	t.Run("NewFromString_error", func(t *testing.T) {
 		t.Parallel()
-		val, err := NewIngestionStatusLevelFromString("error")
+		val, err := NewV3IngestionStatusLevelFromString("error")
 		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, IngestionStatusLevel("error"), val, "enum value should match expected wire value")
+		assert.Equal(t, V3IngestionStatusLevel("error"), val, "enum value should match expected wire value")
 	})
 
 	t.Run("NewFromString_Invalid", func(t *testing.T) {
-		_, err := NewIngestionStatusLevelFromString("invalid_value_that_does_not_exist")
+		_, err := NewV3IngestionStatusLevelFromString("invalid_value_that_does_not_exist")
 		assert.Error(t, err)
 	})
 
 	t.Run("Ptr", func(t *testing.T) {
-		val, err := NewIngestionStatusLevelFromString("ok")
+		val, err := NewV3IngestionStatusLevelFromString("ok")
 		assert.NoError(t, err)
 		ptr := val.Ptr()
 		assert.NotNil(t, ptr)
@@ -8667,10 +8667,10 @@ func TestExtraPropertiesBulkSchedule(t *testing.T) {
 	})
 }
 
-func TestExtraPropertiesBulkSyncDest(t *testing.T) {
+func TestExtraPropertiesV2BulkSyncDest(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncDest{}
+		obj := &V2BulkSyncDest{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -8684,16 +8684,16 @@ func TestExtraPropertiesBulkSyncDest(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncDest
+		var obj *V2BulkSyncDest
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesBulkSyncDestEnvelope(t *testing.T) {
+func TestExtraPropertiesV2BulkSyncDestEnvelope(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncDestEnvelope{}
+		obj := &V2BulkSyncDestEnvelope{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -8707,16 +8707,16 @@ func TestExtraPropertiesBulkSyncDestEnvelope(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncDestEnvelope
+		var obj *V2BulkSyncDestEnvelope
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesBulkSyncIngestionStatus(t *testing.T) {
+func TestExtraPropertiesV2BulkSyncListEnvelope(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncIngestionStatus{}
+		obj := &V2BulkSyncListEnvelope{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -8730,16 +8730,16 @@ func TestExtraPropertiesBulkSyncIngestionStatus(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncIngestionStatus
+		var obj *V2BulkSyncListEnvelope
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesBulkSyncListEnvelope(t *testing.T) {
+func TestExtraPropertiesV2BulkSyncResponse(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncListEnvelope{}
+		obj := &V2BulkSyncResponse{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -8753,16 +8753,16 @@ func TestExtraPropertiesBulkSyncListEnvelope(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncListEnvelope
+		var obj *V2BulkSyncResponse
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesBulkSyncResponse(t *testing.T) {
+func TestExtraPropertiesV2BulkSyncResponseEnvelope(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncResponse{}
+		obj := &V2BulkSyncResponseEnvelope{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -8776,16 +8776,16 @@ func TestExtraPropertiesBulkSyncResponse(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponse
+		var obj *V2BulkSyncResponseEnvelope
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesBulkSyncResponseEnvelope(t *testing.T) {
+func TestExtraPropertiesV2FieldConfiguration(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncResponseEnvelope{}
+		obj := &V2FieldConfiguration{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -8799,16 +8799,16 @@ func TestExtraPropertiesBulkSyncResponseEnvelope(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncResponseEnvelope
+		var obj *V2FieldConfiguration
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesBulkSyncSource(t *testing.T) {
+func TestExtraPropertiesV2SchemaConfiguration(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncSource{}
+		obj := &V2SchemaConfiguration{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -8822,16 +8822,16 @@ func TestExtraPropertiesBulkSyncSource(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncSource
+		var obj *V2SchemaConfiguration
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesBulkSyncSourceEnvelope(t *testing.T) {
+func TestExtraPropertiesV2SupportedBulkMode(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncSourceEnvelope{}
+		obj := &V2SupportedBulkMode{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -8845,16 +8845,16 @@ func TestExtraPropertiesBulkSyncSourceEnvelope(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncSourceEnvelope
+		var obj *V2SupportedBulkMode
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesBulkSyncStatusEnvelope(t *testing.T) {
+func TestExtraPropertiesV3BulkSyncIngestionStatus(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncStatusEnvelope{}
+		obj := &V3BulkSyncIngestionStatus{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -8868,16 +8868,16 @@ func TestExtraPropertiesBulkSyncStatusEnvelope(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncStatusEnvelope
+		var obj *V3BulkSyncIngestionStatus
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesBulkSyncStatusResponse(t *testing.T) {
+func TestExtraPropertiesV3BulkSyncSource(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncStatusResponse{}
+		obj := &V3BulkSyncSource{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -8891,76 +8891,7 @@ func TestExtraPropertiesBulkSyncStatusResponse(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncStatusResponse
-		extraProps := obj.GetExtraProperties()
-		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
-	})
-}
-
-func TestExtraPropertiesFieldConfiguration(t *testing.T) {
-	t.Run("GetExtraProperties", func(t *testing.T) {
-		t.Parallel()
-		obj := &FieldConfiguration{}
-		// Should not panic when calling GetExtraProperties()
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("GetExtraProperties() panicked: %v", r)
-			}
-		}()
-		extraProps := obj.GetExtraProperties()
-		// Result can be nil or an empty/non-empty map
-		_ = extraProps
-	})
-
-	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *FieldConfiguration
-		extraProps := obj.GetExtraProperties()
-		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
-	})
-}
-
-func TestExtraPropertiesSchemaConfiguration(t *testing.T) {
-	t.Run("GetExtraProperties", func(t *testing.T) {
-		t.Parallel()
-		obj := &SchemaConfiguration{}
-		// Should not panic when calling GetExtraProperties()
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("GetExtraProperties() panicked: %v", r)
-			}
-		}()
-		extraProps := obj.GetExtraProperties()
-		// Result can be nil or an empty/non-empty map
-		_ = extraProps
-	})
-
-	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *SchemaConfiguration
-		extraProps := obj.GetExtraProperties()
-		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
-	})
-}
-
-func TestExtraPropertiesSupportedBulkMode(t *testing.T) {
-	t.Run("GetExtraProperties", func(t *testing.T) {
-		t.Parallel()
-		obj := &SupportedBulkMode{}
-		// Should not panic when calling GetExtraProperties()
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("GetExtraProperties() panicked: %v", r)
-			}
-		}()
-		extraProps := obj.GetExtraProperties()
-		// Result can be nil or an empty/non-empty map
-		_ = extraProps
-	})
-
-	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *SupportedBulkMode
+		var obj *V3BulkSyncSource
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
@@ -8984,6 +8915,75 @@ func TestExtraPropertiesV3BulkSyncSourceCapabilities(t *testing.T) {
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *V3BulkSyncSourceCapabilities
+		extraProps := obj.GetExtraProperties()
+		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
+	})
+}
+
+func TestExtraPropertiesV3BulkSyncSourceEnvelope(t *testing.T) {
+	t.Run("GetExtraProperties", func(t *testing.T) {
+		t.Parallel()
+		obj := &V3BulkSyncSourceEnvelope{}
+		// Should not panic when calling GetExtraProperties()
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("GetExtraProperties() panicked: %v", r)
+			}
+		}()
+		extraProps := obj.GetExtraProperties()
+		// Result can be nil or an empty/non-empty map
+		_ = extraProps
+	})
+
+	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncSourceEnvelope
+		extraProps := obj.GetExtraProperties()
+		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
+	})
+}
+
+func TestExtraPropertiesV3BulkSyncStatusEnvelope(t *testing.T) {
+	t.Run("GetExtraProperties", func(t *testing.T) {
+		t.Parallel()
+		obj := &V3BulkSyncStatusEnvelope{}
+		// Should not panic when calling GetExtraProperties()
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("GetExtraProperties() panicked: %v", r)
+			}
+		}()
+		extraProps := obj.GetExtraProperties()
+		// Result can be nil or an empty/non-empty map
+		_ = extraProps
+	})
+
+	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncStatusEnvelope
+		extraProps := obj.GetExtraProperties()
+		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
+	})
+}
+
+func TestExtraPropertiesV3BulkSyncStatusResponse(t *testing.T) {
+	t.Run("GetExtraProperties", func(t *testing.T) {
+		t.Parallel()
+		obj := &V3BulkSyncStatusResponse{}
+		// Should not panic when calling GetExtraProperties()
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("GetExtraProperties() panicked: %v", r)
+			}
+		}()
+		extraProps := obj.GetExtraProperties()
+		// Result can be nil or an empty/non-empty map
+		_ = extraProps
+	})
+
+	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V3BulkSyncStatusResponse
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

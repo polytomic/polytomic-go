@@ -11,16 +11,16 @@ import (
 )
 
 var (
-	connectCardRequestFieldConnection     = big.NewInt(1 << 0)
-	connectCardRequestFieldDark           = big.NewInt(1 << 1)
-	connectCardRequestFieldName           = big.NewInt(1 << 2)
-	connectCardRequestFieldOrganizationID = big.NewInt(1 << 3)
-	connectCardRequestFieldRedirectURL    = big.NewInt(1 << 4)
-	connectCardRequestFieldType           = big.NewInt(1 << 5)
-	connectCardRequestFieldWhitelist      = big.NewInt(1 << 6)
+	v3ConnectCardRequestFieldConnection     = big.NewInt(1 << 0)
+	v3ConnectCardRequestFieldDark           = big.NewInt(1 << 1)
+	v3ConnectCardRequestFieldName           = big.NewInt(1 << 2)
+	v3ConnectCardRequestFieldOrganizationID = big.NewInt(1 << 3)
+	v3ConnectCardRequestFieldRedirectURL    = big.NewInt(1 << 4)
+	v3ConnectCardRequestFieldType           = big.NewInt(1 << 5)
+	v3ConnectCardRequestFieldWhitelist      = big.NewInt(1 << 6)
 )
 
-type ConnectCardRequest struct {
+type V3ConnectCardRequest struct {
 	// The id of an existing connection to update.
 	Connection *string `json:"connection,omitempty" url:"-"`
 	// Whether to use the dark theme for the Connect modal.
@@ -39,95 +39,95 @@ type ConnectCardRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *ConnectCardRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *V3ConnectCardRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetConnection sets the Connection field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectCardRequest) SetConnection(connection *string) {
-	c.Connection = connection
-	c.require(connectCardRequestFieldConnection)
+func (v *V3ConnectCardRequest) SetConnection(connection *string) {
+	v.Connection = connection
+	v.require(v3ConnectCardRequestFieldConnection)
 }
 
 // SetDark sets the Dark field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectCardRequest) SetDark(dark *bool) {
-	c.Dark = dark
-	c.require(connectCardRequestFieldDark)
+func (v *V3ConnectCardRequest) SetDark(dark *bool) {
+	v.Dark = dark
+	v.require(v3ConnectCardRequestFieldDark)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectCardRequest) SetName(name string) {
-	c.Name = name
-	c.require(connectCardRequestFieldName)
+func (v *V3ConnectCardRequest) SetName(name string) {
+	v.Name = name
+	v.require(v3ConnectCardRequestFieldName)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectCardRequest) SetOrganizationID(organizationID *string) {
-	c.OrganizationID = organizationID
-	c.require(connectCardRequestFieldOrganizationID)
+func (v *V3ConnectCardRequest) SetOrganizationID(organizationID *string) {
+	v.OrganizationID = organizationID
+	v.require(v3ConnectCardRequestFieldOrganizationID)
 }
 
 // SetRedirectURL sets the RedirectURL field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectCardRequest) SetRedirectURL(redirectURL string) {
-	c.RedirectURL = redirectURL
-	c.require(connectCardRequestFieldRedirectURL)
+func (v *V3ConnectCardRequest) SetRedirectURL(redirectURL string) {
+	v.RedirectURL = redirectURL
+	v.require(v3ConnectCardRequestFieldRedirectURL)
 }
 
 // SetType sets the Type field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectCardRequest) SetType(type_ *string) {
-	c.Type = type_
-	c.require(connectCardRequestFieldType)
+func (v *V3ConnectCardRequest) SetType(type_ *string) {
+	v.Type = type_
+	v.require(v3ConnectCardRequestFieldType)
 }
 
 // SetWhitelist sets the Whitelist field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectCardRequest) SetWhitelist(whitelist []string) {
-	c.Whitelist = whitelist
-	c.require(connectCardRequestFieldWhitelist)
+func (v *V3ConnectCardRequest) SetWhitelist(whitelist []string) {
+	v.Whitelist = whitelist
+	v.require(v3ConnectCardRequestFieldWhitelist)
 }
 
-func (c *ConnectCardRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectCardRequest
+func (v *V3ConnectCardRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler V3ConnectCardRequest
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*c = ConnectCardRequest(body)
+	*v = V3ConnectCardRequest(body)
 	return nil
 }
 
-func (c *ConnectCardRequest) MarshalJSON() ([]byte, error) {
-	type embed ConnectCardRequest
+func (v *V3ConnectCardRequest) MarshalJSON() ([]byte, error) {
+	type embed V3ConnectCardRequest
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*c),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	createConnectionRequestSchemaFieldConfiguration       = big.NewInt(1 << 0)
-	createConnectionRequestSchemaFieldHealthcheckInterval = big.NewInt(1 << 1)
-	createConnectionRequestSchemaFieldName                = big.NewInt(1 << 2)
-	createConnectionRequestSchemaFieldOrganizationID      = big.NewInt(1 << 3)
-	createConnectionRequestSchemaFieldPolicies            = big.NewInt(1 << 4)
-	createConnectionRequestSchemaFieldRedirectURL         = big.NewInt(1 << 5)
-	createConnectionRequestSchemaFieldType                = big.NewInt(1 << 6)
-	createConnectionRequestSchemaFieldValidate            = big.NewInt(1 << 7)
+	v2CreateConnectionRequestSchemaFieldConfiguration       = big.NewInt(1 << 0)
+	v2CreateConnectionRequestSchemaFieldHealthcheckInterval = big.NewInt(1 << 1)
+	v2CreateConnectionRequestSchemaFieldName                = big.NewInt(1 << 2)
+	v2CreateConnectionRequestSchemaFieldOrganizationID      = big.NewInt(1 << 3)
+	v2CreateConnectionRequestSchemaFieldPolicies            = big.NewInt(1 << 4)
+	v2CreateConnectionRequestSchemaFieldRedirectURL         = big.NewInt(1 << 5)
+	v2CreateConnectionRequestSchemaFieldType                = big.NewInt(1 << 6)
+	v2CreateConnectionRequestSchemaFieldValidate            = big.NewInt(1 << 7)
 )
 
-type CreateConnectionRequestSchema struct {
+type V2CreateConnectionRequestSchema struct {
 	Configuration map[string]any `json:"configuration" url:"-"`
 	// Override interval for connection health checking.
 	HealthcheckInterval *string  `json:"healthcheck_interval,omitempty" url:"-"`
@@ -144,96 +144,96 @@ type CreateConnectionRequestSchema struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CreateConnectionRequestSchema) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *V2CreateConnectionRequestSchema) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetConfiguration sets the Configuration field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionRequestSchema) SetConfiguration(configuration map[string]any) {
-	c.Configuration = configuration
-	c.require(createConnectionRequestSchemaFieldConfiguration)
+func (v *V2CreateConnectionRequestSchema) SetConfiguration(configuration map[string]any) {
+	v.Configuration = configuration
+	v.require(v2CreateConnectionRequestSchemaFieldConfiguration)
 }
 
 // SetHealthcheckInterval sets the HealthcheckInterval field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionRequestSchema) SetHealthcheckInterval(healthcheckInterval *string) {
-	c.HealthcheckInterval = healthcheckInterval
-	c.require(createConnectionRequestSchemaFieldHealthcheckInterval)
+func (v *V2CreateConnectionRequestSchema) SetHealthcheckInterval(healthcheckInterval *string) {
+	v.HealthcheckInterval = healthcheckInterval
+	v.require(v2CreateConnectionRequestSchemaFieldHealthcheckInterval)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionRequestSchema) SetName(name string) {
-	c.Name = name
-	c.require(createConnectionRequestSchemaFieldName)
+func (v *V2CreateConnectionRequestSchema) SetName(name string) {
+	v.Name = name
+	v.require(v2CreateConnectionRequestSchemaFieldName)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionRequestSchema) SetOrganizationID(organizationID *string) {
-	c.OrganizationID = organizationID
-	c.require(createConnectionRequestSchemaFieldOrganizationID)
+func (v *V2CreateConnectionRequestSchema) SetOrganizationID(organizationID *string) {
+	v.OrganizationID = organizationID
+	v.require(v2CreateConnectionRequestSchemaFieldOrganizationID)
 }
 
 // SetPolicies sets the Policies field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionRequestSchema) SetPolicies(policies []string) {
-	c.Policies = policies
-	c.require(createConnectionRequestSchemaFieldPolicies)
+func (v *V2CreateConnectionRequestSchema) SetPolicies(policies []string) {
+	v.Policies = policies
+	v.require(v2CreateConnectionRequestSchemaFieldPolicies)
 }
 
 // SetRedirectURL sets the RedirectURL field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionRequestSchema) SetRedirectURL(redirectURL *string) {
-	c.RedirectURL = redirectURL
-	c.require(createConnectionRequestSchemaFieldRedirectURL)
+func (v *V2CreateConnectionRequestSchema) SetRedirectURL(redirectURL *string) {
+	v.RedirectURL = redirectURL
+	v.require(v2CreateConnectionRequestSchemaFieldRedirectURL)
 }
 
 // SetType sets the Type field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionRequestSchema) SetType(type_ string) {
-	c.Type = type_
-	c.require(createConnectionRequestSchemaFieldType)
+func (v *V2CreateConnectionRequestSchema) SetType(type_ string) {
+	v.Type = type_
+	v.require(v2CreateConnectionRequestSchemaFieldType)
 }
 
 // SetValidate sets the Validate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionRequestSchema) SetValidate(validate *bool) {
-	c.Validate = validate
-	c.require(createConnectionRequestSchemaFieldValidate)
+func (v *V2CreateConnectionRequestSchema) SetValidate(validate *bool) {
+	v.Validate = validate
+	v.require(v2CreateConnectionRequestSchemaFieldValidate)
 }
 
-func (c *CreateConnectionRequestSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateConnectionRequestSchema
+func (v *V2CreateConnectionRequestSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2CreateConnectionRequestSchema
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*c = CreateConnectionRequestSchema(body)
+	*v = V2CreateConnectionRequestSchema(body)
 	return nil
 }
 
-func (c *CreateConnectionRequestSchema) MarshalJSON() ([]byte, error) {
-	type embed CreateConnectionRequestSchema
+func (v *V2CreateConnectionRequestSchema) MarshalJSON() ([]byte, error) {
+	type embed V2CreateConnectionRequestSchema
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*c),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	aPIRequestFieldChildOrganizationID = big.NewInt(1 << 0)
-	aPIRequestFieldName                = big.NewInt(1 << 1)
+	v2CreateSharedConnectionRequestSchemaFieldChildOrganizationID = big.NewInt(1 << 0)
+	v2CreateSharedConnectionRequestSchemaFieldName                = big.NewInt(1 << 1)
 )
 
-type APIRequest struct {
+type V2CreateSharedConnectionRequestSchema struct {
 	ChildOrganizationID string  `json:"child_organization_id" url:"-"`
 	Name                *string `json:"name,omitempty" url:"-"`
 
@@ -241,56 +241,56 @@ type APIRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (a *APIRequest) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
+func (v *V2CreateSharedConnectionRequestSchema) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	a.explicitFields.Or(a.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetChildOrganizationID sets the ChildOrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *APIRequest) SetChildOrganizationID(childOrganizationID string) {
-	a.ChildOrganizationID = childOrganizationID
-	a.require(aPIRequestFieldChildOrganizationID)
+func (v *V2CreateSharedConnectionRequestSchema) SetChildOrganizationID(childOrganizationID string) {
+	v.ChildOrganizationID = childOrganizationID
+	v.require(v2CreateSharedConnectionRequestSchemaFieldChildOrganizationID)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *APIRequest) SetName(name *string) {
-	a.Name = name
-	a.require(aPIRequestFieldName)
+func (v *V2CreateSharedConnectionRequestSchema) SetName(name *string) {
+	v.Name = name
+	v.require(v2CreateSharedConnectionRequestSchemaFieldName)
 }
 
-func (a *APIRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler APIRequest
+func (v *V2CreateSharedConnectionRequestSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2CreateSharedConnectionRequestSchema
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*a = APIRequest(body)
+	*v = V2CreateSharedConnectionRequestSchema(body)
 	return nil
 }
 
-func (a *APIRequest) MarshalJSON() ([]byte, error) {
-	type embed APIRequest
+func (v *V2CreateSharedConnectionRequestSchema) MarshalJSON() ([]byte, error) {
+	type embed V2CreateSharedConnectionRequestSchema
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*a),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	getConnectionTypeParameterValuesRequestSchemaFieldConnectionID = big.NewInt(1 << 0)
-	getConnectionTypeParameterValuesRequestSchemaFieldField        = big.NewInt(1 << 1)
-	getConnectionTypeParameterValuesRequestSchemaFieldParameters   = big.NewInt(1 << 2)
-	getConnectionTypeParameterValuesRequestSchemaFieldQuery        = big.NewInt(1 << 3)
+	v2GetConnectionTypeParameterValuesRequestSchemaFieldConnectionID = big.NewInt(1 << 0)
+	v2GetConnectionTypeParameterValuesRequestSchemaFieldField        = big.NewInt(1 << 1)
+	v2GetConnectionTypeParameterValuesRequestSchemaFieldParameters   = big.NewInt(1 << 2)
+	v2GetConnectionTypeParameterValuesRequestSchemaFieldQuery        = big.NewInt(1 << 3)
 )
 
-type GetConnectionTypeParameterValuesRequestSchema struct {
+type V2GetConnectionTypeParameterValuesRequestSchema struct {
 	ConnectionID *string        `json:"connection_id,omitempty" url:"-"`
 	Field        string         `json:"field" url:"-"`
 	Parameters   map[string]any `json:"parameters,omitempty" url:"-"`
@@ -300,94 +300,94 @@ type GetConnectionTypeParameterValuesRequestSchema struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetConnectionTypeParameterValuesRequestSchema) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (v *V2GetConnectionTypeParameterValuesRequestSchema) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetConnectionID sets the ConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetConnectionTypeParameterValuesRequestSchema) SetConnectionID(connectionID *string) {
-	g.ConnectionID = connectionID
-	g.require(getConnectionTypeParameterValuesRequestSchemaFieldConnectionID)
+func (v *V2GetConnectionTypeParameterValuesRequestSchema) SetConnectionID(connectionID *string) {
+	v.ConnectionID = connectionID
+	v.require(v2GetConnectionTypeParameterValuesRequestSchemaFieldConnectionID)
 }
 
 // SetField sets the Field field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetConnectionTypeParameterValuesRequestSchema) SetField(field string) {
-	g.Field = field
-	g.require(getConnectionTypeParameterValuesRequestSchemaFieldField)
+func (v *V2GetConnectionTypeParameterValuesRequestSchema) SetField(field string) {
+	v.Field = field
+	v.require(v2GetConnectionTypeParameterValuesRequestSchemaFieldField)
 }
 
 // SetParameters sets the Parameters field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetConnectionTypeParameterValuesRequestSchema) SetParameters(parameters map[string]any) {
-	g.Parameters = parameters
-	g.require(getConnectionTypeParameterValuesRequestSchemaFieldParameters)
+func (v *V2GetConnectionTypeParameterValuesRequestSchema) SetParameters(parameters map[string]any) {
+	v.Parameters = parameters
+	v.require(v2GetConnectionTypeParameterValuesRequestSchemaFieldParameters)
 }
 
 // SetQuery sets the Query field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetConnectionTypeParameterValuesRequestSchema) SetQuery(query *string) {
-	g.Query = query
-	g.require(getConnectionTypeParameterValuesRequestSchemaFieldQuery)
+func (v *V2GetConnectionTypeParameterValuesRequestSchema) SetQuery(query *string) {
+	v.Query = query
+	v.require(v2GetConnectionTypeParameterValuesRequestSchemaFieldQuery)
 }
 
-func (g *GetConnectionTypeParameterValuesRequestSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetConnectionTypeParameterValuesRequestSchema
+func (v *V2GetConnectionTypeParameterValuesRequestSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2GetConnectionTypeParameterValuesRequestSchema
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*g = GetConnectionTypeParameterValuesRequestSchema(body)
+	*v = V2GetConnectionTypeParameterValuesRequestSchema(body)
 	return nil
 }
 
-func (g *GetConnectionTypeParameterValuesRequestSchema) MarshalJSON() ([]byte, error) {
-	type embed GetConnectionTypeParameterValuesRequestSchema
+func (v *V2GetConnectionTypeParameterValuesRequestSchema) MarshalJSON() ([]byte, error) {
+	type embed V2GetConnectionTypeParameterValuesRequestSchema
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	connectionsRemoveRequestFieldForce = big.NewInt(1 << 0)
+	removeConnectionsRequestFieldForce = big.NewInt(1 << 0)
 )
 
-type ConnectionsRemoveRequest struct {
+type RemoveConnectionsRequest struct {
 	Force *bool `json:"-" url:"force,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *ConnectionsRemoveRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (r *RemoveConnectionsRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
 // SetForce sets the Force field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionsRemoveRequest) SetForce(force *bool) {
-	c.Force = force
-	c.require(connectionsRemoveRequestFieldForce)
+func (r *RemoveConnectionsRequest) SetForce(force *bool) {
+	r.Force = force
+	r.require(removeConnectionsRequestFieldForce)
 }
 
 var (
-	testConnectionRequestFieldConfiguration = big.NewInt(1 << 0)
-	testConnectionRequestFieldConnectionID  = big.NewInt(1 << 1)
-	testConnectionRequestFieldType          = big.NewInt(1 << 2)
+	v4TestConnectionRequestFieldConfiguration = big.NewInt(1 << 0)
+	v4TestConnectionRequestFieldConnectionID  = big.NewInt(1 << 1)
+	v4TestConnectionRequestFieldType          = big.NewInt(1 << 2)
 )
 
-type TestConnectionRequest struct {
+type V4TestConnectionRequest struct {
 	// Connection configuration to test.
 	Configuration map[string]any `json:"configuration" url:"-"`
 	// Optional existing connection ID to use as a base for testing. The provided configuration will be merged over the stored configuration for this connection before testing.
@@ -399,67 +399,67 @@ type TestConnectionRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (t *TestConnectionRequest) require(field *big.Int) {
-	if t.explicitFields == nil {
-		t.explicitFields = big.NewInt(0)
+func (v *V4TestConnectionRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	t.explicitFields.Or(t.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetConfiguration sets the Configuration field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TestConnectionRequest) SetConfiguration(configuration map[string]any) {
-	t.Configuration = configuration
-	t.require(testConnectionRequestFieldConfiguration)
+func (v *V4TestConnectionRequest) SetConfiguration(configuration map[string]any) {
+	v.Configuration = configuration
+	v.require(v4TestConnectionRequestFieldConfiguration)
 }
 
 // SetConnectionID sets the ConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TestConnectionRequest) SetConnectionID(connectionID *string) {
-	t.ConnectionID = connectionID
-	t.require(testConnectionRequestFieldConnectionID)
+func (v *V4TestConnectionRequest) SetConnectionID(connectionID *string) {
+	v.ConnectionID = connectionID
+	v.require(v4TestConnectionRequestFieldConnectionID)
 }
 
 // SetType sets the Type field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TestConnectionRequest) SetType(type_ string) {
-	t.Type = type_
-	t.require(testConnectionRequestFieldType)
+func (v *V4TestConnectionRequest) SetType(type_ string) {
+	v.Type = type_
+	v.require(v4TestConnectionRequestFieldType)
 }
 
-func (t *TestConnectionRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler TestConnectionRequest
+func (v *V4TestConnectionRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4TestConnectionRequest
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*t = TestConnectionRequest(body)
+	*v = V4TestConnectionRequest(body)
 	return nil
 }
 
-func (t *TestConnectionRequest) MarshalJSON() ([]byte, error) {
-	type embed TestConnectionRequest
+func (v *V4TestConnectionRequest) MarshalJSON() ([]byte, error) {
+	type embed V4TestConnectionRequest
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*t),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	updateConnectionRequestSchemaFieldConfiguration       = big.NewInt(1 << 0)
-	updateConnectionRequestSchemaFieldHealthcheckInterval = big.NewInt(1 << 1)
-	updateConnectionRequestSchemaFieldName                = big.NewInt(1 << 2)
-	updateConnectionRequestSchemaFieldOrganizationID      = big.NewInt(1 << 3)
-	updateConnectionRequestSchemaFieldPolicies            = big.NewInt(1 << 4)
-	updateConnectionRequestSchemaFieldReconnect           = big.NewInt(1 << 5)
-	updateConnectionRequestSchemaFieldType                = big.NewInt(1 << 6)
-	updateConnectionRequestSchemaFieldValidate            = big.NewInt(1 << 7)
+	v2UpdateConnectionRequestSchemaFieldConfiguration       = big.NewInt(1 << 0)
+	v2UpdateConnectionRequestSchemaFieldHealthcheckInterval = big.NewInt(1 << 1)
+	v2UpdateConnectionRequestSchemaFieldName                = big.NewInt(1 << 2)
+	v2UpdateConnectionRequestSchemaFieldOrganizationID      = big.NewInt(1 << 3)
+	v2UpdateConnectionRequestSchemaFieldPolicies            = big.NewInt(1 << 4)
+	v2UpdateConnectionRequestSchemaFieldReconnect           = big.NewInt(1 << 5)
+	v2UpdateConnectionRequestSchemaFieldType                = big.NewInt(1 << 6)
+	v2UpdateConnectionRequestSchemaFieldValidate            = big.NewInt(1 << 7)
 )
 
-type UpdateConnectionRequestSchema struct {
+type V2UpdateConnectionRequestSchema struct {
 	Configuration map[string]any `json:"configuration" url:"-"`
 	// Override interval for connection health checking.
 	HealthcheckInterval *string  `json:"healthcheck_interval,omitempty" url:"-"`
@@ -475,87 +475,87 @@ type UpdateConnectionRequestSchema struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (u *UpdateConnectionRequestSchema) require(field *big.Int) {
-	if u.explicitFields == nil {
-		u.explicitFields = big.NewInt(0)
+func (v *V2UpdateConnectionRequestSchema) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	u.explicitFields.Or(u.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetConfiguration sets the Configuration field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateConnectionRequestSchema) SetConfiguration(configuration map[string]any) {
-	u.Configuration = configuration
-	u.require(updateConnectionRequestSchemaFieldConfiguration)
+func (v *V2UpdateConnectionRequestSchema) SetConfiguration(configuration map[string]any) {
+	v.Configuration = configuration
+	v.require(v2UpdateConnectionRequestSchemaFieldConfiguration)
 }
 
 // SetHealthcheckInterval sets the HealthcheckInterval field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateConnectionRequestSchema) SetHealthcheckInterval(healthcheckInterval *string) {
-	u.HealthcheckInterval = healthcheckInterval
-	u.require(updateConnectionRequestSchemaFieldHealthcheckInterval)
+func (v *V2UpdateConnectionRequestSchema) SetHealthcheckInterval(healthcheckInterval *string) {
+	v.HealthcheckInterval = healthcheckInterval
+	v.require(v2UpdateConnectionRequestSchemaFieldHealthcheckInterval)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateConnectionRequestSchema) SetName(name string) {
-	u.Name = name
-	u.require(updateConnectionRequestSchemaFieldName)
+func (v *V2UpdateConnectionRequestSchema) SetName(name string) {
+	v.Name = name
+	v.require(v2UpdateConnectionRequestSchemaFieldName)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateConnectionRequestSchema) SetOrganizationID(organizationID *string) {
-	u.OrganizationID = organizationID
-	u.require(updateConnectionRequestSchemaFieldOrganizationID)
+func (v *V2UpdateConnectionRequestSchema) SetOrganizationID(organizationID *string) {
+	v.OrganizationID = organizationID
+	v.require(v2UpdateConnectionRequestSchemaFieldOrganizationID)
 }
 
 // SetPolicies sets the Policies field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateConnectionRequestSchema) SetPolicies(policies []string) {
-	u.Policies = policies
-	u.require(updateConnectionRequestSchemaFieldPolicies)
+func (v *V2UpdateConnectionRequestSchema) SetPolicies(policies []string) {
+	v.Policies = policies
+	v.require(v2UpdateConnectionRequestSchemaFieldPolicies)
 }
 
 // SetReconnect sets the Reconnect field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateConnectionRequestSchema) SetReconnect(reconnect *bool) {
-	u.Reconnect = reconnect
-	u.require(updateConnectionRequestSchemaFieldReconnect)
+func (v *V2UpdateConnectionRequestSchema) SetReconnect(reconnect *bool) {
+	v.Reconnect = reconnect
+	v.require(v2UpdateConnectionRequestSchemaFieldReconnect)
 }
 
 // SetType sets the Type field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateConnectionRequestSchema) SetType(type_ *string) {
-	u.Type = type_
-	u.require(updateConnectionRequestSchemaFieldType)
+func (v *V2UpdateConnectionRequestSchema) SetType(type_ *string) {
+	v.Type = type_
+	v.require(v2UpdateConnectionRequestSchemaFieldType)
 }
 
 // SetValidate sets the Validate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateConnectionRequestSchema) SetValidate(validate *bool) {
-	u.Validate = validate
-	u.require(updateConnectionRequestSchemaFieldValidate)
+func (v *V2UpdateConnectionRequestSchema) SetValidate(validate *bool) {
+	v.Validate = validate
+	v.require(v2UpdateConnectionRequestSchemaFieldValidate)
 }
 
-func (u *UpdateConnectionRequestSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler UpdateConnectionRequestSchema
+func (v *V2UpdateConnectionRequestSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2UpdateConnectionRequestSchema
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*u = UpdateConnectionRequestSchema(body)
+	*v = V2UpdateConnectionRequestSchema(body)
 	return nil
 }
 
-func (u *UpdateConnectionRequestSchema) MarshalJSON() ([]byte, error) {
-	type embed UpdateConnectionRequestSchema
+func (v *V2UpdateConnectionRequestSchema) MarshalJSON() ([]byte, error) {
+	type embed V2UpdateConnectionRequestSchema
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*u),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
@@ -805,1825 +805,6 @@ func (b *BackendOauthPrompt) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
-}
-
-var (
-	connectCardResponseFieldRedirectURL = big.NewInt(1 << 0)
-	connectCardResponseFieldToken       = big.NewInt(1 << 1)
-)
-
-type ConnectCardResponse struct {
-	// URL to redirect the user to in order to create the new connection.
-	RedirectURL *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
-	// Opaque single-use token identifying the Connect session.
-	Token *string `json:"token,omitempty" url:"token,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectCardResponse) GetRedirectURL() *string {
-	if c == nil {
-		return nil
-	}
-	return c.RedirectURL
-}
-
-func (c *ConnectCardResponse) GetToken() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Token
-}
-
-func (c *ConnectCardResponse) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectCardResponse) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetRedirectURL sets the RedirectURL field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectCardResponse) SetRedirectURL(redirectURL *string) {
-	c.RedirectURL = redirectURL
-	c.require(connectCardResponseFieldRedirectURL)
-}
-
-// SetToken sets the Token field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectCardResponse) SetToken(token *string) {
-	c.Token = token
-	c.require(connectCardResponseFieldToken)
-}
-
-func (c *ConnectCardResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectCardResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectCardResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectCardResponse) MarshalJSON() ([]byte, error) {
-	type embed ConnectCardResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectCardResponse) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	connectCardResponseEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type ConnectCardResponseEnvelope struct {
-	Data *ConnectCardResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectCardResponseEnvelope) GetData() *ConnectCardResponse {
-	if c == nil {
-		return nil
-	}
-	return c.Data
-}
-
-func (c *ConnectCardResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectCardResponseEnvelope) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectCardResponseEnvelope) SetData(data *ConnectCardResponse) {
-	c.Data = data
-	c.require(connectCardResponseEnvelopeFieldData)
-}
-
-func (c *ConnectCardResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectCardResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectCardResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectCardResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed ConnectCardResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectCardResponseEnvelope) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	connectionListResponseEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type ConnectionListResponseEnvelope struct {
-	Data []*ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionListResponseEnvelope) GetData() []*ConnectionResponseSchema {
-	if c == nil {
-		return nil
-	}
-	return c.Data
-}
-
-func (c *ConnectionListResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionListResponseEnvelope) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionListResponseEnvelope) SetData(data []*ConnectionResponseSchema) {
-	c.Data = data
-	c.require(connectionListResponseEnvelopeFieldData)
-}
-
-func (c *ConnectionListResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionListResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionListResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionListResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed ConnectionListResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionListResponseEnvelope) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	connectionParameterValueFieldLabel = big.NewInt(1 << 0)
-	connectionParameterValueFieldValue = big.NewInt(1 << 1)
-)
-
-type ConnectionParameterValue struct {
-	Label *string `json:"label,omitempty" url:"label,omitempty"`
-	Value any     `json:"value,omitempty" url:"value,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionParameterValue) GetLabel() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Label
-}
-
-func (c *ConnectionParameterValue) GetValue() any {
-	if c == nil {
-		return nil
-	}
-	return c.Value
-}
-
-func (c *ConnectionParameterValue) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionParameterValue) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetLabel sets the Label field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionParameterValue) SetLabel(label *string) {
-	c.Label = label
-	c.require(connectionParameterValueFieldLabel)
-}
-
-// SetValue sets the Value field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionParameterValue) SetValue(value any) {
-	c.Value = value
-	c.require(connectionParameterValueFieldValue)
-}
-
-func (c *ConnectionParameterValue) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionParameterValue
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionParameterValue(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionParameterValue) MarshalJSON() ([]byte, error) {
-	type embed ConnectionParameterValue
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionParameterValue) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	connectionParameterValuesRespFieldAllowsCreation = big.NewInt(1 << 0)
-	connectionParameterValuesRespFieldValues         = big.NewInt(1 << 1)
-)
-
-type ConnectionParameterValuesResp struct {
-	AllowsCreation *bool                       `json:"allows_creation,omitempty" url:"allows_creation,omitempty"`
-	Values         []*ConnectionParameterValue `json:"values,omitempty" url:"values,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionParameterValuesResp) GetAllowsCreation() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.AllowsCreation
-}
-
-func (c *ConnectionParameterValuesResp) GetValues() []*ConnectionParameterValue {
-	if c == nil {
-		return nil
-	}
-	return c.Values
-}
-
-func (c *ConnectionParameterValuesResp) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionParameterValuesResp) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetAllowsCreation sets the AllowsCreation field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionParameterValuesResp) SetAllowsCreation(allowsCreation *bool) {
-	c.AllowsCreation = allowsCreation
-	c.require(connectionParameterValuesRespFieldAllowsCreation)
-}
-
-// SetValues sets the Values field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionParameterValuesResp) SetValues(values []*ConnectionParameterValue) {
-	c.Values = values
-	c.require(connectionParameterValuesRespFieldValues)
-}
-
-func (c *ConnectionParameterValuesResp) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionParameterValuesResp
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionParameterValuesResp(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionParameterValuesResp) MarshalJSON() ([]byte, error) {
-	type embed ConnectionParameterValuesResp
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionParameterValuesResp) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	connectionParameterValuesResponseEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type ConnectionParameterValuesResponseEnvelope struct {
-	Data map[string]*ConnectionParameterValuesResp `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionParameterValuesResponseEnvelope) GetData() map[string]*ConnectionParameterValuesResp {
-	if c == nil {
-		return nil
-	}
-	return c.Data
-}
-
-func (c *ConnectionParameterValuesResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionParameterValuesResponseEnvelope) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionParameterValuesResponseEnvelope) SetData(data map[string]*ConnectionParameterValuesResp) {
-	c.Data = data
-	c.require(connectionParameterValuesResponseEnvelopeFieldData)
-}
-
-func (c *ConnectionParameterValuesResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionParameterValuesResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionParameterValuesResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionParameterValuesResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed ConnectionParameterValuesResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionParameterValuesResponseEnvelope) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	connectionResponseEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type ConnectionResponseEnvelope struct {
-	Data *ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionResponseEnvelope) GetData() *ConnectionResponseSchema {
-	if c == nil {
-		return nil
-	}
-	return c.Data
-}
-
-func (c *ConnectionResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionResponseEnvelope) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseEnvelope) SetData(data *ConnectionResponseSchema) {
-	c.Data = data
-	c.require(connectionResponseEnvelopeFieldData)
-}
-
-func (c *ConnectionResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed ConnectionResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionResponseEnvelope) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	connectionResponseSchemaFieldAPICallsLast24Hours = big.NewInt(1 << 0)
-	connectionResponseSchemaFieldConfiguration       = big.NewInt(1 << 1)
-	connectionResponseSchemaFieldCreatedAt           = big.NewInt(1 << 2)
-	connectionResponseSchemaFieldCreatedBy           = big.NewInt(1 << 3)
-	connectionResponseSchemaFieldID                  = big.NewInt(1 << 4)
-	connectionResponseSchemaFieldName                = big.NewInt(1 << 5)
-	connectionResponseSchemaFieldOrganizationID      = big.NewInt(1 << 6)
-	connectionResponseSchemaFieldParentConnectionID  = big.NewInt(1 << 7)
-	connectionResponseSchemaFieldPolicies            = big.NewInt(1 << 8)
-	connectionResponseSchemaFieldSaved               = big.NewInt(1 << 9)
-	connectionResponseSchemaFieldStatus              = big.NewInt(1 << 10)
-	connectionResponseSchemaFieldStatusError         = big.NewInt(1 << 11)
-	connectionResponseSchemaFieldType                = big.NewInt(1 << 12)
-	connectionResponseSchemaFieldUpdatedAt           = big.NewInt(1 << 13)
-	connectionResponseSchemaFieldUpdatedBy           = big.NewInt(1 << 14)
-)
-
-type ConnectionResponseSchema struct {
-	// API calls made to service in the last 24h (supported integrations only).
-	APICallsLast24Hours *int           `json:"api_calls_last_24_hours,omitempty" url:"api_calls_last_24_hours,omitempty"`
-	Configuration       map[string]any `json:"configuration,omitempty" url:"configuration,omitempty"`
-	CreatedAt           *time.Time     `json:"created_at,omitempty" url:"created_at,omitempty"`
-	CreatedBy           *OutputActor   `json:"created_by,omitempty" url:"created_by,omitempty"`
-	ID                  *string        `json:"id,omitempty" url:"id,omitempty"`
-	Name                *string        `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationID      *string        `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	// For shared connections, the ID of the parent connection.
-	ParentConnectionID *string               `json:"parent_connection_id,omitempty" url:"parent_connection_id,omitempty"`
-	Policies           []string              `json:"policies,omitempty" url:"policies,omitempty"`
-	Saved              *bool                 `json:"saved,omitempty" url:"saved,omitempty"`
-	Status             *string               `json:"status,omitempty" url:"status,omitempty"`
-	StatusError        *string               `json:"status_error,omitempty" url:"status_error,omitempty"`
-	Type               *ConnectionTypeSchema `json:"type,omitempty" url:"type,omitempty"`
-	UpdatedAt          *time.Time            `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	UpdatedBy          *OutputActor          `json:"updated_by,omitempty" url:"updated_by,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionResponseSchema) GetAPICallsLast24Hours() *int {
-	if c == nil {
-		return nil
-	}
-	return c.APICallsLast24Hours
-}
-
-func (c *ConnectionResponseSchema) GetConfiguration() map[string]any {
-	if c == nil {
-		return nil
-	}
-	return c.Configuration
-}
-
-func (c *ConnectionResponseSchema) GetCreatedAt() *time.Time {
-	if c == nil {
-		return nil
-	}
-	return c.CreatedAt
-}
-
-func (c *ConnectionResponseSchema) GetCreatedBy() *OutputActor {
-	if c == nil {
-		return nil
-	}
-	return c.CreatedBy
-}
-
-func (c *ConnectionResponseSchema) GetID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ID
-}
-
-func (c *ConnectionResponseSchema) GetName() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Name
-}
-
-func (c *ConnectionResponseSchema) GetOrganizationID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.OrganizationID
-}
-
-func (c *ConnectionResponseSchema) GetParentConnectionID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ParentConnectionID
-}
-
-func (c *ConnectionResponseSchema) GetPolicies() []string {
-	if c == nil {
-		return nil
-	}
-	return c.Policies
-}
-
-func (c *ConnectionResponseSchema) GetSaved() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.Saved
-}
-
-func (c *ConnectionResponseSchema) GetStatus() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Status
-}
-
-func (c *ConnectionResponseSchema) GetStatusError() *string {
-	if c == nil {
-		return nil
-	}
-	return c.StatusError
-}
-
-func (c *ConnectionResponseSchema) GetType() *ConnectionTypeSchema {
-	if c == nil {
-		return nil
-	}
-	return c.Type
-}
-
-func (c *ConnectionResponseSchema) GetUpdatedAt() *time.Time {
-	if c == nil {
-		return nil
-	}
-	return c.UpdatedAt
-}
-
-func (c *ConnectionResponseSchema) GetUpdatedBy() *OutputActor {
-	if c == nil {
-		return nil
-	}
-	return c.UpdatedBy
-}
-
-func (c *ConnectionResponseSchema) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionResponseSchema) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetAPICallsLast24Hours sets the APICallsLast24Hours field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetAPICallsLast24Hours(apiCallsLast24Hours *int) {
-	c.APICallsLast24Hours = apiCallsLast24Hours
-	c.require(connectionResponseSchemaFieldAPICallsLast24Hours)
-}
-
-// SetConfiguration sets the Configuration field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetConfiguration(configuration map[string]any) {
-	c.Configuration = configuration
-	c.require(connectionResponseSchemaFieldConfiguration)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetCreatedAt(createdAt *time.Time) {
-	c.CreatedAt = createdAt
-	c.require(connectionResponseSchemaFieldCreatedAt)
-}
-
-// SetCreatedBy sets the CreatedBy field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetCreatedBy(createdBy *OutputActor) {
-	c.CreatedBy = createdBy
-	c.require(connectionResponseSchemaFieldCreatedBy)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetID(id *string) {
-	c.ID = id
-	c.require(connectionResponseSchemaFieldID)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetName(name *string) {
-	c.Name = name
-	c.require(connectionResponseSchemaFieldName)
-}
-
-// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetOrganizationID(organizationID *string) {
-	c.OrganizationID = organizationID
-	c.require(connectionResponseSchemaFieldOrganizationID)
-}
-
-// SetParentConnectionID sets the ParentConnectionID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetParentConnectionID(parentConnectionID *string) {
-	c.ParentConnectionID = parentConnectionID
-	c.require(connectionResponseSchemaFieldParentConnectionID)
-}
-
-// SetPolicies sets the Policies field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetPolicies(policies []string) {
-	c.Policies = policies
-	c.require(connectionResponseSchemaFieldPolicies)
-}
-
-// SetSaved sets the Saved field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetSaved(saved *bool) {
-	c.Saved = saved
-	c.require(connectionResponseSchemaFieldSaved)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetStatus(status *string) {
-	c.Status = status
-	c.require(connectionResponseSchemaFieldStatus)
-}
-
-// SetStatusError sets the StatusError field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetStatusError(statusError *string) {
-	c.StatusError = statusError
-	c.require(connectionResponseSchemaFieldStatusError)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetType(type_ *ConnectionTypeSchema) {
-	c.Type = type_
-	c.require(connectionResponseSchemaFieldType)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetUpdatedAt(updatedAt *time.Time) {
-	c.UpdatedAt = updatedAt
-	c.require(connectionResponseSchemaFieldUpdatedAt)
-}
-
-// SetUpdatedBy sets the UpdatedBy field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetUpdatedBy(updatedBy *OutputActor) {
-	c.UpdatedBy = updatedBy
-	c.require(connectionResponseSchemaFieldUpdatedBy)
-}
-
-func (c *ConnectionResponseSchema) UnmarshalJSON(data []byte) error {
-	type embed ConnectionResponseSchema
-	var unmarshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed: embed(*c),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*c = ConnectionResponseSchema(unmarshaler.embed)
-	c.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	c.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionResponseSchema) MarshalJSON() ([]byte, error) {
-	type embed ConnectionResponseSchema
-	var marshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed:     embed(*c),
-		CreatedAt: internal.NewOptionalDateTime(c.CreatedAt),
-		UpdatedAt: internal.NewOptionalDateTime(c.UpdatedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionResponseSchema) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	connectionTypeFieldCapabilities         = big.NewInt(1 << 0)
-	connectionTypeFieldConfigurationForm    = big.NewInt(1 << 1)
-	connectionTypeFieldEnvConfig            = big.NewInt(1 << 2)
-	connectionTypeFieldID                   = big.NewInt(1 << 3)
-	connectionTypeFieldInitialConfiguration = big.NewInt(1 << 4)
-	connectionTypeFieldLogoURL              = big.NewInt(1 << 5)
-	connectionTypeFieldName                 = big.NewInt(1 << 6)
-	connectionTypeFieldOauthPrompt          = big.NewInt(1 << 7)
-	connectionTypeFieldUseOauth             = big.NewInt(1 << 8)
-)
-
-type ConnectionType struct {
-	Capabilities         *BackendConnectionCapabilities `json:"capabilities" url:"capabilities"`
-	ConfigurationForm    *V2ConnectionForm              `json:"configurationForm,omitempty" url:"configurationForm,omitempty"`
-	EnvConfig            map[string]any                 `json:"envConfig,omitempty" url:"envConfig,omitempty"`
-	ID                   *string                        `json:"id,omitempty" url:"id,omitempty"`
-	InitialConfiguration map[string]any                 `json:"initialConfiguration,omitempty" url:"initialConfiguration,omitempty"`
-	LogoURL              *string                        `json:"logo_url,omitempty" url:"logo_url,omitempty"`
-	Name                 *string                        `json:"name,omitempty" url:"name,omitempty"`
-	OauthPrompt          *BackendOauthPrompt            `json:"oauth_prompt,omitempty" url:"oauth_prompt,omitempty"`
-	UseOauth             *bool                          `json:"use_oauth,omitempty" url:"use_oauth,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionType) GetCapabilities() *BackendConnectionCapabilities {
-	if c == nil {
-		return nil
-	}
-	return c.Capabilities
-}
-
-func (c *ConnectionType) GetConfigurationForm() *V2ConnectionForm {
-	if c == nil {
-		return nil
-	}
-	return c.ConfigurationForm
-}
-
-func (c *ConnectionType) GetEnvConfig() map[string]any {
-	if c == nil {
-		return nil
-	}
-	return c.EnvConfig
-}
-
-func (c *ConnectionType) GetID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ID
-}
-
-func (c *ConnectionType) GetInitialConfiguration() map[string]any {
-	if c == nil {
-		return nil
-	}
-	return c.InitialConfiguration
-}
-
-func (c *ConnectionType) GetLogoURL() *string {
-	if c == nil {
-		return nil
-	}
-	return c.LogoURL
-}
-
-func (c *ConnectionType) GetName() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Name
-}
-
-func (c *ConnectionType) GetOauthPrompt() *BackendOauthPrompt {
-	if c == nil {
-		return nil
-	}
-	return c.OauthPrompt
-}
-
-func (c *ConnectionType) GetUseOauth() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.UseOauth
-}
-
-func (c *ConnectionType) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionType) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetCapabilities sets the Capabilities field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionType) SetCapabilities(capabilities *BackendConnectionCapabilities) {
-	c.Capabilities = capabilities
-	c.require(connectionTypeFieldCapabilities)
-}
-
-// SetConfigurationForm sets the ConfigurationForm field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionType) SetConfigurationForm(configurationForm *V2ConnectionForm) {
-	c.ConfigurationForm = configurationForm
-	c.require(connectionTypeFieldConfigurationForm)
-}
-
-// SetEnvConfig sets the EnvConfig field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionType) SetEnvConfig(envConfig map[string]any) {
-	c.EnvConfig = envConfig
-	c.require(connectionTypeFieldEnvConfig)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionType) SetID(id *string) {
-	c.ID = id
-	c.require(connectionTypeFieldID)
-}
-
-// SetInitialConfiguration sets the InitialConfiguration field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionType) SetInitialConfiguration(initialConfiguration map[string]any) {
-	c.InitialConfiguration = initialConfiguration
-	c.require(connectionTypeFieldInitialConfiguration)
-}
-
-// SetLogoURL sets the LogoURL field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionType) SetLogoURL(logoURL *string) {
-	c.LogoURL = logoURL
-	c.require(connectionTypeFieldLogoURL)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionType) SetName(name *string) {
-	c.Name = name
-	c.require(connectionTypeFieldName)
-}
-
-// SetOauthPrompt sets the OauthPrompt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionType) SetOauthPrompt(oauthPrompt *BackendOauthPrompt) {
-	c.OauthPrompt = oauthPrompt
-	c.require(connectionTypeFieldOauthPrompt)
-}
-
-// SetUseOauth sets the UseOauth field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionType) SetUseOauth(useOauth *bool) {
-	c.UseOauth = useOauth
-	c.require(connectionTypeFieldUseOauth)
-}
-
-func (c *ConnectionType) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionType
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionType(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionType) MarshalJSON() ([]byte, error) {
-	type embed ConnectionType
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionType) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	connectionTypeResponseEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type ConnectionTypeResponseEnvelope struct {
-	Data []*ConnectionType `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionTypeResponseEnvelope) GetData() []*ConnectionType {
-	if c == nil {
-		return nil
-	}
-	return c.Data
-}
-
-func (c *ConnectionTypeResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionTypeResponseEnvelope) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionTypeResponseEnvelope) SetData(data []*ConnectionType) {
-	c.Data = data
-	c.require(connectionTypeResponseEnvelopeFieldData)
-}
-
-func (c *ConnectionTypeResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionTypeResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionTypeResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionTypeResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed ConnectionTypeResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionTypeResponseEnvelope) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	connectionTypeSchemaFieldID         = big.NewInt(1 << 0)
-	connectionTypeSchemaFieldLogoURL    = big.NewInt(1 << 1)
-	connectionTypeSchemaFieldName       = big.NewInt(1 << 2)
-	connectionTypeSchemaFieldOperations = big.NewInt(1 << 3)
-)
-
-type ConnectionTypeSchema struct {
-	ID         *string  `json:"id,omitempty" url:"id,omitempty"`
-	LogoURL    *string  `json:"logo_url,omitempty" url:"logo_url,omitempty"`
-	Name       *string  `json:"name,omitempty" url:"name,omitempty"`
-	Operations []string `json:"operations,omitempty" url:"operations,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionTypeSchema) GetID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ID
-}
-
-func (c *ConnectionTypeSchema) GetLogoURL() *string {
-	if c == nil {
-		return nil
-	}
-	return c.LogoURL
-}
-
-func (c *ConnectionTypeSchema) GetName() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Name
-}
-
-func (c *ConnectionTypeSchema) GetOperations() []string {
-	if c == nil {
-		return nil
-	}
-	return c.Operations
-}
-
-func (c *ConnectionTypeSchema) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionTypeSchema) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionTypeSchema) SetID(id *string) {
-	c.ID = id
-	c.require(connectionTypeSchemaFieldID)
-}
-
-// SetLogoURL sets the LogoURL field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionTypeSchema) SetLogoURL(logoURL *string) {
-	c.LogoURL = logoURL
-	c.require(connectionTypeSchemaFieldLogoURL)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionTypeSchema) SetName(name *string) {
-	c.Name = name
-	c.require(connectionTypeSchemaFieldName)
-}
-
-// SetOperations sets the Operations field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionTypeSchema) SetOperations(operations []string) {
-	c.Operations = operations
-	c.require(connectionTypeSchemaFieldOperations)
-}
-
-func (c *ConnectionTypeSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionTypeSchema
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionTypeSchema(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionTypeSchema) MarshalJSON() ([]byte, error) {
-	type embed ConnectionTypeSchema
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionTypeSchema) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	createConnectionResponseEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type CreateConnectionResponseEnvelope struct {
-	Data *CreateConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *CreateConnectionResponseEnvelope) GetData() *CreateConnectionResponseSchema {
-	if c == nil {
-		return nil
-	}
-	return c.Data
-}
-
-func (c *CreateConnectionResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *CreateConnectionResponseEnvelope) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionResponseEnvelope) SetData(data *CreateConnectionResponseSchema) {
-	c.Data = data
-	c.require(createConnectionResponseEnvelopeFieldData)
-}
-
-func (c *CreateConnectionResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateConnectionResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CreateConnectionResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CreateConnectionResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed CreateConnectionResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *CreateConnectionResponseEnvelope) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	createConnectionResponseSchemaFieldAuthCode            = big.NewInt(1 << 0)
-	createConnectionResponseSchemaFieldAuthURL             = big.NewInt(1 << 1)
-	createConnectionResponseSchemaFieldConfiguration       = big.NewInt(1 << 2)
-	createConnectionResponseSchemaFieldHealthcheckInterval = big.NewInt(1 << 3)
-	createConnectionResponseSchemaFieldID                  = big.NewInt(1 << 4)
-	createConnectionResponseSchemaFieldName                = big.NewInt(1 << 5)
-	createConnectionResponseSchemaFieldOrganizationID      = big.NewInt(1 << 6)
-	createConnectionResponseSchemaFieldPolicies            = big.NewInt(1 << 7)
-	createConnectionResponseSchemaFieldSaved               = big.NewInt(1 << 8)
-	createConnectionResponseSchemaFieldStatus              = big.NewInt(1 << 9)
-	createConnectionResponseSchemaFieldStatusError         = big.NewInt(1 << 10)
-	createConnectionResponseSchemaFieldType                = big.NewInt(1 << 11)
-)
-
-type CreateConnectionResponseSchema struct {
-	// Code to enter in order to complete connection authentication.
-	AuthCode *string `json:"auth_code,omitempty" url:"auth_code,omitempty"`
-	// URL to visit to complete connection authentication.
-	AuthURL       *string        `json:"auth_url,omitempty" url:"auth_url,omitempty"`
-	Configuration map[string]any `json:"configuration,omitempty" url:"configuration,omitempty"`
-	// Interval for connection health checking.
-	HealthcheckInterval *string               `json:"healthcheck_interval,omitempty" url:"healthcheck_interval,omitempty"`
-	ID                  *string               `json:"id,omitempty" url:"id,omitempty"`
-	Name                *string               `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationID      *string               `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies            []string              `json:"policies,omitempty" url:"policies,omitempty"`
-	Saved               *bool                 `json:"saved,omitempty" url:"saved,omitempty"`
-	Status              *string               `json:"status,omitempty" url:"status,omitempty"`
-	StatusError         *string               `json:"status_error,omitempty" url:"status_error,omitempty"`
-	Type                *ConnectionTypeSchema `json:"type,omitempty" url:"type,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *CreateConnectionResponseSchema) GetAuthCode() *string {
-	if c == nil {
-		return nil
-	}
-	return c.AuthCode
-}
-
-func (c *CreateConnectionResponseSchema) GetAuthURL() *string {
-	if c == nil {
-		return nil
-	}
-	return c.AuthURL
-}
-
-func (c *CreateConnectionResponseSchema) GetConfiguration() map[string]any {
-	if c == nil {
-		return nil
-	}
-	return c.Configuration
-}
-
-func (c *CreateConnectionResponseSchema) GetHealthcheckInterval() *string {
-	if c == nil {
-		return nil
-	}
-	return c.HealthcheckInterval
-}
-
-func (c *CreateConnectionResponseSchema) GetID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ID
-}
-
-func (c *CreateConnectionResponseSchema) GetName() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Name
-}
-
-func (c *CreateConnectionResponseSchema) GetOrganizationID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.OrganizationID
-}
-
-func (c *CreateConnectionResponseSchema) GetPolicies() []string {
-	if c == nil {
-		return nil
-	}
-	return c.Policies
-}
-
-func (c *CreateConnectionResponseSchema) GetSaved() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.Saved
-}
-
-func (c *CreateConnectionResponseSchema) GetStatus() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Status
-}
-
-func (c *CreateConnectionResponseSchema) GetStatusError() *string {
-	if c == nil {
-		return nil
-	}
-	return c.StatusError
-}
-
-func (c *CreateConnectionResponseSchema) GetType() *ConnectionTypeSchema {
-	if c == nil {
-		return nil
-	}
-	return c.Type
-}
-
-func (c *CreateConnectionResponseSchema) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *CreateConnectionResponseSchema) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetAuthCode sets the AuthCode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionResponseSchema) SetAuthCode(authCode *string) {
-	c.AuthCode = authCode
-	c.require(createConnectionResponseSchemaFieldAuthCode)
-}
-
-// SetAuthURL sets the AuthURL field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionResponseSchema) SetAuthURL(authURL *string) {
-	c.AuthURL = authURL
-	c.require(createConnectionResponseSchemaFieldAuthURL)
-}
-
-// SetConfiguration sets the Configuration field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionResponseSchema) SetConfiguration(configuration map[string]any) {
-	c.Configuration = configuration
-	c.require(createConnectionResponseSchemaFieldConfiguration)
-}
-
-// SetHealthcheckInterval sets the HealthcheckInterval field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionResponseSchema) SetHealthcheckInterval(healthcheckInterval *string) {
-	c.HealthcheckInterval = healthcheckInterval
-	c.require(createConnectionResponseSchemaFieldHealthcheckInterval)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionResponseSchema) SetID(id *string) {
-	c.ID = id
-	c.require(createConnectionResponseSchemaFieldID)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionResponseSchema) SetName(name *string) {
-	c.Name = name
-	c.require(createConnectionResponseSchemaFieldName)
-}
-
-// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionResponseSchema) SetOrganizationID(organizationID *string) {
-	c.OrganizationID = organizationID
-	c.require(createConnectionResponseSchemaFieldOrganizationID)
-}
-
-// SetPolicies sets the Policies field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionResponseSchema) SetPolicies(policies []string) {
-	c.Policies = policies
-	c.require(createConnectionResponseSchemaFieldPolicies)
-}
-
-// SetSaved sets the Saved field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionResponseSchema) SetSaved(saved *bool) {
-	c.Saved = saved
-	c.require(createConnectionResponseSchemaFieldSaved)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionResponseSchema) SetStatus(status *string) {
-	c.Status = status
-	c.require(createConnectionResponseSchemaFieldStatus)
-}
-
-// SetStatusError sets the StatusError field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionResponseSchema) SetStatusError(statusError *string) {
-	c.StatusError = statusError
-	c.require(createConnectionResponseSchemaFieldStatusError)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateConnectionResponseSchema) SetType(type_ *ConnectionTypeSchema) {
-	c.Type = type_
-	c.require(createConnectionResponseSchemaFieldType)
-}
-
-func (c *CreateConnectionResponseSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateConnectionResponseSchema
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CreateConnectionResponseSchema(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CreateConnectionResponseSchema) MarshalJSON() ([]byte, error) {
-	type embed CreateConnectionResponseSchema
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *CreateConnectionResponseSchema) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	createSharedConnectionResponseSchemaFieldID = big.NewInt(1 << 0)
-)
-
-type CreateSharedConnectionResponseSchema struct {
-	ID *string `json:"id,omitempty" url:"id,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *CreateSharedConnectionResponseSchema) GetID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ID
-}
-
-func (c *CreateSharedConnectionResponseSchema) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *CreateSharedConnectionResponseSchema) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSharedConnectionResponseSchema) SetID(id *string) {
-	c.ID = id
-	c.require(createSharedConnectionResponseSchemaFieldID)
-}
-
-func (c *CreateSharedConnectionResponseSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateSharedConnectionResponseSchema
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CreateSharedConnectionResponseSchema(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CreateSharedConnectionResponseSchema) MarshalJSON() ([]byte, error) {
-	type embed CreateSharedConnectionResponseSchema
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *CreateSharedConnectionResponseSchema) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
 }
 
 type JsonschemaDefinitions = map[string]*JsonschemaSchema
@@ -3645,11 +1826,11 @@ func (v *V2ConnectionForm) String() string {
 }
 
 var (
-	v2CreateSharedConnectionResponseEnvelopeFieldData = big.NewInt(1 << 0)
+	v2ConnectionListResponseEnvelopeFieldData = big.NewInt(1 << 0)
 )
 
-type V2CreateSharedConnectionResponseEnvelope struct {
-	Data *CreateSharedConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+type V2ConnectionListResponseEnvelope struct {
+	Data []*V2ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3658,7 +1839,1556 @@ type V2CreateSharedConnectionResponseEnvelope struct {
 	rawJSON         json.RawMessage
 }
 
-func (v *V2CreateSharedConnectionResponseEnvelope) GetData() *CreateSharedConnectionResponseSchema {
+func (v *V2ConnectionListResponseEnvelope) GetData() []*V2ConnectionResponseSchema {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2ConnectionListResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2ConnectionListResponseEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionListResponseEnvelope) SetData(data []*V2ConnectionResponseSchema) {
+	v.Data = data
+	v.require(v2ConnectionListResponseEnvelopeFieldData)
+}
+
+func (v *V2ConnectionListResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionListResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionListResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionListResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V2ConnectionListResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2ConnectionListResponseEnvelope) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2ConnectionParameterValueFieldLabel = big.NewInt(1 << 0)
+	v2ConnectionParameterValueFieldValue = big.NewInt(1 << 1)
+)
+
+type V2ConnectionParameterValue struct {
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	Value any     `json:"value,omitempty" url:"value,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2ConnectionParameterValue) GetLabel() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Label
+}
+
+func (v *V2ConnectionParameterValue) GetValue() any {
+	if v == nil {
+		return nil
+	}
+	return v.Value
+}
+
+func (v *V2ConnectionParameterValue) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2ConnectionParameterValue) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetLabel sets the Label field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionParameterValue) SetLabel(label *string) {
+	v.Label = label
+	v.require(v2ConnectionParameterValueFieldLabel)
+}
+
+// SetValue sets the Value field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionParameterValue) SetValue(value any) {
+	v.Value = value
+	v.require(v2ConnectionParameterValueFieldValue)
+}
+
+func (v *V2ConnectionParameterValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionParameterValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionParameterValue(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionParameterValue) MarshalJSON() ([]byte, error) {
+	type embed V2ConnectionParameterValue
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2ConnectionParameterValue) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2ConnectionParameterValuesRespFieldAllowsCreation = big.NewInt(1 << 0)
+	v2ConnectionParameterValuesRespFieldValues         = big.NewInt(1 << 1)
+)
+
+type V2ConnectionParameterValuesResp struct {
+	AllowsCreation *bool                         `json:"allows_creation,omitempty" url:"allows_creation,omitempty"`
+	Values         []*V2ConnectionParameterValue `json:"values,omitempty" url:"values,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2ConnectionParameterValuesResp) GetAllowsCreation() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.AllowsCreation
+}
+
+func (v *V2ConnectionParameterValuesResp) GetValues() []*V2ConnectionParameterValue {
+	if v == nil {
+		return nil
+	}
+	return v.Values
+}
+
+func (v *V2ConnectionParameterValuesResp) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2ConnectionParameterValuesResp) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetAllowsCreation sets the AllowsCreation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionParameterValuesResp) SetAllowsCreation(allowsCreation *bool) {
+	v.AllowsCreation = allowsCreation
+	v.require(v2ConnectionParameterValuesRespFieldAllowsCreation)
+}
+
+// SetValues sets the Values field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionParameterValuesResp) SetValues(values []*V2ConnectionParameterValue) {
+	v.Values = values
+	v.require(v2ConnectionParameterValuesRespFieldValues)
+}
+
+func (v *V2ConnectionParameterValuesResp) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionParameterValuesResp
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionParameterValuesResp(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionParameterValuesResp) MarshalJSON() ([]byte, error) {
+	type embed V2ConnectionParameterValuesResp
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2ConnectionParameterValuesResp) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2ConnectionParameterValuesResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type V2ConnectionParameterValuesResponseEnvelope struct {
+	Data map[string]*V2ConnectionParameterValuesResp `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2ConnectionParameterValuesResponseEnvelope) GetData() map[string]*V2ConnectionParameterValuesResp {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2ConnectionParameterValuesResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2ConnectionParameterValuesResponseEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionParameterValuesResponseEnvelope) SetData(data map[string]*V2ConnectionParameterValuesResp) {
+	v.Data = data
+	v.require(v2ConnectionParameterValuesResponseEnvelopeFieldData)
+}
+
+func (v *V2ConnectionParameterValuesResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionParameterValuesResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionParameterValuesResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionParameterValuesResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V2ConnectionParameterValuesResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2ConnectionParameterValuesResponseEnvelope) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2ConnectionResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type V2ConnectionResponseEnvelope struct {
+	Data *V2ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2ConnectionResponseEnvelope) GetData() *V2ConnectionResponseSchema {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2ConnectionResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2ConnectionResponseEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionResponseEnvelope) SetData(data *V2ConnectionResponseSchema) {
+	v.Data = data
+	v.require(v2ConnectionResponseEnvelopeFieldData)
+}
+
+func (v *V2ConnectionResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V2ConnectionResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2ConnectionResponseEnvelope) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2ConnectionResponseSchemaFieldAPICallsLast24Hours = big.NewInt(1 << 0)
+	v2ConnectionResponseSchemaFieldConfiguration       = big.NewInt(1 << 1)
+	v2ConnectionResponseSchemaFieldCreatedAt           = big.NewInt(1 << 2)
+	v2ConnectionResponseSchemaFieldCreatedBy           = big.NewInt(1 << 3)
+	v2ConnectionResponseSchemaFieldID                  = big.NewInt(1 << 4)
+	v2ConnectionResponseSchemaFieldName                = big.NewInt(1 << 5)
+	v2ConnectionResponseSchemaFieldOrganizationID      = big.NewInt(1 << 6)
+	v2ConnectionResponseSchemaFieldParentConnectionID  = big.NewInt(1 << 7)
+	v2ConnectionResponseSchemaFieldPolicies            = big.NewInt(1 << 8)
+	v2ConnectionResponseSchemaFieldSaved               = big.NewInt(1 << 9)
+	v2ConnectionResponseSchemaFieldStatus              = big.NewInt(1 << 10)
+	v2ConnectionResponseSchemaFieldStatusError         = big.NewInt(1 << 11)
+	v2ConnectionResponseSchemaFieldType                = big.NewInt(1 << 12)
+	v2ConnectionResponseSchemaFieldUpdatedAt           = big.NewInt(1 << 13)
+	v2ConnectionResponseSchemaFieldUpdatedBy           = big.NewInt(1 << 14)
+)
+
+type V2ConnectionResponseSchema struct {
+	// API calls made to service in the last 24h (supported integrations only).
+	APICallsLast24Hours *int           `json:"api_calls_last_24_hours,omitempty" url:"api_calls_last_24_hours,omitempty"`
+	Configuration       map[string]any `json:"configuration,omitempty" url:"configuration,omitempty"`
+	CreatedAt           *time.Time     `json:"created_at,omitempty" url:"created_at,omitempty"`
+	CreatedBy           *OutputActor   `json:"created_by,omitempty" url:"created_by,omitempty"`
+	ID                  *string        `json:"id,omitempty" url:"id,omitempty"`
+	Name                *string        `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationID      *string        `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// For shared connections, the ID of the parent connection.
+	ParentConnectionID *string                 `json:"parent_connection_id,omitempty" url:"parent_connection_id,omitempty"`
+	Policies           []string                `json:"policies,omitempty" url:"policies,omitempty"`
+	Saved              *bool                   `json:"saved,omitempty" url:"saved,omitempty"`
+	Status             *string                 `json:"status,omitempty" url:"status,omitempty"`
+	StatusError        *string                 `json:"status_error,omitempty" url:"status_error,omitempty"`
+	Type               *V2ConnectionTypeSchema `json:"type,omitempty" url:"type,omitempty"`
+	UpdatedAt          *time.Time              `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	UpdatedBy          *OutputActor            `json:"updated_by,omitempty" url:"updated_by,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2ConnectionResponseSchema) GetAPICallsLast24Hours() *int {
+	if v == nil {
+		return nil
+	}
+	return v.APICallsLast24Hours
+}
+
+func (v *V2ConnectionResponseSchema) GetConfiguration() map[string]any {
+	if v == nil {
+		return nil
+	}
+	return v.Configuration
+}
+
+func (v *V2ConnectionResponseSchema) GetCreatedAt() *time.Time {
+	if v == nil {
+		return nil
+	}
+	return v.CreatedAt
+}
+
+func (v *V2ConnectionResponseSchema) GetCreatedBy() *OutputActor {
+	if v == nil {
+		return nil
+	}
+	return v.CreatedBy
+}
+
+func (v *V2ConnectionResponseSchema) GetID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ID
+}
+
+func (v *V2ConnectionResponseSchema) GetName() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Name
+}
+
+func (v *V2ConnectionResponseSchema) GetOrganizationID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.OrganizationID
+}
+
+func (v *V2ConnectionResponseSchema) GetParentConnectionID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ParentConnectionID
+}
+
+func (v *V2ConnectionResponseSchema) GetPolicies() []string {
+	if v == nil {
+		return nil
+	}
+	return v.Policies
+}
+
+func (v *V2ConnectionResponseSchema) GetSaved() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.Saved
+}
+
+func (v *V2ConnectionResponseSchema) GetStatus() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Status
+}
+
+func (v *V2ConnectionResponseSchema) GetStatusError() *string {
+	if v == nil {
+		return nil
+	}
+	return v.StatusError
+}
+
+func (v *V2ConnectionResponseSchema) GetType() *V2ConnectionTypeSchema {
+	if v == nil {
+		return nil
+	}
+	return v.Type
+}
+
+func (v *V2ConnectionResponseSchema) GetUpdatedAt() *time.Time {
+	if v == nil {
+		return nil
+	}
+	return v.UpdatedAt
+}
+
+func (v *V2ConnectionResponseSchema) GetUpdatedBy() *OutputActor {
+	if v == nil {
+		return nil
+	}
+	return v.UpdatedBy
+}
+
+func (v *V2ConnectionResponseSchema) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2ConnectionResponseSchema) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetAPICallsLast24Hours sets the APICallsLast24Hours field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionResponseSchema) SetAPICallsLast24Hours(apiCallsLast24Hours *int) {
+	v.APICallsLast24Hours = apiCallsLast24Hours
+	v.require(v2ConnectionResponseSchemaFieldAPICallsLast24Hours)
+}
+
+// SetConfiguration sets the Configuration field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionResponseSchema) SetConfiguration(configuration map[string]any) {
+	v.Configuration = configuration
+	v.require(v2ConnectionResponseSchemaFieldConfiguration)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionResponseSchema) SetCreatedAt(createdAt *time.Time) {
+	v.CreatedAt = createdAt
+	v.require(v2ConnectionResponseSchemaFieldCreatedAt)
+}
+
+// SetCreatedBy sets the CreatedBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionResponseSchema) SetCreatedBy(createdBy *OutputActor) {
+	v.CreatedBy = createdBy
+	v.require(v2ConnectionResponseSchemaFieldCreatedBy)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionResponseSchema) SetID(id *string) {
+	v.ID = id
+	v.require(v2ConnectionResponseSchemaFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionResponseSchema) SetName(name *string) {
+	v.Name = name
+	v.require(v2ConnectionResponseSchemaFieldName)
+}
+
+// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionResponseSchema) SetOrganizationID(organizationID *string) {
+	v.OrganizationID = organizationID
+	v.require(v2ConnectionResponseSchemaFieldOrganizationID)
+}
+
+// SetParentConnectionID sets the ParentConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionResponseSchema) SetParentConnectionID(parentConnectionID *string) {
+	v.ParentConnectionID = parentConnectionID
+	v.require(v2ConnectionResponseSchemaFieldParentConnectionID)
+}
+
+// SetPolicies sets the Policies field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionResponseSchema) SetPolicies(policies []string) {
+	v.Policies = policies
+	v.require(v2ConnectionResponseSchemaFieldPolicies)
+}
+
+// SetSaved sets the Saved field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionResponseSchema) SetSaved(saved *bool) {
+	v.Saved = saved
+	v.require(v2ConnectionResponseSchemaFieldSaved)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionResponseSchema) SetStatus(status *string) {
+	v.Status = status
+	v.require(v2ConnectionResponseSchemaFieldStatus)
+}
+
+// SetStatusError sets the StatusError field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionResponseSchema) SetStatusError(statusError *string) {
+	v.StatusError = statusError
+	v.require(v2ConnectionResponseSchemaFieldStatusError)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionResponseSchema) SetType(type_ *V2ConnectionTypeSchema) {
+	v.Type = type_
+	v.require(v2ConnectionResponseSchemaFieldType)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionResponseSchema) SetUpdatedAt(updatedAt *time.Time) {
+	v.UpdatedAt = updatedAt
+	v.require(v2ConnectionResponseSchemaFieldUpdatedAt)
+}
+
+// SetUpdatedBy sets the UpdatedBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionResponseSchema) SetUpdatedBy(updatedBy *OutputActor) {
+	v.UpdatedBy = updatedBy
+	v.require(v2ConnectionResponseSchemaFieldUpdatedBy)
+}
+
+func (v *V2ConnectionResponseSchema) UnmarshalJSON(data []byte) error {
+	type embed V2ConnectionResponseSchema
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*v),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*v = V2ConnectionResponseSchema(unmarshaler.embed)
+	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	v.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionResponseSchema) MarshalJSON() ([]byte, error) {
+	type embed V2ConnectionResponseSchema
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:     embed(*v),
+		CreatedAt: internal.NewOptionalDateTime(v.CreatedAt),
+		UpdatedAt: internal.NewOptionalDateTime(v.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2ConnectionResponseSchema) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2ConnectionTypeFieldCapabilities         = big.NewInt(1 << 0)
+	v2ConnectionTypeFieldConfigurationForm    = big.NewInt(1 << 1)
+	v2ConnectionTypeFieldEnvConfig            = big.NewInt(1 << 2)
+	v2ConnectionTypeFieldID                   = big.NewInt(1 << 3)
+	v2ConnectionTypeFieldInitialConfiguration = big.NewInt(1 << 4)
+	v2ConnectionTypeFieldLogoURL              = big.NewInt(1 << 5)
+	v2ConnectionTypeFieldName                 = big.NewInt(1 << 6)
+	v2ConnectionTypeFieldOauthPrompt          = big.NewInt(1 << 7)
+	v2ConnectionTypeFieldUseOauth             = big.NewInt(1 << 8)
+)
+
+type V2ConnectionType struct {
+	Capabilities         *BackendConnectionCapabilities `json:"capabilities" url:"capabilities"`
+	ConfigurationForm    *V2ConnectionForm              `json:"configurationForm,omitempty" url:"configurationForm,omitempty"`
+	EnvConfig            map[string]any                 `json:"envConfig,omitempty" url:"envConfig,omitempty"`
+	ID                   *string                        `json:"id,omitempty" url:"id,omitempty"`
+	InitialConfiguration map[string]any                 `json:"initialConfiguration,omitempty" url:"initialConfiguration,omitempty"`
+	LogoURL              *string                        `json:"logo_url,omitempty" url:"logo_url,omitempty"`
+	Name                 *string                        `json:"name,omitempty" url:"name,omitempty"`
+	OauthPrompt          *BackendOauthPrompt            `json:"oauth_prompt,omitempty" url:"oauth_prompt,omitempty"`
+	UseOauth             *bool                          `json:"use_oauth,omitempty" url:"use_oauth,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2ConnectionType) GetCapabilities() *BackendConnectionCapabilities {
+	if v == nil {
+		return nil
+	}
+	return v.Capabilities
+}
+
+func (v *V2ConnectionType) GetConfigurationForm() *V2ConnectionForm {
+	if v == nil {
+		return nil
+	}
+	return v.ConfigurationForm
+}
+
+func (v *V2ConnectionType) GetEnvConfig() map[string]any {
+	if v == nil {
+		return nil
+	}
+	return v.EnvConfig
+}
+
+func (v *V2ConnectionType) GetID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ID
+}
+
+func (v *V2ConnectionType) GetInitialConfiguration() map[string]any {
+	if v == nil {
+		return nil
+	}
+	return v.InitialConfiguration
+}
+
+func (v *V2ConnectionType) GetLogoURL() *string {
+	if v == nil {
+		return nil
+	}
+	return v.LogoURL
+}
+
+func (v *V2ConnectionType) GetName() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Name
+}
+
+func (v *V2ConnectionType) GetOauthPrompt() *BackendOauthPrompt {
+	if v == nil {
+		return nil
+	}
+	return v.OauthPrompt
+}
+
+func (v *V2ConnectionType) GetUseOauth() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.UseOauth
+}
+
+func (v *V2ConnectionType) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2ConnectionType) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetCapabilities sets the Capabilities field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionType) SetCapabilities(capabilities *BackendConnectionCapabilities) {
+	v.Capabilities = capabilities
+	v.require(v2ConnectionTypeFieldCapabilities)
+}
+
+// SetConfigurationForm sets the ConfigurationForm field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionType) SetConfigurationForm(configurationForm *V2ConnectionForm) {
+	v.ConfigurationForm = configurationForm
+	v.require(v2ConnectionTypeFieldConfigurationForm)
+}
+
+// SetEnvConfig sets the EnvConfig field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionType) SetEnvConfig(envConfig map[string]any) {
+	v.EnvConfig = envConfig
+	v.require(v2ConnectionTypeFieldEnvConfig)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionType) SetID(id *string) {
+	v.ID = id
+	v.require(v2ConnectionTypeFieldID)
+}
+
+// SetInitialConfiguration sets the InitialConfiguration field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionType) SetInitialConfiguration(initialConfiguration map[string]any) {
+	v.InitialConfiguration = initialConfiguration
+	v.require(v2ConnectionTypeFieldInitialConfiguration)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionType) SetLogoURL(logoURL *string) {
+	v.LogoURL = logoURL
+	v.require(v2ConnectionTypeFieldLogoURL)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionType) SetName(name *string) {
+	v.Name = name
+	v.require(v2ConnectionTypeFieldName)
+}
+
+// SetOauthPrompt sets the OauthPrompt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionType) SetOauthPrompt(oauthPrompt *BackendOauthPrompt) {
+	v.OauthPrompt = oauthPrompt
+	v.require(v2ConnectionTypeFieldOauthPrompt)
+}
+
+// SetUseOauth sets the UseOauth field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionType) SetUseOauth(useOauth *bool) {
+	v.UseOauth = useOauth
+	v.require(v2ConnectionTypeFieldUseOauth)
+}
+
+func (v *V2ConnectionType) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionType
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionType(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionType) MarshalJSON() ([]byte, error) {
+	type embed V2ConnectionType
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2ConnectionType) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2ConnectionTypeResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type V2ConnectionTypeResponseEnvelope struct {
+	Data []*V2ConnectionType `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2ConnectionTypeResponseEnvelope) GetData() []*V2ConnectionType {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2ConnectionTypeResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2ConnectionTypeResponseEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionTypeResponseEnvelope) SetData(data []*V2ConnectionType) {
+	v.Data = data
+	v.require(v2ConnectionTypeResponseEnvelopeFieldData)
+}
+
+func (v *V2ConnectionTypeResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionTypeResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionTypeResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionTypeResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V2ConnectionTypeResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2ConnectionTypeResponseEnvelope) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2ConnectionTypeSchemaFieldID         = big.NewInt(1 << 0)
+	v2ConnectionTypeSchemaFieldLogoURL    = big.NewInt(1 << 1)
+	v2ConnectionTypeSchemaFieldName       = big.NewInt(1 << 2)
+	v2ConnectionTypeSchemaFieldOperations = big.NewInt(1 << 3)
+)
+
+type V2ConnectionTypeSchema struct {
+	ID         *string  `json:"id,omitempty" url:"id,omitempty"`
+	LogoURL    *string  `json:"logo_url,omitempty" url:"logo_url,omitempty"`
+	Name       *string  `json:"name,omitempty" url:"name,omitempty"`
+	Operations []string `json:"operations,omitempty" url:"operations,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2ConnectionTypeSchema) GetID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ID
+}
+
+func (v *V2ConnectionTypeSchema) GetLogoURL() *string {
+	if v == nil {
+		return nil
+	}
+	return v.LogoURL
+}
+
+func (v *V2ConnectionTypeSchema) GetName() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Name
+}
+
+func (v *V2ConnectionTypeSchema) GetOperations() []string {
+	if v == nil {
+		return nil
+	}
+	return v.Operations
+}
+
+func (v *V2ConnectionTypeSchema) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2ConnectionTypeSchema) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionTypeSchema) SetID(id *string) {
+	v.ID = id
+	v.require(v2ConnectionTypeSchemaFieldID)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionTypeSchema) SetLogoURL(logoURL *string) {
+	v.LogoURL = logoURL
+	v.require(v2ConnectionTypeSchemaFieldLogoURL)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionTypeSchema) SetName(name *string) {
+	v.Name = name
+	v.require(v2ConnectionTypeSchemaFieldName)
+}
+
+// SetOperations sets the Operations field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ConnectionTypeSchema) SetOperations(operations []string) {
+	v.Operations = operations
+	v.require(v2ConnectionTypeSchemaFieldOperations)
+}
+
+func (v *V2ConnectionTypeSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ConnectionTypeSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ConnectionTypeSchema(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ConnectionTypeSchema) MarshalJSON() ([]byte, error) {
+	type embed V2ConnectionTypeSchema
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2ConnectionTypeSchema) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2CreateConnectionResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type V2CreateConnectionResponseEnvelope struct {
+	Data *V2CreateConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2CreateConnectionResponseEnvelope) GetData() *V2CreateConnectionResponseSchema {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2CreateConnectionResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2CreateConnectionResponseEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2CreateConnectionResponseEnvelope) SetData(data *V2CreateConnectionResponseSchema) {
+	v.Data = data
+	v.require(v2CreateConnectionResponseEnvelopeFieldData)
+}
+
+func (v *V2CreateConnectionResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2CreateConnectionResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2CreateConnectionResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2CreateConnectionResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V2CreateConnectionResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2CreateConnectionResponseEnvelope) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2CreateConnectionResponseSchemaFieldAuthCode            = big.NewInt(1 << 0)
+	v2CreateConnectionResponseSchemaFieldAuthURL             = big.NewInt(1 << 1)
+	v2CreateConnectionResponseSchemaFieldConfiguration       = big.NewInt(1 << 2)
+	v2CreateConnectionResponseSchemaFieldHealthcheckInterval = big.NewInt(1 << 3)
+	v2CreateConnectionResponseSchemaFieldID                  = big.NewInt(1 << 4)
+	v2CreateConnectionResponseSchemaFieldName                = big.NewInt(1 << 5)
+	v2CreateConnectionResponseSchemaFieldOrganizationID      = big.NewInt(1 << 6)
+	v2CreateConnectionResponseSchemaFieldPolicies            = big.NewInt(1 << 7)
+	v2CreateConnectionResponseSchemaFieldSaved               = big.NewInt(1 << 8)
+	v2CreateConnectionResponseSchemaFieldStatus              = big.NewInt(1 << 9)
+	v2CreateConnectionResponseSchemaFieldStatusError         = big.NewInt(1 << 10)
+	v2CreateConnectionResponseSchemaFieldType                = big.NewInt(1 << 11)
+)
+
+type V2CreateConnectionResponseSchema struct {
+	// Code to enter in order to complete connection authentication.
+	AuthCode *string `json:"auth_code,omitempty" url:"auth_code,omitempty"`
+	// URL to visit to complete connection authentication.
+	AuthURL       *string        `json:"auth_url,omitempty" url:"auth_url,omitempty"`
+	Configuration map[string]any `json:"configuration,omitempty" url:"configuration,omitempty"`
+	// Interval for connection health checking.
+	HealthcheckInterval *string                 `json:"healthcheck_interval,omitempty" url:"healthcheck_interval,omitempty"`
+	ID                  *string                 `json:"id,omitempty" url:"id,omitempty"`
+	Name                *string                 `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationID      *string                 `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies            []string                `json:"policies,omitempty" url:"policies,omitempty"`
+	Saved               *bool                   `json:"saved,omitempty" url:"saved,omitempty"`
+	Status              *string                 `json:"status,omitempty" url:"status,omitempty"`
+	StatusError         *string                 `json:"status_error,omitempty" url:"status_error,omitempty"`
+	Type                *V2ConnectionTypeSchema `json:"type,omitempty" url:"type,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2CreateConnectionResponseSchema) GetAuthCode() *string {
+	if v == nil {
+		return nil
+	}
+	return v.AuthCode
+}
+
+func (v *V2CreateConnectionResponseSchema) GetAuthURL() *string {
+	if v == nil {
+		return nil
+	}
+	return v.AuthURL
+}
+
+func (v *V2CreateConnectionResponseSchema) GetConfiguration() map[string]any {
+	if v == nil {
+		return nil
+	}
+	return v.Configuration
+}
+
+func (v *V2CreateConnectionResponseSchema) GetHealthcheckInterval() *string {
+	if v == nil {
+		return nil
+	}
+	return v.HealthcheckInterval
+}
+
+func (v *V2CreateConnectionResponseSchema) GetID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ID
+}
+
+func (v *V2CreateConnectionResponseSchema) GetName() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Name
+}
+
+func (v *V2CreateConnectionResponseSchema) GetOrganizationID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.OrganizationID
+}
+
+func (v *V2CreateConnectionResponseSchema) GetPolicies() []string {
+	if v == nil {
+		return nil
+	}
+	return v.Policies
+}
+
+func (v *V2CreateConnectionResponseSchema) GetSaved() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.Saved
+}
+
+func (v *V2CreateConnectionResponseSchema) GetStatus() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Status
+}
+
+func (v *V2CreateConnectionResponseSchema) GetStatusError() *string {
+	if v == nil {
+		return nil
+	}
+	return v.StatusError
+}
+
+func (v *V2CreateConnectionResponseSchema) GetType() *V2ConnectionTypeSchema {
+	if v == nil {
+		return nil
+	}
+	return v.Type
+}
+
+func (v *V2CreateConnectionResponseSchema) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2CreateConnectionResponseSchema) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetAuthCode sets the AuthCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2CreateConnectionResponseSchema) SetAuthCode(authCode *string) {
+	v.AuthCode = authCode
+	v.require(v2CreateConnectionResponseSchemaFieldAuthCode)
+}
+
+// SetAuthURL sets the AuthURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2CreateConnectionResponseSchema) SetAuthURL(authURL *string) {
+	v.AuthURL = authURL
+	v.require(v2CreateConnectionResponseSchemaFieldAuthURL)
+}
+
+// SetConfiguration sets the Configuration field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2CreateConnectionResponseSchema) SetConfiguration(configuration map[string]any) {
+	v.Configuration = configuration
+	v.require(v2CreateConnectionResponseSchemaFieldConfiguration)
+}
+
+// SetHealthcheckInterval sets the HealthcheckInterval field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2CreateConnectionResponseSchema) SetHealthcheckInterval(healthcheckInterval *string) {
+	v.HealthcheckInterval = healthcheckInterval
+	v.require(v2CreateConnectionResponseSchemaFieldHealthcheckInterval)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2CreateConnectionResponseSchema) SetID(id *string) {
+	v.ID = id
+	v.require(v2CreateConnectionResponseSchemaFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2CreateConnectionResponseSchema) SetName(name *string) {
+	v.Name = name
+	v.require(v2CreateConnectionResponseSchemaFieldName)
+}
+
+// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2CreateConnectionResponseSchema) SetOrganizationID(organizationID *string) {
+	v.OrganizationID = organizationID
+	v.require(v2CreateConnectionResponseSchemaFieldOrganizationID)
+}
+
+// SetPolicies sets the Policies field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2CreateConnectionResponseSchema) SetPolicies(policies []string) {
+	v.Policies = policies
+	v.require(v2CreateConnectionResponseSchemaFieldPolicies)
+}
+
+// SetSaved sets the Saved field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2CreateConnectionResponseSchema) SetSaved(saved *bool) {
+	v.Saved = saved
+	v.require(v2CreateConnectionResponseSchemaFieldSaved)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2CreateConnectionResponseSchema) SetStatus(status *string) {
+	v.Status = status
+	v.require(v2CreateConnectionResponseSchemaFieldStatus)
+}
+
+// SetStatusError sets the StatusError field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2CreateConnectionResponseSchema) SetStatusError(statusError *string) {
+	v.StatusError = statusError
+	v.require(v2CreateConnectionResponseSchemaFieldStatusError)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2CreateConnectionResponseSchema) SetType(type_ *V2ConnectionTypeSchema) {
+	v.Type = type_
+	v.require(v2CreateConnectionResponseSchemaFieldType)
+}
+
+func (v *V2CreateConnectionResponseSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2CreateConnectionResponseSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2CreateConnectionResponseSchema(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2CreateConnectionResponseSchema) MarshalJSON() ([]byte, error) {
+	type embed V2CreateConnectionResponseSchema
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2CreateConnectionResponseSchema) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2CreateSharedConnectionResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type V2CreateSharedConnectionResponseEnvelope struct {
+	Data *V2CreateSharedConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2CreateSharedConnectionResponseEnvelope) GetData() *V2CreateSharedConnectionResponseSchema {
 	if v == nil {
 		return nil
 	}
@@ -3681,7 +3411,7 @@ func (v *V2CreateSharedConnectionResponseEnvelope) require(field *big.Int) {
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2CreateSharedConnectionResponseEnvelope) SetData(data *CreateSharedConnectionResponseSchema) {
+func (v *V2CreateSharedConnectionResponseEnvelope) SetData(data *V2CreateSharedConnectionResponseSchema) {
 	v.Data = data
 	v.require(v2CreateSharedConnectionResponseEnvelopeFieldData)
 }
@@ -3728,4 +3458,274 @@ func (v *V2CreateSharedConnectionResponseEnvelope) String() string {
 	return fmt.Sprintf("%#v", v)
 }
 
+var (
+	v2CreateSharedConnectionResponseSchemaFieldID = big.NewInt(1 << 0)
+)
+
+type V2CreateSharedConnectionResponseSchema struct {
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2CreateSharedConnectionResponseSchema) GetID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ID
+}
+
+func (v *V2CreateSharedConnectionResponseSchema) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2CreateSharedConnectionResponseSchema) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2CreateSharedConnectionResponseSchema) SetID(id *string) {
+	v.ID = id
+	v.require(v2CreateSharedConnectionResponseSchemaFieldID)
+}
+
+func (v *V2CreateSharedConnectionResponseSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2CreateSharedConnectionResponseSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2CreateSharedConnectionResponseSchema(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2CreateSharedConnectionResponseSchema) MarshalJSON() ([]byte, error) {
+	type embed V2CreateSharedConnectionResponseSchema
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2CreateSharedConnectionResponseSchema) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
 type V2OrderedMapStringGithubComInvopopJsonschemaSchema = map[string]any
+
+var (
+	v3ConnectCardResponseFieldRedirectURL = big.NewInt(1 << 0)
+	v3ConnectCardResponseFieldToken       = big.NewInt(1 << 1)
+)
+
+type V3ConnectCardResponse struct {
+	// URL to redirect the user to in order to create the new connection.
+	RedirectURL *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
+	// Opaque single-use token identifying the Connect session.
+	Token *string `json:"token,omitempty" url:"token,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V3ConnectCardResponse) GetRedirectURL() *string {
+	if v == nil {
+		return nil
+	}
+	return v.RedirectURL
+}
+
+func (v *V3ConnectCardResponse) GetToken() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Token
+}
+
+func (v *V3ConnectCardResponse) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V3ConnectCardResponse) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetRedirectURL sets the RedirectURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3ConnectCardResponse) SetRedirectURL(redirectURL *string) {
+	v.RedirectURL = redirectURL
+	v.require(v3ConnectCardResponseFieldRedirectURL)
+}
+
+// SetToken sets the Token field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3ConnectCardResponse) SetToken(token *string) {
+	v.Token = token
+	v.require(v3ConnectCardResponseFieldToken)
+}
+
+func (v *V3ConnectCardResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler V3ConnectCardResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V3ConnectCardResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V3ConnectCardResponse) MarshalJSON() ([]byte, error) {
+	type embed V3ConnectCardResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V3ConnectCardResponse) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v3ConnectCardResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type V3ConnectCardResponseEnvelope struct {
+	Data *V3ConnectCardResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V3ConnectCardResponseEnvelope) GetData() *V3ConnectCardResponse {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V3ConnectCardResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V3ConnectCardResponseEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3ConnectCardResponseEnvelope) SetData(data *V3ConnectCardResponse) {
+	v.Data = data
+	v.require(v3ConnectCardResponseEnvelopeFieldData)
+}
+
+func (v *V3ConnectCardResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V3ConnectCardResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V3ConnectCardResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V3ConnectCardResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V3ConnectCardResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V3ConnectCardResponseEnvelope) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}

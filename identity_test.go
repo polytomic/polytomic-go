@@ -9,10 +9,10 @@ import (
 	testing "testing"
 )
 
-func TestSettersGetIdentityResponseEnvelope(t *testing.T) {
+func TestSettersV2GetIdentityResponseEnvelope(t *testing.T) {
 	t.Run("SetData", func(t *testing.T) {
-		obj := &GetIdentityResponseEnvelope{}
-		var fernTestValueData *GetIdentityResponseSchema
+		obj := &V2GetIdentityResponseEnvelope{}
+		var fernTestValueData *V2GetIdentityResponseSchema
 		obj.SetData(fernTestValueData)
 		assert.Equal(t, fernTestValueData, obj.Data)
 		assert.NotNil(t, obj.explicitFields)
@@ -20,12 +20,12 @@ func TestSettersGetIdentityResponseEnvelope(t *testing.T) {
 
 }
 
-func TestGettersGetIdentityResponseEnvelope(t *testing.T) {
+func TestGettersV2GetIdentityResponseEnvelope(t *testing.T) {
 	t.Run("GetData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseEnvelope{}
-		var expected *GetIdentityResponseSchema
+		obj := &V2GetIdentityResponseEnvelope{}
+		var expected *V2GetIdentityResponseSchema
 		obj.Data = expected
 
 		// Act & Assert
@@ -35,7 +35,7 @@ func TestGettersGetIdentityResponseEnvelope(t *testing.T) {
 	t.Run("GetData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseEnvelope{}
+		obj := &V2GetIdentityResponseEnvelope{}
 		obj.Data = nil
 
 		// Act & Assert
@@ -44,7 +44,7 @@ func TestGettersGetIdentityResponseEnvelope(t *testing.T) {
 
 	t.Run("GetData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetIdentityResponseEnvelope
+		var obj *V2GetIdentityResponseEnvelope
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -56,12 +56,12 @@ func TestGettersGetIdentityResponseEnvelope(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitGetIdentityResponseEnvelope(t *testing.T) {
+func TestSettersMarkExplicitV2GetIdentityResponseEnvelope(t *testing.T) {
 	t.Run("SetData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseEnvelope{}
-		var fernTestValueData *GetIdentityResponseSchema
+		obj := &V2GetIdentityResponseEnvelope{}
+		var fernTestValueData *V2GetIdentityResponseSchema
 
 		// Act
 		obj.SetData(fernTestValueData)
@@ -90,9 +90,9 @@ func TestSettersMarkExplicitGetIdentityResponseEnvelope(t *testing.T) {
 
 }
 
-func TestSettersGetIdentityResponseSchema(t *testing.T) {
+func TestSettersV2GetIdentityResponseSchema(t *testing.T) {
 	t.Run("SetEmail", func(t *testing.T) {
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueEmail *string
 		obj.SetEmail(fernTestValueEmail)
 		assert.Equal(t, fernTestValueEmail, obj.Email)
@@ -100,7 +100,7 @@ func TestSettersGetIdentityResponseSchema(t *testing.T) {
 	})
 
 	t.Run("SetID", func(t *testing.T) {
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueID *string
 		obj.SetID(fernTestValueID)
 		assert.Equal(t, fernTestValueID, obj.ID)
@@ -108,7 +108,7 @@ func TestSettersGetIdentityResponseSchema(t *testing.T) {
 	})
 
 	t.Run("SetIsOrganization", func(t *testing.T) {
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueIsOrganization *bool
 		obj.SetIsOrganization(fernTestValueIsOrganization)
 		assert.Equal(t, fernTestValueIsOrganization, obj.IsOrganization)
@@ -116,7 +116,7 @@ func TestSettersGetIdentityResponseSchema(t *testing.T) {
 	})
 
 	t.Run("SetIsPartner", func(t *testing.T) {
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueIsPartner *bool
 		obj.SetIsPartner(fernTestValueIsPartner)
 		assert.Equal(t, fernTestValueIsPartner, obj.IsPartner)
@@ -124,7 +124,7 @@ func TestSettersGetIdentityResponseSchema(t *testing.T) {
 	})
 
 	t.Run("SetIsSystem", func(t *testing.T) {
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueIsSystem *bool
 		obj.SetIsSystem(fernTestValueIsSystem)
 		assert.Equal(t, fernTestValueIsSystem, obj.IsSystem)
@@ -132,7 +132,7 @@ func TestSettersGetIdentityResponseSchema(t *testing.T) {
 	})
 
 	t.Run("SetIsUser", func(t *testing.T) {
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueIsUser *bool
 		obj.SetIsUser(fernTestValueIsUser)
 		assert.Equal(t, fernTestValueIsUser, obj.IsUser)
@@ -140,7 +140,7 @@ func TestSettersGetIdentityResponseSchema(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -148,7 +148,7 @@ func TestSettersGetIdentityResponseSchema(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationName", func(t *testing.T) {
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueOrganizationName *string
 		obj.SetOrganizationName(fernTestValueOrganizationName)
 		assert.Equal(t, fernTestValueOrganizationName, obj.OrganizationName)
@@ -156,7 +156,7 @@ func TestSettersGetIdentityResponseSchema(t *testing.T) {
 	})
 
 	t.Run("SetRole", func(t *testing.T) {
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueRole *string
 		obj.SetRole(fernTestValueRole)
 		assert.Equal(t, fernTestValueRole, obj.Role)
@@ -165,11 +165,11 @@ func TestSettersGetIdentityResponseSchema(t *testing.T) {
 
 }
 
-func TestGettersGetIdentityResponseSchema(t *testing.T) {
+func TestGettersV2GetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetEmail", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var expected *string
 		obj.Email = expected
 
@@ -180,7 +180,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetEmail_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		obj.Email = nil
 
 		// Act & Assert
@@ -189,7 +189,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 
 	t.Run("GetEmail_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetIdentityResponseSchema
+		var obj *V2GetIdentityResponseSchema
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -202,7 +202,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var expected *string
 		obj.ID = expected
 
@@ -213,7 +213,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		obj.ID = nil
 
 		// Act & Assert
@@ -222,7 +222,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 
 	t.Run("GetID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetIdentityResponseSchema
+		var obj *V2GetIdentityResponseSchema
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -235,7 +235,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetIsOrganization", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var expected *bool
 		obj.IsOrganization = expected
 
@@ -246,7 +246,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetIsOrganization_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		obj.IsOrganization = nil
 
 		// Act & Assert
@@ -255,7 +255,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 
 	t.Run("GetIsOrganization_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetIdentityResponseSchema
+		var obj *V2GetIdentityResponseSchema
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -268,7 +268,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetIsPartner", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var expected *bool
 		obj.IsPartner = expected
 
@@ -279,7 +279,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetIsPartner_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		obj.IsPartner = nil
 
 		// Act & Assert
@@ -288,7 +288,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 
 	t.Run("GetIsPartner_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetIdentityResponseSchema
+		var obj *V2GetIdentityResponseSchema
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -301,7 +301,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetIsSystem", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var expected *bool
 		obj.IsSystem = expected
 
@@ -312,7 +312,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetIsSystem_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		obj.IsSystem = nil
 
 		// Act & Assert
@@ -321,7 +321,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 
 	t.Run("GetIsSystem_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetIdentityResponseSchema
+		var obj *V2GetIdentityResponseSchema
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -334,7 +334,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetIsUser", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var expected *bool
 		obj.IsUser = expected
 
@@ -345,7 +345,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetIsUser_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		obj.IsUser = nil
 
 		// Act & Assert
@@ -354,7 +354,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 
 	t.Run("GetIsUser_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetIdentityResponseSchema
+		var obj *V2GetIdentityResponseSchema
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -367,7 +367,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetOrganizationID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var expected *string
 		obj.OrganizationID = expected
 
@@ -378,7 +378,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetOrganizationID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		obj.OrganizationID = nil
 
 		// Act & Assert
@@ -387,7 +387,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 
 	t.Run("GetOrganizationID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetIdentityResponseSchema
+		var obj *V2GetIdentityResponseSchema
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -400,7 +400,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetOrganizationName", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var expected *string
 		obj.OrganizationName = expected
 
@@ -411,7 +411,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetOrganizationName_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		obj.OrganizationName = nil
 
 		// Act & Assert
@@ -420,7 +420,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 
 	t.Run("GetOrganizationName_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetIdentityResponseSchema
+		var obj *V2GetIdentityResponseSchema
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -433,7 +433,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetRole", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var expected *string
 		obj.Role = expected
 
@@ -444,7 +444,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetRole_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		obj.Role = nil
 
 		// Act & Assert
@@ -453,7 +453,7 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 
 	t.Run("GetRole_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetIdentityResponseSchema
+		var obj *V2GetIdentityResponseSchema
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -465,11 +465,11 @@ func TestGettersGetIdentityResponseSchema(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitGetIdentityResponseSchema(t *testing.T) {
+func TestSettersMarkExplicitV2GetIdentityResponseSchema(t *testing.T) {
 	t.Run("SetEmail_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueEmail *string
 
 		// Act
@@ -500,7 +500,7 @@ func TestSettersMarkExplicitGetIdentityResponseSchema(t *testing.T) {
 	t.Run("SetID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueID *string
 
 		// Act
@@ -531,7 +531,7 @@ func TestSettersMarkExplicitGetIdentityResponseSchema(t *testing.T) {
 	t.Run("SetIsOrganization_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueIsOrganization *bool
 
 		// Act
@@ -562,7 +562,7 @@ func TestSettersMarkExplicitGetIdentityResponseSchema(t *testing.T) {
 	t.Run("SetIsPartner_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueIsPartner *bool
 
 		// Act
@@ -593,7 +593,7 @@ func TestSettersMarkExplicitGetIdentityResponseSchema(t *testing.T) {
 	t.Run("SetIsSystem_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueIsSystem *bool
 
 		// Act
@@ -624,7 +624,7 @@ func TestSettersMarkExplicitGetIdentityResponseSchema(t *testing.T) {
 	t.Run("SetIsUser_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueIsUser *bool
 
 		// Act
@@ -655,7 +655,7 @@ func TestSettersMarkExplicitGetIdentityResponseSchema(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -686,7 +686,7 @@ func TestSettersMarkExplicitGetIdentityResponseSchema(t *testing.T) {
 	t.Run("SetOrganizationName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueOrganizationName *string
 
 		// Act
@@ -717,7 +717,7 @@ func TestSettersMarkExplicitGetIdentityResponseSchema(t *testing.T) {
 	t.Run("SetRole_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		var fernTestValueRole *string
 
 		// Act
@@ -747,11 +747,11 @@ func TestSettersMarkExplicitGetIdentityResponseSchema(t *testing.T) {
 
 }
 
-func TestJSONMarshalingGetIdentityResponseEnvelope(t *testing.T) {
+func TestJSONMarshalingV2GetIdentityResponseEnvelope(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseEnvelope{}
+		obj := &V2GetIdentityResponseEnvelope{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -760,31 +760,31 @@ func TestJSONMarshalingGetIdentityResponseEnvelope(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled GetIdentityResponseEnvelope
+		var unmarshaled V2GetIdentityResponseEnvelope
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj GetIdentityResponseEnvelope
+		var obj V2GetIdentityResponseEnvelope
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj GetIdentityResponseEnvelope
+		var obj V2GetIdentityResponseEnvelope
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingGetIdentityResponseSchema(t *testing.T) {
+func TestJSONMarshalingV2GetIdentityResponseSchema(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -793,62 +793,62 @@ func TestJSONMarshalingGetIdentityResponseSchema(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled GetIdentityResponseSchema
+		var unmarshaled V2GetIdentityResponseSchema
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj GetIdentityResponseSchema
+		var obj V2GetIdentityResponseSchema
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj GetIdentityResponseSchema
+		var obj V2GetIdentityResponseSchema
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestStringGetIdentityResponseEnvelope(t *testing.T) {
+func TestStringV2GetIdentityResponseEnvelope(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &GetIdentityResponseEnvelope{}
+		obj := &V2GetIdentityResponseEnvelope{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetIdentityResponseEnvelope
+		var obj *V2GetIdentityResponseEnvelope
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringGetIdentityResponseSchema(t *testing.T) {
+func TestStringV2GetIdentityResponseSchema(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetIdentityResponseSchema
+		var obj *V2GetIdentityResponseSchema
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestExtraPropertiesGetIdentityResponseEnvelope(t *testing.T) {
+func TestExtraPropertiesV2GetIdentityResponseEnvelope(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &GetIdentityResponseEnvelope{}
+		obj := &V2GetIdentityResponseEnvelope{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -862,16 +862,16 @@ func TestExtraPropertiesGetIdentityResponseEnvelope(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetIdentityResponseEnvelope
+		var obj *V2GetIdentityResponseEnvelope
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesGetIdentityResponseSchema(t *testing.T) {
+func TestExtraPropertiesV2GetIdentityResponseSchema(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &GetIdentityResponseSchema{}
+		obj := &V2GetIdentityResponseSchema{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -885,7 +885,7 @@ func TestExtraPropertiesGetIdentityResponseSchema(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetIdentityResponseSchema
+		var obj *V2GetIdentityResponseSchema
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

@@ -9,9 +9,9 @@ import (
 	testing "testing"
 )
 
-func TestSettersCreateUserRequestSchema(t *testing.T) {
+func TestSettersV2CreateUserRequestSchema(t *testing.T) {
 	t.Run("SetEmail", func(t *testing.T) {
-		obj := &CreateUserRequestSchema{}
+		obj := &V2CreateUserRequestSchema{}
 		var fernTestValueEmail string
 		obj.SetEmail(fernTestValueEmail)
 		assert.Equal(t, fernTestValueEmail, obj.Email)
@@ -19,7 +19,7 @@ func TestSettersCreateUserRequestSchema(t *testing.T) {
 	})
 
 	t.Run("SetRole", func(t *testing.T) {
-		obj := &CreateUserRequestSchema{}
+		obj := &V2CreateUserRequestSchema{}
 		var fernTestValueRole *string
 		obj.SetRole(fernTestValueRole)
 		assert.Equal(t, fernTestValueRole, obj.Role)
@@ -27,7 +27,7 @@ func TestSettersCreateUserRequestSchema(t *testing.T) {
 	})
 
 	t.Run("SetRoleIDs", func(t *testing.T) {
-		obj := &CreateUserRequestSchema{}
+		obj := &V2CreateUserRequestSchema{}
 		var fernTestValueRoleIDs []string
 		obj.SetRoleIDs(fernTestValueRoleIDs)
 		assert.Equal(t, fernTestValueRoleIDs, obj.RoleIDs)
@@ -36,11 +36,11 @@ func TestSettersCreateUserRequestSchema(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitCreateUserRequestSchema(t *testing.T) {
+func TestSettersMarkExplicitV2CreateUserRequestSchema(t *testing.T) {
 	t.Run("SetEmail_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateUserRequestSchema{}
+		obj := &V2CreateUserRequestSchema{}
 		var fernTestValueEmail string
 
 		// Act
@@ -71,7 +71,7 @@ func TestSettersMarkExplicitCreateUserRequestSchema(t *testing.T) {
 	t.Run("SetRole_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateUserRequestSchema{}
+		obj := &V2CreateUserRequestSchema{}
 		var fernTestValueRole *string
 
 		// Act
@@ -102,7 +102,7 @@ func TestSettersMarkExplicitCreateUserRequestSchema(t *testing.T) {
 	t.Run("SetRoleIDs_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreateUserRequestSchema{}
+		obj := &V2CreateUserRequestSchema{}
 		var fernTestValueRoleIDs []string
 
 		// Act
@@ -132,9 +132,9 @@ func TestSettersMarkExplicitCreateUserRequestSchema(t *testing.T) {
 
 }
 
-func TestSettersUsersCreateAPIKeyRequest(t *testing.T) {
+func TestSettersCreateAPIKeyUsersRequest(t *testing.T) {
 	t.Run("SetForce", func(t *testing.T) {
-		obj := &UsersCreateAPIKeyRequest{}
+		obj := &CreateAPIKeyUsersRequest{}
 		var fernTestValueForce *bool
 		obj.SetForce(fernTestValueForce)
 		assert.Equal(t, fernTestValueForce, obj.Force)
@@ -143,11 +143,11 @@ func TestSettersUsersCreateAPIKeyRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitUsersCreateAPIKeyRequest(t *testing.T) {
+func TestSettersMarkExplicitCreateAPIKeyUsersRequest(t *testing.T) {
 	t.Run("SetForce_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UsersCreateAPIKeyRequest{}
+		obj := &CreateAPIKeyUsersRequest{}
 		var fernTestValueForce *bool
 
 		// Act
@@ -177,9 +177,9 @@ func TestSettersMarkExplicitUsersCreateAPIKeyRequest(t *testing.T) {
 
 }
 
-func TestSettersUpdateUserRequestSchema(t *testing.T) {
+func TestSettersV2UpdateUserRequestSchema(t *testing.T) {
 	t.Run("SetEmail", func(t *testing.T) {
-		obj := &UpdateUserRequestSchema{}
+		obj := &V2UpdateUserRequestSchema{}
 		var fernTestValueEmail string
 		obj.SetEmail(fernTestValueEmail)
 		assert.Equal(t, fernTestValueEmail, obj.Email)
@@ -187,7 +187,7 @@ func TestSettersUpdateUserRequestSchema(t *testing.T) {
 	})
 
 	t.Run("SetRole", func(t *testing.T) {
-		obj := &UpdateUserRequestSchema{}
+		obj := &V2UpdateUserRequestSchema{}
 		var fernTestValueRole *string
 		obj.SetRole(fernTestValueRole)
 		assert.Equal(t, fernTestValueRole, obj.Role)
@@ -195,7 +195,7 @@ func TestSettersUpdateUserRequestSchema(t *testing.T) {
 	})
 
 	t.Run("SetRoleIDs", func(t *testing.T) {
-		obj := &UpdateUserRequestSchema{}
+		obj := &V2UpdateUserRequestSchema{}
 		var fernTestValueRoleIDs []string
 		obj.SetRoleIDs(fernTestValueRoleIDs)
 		assert.Equal(t, fernTestValueRoleIDs, obj.RoleIDs)
@@ -204,11 +204,11 @@ func TestSettersUpdateUserRequestSchema(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitUpdateUserRequestSchema(t *testing.T) {
+func TestSettersMarkExplicitV2UpdateUserRequestSchema(t *testing.T) {
 	t.Run("SetEmail_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateUserRequestSchema{}
+		obj := &V2UpdateUserRequestSchema{}
 		var fernTestValueEmail string
 
 		// Act
@@ -239,7 +239,7 @@ func TestSettersMarkExplicitUpdateUserRequestSchema(t *testing.T) {
 	t.Run("SetRole_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateUserRequestSchema{}
+		obj := &V2UpdateUserRequestSchema{}
 		var fernTestValueRole *string
 
 		// Act
@@ -270,7 +270,7 @@ func TestSettersMarkExplicitUpdateUserRequestSchema(t *testing.T) {
 	t.Run("SetRoleIDs_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateUserRequestSchema{}
+		obj := &V2UpdateUserRequestSchema{}
 		var fernTestValueRoleIDs []string
 
 		// Act
@@ -300,9 +300,9 @@ func TestSettersMarkExplicitUpdateUserRequestSchema(t *testing.T) {
 
 }
 
-func TestSettersAPIKeyResponse(t *testing.T) {
+func TestSettersV2APIKeyResponse(t *testing.T) {
 	t.Run("SetValue", func(t *testing.T) {
-		obj := &APIKeyResponse{}
+		obj := &V2APIKeyResponse{}
 		var fernTestValueValue *string
 		obj.SetValue(fernTestValueValue)
 		assert.Equal(t, fernTestValueValue, obj.Value)
@@ -311,11 +311,11 @@ func TestSettersAPIKeyResponse(t *testing.T) {
 
 }
 
-func TestGettersAPIKeyResponse(t *testing.T) {
+func TestGettersV2APIKeyResponse(t *testing.T) {
 	t.Run("GetValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &APIKeyResponse{}
+		obj := &V2APIKeyResponse{}
 		var expected *string
 		obj.Value = expected
 
@@ -326,7 +326,7 @@ func TestGettersAPIKeyResponse(t *testing.T) {
 	t.Run("GetValue_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &APIKeyResponse{}
+		obj := &V2APIKeyResponse{}
 		obj.Value = nil
 
 		// Act & Assert
@@ -335,7 +335,7 @@ func TestGettersAPIKeyResponse(t *testing.T) {
 
 	t.Run("GetValue_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *APIKeyResponse
+		var obj *V2APIKeyResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -347,11 +347,11 @@ func TestGettersAPIKeyResponse(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitAPIKeyResponse(t *testing.T) {
+func TestSettersMarkExplicitV2APIKeyResponse(t *testing.T) {
 	t.Run("SetValue_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &APIKeyResponse{}
+		obj := &V2APIKeyResponse{}
 		var fernTestValueValue *string
 
 		// Act
@@ -381,10 +381,10 @@ func TestSettersMarkExplicitAPIKeyResponse(t *testing.T) {
 
 }
 
-func TestSettersAPIKeyResponseEnvelope(t *testing.T) {
+func TestSettersV2APIKeyResponseEnvelope(t *testing.T) {
 	t.Run("SetData", func(t *testing.T) {
-		obj := &APIKeyResponseEnvelope{}
-		var fernTestValueData *APIKeyResponse
+		obj := &V2APIKeyResponseEnvelope{}
+		var fernTestValueData *V2APIKeyResponse
 		obj.SetData(fernTestValueData)
 		assert.Equal(t, fernTestValueData, obj.Data)
 		assert.NotNil(t, obj.explicitFields)
@@ -392,12 +392,12 @@ func TestSettersAPIKeyResponseEnvelope(t *testing.T) {
 
 }
 
-func TestGettersAPIKeyResponseEnvelope(t *testing.T) {
+func TestGettersV2APIKeyResponseEnvelope(t *testing.T) {
 	t.Run("GetData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &APIKeyResponseEnvelope{}
-		var expected *APIKeyResponse
+		obj := &V2APIKeyResponseEnvelope{}
+		var expected *V2APIKeyResponse
 		obj.Data = expected
 
 		// Act & Assert
@@ -407,7 +407,7 @@ func TestGettersAPIKeyResponseEnvelope(t *testing.T) {
 	t.Run("GetData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &APIKeyResponseEnvelope{}
+		obj := &V2APIKeyResponseEnvelope{}
 		obj.Data = nil
 
 		// Act & Assert
@@ -416,7 +416,7 @@ func TestGettersAPIKeyResponseEnvelope(t *testing.T) {
 
 	t.Run("GetData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *APIKeyResponseEnvelope
+		var obj *V2APIKeyResponseEnvelope
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -428,12 +428,12 @@ func TestGettersAPIKeyResponseEnvelope(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitAPIKeyResponseEnvelope(t *testing.T) {
+func TestSettersMarkExplicitV2APIKeyResponseEnvelope(t *testing.T) {
 	t.Run("SetData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &APIKeyResponseEnvelope{}
-		var fernTestValueData *APIKeyResponse
+		obj := &V2APIKeyResponseEnvelope{}
+		var fernTestValueData *V2APIKeyResponse
 
 		// Act
 		obj.SetData(fernTestValueData)
@@ -462,10 +462,10 @@ func TestSettersMarkExplicitAPIKeyResponseEnvelope(t *testing.T) {
 
 }
 
-func TestSettersListUsersEnvelope(t *testing.T) {
+func TestSettersV2ListUsersEnvelope(t *testing.T) {
 	t.Run("SetData", func(t *testing.T) {
-		obj := &ListUsersEnvelope{}
-		var fernTestValueData []*User
+		obj := &V2ListUsersEnvelope{}
+		var fernTestValueData []*V2User
 		obj.SetData(fernTestValueData)
 		assert.Equal(t, fernTestValueData, obj.Data)
 		assert.NotNil(t, obj.explicitFields)
@@ -473,12 +473,12 @@ func TestSettersListUsersEnvelope(t *testing.T) {
 
 }
 
-func TestGettersListUsersEnvelope(t *testing.T) {
+func TestGettersV2ListUsersEnvelope(t *testing.T) {
 	t.Run("GetData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ListUsersEnvelope{}
-		var expected []*User
+		obj := &V2ListUsersEnvelope{}
+		var expected []*V2User
 		obj.Data = expected
 
 		// Act & Assert
@@ -488,7 +488,7 @@ func TestGettersListUsersEnvelope(t *testing.T) {
 	t.Run("GetData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ListUsersEnvelope{}
+		obj := &V2ListUsersEnvelope{}
 		obj.Data = nil
 
 		// Act & Assert
@@ -497,7 +497,7 @@ func TestGettersListUsersEnvelope(t *testing.T) {
 
 	t.Run("GetData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ListUsersEnvelope
+		var obj *V2ListUsersEnvelope
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -509,12 +509,12 @@ func TestGettersListUsersEnvelope(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitListUsersEnvelope(t *testing.T) {
+func TestSettersMarkExplicitV2ListUsersEnvelope(t *testing.T) {
 	t.Run("SetData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ListUsersEnvelope{}
-		var fernTestValueData []*User
+		obj := &V2ListUsersEnvelope{}
+		var fernTestValueData []*V2User
 
 		// Act
 		obj.SetData(fernTestValueData)
@@ -543,9 +543,9 @@ func TestSettersMarkExplicitListUsersEnvelope(t *testing.T) {
 
 }
 
-func TestSettersUser(t *testing.T) {
+func TestSettersV2User(t *testing.T) {
 	t.Run("SetEmail", func(t *testing.T) {
-		obj := &User{}
+		obj := &V2User{}
 		var fernTestValueEmail *string
 		obj.SetEmail(fernTestValueEmail)
 		assert.Equal(t, fernTestValueEmail, obj.Email)
@@ -553,7 +553,7 @@ func TestSettersUser(t *testing.T) {
 	})
 
 	t.Run("SetID", func(t *testing.T) {
-		obj := &User{}
+		obj := &V2User{}
 		var fernTestValueID *string
 		obj.SetID(fernTestValueID)
 		assert.Equal(t, fernTestValueID, obj.ID)
@@ -561,7 +561,7 @@ func TestSettersUser(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &User{}
+		obj := &V2User{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -569,7 +569,7 @@ func TestSettersUser(t *testing.T) {
 	})
 
 	t.Run("SetRole", func(t *testing.T) {
-		obj := &User{}
+		obj := &V2User{}
 		var fernTestValueRole *string
 		obj.SetRole(fernTestValueRole)
 		assert.Equal(t, fernTestValueRole, obj.Role)
@@ -577,7 +577,7 @@ func TestSettersUser(t *testing.T) {
 	})
 
 	t.Run("SetRoleIDs", func(t *testing.T) {
-		obj := &User{}
+		obj := &V2User{}
 		var fernTestValueRoleIDs []string
 		obj.SetRoleIDs(fernTestValueRoleIDs)
 		assert.Equal(t, fernTestValueRoleIDs, obj.RoleIDs)
@@ -586,11 +586,11 @@ func TestSettersUser(t *testing.T) {
 
 }
 
-func TestGettersUser(t *testing.T) {
+func TestGettersV2User(t *testing.T) {
 	t.Run("GetEmail", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &User{}
+		obj := &V2User{}
 		var expected *string
 		obj.Email = expected
 
@@ -601,7 +601,7 @@ func TestGettersUser(t *testing.T) {
 	t.Run("GetEmail_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &User{}
+		obj := &V2User{}
 		obj.Email = nil
 
 		// Act & Assert
@@ -610,7 +610,7 @@ func TestGettersUser(t *testing.T) {
 
 	t.Run("GetEmail_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *User
+		var obj *V2User
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -623,7 +623,7 @@ func TestGettersUser(t *testing.T) {
 	t.Run("GetID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &User{}
+		obj := &V2User{}
 		var expected *string
 		obj.ID = expected
 
@@ -634,7 +634,7 @@ func TestGettersUser(t *testing.T) {
 	t.Run("GetID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &User{}
+		obj := &V2User{}
 		obj.ID = nil
 
 		// Act & Assert
@@ -643,7 +643,7 @@ func TestGettersUser(t *testing.T) {
 
 	t.Run("GetID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *User
+		var obj *V2User
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -656,7 +656,7 @@ func TestGettersUser(t *testing.T) {
 	t.Run("GetOrganizationID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &User{}
+		obj := &V2User{}
 		var expected *string
 		obj.OrganizationID = expected
 
@@ -667,7 +667,7 @@ func TestGettersUser(t *testing.T) {
 	t.Run("GetOrganizationID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &User{}
+		obj := &V2User{}
 		obj.OrganizationID = nil
 
 		// Act & Assert
@@ -676,7 +676,7 @@ func TestGettersUser(t *testing.T) {
 
 	t.Run("GetOrganizationID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *User
+		var obj *V2User
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -689,7 +689,7 @@ func TestGettersUser(t *testing.T) {
 	t.Run("GetRole", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &User{}
+		obj := &V2User{}
 		var expected *string
 		obj.Role = expected
 
@@ -700,7 +700,7 @@ func TestGettersUser(t *testing.T) {
 	t.Run("GetRole_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &User{}
+		obj := &V2User{}
 		obj.Role = nil
 
 		// Act & Assert
@@ -709,7 +709,7 @@ func TestGettersUser(t *testing.T) {
 
 	t.Run("GetRole_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *User
+		var obj *V2User
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -722,7 +722,7 @@ func TestGettersUser(t *testing.T) {
 	t.Run("GetRoleIDs", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &User{}
+		obj := &V2User{}
 		var expected []string
 		obj.RoleIDs = expected
 
@@ -733,7 +733,7 @@ func TestGettersUser(t *testing.T) {
 	t.Run("GetRoleIDs_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &User{}
+		obj := &V2User{}
 		obj.RoleIDs = nil
 
 		// Act & Assert
@@ -742,7 +742,7 @@ func TestGettersUser(t *testing.T) {
 
 	t.Run("GetRoleIDs_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *User
+		var obj *V2User
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -754,11 +754,11 @@ func TestGettersUser(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitUser(t *testing.T) {
+func TestSettersMarkExplicitV2User(t *testing.T) {
 	t.Run("SetEmail_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &User{}
+		obj := &V2User{}
 		var fernTestValueEmail *string
 
 		// Act
@@ -789,7 +789,7 @@ func TestSettersMarkExplicitUser(t *testing.T) {
 	t.Run("SetID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &User{}
+		obj := &V2User{}
 		var fernTestValueID *string
 
 		// Act
@@ -820,7 +820,7 @@ func TestSettersMarkExplicitUser(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &User{}
+		obj := &V2User{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -851,7 +851,7 @@ func TestSettersMarkExplicitUser(t *testing.T) {
 	t.Run("SetRole_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &User{}
+		obj := &V2User{}
 		var fernTestValueRole *string
 
 		// Act
@@ -882,7 +882,7 @@ func TestSettersMarkExplicitUser(t *testing.T) {
 	t.Run("SetRoleIDs_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &User{}
+		obj := &V2User{}
 		var fernTestValueRoleIDs []string
 
 		// Act
@@ -912,10 +912,10 @@ func TestSettersMarkExplicitUser(t *testing.T) {
 
 }
 
-func TestSettersUserEnvelope(t *testing.T) {
+func TestSettersV2UserEnvelope(t *testing.T) {
 	t.Run("SetData", func(t *testing.T) {
-		obj := &UserEnvelope{}
-		var fernTestValueData *User
+		obj := &V2UserEnvelope{}
+		var fernTestValueData *V2User
 		obj.SetData(fernTestValueData)
 		assert.Equal(t, fernTestValueData, obj.Data)
 		assert.NotNil(t, obj.explicitFields)
@@ -923,12 +923,12 @@ func TestSettersUserEnvelope(t *testing.T) {
 
 }
 
-func TestGettersUserEnvelope(t *testing.T) {
+func TestGettersV2UserEnvelope(t *testing.T) {
 	t.Run("GetData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UserEnvelope{}
-		var expected *User
+		obj := &V2UserEnvelope{}
+		var expected *V2User
 		obj.Data = expected
 
 		// Act & Assert
@@ -938,7 +938,7 @@ func TestGettersUserEnvelope(t *testing.T) {
 	t.Run("GetData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UserEnvelope{}
+		obj := &V2UserEnvelope{}
 		obj.Data = nil
 
 		// Act & Assert
@@ -947,7 +947,7 @@ func TestGettersUserEnvelope(t *testing.T) {
 
 	t.Run("GetData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *UserEnvelope
+		var obj *V2UserEnvelope
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -959,12 +959,12 @@ func TestGettersUserEnvelope(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitUserEnvelope(t *testing.T) {
+func TestSettersMarkExplicitV2UserEnvelope(t *testing.T) {
 	t.Run("SetData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UserEnvelope{}
-		var fernTestValueData *User
+		obj := &V2UserEnvelope{}
+		var fernTestValueData *V2User
 
 		// Act
 		obj.SetData(fernTestValueData)
@@ -993,11 +993,11 @@ func TestSettersMarkExplicitUserEnvelope(t *testing.T) {
 
 }
 
-func TestJSONMarshalingAPIKeyResponse(t *testing.T) {
+func TestJSONMarshalingV2APIKeyResponse(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &APIKeyResponse{}
+		obj := &V2APIKeyResponse{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -1006,31 +1006,31 @@ func TestJSONMarshalingAPIKeyResponse(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled APIKeyResponse
+		var unmarshaled V2APIKeyResponse
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj APIKeyResponse
+		var obj V2APIKeyResponse
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj APIKeyResponse
+		var obj V2APIKeyResponse
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingAPIKeyResponseEnvelope(t *testing.T) {
+func TestJSONMarshalingV2APIKeyResponseEnvelope(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &APIKeyResponseEnvelope{}
+		obj := &V2APIKeyResponseEnvelope{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -1039,31 +1039,31 @@ func TestJSONMarshalingAPIKeyResponseEnvelope(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled APIKeyResponseEnvelope
+		var unmarshaled V2APIKeyResponseEnvelope
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj APIKeyResponseEnvelope
+		var obj V2APIKeyResponseEnvelope
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj APIKeyResponseEnvelope
+		var obj V2APIKeyResponseEnvelope
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingListUsersEnvelope(t *testing.T) {
+func TestJSONMarshalingV2ListUsersEnvelope(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ListUsersEnvelope{}
+		obj := &V2ListUsersEnvelope{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -1072,31 +1072,31 @@ func TestJSONMarshalingListUsersEnvelope(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled ListUsersEnvelope
+		var unmarshaled V2ListUsersEnvelope
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj ListUsersEnvelope
+		var obj V2ListUsersEnvelope
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj ListUsersEnvelope
+		var obj V2ListUsersEnvelope
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingUser(t *testing.T) {
+func TestJSONMarshalingV2User(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &User{}
+		obj := &V2User{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -1105,31 +1105,31 @@ func TestJSONMarshalingUser(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled User
+		var unmarshaled V2User
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj User
+		var obj V2User
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj User
+		var obj V2User
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingUserEnvelope(t *testing.T) {
+func TestJSONMarshalingV2UserEnvelope(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UserEnvelope{}
+		obj := &V2UserEnvelope{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -1138,110 +1138,110 @@ func TestJSONMarshalingUserEnvelope(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled UserEnvelope
+		var unmarshaled V2UserEnvelope
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj UserEnvelope
+		var obj V2UserEnvelope
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj UserEnvelope
+		var obj V2UserEnvelope
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestStringAPIKeyResponse(t *testing.T) {
+func TestStringV2APIKeyResponse(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &APIKeyResponse{}
+		obj := &V2APIKeyResponse{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *APIKeyResponse
+		var obj *V2APIKeyResponse
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringAPIKeyResponseEnvelope(t *testing.T) {
+func TestStringV2APIKeyResponseEnvelope(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &APIKeyResponseEnvelope{}
+		obj := &V2APIKeyResponseEnvelope{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *APIKeyResponseEnvelope
+		var obj *V2APIKeyResponseEnvelope
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringListUsersEnvelope(t *testing.T) {
+func TestStringV2ListUsersEnvelope(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &ListUsersEnvelope{}
+		obj := &V2ListUsersEnvelope{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ListUsersEnvelope
+		var obj *V2ListUsersEnvelope
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringUser(t *testing.T) {
+func TestStringV2User(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &User{}
+		obj := &V2User{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *User
+		var obj *V2User
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringUserEnvelope(t *testing.T) {
+func TestStringV2UserEnvelope(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &UserEnvelope{}
+		obj := &V2UserEnvelope{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *UserEnvelope
+		var obj *V2UserEnvelope
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestExtraPropertiesAPIKeyResponse(t *testing.T) {
+func TestExtraPropertiesV2APIKeyResponse(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &APIKeyResponse{}
+		obj := &V2APIKeyResponse{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -1255,16 +1255,16 @@ func TestExtraPropertiesAPIKeyResponse(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *APIKeyResponse
+		var obj *V2APIKeyResponse
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesAPIKeyResponseEnvelope(t *testing.T) {
+func TestExtraPropertiesV2APIKeyResponseEnvelope(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &APIKeyResponseEnvelope{}
+		obj := &V2APIKeyResponseEnvelope{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -1278,16 +1278,16 @@ func TestExtraPropertiesAPIKeyResponseEnvelope(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *APIKeyResponseEnvelope
+		var obj *V2APIKeyResponseEnvelope
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesListUsersEnvelope(t *testing.T) {
+func TestExtraPropertiesV2ListUsersEnvelope(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &ListUsersEnvelope{}
+		obj := &V2ListUsersEnvelope{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -1301,16 +1301,16 @@ func TestExtraPropertiesListUsersEnvelope(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ListUsersEnvelope
+		var obj *V2ListUsersEnvelope
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesUser(t *testing.T) {
+func TestExtraPropertiesV2User(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &User{}
+		obj := &V2User{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -1324,16 +1324,16 @@ func TestExtraPropertiesUser(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *User
+		var obj *V2User
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesUserEnvelope(t *testing.T) {
+func TestExtraPropertiesV2UserEnvelope(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &UserEnvelope{}
+		obj := &V2UserEnvelope{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -1347,7 +1347,7 @@ func TestExtraPropertiesUserEnvelope(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *UserEnvelope
+		var obj *V2UserEnvelope
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

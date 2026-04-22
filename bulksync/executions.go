@@ -7,10 +7,10 @@ import (
 )
 
 var (
-	executionsExportLogsRequestFieldNotify = big.NewInt(1 << 0)
+	exportLogsExecutionsRequestFieldNotify = big.NewInt(1 << 0)
 )
 
-type ExecutionsExportLogsRequest struct {
+type ExportLogsExecutionsRequest struct {
 	// Send a notification to the user when the logs are ready for download.
 	Notify *bool `json:"-" url:"notify,omitempty"`
 
@@ -18,7 +18,7 @@ type ExecutionsExportLogsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (e *ExecutionsExportLogsRequest) require(field *big.Int) {
+func (e *ExportLogsExecutionsRequest) require(field *big.Int) {
 	if e.explicitFields == nil {
 		e.explicitFields = big.NewInt(0)
 	}
@@ -27,19 +27,19 @@ func (e *ExecutionsExportLogsRequest) require(field *big.Int) {
 
 // SetNotify sets the Notify field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ExecutionsExportLogsRequest) SetNotify(notify *bool) {
+func (e *ExportLogsExecutionsRequest) SetNotify(notify *bool) {
 	e.Notify = notify
-	e.require(executionsExportLogsRequestFieldNotify)
+	e.require(exportLogsExecutionsRequestFieldNotify)
 }
 
 var (
-	executionsListRequestFieldPageToken    = big.NewInt(1 << 0)
-	executionsListRequestFieldOnlyTerminal = big.NewInt(1 << 1)
-	executionsListRequestFieldAscending    = big.NewInt(1 << 2)
-	executionsListRequestFieldLimit        = big.NewInt(1 << 3)
+	listExecutionsRequestFieldPageToken    = big.NewInt(1 << 0)
+	listExecutionsRequestFieldOnlyTerminal = big.NewInt(1 << 1)
+	listExecutionsRequestFieldAscending    = big.NewInt(1 << 2)
+	listExecutionsRequestFieldLimit        = big.NewInt(1 << 3)
 )
 
-type ExecutionsListRequest struct {
+type ListExecutionsRequest struct {
 	// Pagination cursor returned in the previous response. Omit on the first request.
 	PageToken *string `json:"-" url:"page_token,omitempty"`
 	// When true, only return executions that have finished. Terminal executions are ordered by updated_at.
@@ -53,48 +53,48 @@ type ExecutionsListRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (e *ExecutionsListRequest) require(field *big.Int) {
-	if e.explicitFields == nil {
-		e.explicitFields = big.NewInt(0)
+func (l *ListExecutionsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	e.explicitFields.Or(e.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetPageToken sets the PageToken field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ExecutionsListRequest) SetPageToken(pageToken *string) {
-	e.PageToken = pageToken
-	e.require(executionsListRequestFieldPageToken)
+func (l *ListExecutionsRequest) SetPageToken(pageToken *string) {
+	l.PageToken = pageToken
+	l.require(listExecutionsRequestFieldPageToken)
 }
 
 // SetOnlyTerminal sets the OnlyTerminal field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ExecutionsListRequest) SetOnlyTerminal(onlyTerminal *bool) {
-	e.OnlyTerminal = onlyTerminal
-	e.require(executionsListRequestFieldOnlyTerminal)
+func (l *ListExecutionsRequest) SetOnlyTerminal(onlyTerminal *bool) {
+	l.OnlyTerminal = onlyTerminal
+	l.require(listExecutionsRequestFieldOnlyTerminal)
 }
 
 // SetAscending sets the Ascending field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ExecutionsListRequest) SetAscending(ascending *bool) {
-	e.Ascending = ascending
-	e.require(executionsListRequestFieldAscending)
+func (l *ListExecutionsRequest) SetAscending(ascending *bool) {
+	l.Ascending = ascending
+	l.require(listExecutionsRequestFieldAscending)
 }
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ExecutionsListRequest) SetLimit(limit *int) {
-	e.Limit = limit
-	e.require(executionsListRequestFieldLimit)
+func (l *ListExecutionsRequest) SetLimit(limit *int) {
+	l.Limit = limit
+	l.require(listExecutionsRequestFieldLimit)
 }
 
 var (
-	executionsListStatusRequestFieldAll    = big.NewInt(1 << 0)
-	executionsListStatusRequestFieldActive = big.NewInt(1 << 1)
-	executionsListStatusRequestFieldSyncID = big.NewInt(1 << 2)
+	listStatusExecutionsRequestFieldAll    = big.NewInt(1 << 0)
+	listStatusExecutionsRequestFieldActive = big.NewInt(1 << 1)
+	listStatusExecutionsRequestFieldSyncID = big.NewInt(1 << 2)
 )
 
-type ExecutionsListStatusRequest struct {
+type ListStatusExecutionsRequest struct {
 	// When true, return status for every sync in the caller's organization. Overrides any sync_id values.
 	All *bool `json:"-" url:"all,omitempty"`
 	// When true, return status only for active syncs in the caller's organization. Overrides any sync_id values.
@@ -106,30 +106,30 @@ type ExecutionsListStatusRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (e *ExecutionsListStatusRequest) require(field *big.Int) {
-	if e.explicitFields == nil {
-		e.explicitFields = big.NewInt(0)
+func (l *ListStatusExecutionsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	e.explicitFields.Or(e.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetAll sets the All field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ExecutionsListStatusRequest) SetAll(all *bool) {
-	e.All = all
-	e.require(executionsListStatusRequestFieldAll)
+func (l *ListStatusExecutionsRequest) SetAll(all *bool) {
+	l.All = all
+	l.require(listStatusExecutionsRequestFieldAll)
 }
 
 // SetActive sets the Active field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ExecutionsListStatusRequest) SetActive(active *bool) {
-	e.Active = active
-	e.require(executionsListStatusRequestFieldActive)
+func (l *ListStatusExecutionsRequest) SetActive(active *bool) {
+	l.Active = active
+	l.require(listStatusExecutionsRequestFieldActive)
 }
 
 // SetSyncID sets the SyncID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ExecutionsListStatusRequest) SetSyncID(syncID []*string) {
-	e.SyncID = syncID
-	e.require(executionsListStatusRequestFieldSyncID)
+func (l *ListStatusExecutionsRequest) SetSyncID(syncID []*string) {
+	l.SyncID = syncID
+	l.require(listStatusExecutionsRequestFieldSyncID)
 }

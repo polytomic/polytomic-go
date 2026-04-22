@@ -43,7 +43,7 @@ func (c *Client) List(
 	// Unique identifier of the organization whose users should be listed.
 	orgID string,
 	opts ...option.RequestOption,
-) (*polytomic.ListUsersEnvelope, error) {
+) (*polytomic.V2ListUsersEnvelope, error) {
 	response, err := c.WithRawResponse.List(
 		ctx,
 		orgID,
@@ -64,9 +64,9 @@ func (c *Client) Create(
 	ctx context.Context,
 	// Unique identifier of the organization the user belongs to.
 	orgID string,
-	request *polytomic.CreateUserRequestSchema,
+	request *polytomic.V2CreateUserRequestSchema,
 	opts ...option.RequestOption,
-) (*polytomic.UserEnvelope, error) {
+) (*polytomic.V2UserEnvelope, error) {
 	response, err := c.WithRawResponse.Create(
 		ctx,
 		orgID,
@@ -91,7 +91,7 @@ func (c *Client) Get(
 	// Unique identifier of the user.
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.UserEnvelope, error) {
+) (*polytomic.V2UserEnvelope, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		orgID,
@@ -115,9 +115,9 @@ func (c *Client) Update(
 	orgID string,
 	// Unique identifier of the user to update.
 	id string,
-	request *polytomic.UpdateUserRequestSchema,
+	request *polytomic.V2UpdateUserRequestSchema,
 	opts ...option.RequestOption,
-) (*polytomic.UserEnvelope, error) {
+) (*polytomic.V2UserEnvelope, error) {
 	response, err := c.WithRawResponse.Update(
 		ctx,
 		orgID,
@@ -143,7 +143,7 @@ func (c *Client) Remove(
 	// Unique identifier of the user.
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.UserEnvelope, error) {
+) (*polytomic.V2UserEnvelope, error) {
 	response, err := c.WithRawResponse.Remove(
 		ctx,
 		orgID,
@@ -167,9 +167,9 @@ func (c *Client) CreateAPIKey(
 	orgID string,
 	// Unique identifier of the user the key will be issued for.
 	id string,
-	request *polytomic.UsersCreateAPIKeyRequest,
+	request *polytomic.CreateAPIKeyUsersRequest,
 	opts ...option.RequestOption,
-) (*polytomic.APIKeyResponseEnvelope, error) {
+) (*polytomic.V2APIKeyResponseEnvelope, error) {
 	response, err := c.WithRawResponse.CreateAPIKey(
 		ctx,
 		orgID,

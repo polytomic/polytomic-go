@@ -35,9 +35,9 @@ func (r *RawClient) GetEnrichmentSource(
 	ctx context.Context,
 	// Unique identifier of the connection.
 	id string,
-	request *polytomic.ModelsGetEnrichmentSourceRequest,
+	request *polytomic.GetEnrichmentSourceModelsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.GetModelSyncSourceMetaEnvelope], error) {
+) (*core.Response[*polytomic.V4GetSyncSourceMetaEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -59,7 +59,7 @@ func (r *RawClient) GetEnrichmentSource(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.GetModelSyncSourceMetaEnvelope
+	var response *polytomic.V4GetSyncSourceMetaEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -77,7 +77,7 @@ func (r *RawClient) GetEnrichmentSource(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.GetModelSyncSourceMetaEnvelope]{
+	return &core.Response[*polytomic.V4GetSyncSourceMetaEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -87,7 +87,7 @@ func (r *RawClient) GetEnrichmentSource(
 func (r *RawClient) Post(
 	ctx context.Context,
 	connectionID string,
-	request *polytomic.GetEnrichmentInputFieldsRequest,
+	request *polytomic.V2EnrichmentInputFieldsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.V2GetEnrichmentInputFieldsResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
@@ -133,9 +133,9 @@ func (r *RawClient) Post(
 
 func (r *RawClient) Preview(
 	ctx context.Context,
-	request *polytomic.ModelsPreviewRequest,
+	request *polytomic.PreviewModelsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ModelResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2ModelResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -155,7 +155,7 @@ func (r *RawClient) Preview(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.ModelResponseEnvelope
+	var response *polytomic.V2ModelResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -174,7 +174,7 @@ func (r *RawClient) Preview(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ModelResponseEnvelope]{
+	return &core.Response[*polytomic.V2ModelResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -184,7 +184,7 @@ func (r *RawClient) Preview(
 func (r *RawClient) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ModelListResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2ModelListResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -196,7 +196,7 @@ func (r *RawClient) List(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.ModelListResponseEnvelope
+	var response *polytomic.V2ModelListResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -214,7 +214,7 @@ func (r *RawClient) List(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ModelListResponseEnvelope]{
+	return &core.Response[*polytomic.V2ModelListResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -223,9 +223,9 @@ func (r *RawClient) List(
 
 func (r *RawClient) Create(
 	ctx context.Context,
-	request *polytomic.ModelsCreateRequest,
+	request *polytomic.CreateModelsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ModelResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2ModelResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -245,7 +245,7 @@ func (r *RawClient) Create(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.ModelResponseEnvelope
+	var response *polytomic.V2ModelResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -264,7 +264,7 @@ func (r *RawClient) Create(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ModelResponseEnvelope]{
+	return &core.Response[*polytomic.V2ModelResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -274,9 +274,9 @@ func (r *RawClient) Create(
 func (r *RawClient) Get(
 	ctx context.Context,
 	id string,
-	request *polytomic.ModelsGetRequest,
+	request *polytomic.GetModelsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ModelResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2ModelResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -298,7 +298,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.ModelResponseEnvelope
+	var response *polytomic.V2ModelResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -316,7 +316,7 @@ func (r *RawClient) Get(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ModelResponseEnvelope]{
+	return &core.Response[*polytomic.V2ModelResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -326,9 +326,9 @@ func (r *RawClient) Get(
 func (r *RawClient) Update(
 	ctx context.Context,
 	id string,
-	request *polytomic.UpdateModelRequest,
+	request *polytomic.V2UpdateModelRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ModelResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2ModelResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -351,7 +351,7 @@ func (r *RawClient) Update(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.ModelResponseEnvelope
+	var response *polytomic.V2ModelResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -370,7 +370,7 @@ func (r *RawClient) Update(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ModelResponseEnvelope]{
+	return &core.Response[*polytomic.V2ModelResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -380,7 +380,7 @@ func (r *RawClient) Update(
 func (r *RawClient) Remove(
 	ctx context.Context,
 	id string,
-	request *polytomic.ModelsRemoveRequest,
+	request *polytomic.RemoveModelsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -430,9 +430,9 @@ func (r *RawClient) Remove(
 func (r *RawClient) Sample(
 	ctx context.Context,
 	id string,
-	request *polytomic.ModelsSampleRequest,
+	request *polytomic.SampleModelsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ModelSampleResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2ModelSampleResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -454,7 +454,7 @@ func (r *RawClient) Sample(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.ModelSampleResponseEnvelope
+	var response *polytomic.V2ModelSampleResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -472,7 +472,7 @@ func (r *RawClient) Sample(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ModelSampleResponseEnvelope]{
+	return &core.Response[*polytomic.V2ModelSampleResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

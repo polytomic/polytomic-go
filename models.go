@@ -11,74 +11,74 @@ import (
 )
 
 var (
-	modelsCreateRequestFieldAsync = big.NewInt(1 << 0)
+	createModelsRequestFieldAsync = big.NewInt(1 << 0)
 )
 
-type ModelsCreateRequest struct {
-	Async *bool               `json:"-" url:"async,omitempty"`
-	Body  *CreateModelRequest `json:"-" url:"-"`
+type CreateModelsRequest struct {
+	Async *bool                 `json:"-" url:"async,omitempty"`
+	Body  *V2CreateModelRequest `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (m *ModelsCreateRequest) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
+func (c *CreateModelsRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
 	}
-	m.explicitFields.Or(m.explicitFields, field)
+	c.explicitFields.Or(c.explicitFields, field)
 }
 
 // SetAsync sets the Async field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelsCreateRequest) SetAsync(async *bool) {
-	m.Async = async
-	m.require(modelsCreateRequestFieldAsync)
+func (c *CreateModelsRequest) SetAsync(async *bool) {
+	c.Async = async
+	c.require(createModelsRequestFieldAsync)
 }
 
-func (m *ModelsCreateRequest) UnmarshalJSON(data []byte) error {
-	body := new(CreateModelRequest)
+func (c *CreateModelsRequest) UnmarshalJSON(data []byte) error {
+	body := new(V2CreateModelRequest)
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	m.Body = body
+	c.Body = body
 	return nil
 }
 
-func (m *ModelsCreateRequest) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.Body)
+func (c *CreateModelsRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c.Body)
 }
 
 var (
-	modelsGetRequestFieldAsync = big.NewInt(1 << 0)
+	getModelsRequestFieldAsync = big.NewInt(1 << 0)
 )
 
-type ModelsGetRequest struct {
+type GetModelsRequest struct {
 	Async *bool `json:"-" url:"async,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (m *ModelsGetRequest) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
+func (g *GetModelsRequest) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
 	}
-	m.explicitFields.Or(m.explicitFields, field)
+	g.explicitFields.Or(g.explicitFields, field)
 }
 
 // SetAsync sets the Async field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelsGetRequest) SetAsync(async *bool) {
-	m.Async = async
-	m.require(modelsGetRequestFieldAsync)
+func (g *GetModelsRequest) SetAsync(async *bool) {
+	g.Async = async
+	g.require(getModelsRequestFieldAsync)
 }
 
 var (
-	modelsGetEnrichmentSourceRequestFieldParams = big.NewInt(1 << 0)
+	getEnrichmentSourceModelsRequestFieldParams = big.NewInt(1 << 0)
 )
 
-type ModelsGetEnrichmentSourceRequest struct {
+type GetEnrichmentSourceModelsRequest struct {
 	// Query parameters used to incrementally refine a dependent source configuration. Keys correspond to configuration fields returned by previous calls to this endpoint.
 	Params map[string][]string `json:"-" url:"params,omitempty"`
 
@@ -86,178 +86,178 @@ type ModelsGetEnrichmentSourceRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (m *ModelsGetEnrichmentSourceRequest) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
-	}
-	m.explicitFields.Or(m.explicitFields, field)
-}
-
-// SetParams sets the Params field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelsGetEnrichmentSourceRequest) SetParams(params map[string][]string) {
-	m.Params = params
-	m.require(modelsGetEnrichmentSourceRequestFieldParams)
-}
-
-var (
-	getEnrichmentInputFieldsRequestFieldConfiguration = big.NewInt(1 << 0)
-)
-
-type GetEnrichmentInputFieldsRequest struct {
-	Configuration *V2EnricherConfiguration `json:"configuration,omitempty" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetEnrichmentInputFieldsRequest) require(field *big.Int) {
+func (g *GetEnrichmentSourceModelsRequest) require(field *big.Int) {
 	if g.explicitFields == nil {
 		g.explicitFields = big.NewInt(0)
 	}
 	g.explicitFields.Or(g.explicitFields, field)
 }
 
-// SetConfiguration sets the Configuration field and marks it as non-optional;
+// SetParams sets the Params field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetEnrichmentInputFieldsRequest) SetConfiguration(configuration *V2EnricherConfiguration) {
-	g.Configuration = configuration
-	g.require(getEnrichmentInputFieldsRequestFieldConfiguration)
+func (g *GetEnrichmentSourceModelsRequest) SetParams(params map[string][]string) {
+	g.Params = params
+	g.require(getEnrichmentSourceModelsRequestFieldParams)
 }
 
-func (g *GetEnrichmentInputFieldsRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetEnrichmentInputFieldsRequest
+var (
+	v2EnrichmentInputFieldsRequestFieldConfiguration = big.NewInt(1 << 0)
+)
+
+type V2EnrichmentInputFieldsRequest struct {
+	Configuration *V2EnricherConfiguration `json:"configuration,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (v *V2EnrichmentInputFieldsRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetConfiguration sets the Configuration field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2EnrichmentInputFieldsRequest) SetConfiguration(configuration *V2EnricherConfiguration) {
+	v.Configuration = configuration
+	v.require(v2EnrichmentInputFieldsRequestFieldConfiguration)
+}
+
+func (v *V2EnrichmentInputFieldsRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2EnrichmentInputFieldsRequest
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*g = GetEnrichmentInputFieldsRequest(body)
+	*v = V2EnrichmentInputFieldsRequest(body)
 	return nil
 }
 
-func (g *GetEnrichmentInputFieldsRequest) MarshalJSON() ([]byte, error) {
-	type embed GetEnrichmentInputFieldsRequest
+func (v *V2EnrichmentInputFieldsRequest) MarshalJSON() ([]byte, error) {
+	type embed V2EnrichmentInputFieldsRequest
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	modelsPreviewRequestFieldAsync = big.NewInt(1 << 0)
+	previewModelsRequestFieldAsync = big.NewInt(1 << 0)
 )
 
-type ModelsPreviewRequest struct {
-	Async *bool               `json:"-" url:"async,omitempty"`
-	Body  *CreateModelRequest `json:"-" url:"-"`
+type PreviewModelsRequest struct {
+	Async *bool                 `json:"-" url:"async,omitempty"`
+	Body  *V2CreateModelRequest `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (m *ModelsPreviewRequest) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
+func (p *PreviewModelsRequest) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
 	}
-	m.explicitFields.Or(m.explicitFields, field)
+	p.explicitFields.Or(p.explicitFields, field)
 }
 
 // SetAsync sets the Async field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelsPreviewRequest) SetAsync(async *bool) {
-	m.Async = async
-	m.require(modelsPreviewRequestFieldAsync)
+func (p *PreviewModelsRequest) SetAsync(async *bool) {
+	p.Async = async
+	p.require(previewModelsRequestFieldAsync)
 }
 
-func (m *ModelsPreviewRequest) UnmarshalJSON(data []byte) error {
-	body := new(CreateModelRequest)
+func (p *PreviewModelsRequest) UnmarshalJSON(data []byte) error {
+	body := new(V2CreateModelRequest)
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	m.Body = body
+	p.Body = body
 	return nil
 }
 
-func (m *ModelsPreviewRequest) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.Body)
+func (p *PreviewModelsRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(p.Body)
 }
 
 var (
-	modelsRemoveRequestFieldAsync = big.NewInt(1 << 0)
+	removeModelsRequestFieldAsync = big.NewInt(1 << 0)
 )
 
-type ModelsRemoveRequest struct {
+type RemoveModelsRequest struct {
 	Async *bool `json:"-" url:"async,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (m *ModelsRemoveRequest) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
+func (r *RemoveModelsRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	m.explicitFields.Or(m.explicitFields, field)
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
 // SetAsync sets the Async field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelsRemoveRequest) SetAsync(async *bool) {
-	m.Async = async
-	m.require(modelsRemoveRequestFieldAsync)
+func (r *RemoveModelsRequest) SetAsync(async *bool) {
+	r.Async = async
+	r.require(removeModelsRequestFieldAsync)
 }
 
 var (
-	modelsSampleRequestFieldAsync = big.NewInt(1 << 0)
+	sampleModelsRequestFieldAsync = big.NewInt(1 << 0)
 )
 
-type ModelsSampleRequest struct {
+type SampleModelsRequest struct {
 	Async *bool `json:"-" url:"async,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (m *ModelsSampleRequest) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
+func (s *SampleModelsRequest) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
 	}
-	m.explicitFields.Or(m.explicitFields, field)
+	s.explicitFields.Or(s.explicitFields, field)
 }
 
 // SetAsync sets the Async field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelsSampleRequest) SetAsync(async *bool) {
-	m.Async = async
-	m.require(modelsSampleRequestFieldAsync)
+func (s *SampleModelsRequest) SetAsync(async *bool) {
+	s.Async = async
+	s.require(sampleModelsRequestFieldAsync)
 }
 
 var (
-	updateModelRequestFieldAsync            = big.NewInt(1 << 0)
-	updateModelRequestFieldAdditionalFields = big.NewInt(1 << 1)
-	updateModelRequestFieldConfiguration    = big.NewInt(1 << 2)
-	updateModelRequestFieldConnectionID     = big.NewInt(1 << 3)
-	updateModelRequestFieldEnricher         = big.NewInt(1 << 4)
-	updateModelRequestFieldFields           = big.NewInt(1 << 5)
-	updateModelRequestFieldIdentifier       = big.NewInt(1 << 6)
-	updateModelRequestFieldLabels           = big.NewInt(1 << 7)
-	updateModelRequestFieldName             = big.NewInt(1 << 8)
-	updateModelRequestFieldOrganizationID   = big.NewInt(1 << 9)
-	updateModelRequestFieldPolicies         = big.NewInt(1 << 10)
-	updateModelRequestFieldRefresh          = big.NewInt(1 << 11)
-	updateModelRequestFieldRelations        = big.NewInt(1 << 12)
-	updateModelRequestFieldTrackingColumns  = big.NewInt(1 << 13)
+	v2UpdateModelRequestFieldAsync            = big.NewInt(1 << 0)
+	v2UpdateModelRequestFieldAdditionalFields = big.NewInt(1 << 1)
+	v2UpdateModelRequestFieldConfiguration    = big.NewInt(1 << 2)
+	v2UpdateModelRequestFieldConnectionID     = big.NewInt(1 << 3)
+	v2UpdateModelRequestFieldEnricher         = big.NewInt(1 << 4)
+	v2UpdateModelRequestFieldFields           = big.NewInt(1 << 5)
+	v2UpdateModelRequestFieldIdentifier       = big.NewInt(1 << 6)
+	v2UpdateModelRequestFieldLabels           = big.NewInt(1 << 7)
+	v2UpdateModelRequestFieldName             = big.NewInt(1 << 8)
+	v2UpdateModelRequestFieldOrganizationID   = big.NewInt(1 << 9)
+	v2UpdateModelRequestFieldPolicies         = big.NewInt(1 << 10)
+	v2UpdateModelRequestFieldRefresh          = big.NewInt(1 << 11)
+	v2UpdateModelRequestFieldRelations        = big.NewInt(1 << 12)
+	v2UpdateModelRequestFieldTrackingColumns  = big.NewInt(1 << 13)
 )
 
-type UpdateModelRequest struct {
+type V2UpdateModelRequest struct {
 	Async            *bool                     `json:"-" url:"async,omitempty"`
 	AdditionalFields []*ModelModelFieldRequest `json:"additional_fields,omitempty" url:"-"`
 	Configuration    map[string]any            `json:"configuration" url:"-"`
 	ConnectionID     string                    `json:"connection_id" url:"-"`
-	Enricher         *Enrichment               `json:"enricher,omitempty" url:"-"`
+	Enricher         *V2Enrichment             `json:"enricher,omitempty" url:"-"`
 	Fields           []string                  `json:"fields,omitempty" url:"-"`
 	Identifier       *string                   `json:"identifier,omitempty" url:"-"`
 	Labels           []string                  `json:"labels,omitempty" url:"-"`
@@ -272,627 +272,133 @@ type UpdateModelRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (u *UpdateModelRequest) require(field *big.Int) {
-	if u.explicitFields == nil {
-		u.explicitFields = big.NewInt(0)
+func (v *V2UpdateModelRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	u.explicitFields.Or(u.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetAsync sets the Async field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateModelRequest) SetAsync(async *bool) {
-	u.Async = async
-	u.require(updateModelRequestFieldAsync)
+func (v *V2UpdateModelRequest) SetAsync(async *bool) {
+	v.Async = async
+	v.require(v2UpdateModelRequestFieldAsync)
 }
 
 // SetAdditionalFields sets the AdditionalFields field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateModelRequest) SetAdditionalFields(additionalFields []*ModelModelFieldRequest) {
-	u.AdditionalFields = additionalFields
-	u.require(updateModelRequestFieldAdditionalFields)
+func (v *V2UpdateModelRequest) SetAdditionalFields(additionalFields []*ModelModelFieldRequest) {
+	v.AdditionalFields = additionalFields
+	v.require(v2UpdateModelRequestFieldAdditionalFields)
 }
 
 // SetConfiguration sets the Configuration field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateModelRequest) SetConfiguration(configuration map[string]any) {
-	u.Configuration = configuration
-	u.require(updateModelRequestFieldConfiguration)
+func (v *V2UpdateModelRequest) SetConfiguration(configuration map[string]any) {
+	v.Configuration = configuration
+	v.require(v2UpdateModelRequestFieldConfiguration)
 }
 
 // SetConnectionID sets the ConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateModelRequest) SetConnectionID(connectionID string) {
-	u.ConnectionID = connectionID
-	u.require(updateModelRequestFieldConnectionID)
+func (v *V2UpdateModelRequest) SetConnectionID(connectionID string) {
+	v.ConnectionID = connectionID
+	v.require(v2UpdateModelRequestFieldConnectionID)
 }
 
 // SetEnricher sets the Enricher field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateModelRequest) SetEnricher(enricher *Enrichment) {
-	u.Enricher = enricher
-	u.require(updateModelRequestFieldEnricher)
+func (v *V2UpdateModelRequest) SetEnricher(enricher *V2Enrichment) {
+	v.Enricher = enricher
+	v.require(v2UpdateModelRequestFieldEnricher)
 }
 
 // SetFields sets the Fields field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateModelRequest) SetFields(fields []string) {
-	u.Fields = fields
-	u.require(updateModelRequestFieldFields)
+func (v *V2UpdateModelRequest) SetFields(fields []string) {
+	v.Fields = fields
+	v.require(v2UpdateModelRequestFieldFields)
 }
 
 // SetIdentifier sets the Identifier field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateModelRequest) SetIdentifier(identifier *string) {
-	u.Identifier = identifier
-	u.require(updateModelRequestFieldIdentifier)
+func (v *V2UpdateModelRequest) SetIdentifier(identifier *string) {
+	v.Identifier = identifier
+	v.require(v2UpdateModelRequestFieldIdentifier)
 }
 
 // SetLabels sets the Labels field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateModelRequest) SetLabels(labels []string) {
-	u.Labels = labels
-	u.require(updateModelRequestFieldLabels)
+func (v *V2UpdateModelRequest) SetLabels(labels []string) {
+	v.Labels = labels
+	v.require(v2UpdateModelRequestFieldLabels)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateModelRequest) SetName(name string) {
-	u.Name = name
-	u.require(updateModelRequestFieldName)
+func (v *V2UpdateModelRequest) SetName(name string) {
+	v.Name = name
+	v.require(v2UpdateModelRequestFieldName)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateModelRequest) SetOrganizationID(organizationID *string) {
-	u.OrganizationID = organizationID
-	u.require(updateModelRequestFieldOrganizationID)
+func (v *V2UpdateModelRequest) SetOrganizationID(organizationID *string) {
+	v.OrganizationID = organizationID
+	v.require(v2UpdateModelRequestFieldOrganizationID)
 }
 
 // SetPolicies sets the Policies field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateModelRequest) SetPolicies(policies []string) {
-	u.Policies = policies
-	u.require(updateModelRequestFieldPolicies)
+func (v *V2UpdateModelRequest) SetPolicies(policies []string) {
+	v.Policies = policies
+	v.require(v2UpdateModelRequestFieldPolicies)
 }
 
 // SetRefresh sets the Refresh field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateModelRequest) SetRefresh(refresh *bool) {
-	u.Refresh = refresh
-	u.require(updateModelRequestFieldRefresh)
+func (v *V2UpdateModelRequest) SetRefresh(refresh *bool) {
+	v.Refresh = refresh
+	v.require(v2UpdateModelRequestFieldRefresh)
 }
 
 // SetRelations sets the Relations field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateModelRequest) SetRelations(relations []*ModelRelation) {
-	u.Relations = relations
-	u.require(updateModelRequestFieldRelations)
+func (v *V2UpdateModelRequest) SetRelations(relations []*ModelRelation) {
+	v.Relations = relations
+	v.require(v2UpdateModelRequestFieldRelations)
 }
 
 // SetTrackingColumns sets the TrackingColumns field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateModelRequest) SetTrackingColumns(trackingColumns []string) {
-	u.TrackingColumns = trackingColumns
-	u.require(updateModelRequestFieldTrackingColumns)
+func (v *V2UpdateModelRequest) SetTrackingColumns(trackingColumns []string) {
+	v.TrackingColumns = trackingColumns
+	v.require(v2UpdateModelRequestFieldTrackingColumns)
 }
 
-func (u *UpdateModelRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler UpdateModelRequest
+func (v *V2UpdateModelRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2UpdateModelRequest
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*u = UpdateModelRequest(body)
+	*v = V2UpdateModelRequest(body)
 	return nil
 }
 
-func (u *UpdateModelRequest) MarshalJSON() ([]byte, error) {
-	type embed UpdateModelRequest
+func (v *V2UpdateModelRequest) MarshalJSON() ([]byte, error) {
+	type embed V2UpdateModelRequest
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*u),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
-}
-
-var (
-	createModelRequestFieldAdditionalFields = big.NewInt(1 << 0)
-	createModelRequestFieldConfiguration    = big.NewInt(1 << 1)
-	createModelRequestFieldConnectionID     = big.NewInt(1 << 2)
-	createModelRequestFieldEnricher         = big.NewInt(1 << 3)
-	createModelRequestFieldFields           = big.NewInt(1 << 4)
-	createModelRequestFieldIdentifier       = big.NewInt(1 << 5)
-	createModelRequestFieldLabels           = big.NewInt(1 << 6)
-	createModelRequestFieldName             = big.NewInt(1 << 7)
-	createModelRequestFieldOrganizationID   = big.NewInt(1 << 8)
-	createModelRequestFieldPolicies         = big.NewInt(1 << 9)
-	createModelRequestFieldRelations        = big.NewInt(1 << 10)
-	createModelRequestFieldTrackingColumns  = big.NewInt(1 << 11)
-)
-
-type CreateModelRequest struct {
-	AdditionalFields []*ModelModelFieldRequest `json:"additional_fields,omitempty" url:"additional_fields,omitempty"`
-	Configuration    map[string]any            `json:"configuration" url:"configuration"`
-	ConnectionID     string                    `json:"connection_id" url:"connection_id"`
-	Enricher         *Enrichment               `json:"enricher,omitempty" url:"enricher,omitempty"`
-	Fields           []string                  `json:"fields,omitempty" url:"fields,omitempty"`
-	Identifier       *string                   `json:"identifier,omitempty" url:"identifier,omitempty"`
-	Labels           []string                  `json:"labels,omitempty" url:"labels,omitempty"`
-	Name             string                    `json:"name" url:"name"`
-	OrganizationID   *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies         []string                  `json:"policies,omitempty" url:"policies,omitempty"`
-	Relations        []*ModelRelation          `json:"relations,omitempty" url:"relations,omitempty"`
-	TrackingColumns  []string                  `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *CreateModelRequest) GetAdditionalFields() []*ModelModelFieldRequest {
-	if c == nil {
-		return nil
-	}
-	return c.AdditionalFields
-}
-
-func (c *CreateModelRequest) GetConfiguration() map[string]any {
-	if c == nil {
-		return nil
-	}
-	return c.Configuration
-}
-
-func (c *CreateModelRequest) GetConnectionID() string {
-	if c == nil {
-		return ""
-	}
-	return c.ConnectionID
-}
-
-func (c *CreateModelRequest) GetEnricher() *Enrichment {
-	if c == nil {
-		return nil
-	}
-	return c.Enricher
-}
-
-func (c *CreateModelRequest) GetFields() []string {
-	if c == nil {
-		return nil
-	}
-	return c.Fields
-}
-
-func (c *CreateModelRequest) GetIdentifier() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Identifier
-}
-
-func (c *CreateModelRequest) GetLabels() []string {
-	if c == nil {
-		return nil
-	}
-	return c.Labels
-}
-
-func (c *CreateModelRequest) GetName() string {
-	if c == nil {
-		return ""
-	}
-	return c.Name
-}
-
-func (c *CreateModelRequest) GetOrganizationID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.OrganizationID
-}
-
-func (c *CreateModelRequest) GetPolicies() []string {
-	if c == nil {
-		return nil
-	}
-	return c.Policies
-}
-
-func (c *CreateModelRequest) GetRelations() []*ModelRelation {
-	if c == nil {
-		return nil
-	}
-	return c.Relations
-}
-
-func (c *CreateModelRequest) GetTrackingColumns() []string {
-	if c == nil {
-		return nil
-	}
-	return c.TrackingColumns
-}
-
-func (c *CreateModelRequest) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *CreateModelRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetAdditionalFields sets the AdditionalFields field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateModelRequest) SetAdditionalFields(additionalFields []*ModelModelFieldRequest) {
-	c.AdditionalFields = additionalFields
-	c.require(createModelRequestFieldAdditionalFields)
-}
-
-// SetConfiguration sets the Configuration field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateModelRequest) SetConfiguration(configuration map[string]any) {
-	c.Configuration = configuration
-	c.require(createModelRequestFieldConfiguration)
-}
-
-// SetConnectionID sets the ConnectionID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateModelRequest) SetConnectionID(connectionID string) {
-	c.ConnectionID = connectionID
-	c.require(createModelRequestFieldConnectionID)
-}
-
-// SetEnricher sets the Enricher field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateModelRequest) SetEnricher(enricher *Enrichment) {
-	c.Enricher = enricher
-	c.require(createModelRequestFieldEnricher)
-}
-
-// SetFields sets the Fields field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateModelRequest) SetFields(fields []string) {
-	c.Fields = fields
-	c.require(createModelRequestFieldFields)
-}
-
-// SetIdentifier sets the Identifier field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateModelRequest) SetIdentifier(identifier *string) {
-	c.Identifier = identifier
-	c.require(createModelRequestFieldIdentifier)
-}
-
-// SetLabels sets the Labels field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateModelRequest) SetLabels(labels []string) {
-	c.Labels = labels
-	c.require(createModelRequestFieldLabels)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateModelRequest) SetName(name string) {
-	c.Name = name
-	c.require(createModelRequestFieldName)
-}
-
-// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateModelRequest) SetOrganizationID(organizationID *string) {
-	c.OrganizationID = organizationID
-	c.require(createModelRequestFieldOrganizationID)
-}
-
-// SetPolicies sets the Policies field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateModelRequest) SetPolicies(policies []string) {
-	c.Policies = policies
-	c.require(createModelRequestFieldPolicies)
-}
-
-// SetRelations sets the Relations field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateModelRequest) SetRelations(relations []*ModelRelation) {
-	c.Relations = relations
-	c.require(createModelRequestFieldRelations)
-}
-
-// SetTrackingColumns sets the TrackingColumns field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateModelRequest) SetTrackingColumns(trackingColumns []string) {
-	c.TrackingColumns = trackingColumns
-	c.require(createModelRequestFieldTrackingColumns)
-}
-
-func (c *CreateModelRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateModelRequest
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CreateModelRequest(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CreateModelRequest) MarshalJSON() ([]byte, error) {
-	type embed CreateModelRequest
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *CreateModelRequest) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	enrichmentFieldConfiguration = big.NewInt(1 << 0)
-	enrichmentFieldConnectionID  = big.NewInt(1 << 1)
-	enrichmentFieldEnricherID    = big.NewInt(1 << 2)
-	enrichmentFieldFields        = big.NewInt(1 << 3)
-	enrichmentFieldMappings      = big.NewInt(1 << 4)
-)
-
-type Enrichment struct {
-	Configuration *V2EnricherConfiguration `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionID  *string                  `json:"connection_id,omitempty" url:"connection_id,omitempty"`
-	// Must be provided to update an existing enrichment
-	EnricherID *string `json:"enricher_id,omitempty" url:"enricher_id,omitempty"`
-	// If not provided, all fields will be enabled.
-	Fields   []*ModelField      `json:"fields,omitempty" url:"fields,omitempty"`
-	Mappings *V2EnricherMapping `json:"mappings,omitempty" url:"mappings,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (e *Enrichment) GetConfiguration() *V2EnricherConfiguration {
-	if e == nil {
-		return nil
-	}
-	return e.Configuration
-}
-
-func (e *Enrichment) GetConnectionID() *string {
-	if e == nil {
-		return nil
-	}
-	return e.ConnectionID
-}
-
-func (e *Enrichment) GetEnricherID() *string {
-	if e == nil {
-		return nil
-	}
-	return e.EnricherID
-}
-
-func (e *Enrichment) GetFields() []*ModelField {
-	if e == nil {
-		return nil
-	}
-	return e.Fields
-}
-
-func (e *Enrichment) GetMappings() *V2EnricherMapping {
-	if e == nil {
-		return nil
-	}
-	return e.Mappings
-}
-
-func (e *Enrichment) GetExtraProperties() map[string]interface{} {
-	if e == nil {
-		return nil
-	}
-	return e.extraProperties
-}
-
-func (e *Enrichment) require(field *big.Int) {
-	if e.explicitFields == nil {
-		e.explicitFields = big.NewInt(0)
-	}
-	e.explicitFields.Or(e.explicitFields, field)
-}
-
-// SetConfiguration sets the Configuration field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *Enrichment) SetConfiguration(configuration *V2EnricherConfiguration) {
-	e.Configuration = configuration
-	e.require(enrichmentFieldConfiguration)
-}
-
-// SetConnectionID sets the ConnectionID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *Enrichment) SetConnectionID(connectionID *string) {
-	e.ConnectionID = connectionID
-	e.require(enrichmentFieldConnectionID)
-}
-
-// SetEnricherID sets the EnricherID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *Enrichment) SetEnricherID(enricherID *string) {
-	e.EnricherID = enricherID
-	e.require(enrichmentFieldEnricherID)
-}
-
-// SetFields sets the Fields field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *Enrichment) SetFields(fields []*ModelField) {
-	e.Fields = fields
-	e.require(enrichmentFieldFields)
-}
-
-// SetMappings sets the Mappings field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *Enrichment) SetMappings(mappings *V2EnricherMapping) {
-	e.Mappings = mappings
-	e.require(enrichmentFieldMappings)
-}
-
-func (e *Enrichment) UnmarshalJSON(data []byte) error {
-	type unmarshaler Enrichment
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*e = Enrichment(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *e)
-	if err != nil {
-		return err
-	}
-	e.extraProperties = extraProperties
-	e.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (e *Enrichment) MarshalJSON() ([]byte, error) {
-	type embed Enrichment
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*e),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (e *Enrichment) String() string {
-	if e == nil {
-		return "<nil>"
-	}
-	if len(e.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(e); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", e)
 }
 
 type LabelLabel = map[string]any
-
-var (
-	modelListResponseEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type ModelListResponseEnvelope struct {
-	Data []*ModelResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (m *ModelListResponseEnvelope) GetData() []*ModelResponse {
-	if m == nil {
-		return nil
-	}
-	return m.Data
-}
-
-func (m *ModelListResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if m == nil {
-		return nil
-	}
-	return m.extraProperties
-}
-
-func (m *ModelListResponseEnvelope) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
-	}
-	m.explicitFields.Or(m.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelListResponseEnvelope) SetData(data []*ModelResponse) {
-	m.Data = data
-	m.require(modelListResponseEnvelopeFieldData)
-}
-
-func (m *ModelListResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ModelListResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*m = ModelListResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
-	if err != nil {
-		return err
-	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *ModelListResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed ModelListResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*m),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (m *ModelListResponseEnvelope) String() string {
-	if m == nil {
-		return "<nil>"
-	}
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
 
 var (
 	modelModelFieldRequestFieldExample = big.NewInt(1 << 0)
@@ -1227,45 +733,33 @@ func (m *ModelRelationTo) String() string {
 }
 
 var (
-	modelResponseFieldConfiguration   = big.NewInt(1 << 0)
-	modelResponseFieldConnectionID    = big.NewInt(1 << 1)
-	modelResponseFieldCreatedAt       = big.NewInt(1 << 2)
-	modelResponseFieldCreatedBy       = big.NewInt(1 << 3)
-	modelResponseFieldEnricher        = big.NewInt(1 << 4)
-	modelResponseFieldFields          = big.NewInt(1 << 5)
-	modelResponseFieldID              = big.NewInt(1 << 6)
-	modelResponseFieldIdentifier      = big.NewInt(1 << 7)
-	modelResponseFieldLabels          = big.NewInt(1 << 8)
-	modelResponseFieldName            = big.NewInt(1 << 9)
-	modelResponseFieldOrganizationID  = big.NewInt(1 << 10)
-	modelResponseFieldPolicies        = big.NewInt(1 << 11)
-	modelResponseFieldRelations       = big.NewInt(1 << 12)
-	modelResponseFieldTrackingColumns = big.NewInt(1 << 13)
-	modelResponseFieldType            = big.NewInt(1 << 14)
-	modelResponseFieldUpdatedAt       = big.NewInt(1 << 15)
-	modelResponseFieldUpdatedBy       = big.NewInt(1 << 16)
-	modelResponseFieldVersion         = big.NewInt(1 << 17)
+	v2CreateModelRequestFieldAdditionalFields = big.NewInt(1 << 0)
+	v2CreateModelRequestFieldConfiguration    = big.NewInt(1 << 1)
+	v2CreateModelRequestFieldConnectionID     = big.NewInt(1 << 2)
+	v2CreateModelRequestFieldEnricher         = big.NewInt(1 << 3)
+	v2CreateModelRequestFieldFields           = big.NewInt(1 << 4)
+	v2CreateModelRequestFieldIdentifier       = big.NewInt(1 << 5)
+	v2CreateModelRequestFieldLabels           = big.NewInt(1 << 6)
+	v2CreateModelRequestFieldName             = big.NewInt(1 << 7)
+	v2CreateModelRequestFieldOrganizationID   = big.NewInt(1 << 8)
+	v2CreateModelRequestFieldPolicies         = big.NewInt(1 << 9)
+	v2CreateModelRequestFieldRelations        = big.NewInt(1 << 10)
+	v2CreateModelRequestFieldTrackingColumns  = big.NewInt(1 << 11)
 )
 
-type ModelResponse struct {
-	Configuration   map[string]any `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionID    *string        `json:"connection_id,omitempty" url:"connection_id,omitempty"`
-	CreatedAt       *time.Time     `json:"created_at,omitempty" url:"created_at,omitempty"`
-	CreatedBy       *OutputActor   `json:"created_by,omitempty" url:"created_by,omitempty"`
-	Enricher        *Enrichment    `json:"enricher,omitempty" url:"enricher,omitempty"`
-	Fields          []*ModelField  `json:"fields,omitempty" url:"fields,omitempty"`
-	ID              *string        `json:"id,omitempty" url:"id,omitempty"`
-	Identifier      *string        `json:"identifier,omitempty" url:"identifier,omitempty"`
-	Labels          []LabelLabel   `json:"labels,omitempty" url:"labels,omitempty"`
-	Name            *string        `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationID  *string        `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies        []string       `json:"policies,omitempty" url:"policies,omitempty"`
-	Relations       []*Relation    `json:"relations,omitempty" url:"relations,omitempty"`
-	TrackingColumns []string       `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
-	Type            *string        `json:"type,omitempty" url:"type,omitempty"`
-	UpdatedAt       *time.Time     `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	UpdatedBy       *OutputActor   `json:"updated_by,omitempty" url:"updated_by,omitempty"`
-	Version         *int           `json:"version,omitempty" url:"version,omitempty"`
+type V2CreateModelRequest struct {
+	AdditionalFields []*ModelModelFieldRequest `json:"additional_fields,omitempty" url:"additional_fields,omitempty"`
+	Configuration    map[string]any            `json:"configuration" url:"configuration"`
+	ConnectionID     string                    `json:"connection_id" url:"connection_id"`
+	Enricher         *V2Enrichment             `json:"enricher,omitempty" url:"enricher,omitempty"`
+	Fields           []string                  `json:"fields,omitempty" url:"fields,omitempty"`
+	Identifier       *string                   `json:"identifier,omitempty" url:"identifier,omitempty"`
+	Labels           []string                  `json:"labels,omitempty" url:"labels,omitempty"`
+	Name             string                    `json:"name" url:"name"`
+	OrganizationID   *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies         []string                  `json:"policies,omitempty" url:"policies,omitempty"`
+	Relations        []*ModelRelation          `json:"relations,omitempty" url:"relations,omitempty"`
+	TrackingColumns  []string                  `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1274,824 +768,228 @@ type ModelResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (m *ModelResponse) GetConfiguration() map[string]any {
-	if m == nil {
+func (v *V2CreateModelRequest) GetAdditionalFields() []*ModelModelFieldRequest {
+	if v == nil {
 		return nil
 	}
-	return m.Configuration
+	return v.AdditionalFields
 }
 
-func (m *ModelResponse) GetConnectionID() *string {
-	if m == nil {
+func (v *V2CreateModelRequest) GetConfiguration() map[string]any {
+	if v == nil {
 		return nil
 	}
-	return m.ConnectionID
+	return v.Configuration
 }
 
-func (m *ModelResponse) GetCreatedAt() *time.Time {
-	if m == nil {
+func (v *V2CreateModelRequest) GetConnectionID() string {
+	if v == nil {
+		return ""
+	}
+	return v.ConnectionID
+}
+
+func (v *V2CreateModelRequest) GetEnricher() *V2Enrichment {
+	if v == nil {
 		return nil
 	}
-	return m.CreatedAt
+	return v.Enricher
 }
 
-func (m *ModelResponse) GetCreatedBy() *OutputActor {
-	if m == nil {
+func (v *V2CreateModelRequest) GetFields() []string {
+	if v == nil {
 		return nil
 	}
-	return m.CreatedBy
+	return v.Fields
 }
 
-func (m *ModelResponse) GetEnricher() *Enrichment {
-	if m == nil {
+func (v *V2CreateModelRequest) GetIdentifier() *string {
+	if v == nil {
 		return nil
 	}
-	return m.Enricher
+	return v.Identifier
 }
 
-func (m *ModelResponse) GetFields() []*ModelField {
-	if m == nil {
+func (v *V2CreateModelRequest) GetLabels() []string {
+	if v == nil {
 		return nil
 	}
-	return m.Fields
+	return v.Labels
 }
 
-func (m *ModelResponse) GetID() *string {
-	if m == nil {
+func (v *V2CreateModelRequest) GetName() string {
+	if v == nil {
+		return ""
+	}
+	return v.Name
+}
+
+func (v *V2CreateModelRequest) GetOrganizationID() *string {
+	if v == nil {
 		return nil
 	}
-	return m.ID
+	return v.OrganizationID
 }
 
-func (m *ModelResponse) GetIdentifier() *string {
-	if m == nil {
+func (v *V2CreateModelRequest) GetPolicies() []string {
+	if v == nil {
 		return nil
 	}
-	return m.Identifier
+	return v.Policies
 }
 
-func (m *ModelResponse) GetLabels() []LabelLabel {
-	if m == nil {
+func (v *V2CreateModelRequest) GetRelations() []*ModelRelation {
+	if v == nil {
 		return nil
 	}
-	return m.Labels
+	return v.Relations
 }
 
-func (m *ModelResponse) GetName() *string {
-	if m == nil {
+func (v *V2CreateModelRequest) GetTrackingColumns() []string {
+	if v == nil {
 		return nil
 	}
-	return m.Name
+	return v.TrackingColumns
 }
 
-func (m *ModelResponse) GetOrganizationID() *string {
-	if m == nil {
+func (v *V2CreateModelRequest) GetExtraProperties() map[string]interface{} {
+	if v == nil {
 		return nil
 	}
-	return m.OrganizationID
+	return v.extraProperties
 }
 
-func (m *ModelResponse) GetPolicies() []string {
-	if m == nil {
-		return nil
+func (v *V2CreateModelRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	return m.Policies
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
-func (m *ModelResponse) GetRelations() []*Relation {
-	if m == nil {
-		return nil
-	}
-	return m.Relations
-}
-
-func (m *ModelResponse) GetTrackingColumns() []string {
-	if m == nil {
-		return nil
-	}
-	return m.TrackingColumns
-}
-
-func (m *ModelResponse) GetType() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Type
-}
-
-func (m *ModelResponse) GetUpdatedAt() *time.Time {
-	if m == nil {
-		return nil
-	}
-	return m.UpdatedAt
-}
-
-func (m *ModelResponse) GetUpdatedBy() *OutputActor {
-	if m == nil {
-		return nil
-	}
-	return m.UpdatedBy
-}
-
-func (m *ModelResponse) GetVersion() *int {
-	if m == nil {
-		return nil
-	}
-	return m.Version
-}
-
-func (m *ModelResponse) GetExtraProperties() map[string]interface{} {
-	if m == nil {
-		return nil
-	}
-	return m.extraProperties
-}
-
-func (m *ModelResponse) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
-	}
-	m.explicitFields.Or(m.explicitFields, field)
+// SetAdditionalFields sets the AdditionalFields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2CreateModelRequest) SetAdditionalFields(additionalFields []*ModelModelFieldRequest) {
+	v.AdditionalFields = additionalFields
+	v.require(v2CreateModelRequestFieldAdditionalFields)
 }
 
 // SetConfiguration sets the Configuration field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetConfiguration(configuration map[string]any) {
-	m.Configuration = configuration
-	m.require(modelResponseFieldConfiguration)
+func (v *V2CreateModelRequest) SetConfiguration(configuration map[string]any) {
+	v.Configuration = configuration
+	v.require(v2CreateModelRequestFieldConfiguration)
 }
 
 // SetConnectionID sets the ConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetConnectionID(connectionID *string) {
-	m.ConnectionID = connectionID
-	m.require(modelResponseFieldConnectionID)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetCreatedAt(createdAt *time.Time) {
-	m.CreatedAt = createdAt
-	m.require(modelResponseFieldCreatedAt)
-}
-
-// SetCreatedBy sets the CreatedBy field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetCreatedBy(createdBy *OutputActor) {
-	m.CreatedBy = createdBy
-	m.require(modelResponseFieldCreatedBy)
+func (v *V2CreateModelRequest) SetConnectionID(connectionID string) {
+	v.ConnectionID = connectionID
+	v.require(v2CreateModelRequestFieldConnectionID)
 }
 
 // SetEnricher sets the Enricher field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetEnricher(enricher *Enrichment) {
-	m.Enricher = enricher
-	m.require(modelResponseFieldEnricher)
+func (v *V2CreateModelRequest) SetEnricher(enricher *V2Enrichment) {
+	v.Enricher = enricher
+	v.require(v2CreateModelRequestFieldEnricher)
 }
 
 // SetFields sets the Fields field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetFields(fields []*ModelField) {
-	m.Fields = fields
-	m.require(modelResponseFieldFields)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetID(id *string) {
-	m.ID = id
-	m.require(modelResponseFieldID)
+func (v *V2CreateModelRequest) SetFields(fields []string) {
+	v.Fields = fields
+	v.require(v2CreateModelRequestFieldFields)
 }
 
 // SetIdentifier sets the Identifier field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetIdentifier(identifier *string) {
-	m.Identifier = identifier
-	m.require(modelResponseFieldIdentifier)
+func (v *V2CreateModelRequest) SetIdentifier(identifier *string) {
+	v.Identifier = identifier
+	v.require(v2CreateModelRequestFieldIdentifier)
 }
 
 // SetLabels sets the Labels field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetLabels(labels []LabelLabel) {
-	m.Labels = labels
-	m.require(modelResponseFieldLabels)
+func (v *V2CreateModelRequest) SetLabels(labels []string) {
+	v.Labels = labels
+	v.require(v2CreateModelRequestFieldLabels)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetName(name *string) {
-	m.Name = name
-	m.require(modelResponseFieldName)
+func (v *V2CreateModelRequest) SetName(name string) {
+	v.Name = name
+	v.require(v2CreateModelRequestFieldName)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetOrganizationID(organizationID *string) {
-	m.OrganizationID = organizationID
-	m.require(modelResponseFieldOrganizationID)
+func (v *V2CreateModelRequest) SetOrganizationID(organizationID *string) {
+	v.OrganizationID = organizationID
+	v.require(v2CreateModelRequestFieldOrganizationID)
 }
 
 // SetPolicies sets the Policies field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetPolicies(policies []string) {
-	m.Policies = policies
-	m.require(modelResponseFieldPolicies)
+func (v *V2CreateModelRequest) SetPolicies(policies []string) {
+	v.Policies = policies
+	v.require(v2CreateModelRequestFieldPolicies)
 }
 
 // SetRelations sets the Relations field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetRelations(relations []*Relation) {
-	m.Relations = relations
-	m.require(modelResponseFieldRelations)
+func (v *V2CreateModelRequest) SetRelations(relations []*ModelRelation) {
+	v.Relations = relations
+	v.require(v2CreateModelRequestFieldRelations)
 }
 
 // SetTrackingColumns sets the TrackingColumns field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetTrackingColumns(trackingColumns []string) {
-	m.TrackingColumns = trackingColumns
-	m.require(modelResponseFieldTrackingColumns)
+func (v *V2CreateModelRequest) SetTrackingColumns(trackingColumns []string) {
+	v.TrackingColumns = trackingColumns
+	v.require(v2CreateModelRequestFieldTrackingColumns)
 }
 
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetType(type_ *string) {
-	m.Type = type_
-	m.require(modelResponseFieldType)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetUpdatedAt(updatedAt *time.Time) {
-	m.UpdatedAt = updatedAt
-	m.require(modelResponseFieldUpdatedAt)
-}
-
-// SetUpdatedBy sets the UpdatedBy field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetUpdatedBy(updatedBy *OutputActor) {
-	m.UpdatedBy = updatedBy
-	m.require(modelResponseFieldUpdatedBy)
-}
-
-// SetVersion sets the Version field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponse) SetVersion(version *int) {
-	m.Version = version
-	m.require(modelResponseFieldVersion)
-}
-
-func (m *ModelResponse) UnmarshalJSON(data []byte) error {
-	type embed ModelResponse
-	var unmarshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed: embed(*m),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*m = ModelResponse(unmarshaler.embed)
-	m.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	m.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
-	if err != nil {
-		return err
-	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *ModelResponse) MarshalJSON() ([]byte, error) {
-	type embed ModelResponse
-	var marshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed:     embed(*m),
-		CreatedAt: internal.NewOptionalDateTime(m.CreatedAt),
-		UpdatedAt: internal.NewOptionalDateTime(m.UpdatedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (m *ModelResponse) String() string {
-	if m == nil {
-		return "<nil>"
-	}
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
-
-var (
-	modelResponseEnvelopeFieldData = big.NewInt(1 << 0)
-	modelResponseEnvelopeFieldJob  = big.NewInt(1 << 1)
-)
-
-type ModelResponseEnvelope struct {
-	Data *ModelResponse `json:"data,omitempty" url:"data,omitempty"`
-	Job  *JobResponse   `json:"job,omitempty" url:"job,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (m *ModelResponseEnvelope) GetData() *ModelResponse {
-	if m == nil {
-		return nil
-	}
-	return m.Data
-}
-
-func (m *ModelResponseEnvelope) GetJob() *JobResponse {
-	if m == nil {
-		return nil
-	}
-	return m.Job
-}
-
-func (m *ModelResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if m == nil {
-		return nil
-	}
-	return m.extraProperties
-}
-
-func (m *ModelResponseEnvelope) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
-	}
-	m.explicitFields.Or(m.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponseEnvelope) SetData(data *ModelResponse) {
-	m.Data = data
-	m.require(modelResponseEnvelopeFieldData)
-}
-
-// SetJob sets the Job field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelResponseEnvelope) SetJob(job *JobResponse) {
-	m.Job = job
-	m.require(modelResponseEnvelopeFieldJob)
-}
-
-func (m *ModelResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ModelResponseEnvelope
+func (v *V2CreateModelRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2CreateModelRequest
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*m = ModelResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	*v = V2CreateModelRequest(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
 	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (m *ModelResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed ModelResponseEnvelope
+func (v *V2CreateModelRequest) MarshalJSON() ([]byte, error) {
+	type embed V2CreateModelRequest
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*m),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (m *ModelResponseEnvelope) String() string {
-	if m == nil {
+func (v *V2CreateModelRequest) String() string {
+	if v == nil {
 		return "<nil>"
 	}
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(m); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", m)
-}
-
-var (
-	modelSampleFieldRecords  = big.NewInt(1 << 0)
-	modelSampleFieldWarnings = big.NewInt(1 << 1)
-)
-
-type ModelSample struct {
-	Records  []V2SampleRecord `json:"records,omitempty" url:"records,omitempty"`
-	Warnings []string         `json:"warnings,omitempty" url:"warnings,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (m *ModelSample) GetRecords() []V2SampleRecord {
-	if m == nil {
-		return nil
-	}
-	return m.Records
-}
-
-func (m *ModelSample) GetWarnings() []string {
-	if m == nil {
-		return nil
-	}
-	return m.Warnings
-}
-
-func (m *ModelSample) GetExtraProperties() map[string]interface{} {
-	if m == nil {
-		return nil
-	}
-	return m.extraProperties
-}
-
-func (m *ModelSample) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
-	}
-	m.explicitFields.Or(m.explicitFields, field)
-}
-
-// SetRecords sets the Records field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelSample) SetRecords(records []V2SampleRecord) {
-	m.Records = records
-	m.require(modelSampleFieldRecords)
-}
-
-// SetWarnings sets the Warnings field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelSample) SetWarnings(warnings []string) {
-	m.Warnings = warnings
-	m.require(modelSampleFieldWarnings)
-}
-
-func (m *ModelSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler ModelSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*m = ModelSample(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
-	if err != nil {
-		return err
-	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *ModelSample) MarshalJSON() ([]byte, error) {
-	type embed ModelSample
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*m),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (m *ModelSample) String() string {
-	if m == nil {
-		return "<nil>"
-	}
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
-
-var (
-	modelSampleResponseEnvelopeFieldData = big.NewInt(1 << 0)
-	modelSampleResponseEnvelopeFieldJob  = big.NewInt(1 << 1)
-)
-
-type ModelSampleResponseEnvelope struct {
-	Data *ModelSample `json:"data,omitempty" url:"data,omitempty"`
-	Job  *JobResponse `json:"job,omitempty" url:"job,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (m *ModelSampleResponseEnvelope) GetData() *ModelSample {
-	if m == nil {
-		return nil
-	}
-	return m.Data
-}
-
-func (m *ModelSampleResponseEnvelope) GetJob() *JobResponse {
-	if m == nil {
-		return nil
-	}
-	return m.Job
-}
-
-func (m *ModelSampleResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if m == nil {
-		return nil
-	}
-	return m.extraProperties
-}
-
-func (m *ModelSampleResponseEnvelope) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
-	}
-	m.explicitFields.Or(m.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelSampleResponseEnvelope) SetData(data *ModelSample) {
-	m.Data = data
-	m.require(modelSampleResponseEnvelopeFieldData)
-}
-
-// SetJob sets the Job field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelSampleResponseEnvelope) SetJob(job *JobResponse) {
-	m.Job = job
-	m.require(modelSampleResponseEnvelopeFieldJob)
-}
-
-func (m *ModelSampleResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ModelSampleResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*m = ModelSampleResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
-	if err != nil {
-		return err
-	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *ModelSampleResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed ModelSampleResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*m),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (m *ModelSampleResponseEnvelope) String() string {
-	if m == nil {
-		return "<nil>"
-	}
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
-
-var (
-	relationFieldFrom = big.NewInt(1 << 0)
-	relationFieldTo   = big.NewInt(1 << 1)
-)
-
-type Relation struct {
-	From *string     `json:"from,omitempty" url:"from,omitempty"`
-	To   *RelationTo `json:"to,omitempty" url:"to,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (r *Relation) GetFrom() *string {
-	if r == nil {
-		return nil
-	}
-	return r.From
-}
-
-func (r *Relation) GetTo() *RelationTo {
-	if r == nil {
-		return nil
-	}
-	return r.To
-}
-
-func (r *Relation) GetExtraProperties() map[string]interface{} {
-	if r == nil {
-		return nil
-	}
-	return r.extraProperties
-}
-
-func (r *Relation) require(field *big.Int) {
-	if r.explicitFields == nil {
-		r.explicitFields = big.NewInt(0)
-	}
-	r.explicitFields.Or(r.explicitFields, field)
-}
-
-// SetFrom sets the From field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *Relation) SetFrom(from *string) {
-	r.From = from
-	r.require(relationFieldFrom)
-}
-
-// SetTo sets the To field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *Relation) SetTo(to *RelationTo) {
-	r.To = to
-	r.require(relationFieldTo)
-}
-
-func (r *Relation) UnmarshalJSON(data []byte) error {
-	type unmarshaler Relation
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*r = Relation(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *r)
-	if err != nil {
-		return err
-	}
-	r.extraProperties = extraProperties
-	r.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (r *Relation) MarshalJSON() ([]byte, error) {
-	type embed Relation
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*r),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (r *Relation) String() string {
-	if r == nil {
-		return "<nil>"
-	}
-	if len(r.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(r); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", r)
-}
-
-var (
-	relationToFieldField   = big.NewInt(1 << 0)
-	relationToFieldModelID = big.NewInt(1 << 1)
-)
-
-type RelationTo struct {
-	Field   *string `json:"field,omitempty" url:"field,omitempty"`
-	ModelID *string `json:"model_id,omitempty" url:"model_id,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (r *RelationTo) GetField() *string {
-	if r == nil {
-		return nil
-	}
-	return r.Field
-}
-
-func (r *RelationTo) GetModelID() *string {
-	if r == nil {
-		return nil
-	}
-	return r.ModelID
-}
-
-func (r *RelationTo) GetExtraProperties() map[string]interface{} {
-	if r == nil {
-		return nil
-	}
-	return r.extraProperties
-}
-
-func (r *RelationTo) require(field *big.Int) {
-	if r.explicitFields == nil {
-		r.explicitFields = big.NewInt(0)
-	}
-	r.explicitFields.Or(r.explicitFields, field)
-}
-
-// SetField sets the Field field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RelationTo) SetField(field *string) {
-	r.Field = field
-	r.require(relationToFieldField)
-}
-
-// SetModelID sets the ModelID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RelationTo) SetModelID(modelID *string) {
-	r.ModelID = modelID
-	r.require(relationToFieldModelID)
-}
-
-func (r *RelationTo) UnmarshalJSON(data []byte) error {
-	type unmarshaler RelationTo
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*r = RelationTo(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *r)
-	if err != nil {
-		return err
-	}
-	r.extraProperties = extraProperties
-	r.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (r *RelationTo) MarshalJSON() ([]byte, error) {
-	type embed RelationTo
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*r),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (r *RelationTo) String() string {
-	if r == nil {
-		return "<nil>"
-	}
-	if len(r.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(r); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", r)
+	return fmt.Sprintf("%#v", v)
 }
 
 // Similar to a model configuration, this configures the enricher. For example, if you wanted to use Apollo to enrich people, you would send `{"object": "people"}` as the configuration. Each enricher configuration can be found in the connection configuration docs.
@@ -2099,6 +997,156 @@ type V2EnricherConfiguration = map[string]any
 
 // A map of parent model Source Name to child model Source Name. For example, if your model has a field called `work_email` and the enricher accepts a field called `email`, you'd send a map of `{"work_email":"email"}`. The set of required input mappings varies based on the configuration of the enrichment. You can use the `enrichment/{connection_id}/inputfields` API to discover available input field combinations for a given configuration.
 type V2EnricherMapping = map[string]string
+
+var (
+	v2EnrichmentFieldConfiguration = big.NewInt(1 << 0)
+	v2EnrichmentFieldConnectionID  = big.NewInt(1 << 1)
+	v2EnrichmentFieldEnricherID    = big.NewInt(1 << 2)
+	v2EnrichmentFieldFields        = big.NewInt(1 << 3)
+	v2EnrichmentFieldMappings      = big.NewInt(1 << 4)
+)
+
+type V2Enrichment struct {
+	Configuration *V2EnricherConfiguration `json:"configuration,omitempty" url:"configuration,omitempty"`
+	ConnectionID  *string                  `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	// Must be provided to update an existing enrichment
+	EnricherID *string `json:"enricher_id,omitempty" url:"enricher_id,omitempty"`
+	// If not provided, all fields will be enabled.
+	Fields   []*V2ModelField    `json:"fields,omitempty" url:"fields,omitempty"`
+	Mappings *V2EnricherMapping `json:"mappings,omitempty" url:"mappings,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2Enrichment) GetConfiguration() *V2EnricherConfiguration {
+	if v == nil {
+		return nil
+	}
+	return v.Configuration
+}
+
+func (v *V2Enrichment) GetConnectionID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ConnectionID
+}
+
+func (v *V2Enrichment) GetEnricherID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.EnricherID
+}
+
+func (v *V2Enrichment) GetFields() []*V2ModelField {
+	if v == nil {
+		return nil
+	}
+	return v.Fields
+}
+
+func (v *V2Enrichment) GetMappings() *V2EnricherMapping {
+	if v == nil {
+		return nil
+	}
+	return v.Mappings
+}
+
+func (v *V2Enrichment) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2Enrichment) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetConfiguration sets the Configuration field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2Enrichment) SetConfiguration(configuration *V2EnricherConfiguration) {
+	v.Configuration = configuration
+	v.require(v2EnrichmentFieldConfiguration)
+}
+
+// SetConnectionID sets the ConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2Enrichment) SetConnectionID(connectionID *string) {
+	v.ConnectionID = connectionID
+	v.require(v2EnrichmentFieldConnectionID)
+}
+
+// SetEnricherID sets the EnricherID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2Enrichment) SetEnricherID(enricherID *string) {
+	v.EnricherID = enricherID
+	v.require(v2EnrichmentFieldEnricherID)
+}
+
+// SetFields sets the Fields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2Enrichment) SetFields(fields []*V2ModelField) {
+	v.Fields = fields
+	v.require(v2EnrichmentFieldFields)
+}
+
+// SetMappings sets the Mappings field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2Enrichment) SetMappings(mappings *V2EnricherMapping) {
+	v.Mappings = mappings
+	v.require(v2EnrichmentFieldMappings)
+}
+
+func (v *V2Enrichment) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2Enrichment
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2Enrichment(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2Enrichment) MarshalJSON() ([]byte, error) {
+	type embed V2Enrichment
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2Enrichment) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
 
 var (
 	v2GetEnrichmentInputFieldsResponseEnvelopeFieldData = big.NewInt(1 << 0)
@@ -2170,6 +1218,958 @@ func (v *V2GetEnrichmentInputFieldsResponseEnvelope) MarshalJSON() ([]byte, erro
 }
 
 func (v *V2GetEnrichmentInputFieldsResponseEnvelope) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2ModelListResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type V2ModelListResponseEnvelope struct {
+	Data []*V2ModelResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2ModelListResponseEnvelope) GetData() []*V2ModelResponse {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2ModelListResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2ModelListResponseEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelListResponseEnvelope) SetData(data []*V2ModelResponse) {
+	v.Data = data
+	v.require(v2ModelListResponseEnvelopeFieldData)
+}
+
+func (v *V2ModelListResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ModelListResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ModelListResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ModelListResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V2ModelListResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2ModelListResponseEnvelope) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2ModelResponseFieldConfiguration   = big.NewInt(1 << 0)
+	v2ModelResponseFieldConnectionID    = big.NewInt(1 << 1)
+	v2ModelResponseFieldCreatedAt       = big.NewInt(1 << 2)
+	v2ModelResponseFieldCreatedBy       = big.NewInt(1 << 3)
+	v2ModelResponseFieldEnricher        = big.NewInt(1 << 4)
+	v2ModelResponseFieldFields          = big.NewInt(1 << 5)
+	v2ModelResponseFieldID              = big.NewInt(1 << 6)
+	v2ModelResponseFieldIdentifier      = big.NewInt(1 << 7)
+	v2ModelResponseFieldLabels          = big.NewInt(1 << 8)
+	v2ModelResponseFieldName            = big.NewInt(1 << 9)
+	v2ModelResponseFieldOrganizationID  = big.NewInt(1 << 10)
+	v2ModelResponseFieldPolicies        = big.NewInt(1 << 11)
+	v2ModelResponseFieldRelations       = big.NewInt(1 << 12)
+	v2ModelResponseFieldTrackingColumns = big.NewInt(1 << 13)
+	v2ModelResponseFieldType            = big.NewInt(1 << 14)
+	v2ModelResponseFieldUpdatedAt       = big.NewInt(1 << 15)
+	v2ModelResponseFieldUpdatedBy       = big.NewInt(1 << 16)
+	v2ModelResponseFieldVersion         = big.NewInt(1 << 17)
+)
+
+type V2ModelResponse struct {
+	Configuration   map[string]any  `json:"configuration,omitempty" url:"configuration,omitempty"`
+	ConnectionID    *string         `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	CreatedAt       *time.Time      `json:"created_at,omitempty" url:"created_at,omitempty"`
+	CreatedBy       *OutputActor    `json:"created_by,omitempty" url:"created_by,omitempty"`
+	Enricher        *V2Enrichment   `json:"enricher,omitempty" url:"enricher,omitempty"`
+	Fields          []*V2ModelField `json:"fields,omitempty" url:"fields,omitempty"`
+	ID              *string         `json:"id,omitempty" url:"id,omitempty"`
+	Identifier      *string         `json:"identifier,omitempty" url:"identifier,omitempty"`
+	Labels          []LabelLabel    `json:"labels,omitempty" url:"labels,omitempty"`
+	Name            *string         `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationID  *string         `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies        []string        `json:"policies,omitempty" url:"policies,omitempty"`
+	Relations       []*V2Relation   `json:"relations,omitempty" url:"relations,omitempty"`
+	TrackingColumns []string        `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
+	Type            *string         `json:"type,omitempty" url:"type,omitempty"`
+	UpdatedAt       *time.Time      `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	UpdatedBy       *OutputActor    `json:"updated_by,omitempty" url:"updated_by,omitempty"`
+	Version         *int            `json:"version,omitempty" url:"version,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2ModelResponse) GetConfiguration() map[string]any {
+	if v == nil {
+		return nil
+	}
+	return v.Configuration
+}
+
+func (v *V2ModelResponse) GetConnectionID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ConnectionID
+}
+
+func (v *V2ModelResponse) GetCreatedAt() *time.Time {
+	if v == nil {
+		return nil
+	}
+	return v.CreatedAt
+}
+
+func (v *V2ModelResponse) GetCreatedBy() *OutputActor {
+	if v == nil {
+		return nil
+	}
+	return v.CreatedBy
+}
+
+func (v *V2ModelResponse) GetEnricher() *V2Enrichment {
+	if v == nil {
+		return nil
+	}
+	return v.Enricher
+}
+
+func (v *V2ModelResponse) GetFields() []*V2ModelField {
+	if v == nil {
+		return nil
+	}
+	return v.Fields
+}
+
+func (v *V2ModelResponse) GetID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ID
+}
+
+func (v *V2ModelResponse) GetIdentifier() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Identifier
+}
+
+func (v *V2ModelResponse) GetLabels() []LabelLabel {
+	if v == nil {
+		return nil
+	}
+	return v.Labels
+}
+
+func (v *V2ModelResponse) GetName() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Name
+}
+
+func (v *V2ModelResponse) GetOrganizationID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.OrganizationID
+}
+
+func (v *V2ModelResponse) GetPolicies() []string {
+	if v == nil {
+		return nil
+	}
+	return v.Policies
+}
+
+func (v *V2ModelResponse) GetRelations() []*V2Relation {
+	if v == nil {
+		return nil
+	}
+	return v.Relations
+}
+
+func (v *V2ModelResponse) GetTrackingColumns() []string {
+	if v == nil {
+		return nil
+	}
+	return v.TrackingColumns
+}
+
+func (v *V2ModelResponse) GetType() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Type
+}
+
+func (v *V2ModelResponse) GetUpdatedAt() *time.Time {
+	if v == nil {
+		return nil
+	}
+	return v.UpdatedAt
+}
+
+func (v *V2ModelResponse) GetUpdatedBy() *OutputActor {
+	if v == nil {
+		return nil
+	}
+	return v.UpdatedBy
+}
+
+func (v *V2ModelResponse) GetVersion() *int {
+	if v == nil {
+		return nil
+	}
+	return v.Version
+}
+
+func (v *V2ModelResponse) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2ModelResponse) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetConfiguration sets the Configuration field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetConfiguration(configuration map[string]any) {
+	v.Configuration = configuration
+	v.require(v2ModelResponseFieldConfiguration)
+}
+
+// SetConnectionID sets the ConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetConnectionID(connectionID *string) {
+	v.ConnectionID = connectionID
+	v.require(v2ModelResponseFieldConnectionID)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetCreatedAt(createdAt *time.Time) {
+	v.CreatedAt = createdAt
+	v.require(v2ModelResponseFieldCreatedAt)
+}
+
+// SetCreatedBy sets the CreatedBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetCreatedBy(createdBy *OutputActor) {
+	v.CreatedBy = createdBy
+	v.require(v2ModelResponseFieldCreatedBy)
+}
+
+// SetEnricher sets the Enricher field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetEnricher(enricher *V2Enrichment) {
+	v.Enricher = enricher
+	v.require(v2ModelResponseFieldEnricher)
+}
+
+// SetFields sets the Fields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetFields(fields []*V2ModelField) {
+	v.Fields = fields
+	v.require(v2ModelResponseFieldFields)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetID(id *string) {
+	v.ID = id
+	v.require(v2ModelResponseFieldID)
+}
+
+// SetIdentifier sets the Identifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetIdentifier(identifier *string) {
+	v.Identifier = identifier
+	v.require(v2ModelResponseFieldIdentifier)
+}
+
+// SetLabels sets the Labels field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetLabels(labels []LabelLabel) {
+	v.Labels = labels
+	v.require(v2ModelResponseFieldLabels)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetName(name *string) {
+	v.Name = name
+	v.require(v2ModelResponseFieldName)
+}
+
+// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetOrganizationID(organizationID *string) {
+	v.OrganizationID = organizationID
+	v.require(v2ModelResponseFieldOrganizationID)
+}
+
+// SetPolicies sets the Policies field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetPolicies(policies []string) {
+	v.Policies = policies
+	v.require(v2ModelResponseFieldPolicies)
+}
+
+// SetRelations sets the Relations field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetRelations(relations []*V2Relation) {
+	v.Relations = relations
+	v.require(v2ModelResponseFieldRelations)
+}
+
+// SetTrackingColumns sets the TrackingColumns field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetTrackingColumns(trackingColumns []string) {
+	v.TrackingColumns = trackingColumns
+	v.require(v2ModelResponseFieldTrackingColumns)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetType(type_ *string) {
+	v.Type = type_
+	v.require(v2ModelResponseFieldType)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetUpdatedAt(updatedAt *time.Time) {
+	v.UpdatedAt = updatedAt
+	v.require(v2ModelResponseFieldUpdatedAt)
+}
+
+// SetUpdatedBy sets the UpdatedBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetUpdatedBy(updatedBy *OutputActor) {
+	v.UpdatedBy = updatedBy
+	v.require(v2ModelResponseFieldUpdatedBy)
+}
+
+// SetVersion sets the Version field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponse) SetVersion(version *int) {
+	v.Version = version
+	v.require(v2ModelResponseFieldVersion)
+}
+
+func (v *V2ModelResponse) UnmarshalJSON(data []byte) error {
+	type embed V2ModelResponse
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*v),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*v = V2ModelResponse(unmarshaler.embed)
+	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	v.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ModelResponse) MarshalJSON() ([]byte, error) {
+	type embed V2ModelResponse
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:     embed(*v),
+		CreatedAt: internal.NewOptionalDateTime(v.CreatedAt),
+		UpdatedAt: internal.NewOptionalDateTime(v.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2ModelResponse) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2ModelResponseEnvelopeFieldData = big.NewInt(1 << 0)
+	v2ModelResponseEnvelopeFieldJob  = big.NewInt(1 << 1)
+)
+
+type V2ModelResponseEnvelope struct {
+	Data *V2ModelResponse `json:"data,omitempty" url:"data,omitempty"`
+	Job  *V2JobResponse   `json:"job,omitempty" url:"job,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2ModelResponseEnvelope) GetData() *V2ModelResponse {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2ModelResponseEnvelope) GetJob() *V2JobResponse {
+	if v == nil {
+		return nil
+	}
+	return v.Job
+}
+
+func (v *V2ModelResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2ModelResponseEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponseEnvelope) SetData(data *V2ModelResponse) {
+	v.Data = data
+	v.require(v2ModelResponseEnvelopeFieldData)
+}
+
+// SetJob sets the Job field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelResponseEnvelope) SetJob(job *V2JobResponse) {
+	v.Job = job
+	v.require(v2ModelResponseEnvelopeFieldJob)
+}
+
+func (v *V2ModelResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ModelResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ModelResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ModelResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V2ModelResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2ModelResponseEnvelope) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2ModelSampleFieldRecords  = big.NewInt(1 << 0)
+	v2ModelSampleFieldWarnings = big.NewInt(1 << 1)
+)
+
+type V2ModelSample struct {
+	Records  []V2SampleRecord `json:"records,omitempty" url:"records,omitempty"`
+	Warnings []string         `json:"warnings,omitempty" url:"warnings,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2ModelSample) GetRecords() []V2SampleRecord {
+	if v == nil {
+		return nil
+	}
+	return v.Records
+}
+
+func (v *V2ModelSample) GetWarnings() []string {
+	if v == nil {
+		return nil
+	}
+	return v.Warnings
+}
+
+func (v *V2ModelSample) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2ModelSample) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelSample) SetRecords(records []V2SampleRecord) {
+	v.Records = records
+	v.require(v2ModelSampleFieldRecords)
+}
+
+// SetWarnings sets the Warnings field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelSample) SetWarnings(warnings []string) {
+	v.Warnings = warnings
+	v.require(v2ModelSampleFieldWarnings)
+}
+
+func (v *V2ModelSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ModelSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ModelSample(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ModelSample) MarshalJSON() ([]byte, error) {
+	type embed V2ModelSample
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2ModelSample) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2ModelSampleResponseEnvelopeFieldData = big.NewInt(1 << 0)
+	v2ModelSampleResponseEnvelopeFieldJob  = big.NewInt(1 << 1)
+)
+
+type V2ModelSampleResponseEnvelope struct {
+	Data *V2ModelSample `json:"data,omitempty" url:"data,omitempty"`
+	Job  *V2JobResponse `json:"job,omitempty" url:"job,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2ModelSampleResponseEnvelope) GetData() *V2ModelSample {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V2ModelSampleResponseEnvelope) GetJob() *V2JobResponse {
+	if v == nil {
+		return nil
+	}
+	return v.Job
+}
+
+func (v *V2ModelSampleResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2ModelSampleResponseEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelSampleResponseEnvelope) SetData(data *V2ModelSample) {
+	v.Data = data
+	v.require(v2ModelSampleResponseEnvelopeFieldData)
+}
+
+// SetJob sets the Job field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2ModelSampleResponseEnvelope) SetJob(job *V2JobResponse) {
+	v.Job = job
+	v.require(v2ModelSampleResponseEnvelopeFieldJob)
+}
+
+func (v *V2ModelSampleResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2ModelSampleResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2ModelSampleResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2ModelSampleResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V2ModelSampleResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2ModelSampleResponseEnvelope) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2RelationFieldFrom = big.NewInt(1 << 0)
+	v2RelationFieldTo   = big.NewInt(1 << 1)
+)
+
+type V2Relation struct {
+	From *string       `json:"from,omitempty" url:"from,omitempty"`
+	To   *V2RelationTo `json:"to,omitempty" url:"to,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2Relation) GetFrom() *string {
+	if v == nil {
+		return nil
+	}
+	return v.From
+}
+
+func (v *V2Relation) GetTo() *V2RelationTo {
+	if v == nil {
+		return nil
+	}
+	return v.To
+}
+
+func (v *V2Relation) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2Relation) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetFrom sets the From field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2Relation) SetFrom(from *string) {
+	v.From = from
+	v.require(v2RelationFieldFrom)
+}
+
+// SetTo sets the To field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2Relation) SetTo(to *V2RelationTo) {
+	v.To = to
+	v.require(v2RelationFieldTo)
+}
+
+func (v *V2Relation) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2Relation
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2Relation(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2Relation) MarshalJSON() ([]byte, error) {
+	type embed V2Relation
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2Relation) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v2RelationToFieldField   = big.NewInt(1 << 0)
+	v2RelationToFieldModelID = big.NewInt(1 << 1)
+)
+
+type V2RelationTo struct {
+	Field   *string `json:"field,omitempty" url:"field,omitempty"`
+	ModelID *string `json:"model_id,omitempty" url:"model_id,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2RelationTo) GetField() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Field
+}
+
+func (v *V2RelationTo) GetModelID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ModelID
+}
+
+func (v *V2RelationTo) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2RelationTo) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetField sets the Field field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2RelationTo) SetField(field *string) {
+	v.Field = field
+	v.require(v2RelationToFieldField)
+}
+
+// SetModelID sets the ModelID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2RelationTo) SetModelID(modelID *string) {
+	v.ModelID = modelID
+	v.require(v2RelationToFieldModelID)
+}
+
+func (v *V2RelationTo) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2RelationTo
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2RelationTo(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2RelationTo) MarshalJSON() ([]byte, error) {
+	type embed V2RelationTo
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2RelationTo) String() string {
 	if v == nil {
 		return "<nil>"
 	}

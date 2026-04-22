@@ -88,7 +88,7 @@ func TestEventsListWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.EventsListRequest{
+	request := &polytomic.ListEventsRequest{
 		OrganizationID: polytomic.String(
 			"248df4b7-aa70-47b8-a036-33ac447e668d",
 		),

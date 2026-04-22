@@ -10,9 +10,9 @@ import (
 	time "time"
 )
 
-func TestSettersEventsListRequest(t *testing.T) {
+func TestSettersListEventsRequest(t *testing.T) {
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &EventsListRequest{}
+		obj := &ListEventsRequest{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -20,7 +20,7 @@ func TestSettersEventsListRequest(t *testing.T) {
 	})
 
 	t.Run("SetType", func(t *testing.T) {
-		obj := &EventsListRequest{}
+		obj := &ListEventsRequest{}
 		var fernTestValueType *string
 		obj.SetType(fernTestValueType)
 		assert.Equal(t, fernTestValueType, obj.Type)
@@ -28,7 +28,7 @@ func TestSettersEventsListRequest(t *testing.T) {
 	})
 
 	t.Run("SetStartingAfter", func(t *testing.T) {
-		obj := &EventsListRequest{}
+		obj := &ListEventsRequest{}
 		var fernTestValueStartingAfter *time.Time
 		obj.SetStartingAfter(fernTestValueStartingAfter)
 		assert.Equal(t, fernTestValueStartingAfter, obj.StartingAfter)
@@ -36,7 +36,7 @@ func TestSettersEventsListRequest(t *testing.T) {
 	})
 
 	t.Run("SetEndingBefore", func(t *testing.T) {
-		obj := &EventsListRequest{}
+		obj := &ListEventsRequest{}
 		var fernTestValueEndingBefore *time.Time
 		obj.SetEndingBefore(fernTestValueEndingBefore)
 		assert.Equal(t, fernTestValueEndingBefore, obj.EndingBefore)
@@ -44,7 +44,7 @@ func TestSettersEventsListRequest(t *testing.T) {
 	})
 
 	t.Run("SetLimit", func(t *testing.T) {
-		obj := &EventsListRequest{}
+		obj := &ListEventsRequest{}
 		var fernTestValueLimit *int
 		obj.SetLimit(fernTestValueLimit)
 		assert.Equal(t, fernTestValueLimit, obj.Limit)
@@ -53,11 +53,11 @@ func TestSettersEventsListRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitEventsListRequest(t *testing.T) {
+func TestSettersMarkExplicitListEventsRequest(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &EventsListRequest{}
+		obj := &ListEventsRequest{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -88,7 +88,7 @@ func TestSettersMarkExplicitEventsListRequest(t *testing.T) {
 	t.Run("SetType_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &EventsListRequest{}
+		obj := &ListEventsRequest{}
 		var fernTestValueType *string
 
 		// Act
@@ -119,7 +119,7 @@ func TestSettersMarkExplicitEventsListRequest(t *testing.T) {
 	t.Run("SetStartingAfter_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &EventsListRequest{}
+		obj := &ListEventsRequest{}
 		var fernTestValueStartingAfter *time.Time
 
 		// Act
@@ -150,7 +150,7 @@ func TestSettersMarkExplicitEventsListRequest(t *testing.T) {
 	t.Run("SetEndingBefore_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &EventsListRequest{}
+		obj := &ListEventsRequest{}
 		var fernTestValueEndingBefore *time.Time
 
 		// Act
@@ -181,7 +181,7 @@ func TestSettersMarkExplicitEventsListRequest(t *testing.T) {
 	t.Run("SetLimit_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &EventsListRequest{}
+		obj := &ListEventsRequest{}
 		var fernTestValueLimit *int
 
 		// Act
@@ -211,9 +211,9 @@ func TestSettersMarkExplicitEventsListRequest(t *testing.T) {
 
 }
 
-func TestSettersBulkSyncCanceledEvent(t *testing.T) {
+func TestSettersEventingBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("SetDestinationConnectionID", func(t *testing.T) {
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var fernTestValueDestinationConnectionID *string
 		obj.SetDestinationConnectionID(fernTestValueDestinationConnectionID)
 		assert.Equal(t, fernTestValueDestinationConnectionID, obj.DestinationConnectionID)
@@ -221,7 +221,7 @@ func TestSettersBulkSyncCanceledEvent(t *testing.T) {
 	})
 
 	t.Run("SetExecutionID", func(t *testing.T) {
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var fernTestValueExecutionID *string
 		obj.SetExecutionID(fernTestValueExecutionID)
 		assert.Equal(t, fernTestValueExecutionID, obj.ExecutionID)
@@ -229,7 +229,7 @@ func TestSettersBulkSyncCanceledEvent(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -237,7 +237,7 @@ func TestSettersBulkSyncCanceledEvent(t *testing.T) {
 	})
 
 	t.Run("SetSourceConnectionID", func(t *testing.T) {
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var fernTestValueSourceConnectionID *string
 		obj.SetSourceConnectionID(fernTestValueSourceConnectionID)
 		assert.Equal(t, fernTestValueSourceConnectionID, obj.SourceConnectionID)
@@ -245,7 +245,7 @@ func TestSettersBulkSyncCanceledEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncID", func(t *testing.T) {
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var fernTestValueSyncID *string
 		obj.SetSyncID(fernTestValueSyncID)
 		assert.Equal(t, fernTestValueSyncID, obj.SyncID)
@@ -253,7 +253,7 @@ func TestSettersBulkSyncCanceledEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncName", func(t *testing.T) {
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var fernTestValueSyncName *string
 		obj.SetSyncName(fernTestValueSyncName)
 		assert.Equal(t, fernTestValueSyncName, obj.SyncName)
@@ -262,11 +262,11 @@ func TestSettersBulkSyncCanceledEvent(t *testing.T) {
 
 }
 
-func TestGettersBulkSyncCanceledEvent(t *testing.T) {
+func TestGettersEventingBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("GetDestinationConnectionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var expected *string
 		obj.DestinationConnectionID = expected
 
@@ -277,7 +277,7 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("GetDestinationConnectionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		obj.DestinationConnectionID = nil
 
 		// Act & Assert
@@ -286,7 +286,7 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 
 	t.Run("GetDestinationConnectionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCanceledEvent
+		var obj *EventingBulkSyncCanceledEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -299,7 +299,7 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("GetExecutionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var expected *string
 		obj.ExecutionID = expected
 
@@ -310,7 +310,7 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("GetExecutionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		obj.ExecutionID = nil
 
 		// Act & Assert
@@ -319,7 +319,7 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 
 	t.Run("GetExecutionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCanceledEvent
+		var obj *EventingBulkSyncCanceledEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -332,7 +332,7 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("GetOrganizationID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var expected *string
 		obj.OrganizationID = expected
 
@@ -343,7 +343,7 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("GetOrganizationID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		obj.OrganizationID = nil
 
 		// Act & Assert
@@ -352,7 +352,7 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 
 	t.Run("GetOrganizationID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCanceledEvent
+		var obj *EventingBulkSyncCanceledEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -365,7 +365,7 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("GetSourceConnectionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var expected *string
 		obj.SourceConnectionID = expected
 
@@ -376,7 +376,7 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("GetSourceConnectionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		obj.SourceConnectionID = nil
 
 		// Act & Assert
@@ -385,7 +385,7 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 
 	t.Run("GetSourceConnectionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCanceledEvent
+		var obj *EventingBulkSyncCanceledEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -398,7 +398,7 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("GetSyncID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var expected *string
 		obj.SyncID = expected
 
@@ -409,7 +409,7 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("GetSyncID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		obj.SyncID = nil
 
 		// Act & Assert
@@ -418,7 +418,7 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 
 	t.Run("GetSyncID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCanceledEvent
+		var obj *EventingBulkSyncCanceledEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -431,7 +431,7 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("GetSyncName", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var expected *string
 		obj.SyncName = expected
 
@@ -442,7 +442,7 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("GetSyncName_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		obj.SyncName = nil
 
 		// Act & Assert
@@ -451,7 +451,7 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 
 	t.Run("GetSyncName_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCanceledEvent
+		var obj *EventingBulkSyncCanceledEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -463,11 +463,11 @@ func TestGettersBulkSyncCanceledEvent(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitBulkSyncCanceledEvent(t *testing.T) {
+func TestSettersMarkExplicitEventingBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("SetDestinationConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var fernTestValueDestinationConnectionID *string
 
 		// Act
@@ -498,7 +498,7 @@ func TestSettersMarkExplicitBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("SetExecutionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var fernTestValueExecutionID *string
 
 		// Act
@@ -529,7 +529,7 @@ func TestSettersMarkExplicitBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -560,7 +560,7 @@ func TestSettersMarkExplicitBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("SetSourceConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var fernTestValueSourceConnectionID *string
 
 		// Act
@@ -591,7 +591,7 @@ func TestSettersMarkExplicitBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("SetSyncID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var fernTestValueSyncID *string
 
 		// Act
@@ -622,7 +622,7 @@ func TestSettersMarkExplicitBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("SetSyncName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		var fernTestValueSyncName *string
 
 		// Act
@@ -652,9 +652,9 @@ func TestSettersMarkExplicitBulkSyncCanceledEvent(t *testing.T) {
 
 }
 
-func TestSettersBulkSyncCompletedEvent(t *testing.T) {
+func TestSettersEventingBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("SetDestinationConnectionID", func(t *testing.T) {
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var fernTestValueDestinationConnectionID *string
 		obj.SetDestinationConnectionID(fernTestValueDestinationConnectionID)
 		assert.Equal(t, fernTestValueDestinationConnectionID, obj.DestinationConnectionID)
@@ -662,7 +662,7 @@ func TestSettersBulkSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetExecutionID", func(t *testing.T) {
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var fernTestValueExecutionID *string
 		obj.SetExecutionID(fernTestValueExecutionID)
 		assert.Equal(t, fernTestValueExecutionID, obj.ExecutionID)
@@ -670,7 +670,7 @@ func TestSettersBulkSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -678,7 +678,7 @@ func TestSettersBulkSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetSourceConnectionID", func(t *testing.T) {
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var fernTestValueSourceConnectionID *string
 		obj.SetSourceConnectionID(fernTestValueSourceConnectionID)
 		assert.Equal(t, fernTestValueSourceConnectionID, obj.SourceConnectionID)
@@ -686,7 +686,7 @@ func TestSettersBulkSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncID", func(t *testing.T) {
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var fernTestValueSyncID *string
 		obj.SetSyncID(fernTestValueSyncID)
 		assert.Equal(t, fernTestValueSyncID, obj.SyncID)
@@ -694,7 +694,7 @@ func TestSettersBulkSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncName", func(t *testing.T) {
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var fernTestValueSyncName *string
 		obj.SetSyncName(fernTestValueSyncName)
 		assert.Equal(t, fernTestValueSyncName, obj.SyncName)
@@ -702,7 +702,7 @@ func TestSettersBulkSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetTriggerSource", func(t *testing.T) {
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var fernTestValueTriggerSource *string
 		obj.SetTriggerSource(fernTestValueTriggerSource)
 		assert.Equal(t, fernTestValueTriggerSource, obj.TriggerSource)
@@ -711,11 +711,11 @@ func TestSettersBulkSyncCompletedEvent(t *testing.T) {
 
 }
 
-func TestGettersBulkSyncCompletedEvent(t *testing.T) {
+func TestGettersEventingBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("GetDestinationConnectionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var expected *string
 		obj.DestinationConnectionID = expected
 
@@ -726,7 +726,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("GetDestinationConnectionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		obj.DestinationConnectionID = nil
 
 		// Act & Assert
@@ -735,7 +735,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetDestinationConnectionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedEvent
+		var obj *EventingBulkSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -748,7 +748,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("GetExecutionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var expected *string
 		obj.ExecutionID = expected
 
@@ -759,7 +759,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("GetExecutionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		obj.ExecutionID = nil
 
 		// Act & Assert
@@ -768,7 +768,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetExecutionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedEvent
+		var obj *EventingBulkSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -781,7 +781,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("GetOrganizationID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var expected *string
 		obj.OrganizationID = expected
 
@@ -792,7 +792,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("GetOrganizationID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		obj.OrganizationID = nil
 
 		// Act & Assert
@@ -801,7 +801,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetOrganizationID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedEvent
+		var obj *EventingBulkSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -814,7 +814,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("GetSourceConnectionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var expected *string
 		obj.SourceConnectionID = expected
 
@@ -825,7 +825,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("GetSourceConnectionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		obj.SourceConnectionID = nil
 
 		// Act & Assert
@@ -834,7 +834,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetSourceConnectionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedEvent
+		var obj *EventingBulkSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -847,7 +847,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("GetSyncID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var expected *string
 		obj.SyncID = expected
 
@@ -858,7 +858,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("GetSyncID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		obj.SyncID = nil
 
 		// Act & Assert
@@ -867,7 +867,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetSyncID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedEvent
+		var obj *EventingBulkSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -880,7 +880,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("GetSyncName", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var expected *string
 		obj.SyncName = expected
 
@@ -891,7 +891,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("GetSyncName_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		obj.SyncName = nil
 
 		// Act & Assert
@@ -900,7 +900,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetSyncName_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedEvent
+		var obj *EventingBulkSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -913,7 +913,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("GetTriggerSource", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var expected *string
 		obj.TriggerSource = expected
 
@@ -924,7 +924,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("GetTriggerSource_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		obj.TriggerSource = nil
 
 		// Act & Assert
@@ -933,7 +933,7 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetTriggerSource_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedEvent
+		var obj *EventingBulkSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -945,11 +945,11 @@ func TestGettersBulkSyncCompletedEvent(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitBulkSyncCompletedEvent(t *testing.T) {
+func TestSettersMarkExplicitEventingBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("SetDestinationConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var fernTestValueDestinationConnectionID *string
 
 		// Act
@@ -980,7 +980,7 @@ func TestSettersMarkExplicitBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("SetExecutionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var fernTestValueExecutionID *string
 
 		// Act
@@ -1011,7 +1011,7 @@ func TestSettersMarkExplicitBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -1042,7 +1042,7 @@ func TestSettersMarkExplicitBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("SetSourceConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var fernTestValueSourceConnectionID *string
 
 		// Act
@@ -1073,7 +1073,7 @@ func TestSettersMarkExplicitBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("SetSyncID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var fernTestValueSyncID *string
 
 		// Act
@@ -1104,7 +1104,7 @@ func TestSettersMarkExplicitBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("SetSyncName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var fernTestValueSyncName *string
 
 		// Act
@@ -1135,7 +1135,7 @@ func TestSettersMarkExplicitBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("SetTriggerSource_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		var fernTestValueTriggerSource *string
 
 		// Act
@@ -1165,9 +1165,9 @@ func TestSettersMarkExplicitBulkSyncCompletedEvent(t *testing.T) {
 
 }
 
-func TestSettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
+func TestSettersEventingBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("SetDestinationConnectionID", func(t *testing.T) {
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var fernTestValueDestinationConnectionID *string
 		obj.SetDestinationConnectionID(fernTestValueDestinationConnectionID)
 		assert.Equal(t, fernTestValueDestinationConnectionID, obj.DestinationConnectionID)
@@ -1175,7 +1175,7 @@ func TestSettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	})
 
 	t.Run("SetExecutionID", func(t *testing.T) {
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var fernTestValueExecutionID *string
 		obj.SetExecutionID(fernTestValueExecutionID)
 		assert.Equal(t, fernTestValueExecutionID, obj.ExecutionID)
@@ -1183,7 +1183,7 @@ func TestSettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -1191,7 +1191,7 @@ func TestSettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	})
 
 	t.Run("SetSourceConnectionID", func(t *testing.T) {
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var fernTestValueSourceConnectionID *string
 		obj.SetSourceConnectionID(fernTestValueSourceConnectionID)
 		assert.Equal(t, fernTestValueSourceConnectionID, obj.SourceConnectionID)
@@ -1199,7 +1199,7 @@ func TestSettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncID", func(t *testing.T) {
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var fernTestValueSyncID *string
 		obj.SetSyncID(fernTestValueSyncID)
 		assert.Equal(t, fernTestValueSyncID, obj.SyncID)
@@ -1207,7 +1207,7 @@ func TestSettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncName", func(t *testing.T) {
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var fernTestValueSyncName *string
 		obj.SetSyncName(fernTestValueSyncName)
 		assert.Equal(t, fernTestValueSyncName, obj.SyncName)
@@ -1215,7 +1215,7 @@ func TestSettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	})
 
 	t.Run("SetTriggerSource", func(t *testing.T) {
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var fernTestValueTriggerSource *string
 		obj.SetTriggerSource(fernTestValueTriggerSource)
 		assert.Equal(t, fernTestValueTriggerSource, obj.TriggerSource)
@@ -1224,11 +1224,11 @@ func TestSettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 
 }
 
-func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
+func TestGettersEventingBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("GetDestinationConnectionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var expected *string
 		obj.DestinationConnectionID = expected
 
@@ -1239,7 +1239,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("GetDestinationConnectionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		obj.DestinationConnectionID = nil
 
 		// Act & Assert
@@ -1248,7 +1248,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 
 	t.Run("GetDestinationConnectionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedWithErrorEvent
+		var obj *EventingBulkSyncCompletedWithErrorEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1261,7 +1261,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("GetExecutionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var expected *string
 		obj.ExecutionID = expected
 
@@ -1272,7 +1272,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("GetExecutionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		obj.ExecutionID = nil
 
 		// Act & Assert
@@ -1281,7 +1281,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 
 	t.Run("GetExecutionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedWithErrorEvent
+		var obj *EventingBulkSyncCompletedWithErrorEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1294,7 +1294,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("GetOrganizationID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var expected *string
 		obj.OrganizationID = expected
 
@@ -1305,7 +1305,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("GetOrganizationID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		obj.OrganizationID = nil
 
 		// Act & Assert
@@ -1314,7 +1314,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 
 	t.Run("GetOrganizationID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedWithErrorEvent
+		var obj *EventingBulkSyncCompletedWithErrorEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1327,7 +1327,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("GetSourceConnectionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var expected *string
 		obj.SourceConnectionID = expected
 
@@ -1338,7 +1338,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("GetSourceConnectionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		obj.SourceConnectionID = nil
 
 		// Act & Assert
@@ -1347,7 +1347,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 
 	t.Run("GetSourceConnectionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedWithErrorEvent
+		var obj *EventingBulkSyncCompletedWithErrorEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1360,7 +1360,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("GetSyncID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var expected *string
 		obj.SyncID = expected
 
@@ -1371,7 +1371,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("GetSyncID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		obj.SyncID = nil
 
 		// Act & Assert
@@ -1380,7 +1380,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 
 	t.Run("GetSyncID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedWithErrorEvent
+		var obj *EventingBulkSyncCompletedWithErrorEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1393,7 +1393,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("GetSyncName", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var expected *string
 		obj.SyncName = expected
 
@@ -1404,7 +1404,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("GetSyncName_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		obj.SyncName = nil
 
 		// Act & Assert
@@ -1413,7 +1413,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 
 	t.Run("GetSyncName_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedWithErrorEvent
+		var obj *EventingBulkSyncCompletedWithErrorEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1426,7 +1426,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("GetTriggerSource", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var expected *string
 		obj.TriggerSource = expected
 
@@ -1437,7 +1437,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("GetTriggerSource_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		obj.TriggerSource = nil
 
 		// Act & Assert
@@ -1446,7 +1446,7 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 
 	t.Run("GetTriggerSource_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedWithErrorEvent
+		var obj *EventingBulkSyncCompletedWithErrorEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1458,11 +1458,11 @@ func TestGettersBulkSyncCompletedWithErrorEvent(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitBulkSyncCompletedWithErrorEvent(t *testing.T) {
+func TestSettersMarkExplicitEventingBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("SetDestinationConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var fernTestValueDestinationConnectionID *string
 
 		// Act
@@ -1493,7 +1493,7 @@ func TestSettersMarkExplicitBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("SetExecutionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var fernTestValueExecutionID *string
 
 		// Act
@@ -1524,7 +1524,7 @@ func TestSettersMarkExplicitBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -1555,7 +1555,7 @@ func TestSettersMarkExplicitBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("SetSourceConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var fernTestValueSourceConnectionID *string
 
 		// Act
@@ -1586,7 +1586,7 @@ func TestSettersMarkExplicitBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("SetSyncID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var fernTestValueSyncID *string
 
 		// Act
@@ -1617,7 +1617,7 @@ func TestSettersMarkExplicitBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("SetSyncName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var fernTestValueSyncName *string
 
 		// Act
@@ -1648,7 +1648,7 @@ func TestSettersMarkExplicitBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("SetTriggerSource_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		var fernTestValueTriggerSource *string
 
 		// Act
@@ -1678,9 +1678,9 @@ func TestSettersMarkExplicitBulkSyncCompletedWithErrorEvent(t *testing.T) {
 
 }
 
-func TestSettersBulkSyncFailedEvent(t *testing.T) {
+func TestSettersEventingBulkSyncFailedEvent(t *testing.T) {
 	t.Run("SetDestinationConnectionID", func(t *testing.T) {
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var fernTestValueDestinationConnectionID *string
 		obj.SetDestinationConnectionID(fernTestValueDestinationConnectionID)
 		assert.Equal(t, fernTestValueDestinationConnectionID, obj.DestinationConnectionID)
@@ -1688,7 +1688,7 @@ func TestSettersBulkSyncFailedEvent(t *testing.T) {
 	})
 
 	t.Run("SetError", func(t *testing.T) {
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var fernTestValueError *string
 		obj.SetError(fernTestValueError)
 		assert.Equal(t, fernTestValueError, obj.Error)
@@ -1696,7 +1696,7 @@ func TestSettersBulkSyncFailedEvent(t *testing.T) {
 	})
 
 	t.Run("SetExecutionID", func(t *testing.T) {
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var fernTestValueExecutionID *string
 		obj.SetExecutionID(fernTestValueExecutionID)
 		assert.Equal(t, fernTestValueExecutionID, obj.ExecutionID)
@@ -1704,7 +1704,7 @@ func TestSettersBulkSyncFailedEvent(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -1712,7 +1712,7 @@ func TestSettersBulkSyncFailedEvent(t *testing.T) {
 	})
 
 	t.Run("SetSourceConnectionID", func(t *testing.T) {
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var fernTestValueSourceConnectionID *string
 		obj.SetSourceConnectionID(fernTestValueSourceConnectionID)
 		assert.Equal(t, fernTestValueSourceConnectionID, obj.SourceConnectionID)
@@ -1720,7 +1720,7 @@ func TestSettersBulkSyncFailedEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncID", func(t *testing.T) {
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var fernTestValueSyncID *string
 		obj.SetSyncID(fernTestValueSyncID)
 		assert.Equal(t, fernTestValueSyncID, obj.SyncID)
@@ -1728,7 +1728,7 @@ func TestSettersBulkSyncFailedEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncName", func(t *testing.T) {
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var fernTestValueSyncName *string
 		obj.SetSyncName(fernTestValueSyncName)
 		assert.Equal(t, fernTestValueSyncName, obj.SyncName)
@@ -1736,7 +1736,7 @@ func TestSettersBulkSyncFailedEvent(t *testing.T) {
 	})
 
 	t.Run("SetTriggerSource", func(t *testing.T) {
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var fernTestValueTriggerSource *string
 		obj.SetTriggerSource(fernTestValueTriggerSource)
 		assert.Equal(t, fernTestValueTriggerSource, obj.TriggerSource)
@@ -1745,11 +1745,11 @@ func TestSettersBulkSyncFailedEvent(t *testing.T) {
 
 }
 
-func TestGettersBulkSyncFailedEvent(t *testing.T) {
+func TestGettersEventingBulkSyncFailedEvent(t *testing.T) {
 	t.Run("GetDestinationConnectionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var expected *string
 		obj.DestinationConnectionID = expected
 
@@ -1760,7 +1760,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 	t.Run("GetDestinationConnectionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		obj.DestinationConnectionID = nil
 
 		// Act & Assert
@@ -1769,7 +1769,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 
 	t.Run("GetDestinationConnectionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncFailedEvent
+		var obj *EventingBulkSyncFailedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1782,7 +1782,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 	t.Run("GetError", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var expected *string
 		obj.Error = expected
 
@@ -1793,7 +1793,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 	t.Run("GetError_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		obj.Error = nil
 
 		// Act & Assert
@@ -1802,7 +1802,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 
 	t.Run("GetError_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncFailedEvent
+		var obj *EventingBulkSyncFailedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1815,7 +1815,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 	t.Run("GetExecutionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var expected *string
 		obj.ExecutionID = expected
 
@@ -1826,7 +1826,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 	t.Run("GetExecutionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		obj.ExecutionID = nil
 
 		// Act & Assert
@@ -1835,7 +1835,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 
 	t.Run("GetExecutionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncFailedEvent
+		var obj *EventingBulkSyncFailedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1848,7 +1848,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 	t.Run("GetOrganizationID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var expected *string
 		obj.OrganizationID = expected
 
@@ -1859,7 +1859,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 	t.Run("GetOrganizationID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		obj.OrganizationID = nil
 
 		// Act & Assert
@@ -1868,7 +1868,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 
 	t.Run("GetOrganizationID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncFailedEvent
+		var obj *EventingBulkSyncFailedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1881,7 +1881,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 	t.Run("GetSourceConnectionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var expected *string
 		obj.SourceConnectionID = expected
 
@@ -1892,7 +1892,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 	t.Run("GetSourceConnectionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		obj.SourceConnectionID = nil
 
 		// Act & Assert
@@ -1901,7 +1901,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 
 	t.Run("GetSourceConnectionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncFailedEvent
+		var obj *EventingBulkSyncFailedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1914,7 +1914,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 	t.Run("GetSyncID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var expected *string
 		obj.SyncID = expected
 
@@ -1925,7 +1925,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 	t.Run("GetSyncID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		obj.SyncID = nil
 
 		// Act & Assert
@@ -1934,7 +1934,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 
 	t.Run("GetSyncID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncFailedEvent
+		var obj *EventingBulkSyncFailedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1947,7 +1947,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 	t.Run("GetSyncName", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var expected *string
 		obj.SyncName = expected
 
@@ -1958,7 +1958,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 	t.Run("GetSyncName_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		obj.SyncName = nil
 
 		// Act & Assert
@@ -1967,7 +1967,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 
 	t.Run("GetSyncName_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncFailedEvent
+		var obj *EventingBulkSyncFailedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1980,7 +1980,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 	t.Run("GetTriggerSource", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var expected *string
 		obj.TriggerSource = expected
 
@@ -1991,7 +1991,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 	t.Run("GetTriggerSource_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		obj.TriggerSource = nil
 
 		// Act & Assert
@@ -2000,7 +2000,7 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 
 	t.Run("GetTriggerSource_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncFailedEvent
+		var obj *EventingBulkSyncFailedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2012,11 +2012,11 @@ func TestGettersBulkSyncFailedEvent(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitBulkSyncFailedEvent(t *testing.T) {
+func TestSettersMarkExplicitEventingBulkSyncFailedEvent(t *testing.T) {
 	t.Run("SetDestinationConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var fernTestValueDestinationConnectionID *string
 
 		// Act
@@ -2047,7 +2047,7 @@ func TestSettersMarkExplicitBulkSyncFailedEvent(t *testing.T) {
 	t.Run("SetError_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var fernTestValueError *string
 
 		// Act
@@ -2078,7 +2078,7 @@ func TestSettersMarkExplicitBulkSyncFailedEvent(t *testing.T) {
 	t.Run("SetExecutionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var fernTestValueExecutionID *string
 
 		// Act
@@ -2109,7 +2109,7 @@ func TestSettersMarkExplicitBulkSyncFailedEvent(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -2140,7 +2140,7 @@ func TestSettersMarkExplicitBulkSyncFailedEvent(t *testing.T) {
 	t.Run("SetSourceConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var fernTestValueSourceConnectionID *string
 
 		// Act
@@ -2171,7 +2171,7 @@ func TestSettersMarkExplicitBulkSyncFailedEvent(t *testing.T) {
 	t.Run("SetSyncID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var fernTestValueSyncID *string
 
 		// Act
@@ -2202,7 +2202,7 @@ func TestSettersMarkExplicitBulkSyncFailedEvent(t *testing.T) {
 	t.Run("SetSyncName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var fernTestValueSyncName *string
 
 		// Act
@@ -2233,7 +2233,7 @@ func TestSettersMarkExplicitBulkSyncFailedEvent(t *testing.T) {
 	t.Run("SetTriggerSource_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		var fernTestValueTriggerSource *string
 
 		// Act
@@ -2263,9 +2263,9 @@ func TestSettersMarkExplicitBulkSyncFailedEvent(t *testing.T) {
 
 }
 
-func TestSettersBulkSyncRunningEvent(t *testing.T) {
+func TestSettersEventingBulkSyncRunningEvent(t *testing.T) {
 	t.Run("SetDestinationConnectionID", func(t *testing.T) {
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var fernTestValueDestinationConnectionID *string
 		obj.SetDestinationConnectionID(fernTestValueDestinationConnectionID)
 		assert.Equal(t, fernTestValueDestinationConnectionID, obj.DestinationConnectionID)
@@ -2273,7 +2273,7 @@ func TestSettersBulkSyncRunningEvent(t *testing.T) {
 	})
 
 	t.Run("SetExecutionID", func(t *testing.T) {
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var fernTestValueExecutionID *string
 		obj.SetExecutionID(fernTestValueExecutionID)
 		assert.Equal(t, fernTestValueExecutionID, obj.ExecutionID)
@@ -2281,7 +2281,7 @@ func TestSettersBulkSyncRunningEvent(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -2289,7 +2289,7 @@ func TestSettersBulkSyncRunningEvent(t *testing.T) {
 	})
 
 	t.Run("SetSourceConnectionID", func(t *testing.T) {
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var fernTestValueSourceConnectionID *string
 		obj.SetSourceConnectionID(fernTestValueSourceConnectionID)
 		assert.Equal(t, fernTestValueSourceConnectionID, obj.SourceConnectionID)
@@ -2297,7 +2297,7 @@ func TestSettersBulkSyncRunningEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncID", func(t *testing.T) {
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var fernTestValueSyncID *string
 		obj.SetSyncID(fernTestValueSyncID)
 		assert.Equal(t, fernTestValueSyncID, obj.SyncID)
@@ -2305,7 +2305,7 @@ func TestSettersBulkSyncRunningEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncName", func(t *testing.T) {
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var fernTestValueSyncName *string
 		obj.SetSyncName(fernTestValueSyncName)
 		assert.Equal(t, fernTestValueSyncName, obj.SyncName)
@@ -2314,11 +2314,11 @@ func TestSettersBulkSyncRunningEvent(t *testing.T) {
 
 }
 
-func TestGettersBulkSyncRunningEvent(t *testing.T) {
+func TestGettersEventingBulkSyncRunningEvent(t *testing.T) {
 	t.Run("GetDestinationConnectionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var expected *string
 		obj.DestinationConnectionID = expected
 
@@ -2329,7 +2329,7 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 	t.Run("GetDestinationConnectionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		obj.DestinationConnectionID = nil
 
 		// Act & Assert
@@ -2338,7 +2338,7 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 
 	t.Run("GetDestinationConnectionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncRunningEvent
+		var obj *EventingBulkSyncRunningEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2351,7 +2351,7 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 	t.Run("GetExecutionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var expected *string
 		obj.ExecutionID = expected
 
@@ -2362,7 +2362,7 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 	t.Run("GetExecutionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		obj.ExecutionID = nil
 
 		// Act & Assert
@@ -2371,7 +2371,7 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 
 	t.Run("GetExecutionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncRunningEvent
+		var obj *EventingBulkSyncRunningEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2384,7 +2384,7 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 	t.Run("GetOrganizationID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var expected *string
 		obj.OrganizationID = expected
 
@@ -2395,7 +2395,7 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 	t.Run("GetOrganizationID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		obj.OrganizationID = nil
 
 		// Act & Assert
@@ -2404,7 +2404,7 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 
 	t.Run("GetOrganizationID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncRunningEvent
+		var obj *EventingBulkSyncRunningEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2417,7 +2417,7 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 	t.Run("GetSourceConnectionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var expected *string
 		obj.SourceConnectionID = expected
 
@@ -2428,7 +2428,7 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 	t.Run("GetSourceConnectionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		obj.SourceConnectionID = nil
 
 		// Act & Assert
@@ -2437,7 +2437,7 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 
 	t.Run("GetSourceConnectionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncRunningEvent
+		var obj *EventingBulkSyncRunningEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2450,7 +2450,7 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 	t.Run("GetSyncID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var expected *string
 		obj.SyncID = expected
 
@@ -2461,7 +2461,7 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 	t.Run("GetSyncID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		obj.SyncID = nil
 
 		// Act & Assert
@@ -2470,7 +2470,7 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 
 	t.Run("GetSyncID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncRunningEvent
+		var obj *EventingBulkSyncRunningEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2483,7 +2483,7 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 	t.Run("GetSyncName", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var expected *string
 		obj.SyncName = expected
 
@@ -2494,7 +2494,7 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 	t.Run("GetSyncName_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		obj.SyncName = nil
 
 		// Act & Assert
@@ -2503,7 +2503,7 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 
 	t.Run("GetSyncName_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncRunningEvent
+		var obj *EventingBulkSyncRunningEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2515,11 +2515,11 @@ func TestGettersBulkSyncRunningEvent(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitBulkSyncRunningEvent(t *testing.T) {
+func TestSettersMarkExplicitEventingBulkSyncRunningEvent(t *testing.T) {
 	t.Run("SetDestinationConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var fernTestValueDestinationConnectionID *string
 
 		// Act
@@ -2550,7 +2550,7 @@ func TestSettersMarkExplicitBulkSyncRunningEvent(t *testing.T) {
 	t.Run("SetExecutionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var fernTestValueExecutionID *string
 
 		// Act
@@ -2581,7 +2581,7 @@ func TestSettersMarkExplicitBulkSyncRunningEvent(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -2612,7 +2612,7 @@ func TestSettersMarkExplicitBulkSyncRunningEvent(t *testing.T) {
 	t.Run("SetSourceConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var fernTestValueSourceConnectionID *string
 
 		// Act
@@ -2643,7 +2643,7 @@ func TestSettersMarkExplicitBulkSyncRunningEvent(t *testing.T) {
 	t.Run("SetSyncID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var fernTestValueSyncID *string
 
 		// Act
@@ -2674,7 +2674,7 @@ func TestSettersMarkExplicitBulkSyncRunningEvent(t *testing.T) {
 	t.Run("SetSyncName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		var fernTestValueSyncName *string
 
 		// Act
@@ -2704,873 +2704,9 @@ func TestSettersMarkExplicitBulkSyncRunningEvent(t *testing.T) {
 
 }
 
-func TestSettersEvent(t *testing.T) {
-	t.Run("SetCreatedAt", func(t *testing.T) {
-		obj := &Event{}
-		var fernTestValueCreatedAt *time.Time
-		obj.SetCreatedAt(fernTestValueCreatedAt)
-		assert.Equal(t, fernTestValueCreatedAt, obj.CreatedAt)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetEvent", func(t *testing.T) {
-		obj := &Event{}
-		var fernTestValueEvent *EventBody
-		obj.SetEvent(fernTestValueEvent)
-		assert.Equal(t, fernTestValueEvent, obj.Event)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetID", func(t *testing.T) {
-		obj := &Event{}
-		var fernTestValueID *string
-		obj.SetID(fernTestValueID)
-		assert.Equal(t, fernTestValueID, obj.ID)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &Event{}
-		var fernTestValueOrganizationID *string
-		obj.SetOrganizationID(fernTestValueOrganizationID)
-		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetType", func(t *testing.T) {
-		obj := &Event{}
-		var fernTestValueType *string
-		obj.SetType(fernTestValueType)
-		assert.Equal(t, fernTestValueType, obj.Type)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-}
-
-func TestGettersEvent(t *testing.T) {
-	t.Run("GetCreatedAt", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &Event{}
-		var expected *time.Time
-		obj.CreatedAt = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetCreatedAt(), "getter should return the property value")
-	})
-
-	t.Run("GetCreatedAt_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &Event{}
-		obj.CreatedAt = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetCreatedAt(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetCreatedAt_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *Event
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetCreatedAt() // Should return zero value
-	})
-
-	t.Run("GetEvent", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &Event{}
-		var expected *EventBody
-		obj.Event = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetEvent(), "getter should return the property value")
-	})
-
-	t.Run("GetEvent_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &Event{}
-		obj.Event = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetEvent(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetEvent_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *Event
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetEvent() // Should return zero value
-	})
-
-	t.Run("GetID", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &Event{}
-		var expected *string
-		obj.ID = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetID(), "getter should return the property value")
-	})
-
-	t.Run("GetID_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &Event{}
-		obj.ID = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetID(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetID_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *Event
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetID() // Should return zero value
-	})
-
-	t.Run("GetOrganizationID", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &Event{}
-		var expected *string
-		obj.OrganizationID = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetOrganizationID(), "getter should return the property value")
-	})
-
-	t.Run("GetOrganizationID_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &Event{}
-		obj.OrganizationID = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetOrganizationID(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetOrganizationID_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *Event
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetOrganizationID() // Should return zero value
-	})
-
-	t.Run("GetType", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &Event{}
-		var expected *string
-		obj.Type = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetType(), "getter should return the property value")
-	})
-
-	t.Run("GetType_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &Event{}
-		obj.Type = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetType(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetType_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *Event
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetType() // Should return zero value
-	})
-
-}
-
-func TestSettersMarkExplicitEvent(t *testing.T) {
-	t.Run("SetCreatedAt_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &Event{}
-		var fernTestValueCreatedAt *time.Time
-
-		// Act
-		obj.SetCreatedAt(fernTestValueCreatedAt)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetEvent_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &Event{}
-		var fernTestValueEvent *EventBody
-
-		// Act
-		obj.SetEvent(fernTestValueEvent)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetID_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &Event{}
-		var fernTestValueID *string
-
-		// Act
-		obj.SetID(fernTestValueID)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &Event{}
-		var fernTestValueOrganizationID *string
-
-		// Act
-		obj.SetOrganizationID(fernTestValueOrganizationID)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetType_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &Event{}
-		var fernTestValueType *string
-
-		// Act
-		obj.SetType(fernTestValueType)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-}
-
-func TestGettersEventBody(t *testing.T) {
-	t.Run("GetSyncRunningEvent", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		var expected *SyncRunningEvent
-		obj.SyncRunningEvent = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetSyncRunningEvent(), "getter should return the property value")
-	})
-
-	t.Run("GetSyncRunningEvent_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		obj.SyncRunningEvent = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetSyncRunningEvent(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetSyncRunningEvent_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *EventBody
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetSyncRunningEvent() // Should return zero value
-	})
-
-	t.Run("GetSyncCompletedEvent", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		var expected *SyncCompletedEvent
-		obj.SyncCompletedEvent = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetSyncCompletedEvent(), "getter should return the property value")
-	})
-
-	t.Run("GetSyncCompletedEvent_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		obj.SyncCompletedEvent = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetSyncCompletedEvent(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetSyncCompletedEvent_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *EventBody
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetSyncCompletedEvent() // Should return zero value
-	})
-
-	t.Run("GetSyncFailedEvent", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		var expected *SyncFailedEvent
-		obj.SyncFailedEvent = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetSyncFailedEvent(), "getter should return the property value")
-	})
-
-	t.Run("GetSyncFailedEvent_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		obj.SyncFailedEvent = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetSyncFailedEvent(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetSyncFailedEvent_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *EventBody
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetSyncFailedEvent() // Should return zero value
-	})
-
-	t.Run("GetSyncCanceledEvent", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		var expected *SyncCanceledEvent
-		obj.SyncCanceledEvent = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetSyncCanceledEvent(), "getter should return the property value")
-	})
-
-	t.Run("GetSyncCanceledEvent_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		obj.SyncCanceledEvent = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetSyncCanceledEvent(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetSyncCanceledEvent_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *EventBody
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetSyncCanceledEvent() // Should return zero value
-	})
-
-	t.Run("GetSyncCompletedWithErrorsEvent", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		var expected *SyncCompletedWithErrorsEvent
-		obj.SyncCompletedWithErrorsEvent = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetSyncCompletedWithErrorsEvent(), "getter should return the property value")
-	})
-
-	t.Run("GetSyncCompletedWithErrorsEvent_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		obj.SyncCompletedWithErrorsEvent = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetSyncCompletedWithErrorsEvent(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetSyncCompletedWithErrorsEvent_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *EventBody
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetSyncCompletedWithErrorsEvent() // Should return zero value
-	})
-
-	t.Run("GetBulkSyncRunningEvent", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		var expected *BulkSyncRunningEvent
-		obj.BulkSyncRunningEvent = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetBulkSyncRunningEvent(), "getter should return the property value")
-	})
-
-	t.Run("GetBulkSyncRunningEvent_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		obj.BulkSyncRunningEvent = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetBulkSyncRunningEvent(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetBulkSyncRunningEvent_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *EventBody
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetBulkSyncRunningEvent() // Should return zero value
-	})
-
-	t.Run("GetBulkSyncCompletedEvent", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		var expected *BulkSyncCompletedEvent
-		obj.BulkSyncCompletedEvent = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetBulkSyncCompletedEvent(), "getter should return the property value")
-	})
-
-	t.Run("GetBulkSyncCompletedEvent_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		obj.BulkSyncCompletedEvent = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetBulkSyncCompletedEvent(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetBulkSyncCompletedEvent_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *EventBody
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetBulkSyncCompletedEvent() // Should return zero value
-	})
-
-	t.Run("GetBulkSyncCanceledEvent", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		var expected *BulkSyncCanceledEvent
-		obj.BulkSyncCanceledEvent = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetBulkSyncCanceledEvent(), "getter should return the property value")
-	})
-
-	t.Run("GetBulkSyncCanceledEvent_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		obj.BulkSyncCanceledEvent = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetBulkSyncCanceledEvent(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetBulkSyncCanceledEvent_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *EventBody
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetBulkSyncCanceledEvent() // Should return zero value
-	})
-
-	t.Run("GetBulkSyncCompletedWithErrorEvent", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		var expected *BulkSyncCompletedWithErrorEvent
-		obj.BulkSyncCompletedWithErrorEvent = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetBulkSyncCompletedWithErrorEvent(), "getter should return the property value")
-	})
-
-	t.Run("GetBulkSyncCompletedWithErrorEvent_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		obj.BulkSyncCompletedWithErrorEvent = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetBulkSyncCompletedWithErrorEvent(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetBulkSyncCompletedWithErrorEvent_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *EventBody
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetBulkSyncCompletedWithErrorEvent() // Should return zero value
-	})
-
-	t.Run("GetBulkSyncFailedEvent", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		var expected *BulkSyncFailedEvent
-		obj.BulkSyncFailedEvent = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetBulkSyncFailedEvent(), "getter should return the property value")
-	})
-
-	t.Run("GetBulkSyncFailedEvent_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventBody{}
-		obj.BulkSyncFailedEvent = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetBulkSyncFailedEvent(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetBulkSyncFailedEvent_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *EventBody
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetBulkSyncFailedEvent() // Should return zero value
-	})
-
-}
-
-func TestSettersEventTypesEnvelope(t *testing.T) {
-	t.Run("SetData", func(t *testing.T) {
-		obj := &EventTypesEnvelope{}
-		var fernTestValueData []string
-		obj.SetData(fernTestValueData)
-		assert.Equal(t, fernTestValueData, obj.Data)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-}
-
-func TestGettersEventTypesEnvelope(t *testing.T) {
-	t.Run("GetData", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventTypesEnvelope{}
-		var expected []string
-		obj.Data = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetData(), "getter should return the property value")
-	})
-
-	t.Run("GetData_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventTypesEnvelope{}
-		obj.Data = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetData(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetData_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *EventTypesEnvelope
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetData() // Should return zero value
-	})
-
-}
-
-func TestSettersMarkExplicitEventTypesEnvelope(t *testing.T) {
-	t.Run("SetData_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventTypesEnvelope{}
-		var fernTestValueData []string
-
-		// Act
-		obj.SetData(fernTestValueData)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-}
-
-func TestSettersEventsEnvelope(t *testing.T) {
-	t.Run("SetData", func(t *testing.T) {
-		obj := &EventsEnvelope{}
-		var fernTestValueData []*Event
-		obj.SetData(fernTestValueData)
-		assert.Equal(t, fernTestValueData, obj.Data)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-}
-
-func TestGettersEventsEnvelope(t *testing.T) {
-	t.Run("GetData", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventsEnvelope{}
-		var expected []*Event
-		obj.Data = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetData(), "getter should return the property value")
-	})
-
-	t.Run("GetData_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventsEnvelope{}
-		obj.Data = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetData(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetData_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *EventsEnvelope
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetData() // Should return zero value
-	})
-
-}
-
-func TestSettersMarkExplicitEventsEnvelope(t *testing.T) {
-	t.Run("SetData_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &EventsEnvelope{}
-		var fernTestValueData []*Event
-
-		// Act
-		obj.SetData(fernTestValueData)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-}
-
-func TestSettersSyncCanceledEvent(t *testing.T) {
+func TestSettersEventingSyncCanceledEvent(t *testing.T) {
 	t.Run("SetExecutionID", func(t *testing.T) {
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		var fernTestValueExecutionID *string
 		obj.SetExecutionID(fernTestValueExecutionID)
 		assert.Equal(t, fernTestValueExecutionID, obj.ExecutionID)
@@ -3578,7 +2714,7 @@ func TestSettersSyncCanceledEvent(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -3586,15 +2722,15 @@ func TestSettersSyncCanceledEvent(t *testing.T) {
 	})
 
 	t.Run("SetStatus", func(t *testing.T) {
-		obj := &SyncCanceledEvent{}
-		var fernTestValueStatus *ExecutionStatus
+		obj := &EventingSyncCanceledEvent{}
+		var fernTestValueStatus *UtilExecutionStatus
 		obj.SetStatus(fernTestValueStatus)
 		assert.Equal(t, fernTestValueStatus, obj.Status)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
 	t.Run("SetSyncID", func(t *testing.T) {
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		var fernTestValueSyncID *string
 		obj.SetSyncID(fernTestValueSyncID)
 		assert.Equal(t, fernTestValueSyncID, obj.SyncID)
@@ -3602,7 +2738,7 @@ func TestSettersSyncCanceledEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncName", func(t *testing.T) {
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		var fernTestValueSyncName *string
 		obj.SetSyncName(fernTestValueSyncName)
 		assert.Equal(t, fernTestValueSyncName, obj.SyncName)
@@ -3610,7 +2746,7 @@ func TestSettersSyncCanceledEvent(t *testing.T) {
 	})
 
 	t.Run("SetTargetConnectionID", func(t *testing.T) {
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		var fernTestValueTargetConnectionID *string
 		obj.SetTargetConnectionID(fernTestValueTargetConnectionID)
 		assert.Equal(t, fernTestValueTargetConnectionID, obj.TargetConnectionID)
@@ -3619,11 +2755,11 @@ func TestSettersSyncCanceledEvent(t *testing.T) {
 
 }
 
-func TestGettersSyncCanceledEvent(t *testing.T) {
+func TestGettersEventingSyncCanceledEvent(t *testing.T) {
 	t.Run("GetExecutionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		var expected *string
 		obj.ExecutionID = expected
 
@@ -3634,7 +2770,7 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 	t.Run("GetExecutionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		obj.ExecutionID = nil
 
 		// Act & Assert
@@ -3643,7 +2779,7 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 
 	t.Run("GetExecutionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCanceledEvent
+		var obj *EventingSyncCanceledEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -3656,7 +2792,7 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 	t.Run("GetOrganizationID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		var expected *string
 		obj.OrganizationID = expected
 
@@ -3667,7 +2803,7 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 	t.Run("GetOrganizationID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		obj.OrganizationID = nil
 
 		// Act & Assert
@@ -3676,7 +2812,7 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 
 	t.Run("GetOrganizationID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCanceledEvent
+		var obj *EventingSyncCanceledEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -3689,8 +2825,8 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 	t.Run("GetStatus", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
-		var expected *ExecutionStatus
+		obj := &EventingSyncCanceledEvent{}
+		var expected *UtilExecutionStatus
 		obj.Status = expected
 
 		// Act & Assert
@@ -3700,7 +2836,7 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 	t.Run("GetStatus_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		obj.Status = nil
 
 		// Act & Assert
@@ -3709,7 +2845,7 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 
 	t.Run("GetStatus_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCanceledEvent
+		var obj *EventingSyncCanceledEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -3722,7 +2858,7 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 	t.Run("GetSyncID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		var expected *string
 		obj.SyncID = expected
 
@@ -3733,7 +2869,7 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 	t.Run("GetSyncID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		obj.SyncID = nil
 
 		// Act & Assert
@@ -3742,7 +2878,7 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 
 	t.Run("GetSyncID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCanceledEvent
+		var obj *EventingSyncCanceledEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -3755,7 +2891,7 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 	t.Run("GetSyncName", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		var expected *string
 		obj.SyncName = expected
 
@@ -3766,7 +2902,7 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 	t.Run("GetSyncName_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		obj.SyncName = nil
 
 		// Act & Assert
@@ -3775,7 +2911,7 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 
 	t.Run("GetSyncName_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCanceledEvent
+		var obj *EventingSyncCanceledEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -3788,7 +2924,7 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 	t.Run("GetTargetConnectionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		var expected *string
 		obj.TargetConnectionID = expected
 
@@ -3799,7 +2935,7 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 	t.Run("GetTargetConnectionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		obj.TargetConnectionID = nil
 
 		// Act & Assert
@@ -3808,7 +2944,7 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 
 	t.Run("GetTargetConnectionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCanceledEvent
+		var obj *EventingSyncCanceledEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -3820,11 +2956,11 @@ func TestGettersSyncCanceledEvent(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitSyncCanceledEvent(t *testing.T) {
+func TestSettersMarkExplicitEventingSyncCanceledEvent(t *testing.T) {
 	t.Run("SetExecutionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		var fernTestValueExecutionID *string
 
 		// Act
@@ -3855,7 +2991,7 @@ func TestSettersMarkExplicitSyncCanceledEvent(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -3886,8 +3022,8 @@ func TestSettersMarkExplicitSyncCanceledEvent(t *testing.T) {
 	t.Run("SetStatus_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
-		var fernTestValueStatus *ExecutionStatus
+		obj := &EventingSyncCanceledEvent{}
+		var fernTestValueStatus *UtilExecutionStatus
 
 		// Act
 		obj.SetStatus(fernTestValueStatus)
@@ -3917,7 +3053,7 @@ func TestSettersMarkExplicitSyncCanceledEvent(t *testing.T) {
 	t.Run("SetSyncID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		var fernTestValueSyncID *string
 
 		// Act
@@ -3948,7 +3084,7 @@ func TestSettersMarkExplicitSyncCanceledEvent(t *testing.T) {
 	t.Run("SetSyncName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		var fernTestValueSyncName *string
 
 		// Act
@@ -3979,7 +3115,7 @@ func TestSettersMarkExplicitSyncCanceledEvent(t *testing.T) {
 	t.Run("SetTargetConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncCanceledEvent{}
 		var fernTestValueTargetConnectionID *string
 
 		// Act
@@ -4009,9 +3145,9 @@ func TestSettersMarkExplicitSyncCanceledEvent(t *testing.T) {
 
 }
 
-func TestSettersSyncCompletedEvent(t *testing.T) {
+func TestSettersEventingSyncCompletedEvent(t *testing.T) {
 	t.Run("SetDeletedRecords", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueDeletedRecords []string
 		obj.SetDeletedRecords(fernTestValueDeletedRecords)
 		assert.Equal(t, fernTestValueDeletedRecords, obj.DeletedRecords)
@@ -4019,7 +3155,7 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetErrorCount", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueErrorCount *int
 		obj.SetErrorCount(fernTestValueErrorCount)
 		assert.Equal(t, fernTestValueErrorCount, obj.ErrorCount)
@@ -4027,7 +3163,7 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetErroredRecords", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueErroredRecords []string
 		obj.SetErroredRecords(fernTestValueErroredRecords)
 		assert.Equal(t, fernTestValueErroredRecords, obj.ErroredRecords)
@@ -4035,7 +3171,7 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetExecutionID", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueExecutionID *string
 		obj.SetExecutionID(fernTestValueExecutionID)
 		assert.Equal(t, fernTestValueExecutionID, obj.ExecutionID)
@@ -4043,7 +3179,7 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetInsertedCount", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueInsertedCount *int
 		obj.SetInsertedCount(fernTestValueInsertedCount)
 		assert.Equal(t, fernTestValueInsertedCount, obj.InsertedCount)
@@ -4051,7 +3187,7 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetInsertedRecords", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueInsertedRecords []string
 		obj.SetInsertedRecords(fernTestValueInsertedRecords)
 		assert.Equal(t, fernTestValueInsertedRecords, obj.InsertedRecords)
@@ -4059,7 +3195,7 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -4067,7 +3203,7 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetRecordCount", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueRecordCount *int
 		obj.SetRecordCount(fernTestValueRecordCount)
 		assert.Equal(t, fernTestValueRecordCount, obj.RecordCount)
@@ -4075,15 +3211,15 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetStatus", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
-		var fernTestValueStatus *ExecutionStatus
+		obj := &EventingSyncCompletedEvent{}
+		var fernTestValueStatus *UtilExecutionStatus
 		obj.SetStatus(fernTestValueStatus)
 		assert.Equal(t, fernTestValueStatus, obj.Status)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
 	t.Run("SetSyncID", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueSyncID *string
 		obj.SetSyncID(fernTestValueSyncID)
 		assert.Equal(t, fernTestValueSyncID, obj.SyncID)
@@ -4091,7 +3227,7 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncName", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueSyncName *string
 		obj.SetSyncName(fernTestValueSyncName)
 		assert.Equal(t, fernTestValueSyncName, obj.SyncName)
@@ -4099,7 +3235,7 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetTargetConnectionID", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueTargetConnectionID *string
 		obj.SetTargetConnectionID(fernTestValueTargetConnectionID)
 		assert.Equal(t, fernTestValueTargetConnectionID, obj.TargetConnectionID)
@@ -4107,7 +3243,7 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetTotalRecords", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueTotalRecords []string
 		obj.SetTotalRecords(fernTestValueTotalRecords)
 		assert.Equal(t, fernTestValueTotalRecords, obj.TotalRecords)
@@ -4115,7 +3251,7 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetTrigger", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueTrigger *string
 		obj.SetTrigger(fernTestValueTrigger)
 		assert.Equal(t, fernTestValueTrigger, obj.Trigger)
@@ -4123,7 +3259,7 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetUpdatedCount", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueUpdatedCount *int
 		obj.SetUpdatedCount(fernTestValueUpdatedCount)
 		assert.Equal(t, fernTestValueUpdatedCount, obj.UpdatedCount)
@@ -4131,7 +3267,7 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetUpdatedRecords", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueUpdatedRecords []string
 		obj.SetUpdatedRecords(fernTestValueUpdatedRecords)
 		assert.Equal(t, fernTestValueUpdatedRecords, obj.UpdatedRecords)
@@ -4139,7 +3275,7 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetUpsertedCount", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueUpsertedCount *int
 		obj.SetUpsertedCount(fernTestValueUpsertedCount)
 		assert.Equal(t, fernTestValueUpsertedCount, obj.UpsertedCount)
@@ -4147,7 +3283,7 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetWarningCount", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueWarningCount *int
 		obj.SetWarningCount(fernTestValueWarningCount)
 		assert.Equal(t, fernTestValueWarningCount, obj.WarningCount)
@@ -4155,7 +3291,7 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 	})
 
 	t.Run("SetWarnings", func(t *testing.T) {
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueWarnings []string
 		obj.SetWarnings(fernTestValueWarnings)
 		assert.Equal(t, fernTestValueWarnings, obj.Warnings)
@@ -4164,11 +3300,11 @@ func TestSettersSyncCompletedEvent(t *testing.T) {
 
 }
 
-func TestGettersSyncCompletedEvent(t *testing.T) {
+func TestGettersEventingSyncCompletedEvent(t *testing.T) {
 	t.Run("GetDeletedRecords", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected []string
 		obj.DeletedRecords = expected
 
@@ -4179,7 +3315,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetDeletedRecords_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.DeletedRecords = nil
 
 		// Act & Assert
@@ -4188,7 +3324,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetDeletedRecords_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4201,7 +3337,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetErrorCount", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected *int
 		obj.ErrorCount = expected
 
@@ -4212,7 +3348,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetErrorCount_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.ErrorCount = nil
 
 		// Act & Assert
@@ -4221,7 +3357,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetErrorCount_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4234,7 +3370,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetErroredRecords", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected []string
 		obj.ErroredRecords = expected
 
@@ -4245,7 +3381,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetErroredRecords_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.ErroredRecords = nil
 
 		// Act & Assert
@@ -4254,7 +3390,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetErroredRecords_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4267,7 +3403,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetExecutionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected *string
 		obj.ExecutionID = expected
 
@@ -4278,7 +3414,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetExecutionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.ExecutionID = nil
 
 		// Act & Assert
@@ -4287,7 +3423,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetExecutionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4300,7 +3436,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetInsertedCount", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected *int
 		obj.InsertedCount = expected
 
@@ -4311,7 +3447,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetInsertedCount_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.InsertedCount = nil
 
 		// Act & Assert
@@ -4320,7 +3456,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetInsertedCount_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4333,7 +3469,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetInsertedRecords", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected []string
 		obj.InsertedRecords = expected
 
@@ -4344,7 +3480,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetInsertedRecords_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.InsertedRecords = nil
 
 		// Act & Assert
@@ -4353,7 +3489,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetInsertedRecords_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4366,7 +3502,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetOrganizationID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected *string
 		obj.OrganizationID = expected
 
@@ -4377,7 +3513,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetOrganizationID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.OrganizationID = nil
 
 		// Act & Assert
@@ -4386,7 +3522,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetOrganizationID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4399,7 +3535,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetRecordCount", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected *int
 		obj.RecordCount = expected
 
@@ -4410,7 +3546,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetRecordCount_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.RecordCount = nil
 
 		// Act & Assert
@@ -4419,7 +3555,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetRecordCount_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4432,8 +3568,8 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetStatus", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
-		var expected *ExecutionStatus
+		obj := &EventingSyncCompletedEvent{}
+		var expected *UtilExecutionStatus
 		obj.Status = expected
 
 		// Act & Assert
@@ -4443,7 +3579,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetStatus_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.Status = nil
 
 		// Act & Assert
@@ -4452,7 +3588,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetStatus_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4465,7 +3601,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetSyncID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected *string
 		obj.SyncID = expected
 
@@ -4476,7 +3612,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetSyncID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.SyncID = nil
 
 		// Act & Assert
@@ -4485,7 +3621,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetSyncID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4498,7 +3634,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetSyncName", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected *string
 		obj.SyncName = expected
 
@@ -4509,7 +3645,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetSyncName_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.SyncName = nil
 
 		// Act & Assert
@@ -4518,7 +3654,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetSyncName_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4531,7 +3667,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetTargetConnectionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected *string
 		obj.TargetConnectionID = expected
 
@@ -4542,7 +3678,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetTargetConnectionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.TargetConnectionID = nil
 
 		// Act & Assert
@@ -4551,7 +3687,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetTargetConnectionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4564,7 +3700,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetTotalRecords", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected []string
 		obj.TotalRecords = expected
 
@@ -4575,7 +3711,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetTotalRecords_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.TotalRecords = nil
 
 		// Act & Assert
@@ -4584,7 +3720,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetTotalRecords_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4597,7 +3733,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetTrigger", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected *string
 		obj.Trigger = expected
 
@@ -4608,7 +3744,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetTrigger_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.Trigger = nil
 
 		// Act & Assert
@@ -4617,7 +3753,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetTrigger_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4630,7 +3766,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetUpdatedCount", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected *int
 		obj.UpdatedCount = expected
 
@@ -4641,7 +3777,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetUpdatedCount_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.UpdatedCount = nil
 
 		// Act & Assert
@@ -4650,7 +3786,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetUpdatedCount_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4663,7 +3799,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetUpdatedRecords", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected []string
 		obj.UpdatedRecords = expected
 
@@ -4674,7 +3810,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetUpdatedRecords_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.UpdatedRecords = nil
 
 		// Act & Assert
@@ -4683,7 +3819,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetUpdatedRecords_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4696,7 +3832,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetUpsertedCount", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected *int
 		obj.UpsertedCount = expected
 
@@ -4707,7 +3843,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetUpsertedCount_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.UpsertedCount = nil
 
 		// Act & Assert
@@ -4716,7 +3852,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetUpsertedCount_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4729,7 +3865,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetWarningCount", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected *int
 		obj.WarningCount = expected
 
@@ -4740,7 +3876,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetWarningCount_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.WarningCount = nil
 
 		// Act & Assert
@@ -4749,7 +3885,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetWarningCount_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4762,7 +3898,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetWarnings", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var expected []string
 		obj.Warnings = expected
 
@@ -4773,7 +3909,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 	t.Run("GetWarnings_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		obj.Warnings = nil
 
 		// Act & Assert
@@ -4782,7 +3918,7 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetWarnings_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncCompletedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -4794,11 +3930,11 @@ func TestGettersSyncCompletedEvent(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
+func TestSettersMarkExplicitEventingSyncCompletedEvent(t *testing.T) {
 	t.Run("SetDeletedRecords_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueDeletedRecords []string
 
 		// Act
@@ -4829,7 +3965,7 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetErrorCount_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueErrorCount *int
 
 		// Act
@@ -4860,7 +3996,7 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetErroredRecords_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueErroredRecords []string
 
 		// Act
@@ -4891,7 +4027,7 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetExecutionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueExecutionID *string
 
 		// Act
@@ -4922,7 +4058,7 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetInsertedCount_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueInsertedCount *int
 
 		// Act
@@ -4953,7 +4089,7 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetInsertedRecords_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueInsertedRecords []string
 
 		// Act
@@ -4984,7 +4120,7 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -5015,7 +4151,7 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetRecordCount_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueRecordCount *int
 
 		// Act
@@ -5046,8 +4182,8 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetStatus_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
-		var fernTestValueStatus *ExecutionStatus
+		obj := &EventingSyncCompletedEvent{}
+		var fernTestValueStatus *UtilExecutionStatus
 
 		// Act
 		obj.SetStatus(fernTestValueStatus)
@@ -5077,7 +4213,7 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetSyncID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueSyncID *string
 
 		// Act
@@ -5108,7 +4244,7 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetSyncName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueSyncName *string
 
 		// Act
@@ -5139,7 +4275,7 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetTargetConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueTargetConnectionID *string
 
 		// Act
@@ -5170,7 +4306,7 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetTotalRecords_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueTotalRecords []string
 
 		// Act
@@ -5201,7 +4337,7 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetTrigger_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueTrigger *string
 
 		// Act
@@ -5232,7 +4368,7 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetUpdatedCount_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueUpdatedCount *int
 
 		// Act
@@ -5263,7 +4399,7 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetUpdatedRecords_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueUpdatedRecords []string
 
 		// Act
@@ -5294,7 +4430,7 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetUpsertedCount_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueUpsertedCount *int
 
 		// Act
@@ -5325,7 +4461,7 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetWarningCount_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueWarningCount *int
 
 		// Act
@@ -5356,7 +4492,7 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 	t.Run("SetWarnings_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueWarnings []string
 
 		// Act
@@ -5386,9 +4522,9 @@ func TestSettersMarkExplicitSyncCompletedEvent(t *testing.T) {
 
 }
 
-func TestSettersSyncCompletedWithErrorsEvent(t *testing.T) {
+func TestSettersEventingSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("SetError", func(t *testing.T) {
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var fernTestValueError *string
 		obj.SetError(fernTestValueError)
 		assert.Equal(t, fernTestValueError, obj.Error)
@@ -5396,7 +4532,7 @@ func TestSettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	})
 
 	t.Run("SetExecutionID", func(t *testing.T) {
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var fernTestValueExecutionID *string
 		obj.SetExecutionID(fernTestValueExecutionID)
 		assert.Equal(t, fernTestValueExecutionID, obj.ExecutionID)
@@ -5404,7 +4540,7 @@ func TestSettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	})
 
 	t.Run("SetNumberOfErrors", func(t *testing.T) {
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var fernTestValueNumberOfErrors *int
 		obj.SetNumberOfErrors(fernTestValueNumberOfErrors)
 		assert.Equal(t, fernTestValueNumberOfErrors, obj.NumberOfErrors)
@@ -5412,7 +4548,7 @@ func TestSettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	})
 
 	t.Run("SetNumberOfWarnings", func(t *testing.T) {
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var fernTestValueNumberOfWarnings *int
 		obj.SetNumberOfWarnings(fernTestValueNumberOfWarnings)
 		assert.Equal(t, fernTestValueNumberOfWarnings, obj.NumberOfWarnings)
@@ -5420,7 +4556,7 @@ func TestSettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -5428,7 +4564,7 @@ func TestSettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncID", func(t *testing.T) {
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var fernTestValueSyncID *string
 		obj.SetSyncID(fernTestValueSyncID)
 		assert.Equal(t, fernTestValueSyncID, obj.SyncID)
@@ -5436,7 +4572,7 @@ func TestSettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncName", func(t *testing.T) {
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var fernTestValueSyncName *string
 		obj.SetSyncName(fernTestValueSyncName)
 		assert.Equal(t, fernTestValueSyncName, obj.SyncName)
@@ -5444,7 +4580,7 @@ func TestSettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	})
 
 	t.Run("SetTargetConnectionID", func(t *testing.T) {
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var fernTestValueTargetConnectionID *string
 		obj.SetTargetConnectionID(fernTestValueTargetConnectionID)
 		assert.Equal(t, fernTestValueTargetConnectionID, obj.TargetConnectionID)
@@ -5453,11 +4589,11 @@ func TestSettersSyncCompletedWithErrorsEvent(t *testing.T) {
 
 }
 
-func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
+func TestGettersEventingSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("GetError", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var expected *string
 		obj.Error = expected
 
@@ -5468,7 +4604,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("GetError_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		obj.Error = nil
 
 		// Act & Assert
@@ -5477,7 +4613,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 
 	t.Run("GetError_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedWithErrorsEvent
+		var obj *EventingSyncCompletedWithErrorsEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -5490,7 +4626,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("GetExecutionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var expected *string
 		obj.ExecutionID = expected
 
@@ -5501,7 +4637,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("GetExecutionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		obj.ExecutionID = nil
 
 		// Act & Assert
@@ -5510,7 +4646,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 
 	t.Run("GetExecutionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedWithErrorsEvent
+		var obj *EventingSyncCompletedWithErrorsEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -5523,7 +4659,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("GetNumberOfErrors", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var expected *int
 		obj.NumberOfErrors = expected
 
@@ -5534,7 +4670,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("GetNumberOfErrors_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		obj.NumberOfErrors = nil
 
 		// Act & Assert
@@ -5543,7 +4679,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 
 	t.Run("GetNumberOfErrors_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedWithErrorsEvent
+		var obj *EventingSyncCompletedWithErrorsEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -5556,7 +4692,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("GetNumberOfWarnings", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var expected *int
 		obj.NumberOfWarnings = expected
 
@@ -5567,7 +4703,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("GetNumberOfWarnings_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		obj.NumberOfWarnings = nil
 
 		// Act & Assert
@@ -5576,7 +4712,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 
 	t.Run("GetNumberOfWarnings_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedWithErrorsEvent
+		var obj *EventingSyncCompletedWithErrorsEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -5589,7 +4725,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("GetOrganizationID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var expected *string
 		obj.OrganizationID = expected
 
@@ -5600,7 +4736,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("GetOrganizationID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		obj.OrganizationID = nil
 
 		// Act & Assert
@@ -5609,7 +4745,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 
 	t.Run("GetOrganizationID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedWithErrorsEvent
+		var obj *EventingSyncCompletedWithErrorsEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -5622,7 +4758,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("GetSyncID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var expected *string
 		obj.SyncID = expected
 
@@ -5633,7 +4769,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("GetSyncID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		obj.SyncID = nil
 
 		// Act & Assert
@@ -5642,7 +4778,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 
 	t.Run("GetSyncID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedWithErrorsEvent
+		var obj *EventingSyncCompletedWithErrorsEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -5655,7 +4791,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("GetSyncName", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var expected *string
 		obj.SyncName = expected
 
@@ -5666,7 +4802,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("GetSyncName_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		obj.SyncName = nil
 
 		// Act & Assert
@@ -5675,7 +4811,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 
 	t.Run("GetSyncName_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedWithErrorsEvent
+		var obj *EventingSyncCompletedWithErrorsEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -5688,7 +4824,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("GetTargetConnectionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var expected *string
 		obj.TargetConnectionID = expected
 
@@ -5699,7 +4835,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("GetTargetConnectionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		obj.TargetConnectionID = nil
 
 		// Act & Assert
@@ -5708,7 +4844,7 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 
 	t.Run("GetTargetConnectionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedWithErrorsEvent
+		var obj *EventingSyncCompletedWithErrorsEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -5720,11 +4856,11 @@ func TestGettersSyncCompletedWithErrorsEvent(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitSyncCompletedWithErrorsEvent(t *testing.T) {
+func TestSettersMarkExplicitEventingSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("SetError_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var fernTestValueError *string
 
 		// Act
@@ -5755,7 +4891,7 @@ func TestSettersMarkExplicitSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("SetExecutionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var fernTestValueExecutionID *string
 
 		// Act
@@ -5786,7 +4922,7 @@ func TestSettersMarkExplicitSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("SetNumberOfErrors_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var fernTestValueNumberOfErrors *int
 
 		// Act
@@ -5817,7 +4953,7 @@ func TestSettersMarkExplicitSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("SetNumberOfWarnings_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var fernTestValueNumberOfWarnings *int
 
 		// Act
@@ -5848,7 +4984,7 @@ func TestSettersMarkExplicitSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -5879,7 +5015,7 @@ func TestSettersMarkExplicitSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("SetSyncID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var fernTestValueSyncID *string
 
 		// Act
@@ -5910,7 +5046,7 @@ func TestSettersMarkExplicitSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("SetSyncName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var fernTestValueSyncName *string
 
 		// Act
@@ -5941,7 +5077,7 @@ func TestSettersMarkExplicitSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("SetTargetConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		var fernTestValueTargetConnectionID *string
 
 		// Act
@@ -5971,9 +5107,9 @@ func TestSettersMarkExplicitSyncCompletedWithErrorsEvent(t *testing.T) {
 
 }
 
-func TestSettersSyncFailedEvent(t *testing.T) {
+func TestSettersEventingSyncFailedEvent(t *testing.T) {
 	t.Run("SetError", func(t *testing.T) {
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var fernTestValueError *string
 		obj.SetError(fernTestValueError)
 		assert.Equal(t, fernTestValueError, obj.Error)
@@ -5981,7 +5117,7 @@ func TestSettersSyncFailedEvent(t *testing.T) {
 	})
 
 	t.Run("SetExecutionID", func(t *testing.T) {
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var fernTestValueExecutionID *string
 		obj.SetExecutionID(fernTestValueExecutionID)
 		assert.Equal(t, fernTestValueExecutionID, obj.ExecutionID)
@@ -5989,7 +5125,7 @@ func TestSettersSyncFailedEvent(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -5997,7 +5133,7 @@ func TestSettersSyncFailedEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncID", func(t *testing.T) {
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var fernTestValueSyncID *string
 		obj.SetSyncID(fernTestValueSyncID)
 		assert.Equal(t, fernTestValueSyncID, obj.SyncID)
@@ -6005,7 +5141,7 @@ func TestSettersSyncFailedEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncName", func(t *testing.T) {
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var fernTestValueSyncName *string
 		obj.SetSyncName(fernTestValueSyncName)
 		assert.Equal(t, fernTestValueSyncName, obj.SyncName)
@@ -6013,7 +5149,7 @@ func TestSettersSyncFailedEvent(t *testing.T) {
 	})
 
 	t.Run("SetTargetConnectionID", func(t *testing.T) {
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var fernTestValueTargetConnectionID *string
 		obj.SetTargetConnectionID(fernTestValueTargetConnectionID)
 		assert.Equal(t, fernTestValueTargetConnectionID, obj.TargetConnectionID)
@@ -6022,11 +5158,11 @@ func TestSettersSyncFailedEvent(t *testing.T) {
 
 }
 
-func TestGettersSyncFailedEvent(t *testing.T) {
+func TestGettersEventingSyncFailedEvent(t *testing.T) {
 	t.Run("GetError", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var expected *string
 		obj.Error = expected
 
@@ -6037,7 +5173,7 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 	t.Run("GetError_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		obj.Error = nil
 
 		// Act & Assert
@@ -6046,7 +5182,7 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 
 	t.Run("GetError_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncFailedEvent
+		var obj *EventingSyncFailedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6059,7 +5195,7 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 	t.Run("GetExecutionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var expected *string
 		obj.ExecutionID = expected
 
@@ -6070,7 +5206,7 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 	t.Run("GetExecutionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		obj.ExecutionID = nil
 
 		// Act & Assert
@@ -6079,7 +5215,7 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 
 	t.Run("GetExecutionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncFailedEvent
+		var obj *EventingSyncFailedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6092,7 +5228,7 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 	t.Run("GetOrganizationID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var expected *string
 		obj.OrganizationID = expected
 
@@ -6103,7 +5239,7 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 	t.Run("GetOrganizationID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		obj.OrganizationID = nil
 
 		// Act & Assert
@@ -6112,7 +5248,7 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 
 	t.Run("GetOrganizationID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncFailedEvent
+		var obj *EventingSyncFailedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6125,7 +5261,7 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 	t.Run("GetSyncID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var expected *string
 		obj.SyncID = expected
 
@@ -6136,7 +5272,7 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 	t.Run("GetSyncID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		obj.SyncID = nil
 
 		// Act & Assert
@@ -6145,7 +5281,7 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 
 	t.Run("GetSyncID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncFailedEvent
+		var obj *EventingSyncFailedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6158,7 +5294,7 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 	t.Run("GetSyncName", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var expected *string
 		obj.SyncName = expected
 
@@ -6169,7 +5305,7 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 	t.Run("GetSyncName_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		obj.SyncName = nil
 
 		// Act & Assert
@@ -6178,7 +5314,7 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 
 	t.Run("GetSyncName_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncFailedEvent
+		var obj *EventingSyncFailedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6191,7 +5327,7 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 	t.Run("GetTargetConnectionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var expected *string
 		obj.TargetConnectionID = expected
 
@@ -6202,7 +5338,7 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 	t.Run("GetTargetConnectionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		obj.TargetConnectionID = nil
 
 		// Act & Assert
@@ -6211,7 +5347,7 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 
 	t.Run("GetTargetConnectionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncFailedEvent
+		var obj *EventingSyncFailedEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6223,11 +5359,11 @@ func TestGettersSyncFailedEvent(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitSyncFailedEvent(t *testing.T) {
+func TestSettersMarkExplicitEventingSyncFailedEvent(t *testing.T) {
 	t.Run("SetError_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var fernTestValueError *string
 
 		// Act
@@ -6258,7 +5394,7 @@ func TestSettersMarkExplicitSyncFailedEvent(t *testing.T) {
 	t.Run("SetExecutionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var fernTestValueExecutionID *string
 
 		// Act
@@ -6289,7 +5425,7 @@ func TestSettersMarkExplicitSyncFailedEvent(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -6320,7 +5456,7 @@ func TestSettersMarkExplicitSyncFailedEvent(t *testing.T) {
 	t.Run("SetSyncID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var fernTestValueSyncID *string
 
 		// Act
@@ -6351,7 +5487,7 @@ func TestSettersMarkExplicitSyncFailedEvent(t *testing.T) {
 	t.Run("SetSyncName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var fernTestValueSyncName *string
 
 		// Act
@@ -6382,7 +5518,7 @@ func TestSettersMarkExplicitSyncFailedEvent(t *testing.T) {
 	t.Run("SetTargetConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &EventingSyncFailedEvent{}
 		var fernTestValueTargetConnectionID *string
 
 		// Act
@@ -6412,9 +5548,9 @@ func TestSettersMarkExplicitSyncFailedEvent(t *testing.T) {
 
 }
 
-func TestSettersSyncRunningEvent(t *testing.T) {
+func TestSettersEventingSyncRunningEvent(t *testing.T) {
 	t.Run("SetExecutionID", func(t *testing.T) {
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		var fernTestValueExecutionID *string
 		obj.SetExecutionID(fernTestValueExecutionID)
 		assert.Equal(t, fernTestValueExecutionID, obj.ExecutionID)
@@ -6422,7 +5558,7 @@ func TestSettersSyncRunningEvent(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -6430,7 +5566,7 @@ func TestSettersSyncRunningEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncID", func(t *testing.T) {
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		var fernTestValueSyncID *string
 		obj.SetSyncID(fernTestValueSyncID)
 		assert.Equal(t, fernTestValueSyncID, obj.SyncID)
@@ -6438,7 +5574,7 @@ func TestSettersSyncRunningEvent(t *testing.T) {
 	})
 
 	t.Run("SetSyncName", func(t *testing.T) {
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		var fernTestValueSyncName *string
 		obj.SetSyncName(fernTestValueSyncName)
 		assert.Equal(t, fernTestValueSyncName, obj.SyncName)
@@ -6446,7 +5582,7 @@ func TestSettersSyncRunningEvent(t *testing.T) {
 	})
 
 	t.Run("SetTargetConnectionID", func(t *testing.T) {
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		var fernTestValueTargetConnectionID *string
 		obj.SetTargetConnectionID(fernTestValueTargetConnectionID)
 		assert.Equal(t, fernTestValueTargetConnectionID, obj.TargetConnectionID)
@@ -6455,11 +5591,11 @@ func TestSettersSyncRunningEvent(t *testing.T) {
 
 }
 
-func TestGettersSyncRunningEvent(t *testing.T) {
+func TestGettersEventingSyncRunningEvent(t *testing.T) {
 	t.Run("GetExecutionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		var expected *string
 		obj.ExecutionID = expected
 
@@ -6470,7 +5606,7 @@ func TestGettersSyncRunningEvent(t *testing.T) {
 	t.Run("GetExecutionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		obj.ExecutionID = nil
 
 		// Act & Assert
@@ -6479,7 +5615,7 @@ func TestGettersSyncRunningEvent(t *testing.T) {
 
 	t.Run("GetExecutionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncRunningEvent
+		var obj *EventingSyncRunningEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6492,7 +5628,7 @@ func TestGettersSyncRunningEvent(t *testing.T) {
 	t.Run("GetOrganizationID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		var expected *string
 		obj.OrganizationID = expected
 
@@ -6503,7 +5639,7 @@ func TestGettersSyncRunningEvent(t *testing.T) {
 	t.Run("GetOrganizationID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		obj.OrganizationID = nil
 
 		// Act & Assert
@@ -6512,7 +5648,7 @@ func TestGettersSyncRunningEvent(t *testing.T) {
 
 	t.Run("GetOrganizationID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncRunningEvent
+		var obj *EventingSyncRunningEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6525,7 +5661,7 @@ func TestGettersSyncRunningEvent(t *testing.T) {
 	t.Run("GetSyncID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		var expected *string
 		obj.SyncID = expected
 
@@ -6536,7 +5672,7 @@ func TestGettersSyncRunningEvent(t *testing.T) {
 	t.Run("GetSyncID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		obj.SyncID = nil
 
 		// Act & Assert
@@ -6545,7 +5681,7 @@ func TestGettersSyncRunningEvent(t *testing.T) {
 
 	t.Run("GetSyncID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncRunningEvent
+		var obj *EventingSyncRunningEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6558,7 +5694,7 @@ func TestGettersSyncRunningEvent(t *testing.T) {
 	t.Run("GetSyncName", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		var expected *string
 		obj.SyncName = expected
 
@@ -6569,7 +5705,7 @@ func TestGettersSyncRunningEvent(t *testing.T) {
 	t.Run("GetSyncName_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		obj.SyncName = nil
 
 		// Act & Assert
@@ -6578,7 +5714,7 @@ func TestGettersSyncRunningEvent(t *testing.T) {
 
 	t.Run("GetSyncName_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncRunningEvent
+		var obj *EventingSyncRunningEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6591,7 +5727,7 @@ func TestGettersSyncRunningEvent(t *testing.T) {
 	t.Run("GetTargetConnectionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		var expected *string
 		obj.TargetConnectionID = expected
 
@@ -6602,7 +5738,7 @@ func TestGettersSyncRunningEvent(t *testing.T) {
 	t.Run("GetTargetConnectionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		obj.TargetConnectionID = nil
 
 		// Act & Assert
@@ -6611,7 +5747,7 @@ func TestGettersSyncRunningEvent(t *testing.T) {
 
 	t.Run("GetTargetConnectionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncRunningEvent
+		var obj *EventingSyncRunningEvent
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -6623,11 +5759,11 @@ func TestGettersSyncRunningEvent(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitSyncRunningEvent(t *testing.T) {
+func TestSettersMarkExplicitEventingSyncRunningEvent(t *testing.T) {
 	t.Run("SetExecutionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		var fernTestValueExecutionID *string
 
 		// Act
@@ -6658,7 +5794,7 @@ func TestSettersMarkExplicitSyncRunningEvent(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -6689,7 +5825,7 @@ func TestSettersMarkExplicitSyncRunningEvent(t *testing.T) {
 	t.Run("SetSyncID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		var fernTestValueSyncID *string
 
 		// Act
@@ -6720,7 +5856,7 @@ func TestSettersMarkExplicitSyncRunningEvent(t *testing.T) {
 	t.Run("SetSyncName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		var fernTestValueSyncName *string
 
 		// Act
@@ -6751,7 +5887,7 @@ func TestSettersMarkExplicitSyncRunningEvent(t *testing.T) {
 	t.Run("SetTargetConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncRunningEvent{}
+		obj := &EventingSyncRunningEvent{}
 		var fernTestValueTargetConnectionID *string
 
 		// Act
@@ -6781,11 +5917,875 @@ func TestSettersMarkExplicitSyncRunningEvent(t *testing.T) {
 
 }
 
-func TestJSONMarshalingBulkSyncCanceledEvent(t *testing.T) {
+func TestSettersV2Event(t *testing.T) {
+	t.Run("SetCreatedAt", func(t *testing.T) {
+		obj := &V2Event{}
+		var fernTestValueCreatedAt *time.Time
+		obj.SetCreatedAt(fernTestValueCreatedAt)
+		assert.Equal(t, fernTestValueCreatedAt, obj.CreatedAt)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetEvent", func(t *testing.T) {
+		obj := &V2Event{}
+		var fernTestValueEvent *V2EventPayload
+		obj.SetEvent(fernTestValueEvent)
+		assert.Equal(t, fernTestValueEvent, obj.Event)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetID", func(t *testing.T) {
+		obj := &V2Event{}
+		var fernTestValueID *string
+		obj.SetID(fernTestValueID)
+		assert.Equal(t, fernTestValueID, obj.ID)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetOrganizationID", func(t *testing.T) {
+		obj := &V2Event{}
+		var fernTestValueOrganizationID *string
+		obj.SetOrganizationID(fernTestValueOrganizationID)
+		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetType", func(t *testing.T) {
+		obj := &V2Event{}
+		var fernTestValueType *string
+		obj.SetType(fernTestValueType)
+		assert.Equal(t, fernTestValueType, obj.Type)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+}
+
+func TestGettersV2Event(t *testing.T) {
+	t.Run("GetCreatedAt", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2Event{}
+		var expected *time.Time
+		obj.CreatedAt = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetCreatedAt(), "getter should return the property value")
+	})
+
+	t.Run("GetCreatedAt_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2Event{}
+		obj.CreatedAt = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCreatedAt(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetCreatedAt_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2Event
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetCreatedAt() // Should return zero value
+	})
+
+	t.Run("GetEvent", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2Event{}
+		var expected *V2EventPayload
+		obj.Event = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetEvent(), "getter should return the property value")
+	})
+
+	t.Run("GetEvent_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2Event{}
+		obj.Event = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetEvent(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetEvent_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2Event
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetEvent() // Should return zero value
+	})
+
+	t.Run("GetID", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2Event{}
+		var expected *string
+		obj.ID = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetID(), "getter should return the property value")
+	})
+
+	t.Run("GetID_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2Event{}
+		obj.ID = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetID(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetID_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2Event
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetID() // Should return zero value
+	})
+
+	t.Run("GetOrganizationID", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2Event{}
+		var expected *string
+		obj.OrganizationID = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetOrganizationID(), "getter should return the property value")
+	})
+
+	t.Run("GetOrganizationID_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2Event{}
+		obj.OrganizationID = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetOrganizationID(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetOrganizationID_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2Event
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetOrganizationID() // Should return zero value
+	})
+
+	t.Run("GetType", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2Event{}
+		var expected *string
+		obj.Type = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetType(), "getter should return the property value")
+	})
+
+	t.Run("GetType_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2Event{}
+		obj.Type = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetType(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetType_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2Event
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetType() // Should return zero value
+	})
+
+}
+
+func TestSettersMarkExplicitV2Event(t *testing.T) {
+	t.Run("SetCreatedAt_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2Event{}
+		var fernTestValueCreatedAt *time.Time
+
+		// Act
+		obj.SetCreatedAt(fernTestValueCreatedAt)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetEvent_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2Event{}
+		var fernTestValueEvent *V2EventPayload
+
+		// Act
+		obj.SetEvent(fernTestValueEvent)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetID_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2Event{}
+		var fernTestValueID *string
+
+		// Act
+		obj.SetID(fernTestValueID)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2Event{}
+		var fernTestValueOrganizationID *string
+
+		// Act
+		obj.SetOrganizationID(fernTestValueOrganizationID)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetType_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2Event{}
+		var fernTestValueType *string
+
+		// Act
+		obj.SetType(fernTestValueType)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+}
+
+func TestGettersV2EventPayload(t *testing.T) {
+	t.Run("GetEventingSyncRunningEvent", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		var expected *EventingSyncRunningEvent
+		obj.EventingSyncRunningEvent = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetEventingSyncRunningEvent(), "getter should return the property value")
+	})
+
+	t.Run("GetEventingSyncRunningEvent_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		obj.EventingSyncRunningEvent = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetEventingSyncRunningEvent(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetEventingSyncRunningEvent_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2EventPayload
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetEventingSyncRunningEvent() // Should return zero value
+	})
+
+	t.Run("GetEventingSyncCompletedEvent", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		var expected *EventingSyncCompletedEvent
+		obj.EventingSyncCompletedEvent = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetEventingSyncCompletedEvent(), "getter should return the property value")
+	})
+
+	t.Run("GetEventingSyncCompletedEvent_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		obj.EventingSyncCompletedEvent = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetEventingSyncCompletedEvent(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetEventingSyncCompletedEvent_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2EventPayload
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetEventingSyncCompletedEvent() // Should return zero value
+	})
+
+	t.Run("GetEventingSyncFailedEvent", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		var expected *EventingSyncFailedEvent
+		obj.EventingSyncFailedEvent = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetEventingSyncFailedEvent(), "getter should return the property value")
+	})
+
+	t.Run("GetEventingSyncFailedEvent_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		obj.EventingSyncFailedEvent = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetEventingSyncFailedEvent(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetEventingSyncFailedEvent_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2EventPayload
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetEventingSyncFailedEvent() // Should return zero value
+	})
+
+	t.Run("GetEventingSyncCanceledEvent", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		var expected *EventingSyncCanceledEvent
+		obj.EventingSyncCanceledEvent = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetEventingSyncCanceledEvent(), "getter should return the property value")
+	})
+
+	t.Run("GetEventingSyncCanceledEvent_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		obj.EventingSyncCanceledEvent = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetEventingSyncCanceledEvent(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetEventingSyncCanceledEvent_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2EventPayload
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetEventingSyncCanceledEvent() // Should return zero value
+	})
+
+	t.Run("GetEventingSyncCompletedWithErrorsEvent", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		var expected *EventingSyncCompletedWithErrorsEvent
+		obj.EventingSyncCompletedWithErrorsEvent = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetEventingSyncCompletedWithErrorsEvent(), "getter should return the property value")
+	})
+
+	t.Run("GetEventingSyncCompletedWithErrorsEvent_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		obj.EventingSyncCompletedWithErrorsEvent = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetEventingSyncCompletedWithErrorsEvent(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetEventingSyncCompletedWithErrorsEvent_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2EventPayload
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetEventingSyncCompletedWithErrorsEvent() // Should return zero value
+	})
+
+	t.Run("GetEventingBulkSyncRunningEvent", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		var expected *EventingBulkSyncRunningEvent
+		obj.EventingBulkSyncRunningEvent = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetEventingBulkSyncRunningEvent(), "getter should return the property value")
+	})
+
+	t.Run("GetEventingBulkSyncRunningEvent_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		obj.EventingBulkSyncRunningEvent = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetEventingBulkSyncRunningEvent(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetEventingBulkSyncRunningEvent_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2EventPayload
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetEventingBulkSyncRunningEvent() // Should return zero value
+	})
+
+	t.Run("GetEventingBulkSyncCompletedEvent", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		var expected *EventingBulkSyncCompletedEvent
+		obj.EventingBulkSyncCompletedEvent = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetEventingBulkSyncCompletedEvent(), "getter should return the property value")
+	})
+
+	t.Run("GetEventingBulkSyncCompletedEvent_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		obj.EventingBulkSyncCompletedEvent = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetEventingBulkSyncCompletedEvent(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetEventingBulkSyncCompletedEvent_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2EventPayload
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetEventingBulkSyncCompletedEvent() // Should return zero value
+	})
+
+	t.Run("GetEventingBulkSyncCanceledEvent", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		var expected *EventingBulkSyncCanceledEvent
+		obj.EventingBulkSyncCanceledEvent = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetEventingBulkSyncCanceledEvent(), "getter should return the property value")
+	})
+
+	t.Run("GetEventingBulkSyncCanceledEvent_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		obj.EventingBulkSyncCanceledEvent = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetEventingBulkSyncCanceledEvent(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetEventingBulkSyncCanceledEvent_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2EventPayload
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetEventingBulkSyncCanceledEvent() // Should return zero value
+	})
+
+	t.Run("GetEventingBulkSyncCompletedWithErrorEvent", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		var expected *EventingBulkSyncCompletedWithErrorEvent
+		obj.EventingBulkSyncCompletedWithErrorEvent = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetEventingBulkSyncCompletedWithErrorEvent(), "getter should return the property value")
+	})
+
+	t.Run("GetEventingBulkSyncCompletedWithErrorEvent_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		obj.EventingBulkSyncCompletedWithErrorEvent = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetEventingBulkSyncCompletedWithErrorEvent(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetEventingBulkSyncCompletedWithErrorEvent_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2EventPayload
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetEventingBulkSyncCompletedWithErrorEvent() // Should return zero value
+	})
+
+	t.Run("GetEventingBulkSyncFailedEvent", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		var expected *EventingBulkSyncFailedEvent
+		obj.EventingBulkSyncFailedEvent = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetEventingBulkSyncFailedEvent(), "getter should return the property value")
+	})
+
+	t.Run("GetEventingBulkSyncFailedEvent_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventPayload{}
+		obj.EventingBulkSyncFailedEvent = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetEventingBulkSyncFailedEvent(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetEventingBulkSyncFailedEvent_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2EventPayload
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetEventingBulkSyncFailedEvent() // Should return zero value
+	})
+
+}
+
+func TestSettersV2EventTypesEnvelope(t *testing.T) {
+	t.Run("SetData", func(t *testing.T) {
+		obj := &V2EventTypesEnvelope{}
+		var fernTestValueData []string
+		obj.SetData(fernTestValueData)
+		assert.Equal(t, fernTestValueData, obj.Data)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+}
+
+func TestGettersV2EventTypesEnvelope(t *testing.T) {
+	t.Run("GetData", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventTypesEnvelope{}
+		var expected []string
+		obj.Data = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetData(), "getter should return the property value")
+	})
+
+	t.Run("GetData_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventTypesEnvelope{}
+		obj.Data = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetData(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetData_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2EventTypesEnvelope
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetData() // Should return zero value
+	})
+
+}
+
+func TestSettersMarkExplicitV2EventTypesEnvelope(t *testing.T) {
+	t.Run("SetData_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventTypesEnvelope{}
+		var fernTestValueData []string
+
+		// Act
+		obj.SetData(fernTestValueData)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+}
+
+func TestSettersV2EventsEnvelope(t *testing.T) {
+	t.Run("SetData", func(t *testing.T) {
+		obj := &V2EventsEnvelope{}
+		var fernTestValueData []*V2Event
+		obj.SetData(fernTestValueData)
+		assert.Equal(t, fernTestValueData, obj.Data)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+}
+
+func TestGettersV2EventsEnvelope(t *testing.T) {
+	t.Run("GetData", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventsEnvelope{}
+		var expected []*V2Event
+		obj.Data = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetData(), "getter should return the property value")
+	})
+
+	t.Run("GetData_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventsEnvelope{}
+		obj.Data = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetData(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetData_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *V2EventsEnvelope
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetData() // Should return zero value
+	})
+
+}
+
+func TestSettersMarkExplicitV2EventsEnvelope(t *testing.T) {
+	t.Run("SetData_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2EventsEnvelope{}
+		var fernTestValueData []*V2Event
+
+		// Act
+		obj.SetData(fernTestValueData)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+}
+
+func TestJSONMarshalingEventingBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -6794,31 +6794,31 @@ func TestJSONMarshalingBulkSyncCanceledEvent(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled BulkSyncCanceledEvent
+		var unmarshaled EventingBulkSyncCanceledEvent
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncCanceledEvent
+		var obj EventingBulkSyncCanceledEvent
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncCanceledEvent
+		var obj EventingBulkSyncCanceledEvent
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingBulkSyncCompletedEvent(t *testing.T) {
+func TestJSONMarshalingEventingBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -6827,31 +6827,31 @@ func TestJSONMarshalingBulkSyncCompletedEvent(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled BulkSyncCompletedEvent
+		var unmarshaled EventingBulkSyncCompletedEvent
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncCompletedEvent
+		var obj EventingBulkSyncCompletedEvent
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncCompletedEvent
+		var obj EventingBulkSyncCompletedEvent
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingBulkSyncCompletedWithErrorEvent(t *testing.T) {
+func TestJSONMarshalingEventingBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -6860,31 +6860,31 @@ func TestJSONMarshalingBulkSyncCompletedWithErrorEvent(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled BulkSyncCompletedWithErrorEvent
+		var unmarshaled EventingBulkSyncCompletedWithErrorEvent
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncCompletedWithErrorEvent
+		var obj EventingBulkSyncCompletedWithErrorEvent
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncCompletedWithErrorEvent
+		var obj EventingBulkSyncCompletedWithErrorEvent
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingBulkSyncFailedEvent(t *testing.T) {
+func TestJSONMarshalingEventingBulkSyncFailedEvent(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -6893,31 +6893,31 @@ func TestJSONMarshalingBulkSyncFailedEvent(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled BulkSyncFailedEvent
+		var unmarshaled EventingBulkSyncFailedEvent
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncFailedEvent
+		var obj EventingBulkSyncFailedEvent
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncFailedEvent
+		var obj EventingBulkSyncFailedEvent
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingBulkSyncRunningEvent(t *testing.T) {
+func TestJSONMarshalingEventingBulkSyncRunningEvent(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -6926,31 +6926,31 @@ func TestJSONMarshalingBulkSyncRunningEvent(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled BulkSyncRunningEvent
+		var unmarshaled EventingBulkSyncRunningEvent
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncRunningEvent
+		var obj EventingBulkSyncRunningEvent
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj BulkSyncRunningEvent
+		var obj EventingBulkSyncRunningEvent
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingEvent(t *testing.T) {
+func TestJSONMarshalingEventingSyncCanceledEvent(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &Event{}
+		obj := &EventingSyncCanceledEvent{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -6959,31 +6959,31 @@ func TestJSONMarshalingEvent(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled Event
+		var unmarshaled EventingSyncCanceledEvent
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj Event
+		var obj EventingSyncCanceledEvent
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj Event
+		var obj EventingSyncCanceledEvent
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingEventTypesEnvelope(t *testing.T) {
+func TestJSONMarshalingEventingSyncCompletedEvent(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &EventTypesEnvelope{}
+		obj := &EventingSyncCompletedEvent{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -6992,31 +6992,31 @@ func TestJSONMarshalingEventTypesEnvelope(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled EventTypesEnvelope
+		var unmarshaled EventingSyncCompletedEvent
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj EventTypesEnvelope
+		var obj EventingSyncCompletedEvent
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj EventTypesEnvelope
+		var obj EventingSyncCompletedEvent
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingEventsEnvelope(t *testing.T) {
+func TestJSONMarshalingEventingSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &EventsEnvelope{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -7025,31 +7025,31 @@ func TestJSONMarshalingEventsEnvelope(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled EventsEnvelope
+		var unmarshaled EventingSyncCompletedWithErrorsEvent
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj EventsEnvelope
+		var obj EventingSyncCompletedWithErrorsEvent
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj EventsEnvelope
+		var obj EventingSyncCompletedWithErrorsEvent
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingSyncCanceledEvent(t *testing.T) {
+func TestJSONMarshalingEventingSyncFailedEvent(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncFailedEvent{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -7058,31 +7058,31 @@ func TestJSONMarshalingSyncCanceledEvent(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled SyncCanceledEvent
+		var unmarshaled EventingSyncFailedEvent
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj SyncCanceledEvent
+		var obj EventingSyncFailedEvent
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj SyncCanceledEvent
+		var obj EventingSyncFailedEvent
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingSyncCompletedEvent(t *testing.T) {
+func TestJSONMarshalingEventingSyncRunningEvent(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncRunningEvent{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -7091,31 +7091,31 @@ func TestJSONMarshalingSyncCompletedEvent(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled SyncCompletedEvent
+		var unmarshaled EventingSyncRunningEvent
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj SyncCompletedEvent
+		var obj EventingSyncRunningEvent
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj SyncCompletedEvent
+		var obj EventingSyncRunningEvent
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingSyncCompletedWithErrorsEvent(t *testing.T) {
+func TestJSONMarshalingV2Event(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &V2Event{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -7124,31 +7124,31 @@ func TestJSONMarshalingSyncCompletedWithErrorsEvent(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled SyncCompletedWithErrorsEvent
+		var unmarshaled V2Event
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj SyncCompletedWithErrorsEvent
+		var obj V2Event
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj SyncCompletedWithErrorsEvent
+		var obj V2Event
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingSyncFailedEvent(t *testing.T) {
+func TestJSONMarshalingV2EventTypesEnvelope(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncFailedEvent{}
+		obj := &V2EventTypesEnvelope{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -7157,31 +7157,31 @@ func TestJSONMarshalingSyncFailedEvent(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled SyncFailedEvent
+		var unmarshaled V2EventTypesEnvelope
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj SyncFailedEvent
+		var obj V2EventTypesEnvelope
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj SyncFailedEvent
+		var obj V2EventTypesEnvelope
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingSyncRunningEvent(t *testing.T) {
+func TestJSONMarshalingV2EventsEnvelope(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SyncRunningEvent{}
+		obj := &V2EventsEnvelope{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -7190,238 +7190,238 @@ func TestJSONMarshalingSyncRunningEvent(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled SyncRunningEvent
+		var unmarshaled V2EventsEnvelope
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj SyncRunningEvent
+		var obj V2EventsEnvelope
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj SyncRunningEvent
+		var obj V2EventsEnvelope
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestStringBulkSyncCanceledEvent(t *testing.T) {
+func TestStringEventingBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCanceledEvent
+		var obj *EventingBulkSyncCanceledEvent
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringBulkSyncCompletedEvent(t *testing.T) {
+func TestStringEventingBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedEvent
+		var obj *EventingBulkSyncCompletedEvent
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringBulkSyncCompletedWithErrorEvent(t *testing.T) {
+func TestStringEventingBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedWithErrorEvent
+		var obj *EventingBulkSyncCompletedWithErrorEvent
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringBulkSyncFailedEvent(t *testing.T) {
+func TestStringEventingBulkSyncFailedEvent(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncFailedEvent
+		var obj *EventingBulkSyncFailedEvent
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringBulkSyncRunningEvent(t *testing.T) {
+func TestStringEventingBulkSyncRunningEvent(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncRunningEvent
+		var obj *EventingBulkSyncRunningEvent
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringEvent(t *testing.T) {
+func TestStringEventingSyncCanceledEvent(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &Event{}
+		obj := &EventingSyncCanceledEvent{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *Event
+		var obj *EventingSyncCanceledEvent
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringEventTypesEnvelope(t *testing.T) {
+func TestStringEventingSyncCompletedEvent(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &EventTypesEnvelope{}
+		obj := &EventingSyncCompletedEvent{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *EventTypesEnvelope
+		var obj *EventingSyncCompletedEvent
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringEventsEnvelope(t *testing.T) {
+func TestStringEventingSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &EventsEnvelope{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *EventsEnvelope
+		var obj *EventingSyncCompletedWithErrorsEvent
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringSyncCanceledEvent(t *testing.T) {
+func TestStringEventingSyncFailedEvent(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncFailedEvent{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCanceledEvent
+		var obj *EventingSyncFailedEvent
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringSyncCompletedEvent(t *testing.T) {
+func TestStringEventingSyncRunningEvent(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncRunningEvent{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncRunningEvent
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringSyncCompletedWithErrorsEvent(t *testing.T) {
+func TestStringV2Event(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &V2Event{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedWithErrorsEvent
+		var obj *V2Event
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringSyncFailedEvent(t *testing.T) {
+func TestStringV2EventTypesEnvelope(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &SyncFailedEvent{}
+		obj := &V2EventTypesEnvelope{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncFailedEvent
+		var obj *V2EventTypesEnvelope
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringSyncRunningEvent(t *testing.T) {
+func TestStringV2EventsEnvelope(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &SyncRunningEvent{}
+		obj := &V2EventsEnvelope{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncRunningEvent
+		var obj *V2EventsEnvelope
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestExtraPropertiesBulkSyncCanceledEvent(t *testing.T) {
+func TestExtraPropertiesEventingBulkSyncCanceledEvent(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncCanceledEvent{}
+		obj := &EventingBulkSyncCanceledEvent{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -7435,16 +7435,16 @@ func TestExtraPropertiesBulkSyncCanceledEvent(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCanceledEvent
+		var obj *EventingBulkSyncCanceledEvent
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesBulkSyncCompletedEvent(t *testing.T) {
+func TestExtraPropertiesEventingBulkSyncCompletedEvent(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncCompletedEvent{}
+		obj := &EventingBulkSyncCompletedEvent{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -7458,16 +7458,16 @@ func TestExtraPropertiesBulkSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedEvent
+		var obj *EventingBulkSyncCompletedEvent
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesBulkSyncCompletedWithErrorEvent(t *testing.T) {
+func TestExtraPropertiesEventingBulkSyncCompletedWithErrorEvent(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncCompletedWithErrorEvent{}
+		obj := &EventingBulkSyncCompletedWithErrorEvent{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -7481,16 +7481,16 @@ func TestExtraPropertiesBulkSyncCompletedWithErrorEvent(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncCompletedWithErrorEvent
+		var obj *EventingBulkSyncCompletedWithErrorEvent
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesBulkSyncFailedEvent(t *testing.T) {
+func TestExtraPropertiesEventingBulkSyncFailedEvent(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncFailedEvent{}
+		obj := &EventingBulkSyncFailedEvent{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -7504,16 +7504,16 @@ func TestExtraPropertiesBulkSyncFailedEvent(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncFailedEvent
+		var obj *EventingBulkSyncFailedEvent
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesBulkSyncRunningEvent(t *testing.T) {
+func TestExtraPropertiesEventingBulkSyncRunningEvent(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &BulkSyncRunningEvent{}
+		obj := &EventingBulkSyncRunningEvent{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -7527,16 +7527,16 @@ func TestExtraPropertiesBulkSyncRunningEvent(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *BulkSyncRunningEvent
+		var obj *EventingBulkSyncRunningEvent
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesEvent(t *testing.T) {
+func TestExtraPropertiesEventingSyncCanceledEvent(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &Event{}
+		obj := &EventingSyncCanceledEvent{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -7550,16 +7550,16 @@ func TestExtraPropertiesEvent(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *Event
+		var obj *EventingSyncCanceledEvent
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesEventTypesEnvelope(t *testing.T) {
+func TestExtraPropertiesEventingSyncCompletedEvent(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &EventTypesEnvelope{}
+		obj := &EventingSyncCompletedEvent{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -7573,16 +7573,16 @@ func TestExtraPropertiesEventTypesEnvelope(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *EventTypesEnvelope
+		var obj *EventingSyncCompletedEvent
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesEventsEnvelope(t *testing.T) {
+func TestExtraPropertiesEventingSyncCompletedWithErrorsEvent(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &EventsEnvelope{}
+		obj := &EventingSyncCompletedWithErrorsEvent{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -7596,16 +7596,16 @@ func TestExtraPropertiesEventsEnvelope(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *EventsEnvelope
+		var obj *EventingSyncCompletedWithErrorsEvent
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesSyncCanceledEvent(t *testing.T) {
+func TestExtraPropertiesEventingSyncFailedEvent(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &SyncCanceledEvent{}
+		obj := &EventingSyncFailedEvent{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -7619,16 +7619,16 @@ func TestExtraPropertiesSyncCanceledEvent(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCanceledEvent
+		var obj *EventingSyncFailedEvent
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesSyncCompletedEvent(t *testing.T) {
+func TestExtraPropertiesEventingSyncRunningEvent(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &SyncCompletedEvent{}
+		obj := &EventingSyncRunningEvent{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -7642,16 +7642,16 @@ func TestExtraPropertiesSyncCompletedEvent(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedEvent
+		var obj *EventingSyncRunningEvent
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesSyncCompletedWithErrorsEvent(t *testing.T) {
+func TestExtraPropertiesV2Event(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &SyncCompletedWithErrorsEvent{}
+		obj := &V2Event{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -7665,16 +7665,16 @@ func TestExtraPropertiesSyncCompletedWithErrorsEvent(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncCompletedWithErrorsEvent
+		var obj *V2Event
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesSyncFailedEvent(t *testing.T) {
+func TestExtraPropertiesV2EventTypesEnvelope(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &SyncFailedEvent{}
+		obj := &V2EventTypesEnvelope{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -7688,16 +7688,16 @@ func TestExtraPropertiesSyncFailedEvent(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncFailedEvent
+		var obj *V2EventTypesEnvelope
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesSyncRunningEvent(t *testing.T) {
+func TestExtraPropertiesV2EventsEnvelope(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &SyncRunningEvent{}
+		obj := &V2EventsEnvelope{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -7711,7 +7711,7 @@ func TestExtraPropertiesSyncRunningEvent(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *SyncRunningEvent
+		var obj *V2EventsEnvelope
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

@@ -9,9 +9,9 @@ import (
 	testing "testing"
 )
 
-func TestSettersTargetsGetTargetRequest(t *testing.T) {
+func TestSettersGetTargetTargetsRequest(t *testing.T) {
 	t.Run("SetType", func(t *testing.T) {
-		obj := &TargetsGetTargetRequest{}
+		obj := &GetTargetTargetsRequest{}
 		var fernTestValueType *string
 		obj.SetType(fernTestValueType)
 		assert.Equal(t, fernTestValueType, obj.Type)
@@ -19,7 +19,7 @@ func TestSettersTargetsGetTargetRequest(t *testing.T) {
 	})
 
 	t.Run("SetSearch", func(t *testing.T) {
-		obj := &TargetsGetTargetRequest{}
+		obj := &GetTargetTargetsRequest{}
 		var fernTestValueSearch *string
 		obj.SetSearch(fernTestValueSearch)
 		assert.Equal(t, fernTestValueSearch, obj.Search)
@@ -28,11 +28,11 @@ func TestSettersTargetsGetTargetRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitTargetsGetTargetRequest(t *testing.T) {
+func TestSettersMarkExplicitGetTargetTargetsRequest(t *testing.T) {
 	t.Run("SetType_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &TargetsGetTargetRequest{}
+		obj := &GetTargetTargetsRequest{}
 		var fernTestValueType *string
 
 		// Act
@@ -63,7 +63,7 @@ func TestSettersMarkExplicitTargetsGetTargetRequest(t *testing.T) {
 	t.Run("SetSearch_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &TargetsGetTargetRequest{}
+		obj := &GetTargetTargetsRequest{}
 		var fernTestValueSearch *string
 
 		// Act
@@ -93,9 +93,9 @@ func TestSettersMarkExplicitTargetsGetTargetRequest(t *testing.T) {
 
 }
 
-func TestSettersTargetsGetTargetFieldsRequest(t *testing.T) {
+func TestSettersGetTargetFieldsTargetsRequest(t *testing.T) {
 	t.Run("SetTarget", func(t *testing.T) {
-		obj := &TargetsGetTargetFieldsRequest{}
+		obj := &GetTargetFieldsTargetsRequest{}
 		var fernTestValueTarget string
 		obj.SetTarget(fernTestValueTarget)
 		assert.Equal(t, fernTestValueTarget, obj.Target)
@@ -103,7 +103,7 @@ func TestSettersTargetsGetTargetFieldsRequest(t *testing.T) {
 	})
 
 	t.Run("SetRefresh", func(t *testing.T) {
-		obj := &TargetsGetTargetFieldsRequest{}
+		obj := &GetTargetFieldsTargetsRequest{}
 		var fernTestValueRefresh *bool
 		obj.SetRefresh(fernTestValueRefresh)
 		assert.Equal(t, fernTestValueRefresh, obj.Refresh)
@@ -112,11 +112,11 @@ func TestSettersTargetsGetTargetFieldsRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitTargetsGetTargetFieldsRequest(t *testing.T) {
+func TestSettersMarkExplicitGetTargetFieldsTargetsRequest(t *testing.T) {
 	t.Run("SetTarget_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &TargetsGetTargetFieldsRequest{}
+		obj := &GetTargetFieldsTargetsRequest{}
 		var fernTestValueTarget string
 
 		// Act
@@ -147,7 +147,7 @@ func TestSettersMarkExplicitTargetsGetTargetFieldsRequest(t *testing.T) {
 	t.Run("SetRefresh_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &TargetsGetTargetFieldsRequest{}
+		obj := &GetTargetFieldsTargetsRequest{}
 		var fernTestValueRefresh *bool
 
 		// Act

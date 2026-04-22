@@ -34,7 +34,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.OrganizationsEnvelope], error) {
+) (*core.Response[*polytomic.V2OrganizationsEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -46,7 +46,7 @@ func (r *RawClient) List(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.OrganizationsEnvelope
+	var response *polytomic.V2OrganizationsEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -64,7 +64,7 @@ func (r *RawClient) List(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.OrganizationsEnvelope]{
+	return &core.Response[*polytomic.V2OrganizationsEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -73,9 +73,9 @@ func (r *RawClient) List(
 
 func (r *RawClient) Create(
 	ctx context.Context,
-	request *polytomic.CreateOrganizationRequestSchema,
+	request *polytomic.V2CreateOrganizationRequestSchema,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.OrganizationEnvelope], error) {
+) (*core.Response[*polytomic.V2OrganizationEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -88,7 +88,7 @@ func (r *RawClient) Create(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.OrganizationEnvelope
+	var response *polytomic.V2OrganizationEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -107,7 +107,7 @@ func (r *RawClient) Create(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.OrganizationEnvelope]{
+	return &core.Response[*polytomic.V2OrganizationEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -119,7 +119,7 @@ func (r *RawClient) Get(
 	// Unique identifier of the organization.
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.OrganizationEnvelope], error) {
+) (*core.Response[*polytomic.V2OrganizationEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -134,7 +134,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.OrganizationEnvelope
+	var response *polytomic.V2OrganizationEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -152,7 +152,7 @@ func (r *RawClient) Get(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.OrganizationEnvelope]{
+	return &core.Response[*polytomic.V2OrganizationEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -163,9 +163,9 @@ func (r *RawClient) Update(
 	ctx context.Context,
 	// Unique identifier of the organization to update.
 	id string,
-	request *polytomic.UpdateOrganizationRequestSchema,
+	request *polytomic.V2UpdateOrganizationRequestSchema,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.OrganizationEnvelope], error) {
+) (*core.Response[*polytomic.V2OrganizationEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -181,7 +181,7 @@ func (r *RawClient) Update(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.OrganizationEnvelope
+	var response *polytomic.V2OrganizationEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -200,7 +200,7 @@ func (r *RawClient) Update(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.OrganizationEnvelope]{
+	return &core.Response[*polytomic.V2OrganizationEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

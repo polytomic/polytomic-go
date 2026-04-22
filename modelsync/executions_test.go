@@ -10,9 +10,9 @@ import (
 	testing "testing"
 )
 
-func TestSettersExecutionsListRequest(t *testing.T) {
+func TestSettersListExecutionsRequest(t *testing.T) {
 	t.Run("SetPageToken", func(t *testing.T) {
-		obj := &ExecutionsListRequest{}
+		obj := &ListExecutionsRequest{}
 		var fernTestValuePageToken *string
 		obj.SetPageToken(fernTestValuePageToken)
 		assert.Equal(t, fernTestValuePageToken, obj.PageToken)
@@ -20,7 +20,7 @@ func TestSettersExecutionsListRequest(t *testing.T) {
 	})
 
 	t.Run("SetOnlyCompleted", func(t *testing.T) {
-		obj := &ExecutionsListRequest{}
+		obj := &ListExecutionsRequest{}
 		var fernTestValueOnlyCompleted *bool
 		obj.SetOnlyCompleted(fernTestValueOnlyCompleted)
 		assert.Equal(t, fernTestValueOnlyCompleted, obj.OnlyCompleted)
@@ -28,7 +28,7 @@ func TestSettersExecutionsListRequest(t *testing.T) {
 	})
 
 	t.Run("SetAscending", func(t *testing.T) {
-		obj := &ExecutionsListRequest{}
+		obj := &ListExecutionsRequest{}
 		var fernTestValueAscending *bool
 		obj.SetAscending(fernTestValueAscending)
 		assert.Equal(t, fernTestValueAscending, obj.Ascending)
@@ -37,11 +37,11 @@ func TestSettersExecutionsListRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitExecutionsListRequest(t *testing.T) {
+func TestSettersMarkExplicitListExecutionsRequest(t *testing.T) {
 	t.Run("SetPageToken_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ExecutionsListRequest{}
+		obj := &ListExecutionsRequest{}
 		var fernTestValuePageToken *string
 
 		// Act
@@ -72,7 +72,7 @@ func TestSettersMarkExplicitExecutionsListRequest(t *testing.T) {
 	t.Run("SetOnlyCompleted_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ExecutionsListRequest{}
+		obj := &ListExecutionsRequest{}
 		var fernTestValueOnlyCompleted *bool
 
 		// Act
@@ -103,7 +103,7 @@ func TestSettersMarkExplicitExecutionsListRequest(t *testing.T) {
 	t.Run("SetAscending_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ExecutionsListRequest{}
+		obj := &ListExecutionsRequest{}
 		var fernTestValueAscending *bool
 
 		// Act
@@ -133,10 +133,10 @@ func TestSettersMarkExplicitExecutionsListRequest(t *testing.T) {
 
 }
 
-func TestSettersUpdateExecutionRequest(t *testing.T) {
+func TestSettersV2UpdateExecutionRequest(t *testing.T) {
 	t.Run("SetStatus", func(t *testing.T) {
-		obj := &UpdateExecutionRequest{}
-		var fernTestValueStatus v24.ExecutionStatus
+		obj := &V2UpdateExecutionRequest{}
+		var fernTestValueStatus v24.UtilExecutionStatus
 		obj.SetStatus(fernTestValueStatus)
 		assert.Equal(t, fernTestValueStatus, obj.Status)
 		assert.NotNil(t, obj.explicitFields)
@@ -144,12 +144,12 @@ func TestSettersUpdateExecutionRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitUpdateExecutionRequest(t *testing.T) {
+func TestSettersMarkExplicitV2UpdateExecutionRequest(t *testing.T) {
 	t.Run("SetStatus_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdateExecutionRequest{}
-		var fernTestValueStatus v24.ExecutionStatus
+		obj := &V2UpdateExecutionRequest{}
+		var fernTestValueStatus v24.UtilExecutionStatus
 
 		// Act
 		obj.SetStatus(fernTestValueStatus)

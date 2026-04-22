@@ -10,9 +10,9 @@ import (
 	testing "testing"
 )
 
-func TestSettersCreatePolicyRequest(t *testing.T) {
+func TestSettersV2CreatePolicyRequest(t *testing.T) {
 	t.Run("SetName", func(t *testing.T) {
-		obj := &CreatePolicyRequest{}
+		obj := &V2CreatePolicyRequest{}
 		var fernTestValueName string
 		obj.SetName(fernTestValueName)
 		assert.Equal(t, fernTestValueName, obj.Name)
@@ -20,7 +20,7 @@ func TestSettersCreatePolicyRequest(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &CreatePolicyRequest{}
+		obj := &V2CreatePolicyRequest{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -28,8 +28,8 @@ func TestSettersCreatePolicyRequest(t *testing.T) {
 	})
 
 	t.Run("SetPolicyActions", func(t *testing.T) {
-		obj := &CreatePolicyRequest{}
-		var fernTestValuePolicyActions []*v24.PolicyAction
+		obj := &V2CreatePolicyRequest{}
+		var fernTestValuePolicyActions []*v24.V2PolicyAction
 		obj.SetPolicyActions(fernTestValuePolicyActions)
 		assert.Equal(t, fernTestValuePolicyActions, obj.PolicyActions)
 		assert.NotNil(t, obj.explicitFields)
@@ -37,11 +37,11 @@ func TestSettersCreatePolicyRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitCreatePolicyRequest(t *testing.T) {
+func TestSettersMarkExplicitV2CreatePolicyRequest(t *testing.T) {
 	t.Run("SetName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreatePolicyRequest{}
+		obj := &V2CreatePolicyRequest{}
 		var fernTestValueName string
 
 		// Act
@@ -72,7 +72,7 @@ func TestSettersMarkExplicitCreatePolicyRequest(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreatePolicyRequest{}
+		obj := &V2CreatePolicyRequest{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -103,8 +103,8 @@ func TestSettersMarkExplicitCreatePolicyRequest(t *testing.T) {
 	t.Run("SetPolicyActions_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CreatePolicyRequest{}
-		var fernTestValuePolicyActions []*v24.PolicyAction
+		obj := &V2CreatePolicyRequest{}
+		var fernTestValuePolicyActions []*v24.V2PolicyAction
 
 		// Act
 		obj.SetPolicyActions(fernTestValuePolicyActions)
@@ -133,9 +133,9 @@ func TestSettersMarkExplicitCreatePolicyRequest(t *testing.T) {
 
 }
 
-func TestSettersUpdatePolicyRequest(t *testing.T) {
+func TestSettersV2UpdatePolicyRequest(t *testing.T) {
 	t.Run("SetName", func(t *testing.T) {
-		obj := &UpdatePolicyRequest{}
+		obj := &V2UpdatePolicyRequest{}
 		var fernTestValueName string
 		obj.SetName(fernTestValueName)
 		assert.Equal(t, fernTestValueName, obj.Name)
@@ -143,7 +143,7 @@ func TestSettersUpdatePolicyRequest(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &UpdatePolicyRequest{}
+		obj := &V2UpdatePolicyRequest{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -151,8 +151,8 @@ func TestSettersUpdatePolicyRequest(t *testing.T) {
 	})
 
 	t.Run("SetPolicyActions", func(t *testing.T) {
-		obj := &UpdatePolicyRequest{}
-		var fernTestValuePolicyActions []*v24.PolicyAction
+		obj := &V2UpdatePolicyRequest{}
+		var fernTestValuePolicyActions []*v24.V2PolicyAction
 		obj.SetPolicyActions(fernTestValuePolicyActions)
 		assert.Equal(t, fernTestValuePolicyActions, obj.PolicyActions)
 		assert.NotNil(t, obj.explicitFields)
@@ -160,11 +160,11 @@ func TestSettersUpdatePolicyRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitUpdatePolicyRequest(t *testing.T) {
+func TestSettersMarkExplicitV2UpdatePolicyRequest(t *testing.T) {
 	t.Run("SetName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdatePolicyRequest{}
+		obj := &V2UpdatePolicyRequest{}
 		var fernTestValueName string
 
 		// Act
@@ -195,7 +195,7 @@ func TestSettersMarkExplicitUpdatePolicyRequest(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdatePolicyRequest{}
+		obj := &V2UpdatePolicyRequest{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -226,8 +226,8 @@ func TestSettersMarkExplicitUpdatePolicyRequest(t *testing.T) {
 	t.Run("SetPolicyActions_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &UpdatePolicyRequest{}
-		var fernTestValuePolicyActions []*v24.PolicyAction
+		obj := &V2UpdatePolicyRequest{}
+		var fernTestValuePolicyActions []*v24.V2PolicyAction
 
 		// Act
 		obj.SetPolicyActions(fernTestValuePolicyActions)

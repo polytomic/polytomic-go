@@ -88,7 +88,7 @@ func TestModelsGetEnrichmentSourceWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.ModelsGetEnrichmentSourceRequest{}
+	request := &polytomic.GetEnrichmentSourceModelsRequest{}
 	_, invocationErr := client.Models.GetEnrichmentSource(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -113,7 +113,7 @@ func TestModelsPostWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.GetEnrichmentInputFieldsRequest{}
+	request := &polytomic.V2EnrichmentInputFieldsRequest{}
 	_, invocationErr := client.Models.Post(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -138,11 +138,11 @@ func TestModelsPreviewWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.ModelsPreviewRequest{
+	request := &polytomic.PreviewModelsRequest{
 		Async: polytomic.Bool(
 			true,
 		),
-		Body: &polytomic.CreateModelRequest{
+		Body: &polytomic.V2CreateModelRequest{
 			Configuration: map[string]any{
 				"table": "public.users",
 			},
@@ -195,11 +195,11 @@ func TestModelsCreateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.ModelsCreateRequest{
+	request := &polytomic.CreateModelsRequest{
 		Async: polytomic.Bool(
 			true,
 		),
-		Body: &polytomic.CreateModelRequest{
+		Body: &polytomic.V2CreateModelRequest{
 			Configuration: map[string]any{
 				"table": "public.users",
 			},
@@ -230,7 +230,7 @@ func TestModelsGetWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.ModelsGetRequest{
+	request := &polytomic.GetModelsRequest{
 		Async: polytomic.Bool(
 			true,
 		),
@@ -259,7 +259,7 @@ func TestModelsUpdateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.UpdateModelRequest{
+	request := &polytomic.V2UpdateModelRequest{
 		Async: polytomic.Bool(
 			false,
 		),
@@ -293,7 +293,7 @@ func TestModelsRemoveWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.ModelsRemoveRequest{
+	request := &polytomic.RemoveModelsRequest{
 		Async: polytomic.Bool(
 			true,
 		),
@@ -322,7 +322,7 @@ func TestModelsSampleWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.ModelsSampleRequest{
+	request := &polytomic.SampleModelsRequest{
 		Async: polytomic.Bool(
 			true,
 		),

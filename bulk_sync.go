@@ -11,28 +11,28 @@ import (
 )
 
 var (
-	createBulkSyncRequestFieldActive                     = big.NewInt(1 << 0)
-	createBulkSyncRequestFieldAutomaticallyAddNewFields  = big.NewInt(1 << 1)
-	createBulkSyncRequestFieldAutomaticallyAddNewObjects = big.NewInt(1 << 2)
-	createBulkSyncRequestFieldConcurrencyLimit           = big.NewInt(1 << 3)
-	createBulkSyncRequestFieldDataCutoffTimestamp        = big.NewInt(1 << 4)
-	createBulkSyncRequestFieldDestinationConfiguration   = big.NewInt(1 << 5)
-	createBulkSyncRequestFieldDestinationConnectionID    = big.NewInt(1 << 6)
-	createBulkSyncRequestFieldDisableRecordTimestamps    = big.NewInt(1 << 7)
-	createBulkSyncRequestFieldDiscover                   = big.NewInt(1 << 8)
-	createBulkSyncRequestFieldMode                       = big.NewInt(1 << 9)
-	createBulkSyncRequestFieldName                       = big.NewInt(1 << 10)
-	createBulkSyncRequestFieldNormalizeNames             = big.NewInt(1 << 11)
-	createBulkSyncRequestFieldOrganizationID             = big.NewInt(1 << 12)
-	createBulkSyncRequestFieldPolicies                   = big.NewInt(1 << 13)
-	createBulkSyncRequestFieldResyncConcurrencyLimit     = big.NewInt(1 << 14)
-	createBulkSyncRequestFieldSchedule                   = big.NewInt(1 << 15)
-	createBulkSyncRequestFieldSchemas                    = big.NewInt(1 << 16)
-	createBulkSyncRequestFieldSourceConfiguration        = big.NewInt(1 << 17)
-	createBulkSyncRequestFieldSourceConnectionID         = big.NewInt(1 << 18)
+	v2CreateBulkSyncRequestFieldActive                     = big.NewInt(1 << 0)
+	v2CreateBulkSyncRequestFieldAutomaticallyAddNewFields  = big.NewInt(1 << 1)
+	v2CreateBulkSyncRequestFieldAutomaticallyAddNewObjects = big.NewInt(1 << 2)
+	v2CreateBulkSyncRequestFieldConcurrencyLimit           = big.NewInt(1 << 3)
+	v2CreateBulkSyncRequestFieldDataCutoffTimestamp        = big.NewInt(1 << 4)
+	v2CreateBulkSyncRequestFieldDestinationConfiguration   = big.NewInt(1 << 5)
+	v2CreateBulkSyncRequestFieldDestinationConnectionID    = big.NewInt(1 << 6)
+	v2CreateBulkSyncRequestFieldDisableRecordTimestamps    = big.NewInt(1 << 7)
+	v2CreateBulkSyncRequestFieldDiscover                   = big.NewInt(1 << 8)
+	v2CreateBulkSyncRequestFieldMode                       = big.NewInt(1 << 9)
+	v2CreateBulkSyncRequestFieldName                       = big.NewInt(1 << 10)
+	v2CreateBulkSyncRequestFieldNormalizeNames             = big.NewInt(1 << 11)
+	v2CreateBulkSyncRequestFieldOrganizationID             = big.NewInt(1 << 12)
+	v2CreateBulkSyncRequestFieldPolicies                   = big.NewInt(1 << 13)
+	v2CreateBulkSyncRequestFieldResyncConcurrencyLimit     = big.NewInt(1 << 14)
+	v2CreateBulkSyncRequestFieldSchedule                   = big.NewInt(1 << 15)
+	v2CreateBulkSyncRequestFieldSchemas                    = big.NewInt(1 << 16)
+	v2CreateBulkSyncRequestFieldSourceConfiguration        = big.NewInt(1 << 17)
+	v2CreateBulkSyncRequestFieldSourceConnectionID         = big.NewInt(1 << 18)
 )
 
-type CreateBulkSyncRequest struct {
+type V2CreateBulkSyncRequest struct {
 	Active                     *bool         `json:"active,omitempty" url:"-"`
 	AutomaticallyAddNewFields  *BulkDiscover `json:"automatically_add_new_fields,omitempty" url:"-"`
 	AutomaticallyAddNewObjects *BulkDiscover `json:"automatically_add_new_objects,omitempty" url:"-"`
@@ -44,7 +44,7 @@ type CreateBulkSyncRequest struct {
 	DisableRecordTimestamps  *bool          `json:"disable_record_timestamps,omitempty" url:"-"`
 	// DEPRECATED: Use automatically_add_new_objects/automatically_add_new_fields instead
 	Discover       *bool               `json:"discover,omitempty" url:"-"`
-	Mode           *BulkSyncMode       `json:"mode,omitempty" url:"-"`
+	Mode           *BulkSyncTargetMode `json:"mode,omitempty" url:"-"`
 	Name           string              `json:"name" url:"-"`
 	NormalizeNames *BulkNormalizeNames `json:"normalize_names,omitempty" url:"-"`
 	OrganizationID *string             `json:"organization_id,omitempty" url:"-"`
@@ -61,199 +61,199 @@ type CreateBulkSyncRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CreateBulkSyncRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *V2CreateBulkSyncRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetActive sets the Active field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetActive(active *bool) {
-	c.Active = active
-	c.require(createBulkSyncRequestFieldActive)
+func (v *V2CreateBulkSyncRequest) SetActive(active *bool) {
+	v.Active = active
+	v.require(v2CreateBulkSyncRequestFieldActive)
 }
 
 // SetAutomaticallyAddNewFields sets the AutomaticallyAddNewFields field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetAutomaticallyAddNewFields(automaticallyAddNewFields *BulkDiscover) {
-	c.AutomaticallyAddNewFields = automaticallyAddNewFields
-	c.require(createBulkSyncRequestFieldAutomaticallyAddNewFields)
+func (v *V2CreateBulkSyncRequest) SetAutomaticallyAddNewFields(automaticallyAddNewFields *BulkDiscover) {
+	v.AutomaticallyAddNewFields = automaticallyAddNewFields
+	v.require(v2CreateBulkSyncRequestFieldAutomaticallyAddNewFields)
 }
 
 // SetAutomaticallyAddNewObjects sets the AutomaticallyAddNewObjects field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetAutomaticallyAddNewObjects(automaticallyAddNewObjects *BulkDiscover) {
-	c.AutomaticallyAddNewObjects = automaticallyAddNewObjects
-	c.require(createBulkSyncRequestFieldAutomaticallyAddNewObjects)
+func (v *V2CreateBulkSyncRequest) SetAutomaticallyAddNewObjects(automaticallyAddNewObjects *BulkDiscover) {
+	v.AutomaticallyAddNewObjects = automaticallyAddNewObjects
+	v.require(v2CreateBulkSyncRequestFieldAutomaticallyAddNewObjects)
 }
 
 // SetConcurrencyLimit sets the ConcurrencyLimit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetConcurrencyLimit(concurrencyLimit *int) {
-	c.ConcurrencyLimit = concurrencyLimit
-	c.require(createBulkSyncRequestFieldConcurrencyLimit)
+func (v *V2CreateBulkSyncRequest) SetConcurrencyLimit(concurrencyLimit *int) {
+	v.ConcurrencyLimit = concurrencyLimit
+	v.require(v2CreateBulkSyncRequestFieldConcurrencyLimit)
 }
 
 // SetDataCutoffTimestamp sets the DataCutoffTimestamp field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetDataCutoffTimestamp(dataCutoffTimestamp *time.Time) {
-	c.DataCutoffTimestamp = dataCutoffTimestamp
-	c.require(createBulkSyncRequestFieldDataCutoffTimestamp)
+func (v *V2CreateBulkSyncRequest) SetDataCutoffTimestamp(dataCutoffTimestamp *time.Time) {
+	v.DataCutoffTimestamp = dataCutoffTimestamp
+	v.require(v2CreateBulkSyncRequestFieldDataCutoffTimestamp)
 }
 
 // SetDestinationConfiguration sets the DestinationConfiguration field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetDestinationConfiguration(destinationConfiguration map[string]any) {
-	c.DestinationConfiguration = destinationConfiguration
-	c.require(createBulkSyncRequestFieldDestinationConfiguration)
+func (v *V2CreateBulkSyncRequest) SetDestinationConfiguration(destinationConfiguration map[string]any) {
+	v.DestinationConfiguration = destinationConfiguration
+	v.require(v2CreateBulkSyncRequestFieldDestinationConfiguration)
 }
 
 // SetDestinationConnectionID sets the DestinationConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetDestinationConnectionID(destinationConnectionID string) {
-	c.DestinationConnectionID = destinationConnectionID
-	c.require(createBulkSyncRequestFieldDestinationConnectionID)
+func (v *V2CreateBulkSyncRequest) SetDestinationConnectionID(destinationConnectionID string) {
+	v.DestinationConnectionID = destinationConnectionID
+	v.require(v2CreateBulkSyncRequestFieldDestinationConnectionID)
 }
 
 // SetDisableRecordTimestamps sets the DisableRecordTimestamps field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetDisableRecordTimestamps(disableRecordTimestamps *bool) {
-	c.DisableRecordTimestamps = disableRecordTimestamps
-	c.require(createBulkSyncRequestFieldDisableRecordTimestamps)
+func (v *V2CreateBulkSyncRequest) SetDisableRecordTimestamps(disableRecordTimestamps *bool) {
+	v.DisableRecordTimestamps = disableRecordTimestamps
+	v.require(v2CreateBulkSyncRequestFieldDisableRecordTimestamps)
 }
 
 // SetDiscover sets the Discover field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetDiscover(discover *bool) {
-	c.Discover = discover
-	c.require(createBulkSyncRequestFieldDiscover)
+func (v *V2CreateBulkSyncRequest) SetDiscover(discover *bool) {
+	v.Discover = discover
+	v.require(v2CreateBulkSyncRequestFieldDiscover)
 }
 
 // SetMode sets the Mode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetMode(mode *BulkSyncMode) {
-	c.Mode = mode
-	c.require(createBulkSyncRequestFieldMode)
+func (v *V2CreateBulkSyncRequest) SetMode(mode *BulkSyncTargetMode) {
+	v.Mode = mode
+	v.require(v2CreateBulkSyncRequestFieldMode)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetName(name string) {
-	c.Name = name
-	c.require(createBulkSyncRequestFieldName)
+func (v *V2CreateBulkSyncRequest) SetName(name string) {
+	v.Name = name
+	v.require(v2CreateBulkSyncRequestFieldName)
 }
 
 // SetNormalizeNames sets the NormalizeNames field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetNormalizeNames(normalizeNames *BulkNormalizeNames) {
-	c.NormalizeNames = normalizeNames
-	c.require(createBulkSyncRequestFieldNormalizeNames)
+func (v *V2CreateBulkSyncRequest) SetNormalizeNames(normalizeNames *BulkNormalizeNames) {
+	v.NormalizeNames = normalizeNames
+	v.require(v2CreateBulkSyncRequestFieldNormalizeNames)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetOrganizationID(organizationID *string) {
-	c.OrganizationID = organizationID
-	c.require(createBulkSyncRequestFieldOrganizationID)
+func (v *V2CreateBulkSyncRequest) SetOrganizationID(organizationID *string) {
+	v.OrganizationID = organizationID
+	v.require(v2CreateBulkSyncRequestFieldOrganizationID)
 }
 
 // SetPolicies sets the Policies field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetPolicies(policies []string) {
-	c.Policies = policies
-	c.require(createBulkSyncRequestFieldPolicies)
+func (v *V2CreateBulkSyncRequest) SetPolicies(policies []string) {
+	v.Policies = policies
+	v.require(v2CreateBulkSyncRequestFieldPolicies)
 }
 
 // SetResyncConcurrencyLimit sets the ResyncConcurrencyLimit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetResyncConcurrencyLimit(resyncConcurrencyLimit *int) {
-	c.ResyncConcurrencyLimit = resyncConcurrencyLimit
-	c.require(createBulkSyncRequestFieldResyncConcurrencyLimit)
+func (v *V2CreateBulkSyncRequest) SetResyncConcurrencyLimit(resyncConcurrencyLimit *int) {
+	v.ResyncConcurrencyLimit = resyncConcurrencyLimit
+	v.require(v2CreateBulkSyncRequestFieldResyncConcurrencyLimit)
 }
 
 // SetSchedule sets the Schedule field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetSchedule(schedule *BulkSchedule) {
-	c.Schedule = schedule
-	c.require(createBulkSyncRequestFieldSchedule)
+func (v *V2CreateBulkSyncRequest) SetSchedule(schedule *BulkSchedule) {
+	v.Schedule = schedule
+	v.require(v2CreateBulkSyncRequestFieldSchedule)
 }
 
 // SetSchemas sets the Schemas field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetSchemas(schemas []*V2CreateBulkSyncRequestSchemasItem) {
-	c.Schemas = schemas
-	c.require(createBulkSyncRequestFieldSchemas)
+func (v *V2CreateBulkSyncRequest) SetSchemas(schemas []*V2CreateBulkSyncRequestSchemasItem) {
+	v.Schemas = schemas
+	v.require(v2CreateBulkSyncRequestFieldSchemas)
 }
 
 // SetSourceConfiguration sets the SourceConfiguration field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetSourceConfiguration(sourceConfiguration map[string]any) {
-	c.SourceConfiguration = sourceConfiguration
-	c.require(createBulkSyncRequestFieldSourceConfiguration)
+func (v *V2CreateBulkSyncRequest) SetSourceConfiguration(sourceConfiguration map[string]any) {
+	v.SourceConfiguration = sourceConfiguration
+	v.require(v2CreateBulkSyncRequestFieldSourceConfiguration)
 }
 
 // SetSourceConnectionID sets the SourceConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateBulkSyncRequest) SetSourceConnectionID(sourceConnectionID string) {
-	c.SourceConnectionID = sourceConnectionID
-	c.require(createBulkSyncRequestFieldSourceConnectionID)
+func (v *V2CreateBulkSyncRequest) SetSourceConnectionID(sourceConnectionID string) {
+	v.SourceConnectionID = sourceConnectionID
+	v.require(v2CreateBulkSyncRequestFieldSourceConnectionID)
 }
 
-func (c *CreateBulkSyncRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateBulkSyncRequest
+func (v *V2CreateBulkSyncRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2CreateBulkSyncRequest
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*c = CreateBulkSyncRequest(body)
+	*v = V2CreateBulkSyncRequest(body)
 	return nil
 }
 
-func (c *CreateBulkSyncRequest) MarshalJSON() ([]byte, error) {
-	type embed CreateBulkSyncRequest
+func (v *V2CreateBulkSyncRequest) MarshalJSON() ([]byte, error) {
+	type embed V2CreateBulkSyncRequest
 	var marshaler = struct {
 		embed
 		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
 	}{
-		embed:               embed(*c),
-		DataCutoffTimestamp: internal.NewOptionalDateTime(c.DataCutoffTimestamp),
+		embed:               embed(*v),
+		DataCutoffTimestamp: internal.NewOptionalDateTime(v.DataCutoffTimestamp),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	bulkSyncGetRequestFieldRefreshSchemas = big.NewInt(1 << 0)
+	getBulkSyncRequestFieldRefreshSchemas = big.NewInt(1 << 0)
 )
 
-type BulkSyncGetRequest struct {
+type GetBulkSyncRequest struct {
 	RefreshSchemas *bool `json:"-" url:"refresh_schemas,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BulkSyncGetRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (g *GetBulkSyncRequest) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
+	g.explicitFields.Or(g.explicitFields, field)
 }
 
 // SetRefreshSchemas sets the RefreshSchemas field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncGetRequest) SetRefreshSchemas(refreshSchemas *bool) {
-	b.RefreshSchemas = refreshSchemas
-	b.require(bulkSyncGetRequestFieldRefreshSchemas)
+func (g *GetBulkSyncRequest) SetRefreshSchemas(refreshSchemas *bool) {
+	g.RefreshSchemas = refreshSchemas
+	g.require(getBulkSyncRequestFieldRefreshSchemas)
 }
 
 var (
-	bulkSyncGetSourceRequestFieldIncludeFields = big.NewInt(1 << 0)
+	getSourceBulkSyncRequestFieldIncludeFields = big.NewInt(1 << 0)
 )
 
-type BulkSyncGetSourceRequest struct {
+type GetSourceBulkSyncRequest struct {
 	// When true, include per-schema field lists in the response. Set to false for a smaller payload when field details are not needed.
 	IncludeFields *bool `json:"-" url:"include_fields,omitempty"`
 
@@ -261,25 +261,25 @@ type BulkSyncGetSourceRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BulkSyncGetSourceRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (g *GetSourceBulkSyncRequest) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
+	g.explicitFields.Or(g.explicitFields, field)
 }
 
 // SetIncludeFields sets the IncludeFields field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncGetSourceRequest) SetIncludeFields(includeFields *bool) {
-	b.IncludeFields = includeFields
-	b.require(bulkSyncGetSourceRequestFieldIncludeFields)
+func (g *GetSourceBulkSyncRequest) SetIncludeFields(includeFields *bool) {
+	g.IncludeFields = includeFields
+	g.require(getSourceBulkSyncRequestFieldIncludeFields)
 }
 
 var (
-	bulkSyncListRequestFieldActive = big.NewInt(1 << 0)
+	listBulkSyncRequestFieldActive = big.NewInt(1 << 0)
 )
 
-type BulkSyncListRequest struct {
+type ListBulkSyncRequest struct {
 	// Filter to only active (true) or only paused (false) syncs. Omit to return both.
 	Active *bool `json:"-" url:"active,omitempty"`
 
@@ -287,55 +287,55 @@ type BulkSyncListRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BulkSyncListRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (l *ListBulkSyncRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetActive sets the Active field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncListRequest) SetActive(active *bool) {
-	b.Active = active
-	b.require(bulkSyncListRequestFieldActive)
+func (l *ListBulkSyncRequest) SetActive(active *bool) {
+	l.Active = active
+	l.require(listBulkSyncRequestFieldActive)
 }
 
 var (
-	bulkSyncRemoveRequestFieldRefreshSchemas = big.NewInt(1 << 0)
+	removeBulkSyncRequestFieldRefreshSchemas = big.NewInt(1 << 0)
 )
 
-type BulkSyncRemoveRequest struct {
+type RemoveBulkSyncRequest struct {
 	RefreshSchemas *bool `json:"-" url:"refresh_schemas,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BulkSyncRemoveRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (r *RemoveBulkSyncRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
 // SetRefreshSchemas sets the RefreshSchemas field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncRemoveRequest) SetRefreshSchemas(refreshSchemas *bool) {
-	b.RefreshSchemas = refreshSchemas
-	b.require(bulkSyncRemoveRequestFieldRefreshSchemas)
+func (r *RemoveBulkSyncRequest) SetRefreshSchemas(refreshSchemas *bool) {
+	r.RefreshSchemas = refreshSchemas
+	r.require(removeBulkSyncRequestFieldRefreshSchemas)
 }
 
 var (
-	startBulkSyncRequestFieldFetchMode  = big.NewInt(1 << 0)
-	startBulkSyncRequestFieldResync     = big.NewInt(1 << 1)
-	startBulkSyncRequestFieldResyncMode = big.NewInt(1 << 2)
-	startBulkSyncRequestFieldSchemas    = big.NewInt(1 << 3)
-	startBulkSyncRequestFieldTest       = big.NewInt(1 << 4)
+	v3StartBulkSyncRequestFieldFetchMode  = big.NewInt(1 << 0)
+	v3StartBulkSyncRequestFieldResync     = big.NewInt(1 << 1)
+	v3StartBulkSyncRequestFieldResyncMode = big.NewInt(1 << 2)
+	v3StartBulkSyncRequestFieldSchemas    = big.NewInt(1 << 3)
+	v3StartBulkSyncRequestFieldTest       = big.NewInt(1 << 4)
 )
 
-type StartBulkSyncRequest struct {
-	FetchMode *BulkFetchMode `json:"fetch_mode,omitempty" url:"-"`
+type V3StartBulkSyncRequest struct {
+	FetchMode *V3BulkFetchMode `json:"fetch_mode,omitempty" url:"-"`
 	// Deprecated: use resync_mode instead. Equivalent to resync_mode=rebuild.
 	Resync     *bool           `json:"resync,omitempty" url:"-"`
 	ResyncMode *BulkResyncMode `json:"resync_mode,omitempty" url:"-"`
@@ -348,92 +348,92 @@ type StartBulkSyncRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (s *StartBulkSyncRequest) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (v *V3StartBulkSyncRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	s.explicitFields.Or(s.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetFetchMode sets the FetchMode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StartBulkSyncRequest) SetFetchMode(fetchMode *BulkFetchMode) {
-	s.FetchMode = fetchMode
-	s.require(startBulkSyncRequestFieldFetchMode)
+func (v *V3StartBulkSyncRequest) SetFetchMode(fetchMode *V3BulkFetchMode) {
+	v.FetchMode = fetchMode
+	v.require(v3StartBulkSyncRequestFieldFetchMode)
 }
 
 // SetResync sets the Resync field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StartBulkSyncRequest) SetResync(resync *bool) {
-	s.Resync = resync
-	s.require(startBulkSyncRequestFieldResync)
+func (v *V3StartBulkSyncRequest) SetResync(resync *bool) {
+	v.Resync = resync
+	v.require(v3StartBulkSyncRequestFieldResync)
 }
 
 // SetResyncMode sets the ResyncMode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StartBulkSyncRequest) SetResyncMode(resyncMode *BulkResyncMode) {
-	s.ResyncMode = resyncMode
-	s.require(startBulkSyncRequestFieldResyncMode)
+func (v *V3StartBulkSyncRequest) SetResyncMode(resyncMode *BulkResyncMode) {
+	v.ResyncMode = resyncMode
+	v.require(v3StartBulkSyncRequestFieldResyncMode)
 }
 
 // SetSchemas sets the Schemas field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StartBulkSyncRequest) SetSchemas(schemas []string) {
-	s.Schemas = schemas
-	s.require(startBulkSyncRequestFieldSchemas)
+func (v *V3StartBulkSyncRequest) SetSchemas(schemas []string) {
+	v.Schemas = schemas
+	v.require(v3StartBulkSyncRequestFieldSchemas)
 }
 
 // SetTest sets the Test field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StartBulkSyncRequest) SetTest(test *bool) {
-	s.Test = test
-	s.require(startBulkSyncRequestFieldTest)
+func (v *V3StartBulkSyncRequest) SetTest(test *bool) {
+	v.Test = test
+	v.require(v3StartBulkSyncRequestFieldTest)
 }
 
-func (s *StartBulkSyncRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler StartBulkSyncRequest
+func (v *V3StartBulkSyncRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler V3StartBulkSyncRequest
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*s = StartBulkSyncRequest(body)
+	*v = V3StartBulkSyncRequest(body)
 	return nil
 }
 
-func (s *StartBulkSyncRequest) MarshalJSON() ([]byte, error) {
-	type embed StartBulkSyncRequest
+func (v *V3StartBulkSyncRequest) MarshalJSON() ([]byte, error) {
+	type embed V3StartBulkSyncRequest
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*s),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	updateBulkSyncRequestFieldActive                     = big.NewInt(1 << 0)
-	updateBulkSyncRequestFieldAutomaticallyAddNewFields  = big.NewInt(1 << 1)
-	updateBulkSyncRequestFieldAutomaticallyAddNewObjects = big.NewInt(1 << 2)
-	updateBulkSyncRequestFieldConcurrencyLimit           = big.NewInt(1 << 3)
-	updateBulkSyncRequestFieldDataCutoffTimestamp        = big.NewInt(1 << 4)
-	updateBulkSyncRequestFieldDestinationConfiguration   = big.NewInt(1 << 5)
-	updateBulkSyncRequestFieldDestinationConnectionID    = big.NewInt(1 << 6)
-	updateBulkSyncRequestFieldDisableRecordTimestamps    = big.NewInt(1 << 7)
-	updateBulkSyncRequestFieldDiscover                   = big.NewInt(1 << 8)
-	updateBulkSyncRequestFieldMode                       = big.NewInt(1 << 9)
-	updateBulkSyncRequestFieldName                       = big.NewInt(1 << 10)
-	updateBulkSyncRequestFieldNormalizeNames             = big.NewInt(1 << 11)
-	updateBulkSyncRequestFieldOrganizationID             = big.NewInt(1 << 12)
-	updateBulkSyncRequestFieldPolicies                   = big.NewInt(1 << 13)
-	updateBulkSyncRequestFieldResyncConcurrencyLimit     = big.NewInt(1 << 14)
-	updateBulkSyncRequestFieldSchedule                   = big.NewInt(1 << 15)
-	updateBulkSyncRequestFieldSchemas                    = big.NewInt(1 << 16)
-	updateBulkSyncRequestFieldSourceConfiguration        = big.NewInt(1 << 17)
-	updateBulkSyncRequestFieldSourceConnectionID         = big.NewInt(1 << 18)
+	v2UpdateBulkSyncRequestFieldActive                     = big.NewInt(1 << 0)
+	v2UpdateBulkSyncRequestFieldAutomaticallyAddNewFields  = big.NewInt(1 << 1)
+	v2UpdateBulkSyncRequestFieldAutomaticallyAddNewObjects = big.NewInt(1 << 2)
+	v2UpdateBulkSyncRequestFieldConcurrencyLimit           = big.NewInt(1 << 3)
+	v2UpdateBulkSyncRequestFieldDataCutoffTimestamp        = big.NewInt(1 << 4)
+	v2UpdateBulkSyncRequestFieldDestinationConfiguration   = big.NewInt(1 << 5)
+	v2UpdateBulkSyncRequestFieldDestinationConnectionID    = big.NewInt(1 << 6)
+	v2UpdateBulkSyncRequestFieldDisableRecordTimestamps    = big.NewInt(1 << 7)
+	v2UpdateBulkSyncRequestFieldDiscover                   = big.NewInt(1 << 8)
+	v2UpdateBulkSyncRequestFieldMode                       = big.NewInt(1 << 9)
+	v2UpdateBulkSyncRequestFieldName                       = big.NewInt(1 << 10)
+	v2UpdateBulkSyncRequestFieldNormalizeNames             = big.NewInt(1 << 11)
+	v2UpdateBulkSyncRequestFieldOrganizationID             = big.NewInt(1 << 12)
+	v2UpdateBulkSyncRequestFieldPolicies                   = big.NewInt(1 << 13)
+	v2UpdateBulkSyncRequestFieldResyncConcurrencyLimit     = big.NewInt(1 << 14)
+	v2UpdateBulkSyncRequestFieldSchedule                   = big.NewInt(1 << 15)
+	v2UpdateBulkSyncRequestFieldSchemas                    = big.NewInt(1 << 16)
+	v2UpdateBulkSyncRequestFieldSourceConfiguration        = big.NewInt(1 << 17)
+	v2UpdateBulkSyncRequestFieldSourceConnectionID         = big.NewInt(1 << 18)
 )
 
-type UpdateBulkSyncRequest struct {
+type V2UpdateBulkSyncRequest struct {
 	Active                     *bool         `json:"active,omitempty" url:"-"`
 	AutomaticallyAddNewFields  *BulkDiscover `json:"automatically_add_new_fields,omitempty" url:"-"`
 	AutomaticallyAddNewObjects *BulkDiscover `json:"automatically_add_new_objects,omitempty" url:"-"`
@@ -445,7 +445,7 @@ type UpdateBulkSyncRequest struct {
 	DisableRecordTimestamps  *bool          `json:"disable_record_timestamps,omitempty" url:"-"`
 	// DEPRECATED: Use automatically_add_new_objects/automatically_add_new_fields instead
 	Discover       *bool               `json:"discover,omitempty" url:"-"`
-	Mode           *BulkSyncMode       `json:"mode,omitempty" url:"-"`
+	Mode           *BulkSyncTargetMode `json:"mode,omitempty" url:"-"`
 	Name           string              `json:"name" url:"-"`
 	NormalizeNames *BulkNormalizeNames `json:"normalize_names,omitempty" url:"-"`
 	OrganizationID *string             `json:"organization_id,omitempty" url:"-"`
@@ -462,166 +462,166 @@ type UpdateBulkSyncRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (u *UpdateBulkSyncRequest) require(field *big.Int) {
-	if u.explicitFields == nil {
-		u.explicitFields = big.NewInt(0)
+func (v *V2UpdateBulkSyncRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	u.explicitFields.Or(u.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetActive sets the Active field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetActive(active *bool) {
-	u.Active = active
-	u.require(updateBulkSyncRequestFieldActive)
+func (v *V2UpdateBulkSyncRequest) SetActive(active *bool) {
+	v.Active = active
+	v.require(v2UpdateBulkSyncRequestFieldActive)
 }
 
 // SetAutomaticallyAddNewFields sets the AutomaticallyAddNewFields field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetAutomaticallyAddNewFields(automaticallyAddNewFields *BulkDiscover) {
-	u.AutomaticallyAddNewFields = automaticallyAddNewFields
-	u.require(updateBulkSyncRequestFieldAutomaticallyAddNewFields)
+func (v *V2UpdateBulkSyncRequest) SetAutomaticallyAddNewFields(automaticallyAddNewFields *BulkDiscover) {
+	v.AutomaticallyAddNewFields = automaticallyAddNewFields
+	v.require(v2UpdateBulkSyncRequestFieldAutomaticallyAddNewFields)
 }
 
 // SetAutomaticallyAddNewObjects sets the AutomaticallyAddNewObjects field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetAutomaticallyAddNewObjects(automaticallyAddNewObjects *BulkDiscover) {
-	u.AutomaticallyAddNewObjects = automaticallyAddNewObjects
-	u.require(updateBulkSyncRequestFieldAutomaticallyAddNewObjects)
+func (v *V2UpdateBulkSyncRequest) SetAutomaticallyAddNewObjects(automaticallyAddNewObjects *BulkDiscover) {
+	v.AutomaticallyAddNewObjects = automaticallyAddNewObjects
+	v.require(v2UpdateBulkSyncRequestFieldAutomaticallyAddNewObjects)
 }
 
 // SetConcurrencyLimit sets the ConcurrencyLimit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetConcurrencyLimit(concurrencyLimit *int) {
-	u.ConcurrencyLimit = concurrencyLimit
-	u.require(updateBulkSyncRequestFieldConcurrencyLimit)
+func (v *V2UpdateBulkSyncRequest) SetConcurrencyLimit(concurrencyLimit *int) {
+	v.ConcurrencyLimit = concurrencyLimit
+	v.require(v2UpdateBulkSyncRequestFieldConcurrencyLimit)
 }
 
 // SetDataCutoffTimestamp sets the DataCutoffTimestamp field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetDataCutoffTimestamp(dataCutoffTimestamp *time.Time) {
-	u.DataCutoffTimestamp = dataCutoffTimestamp
-	u.require(updateBulkSyncRequestFieldDataCutoffTimestamp)
+func (v *V2UpdateBulkSyncRequest) SetDataCutoffTimestamp(dataCutoffTimestamp *time.Time) {
+	v.DataCutoffTimestamp = dataCutoffTimestamp
+	v.require(v2UpdateBulkSyncRequestFieldDataCutoffTimestamp)
 }
 
 // SetDestinationConfiguration sets the DestinationConfiguration field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetDestinationConfiguration(destinationConfiguration map[string]any) {
-	u.DestinationConfiguration = destinationConfiguration
-	u.require(updateBulkSyncRequestFieldDestinationConfiguration)
+func (v *V2UpdateBulkSyncRequest) SetDestinationConfiguration(destinationConfiguration map[string]any) {
+	v.DestinationConfiguration = destinationConfiguration
+	v.require(v2UpdateBulkSyncRequestFieldDestinationConfiguration)
 }
 
 // SetDestinationConnectionID sets the DestinationConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetDestinationConnectionID(destinationConnectionID string) {
-	u.DestinationConnectionID = destinationConnectionID
-	u.require(updateBulkSyncRequestFieldDestinationConnectionID)
+func (v *V2UpdateBulkSyncRequest) SetDestinationConnectionID(destinationConnectionID string) {
+	v.DestinationConnectionID = destinationConnectionID
+	v.require(v2UpdateBulkSyncRequestFieldDestinationConnectionID)
 }
 
 // SetDisableRecordTimestamps sets the DisableRecordTimestamps field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetDisableRecordTimestamps(disableRecordTimestamps *bool) {
-	u.DisableRecordTimestamps = disableRecordTimestamps
-	u.require(updateBulkSyncRequestFieldDisableRecordTimestamps)
+func (v *V2UpdateBulkSyncRequest) SetDisableRecordTimestamps(disableRecordTimestamps *bool) {
+	v.DisableRecordTimestamps = disableRecordTimestamps
+	v.require(v2UpdateBulkSyncRequestFieldDisableRecordTimestamps)
 }
 
 // SetDiscover sets the Discover field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetDiscover(discover *bool) {
-	u.Discover = discover
-	u.require(updateBulkSyncRequestFieldDiscover)
+func (v *V2UpdateBulkSyncRequest) SetDiscover(discover *bool) {
+	v.Discover = discover
+	v.require(v2UpdateBulkSyncRequestFieldDiscover)
 }
 
 // SetMode sets the Mode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetMode(mode *BulkSyncMode) {
-	u.Mode = mode
-	u.require(updateBulkSyncRequestFieldMode)
+func (v *V2UpdateBulkSyncRequest) SetMode(mode *BulkSyncTargetMode) {
+	v.Mode = mode
+	v.require(v2UpdateBulkSyncRequestFieldMode)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetName(name string) {
-	u.Name = name
-	u.require(updateBulkSyncRequestFieldName)
+func (v *V2UpdateBulkSyncRequest) SetName(name string) {
+	v.Name = name
+	v.require(v2UpdateBulkSyncRequestFieldName)
 }
 
 // SetNormalizeNames sets the NormalizeNames field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetNormalizeNames(normalizeNames *BulkNormalizeNames) {
-	u.NormalizeNames = normalizeNames
-	u.require(updateBulkSyncRequestFieldNormalizeNames)
+func (v *V2UpdateBulkSyncRequest) SetNormalizeNames(normalizeNames *BulkNormalizeNames) {
+	v.NormalizeNames = normalizeNames
+	v.require(v2UpdateBulkSyncRequestFieldNormalizeNames)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetOrganizationID(organizationID *string) {
-	u.OrganizationID = organizationID
-	u.require(updateBulkSyncRequestFieldOrganizationID)
+func (v *V2UpdateBulkSyncRequest) SetOrganizationID(organizationID *string) {
+	v.OrganizationID = organizationID
+	v.require(v2UpdateBulkSyncRequestFieldOrganizationID)
 }
 
 // SetPolicies sets the Policies field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetPolicies(policies []string) {
-	u.Policies = policies
-	u.require(updateBulkSyncRequestFieldPolicies)
+func (v *V2UpdateBulkSyncRequest) SetPolicies(policies []string) {
+	v.Policies = policies
+	v.require(v2UpdateBulkSyncRequestFieldPolicies)
 }
 
 // SetResyncConcurrencyLimit sets the ResyncConcurrencyLimit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetResyncConcurrencyLimit(resyncConcurrencyLimit *int) {
-	u.ResyncConcurrencyLimit = resyncConcurrencyLimit
-	u.require(updateBulkSyncRequestFieldResyncConcurrencyLimit)
+func (v *V2UpdateBulkSyncRequest) SetResyncConcurrencyLimit(resyncConcurrencyLimit *int) {
+	v.ResyncConcurrencyLimit = resyncConcurrencyLimit
+	v.require(v2UpdateBulkSyncRequestFieldResyncConcurrencyLimit)
 }
 
 // SetSchedule sets the Schedule field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetSchedule(schedule *BulkSchedule) {
-	u.Schedule = schedule
-	u.require(updateBulkSyncRequestFieldSchedule)
+func (v *V2UpdateBulkSyncRequest) SetSchedule(schedule *BulkSchedule) {
+	v.Schedule = schedule
+	v.require(v2UpdateBulkSyncRequestFieldSchedule)
 }
 
 // SetSchemas sets the Schemas field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetSchemas(schemas []*V2UpdateBulkSyncRequestSchemasItem) {
-	u.Schemas = schemas
-	u.require(updateBulkSyncRequestFieldSchemas)
+func (v *V2UpdateBulkSyncRequest) SetSchemas(schemas []*V2UpdateBulkSyncRequestSchemasItem) {
+	v.Schemas = schemas
+	v.require(v2UpdateBulkSyncRequestFieldSchemas)
 }
 
 // SetSourceConfiguration sets the SourceConfiguration field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetSourceConfiguration(sourceConfiguration map[string]any) {
-	u.SourceConfiguration = sourceConfiguration
-	u.require(updateBulkSyncRequestFieldSourceConfiguration)
+func (v *V2UpdateBulkSyncRequest) SetSourceConfiguration(sourceConfiguration map[string]any) {
+	v.SourceConfiguration = sourceConfiguration
+	v.require(v2UpdateBulkSyncRequestFieldSourceConfiguration)
 }
 
 // SetSourceConnectionID sets the SourceConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateBulkSyncRequest) SetSourceConnectionID(sourceConnectionID string) {
-	u.SourceConnectionID = sourceConnectionID
-	u.require(updateBulkSyncRequestFieldSourceConnectionID)
+func (v *V2UpdateBulkSyncRequest) SetSourceConnectionID(sourceConnectionID string) {
+	v.SourceConnectionID = sourceConnectionID
+	v.require(v2UpdateBulkSyncRequestFieldSourceConnectionID)
 }
 
-func (u *UpdateBulkSyncRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler UpdateBulkSyncRequest
+func (v *V2UpdateBulkSyncRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2UpdateBulkSyncRequest
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*u = UpdateBulkSyncRequest(body)
+	*v = V2UpdateBulkSyncRequest(body)
 	return nil
 }
 
-func (u *UpdateBulkSyncRequest) MarshalJSON() ([]byte, error) {
-	type embed UpdateBulkSyncRequest
+func (v *V2UpdateBulkSyncRequest) MarshalJSON() ([]byte, error) {
+	type embed V2UpdateBulkSyncRequest
 	var marshaler = struct {
 		embed
 		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
 	}{
-		embed:               embed(*u),
-		DataCutoffTimestamp: internal.NewOptionalDateTime(u.DataCutoffTimestamp),
+		embed:               embed(*v),
+		DataCutoffTimestamp: internal.NewOptionalDateTime(v.DataCutoffTimestamp),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
@@ -1083,15 +1083,37 @@ func (b *BulkSchedule) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
-var (
-	bulkSyncDestFieldConfiguration        = big.NewInt(1 << 0)
-	bulkSyncDestFieldModes                = big.NewInt(1 << 1)
-	bulkSyncDestFieldSupportedResyncModes = big.NewInt(1 << 2)
+type BulkSyncTargetMode string
+
+const (
+	BulkSyncTargetModeSnapshot  BulkSyncTargetMode = "snapshot"
+	BulkSyncTargetModeReplicate BulkSyncTargetMode = "replicate"
 )
 
-type BulkSyncDest struct {
-	Configuration map[string]any       `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Modes         []*SupportedBulkMode `json:"modes,omitempty" url:"modes,omitempty"`
+func NewBulkSyncTargetModeFromString(s string) (BulkSyncTargetMode, error) {
+	switch s {
+	case "snapshot":
+		return BulkSyncTargetModeSnapshot, nil
+	case "replicate":
+		return BulkSyncTargetModeReplicate, nil
+	}
+	var t BulkSyncTargetMode
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BulkSyncTargetMode) Ptr() *BulkSyncTargetMode {
+	return &b
+}
+
+var (
+	v2BulkSyncDestFieldConfiguration        = big.NewInt(1 << 0)
+	v2BulkSyncDestFieldModes                = big.NewInt(1 << 1)
+	v2BulkSyncDestFieldSupportedResyncModes = big.NewInt(1 << 2)
+)
+
+type V2BulkSyncDest struct {
+	Configuration map[string]any         `json:"configuration,omitempty" url:"configuration,omitempty"`
+	Modes         []*V2SupportedBulkMode `json:"modes,omitempty" url:"modes,omitempty"`
 	// Resync modes supported by this destination (refetch, resync, rebuild).
 	SupportedResyncModes []BulkResyncMode `json:"supported_resync_modes,omitempty" url:"supported_resync_modes,omitempty"`
 
@@ -1102,110 +1124,110 @@ type BulkSyncDest struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BulkSyncDest) GetConfiguration() map[string]any {
-	if b == nil {
+func (v *V2BulkSyncDest) GetConfiguration() map[string]any {
+	if v == nil {
 		return nil
 	}
-	return b.Configuration
+	return v.Configuration
 }
 
-func (b *BulkSyncDest) GetModes() []*SupportedBulkMode {
-	if b == nil {
+func (v *V2BulkSyncDest) GetModes() []*V2SupportedBulkMode {
+	if v == nil {
 		return nil
 	}
-	return b.Modes
+	return v.Modes
 }
 
-func (b *BulkSyncDest) GetSupportedResyncModes() []BulkResyncMode {
-	if b == nil {
+func (v *V2BulkSyncDest) GetSupportedResyncModes() []BulkResyncMode {
+	if v == nil {
 		return nil
 	}
-	return b.SupportedResyncModes
+	return v.SupportedResyncModes
 }
 
-func (b *BulkSyncDest) GetExtraProperties() map[string]interface{} {
-	if b == nil {
+func (v *V2BulkSyncDest) GetExtraProperties() map[string]interface{} {
+	if v == nil {
 		return nil
 	}
-	return b.extraProperties
+	return v.extraProperties
 }
 
-func (b *BulkSyncDest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (v *V2BulkSyncDest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetConfiguration sets the Configuration field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncDest) SetConfiguration(configuration map[string]any) {
-	b.Configuration = configuration
-	b.require(bulkSyncDestFieldConfiguration)
+func (v *V2BulkSyncDest) SetConfiguration(configuration map[string]any) {
+	v.Configuration = configuration
+	v.require(v2BulkSyncDestFieldConfiguration)
 }
 
 // SetModes sets the Modes field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncDest) SetModes(modes []*SupportedBulkMode) {
-	b.Modes = modes
-	b.require(bulkSyncDestFieldModes)
+func (v *V2BulkSyncDest) SetModes(modes []*V2SupportedBulkMode) {
+	v.Modes = modes
+	v.require(v2BulkSyncDestFieldModes)
 }
 
 // SetSupportedResyncModes sets the SupportedResyncModes field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncDest) SetSupportedResyncModes(supportedResyncModes []BulkResyncMode) {
-	b.SupportedResyncModes = supportedResyncModes
-	b.require(bulkSyncDestFieldSupportedResyncModes)
+func (v *V2BulkSyncDest) SetSupportedResyncModes(supportedResyncModes []BulkResyncMode) {
+	v.SupportedResyncModes = supportedResyncModes
+	v.require(v2BulkSyncDestFieldSupportedResyncModes)
 }
 
-func (b *BulkSyncDest) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkSyncDest
+func (v *V2BulkSyncDest) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2BulkSyncDest
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*b = BulkSyncDest(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	*v = V2BulkSyncDest(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
 	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (b *BulkSyncDest) MarshalJSON() ([]byte, error) {
-	type embed BulkSyncDest
+func (v *V2BulkSyncDest) MarshalJSON() ([]byte, error) {
+	type embed V2BulkSyncDest
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*b),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (b *BulkSyncDest) String() string {
-	if b == nil {
+func (v *V2BulkSyncDest) String() string {
+	if v == nil {
 		return "<nil>"
 	}
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", b)
+	return fmt.Sprintf("%#v", v)
 }
 
 var (
-	bulkSyncDestEnvelopeFieldData = big.NewInt(1 << 0)
+	v2BulkSyncDestEnvelopeFieldData = big.NewInt(1 << 0)
 )
 
-type BulkSyncDestEnvelope struct {
-	Data *BulkSyncDest `json:"data,omitempty" url:"data,omitempty"`
+type V2BulkSyncDestEnvelope struct {
+	Data *V2BulkSyncDest `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1214,96 +1236,82 @@ type BulkSyncDestEnvelope struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BulkSyncDestEnvelope) GetData() *BulkSyncDest {
-	if b == nil {
+func (v *V2BulkSyncDestEnvelope) GetData() *V2BulkSyncDest {
+	if v == nil {
 		return nil
 	}
-	return b.Data
+	return v.Data
 }
 
-func (b *BulkSyncDestEnvelope) GetExtraProperties() map[string]interface{} {
-	if b == nil {
+func (v *V2BulkSyncDestEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
 		return nil
 	}
-	return b.extraProperties
+	return v.extraProperties
 }
 
-func (b *BulkSyncDestEnvelope) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (v *V2BulkSyncDestEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncDestEnvelope) SetData(data *BulkSyncDest) {
-	b.Data = data
-	b.require(bulkSyncDestEnvelopeFieldData)
+func (v *V2BulkSyncDestEnvelope) SetData(data *V2BulkSyncDest) {
+	v.Data = data
+	v.require(v2BulkSyncDestEnvelopeFieldData)
 }
 
-func (b *BulkSyncDestEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkSyncDestEnvelope
+func (v *V2BulkSyncDestEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2BulkSyncDestEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*b = BulkSyncDestEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	*v = V2BulkSyncDestEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
 	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (b *BulkSyncDestEnvelope) MarshalJSON() ([]byte, error) {
-	type embed BulkSyncDestEnvelope
+func (v *V2BulkSyncDestEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V2BulkSyncDestEnvelope
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*b),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (b *BulkSyncDestEnvelope) String() string {
-	if b == nil {
+func (v *V2BulkSyncDestEnvelope) String() string {
+	if v == nil {
 		return "<nil>"
 	}
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", b)
+	return fmt.Sprintf("%#v", v)
 }
 
 var (
-	bulkSyncIngestionStatusFieldEnabled       = big.NewInt(1 << 0)
-	bulkSyncIngestionStatusFieldHighwaterMark = big.NewInt(1 << 1)
-	bulkSyncIngestionStatusFieldIsRunning     = big.NewInt(1 << 2)
-	bulkSyncIngestionStatusFieldPosition      = big.NewInt(1 << 3)
-	bulkSyncIngestionStatusFieldPositionTime  = big.NewInt(1 << 4)
-	bulkSyncIngestionStatusFieldStatus        = big.NewInt(1 << 5)
-	bulkSyncIngestionStatusFieldStatusMessage = big.NewInt(1 << 6)
-	bulkSyncIngestionStatusFieldUpdatedAt     = big.NewInt(1 << 7)
+	v2BulkSyncListEnvelopeFieldData = big.NewInt(1 << 0)
 )
 
-type BulkSyncIngestionStatus struct {
-	Enabled       *bool                 `json:"enabled,omitempty" url:"enabled,omitempty"`
-	HighwaterMark *string               `json:"highwater_mark,omitempty" url:"highwater_mark,omitempty"`
-	IsRunning     *bool                 `json:"is_running,omitempty" url:"is_running,omitempty"`
-	Position      *string               `json:"position,omitempty" url:"position,omitempty"`
-	PositionTime  *time.Time            `json:"position_time,omitempty" url:"position_time,omitempty"`
-	Status        *IngestionStatusLevel `json:"status,omitempty" url:"status,omitempty"`
-	StatusMessage *string               `json:"status_message,omitempty" url:"status_message,omitempty"`
-	UpdatedAt     *time.Time            `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+type V2BulkSyncListEnvelope struct {
+	Data []*V2BulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1312,319 +1320,103 @@ type BulkSyncIngestionStatus struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BulkSyncIngestionStatus) GetEnabled() *bool {
-	if b == nil {
+func (v *V2BulkSyncListEnvelope) GetData() []*V2BulkSyncResponse {
+	if v == nil {
 		return nil
 	}
-	return b.Enabled
+	return v.Data
 }
 
-func (b *BulkSyncIngestionStatus) GetHighwaterMark() *string {
-	if b == nil {
+func (v *V2BulkSyncListEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
 		return nil
 	}
-	return b.HighwaterMark
+	return v.extraProperties
 }
 
-func (b *BulkSyncIngestionStatus) GetIsRunning() *bool {
-	if b == nil {
-		return nil
+func (v *V2BulkSyncListEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	return b.IsRunning
-}
-
-func (b *BulkSyncIngestionStatus) GetPosition() *string {
-	if b == nil {
-		return nil
-	}
-	return b.Position
-}
-
-func (b *BulkSyncIngestionStatus) GetPositionTime() *time.Time {
-	if b == nil {
-		return nil
-	}
-	return b.PositionTime
-}
-
-func (b *BulkSyncIngestionStatus) GetStatus() *IngestionStatusLevel {
-	if b == nil {
-		return nil
-	}
-	return b.Status
-}
-
-func (b *BulkSyncIngestionStatus) GetStatusMessage() *string {
-	if b == nil {
-		return nil
-	}
-	return b.StatusMessage
-}
-
-func (b *BulkSyncIngestionStatus) GetUpdatedAt() *time.Time {
-	if b == nil {
-		return nil
-	}
-	return b.UpdatedAt
-}
-
-func (b *BulkSyncIngestionStatus) GetExtraProperties() map[string]interface{} {
-	if b == nil {
-		return nil
-	}
-	return b.extraProperties
-}
-
-func (b *BulkSyncIngestionStatus) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetEnabled sets the Enabled field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncIngestionStatus) SetEnabled(enabled *bool) {
-	b.Enabled = enabled
-	b.require(bulkSyncIngestionStatusFieldEnabled)
-}
-
-// SetHighwaterMark sets the HighwaterMark field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncIngestionStatus) SetHighwaterMark(highwaterMark *string) {
-	b.HighwaterMark = highwaterMark
-	b.require(bulkSyncIngestionStatusFieldHighwaterMark)
-}
-
-// SetIsRunning sets the IsRunning field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncIngestionStatus) SetIsRunning(isRunning *bool) {
-	b.IsRunning = isRunning
-	b.require(bulkSyncIngestionStatusFieldIsRunning)
-}
-
-// SetPosition sets the Position field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncIngestionStatus) SetPosition(position *string) {
-	b.Position = position
-	b.require(bulkSyncIngestionStatusFieldPosition)
-}
-
-// SetPositionTime sets the PositionTime field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncIngestionStatus) SetPositionTime(positionTime *time.Time) {
-	b.PositionTime = positionTime
-	b.require(bulkSyncIngestionStatusFieldPositionTime)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncIngestionStatus) SetStatus(status *IngestionStatusLevel) {
-	b.Status = status
-	b.require(bulkSyncIngestionStatusFieldStatus)
-}
-
-// SetStatusMessage sets the StatusMessage field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncIngestionStatus) SetStatusMessage(statusMessage *string) {
-	b.StatusMessage = statusMessage
-	b.require(bulkSyncIngestionStatusFieldStatusMessage)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncIngestionStatus) SetUpdatedAt(updatedAt *time.Time) {
-	b.UpdatedAt = updatedAt
-	b.require(bulkSyncIngestionStatusFieldUpdatedAt)
-}
-
-func (b *BulkSyncIngestionStatus) UnmarshalJSON(data []byte) error {
-	type embed BulkSyncIngestionStatus
-	var unmarshaler = struct {
-		embed
-		PositionTime *internal.DateTime `json:"position_time,omitempty"`
-		UpdatedAt    *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed: embed(*b),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*b = BulkSyncIngestionStatus(unmarshaler.embed)
-	b.PositionTime = unmarshaler.PositionTime.TimePtr()
-	b.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BulkSyncIngestionStatus) MarshalJSON() ([]byte, error) {
-	type embed BulkSyncIngestionStatus
-	var marshaler = struct {
-		embed
-		PositionTime *internal.DateTime `json:"position_time,omitempty"`
-		UpdatedAt    *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed:        embed(*b),
-		PositionTime: internal.NewOptionalDateTime(b.PositionTime),
-		UpdatedAt:    internal.NewOptionalDateTime(b.UpdatedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (b *BulkSyncIngestionStatus) String() string {
-	if b == nil {
-		return "<nil>"
-	}
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
-var (
-	bulkSyncListEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type BulkSyncListEnvelope struct {
-	Data []*BulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BulkSyncListEnvelope) GetData() []*BulkSyncResponse {
-	if b == nil {
-		return nil
-	}
-	return b.Data
-}
-
-func (b *BulkSyncListEnvelope) GetExtraProperties() map[string]interface{} {
-	if b == nil {
-		return nil
-	}
-	return b.extraProperties
-}
-
-func (b *BulkSyncListEnvelope) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncListEnvelope) SetData(data []*BulkSyncResponse) {
-	b.Data = data
-	b.require(bulkSyncListEnvelopeFieldData)
+func (v *V2BulkSyncListEnvelope) SetData(data []*V2BulkSyncResponse) {
+	v.Data = data
+	v.require(v2BulkSyncListEnvelopeFieldData)
 }
 
-func (b *BulkSyncListEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkSyncListEnvelope
+func (v *V2BulkSyncListEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2BulkSyncListEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*b = BulkSyncListEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	*v = V2BulkSyncListEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
 	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (b *BulkSyncListEnvelope) MarshalJSON() ([]byte, error) {
-	type embed BulkSyncListEnvelope
+func (v *V2BulkSyncListEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V2BulkSyncListEnvelope
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*b),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (b *BulkSyncListEnvelope) String() string {
-	if b == nil {
+func (v *V2BulkSyncListEnvelope) String() string {
+	if v == nil {
 		return "<nil>"
 	}
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", b)
-}
-
-type BulkSyncMode string
-
-const (
-	BulkSyncModeSnapshot  BulkSyncMode = "snapshot"
-	BulkSyncModeReplicate BulkSyncMode = "replicate"
-)
-
-func NewBulkSyncModeFromString(s string) (BulkSyncMode, error) {
-	switch s {
-	case "snapshot":
-		return BulkSyncModeSnapshot, nil
-	case "replicate":
-		return BulkSyncModeReplicate, nil
-	}
-	var t BulkSyncMode
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (b BulkSyncMode) Ptr() *BulkSyncMode {
-	return &b
+	return fmt.Sprintf("%#v", v)
 }
 
 var (
-	bulkSyncResponseFieldActive                     = big.NewInt(1 << 0)
-	bulkSyncResponseFieldAutomaticallyAddNewFields  = big.NewInt(1 << 1)
-	bulkSyncResponseFieldAutomaticallyAddNewObjects = big.NewInt(1 << 2)
-	bulkSyncResponseFieldConcurrencyLimit           = big.NewInt(1 << 3)
-	bulkSyncResponseFieldCreatedAt                  = big.NewInt(1 << 4)
-	bulkSyncResponseFieldCreatedBy                  = big.NewInt(1 << 5)
-	bulkSyncResponseFieldDataCutoffTimestamp        = big.NewInt(1 << 6)
-	bulkSyncResponseFieldDestinationConfiguration   = big.NewInt(1 << 7)
-	bulkSyncResponseFieldDestinationConnectionID    = big.NewInt(1 << 8)
-	bulkSyncResponseFieldDisableRecordTimestamps    = big.NewInt(1 << 9)
-	bulkSyncResponseFieldDiscover                   = big.NewInt(1 << 10)
-	bulkSyncResponseFieldID                         = big.NewInt(1 << 11)
-	bulkSyncResponseFieldMode                       = big.NewInt(1 << 12)
-	bulkSyncResponseFieldName                       = big.NewInt(1 << 13)
-	bulkSyncResponseFieldNormalizeNames             = big.NewInt(1 << 14)
-	bulkSyncResponseFieldOrganizationID             = big.NewInt(1 << 15)
-	bulkSyncResponseFieldPolicies                   = big.NewInt(1 << 16)
-	bulkSyncResponseFieldResyncConcurrencyLimit     = big.NewInt(1 << 17)
-	bulkSyncResponseFieldSchedule                   = big.NewInt(1 << 18)
-	bulkSyncResponseFieldSourceConfiguration        = big.NewInt(1 << 19)
-	bulkSyncResponseFieldSourceConnectionID         = big.NewInt(1 << 20)
-	bulkSyncResponseFieldUpdatedAt                  = big.NewInt(1 << 21)
-	bulkSyncResponseFieldUpdatedBy                  = big.NewInt(1 << 22)
+	v2BulkSyncResponseFieldActive                     = big.NewInt(1 << 0)
+	v2BulkSyncResponseFieldAutomaticallyAddNewFields  = big.NewInt(1 << 1)
+	v2BulkSyncResponseFieldAutomaticallyAddNewObjects = big.NewInt(1 << 2)
+	v2BulkSyncResponseFieldConcurrencyLimit           = big.NewInt(1 << 3)
+	v2BulkSyncResponseFieldCreatedAt                  = big.NewInt(1 << 4)
+	v2BulkSyncResponseFieldCreatedBy                  = big.NewInt(1 << 5)
+	v2BulkSyncResponseFieldDataCutoffTimestamp        = big.NewInt(1 << 6)
+	v2BulkSyncResponseFieldDestinationConfiguration   = big.NewInt(1 << 7)
+	v2BulkSyncResponseFieldDestinationConnectionID    = big.NewInt(1 << 8)
+	v2BulkSyncResponseFieldDisableRecordTimestamps    = big.NewInt(1 << 9)
+	v2BulkSyncResponseFieldDiscover                   = big.NewInt(1 << 10)
+	v2BulkSyncResponseFieldID                         = big.NewInt(1 << 11)
+	v2BulkSyncResponseFieldMode                       = big.NewInt(1 << 12)
+	v2BulkSyncResponseFieldName                       = big.NewInt(1 << 13)
+	v2BulkSyncResponseFieldNormalizeNames             = big.NewInt(1 << 14)
+	v2BulkSyncResponseFieldOrganizationID             = big.NewInt(1 << 15)
+	v2BulkSyncResponseFieldPolicies                   = big.NewInt(1 << 16)
+	v2BulkSyncResponseFieldResyncConcurrencyLimit     = big.NewInt(1 << 17)
+	v2BulkSyncResponseFieldSchedule                   = big.NewInt(1 << 18)
+	v2BulkSyncResponseFieldSourceConfiguration        = big.NewInt(1 << 19)
+	v2BulkSyncResponseFieldSourceConnectionID         = big.NewInt(1 << 20)
+	v2BulkSyncResponseFieldUpdatedAt                  = big.NewInt(1 << 21)
+	v2BulkSyncResponseFieldUpdatedBy                  = big.NewInt(1 << 22)
 )
 
-type BulkSyncResponse struct {
+type V2BulkSyncResponse struct {
 	Active                     *bool         `json:"active,omitempty" url:"active,omitempty"`
 	AutomaticallyAddNewFields  *BulkDiscover `json:"automatically_add_new_fields,omitempty" url:"automatically_add_new_fields,omitempty"`
 	AutomaticallyAddNewObjects *BulkDiscover `json:"automatically_add_new_objects,omitempty" url:"automatically_add_new_objects,omitempty"`
@@ -1638,9 +1430,9 @@ type BulkSyncResponse struct {
 	DestinationConnectionID  *string        `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
 	DisableRecordTimestamps  *bool          `json:"disable_record_timestamps,omitempty" url:"disable_record_timestamps,omitempty"`
 	// DEPRECATED: Use automatically_add_new_objects/automatically_add_new_fields instead
-	Discover *bool         `json:"discover,omitempty" url:"discover,omitempty"`
-	ID       *string       `json:"id,omitempty" url:"id,omitempty"`
-	Mode     *BulkSyncMode `json:"mode,omitempty" url:"mode,omitempty"`
+	Discover *bool               `json:"discover,omitempty" url:"discover,omitempty"`
+	ID       *string             `json:"id,omitempty" url:"id,omitempty"`
+	Mode     *BulkSyncTargetMode `json:"mode,omitempty" url:"mode,omitempty"`
 	// Name of the bulk sync
 	Name           *string             `json:"name,omitempty" url:"name,omitempty"`
 	NormalizeNames *BulkNormalizeNames `json:"normalize_names,omitempty" url:"normalize_names,omitempty"`
@@ -1663,406 +1455,406 @@ type BulkSyncResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BulkSyncResponse) GetActive() *bool {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetActive() *bool {
+	if v == nil {
 		return nil
 	}
-	return b.Active
+	return v.Active
 }
 
-func (b *BulkSyncResponse) GetAutomaticallyAddNewFields() *BulkDiscover {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetAutomaticallyAddNewFields() *BulkDiscover {
+	if v == nil {
 		return nil
 	}
-	return b.AutomaticallyAddNewFields
+	return v.AutomaticallyAddNewFields
 }
 
-func (b *BulkSyncResponse) GetAutomaticallyAddNewObjects() *BulkDiscover {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetAutomaticallyAddNewObjects() *BulkDiscover {
+	if v == nil {
 		return nil
 	}
-	return b.AutomaticallyAddNewObjects
+	return v.AutomaticallyAddNewObjects
 }
 
-func (b *BulkSyncResponse) GetConcurrencyLimit() *int {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetConcurrencyLimit() *int {
+	if v == nil {
 		return nil
 	}
-	return b.ConcurrencyLimit
+	return v.ConcurrencyLimit
 }
 
-func (b *BulkSyncResponse) GetCreatedAt() *time.Time {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetCreatedAt() *time.Time {
+	if v == nil {
 		return nil
 	}
-	return b.CreatedAt
+	return v.CreatedAt
 }
 
-func (b *BulkSyncResponse) GetCreatedBy() *OutputActor {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetCreatedBy() *OutputActor {
+	if v == nil {
 		return nil
 	}
-	return b.CreatedBy
+	return v.CreatedBy
 }
 
-func (b *BulkSyncResponse) GetDataCutoffTimestamp() *time.Time {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetDataCutoffTimestamp() *time.Time {
+	if v == nil {
 		return nil
 	}
-	return b.DataCutoffTimestamp
+	return v.DataCutoffTimestamp
 }
 
-func (b *BulkSyncResponse) GetDestinationConfiguration() map[string]any {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetDestinationConfiguration() map[string]any {
+	if v == nil {
 		return nil
 	}
-	return b.DestinationConfiguration
+	return v.DestinationConfiguration
 }
 
-func (b *BulkSyncResponse) GetDestinationConnectionID() *string {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetDestinationConnectionID() *string {
+	if v == nil {
 		return nil
 	}
-	return b.DestinationConnectionID
+	return v.DestinationConnectionID
 }
 
-func (b *BulkSyncResponse) GetDisableRecordTimestamps() *bool {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetDisableRecordTimestamps() *bool {
+	if v == nil {
 		return nil
 	}
-	return b.DisableRecordTimestamps
+	return v.DisableRecordTimestamps
 }
 
-func (b *BulkSyncResponse) GetDiscover() *bool {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetDiscover() *bool {
+	if v == nil {
 		return nil
 	}
-	return b.Discover
+	return v.Discover
 }
 
-func (b *BulkSyncResponse) GetID() *string {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetID() *string {
+	if v == nil {
 		return nil
 	}
-	return b.ID
+	return v.ID
 }
 
-func (b *BulkSyncResponse) GetMode() *BulkSyncMode {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetMode() *BulkSyncTargetMode {
+	if v == nil {
 		return nil
 	}
-	return b.Mode
+	return v.Mode
 }
 
-func (b *BulkSyncResponse) GetName() *string {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetName() *string {
+	if v == nil {
 		return nil
 	}
-	return b.Name
+	return v.Name
 }
 
-func (b *BulkSyncResponse) GetNormalizeNames() *BulkNormalizeNames {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetNormalizeNames() *BulkNormalizeNames {
+	if v == nil {
 		return nil
 	}
-	return b.NormalizeNames
+	return v.NormalizeNames
 }
 
-func (b *BulkSyncResponse) GetOrganizationID() *string {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetOrganizationID() *string {
+	if v == nil {
 		return nil
 	}
-	return b.OrganizationID
+	return v.OrganizationID
 }
 
-func (b *BulkSyncResponse) GetPolicies() []string {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetPolicies() []string {
+	if v == nil {
 		return nil
 	}
-	return b.Policies
+	return v.Policies
 }
 
-func (b *BulkSyncResponse) GetResyncConcurrencyLimit() *int {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetResyncConcurrencyLimit() *int {
+	if v == nil {
 		return nil
 	}
-	return b.ResyncConcurrencyLimit
+	return v.ResyncConcurrencyLimit
 }
 
-func (b *BulkSyncResponse) GetSchedule() *BulkSchedule {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetSchedule() *BulkSchedule {
+	if v == nil {
 		return nil
 	}
-	return b.Schedule
+	return v.Schedule
 }
 
-func (b *BulkSyncResponse) GetSourceConfiguration() map[string]any {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetSourceConfiguration() map[string]any {
+	if v == nil {
 		return nil
 	}
-	return b.SourceConfiguration
+	return v.SourceConfiguration
 }
 
-func (b *BulkSyncResponse) GetSourceConnectionID() *string {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetSourceConnectionID() *string {
+	if v == nil {
 		return nil
 	}
-	return b.SourceConnectionID
+	return v.SourceConnectionID
 }
 
-func (b *BulkSyncResponse) GetUpdatedAt() *time.Time {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetUpdatedAt() *time.Time {
+	if v == nil {
 		return nil
 	}
-	return b.UpdatedAt
+	return v.UpdatedAt
 }
 
-func (b *BulkSyncResponse) GetUpdatedBy() *OutputActor {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetUpdatedBy() *OutputActor {
+	if v == nil {
 		return nil
 	}
-	return b.UpdatedBy
+	return v.UpdatedBy
 }
 
-func (b *BulkSyncResponse) GetExtraProperties() map[string]interface{} {
-	if b == nil {
+func (v *V2BulkSyncResponse) GetExtraProperties() map[string]interface{} {
+	if v == nil {
 		return nil
 	}
-	return b.extraProperties
+	return v.extraProperties
 }
 
-func (b *BulkSyncResponse) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (v *V2BulkSyncResponse) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetActive sets the Active field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetActive(active *bool) {
-	b.Active = active
-	b.require(bulkSyncResponseFieldActive)
+func (v *V2BulkSyncResponse) SetActive(active *bool) {
+	v.Active = active
+	v.require(v2BulkSyncResponseFieldActive)
 }
 
 // SetAutomaticallyAddNewFields sets the AutomaticallyAddNewFields field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetAutomaticallyAddNewFields(automaticallyAddNewFields *BulkDiscover) {
-	b.AutomaticallyAddNewFields = automaticallyAddNewFields
-	b.require(bulkSyncResponseFieldAutomaticallyAddNewFields)
+func (v *V2BulkSyncResponse) SetAutomaticallyAddNewFields(automaticallyAddNewFields *BulkDiscover) {
+	v.AutomaticallyAddNewFields = automaticallyAddNewFields
+	v.require(v2BulkSyncResponseFieldAutomaticallyAddNewFields)
 }
 
 // SetAutomaticallyAddNewObjects sets the AutomaticallyAddNewObjects field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetAutomaticallyAddNewObjects(automaticallyAddNewObjects *BulkDiscover) {
-	b.AutomaticallyAddNewObjects = automaticallyAddNewObjects
-	b.require(bulkSyncResponseFieldAutomaticallyAddNewObjects)
+func (v *V2BulkSyncResponse) SetAutomaticallyAddNewObjects(automaticallyAddNewObjects *BulkDiscover) {
+	v.AutomaticallyAddNewObjects = automaticallyAddNewObjects
+	v.require(v2BulkSyncResponseFieldAutomaticallyAddNewObjects)
 }
 
 // SetConcurrencyLimit sets the ConcurrencyLimit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetConcurrencyLimit(concurrencyLimit *int) {
-	b.ConcurrencyLimit = concurrencyLimit
-	b.require(bulkSyncResponseFieldConcurrencyLimit)
+func (v *V2BulkSyncResponse) SetConcurrencyLimit(concurrencyLimit *int) {
+	v.ConcurrencyLimit = concurrencyLimit
+	v.require(v2BulkSyncResponseFieldConcurrencyLimit)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetCreatedAt(createdAt *time.Time) {
-	b.CreatedAt = createdAt
-	b.require(bulkSyncResponseFieldCreatedAt)
+func (v *V2BulkSyncResponse) SetCreatedAt(createdAt *time.Time) {
+	v.CreatedAt = createdAt
+	v.require(v2BulkSyncResponseFieldCreatedAt)
 }
 
 // SetCreatedBy sets the CreatedBy field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetCreatedBy(createdBy *OutputActor) {
-	b.CreatedBy = createdBy
-	b.require(bulkSyncResponseFieldCreatedBy)
+func (v *V2BulkSyncResponse) SetCreatedBy(createdBy *OutputActor) {
+	v.CreatedBy = createdBy
+	v.require(v2BulkSyncResponseFieldCreatedBy)
 }
 
 // SetDataCutoffTimestamp sets the DataCutoffTimestamp field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetDataCutoffTimestamp(dataCutoffTimestamp *time.Time) {
-	b.DataCutoffTimestamp = dataCutoffTimestamp
-	b.require(bulkSyncResponseFieldDataCutoffTimestamp)
+func (v *V2BulkSyncResponse) SetDataCutoffTimestamp(dataCutoffTimestamp *time.Time) {
+	v.DataCutoffTimestamp = dataCutoffTimestamp
+	v.require(v2BulkSyncResponseFieldDataCutoffTimestamp)
 }
 
 // SetDestinationConfiguration sets the DestinationConfiguration field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetDestinationConfiguration(destinationConfiguration map[string]any) {
-	b.DestinationConfiguration = destinationConfiguration
-	b.require(bulkSyncResponseFieldDestinationConfiguration)
+func (v *V2BulkSyncResponse) SetDestinationConfiguration(destinationConfiguration map[string]any) {
+	v.DestinationConfiguration = destinationConfiguration
+	v.require(v2BulkSyncResponseFieldDestinationConfiguration)
 }
 
 // SetDestinationConnectionID sets the DestinationConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetDestinationConnectionID(destinationConnectionID *string) {
-	b.DestinationConnectionID = destinationConnectionID
-	b.require(bulkSyncResponseFieldDestinationConnectionID)
+func (v *V2BulkSyncResponse) SetDestinationConnectionID(destinationConnectionID *string) {
+	v.DestinationConnectionID = destinationConnectionID
+	v.require(v2BulkSyncResponseFieldDestinationConnectionID)
 }
 
 // SetDisableRecordTimestamps sets the DisableRecordTimestamps field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetDisableRecordTimestamps(disableRecordTimestamps *bool) {
-	b.DisableRecordTimestamps = disableRecordTimestamps
-	b.require(bulkSyncResponseFieldDisableRecordTimestamps)
+func (v *V2BulkSyncResponse) SetDisableRecordTimestamps(disableRecordTimestamps *bool) {
+	v.DisableRecordTimestamps = disableRecordTimestamps
+	v.require(v2BulkSyncResponseFieldDisableRecordTimestamps)
 }
 
 // SetDiscover sets the Discover field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetDiscover(discover *bool) {
-	b.Discover = discover
-	b.require(bulkSyncResponseFieldDiscover)
+func (v *V2BulkSyncResponse) SetDiscover(discover *bool) {
+	v.Discover = discover
+	v.require(v2BulkSyncResponseFieldDiscover)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetID(id *string) {
-	b.ID = id
-	b.require(bulkSyncResponseFieldID)
+func (v *V2BulkSyncResponse) SetID(id *string) {
+	v.ID = id
+	v.require(v2BulkSyncResponseFieldID)
 }
 
 // SetMode sets the Mode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetMode(mode *BulkSyncMode) {
-	b.Mode = mode
-	b.require(bulkSyncResponseFieldMode)
+func (v *V2BulkSyncResponse) SetMode(mode *BulkSyncTargetMode) {
+	v.Mode = mode
+	v.require(v2BulkSyncResponseFieldMode)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetName(name *string) {
-	b.Name = name
-	b.require(bulkSyncResponseFieldName)
+func (v *V2BulkSyncResponse) SetName(name *string) {
+	v.Name = name
+	v.require(v2BulkSyncResponseFieldName)
 }
 
 // SetNormalizeNames sets the NormalizeNames field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetNormalizeNames(normalizeNames *BulkNormalizeNames) {
-	b.NormalizeNames = normalizeNames
-	b.require(bulkSyncResponseFieldNormalizeNames)
+func (v *V2BulkSyncResponse) SetNormalizeNames(normalizeNames *BulkNormalizeNames) {
+	v.NormalizeNames = normalizeNames
+	v.require(v2BulkSyncResponseFieldNormalizeNames)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetOrganizationID(organizationID *string) {
-	b.OrganizationID = organizationID
-	b.require(bulkSyncResponseFieldOrganizationID)
+func (v *V2BulkSyncResponse) SetOrganizationID(organizationID *string) {
+	v.OrganizationID = organizationID
+	v.require(v2BulkSyncResponseFieldOrganizationID)
 }
 
 // SetPolicies sets the Policies field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetPolicies(policies []string) {
-	b.Policies = policies
-	b.require(bulkSyncResponseFieldPolicies)
+func (v *V2BulkSyncResponse) SetPolicies(policies []string) {
+	v.Policies = policies
+	v.require(v2BulkSyncResponseFieldPolicies)
 }
 
 // SetResyncConcurrencyLimit sets the ResyncConcurrencyLimit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetResyncConcurrencyLimit(resyncConcurrencyLimit *int) {
-	b.ResyncConcurrencyLimit = resyncConcurrencyLimit
-	b.require(bulkSyncResponseFieldResyncConcurrencyLimit)
+func (v *V2BulkSyncResponse) SetResyncConcurrencyLimit(resyncConcurrencyLimit *int) {
+	v.ResyncConcurrencyLimit = resyncConcurrencyLimit
+	v.require(v2BulkSyncResponseFieldResyncConcurrencyLimit)
 }
 
 // SetSchedule sets the Schedule field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetSchedule(schedule *BulkSchedule) {
-	b.Schedule = schedule
-	b.require(bulkSyncResponseFieldSchedule)
+func (v *V2BulkSyncResponse) SetSchedule(schedule *BulkSchedule) {
+	v.Schedule = schedule
+	v.require(v2BulkSyncResponseFieldSchedule)
 }
 
 // SetSourceConfiguration sets the SourceConfiguration field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetSourceConfiguration(sourceConfiguration map[string]any) {
-	b.SourceConfiguration = sourceConfiguration
-	b.require(bulkSyncResponseFieldSourceConfiguration)
+func (v *V2BulkSyncResponse) SetSourceConfiguration(sourceConfiguration map[string]any) {
+	v.SourceConfiguration = sourceConfiguration
+	v.require(v2BulkSyncResponseFieldSourceConfiguration)
 }
 
 // SetSourceConnectionID sets the SourceConnectionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetSourceConnectionID(sourceConnectionID *string) {
-	b.SourceConnectionID = sourceConnectionID
-	b.require(bulkSyncResponseFieldSourceConnectionID)
+func (v *V2BulkSyncResponse) SetSourceConnectionID(sourceConnectionID *string) {
+	v.SourceConnectionID = sourceConnectionID
+	v.require(v2BulkSyncResponseFieldSourceConnectionID)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetUpdatedAt(updatedAt *time.Time) {
-	b.UpdatedAt = updatedAt
-	b.require(bulkSyncResponseFieldUpdatedAt)
+func (v *V2BulkSyncResponse) SetUpdatedAt(updatedAt *time.Time) {
+	v.UpdatedAt = updatedAt
+	v.require(v2BulkSyncResponseFieldUpdatedAt)
 }
 
 // SetUpdatedBy sets the UpdatedBy field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponse) SetUpdatedBy(updatedBy *OutputActor) {
-	b.UpdatedBy = updatedBy
-	b.require(bulkSyncResponseFieldUpdatedBy)
+func (v *V2BulkSyncResponse) SetUpdatedBy(updatedBy *OutputActor) {
+	v.UpdatedBy = updatedBy
+	v.require(v2BulkSyncResponseFieldUpdatedBy)
 }
 
-func (b *BulkSyncResponse) UnmarshalJSON(data []byte) error {
-	type embed BulkSyncResponse
+func (v *V2BulkSyncResponse) UnmarshalJSON(data []byte) error {
+	type embed V2BulkSyncResponse
 	var unmarshaler = struct {
 		embed
 		CreatedAt           *internal.DateTime `json:"created_at,omitempty"`
 		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
 		UpdatedAt           *internal.DateTime `json:"updated_at,omitempty"`
 	}{
-		embed: embed(*b),
+		embed: embed(*v),
 	}
 	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*b = BulkSyncResponse(unmarshaler.embed)
-	b.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	b.DataCutoffTimestamp = unmarshaler.DataCutoffTimestamp.TimePtr()
-	b.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	*v = V2BulkSyncResponse(unmarshaler.embed)
+	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	v.DataCutoffTimestamp = unmarshaler.DataCutoffTimestamp.TimePtr()
+	v.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
 	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (b *BulkSyncResponse) MarshalJSON() ([]byte, error) {
-	type embed BulkSyncResponse
+func (v *V2BulkSyncResponse) MarshalJSON() ([]byte, error) {
+	type embed V2BulkSyncResponse
 	var marshaler = struct {
 		embed
 		CreatedAt           *internal.DateTime `json:"created_at,omitempty"`
 		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
 		UpdatedAt           *internal.DateTime `json:"updated_at,omitempty"`
 	}{
-		embed:               embed(*b),
-		CreatedAt:           internal.NewOptionalDateTime(b.CreatedAt),
-		DataCutoffTimestamp: internal.NewOptionalDateTime(b.DataCutoffTimestamp),
-		UpdatedAt:           internal.NewOptionalDateTime(b.UpdatedAt),
+		embed:               embed(*v),
+		CreatedAt:           internal.NewOptionalDateTime(v.CreatedAt),
+		DataCutoffTimestamp: internal.NewOptionalDateTime(v.DataCutoffTimestamp),
+		UpdatedAt:           internal.NewOptionalDateTime(v.UpdatedAt),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (b *BulkSyncResponse) String() string {
-	if b == nil {
+func (v *V2BulkSyncResponse) String() string {
+	if v == nil {
 		return "<nil>"
 	}
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", b)
+	return fmt.Sprintf("%#v", v)
 }
 
 var (
-	bulkSyncResponseEnvelopeFieldData = big.NewInt(1 << 0)
+	v2BulkSyncResponseEnvelopeFieldData = big.NewInt(1 << 0)
 )
 
-type BulkSyncResponseEnvelope struct {
-	Data *BulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
+type V2BulkSyncResponseEnvelope struct {
+	Data *V2BulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2071,507 +1863,83 @@ type BulkSyncResponseEnvelope struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BulkSyncResponseEnvelope) GetData() *BulkSyncResponse {
-	if b == nil {
+func (v *V2BulkSyncResponseEnvelope) GetData() *V2BulkSyncResponse {
+	if v == nil {
 		return nil
 	}
-	return b.Data
+	return v.Data
 }
 
-func (b *BulkSyncResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if b == nil {
+func (v *V2BulkSyncResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
 		return nil
 	}
-	return b.extraProperties
+	return v.extraProperties
 }
 
-func (b *BulkSyncResponseEnvelope) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (v *V2BulkSyncResponseEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncResponseEnvelope) SetData(data *BulkSyncResponse) {
-	b.Data = data
-	b.require(bulkSyncResponseEnvelopeFieldData)
+func (v *V2BulkSyncResponseEnvelope) SetData(data *V2BulkSyncResponse) {
+	v.Data = data
+	v.require(v2BulkSyncResponseEnvelopeFieldData)
 }
 
-func (b *BulkSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkSyncResponseEnvelope
+func (v *V2BulkSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2BulkSyncResponseEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*b = BulkSyncResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	*v = V2BulkSyncResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
 	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (b *BulkSyncResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed BulkSyncResponseEnvelope
+func (v *V2BulkSyncResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V2BulkSyncResponseEnvelope
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*b),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (b *BulkSyncResponseEnvelope) String() string {
-	if b == nil {
+func (v *V2BulkSyncResponseEnvelope) String() string {
+	if v == nil {
 		return "<nil>"
 	}
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(b); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", b)
+	return fmt.Sprintf("%#v", v)
 }
 
 var (
-	bulkSyncSourceFieldCapabilities  = big.NewInt(1 << 0)
-	bulkSyncSourceFieldConfiguration = big.NewInt(1 << 1)
-	bulkSyncSourceFieldSchemas       = big.NewInt(1 << 2)
+	v2FieldConfigurationFieldEnabled   = big.NewInt(1 << 0)
+	v2FieldConfigurationFieldID        = big.NewInt(1 << 1)
+	v2FieldConfigurationFieldObfuscate = big.NewInt(1 << 2)
 )
 
-type BulkSyncSource struct {
-	Capabilities  *V3BulkSyncSourceCapabilities `json:"capabilities,omitempty" url:"capabilities,omitempty"`
-	Configuration any                           `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Schemas       []*Schema                     `json:"schemas,omitempty" url:"schemas,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BulkSyncSource) GetCapabilities() *V3BulkSyncSourceCapabilities {
-	if b == nil {
-		return nil
-	}
-	return b.Capabilities
-}
-
-func (b *BulkSyncSource) GetConfiguration() any {
-	if b == nil {
-		return nil
-	}
-	return b.Configuration
-}
-
-func (b *BulkSyncSource) GetSchemas() []*Schema {
-	if b == nil {
-		return nil
-	}
-	return b.Schemas
-}
-
-func (b *BulkSyncSource) GetExtraProperties() map[string]interface{} {
-	if b == nil {
-		return nil
-	}
-	return b.extraProperties
-}
-
-func (b *BulkSyncSource) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetCapabilities sets the Capabilities field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncSource) SetCapabilities(capabilities *V3BulkSyncSourceCapabilities) {
-	b.Capabilities = capabilities
-	b.require(bulkSyncSourceFieldCapabilities)
-}
-
-// SetConfiguration sets the Configuration field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncSource) SetConfiguration(configuration any) {
-	b.Configuration = configuration
-	b.require(bulkSyncSourceFieldConfiguration)
-}
-
-// SetSchemas sets the Schemas field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncSource) SetSchemas(schemas []*Schema) {
-	b.Schemas = schemas
-	b.require(bulkSyncSourceFieldSchemas)
-}
-
-func (b *BulkSyncSource) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkSyncSource
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*b = BulkSyncSource(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BulkSyncSource) MarshalJSON() ([]byte, error) {
-	type embed BulkSyncSource
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*b),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (b *BulkSyncSource) String() string {
-	if b == nil {
-		return "<nil>"
-	}
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
-var (
-	bulkSyncSourceEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type BulkSyncSourceEnvelope struct {
-	Data *BulkSyncSource `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BulkSyncSourceEnvelope) GetData() *BulkSyncSource {
-	if b == nil {
-		return nil
-	}
-	return b.Data
-}
-
-func (b *BulkSyncSourceEnvelope) GetExtraProperties() map[string]interface{} {
-	if b == nil {
-		return nil
-	}
-	return b.extraProperties
-}
-
-func (b *BulkSyncSourceEnvelope) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncSourceEnvelope) SetData(data *BulkSyncSource) {
-	b.Data = data
-	b.require(bulkSyncSourceEnvelopeFieldData)
-}
-
-func (b *BulkSyncSourceEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkSyncSourceEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*b = BulkSyncSourceEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BulkSyncSourceEnvelope) MarshalJSON() ([]byte, error) {
-	type embed BulkSyncSourceEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*b),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (b *BulkSyncSourceEnvelope) String() string {
-	if b == nil {
-		return "<nil>"
-	}
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
-var (
-	bulkSyncStatusEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type BulkSyncStatusEnvelope struct {
-	Data *BulkSyncStatusResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BulkSyncStatusEnvelope) GetData() *BulkSyncStatusResponse {
-	if b == nil {
-		return nil
-	}
-	return b.Data
-}
-
-func (b *BulkSyncStatusEnvelope) GetExtraProperties() map[string]interface{} {
-	if b == nil {
-		return nil
-	}
-	return b.extraProperties
-}
-
-func (b *BulkSyncStatusEnvelope) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncStatusEnvelope) SetData(data *BulkSyncStatusResponse) {
-	b.Data = data
-	b.require(bulkSyncStatusEnvelopeFieldData)
-}
-
-func (b *BulkSyncStatusEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkSyncStatusEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*b = BulkSyncStatusEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BulkSyncStatusEnvelope) MarshalJSON() ([]byte, error) {
-	type embed BulkSyncStatusEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*b),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (b *BulkSyncStatusEnvelope) String() string {
-	if b == nil {
-		return "<nil>"
-	}
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
-var (
-	bulkSyncStatusResponseFieldCurrentExecution  = big.NewInt(1 << 0)
-	bulkSyncStatusResponseFieldIngestionStatus   = big.NewInt(1 << 1)
-	bulkSyncStatusResponseFieldLastExecution     = big.NewInt(1 << 2)
-	bulkSyncStatusResponseFieldNextExecutionTime = big.NewInt(1 << 3)
-)
-
-type BulkSyncStatusResponse struct {
-	CurrentExecution  *BulkSyncExecution       `json:"current_execution,omitempty" url:"current_execution,omitempty"`
-	IngestionStatus   *BulkSyncIngestionStatus `json:"ingestion_status,omitempty" url:"ingestion_status,omitempty"`
-	LastExecution     *BulkSyncExecution       `json:"last_execution,omitempty" url:"last_execution,omitempty"`
-	NextExecutionTime *time.Time               `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BulkSyncStatusResponse) GetCurrentExecution() *BulkSyncExecution {
-	if b == nil {
-		return nil
-	}
-	return b.CurrentExecution
-}
-
-func (b *BulkSyncStatusResponse) GetIngestionStatus() *BulkSyncIngestionStatus {
-	if b == nil {
-		return nil
-	}
-	return b.IngestionStatus
-}
-
-func (b *BulkSyncStatusResponse) GetLastExecution() *BulkSyncExecution {
-	if b == nil {
-		return nil
-	}
-	return b.LastExecution
-}
-
-func (b *BulkSyncStatusResponse) GetNextExecutionTime() *time.Time {
-	if b == nil {
-		return nil
-	}
-	return b.NextExecutionTime
-}
-
-func (b *BulkSyncStatusResponse) GetExtraProperties() map[string]interface{} {
-	if b == nil {
-		return nil
-	}
-	return b.extraProperties
-}
-
-func (b *BulkSyncStatusResponse) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetCurrentExecution sets the CurrentExecution field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncStatusResponse) SetCurrentExecution(currentExecution *BulkSyncExecution) {
-	b.CurrentExecution = currentExecution
-	b.require(bulkSyncStatusResponseFieldCurrentExecution)
-}
-
-// SetIngestionStatus sets the IngestionStatus field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncStatusResponse) SetIngestionStatus(ingestionStatus *BulkSyncIngestionStatus) {
-	b.IngestionStatus = ingestionStatus
-	b.require(bulkSyncStatusResponseFieldIngestionStatus)
-}
-
-// SetLastExecution sets the LastExecution field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncStatusResponse) SetLastExecution(lastExecution *BulkSyncExecution) {
-	b.LastExecution = lastExecution
-	b.require(bulkSyncStatusResponseFieldLastExecution)
-}
-
-// SetNextExecutionTime sets the NextExecutionTime field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncStatusResponse) SetNextExecutionTime(nextExecutionTime *time.Time) {
-	b.NextExecutionTime = nextExecutionTime
-	b.require(bulkSyncStatusResponseFieldNextExecutionTime)
-}
-
-func (b *BulkSyncStatusResponse) UnmarshalJSON(data []byte) error {
-	type embed BulkSyncStatusResponse
-	var unmarshaler = struct {
-		embed
-		NextExecutionTime *internal.DateTime `json:"next_execution_time,omitempty"`
-	}{
-		embed: embed(*b),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*b = BulkSyncStatusResponse(unmarshaler.embed)
-	b.NextExecutionTime = unmarshaler.NextExecutionTime.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BulkSyncStatusResponse) MarshalJSON() ([]byte, error) {
-	type embed BulkSyncStatusResponse
-	var marshaler = struct {
-		embed
-		NextExecutionTime *internal.DateTime `json:"next_execution_time,omitempty"`
-	}{
-		embed:             embed(*b),
-		NextExecutionTime: internal.NewOptionalDateTime(b.NextExecutionTime),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (b *BulkSyncStatusResponse) String() string {
-	if b == nil {
-		return "<nil>"
-	}
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
-var (
-	fieldConfigurationFieldEnabled   = big.NewInt(1 << 0)
-	fieldConfigurationFieldID        = big.NewInt(1 << 1)
-	fieldConfigurationFieldObfuscate = big.NewInt(1 << 2)
-)
-
-type FieldConfiguration struct {
+type V2FieldConfiguration struct {
 	// Whether the field is enabled for syncing.
 	Enabled *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
 	ID      *string `json:"id,omitempty" url:"id,omitempty"`
@@ -2585,142 +1953,116 @@ type FieldConfiguration struct {
 	rawJSON         json.RawMessage
 }
 
-func (f *FieldConfiguration) GetEnabled() *bool {
-	if f == nil {
+func (v *V2FieldConfiguration) GetEnabled() *bool {
+	if v == nil {
 		return nil
 	}
-	return f.Enabled
+	return v.Enabled
 }
 
-func (f *FieldConfiguration) GetID() *string {
-	if f == nil {
+func (v *V2FieldConfiguration) GetID() *string {
+	if v == nil {
 		return nil
 	}
-	return f.ID
+	return v.ID
 }
 
-func (f *FieldConfiguration) GetObfuscate() *bool {
-	if f == nil {
+func (v *V2FieldConfiguration) GetObfuscate() *bool {
+	if v == nil {
 		return nil
 	}
-	return f.Obfuscate
+	return v.Obfuscate
 }
 
-func (f *FieldConfiguration) GetExtraProperties() map[string]interface{} {
-	if f == nil {
+func (v *V2FieldConfiguration) GetExtraProperties() map[string]interface{} {
+	if v == nil {
 		return nil
 	}
-	return f.extraProperties
+	return v.extraProperties
 }
 
-func (f *FieldConfiguration) require(field *big.Int) {
-	if f.explicitFields == nil {
-		f.explicitFields = big.NewInt(0)
+func (v *V2FieldConfiguration) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	f.explicitFields.Or(f.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetEnabled sets the Enabled field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FieldConfiguration) SetEnabled(enabled *bool) {
-	f.Enabled = enabled
-	f.require(fieldConfigurationFieldEnabled)
+func (v *V2FieldConfiguration) SetEnabled(enabled *bool) {
+	v.Enabled = enabled
+	v.require(v2FieldConfigurationFieldEnabled)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FieldConfiguration) SetID(id *string) {
-	f.ID = id
-	f.require(fieldConfigurationFieldID)
+func (v *V2FieldConfiguration) SetID(id *string) {
+	v.ID = id
+	v.require(v2FieldConfigurationFieldID)
 }
 
 // SetObfuscate sets the Obfuscate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FieldConfiguration) SetObfuscate(obfuscate *bool) {
-	f.Obfuscate = obfuscate
-	f.require(fieldConfigurationFieldObfuscate)
+func (v *V2FieldConfiguration) SetObfuscate(obfuscate *bool) {
+	v.Obfuscate = obfuscate
+	v.require(v2FieldConfigurationFieldObfuscate)
 }
 
-func (f *FieldConfiguration) UnmarshalJSON(data []byte) error {
-	type unmarshaler FieldConfiguration
+func (v *V2FieldConfiguration) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2FieldConfiguration
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*f = FieldConfiguration(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *f)
+	*v = V2FieldConfiguration(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
 	}
-	f.extraProperties = extraProperties
-	f.rawJSON = json.RawMessage(data)
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (f *FieldConfiguration) MarshalJSON() ([]byte, error) {
-	type embed FieldConfiguration
+func (v *V2FieldConfiguration) MarshalJSON() ([]byte, error) {
+	type embed V2FieldConfiguration
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*f),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, f.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (f *FieldConfiguration) String() string {
-	if f == nil {
+func (v *V2FieldConfiguration) String() string {
+	if v == nil {
 		return "<nil>"
 	}
-	if len(f.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(f.rawJSON); err == nil {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(f); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", f)
-}
-
-// The health status of CDC ingestion for a bulk sync. 'ok' means ingestion is operating normally. 'warning' indicates a non-fatal issue. 'error' indicates a potentially fatal ingestion error.
-type IngestionStatusLevel string
-
-const (
-	IngestionStatusLevelOk      IngestionStatusLevel = "ok"
-	IngestionStatusLevelWarning IngestionStatusLevel = "warning"
-	IngestionStatusLevelError   IngestionStatusLevel = "error"
-)
-
-func NewIngestionStatusLevelFromString(s string) (IngestionStatusLevel, error) {
-	switch s {
-	case "ok":
-		return IngestionStatusLevelOk, nil
-	case "warning":
-		return IngestionStatusLevelWarning, nil
-	case "error":
-		return IngestionStatusLevelError, nil
-	}
-	var t IngestionStatusLevel
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (i IngestionStatusLevel) Ptr() *IngestionStatusLevel {
-	return &i
+	return fmt.Sprintf("%#v", v)
 }
 
 var (
-	schemaConfigurationFieldDataCutoffTimestamp = big.NewInt(1 << 0)
-	schemaConfigurationFieldDisableDataCutoff   = big.NewInt(1 << 1)
-	schemaConfigurationFieldEnabled             = big.NewInt(1 << 2)
-	schemaConfigurationFieldFields              = big.NewInt(1 << 3)
-	schemaConfigurationFieldFilters             = big.NewInt(1 << 4)
-	schemaConfigurationFieldID                  = big.NewInt(1 << 5)
-	schemaConfigurationFieldPartitionKey        = big.NewInt(1 << 6)
-	schemaConfigurationFieldTrackingField       = big.NewInt(1 << 7)
+	v2SchemaConfigurationFieldDataCutoffTimestamp = big.NewInt(1 << 0)
+	v2SchemaConfigurationFieldDisableDataCutoff   = big.NewInt(1 << 1)
+	v2SchemaConfigurationFieldEnabled             = big.NewInt(1 << 2)
+	v2SchemaConfigurationFieldFields              = big.NewInt(1 << 3)
+	v2SchemaConfigurationFieldFilters             = big.NewInt(1 << 4)
+	v2SchemaConfigurationFieldID                  = big.NewInt(1 << 5)
+	v2SchemaConfigurationFieldPartitionKey        = big.NewInt(1 << 6)
+	v2SchemaConfigurationFieldTrackingField       = big.NewInt(1 << 7)
 )
 
-type SchemaConfiguration struct {
+type V2SchemaConfiguration struct {
 	DataCutoffTimestamp *time.Time `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
 	// Whether data cutoff is disabled for this schema.
 	DisableDataCutoff *bool `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
@@ -2739,349 +2081,185 @@ type SchemaConfiguration struct {
 	rawJSON         json.RawMessage
 }
 
-func (s *SchemaConfiguration) GetDataCutoffTimestamp() *time.Time {
-	if s == nil {
+func (v *V2SchemaConfiguration) GetDataCutoffTimestamp() *time.Time {
+	if v == nil {
 		return nil
 	}
-	return s.DataCutoffTimestamp
+	return v.DataCutoffTimestamp
 }
 
-func (s *SchemaConfiguration) GetDisableDataCutoff() *bool {
-	if s == nil {
+func (v *V2SchemaConfiguration) GetDisableDataCutoff() *bool {
+	if v == nil {
 		return nil
 	}
-	return s.DisableDataCutoff
+	return v.DisableDataCutoff
 }
 
-func (s *SchemaConfiguration) GetEnabled() *bool {
-	if s == nil {
+func (v *V2SchemaConfiguration) GetEnabled() *bool {
+	if v == nil {
 		return nil
 	}
-	return s.Enabled
+	return v.Enabled
 }
 
-func (s *SchemaConfiguration) GetFields() []*V2SchemaConfigurationFieldsItem {
-	if s == nil {
+func (v *V2SchemaConfiguration) GetFields() []*V2SchemaConfigurationFieldsItem {
+	if v == nil {
 		return nil
 	}
-	return s.Fields
+	return v.Fields
 }
 
-func (s *SchemaConfiguration) GetFilters() []*BulkFilter {
-	if s == nil {
+func (v *V2SchemaConfiguration) GetFilters() []*BulkFilter {
+	if v == nil {
 		return nil
 	}
-	return s.Filters
+	return v.Filters
 }
 
-func (s *SchemaConfiguration) GetID() *string {
-	if s == nil {
+func (v *V2SchemaConfiguration) GetID() *string {
+	if v == nil {
 		return nil
 	}
-	return s.ID
+	return v.ID
 }
 
-func (s *SchemaConfiguration) GetPartitionKey() *string {
-	if s == nil {
+func (v *V2SchemaConfiguration) GetPartitionKey() *string {
+	if v == nil {
 		return nil
 	}
-	return s.PartitionKey
+	return v.PartitionKey
 }
 
-func (s *SchemaConfiguration) GetTrackingField() *string {
-	if s == nil {
+func (v *V2SchemaConfiguration) GetTrackingField() *string {
+	if v == nil {
 		return nil
 	}
-	return s.TrackingField
+	return v.TrackingField
 }
 
-func (s *SchemaConfiguration) GetExtraProperties() map[string]interface{} {
-	if s == nil {
+func (v *V2SchemaConfiguration) GetExtraProperties() map[string]interface{} {
+	if v == nil {
 		return nil
 	}
-	return s.extraProperties
+	return v.extraProperties
 }
 
-func (s *SchemaConfiguration) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (v *V2SchemaConfiguration) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	s.explicitFields.Or(s.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetDataCutoffTimestamp sets the DataCutoffTimestamp field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SchemaConfiguration) SetDataCutoffTimestamp(dataCutoffTimestamp *time.Time) {
-	s.DataCutoffTimestamp = dataCutoffTimestamp
-	s.require(schemaConfigurationFieldDataCutoffTimestamp)
+func (v *V2SchemaConfiguration) SetDataCutoffTimestamp(dataCutoffTimestamp *time.Time) {
+	v.DataCutoffTimestamp = dataCutoffTimestamp
+	v.require(v2SchemaConfigurationFieldDataCutoffTimestamp)
 }
 
 // SetDisableDataCutoff sets the DisableDataCutoff field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SchemaConfiguration) SetDisableDataCutoff(disableDataCutoff *bool) {
-	s.DisableDataCutoff = disableDataCutoff
-	s.require(schemaConfigurationFieldDisableDataCutoff)
+func (v *V2SchemaConfiguration) SetDisableDataCutoff(disableDataCutoff *bool) {
+	v.DisableDataCutoff = disableDataCutoff
+	v.require(v2SchemaConfigurationFieldDisableDataCutoff)
 }
 
 // SetEnabled sets the Enabled field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SchemaConfiguration) SetEnabled(enabled *bool) {
-	s.Enabled = enabled
-	s.require(schemaConfigurationFieldEnabled)
+func (v *V2SchemaConfiguration) SetEnabled(enabled *bool) {
+	v.Enabled = enabled
+	v.require(v2SchemaConfigurationFieldEnabled)
 }
 
 // SetFields sets the Fields field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SchemaConfiguration) SetFields(fields []*V2SchemaConfigurationFieldsItem) {
-	s.Fields = fields
-	s.require(schemaConfigurationFieldFields)
+func (v *V2SchemaConfiguration) SetFields(fields []*V2SchemaConfigurationFieldsItem) {
+	v.Fields = fields
+	v.require(v2SchemaConfigurationFieldFields)
 }
 
 // SetFilters sets the Filters field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SchemaConfiguration) SetFilters(filters []*BulkFilter) {
-	s.Filters = filters
-	s.require(schemaConfigurationFieldFilters)
+func (v *V2SchemaConfiguration) SetFilters(filters []*BulkFilter) {
+	v.Filters = filters
+	v.require(v2SchemaConfigurationFieldFilters)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SchemaConfiguration) SetID(id *string) {
-	s.ID = id
-	s.require(schemaConfigurationFieldID)
+func (v *V2SchemaConfiguration) SetID(id *string) {
+	v.ID = id
+	v.require(v2SchemaConfigurationFieldID)
 }
 
 // SetPartitionKey sets the PartitionKey field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SchemaConfiguration) SetPartitionKey(partitionKey *string) {
-	s.PartitionKey = partitionKey
-	s.require(schemaConfigurationFieldPartitionKey)
+func (v *V2SchemaConfiguration) SetPartitionKey(partitionKey *string) {
+	v.PartitionKey = partitionKey
+	v.require(v2SchemaConfigurationFieldPartitionKey)
 }
 
 // SetTrackingField sets the TrackingField field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SchemaConfiguration) SetTrackingField(trackingField *string) {
-	s.TrackingField = trackingField
-	s.require(schemaConfigurationFieldTrackingField)
+func (v *V2SchemaConfiguration) SetTrackingField(trackingField *string) {
+	v.TrackingField = trackingField
+	v.require(v2SchemaConfigurationFieldTrackingField)
 }
 
-func (s *SchemaConfiguration) UnmarshalJSON(data []byte) error {
-	type embed SchemaConfiguration
+func (v *V2SchemaConfiguration) UnmarshalJSON(data []byte) error {
+	type embed V2SchemaConfiguration
 	var unmarshaler = struct {
 		embed
 		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
 	}{
-		embed: embed(*s),
+		embed: embed(*v),
 	}
 	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*s = SchemaConfiguration(unmarshaler.embed)
-	s.DataCutoffTimestamp = unmarshaler.DataCutoffTimestamp.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	*v = V2SchemaConfiguration(unmarshaler.embed)
+	v.DataCutoffTimestamp = unmarshaler.DataCutoffTimestamp.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
 	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (s *SchemaConfiguration) MarshalJSON() ([]byte, error) {
-	type embed SchemaConfiguration
+func (v *V2SchemaConfiguration) MarshalJSON() ([]byte, error) {
+	type embed V2SchemaConfiguration
 	var marshaler = struct {
 		embed
 		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
 	}{
-		embed:               embed(*s),
-		DataCutoffTimestamp: internal.NewOptionalDateTime(s.DataCutoffTimestamp),
+		embed:               embed(*v),
+		DataCutoffTimestamp: internal.NewOptionalDateTime(v.DataCutoffTimestamp),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (s *SchemaConfiguration) String() string {
-	if s == nil {
+func (v *V2SchemaConfiguration) String() string {
+	if v == nil {
 		return "<nil>"
 	}
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(s); err == nil {
+	if value, err := internal.StringifyJSON(v); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", s)
-}
-
-var (
-	supportedBulkModeFieldDescription           = big.NewInt(1 << 0)
-	supportedBulkModeFieldID                    = big.NewInt(1 << 1)
-	supportedBulkModeFieldLabel                 = big.NewInt(1 << 2)
-	supportedBulkModeFieldRequiresIdentity      = big.NewInt(1 << 3)
-	supportedBulkModeFieldSupportsFieldSyncMode = big.NewInt(1 << 4)
-	supportedBulkModeFieldSupportsTargetFilters = big.NewInt(1 << 5)
-)
-
-type SupportedBulkMode struct {
-	Description           *string       `json:"description,omitempty" url:"description,omitempty"`
-	ID                    *BulkSyncMode `json:"id,omitempty" url:"id,omitempty"`
-	Label                 *string       `json:"label,omitempty" url:"label,omitempty"`
-	RequiresIdentity      *bool         `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
-	SupportsFieldSyncMode *bool         `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
-	SupportsTargetFilters *bool         `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (s *SupportedBulkMode) GetDescription() *string {
-	if s == nil {
-		return nil
-	}
-	return s.Description
-}
-
-func (s *SupportedBulkMode) GetID() *BulkSyncMode {
-	if s == nil {
-		return nil
-	}
-	return s.ID
-}
-
-func (s *SupportedBulkMode) GetLabel() *string {
-	if s == nil {
-		return nil
-	}
-	return s.Label
-}
-
-func (s *SupportedBulkMode) GetRequiresIdentity() *bool {
-	if s == nil {
-		return nil
-	}
-	return s.RequiresIdentity
-}
-
-func (s *SupportedBulkMode) GetSupportsFieldSyncMode() *bool {
-	if s == nil {
-		return nil
-	}
-	return s.SupportsFieldSyncMode
-}
-
-func (s *SupportedBulkMode) GetSupportsTargetFilters() *bool {
-	if s == nil {
-		return nil
-	}
-	return s.SupportsTargetFilters
-}
-
-func (s *SupportedBulkMode) GetExtraProperties() map[string]interface{} {
-	if s == nil {
-		return nil
-	}
-	return s.extraProperties
-}
-
-func (s *SupportedBulkMode) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
-	}
-	s.explicitFields.Or(s.explicitFields, field)
-}
-
-// SetDescription sets the Description field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SupportedBulkMode) SetDescription(description *string) {
-	s.Description = description
-	s.require(supportedBulkModeFieldDescription)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SupportedBulkMode) SetID(id *BulkSyncMode) {
-	s.ID = id
-	s.require(supportedBulkModeFieldID)
-}
-
-// SetLabel sets the Label field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SupportedBulkMode) SetLabel(label *string) {
-	s.Label = label
-	s.require(supportedBulkModeFieldLabel)
-}
-
-// SetRequiresIdentity sets the RequiresIdentity field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SupportedBulkMode) SetRequiresIdentity(requiresIdentity *bool) {
-	s.RequiresIdentity = requiresIdentity
-	s.require(supportedBulkModeFieldRequiresIdentity)
-}
-
-// SetSupportsFieldSyncMode sets the SupportsFieldSyncMode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SupportedBulkMode) SetSupportsFieldSyncMode(supportsFieldSyncMode *bool) {
-	s.SupportsFieldSyncMode = supportsFieldSyncMode
-	s.require(supportedBulkModeFieldSupportsFieldSyncMode)
-}
-
-// SetSupportsTargetFilters sets the SupportsTargetFilters field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SupportedBulkMode) SetSupportsTargetFilters(supportsTargetFilters *bool) {
-	s.SupportsTargetFilters = supportsTargetFilters
-	s.require(supportedBulkModeFieldSupportsTargetFilters)
-}
-
-func (s *SupportedBulkMode) UnmarshalJSON(data []byte) error {
-	type unmarshaler SupportedBulkMode
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*s = SupportedBulkMode(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
-	if err != nil {
-		return err
-	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *SupportedBulkMode) MarshalJSON() ([]byte, error) {
-	type embed SupportedBulkMode
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*s),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (s *SupportedBulkMode) String() string {
-	if s == nil {
-		return "<nil>"
-	}
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
+	return fmt.Sprintf("%#v", v)
 }
 
 type V2SchemaConfigurationFieldsItem struct {
-	String             string
-	FieldConfiguration *FieldConfiguration
+	String               string
+	V2FieldConfiguration *V2FieldConfiguration
 
 	typ string
 }
@@ -3093,11 +2271,11 @@ func (v *V2SchemaConfigurationFieldsItem) GetString() string {
 	return v.String
 }
 
-func (v *V2SchemaConfigurationFieldsItem) GetFieldConfiguration() *FieldConfiguration {
+func (v *V2SchemaConfigurationFieldsItem) GetV2FieldConfiguration() *V2FieldConfiguration {
 	if v == nil {
 		return nil
 	}
-	return v.FieldConfiguration
+	return v.V2FieldConfiguration
 }
 
 func (v *V2SchemaConfigurationFieldsItem) UnmarshalJSON(data []byte) error {
@@ -3107,10 +2285,10 @@ func (v *V2SchemaConfigurationFieldsItem) UnmarshalJSON(data []byte) error {
 		v.String = valueString
 		return nil
 	}
-	valueFieldConfiguration := new(FieldConfiguration)
-	if err := json.Unmarshal(data, &valueFieldConfiguration); err == nil {
-		v.typ = "FieldConfiguration"
-		v.FieldConfiguration = valueFieldConfiguration
+	valueV2FieldConfiguration := new(V2FieldConfiguration)
+	if err := json.Unmarshal(data, &valueV2FieldConfiguration); err == nil {
+		v.typ = "V2FieldConfiguration"
+		v.V2FieldConfiguration = valueV2FieldConfiguration
 		return nil
 	}
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, v)
@@ -3120,25 +2298,513 @@ func (v V2SchemaConfigurationFieldsItem) MarshalJSON() ([]byte, error) {
 	if v.typ == "String" || v.String != "" {
 		return json.Marshal(v.String)
 	}
-	if v.typ == "FieldConfiguration" || v.FieldConfiguration != nil {
-		return json.Marshal(v.FieldConfiguration)
+	if v.typ == "V2FieldConfiguration" || v.V2FieldConfiguration != nil {
+		return json.Marshal(v.V2FieldConfiguration)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", v)
 }
 
 type V2SchemaConfigurationFieldsItemVisitor interface {
 	VisitString(string) error
-	VisitFieldConfiguration(*FieldConfiguration) error
+	VisitV2FieldConfiguration(*V2FieldConfiguration) error
 }
 
 func (v *V2SchemaConfigurationFieldsItem) Accept(visitor V2SchemaConfigurationFieldsItemVisitor) error {
 	if v.typ == "String" || v.String != "" {
 		return visitor.VisitString(v.String)
 	}
-	if v.typ == "FieldConfiguration" || v.FieldConfiguration != nil {
-		return visitor.VisitFieldConfiguration(v.FieldConfiguration)
+	if v.typ == "V2FieldConfiguration" || v.V2FieldConfiguration != nil {
+		return visitor.VisitV2FieldConfiguration(v.V2FieldConfiguration)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", v)
+}
+
+var (
+	v2SupportedBulkModeFieldDescription           = big.NewInt(1 << 0)
+	v2SupportedBulkModeFieldID                    = big.NewInt(1 << 1)
+	v2SupportedBulkModeFieldLabel                 = big.NewInt(1 << 2)
+	v2SupportedBulkModeFieldRequiresIdentity      = big.NewInt(1 << 3)
+	v2SupportedBulkModeFieldSupportsFieldSyncMode = big.NewInt(1 << 4)
+	v2SupportedBulkModeFieldSupportsTargetFilters = big.NewInt(1 << 5)
+)
+
+type V2SupportedBulkMode struct {
+	Description           *string             `json:"description,omitempty" url:"description,omitempty"`
+	ID                    *BulkSyncTargetMode `json:"id,omitempty" url:"id,omitempty"`
+	Label                 *string             `json:"label,omitempty" url:"label,omitempty"`
+	RequiresIdentity      *bool               `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
+	SupportsFieldSyncMode *bool               `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
+	SupportsTargetFilters *bool               `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V2SupportedBulkMode) GetDescription() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Description
+}
+
+func (v *V2SupportedBulkMode) GetID() *BulkSyncTargetMode {
+	if v == nil {
+		return nil
+	}
+	return v.ID
+}
+
+func (v *V2SupportedBulkMode) GetLabel() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Label
+}
+
+func (v *V2SupportedBulkMode) GetRequiresIdentity() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.RequiresIdentity
+}
+
+func (v *V2SupportedBulkMode) GetSupportsFieldSyncMode() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.SupportsFieldSyncMode
+}
+
+func (v *V2SupportedBulkMode) GetSupportsTargetFilters() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.SupportsTargetFilters
+}
+
+func (v *V2SupportedBulkMode) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V2SupportedBulkMode) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2SupportedBulkMode) SetDescription(description *string) {
+	v.Description = description
+	v.require(v2SupportedBulkModeFieldDescription)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2SupportedBulkMode) SetID(id *BulkSyncTargetMode) {
+	v.ID = id
+	v.require(v2SupportedBulkModeFieldID)
+}
+
+// SetLabel sets the Label field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2SupportedBulkMode) SetLabel(label *string) {
+	v.Label = label
+	v.require(v2SupportedBulkModeFieldLabel)
+}
+
+// SetRequiresIdentity sets the RequiresIdentity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2SupportedBulkMode) SetRequiresIdentity(requiresIdentity *bool) {
+	v.RequiresIdentity = requiresIdentity
+	v.require(v2SupportedBulkModeFieldRequiresIdentity)
+}
+
+// SetSupportsFieldSyncMode sets the SupportsFieldSyncMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2SupportedBulkMode) SetSupportsFieldSyncMode(supportsFieldSyncMode *bool) {
+	v.SupportsFieldSyncMode = supportsFieldSyncMode
+	v.require(v2SupportedBulkModeFieldSupportsFieldSyncMode)
+}
+
+// SetSupportsTargetFilters sets the SupportsTargetFilters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V2SupportedBulkMode) SetSupportsTargetFilters(supportsTargetFilters *bool) {
+	v.SupportsTargetFilters = supportsTargetFilters
+	v.require(v2SupportedBulkModeFieldSupportsTargetFilters)
+}
+
+func (v *V2SupportedBulkMode) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2SupportedBulkMode
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V2SupportedBulkMode(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V2SupportedBulkMode) MarshalJSON() ([]byte, error) {
+	type embed V2SupportedBulkMode
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V2SupportedBulkMode) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v3BulkSyncIngestionStatusFieldEnabled       = big.NewInt(1 << 0)
+	v3BulkSyncIngestionStatusFieldHighwaterMark = big.NewInt(1 << 1)
+	v3BulkSyncIngestionStatusFieldIsRunning     = big.NewInt(1 << 2)
+	v3BulkSyncIngestionStatusFieldPosition      = big.NewInt(1 << 3)
+	v3BulkSyncIngestionStatusFieldPositionTime  = big.NewInt(1 << 4)
+	v3BulkSyncIngestionStatusFieldStatus        = big.NewInt(1 << 5)
+	v3BulkSyncIngestionStatusFieldStatusMessage = big.NewInt(1 << 6)
+	v3BulkSyncIngestionStatusFieldUpdatedAt     = big.NewInt(1 << 7)
+)
+
+type V3BulkSyncIngestionStatus struct {
+	Enabled       *bool                   `json:"enabled,omitempty" url:"enabled,omitempty"`
+	HighwaterMark *string                 `json:"highwater_mark,omitempty" url:"highwater_mark,omitempty"`
+	IsRunning     *bool                   `json:"is_running,omitempty" url:"is_running,omitempty"`
+	Position      *string                 `json:"position,omitempty" url:"position,omitempty"`
+	PositionTime  *time.Time              `json:"position_time,omitempty" url:"position_time,omitempty"`
+	Status        *V3IngestionStatusLevel `json:"status,omitempty" url:"status,omitempty"`
+	StatusMessage *string                 `json:"status_message,omitempty" url:"status_message,omitempty"`
+	UpdatedAt     *time.Time              `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V3BulkSyncIngestionStatus) GetEnabled() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.Enabled
+}
+
+func (v *V3BulkSyncIngestionStatus) GetHighwaterMark() *string {
+	if v == nil {
+		return nil
+	}
+	return v.HighwaterMark
+}
+
+func (v *V3BulkSyncIngestionStatus) GetIsRunning() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.IsRunning
+}
+
+func (v *V3BulkSyncIngestionStatus) GetPosition() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Position
+}
+
+func (v *V3BulkSyncIngestionStatus) GetPositionTime() *time.Time {
+	if v == nil {
+		return nil
+	}
+	return v.PositionTime
+}
+
+func (v *V3BulkSyncIngestionStatus) GetStatus() *V3IngestionStatusLevel {
+	if v == nil {
+		return nil
+	}
+	return v.Status
+}
+
+func (v *V3BulkSyncIngestionStatus) GetStatusMessage() *string {
+	if v == nil {
+		return nil
+	}
+	return v.StatusMessage
+}
+
+func (v *V3BulkSyncIngestionStatus) GetUpdatedAt() *time.Time {
+	if v == nil {
+		return nil
+	}
+	return v.UpdatedAt
+}
+
+func (v *V3BulkSyncIngestionStatus) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V3BulkSyncIngestionStatus) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3BulkSyncIngestionStatus) SetEnabled(enabled *bool) {
+	v.Enabled = enabled
+	v.require(v3BulkSyncIngestionStatusFieldEnabled)
+}
+
+// SetHighwaterMark sets the HighwaterMark field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3BulkSyncIngestionStatus) SetHighwaterMark(highwaterMark *string) {
+	v.HighwaterMark = highwaterMark
+	v.require(v3BulkSyncIngestionStatusFieldHighwaterMark)
+}
+
+// SetIsRunning sets the IsRunning field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3BulkSyncIngestionStatus) SetIsRunning(isRunning *bool) {
+	v.IsRunning = isRunning
+	v.require(v3BulkSyncIngestionStatusFieldIsRunning)
+}
+
+// SetPosition sets the Position field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3BulkSyncIngestionStatus) SetPosition(position *string) {
+	v.Position = position
+	v.require(v3BulkSyncIngestionStatusFieldPosition)
+}
+
+// SetPositionTime sets the PositionTime field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3BulkSyncIngestionStatus) SetPositionTime(positionTime *time.Time) {
+	v.PositionTime = positionTime
+	v.require(v3BulkSyncIngestionStatusFieldPositionTime)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3BulkSyncIngestionStatus) SetStatus(status *V3IngestionStatusLevel) {
+	v.Status = status
+	v.require(v3BulkSyncIngestionStatusFieldStatus)
+}
+
+// SetStatusMessage sets the StatusMessage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3BulkSyncIngestionStatus) SetStatusMessage(statusMessage *string) {
+	v.StatusMessage = statusMessage
+	v.require(v3BulkSyncIngestionStatusFieldStatusMessage)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3BulkSyncIngestionStatus) SetUpdatedAt(updatedAt *time.Time) {
+	v.UpdatedAt = updatedAt
+	v.require(v3BulkSyncIngestionStatusFieldUpdatedAt)
+}
+
+func (v *V3BulkSyncIngestionStatus) UnmarshalJSON(data []byte) error {
+	type embed V3BulkSyncIngestionStatus
+	var unmarshaler = struct {
+		embed
+		PositionTime *internal.DateTime `json:"position_time,omitempty"`
+		UpdatedAt    *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*v),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*v = V3BulkSyncIngestionStatus(unmarshaler.embed)
+	v.PositionTime = unmarshaler.PositionTime.TimePtr()
+	v.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V3BulkSyncIngestionStatus) MarshalJSON() ([]byte, error) {
+	type embed V3BulkSyncIngestionStatus
+	var marshaler = struct {
+		embed
+		PositionTime *internal.DateTime `json:"position_time,omitempty"`
+		UpdatedAt    *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:        embed(*v),
+		PositionTime: internal.NewOptionalDateTime(v.PositionTime),
+		UpdatedAt:    internal.NewOptionalDateTime(v.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V3BulkSyncIngestionStatus) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v3BulkSyncSourceFieldCapabilities  = big.NewInt(1 << 0)
+	v3BulkSyncSourceFieldConfiguration = big.NewInt(1 << 1)
+	v3BulkSyncSourceFieldSchemas       = big.NewInt(1 << 2)
+)
+
+type V3BulkSyncSource struct {
+	Capabilities  *V3BulkSyncSourceCapabilities `json:"capabilities,omitempty" url:"capabilities,omitempty"`
+	Configuration any                           `json:"configuration,omitempty" url:"configuration,omitempty"`
+	Schemas       []*V3Schema                   `json:"schemas,omitempty" url:"schemas,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V3BulkSyncSource) GetCapabilities() *V3BulkSyncSourceCapabilities {
+	if v == nil {
+		return nil
+	}
+	return v.Capabilities
+}
+
+func (v *V3BulkSyncSource) GetConfiguration() any {
+	if v == nil {
+		return nil
+	}
+	return v.Configuration
+}
+
+func (v *V3BulkSyncSource) GetSchemas() []*V3Schema {
+	if v == nil {
+		return nil
+	}
+	return v.Schemas
+}
+
+func (v *V3BulkSyncSource) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V3BulkSyncSource) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetCapabilities sets the Capabilities field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3BulkSyncSource) SetCapabilities(capabilities *V3BulkSyncSourceCapabilities) {
+	v.Capabilities = capabilities
+	v.require(v3BulkSyncSourceFieldCapabilities)
+}
+
+// SetConfiguration sets the Configuration field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3BulkSyncSource) SetConfiguration(configuration any) {
+	v.Configuration = configuration
+	v.require(v3BulkSyncSourceFieldConfiguration)
+}
+
+// SetSchemas sets the Schemas field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3BulkSyncSource) SetSchemas(schemas []*V3Schema) {
+	v.Schemas = schemas
+	v.require(v3BulkSyncSourceFieldSchemas)
+}
+
+func (v *V3BulkSyncSource) UnmarshalJSON(data []byte) error {
+	type unmarshaler V3BulkSyncSource
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V3BulkSyncSource(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V3BulkSyncSource) MarshalJSON() ([]byte, error) {
+	type embed V3BulkSyncSource
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V3BulkSyncSource) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
 }
 
 var (
@@ -3225,9 +2891,343 @@ func (v *V3BulkSyncSourceCapabilities) String() string {
 	return fmt.Sprintf("%#v", v)
 }
 
+var (
+	v3BulkSyncSourceEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type V3BulkSyncSourceEnvelope struct {
+	Data *V3BulkSyncSource `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V3BulkSyncSourceEnvelope) GetData() *V3BulkSyncSource {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V3BulkSyncSourceEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V3BulkSyncSourceEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3BulkSyncSourceEnvelope) SetData(data *V3BulkSyncSource) {
+	v.Data = data
+	v.require(v3BulkSyncSourceEnvelopeFieldData)
+}
+
+func (v *V3BulkSyncSourceEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V3BulkSyncSourceEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V3BulkSyncSourceEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V3BulkSyncSourceEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V3BulkSyncSourceEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V3BulkSyncSourceEnvelope) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v3BulkSyncStatusEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type V3BulkSyncStatusEnvelope struct {
+	Data *V3BulkSyncStatusResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V3BulkSyncStatusEnvelope) GetData() *V3BulkSyncStatusResponse {
+	if v == nil {
+		return nil
+	}
+	return v.Data
+}
+
+func (v *V3BulkSyncStatusEnvelope) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V3BulkSyncStatusEnvelope) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3BulkSyncStatusEnvelope) SetData(data *V3BulkSyncStatusResponse) {
+	v.Data = data
+	v.require(v3BulkSyncStatusEnvelopeFieldData)
+}
+
+func (v *V3BulkSyncStatusEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler V3BulkSyncStatusEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = V3BulkSyncStatusEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V3BulkSyncStatusEnvelope) MarshalJSON() ([]byte, error) {
+	type embed V3BulkSyncStatusEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V3BulkSyncStatusEnvelope) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	v3BulkSyncStatusResponseFieldCurrentExecution  = big.NewInt(1 << 0)
+	v3BulkSyncStatusResponseFieldIngestionStatus   = big.NewInt(1 << 1)
+	v3BulkSyncStatusResponseFieldLastExecution     = big.NewInt(1 << 2)
+	v3BulkSyncStatusResponseFieldNextExecutionTime = big.NewInt(1 << 3)
+)
+
+type V3BulkSyncStatusResponse struct {
+	CurrentExecution  *V3BulkSyncExecution       `json:"current_execution,omitempty" url:"current_execution,omitempty"`
+	IngestionStatus   *V3BulkSyncIngestionStatus `json:"ingestion_status,omitempty" url:"ingestion_status,omitempty"`
+	LastExecution     *V3BulkSyncExecution       `json:"last_execution,omitempty" url:"last_execution,omitempty"`
+	NextExecutionTime *time.Time                 `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *V3BulkSyncStatusResponse) GetCurrentExecution() *V3BulkSyncExecution {
+	if v == nil {
+		return nil
+	}
+	return v.CurrentExecution
+}
+
+func (v *V3BulkSyncStatusResponse) GetIngestionStatus() *V3BulkSyncIngestionStatus {
+	if v == nil {
+		return nil
+	}
+	return v.IngestionStatus
+}
+
+func (v *V3BulkSyncStatusResponse) GetLastExecution() *V3BulkSyncExecution {
+	if v == nil {
+		return nil
+	}
+	return v.LastExecution
+}
+
+func (v *V3BulkSyncStatusResponse) GetNextExecutionTime() *time.Time {
+	if v == nil {
+		return nil
+	}
+	return v.NextExecutionTime
+}
+
+func (v *V3BulkSyncStatusResponse) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *V3BulkSyncStatusResponse) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetCurrentExecution sets the CurrentExecution field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3BulkSyncStatusResponse) SetCurrentExecution(currentExecution *V3BulkSyncExecution) {
+	v.CurrentExecution = currentExecution
+	v.require(v3BulkSyncStatusResponseFieldCurrentExecution)
+}
+
+// SetIngestionStatus sets the IngestionStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3BulkSyncStatusResponse) SetIngestionStatus(ingestionStatus *V3BulkSyncIngestionStatus) {
+	v.IngestionStatus = ingestionStatus
+	v.require(v3BulkSyncStatusResponseFieldIngestionStatus)
+}
+
+// SetLastExecution sets the LastExecution field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3BulkSyncStatusResponse) SetLastExecution(lastExecution *V3BulkSyncExecution) {
+	v.LastExecution = lastExecution
+	v.require(v3BulkSyncStatusResponseFieldLastExecution)
+}
+
+// SetNextExecutionTime sets the NextExecutionTime field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *V3BulkSyncStatusResponse) SetNextExecutionTime(nextExecutionTime *time.Time) {
+	v.NextExecutionTime = nextExecutionTime
+	v.require(v3BulkSyncStatusResponseFieldNextExecutionTime)
+}
+
+func (v *V3BulkSyncStatusResponse) UnmarshalJSON(data []byte) error {
+	type embed V3BulkSyncStatusResponse
+	var unmarshaler = struct {
+		embed
+		NextExecutionTime *internal.DateTime `json:"next_execution_time,omitempty"`
+	}{
+		embed: embed(*v),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*v = V3BulkSyncStatusResponse(unmarshaler.embed)
+	v.NextExecutionTime = unmarshaler.NextExecutionTime.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *V3BulkSyncStatusResponse) MarshalJSON() ([]byte, error) {
+	type embed V3BulkSyncStatusResponse
+	var marshaler = struct {
+		embed
+		NextExecutionTime *internal.DateTime `json:"next_execution_time,omitempty"`
+	}{
+		embed:             embed(*v),
+		NextExecutionTime: internal.NewOptionalDateTime(v.NextExecutionTime),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *V3BulkSyncStatusResponse) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+// The health status of CDC ingestion for a bulk sync. 'ok' means ingestion is operating normally. 'warning' indicates a non-fatal issue. 'error' indicates a potentially fatal ingestion error.
+type V3IngestionStatusLevel string
+
+const (
+	V3IngestionStatusLevelOk      V3IngestionStatusLevel = "ok"
+	V3IngestionStatusLevelWarning V3IngestionStatusLevel = "warning"
+	V3IngestionStatusLevelError   V3IngestionStatusLevel = "error"
+)
+
+func NewV3IngestionStatusLevelFromString(s string) (V3IngestionStatusLevel, error) {
+	switch s {
+	case "ok":
+		return V3IngestionStatusLevelOk, nil
+	case "warning":
+		return V3IngestionStatusLevelWarning, nil
+	case "error":
+		return V3IngestionStatusLevelError, nil
+	}
+	var t V3IngestionStatusLevel
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (v V3IngestionStatusLevel) Ptr() *V3IngestionStatusLevel {
+	return &v
+}
+
 type V2CreateBulkSyncRequestSchemasItem struct {
-	String              string
-	SchemaConfiguration *SchemaConfiguration
+	String                string
+	V2SchemaConfiguration *V2SchemaConfiguration
 
 	typ string
 }
@@ -3239,11 +3239,11 @@ func (v *V2CreateBulkSyncRequestSchemasItem) GetString() string {
 	return v.String
 }
 
-func (v *V2CreateBulkSyncRequestSchemasItem) GetSchemaConfiguration() *SchemaConfiguration {
+func (v *V2CreateBulkSyncRequestSchemasItem) GetV2SchemaConfiguration() *V2SchemaConfiguration {
 	if v == nil {
 		return nil
 	}
-	return v.SchemaConfiguration
+	return v.V2SchemaConfiguration
 }
 
 func (v *V2CreateBulkSyncRequestSchemasItem) UnmarshalJSON(data []byte) error {
@@ -3253,10 +3253,10 @@ func (v *V2CreateBulkSyncRequestSchemasItem) UnmarshalJSON(data []byte) error {
 		v.String = valueString
 		return nil
 	}
-	valueSchemaConfiguration := new(SchemaConfiguration)
-	if err := json.Unmarshal(data, &valueSchemaConfiguration); err == nil {
-		v.typ = "SchemaConfiguration"
-		v.SchemaConfiguration = valueSchemaConfiguration
+	valueV2SchemaConfiguration := new(V2SchemaConfiguration)
+	if err := json.Unmarshal(data, &valueV2SchemaConfiguration); err == nil {
+		v.typ = "V2SchemaConfiguration"
+		v.V2SchemaConfiguration = valueV2SchemaConfiguration
 		return nil
 	}
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, v)
@@ -3266,30 +3266,30 @@ func (v V2CreateBulkSyncRequestSchemasItem) MarshalJSON() ([]byte, error) {
 	if v.typ == "String" || v.String != "" {
 		return json.Marshal(v.String)
 	}
-	if v.typ == "SchemaConfiguration" || v.SchemaConfiguration != nil {
-		return json.Marshal(v.SchemaConfiguration)
+	if v.typ == "V2SchemaConfiguration" || v.V2SchemaConfiguration != nil {
+		return json.Marshal(v.V2SchemaConfiguration)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", v)
 }
 
 type V2CreateBulkSyncRequestSchemasItemVisitor interface {
 	VisitString(string) error
-	VisitSchemaConfiguration(*SchemaConfiguration) error
+	VisitV2SchemaConfiguration(*V2SchemaConfiguration) error
 }
 
 func (v *V2CreateBulkSyncRequestSchemasItem) Accept(visitor V2CreateBulkSyncRequestSchemasItemVisitor) error {
 	if v.typ == "String" || v.String != "" {
 		return visitor.VisitString(v.String)
 	}
-	if v.typ == "SchemaConfiguration" || v.SchemaConfiguration != nil {
-		return visitor.VisitSchemaConfiguration(v.SchemaConfiguration)
+	if v.typ == "V2SchemaConfiguration" || v.V2SchemaConfiguration != nil {
+		return visitor.VisitV2SchemaConfiguration(v.V2SchemaConfiguration)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", v)
 }
 
 type V2UpdateBulkSyncRequestSchemasItem struct {
-	String              string
-	SchemaConfiguration *SchemaConfiguration
+	String                string
+	V2SchemaConfiguration *V2SchemaConfiguration
 
 	typ string
 }
@@ -3301,11 +3301,11 @@ func (v *V2UpdateBulkSyncRequestSchemasItem) GetString() string {
 	return v.String
 }
 
-func (v *V2UpdateBulkSyncRequestSchemasItem) GetSchemaConfiguration() *SchemaConfiguration {
+func (v *V2UpdateBulkSyncRequestSchemasItem) GetV2SchemaConfiguration() *V2SchemaConfiguration {
 	if v == nil {
 		return nil
 	}
-	return v.SchemaConfiguration
+	return v.V2SchemaConfiguration
 }
 
 func (v *V2UpdateBulkSyncRequestSchemasItem) UnmarshalJSON(data []byte) error {
@@ -3315,10 +3315,10 @@ func (v *V2UpdateBulkSyncRequestSchemasItem) UnmarshalJSON(data []byte) error {
 		v.String = valueString
 		return nil
 	}
-	valueSchemaConfiguration := new(SchemaConfiguration)
-	if err := json.Unmarshal(data, &valueSchemaConfiguration); err == nil {
-		v.typ = "SchemaConfiguration"
-		v.SchemaConfiguration = valueSchemaConfiguration
+	valueV2SchemaConfiguration := new(V2SchemaConfiguration)
+	if err := json.Unmarshal(data, &valueV2SchemaConfiguration); err == nil {
+		v.typ = "V2SchemaConfiguration"
+		v.V2SchemaConfiguration = valueV2SchemaConfiguration
 		return nil
 	}
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, v)
@@ -3328,23 +3328,23 @@ func (v V2UpdateBulkSyncRequestSchemasItem) MarshalJSON() ([]byte, error) {
 	if v.typ == "String" || v.String != "" {
 		return json.Marshal(v.String)
 	}
-	if v.typ == "SchemaConfiguration" || v.SchemaConfiguration != nil {
-		return json.Marshal(v.SchemaConfiguration)
+	if v.typ == "V2SchemaConfiguration" || v.V2SchemaConfiguration != nil {
+		return json.Marshal(v.V2SchemaConfiguration)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", v)
 }
 
 type V2UpdateBulkSyncRequestSchemasItemVisitor interface {
 	VisitString(string) error
-	VisitSchemaConfiguration(*SchemaConfiguration) error
+	VisitV2SchemaConfiguration(*V2SchemaConfiguration) error
 }
 
 func (v *V2UpdateBulkSyncRequestSchemasItem) Accept(visitor V2UpdateBulkSyncRequestSchemasItemVisitor) error {
 	if v.typ == "String" || v.String != "" {
 		return visitor.VisitString(v.String)
 	}
-	if v.typ == "SchemaConfiguration" || v.SchemaConfiguration != nil {
-		return visitor.VisitSchemaConfiguration(v.SchemaConfiguration)
+	if v.typ == "V2SchemaConfiguration" || v.V2SchemaConfiguration != nil {
+		return visitor.VisitV2SchemaConfiguration(v.V2SchemaConfiguration)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", v)
 }

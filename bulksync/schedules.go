@@ -10,93 +10,93 @@ import (
 )
 
 var (
-	createScheduleRequestFieldSchedule = big.NewInt(1 << 0)
+	v4CreateScheduleRequestFieldSchedule = big.NewInt(1 << 0)
 )
 
-type CreateScheduleRequest struct {
+type V4CreateScheduleRequest struct {
 	Schedule *v24.V4BulkSyncScheduleAPI `json:"schedule" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CreateScheduleRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *V4CreateScheduleRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetSchedule sets the Schedule field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateScheduleRequest) SetSchedule(schedule *v24.V4BulkSyncScheduleAPI) {
-	c.Schedule = schedule
-	c.require(createScheduleRequestFieldSchedule)
+func (v *V4CreateScheduleRequest) SetSchedule(schedule *v24.V4BulkSyncScheduleAPI) {
+	v.Schedule = schedule
+	v.require(v4CreateScheduleRequestFieldSchedule)
 }
 
-func (c *CreateScheduleRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateScheduleRequest
+func (v *V4CreateScheduleRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4CreateScheduleRequest
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*c = CreateScheduleRequest(body)
+	*v = V4CreateScheduleRequest(body)
 	return nil
 }
 
-func (c *CreateScheduleRequest) MarshalJSON() ([]byte, error) {
-	type embed CreateScheduleRequest
+func (v *V4CreateScheduleRequest) MarshalJSON() ([]byte, error) {
+	type embed V4CreateScheduleRequest
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*c),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	updateScheduleRequestFieldSchedule = big.NewInt(1 << 0)
+	v4UpdateScheduleRequestFieldSchedule = big.NewInt(1 << 0)
 )
 
-type UpdateScheduleRequest struct {
+type V4UpdateScheduleRequest struct {
 	Schedule *v24.V4BulkSyncScheduleAPI `json:"schedule" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (u *UpdateScheduleRequest) require(field *big.Int) {
-	if u.explicitFields == nil {
-		u.explicitFields = big.NewInt(0)
+func (v *V4UpdateScheduleRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	u.explicitFields.Or(u.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetSchedule sets the Schedule field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateScheduleRequest) SetSchedule(schedule *v24.V4BulkSyncScheduleAPI) {
-	u.Schedule = schedule
-	u.require(updateScheduleRequestFieldSchedule)
+func (v *V4UpdateScheduleRequest) SetSchedule(schedule *v24.V4BulkSyncScheduleAPI) {
+	v.Schedule = schedule
+	v.require(v4UpdateScheduleRequestFieldSchedule)
 }
 
-func (u *UpdateScheduleRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler UpdateScheduleRequest
+func (v *V4UpdateScheduleRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler V4UpdateScheduleRequest
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*u = UpdateScheduleRequest(body)
+	*v = V4UpdateScheduleRequest(body)
 	return nil
 }
 
-func (u *UpdateScheduleRequest) MarshalJSON() ([]byte, error) {
-	type embed UpdateScheduleRequest
+func (v *V4UpdateScheduleRequest) MarshalJSON() ([]byte, error) {
+	type embed V4UpdateScheduleRequest
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*u),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }

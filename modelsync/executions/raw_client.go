@@ -35,9 +35,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) List(
 	ctx context.Context,
 	syncID string,
-	request *modelsync.ExecutionsListRequest,
+	request *modelsync.ListExecutionsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ListExecutionResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2ListExecutionResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -59,7 +59,7 @@ func (r *RawClient) List(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.ListExecutionResponseEnvelope
+	var response *polytomic.V2ListExecutionResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -77,7 +77,7 @@ func (r *RawClient) List(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ListExecutionResponseEnvelope]{
+	return &core.Response[*polytomic.V2ListExecutionResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -89,7 +89,7 @@ func (r *RawClient) Get(
 	syncID string,
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.GetExecutionResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2GetExecutionResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -105,7 +105,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.GetExecutionResponseEnvelope
+	var response *polytomic.V2GetExecutionResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -123,7 +123,7 @@ func (r *RawClient) Get(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.GetExecutionResponseEnvelope]{
+	return &core.Response[*polytomic.V2GetExecutionResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -135,9 +135,9 @@ func (r *RawClient) Update(
 	syncID string,
 	// The ID of the execution to update.
 	id string,
-	request *modelsync.UpdateExecutionRequest,
+	request *modelsync.V2UpdateExecutionRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.GetExecutionResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2GetExecutionResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -154,7 +154,7 @@ func (r *RawClient) Update(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.GetExecutionResponseEnvelope
+	var response *polytomic.V2GetExecutionResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -173,7 +173,7 @@ func (r *RawClient) Update(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.GetExecutionResponseEnvelope]{
+	return &core.Response[*polytomic.V2GetExecutionResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -186,7 +186,7 @@ func (r *RawClient) GetLogURLs(
 	id string,
 	type_ *polytomic.V2ExecutionLogType,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ExecutionLogsResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2ExecutionLogsResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -203,7 +203,7 @@ func (r *RawClient) GetLogURLs(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.ExecutionLogsResponseEnvelope
+	var response *polytomic.V2ExecutionLogsResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -221,7 +221,7 @@ func (r *RawClient) GetLogURLs(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ExecutionLogsResponseEnvelope]{
+	return &core.Response[*polytomic.V2ExecutionLogsResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

@@ -88,7 +88,7 @@ func TestBulkSyncListWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.BulkSyncListRequest{
+	request := &polytomic.ListBulkSyncRequest{
 		Active: polytomic.Bool(
 			true,
 		),
@@ -116,7 +116,7 @@ func TestBulkSyncCreateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.CreateBulkSyncRequest{
+	request := &polytomic.V2CreateBulkSyncRequest{
 		DestinationConfiguration: map[string]any{
 			"schema": "my_schema",
 		},
@@ -150,7 +150,7 @@ func TestBulkSyncGetWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.BulkSyncGetRequest{
+	request := &polytomic.GetBulkSyncRequest{
 		RefreshSchemas: polytomic.Bool(
 			true,
 		),
@@ -179,7 +179,7 @@ func TestBulkSyncUpdateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.UpdateBulkSyncRequest{
+	request := &polytomic.V2UpdateBulkSyncRequest{
 		DestinationConfiguration: map[string]any{
 			"schema": "my_schema",
 		},
@@ -214,7 +214,7 @@ func TestBulkSyncRemoveWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.BulkSyncRemoveRequest{
+	request := &polytomic.RemoveBulkSyncRequest{
 		RefreshSchemas: polytomic.Bool(
 			true,
 		),
@@ -243,7 +243,7 @@ func TestBulkSyncActivateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.ActivateSyncInput{
+	request := &polytomic.V2ActivateSyncInput{
 		Active: true,
 	}
 	_, invocationErr := client.BulkSync.Activate(
@@ -293,7 +293,7 @@ func TestBulkSyncStartWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.StartBulkSyncRequest{}
+	request := &polytomic.V3StartBulkSyncRequest{}
 	_, invocationErr := client.BulkSync.Start(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -341,7 +341,7 @@ func TestBulkSyncGetSourceWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.BulkSyncGetSourceRequest{
+	request := &polytomic.GetSourceBulkSyncRequest{
 		IncludeFields: polytomic.Bool(
 			true,
 		),

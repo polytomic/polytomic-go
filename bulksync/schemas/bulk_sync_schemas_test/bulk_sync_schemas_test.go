@@ -88,7 +88,7 @@ func TestBulkSyncSchemasListWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &bulksync.SchemasListRequest{}
+	request := &bulksync.ListSchemasRequest{}
 	_, invocationErr := client.BulkSync.Schemas.List(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -113,7 +113,7 @@ func TestBulkSyncSchemasPatchWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &bulksync.BulkSyncSchemasRequest{}
+	request := &bulksync.V3BulkSyncSchemasRequest{}
 	_, invocationErr := client.BulkSync.Schemas.Patch(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -162,7 +162,7 @@ func TestBulkSyncSchemasUpdateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &bulksync.UpdateBulkSchema{}
+	request := &bulksync.V3UpdateBulkSchema{}
 	_, invocationErr := client.BulkSync.Schemas.Update(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",

@@ -9,9 +9,9 @@ import (
 	testing "testing"
 )
 
-func TestSettersExecutionsExportLogsRequest(t *testing.T) {
+func TestSettersExportLogsExecutionsRequest(t *testing.T) {
 	t.Run("SetNotify", func(t *testing.T) {
-		obj := &ExecutionsExportLogsRequest{}
+		obj := &ExportLogsExecutionsRequest{}
 		var fernTestValueNotify *bool
 		obj.SetNotify(fernTestValueNotify)
 		assert.Equal(t, fernTestValueNotify, obj.Notify)
@@ -20,11 +20,11 @@ func TestSettersExecutionsExportLogsRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitExecutionsExportLogsRequest(t *testing.T) {
+func TestSettersMarkExplicitExportLogsExecutionsRequest(t *testing.T) {
 	t.Run("SetNotify_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ExecutionsExportLogsRequest{}
+		obj := &ExportLogsExecutionsRequest{}
 		var fernTestValueNotify *bool
 
 		// Act
@@ -54,9 +54,9 @@ func TestSettersMarkExplicitExecutionsExportLogsRequest(t *testing.T) {
 
 }
 
-func TestSettersExecutionsListRequest(t *testing.T) {
+func TestSettersListExecutionsRequest(t *testing.T) {
 	t.Run("SetPageToken", func(t *testing.T) {
-		obj := &ExecutionsListRequest{}
+		obj := &ListExecutionsRequest{}
 		var fernTestValuePageToken *string
 		obj.SetPageToken(fernTestValuePageToken)
 		assert.Equal(t, fernTestValuePageToken, obj.PageToken)
@@ -64,7 +64,7 @@ func TestSettersExecutionsListRequest(t *testing.T) {
 	})
 
 	t.Run("SetOnlyTerminal", func(t *testing.T) {
-		obj := &ExecutionsListRequest{}
+		obj := &ListExecutionsRequest{}
 		var fernTestValueOnlyTerminal *bool
 		obj.SetOnlyTerminal(fernTestValueOnlyTerminal)
 		assert.Equal(t, fernTestValueOnlyTerminal, obj.OnlyTerminal)
@@ -72,7 +72,7 @@ func TestSettersExecutionsListRequest(t *testing.T) {
 	})
 
 	t.Run("SetAscending", func(t *testing.T) {
-		obj := &ExecutionsListRequest{}
+		obj := &ListExecutionsRequest{}
 		var fernTestValueAscending *bool
 		obj.SetAscending(fernTestValueAscending)
 		assert.Equal(t, fernTestValueAscending, obj.Ascending)
@@ -80,7 +80,7 @@ func TestSettersExecutionsListRequest(t *testing.T) {
 	})
 
 	t.Run("SetLimit", func(t *testing.T) {
-		obj := &ExecutionsListRequest{}
+		obj := &ListExecutionsRequest{}
 		var fernTestValueLimit *int
 		obj.SetLimit(fernTestValueLimit)
 		assert.Equal(t, fernTestValueLimit, obj.Limit)
@@ -89,11 +89,11 @@ func TestSettersExecutionsListRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitExecutionsListRequest(t *testing.T) {
+func TestSettersMarkExplicitListExecutionsRequest(t *testing.T) {
 	t.Run("SetPageToken_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ExecutionsListRequest{}
+		obj := &ListExecutionsRequest{}
 		var fernTestValuePageToken *string
 
 		// Act
@@ -124,7 +124,7 @@ func TestSettersMarkExplicitExecutionsListRequest(t *testing.T) {
 	t.Run("SetOnlyTerminal_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ExecutionsListRequest{}
+		obj := &ListExecutionsRequest{}
 		var fernTestValueOnlyTerminal *bool
 
 		// Act
@@ -155,7 +155,7 @@ func TestSettersMarkExplicitExecutionsListRequest(t *testing.T) {
 	t.Run("SetAscending_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ExecutionsListRequest{}
+		obj := &ListExecutionsRequest{}
 		var fernTestValueAscending *bool
 
 		// Act
@@ -186,7 +186,7 @@ func TestSettersMarkExplicitExecutionsListRequest(t *testing.T) {
 	t.Run("SetLimit_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ExecutionsListRequest{}
+		obj := &ListExecutionsRequest{}
 		var fernTestValueLimit *int
 
 		// Act
@@ -216,9 +216,9 @@ func TestSettersMarkExplicitExecutionsListRequest(t *testing.T) {
 
 }
 
-func TestSettersExecutionsListStatusRequest(t *testing.T) {
+func TestSettersListStatusExecutionsRequest(t *testing.T) {
 	t.Run("SetAll", func(t *testing.T) {
-		obj := &ExecutionsListStatusRequest{}
+		obj := &ListStatusExecutionsRequest{}
 		var fernTestValueAll *bool
 		obj.SetAll(fernTestValueAll)
 		assert.Equal(t, fernTestValueAll, obj.All)
@@ -226,7 +226,7 @@ func TestSettersExecutionsListStatusRequest(t *testing.T) {
 	})
 
 	t.Run("SetActive", func(t *testing.T) {
-		obj := &ExecutionsListStatusRequest{}
+		obj := &ListStatusExecutionsRequest{}
 		var fernTestValueActive *bool
 		obj.SetActive(fernTestValueActive)
 		assert.Equal(t, fernTestValueActive, obj.Active)
@@ -234,7 +234,7 @@ func TestSettersExecutionsListStatusRequest(t *testing.T) {
 	})
 
 	t.Run("SetSyncID", func(t *testing.T) {
-		obj := &ExecutionsListStatusRequest{}
+		obj := &ListStatusExecutionsRequest{}
 		var fernTestValueSyncID []*string
 		obj.SetSyncID(fernTestValueSyncID)
 		assert.Equal(t, fernTestValueSyncID, obj.SyncID)
@@ -243,11 +243,11 @@ func TestSettersExecutionsListStatusRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitExecutionsListStatusRequest(t *testing.T) {
+func TestSettersMarkExplicitListStatusExecutionsRequest(t *testing.T) {
 	t.Run("SetAll_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ExecutionsListStatusRequest{}
+		obj := &ListStatusExecutionsRequest{}
 		var fernTestValueAll *bool
 
 		// Act
@@ -278,7 +278,7 @@ func TestSettersMarkExplicitExecutionsListStatusRequest(t *testing.T) {
 	t.Run("SetActive_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ExecutionsListStatusRequest{}
+		obj := &ListStatusExecutionsRequest{}
 		var fernTestValueActive *bool
 
 		// Act
@@ -309,7 +309,7 @@ func TestSettersMarkExplicitExecutionsListStatusRequest(t *testing.T) {
 	t.Run("SetSyncID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ExecutionsListStatusRequest{}
+		obj := &ListStatusExecutionsRequest{}
 		var fernTestValueSyncID []*string
 
 		// Act

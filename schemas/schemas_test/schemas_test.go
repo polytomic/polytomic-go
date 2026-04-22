@@ -88,7 +88,7 @@ func TestSchemasUpsertFieldWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.UpsertSchemaFieldRequest{}
+	request := &polytomic.V4UpsertSchemaFieldRequest{}
 	invocationErr := client.Schemas.UpsertField(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -139,7 +139,7 @@ func TestSchemasSetPrimaryKeysWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.SetPrimaryKeysRequest{}
+	request := &polytomic.V4SetPrimaryKeysRequest{}
 	invocationErr := client.Schemas.SetPrimaryKeys(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",

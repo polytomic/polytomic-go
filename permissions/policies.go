@@ -10,129 +10,129 @@ import (
 )
 
 var (
-	createPolicyRequestFieldName           = big.NewInt(1 << 0)
-	createPolicyRequestFieldOrganizationID = big.NewInt(1 << 1)
-	createPolicyRequestFieldPolicyActions  = big.NewInt(1 << 2)
+	v2CreatePolicyRequestFieldName           = big.NewInt(1 << 0)
+	v2CreatePolicyRequestFieldOrganizationID = big.NewInt(1 << 1)
+	v2CreatePolicyRequestFieldPolicyActions  = big.NewInt(1 << 2)
 )
 
-type CreatePolicyRequest struct {
-	Name           string              `json:"name" url:"-"`
-	OrganizationID *string             `json:"organization_id,omitempty" url:"-"`
-	PolicyActions  []*v24.PolicyAction `json:"policy_actions,omitempty" url:"-"`
+type V2CreatePolicyRequest struct {
+	Name           string                `json:"name" url:"-"`
+	OrganizationID *string               `json:"organization_id,omitempty" url:"-"`
+	PolicyActions  []*v24.V2PolicyAction `json:"policy_actions,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CreatePolicyRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *V2CreatePolicyRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreatePolicyRequest) SetName(name string) {
-	c.Name = name
-	c.require(createPolicyRequestFieldName)
+func (v *V2CreatePolicyRequest) SetName(name string) {
+	v.Name = name
+	v.require(v2CreatePolicyRequestFieldName)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreatePolicyRequest) SetOrganizationID(organizationID *string) {
-	c.OrganizationID = organizationID
-	c.require(createPolicyRequestFieldOrganizationID)
+func (v *V2CreatePolicyRequest) SetOrganizationID(organizationID *string) {
+	v.OrganizationID = organizationID
+	v.require(v2CreatePolicyRequestFieldOrganizationID)
 }
 
 // SetPolicyActions sets the PolicyActions field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreatePolicyRequest) SetPolicyActions(policyActions []*v24.PolicyAction) {
-	c.PolicyActions = policyActions
-	c.require(createPolicyRequestFieldPolicyActions)
+func (v *V2CreatePolicyRequest) SetPolicyActions(policyActions []*v24.V2PolicyAction) {
+	v.PolicyActions = policyActions
+	v.require(v2CreatePolicyRequestFieldPolicyActions)
 }
 
-func (c *CreatePolicyRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreatePolicyRequest
+func (v *V2CreatePolicyRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2CreatePolicyRequest
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*c = CreatePolicyRequest(body)
+	*v = V2CreatePolicyRequest(body)
 	return nil
 }
 
-func (c *CreatePolicyRequest) MarshalJSON() ([]byte, error) {
-	type embed CreatePolicyRequest
+func (v *V2CreatePolicyRequest) MarshalJSON() ([]byte, error) {
+	type embed V2CreatePolicyRequest
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*c),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	updatePolicyRequestFieldName           = big.NewInt(1 << 0)
-	updatePolicyRequestFieldOrganizationID = big.NewInt(1 << 1)
-	updatePolicyRequestFieldPolicyActions  = big.NewInt(1 << 2)
+	v2UpdatePolicyRequestFieldName           = big.NewInt(1 << 0)
+	v2UpdatePolicyRequestFieldOrganizationID = big.NewInt(1 << 1)
+	v2UpdatePolicyRequestFieldPolicyActions  = big.NewInt(1 << 2)
 )
 
-type UpdatePolicyRequest struct {
-	Name           string              `json:"name" url:"-"`
-	OrganizationID *string             `json:"organization_id,omitempty" url:"-"`
-	PolicyActions  []*v24.PolicyAction `json:"policy_actions,omitempty" url:"-"`
+type V2UpdatePolicyRequest struct {
+	Name           string                `json:"name" url:"-"`
+	OrganizationID *string               `json:"organization_id,omitempty" url:"-"`
+	PolicyActions  []*v24.V2PolicyAction `json:"policy_actions,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (u *UpdatePolicyRequest) require(field *big.Int) {
-	if u.explicitFields == nil {
-		u.explicitFields = big.NewInt(0)
+func (v *V2UpdatePolicyRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	u.explicitFields.Or(u.explicitFields, field)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdatePolicyRequest) SetName(name string) {
-	u.Name = name
-	u.require(updatePolicyRequestFieldName)
+func (v *V2UpdatePolicyRequest) SetName(name string) {
+	v.Name = name
+	v.require(v2UpdatePolicyRequestFieldName)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdatePolicyRequest) SetOrganizationID(organizationID *string) {
-	u.OrganizationID = organizationID
-	u.require(updatePolicyRequestFieldOrganizationID)
+func (v *V2UpdatePolicyRequest) SetOrganizationID(organizationID *string) {
+	v.OrganizationID = organizationID
+	v.require(v2UpdatePolicyRequestFieldOrganizationID)
 }
 
 // SetPolicyActions sets the PolicyActions field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdatePolicyRequest) SetPolicyActions(policyActions []*v24.PolicyAction) {
-	u.PolicyActions = policyActions
-	u.require(updatePolicyRequestFieldPolicyActions)
+func (v *V2UpdatePolicyRequest) SetPolicyActions(policyActions []*v24.V2PolicyAction) {
+	v.PolicyActions = policyActions
+	v.require(v2UpdatePolicyRequestFieldPolicyActions)
 }
 
-func (u *UpdatePolicyRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler UpdatePolicyRequest
+func (v *V2UpdatePolicyRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler V2UpdatePolicyRequest
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*u = UpdatePolicyRequest(body)
+	*v = V2UpdatePolicyRequest(body)
 	return nil
 }
 
-func (u *UpdatePolicyRequest) MarshalJSON() ([]byte, error) {
-	type embed UpdatePolicyRequest
+func (v *V2UpdatePolicyRequest) MarshalJSON() ([]byte, error) {
+	type embed V2UpdatePolicyRequest
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*u),
+		embed: embed(*v),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }

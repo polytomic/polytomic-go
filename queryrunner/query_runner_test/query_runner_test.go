@@ -117,7 +117,7 @@ func TestQueryRunnerGetQueryWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.QueryRunnerGetQueryRequest{
+	request := &polytomic.GetQueryQueryRunnerRequest{
 		Page: polytomic.String(
 			"page",
 		),

@@ -49,9 +49,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // expands the request to the caller's organization scope.
 func (c *Client) ListStatus(
 	ctx context.Context,
-	request *bulksync.ExecutionsListStatusRequest,
+	request *bulksync.ListStatusExecutionsRequest,
 	opts ...option.RequestOption,
-) (*polytomic.ListBulkSyncExecutionStatusEnvelope, error) {
+) (*polytomic.V4ListBulkSyncExecutionsStatusEnvelope, error) {
 	response, err := c.WithRawResponse.ListStatus(
 		ctx,
 		request,
@@ -82,9 +82,9 @@ func (c *Client) List(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
 	id string,
-	request *bulksync.ExecutionsListRequest,
+	request *bulksync.ListExecutionsRequest,
 	opts ...option.RequestOption,
-) (*polytomic.ListBulkSyncExecutionsEnvelope, error) {
+) (*polytomic.V3ListBulkSyncExecutionsEnvelope, error) {
 	response, err := c.WithRawResponse.List(
 		ctx,
 		id,
@@ -110,7 +110,7 @@ func (c *Client) Get(
 	// Unique identifier of the execution.
 	execID string,
 	opts ...option.RequestOption,
-) (*polytomic.BulkSyncExecutionEnvelope, error) {
+) (*polytomic.V3BulkSyncExecutionEnvelope, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		id,
@@ -137,7 +137,7 @@ func (c *Client) Cancel(
 	// The execution ID to cancel.
 	execID string,
 	opts ...option.RequestOption,
-) (*polytomic.CancelBulkSyncResponseEnvelope, error) {
+) (*polytomic.V2CancelBulkSyncResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Cancel(
 		ctx,
 		id,
@@ -199,7 +199,7 @@ func (c *Client) ExportLogs(
 	syncID string,
 	// Unique identifier of the execution whose logs should be exported.
 	executionID string,
-	request *bulksync.ExecutionsExportLogsRequest,
+	request *bulksync.ExportLogsExecutionsRequest,
 	opts ...option.RequestOption,
 ) (*polytomic.V4ExportSyncLogsEnvelope, error) {
 	response, err := c.WithRawResponse.ExportLogs(

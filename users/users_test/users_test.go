@@ -111,7 +111,7 @@ func TestUsersCreateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.CreateUserRequestSchema{
+	request := &polytomic.V2CreateUserRequestSchema{
 		Email: "mail@example.com",
 	}
 	_, invocationErr := client.Users.Create(
@@ -162,7 +162,7 @@ func TestUsersUpdateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.UpdateUserRequestSchema{
+	request := &polytomic.V2UpdateUserRequestSchema{
 		Email: "mail@example.com",
 	}
 	_, invocationErr := client.Users.Update(
@@ -214,7 +214,7 @@ func TestUsersCreateAPIKeyWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.UsersCreateAPIKeyRequest{
+	request := &polytomic.CreateAPIKeyUsersRequest{
 		Force: polytomic.Bool(
 			true,
 		),

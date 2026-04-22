@@ -34,9 +34,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ListStatus(
 	ctx context.Context,
-	request *bulksync.ExecutionsListStatusRequest,
+	request *bulksync.ListStatusExecutionsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ListBulkSyncExecutionStatusEnvelope], error) {
+) (*core.Response[*polytomic.V4ListBulkSyncExecutionsStatusEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -55,7 +55,7 @@ func (r *RawClient) ListStatus(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.ListBulkSyncExecutionStatusEnvelope
+	var response *polytomic.V4ListBulkSyncExecutionsStatusEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -73,7 +73,7 @@ func (r *RawClient) ListStatus(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ListBulkSyncExecutionStatusEnvelope]{
+	return &core.Response[*polytomic.V4ListBulkSyncExecutionsStatusEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -84,9 +84,9 @@ func (r *RawClient) List(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
 	id string,
-	request *bulksync.ExecutionsListRequest,
+	request *bulksync.ListExecutionsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ListBulkSyncExecutionsEnvelope], error) {
+) (*core.Response[*polytomic.V3ListBulkSyncExecutionsEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -108,7 +108,7 @@ func (r *RawClient) List(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.ListBulkSyncExecutionsEnvelope
+	var response *polytomic.V3ListBulkSyncExecutionsEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -126,7 +126,7 @@ func (r *RawClient) List(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ListBulkSyncExecutionsEnvelope]{
+	return &core.Response[*polytomic.V3ListBulkSyncExecutionsEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -140,7 +140,7 @@ func (r *RawClient) Get(
 	// Unique identifier of the execution.
 	execID string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.BulkSyncExecutionEnvelope], error) {
+) (*core.Response[*polytomic.V3BulkSyncExecutionEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -156,7 +156,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.BulkSyncExecutionEnvelope
+	var response *polytomic.V3BulkSyncExecutionEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -174,7 +174,7 @@ func (r *RawClient) Get(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.BulkSyncExecutionEnvelope]{
+	return &core.Response[*polytomic.V3BulkSyncExecutionEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -188,7 +188,7 @@ func (r *RawClient) Cancel(
 	// The execution ID to cancel.
 	execID string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.CancelBulkSyncResponseEnvelope], error) {
+) (*core.Response[*polytomic.V2CancelBulkSyncResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -204,7 +204,7 @@ func (r *RawClient) Cancel(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.CancelBulkSyncResponseEnvelope
+	var response *polytomic.V2CancelBulkSyncResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -222,7 +222,7 @@ func (r *RawClient) Cancel(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.CancelBulkSyncResponseEnvelope]{
+	return &core.Response[*polytomic.V2CancelBulkSyncResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -283,7 +283,7 @@ func (r *RawClient) ExportLogs(
 	syncID string,
 	// Unique identifier of the execution whose logs should be exported.
 	executionID string,
-	request *bulksync.ExecutionsExportLogsRequest,
+	request *bulksync.ExportLogsExecutionsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.V4ExportSyncLogsEnvelope], error) {
 	options := core.NewRequestOptions(opts...)

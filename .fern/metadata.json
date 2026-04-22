@@ -1,0 +1,17 @@
+{
+  "cliVersion": "4.86.2",
+  "generatorName": "fernapi/fern-go-sdk",
+  "generatorVersion": "1.35.0",
+  "generatorConfig": {
+    "packageName": "polytomic",
+    "module": {
+      "path": "github.com/polytomic/polytomic-go/v24"
+    }
+  },
+  "originGitCommit": "6eafec7afb67fc66d4732a8f265c3749fa0f2eba",
+  "originGitCommitIsDirty": true,
+  "invokedBy": "manual",
+  "requestedVersion": null,
+  "ciProvider": null,
+  "sdkVersion": "v1.18.1"
+}

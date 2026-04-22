@@ -206,12 +206,12 @@ func TestModelSyncExecutionsGetLogsWithWireMock(
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
 		"0ecd09c1-b901-4d27-9053-f0367c427254",
 		polytomic.V2ExecutionLogTypeRecords.Ptr(),
-		"path/to/file.json",
+		"file.json",
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestModelSyncExecutionsGetLogsWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestModelSyncExecutionsGetLogsWithWireMock", "GET", "/api/syncs/248df4b7-aa70-47b8-a036-33ac447e668d/executions/0ecd09c1-b901-4d27-9053-f0367c427254/records/path/to/file.json", nil, 1)
+	VerifyRequestCount(t, "TestModelSyncExecutionsGetLogsWithWireMock", "GET", "/api/syncs/248df4b7-aa70-47b8-a036-33ac447e668d/executions/0ecd09c1-b901-4d27-9053-f0367c427254/records/file.json", nil, 1)
 }

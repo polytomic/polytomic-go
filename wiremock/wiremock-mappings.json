@@ -3868,7 +3868,7 @@
             "equalTo": "records"
           },
           "filename": {
-            "equalTo": "path/to/file.json"
+            "equalTo": "file.json"
           }
         }
       },

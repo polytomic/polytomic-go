@@ -8987,7 +8987,7 @@ client.ModelSync.Executions.GetLogs(
         "248df4b7-aa70-47b8-a036-33ac447e668d",
         "0ecd09c1-b901-4d27-9053-f0367c427254",
         polytomic.V2ExecutionLogTypeRecords.Ptr(),
-        "path/to/file.json",
+        "file.json",
     )
 }
 ```

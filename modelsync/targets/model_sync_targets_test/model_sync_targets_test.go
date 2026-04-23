@@ -89,7 +89,7 @@ func TestModelSyncTargetsGetTargetWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &modelsync.GetTargetTargetsRequest{
+	request := &modelsync.TargetsGetTargetRequest{
 		Type: polytomic.String(
 			"type",
 		),
@@ -121,7 +121,7 @@ func TestModelSyncTargetsGetTargetFieldsWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &modelsync.GetTargetFieldsTargetsRequest{
+	request := &modelsync.TargetsGetTargetFieldsRequest{
 		Target: "database.table",
 		Refresh: polytomic.Bool(
 			false,

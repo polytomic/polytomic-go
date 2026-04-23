@@ -38,7 +38,7 @@ func (r *RawClient) Get(
 	// Unique identifier of the job (usually returned by whichever endpoint started the job).
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2JobResponseEnvelope], error) {
+) (*core.Response[*polytomic.JobResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -54,7 +54,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V2JobResponseEnvelope
+	var response *polytomic.JobResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -72,7 +72,7 @@ func (r *RawClient) Get(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2JobResponseEnvelope]{
+	return &core.Response[*polytomic.JobResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

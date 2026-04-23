@@ -43,7 +43,7 @@ func (c *Client) List(
 	// Unique identifier of the bulk sync whose schedules should be returned.
 	syncID string,
 	opts ...option.RequestOption,
-) (*polytomic.V4SchedulesEnvelope, error) {
+) (*polytomic.SchedulesEnvelope, error) {
 	response, err := c.WithRawResponse.List(
 		ctx,
 		syncID,
@@ -67,9 +67,9 @@ func (c *Client) Create(
 	ctx context.Context,
 	// Unique identifier of the bulk sync to add a schedule to.
 	syncID string,
-	request *bulksync.V4CreateScheduleRequest,
+	request *bulksync.CreateScheduleRequest,
 	opts ...option.RequestOption,
-) (*polytomic.V4ScheduleEnvelope, error) {
+) (*polytomic.ScheduleEnvelope, error) {
 	response, err := c.WithRawResponse.Create(
 		ctx,
 		syncID,
@@ -97,7 +97,7 @@ func (c *Client) Get(
 	// Unique identifier of the schedule.
 	scheduleID string,
 	opts ...option.RequestOption,
-) (*polytomic.V4ScheduleEnvelope, error) {
+) (*polytomic.ScheduleEnvelope, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		syncID,
@@ -121,9 +121,9 @@ func (c *Client) Update(
 	syncID string,
 	// Unique identifier of the schedule to update.
 	scheduleID string,
-	request *bulksync.V4UpdateScheduleRequest,
+	request *bulksync.UpdateScheduleRequest,
 	opts ...option.RequestOption,
-) (*polytomic.V4ScheduleEnvelope, error) {
+) (*polytomic.ScheduleEnvelope, error) {
 	response, err := c.WithRawResponse.Update(
 		ctx,
 		syncID,

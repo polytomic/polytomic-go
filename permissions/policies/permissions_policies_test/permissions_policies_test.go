@@ -110,7 +110,7 @@ func TestPermissionsPoliciesCreateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &permissions.V2CreatePolicyRequest{
+	request := &permissions.CreatePolicyRequest{
 		Name: "Custom",
 	}
 	_, invocationErr := client.Permissions.Policies.Create(
@@ -159,7 +159,7 @@ func TestPermissionsPoliciesUpdateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &permissions.V2UpdatePolicyRequest{
+	request := &permissions.UpdatePolicyRequest{
 		Name: "Custom",
 	}
 	_, invocationErr := client.Permissions.Policies.Update(

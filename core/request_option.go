@@ -60,8 +60,8 @@ func (r *RequestOptions) cloneHeader() http.Header {
 	headers := r.HTTPHeader.Clone()
 	headers.Set("X-Fern-Language", "Go")
 	headers.Set("X-Fern-SDK-Name", "github.com/polytomic/polytomic-go/v24")
-	headers.Set("X-Fern-SDK-Version", "v1.18.1")
-	headers.Set("User-Agent", "github.com/polytomic/polytomic-go/1.18.1")
+	headers.Set("X-Fern-SDK-Version", "v24.2.0-beta.1")
+	headers.Set("User-Agent", "github.com/polytomic/polytomic-go/24.2.0-beta.1")
 	return headers
 }
 

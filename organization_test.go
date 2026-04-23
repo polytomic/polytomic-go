@@ -9,9 +9,9 @@ import (
 	testing "testing"
 )
 
-func TestSettersV2CreateOrganizationRequestSchema(t *testing.T) {
+func TestSettersCreateOrganizationRequestSchema(t *testing.T) {
 	t.Run("SetClientID", func(t *testing.T) {
-		obj := &V2CreateOrganizationRequestSchema{}
+		obj := &CreateOrganizationRequestSchema{}
 		var fernTestValueClientID *string
 		obj.SetClientID(fernTestValueClientID)
 		assert.Equal(t, fernTestValueClientID, obj.ClientID)
@@ -19,7 +19,7 @@ func TestSettersV2CreateOrganizationRequestSchema(t *testing.T) {
 	})
 
 	t.Run("SetClientSecret", func(t *testing.T) {
-		obj := &V2CreateOrganizationRequestSchema{}
+		obj := &CreateOrganizationRequestSchema{}
 		var fernTestValueClientSecret *string
 		obj.SetClientSecret(fernTestValueClientSecret)
 		assert.Equal(t, fernTestValueClientSecret, obj.ClientSecret)
@@ -27,7 +27,7 @@ func TestSettersV2CreateOrganizationRequestSchema(t *testing.T) {
 	})
 
 	t.Run("SetIssuer", func(t *testing.T) {
-		obj := &V2CreateOrganizationRequestSchema{}
+		obj := &CreateOrganizationRequestSchema{}
 		var fernTestValueIssuer *string
 		obj.SetIssuer(fernTestValueIssuer)
 		assert.Equal(t, fernTestValueIssuer, obj.Issuer)
@@ -35,7 +35,7 @@ func TestSettersV2CreateOrganizationRequestSchema(t *testing.T) {
 	})
 
 	t.Run("SetName", func(t *testing.T) {
-		obj := &V2CreateOrganizationRequestSchema{}
+		obj := &CreateOrganizationRequestSchema{}
 		var fernTestValueName string
 		obj.SetName(fernTestValueName)
 		assert.Equal(t, fernTestValueName, obj.Name)
@@ -43,7 +43,7 @@ func TestSettersV2CreateOrganizationRequestSchema(t *testing.T) {
 	})
 
 	t.Run("SetSSODomain", func(t *testing.T) {
-		obj := &V2CreateOrganizationRequestSchema{}
+		obj := &CreateOrganizationRequestSchema{}
 		var fernTestValueSSODomain *string
 		obj.SetSSODomain(fernTestValueSSODomain)
 		assert.Equal(t, fernTestValueSSODomain, obj.SSODomain)
@@ -51,7 +51,7 @@ func TestSettersV2CreateOrganizationRequestSchema(t *testing.T) {
 	})
 
 	t.Run("SetSSOOrgID", func(t *testing.T) {
-		obj := &V2CreateOrganizationRequestSchema{}
+		obj := &CreateOrganizationRequestSchema{}
 		var fernTestValueSSOOrgID *string
 		obj.SetSSOOrgID(fernTestValueSSOOrgID)
 		assert.Equal(t, fernTestValueSSOOrgID, obj.SSOOrgID)
@@ -60,11 +60,11 @@ func TestSettersV2CreateOrganizationRequestSchema(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitV2CreateOrganizationRequestSchema(t *testing.T) {
+func TestSettersMarkExplicitCreateOrganizationRequestSchema(t *testing.T) {
 	t.Run("SetClientID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2CreateOrganizationRequestSchema{}
+		obj := &CreateOrganizationRequestSchema{}
 		var fernTestValueClientID *string
 
 		// Act
@@ -95,7 +95,7 @@ func TestSettersMarkExplicitV2CreateOrganizationRequestSchema(t *testing.T) {
 	t.Run("SetClientSecret_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2CreateOrganizationRequestSchema{}
+		obj := &CreateOrganizationRequestSchema{}
 		var fernTestValueClientSecret *string
 
 		// Act
@@ -126,7 +126,7 @@ func TestSettersMarkExplicitV2CreateOrganizationRequestSchema(t *testing.T) {
 	t.Run("SetIssuer_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2CreateOrganizationRequestSchema{}
+		obj := &CreateOrganizationRequestSchema{}
 		var fernTestValueIssuer *string
 
 		// Act
@@ -157,7 +157,7 @@ func TestSettersMarkExplicitV2CreateOrganizationRequestSchema(t *testing.T) {
 	t.Run("SetName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2CreateOrganizationRequestSchema{}
+		obj := &CreateOrganizationRequestSchema{}
 		var fernTestValueName string
 
 		// Act
@@ -188,7 +188,7 @@ func TestSettersMarkExplicitV2CreateOrganizationRequestSchema(t *testing.T) {
 	t.Run("SetSSODomain_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2CreateOrganizationRequestSchema{}
+		obj := &CreateOrganizationRequestSchema{}
 		var fernTestValueSSODomain *string
 
 		// Act
@@ -219,7 +219,7 @@ func TestSettersMarkExplicitV2CreateOrganizationRequestSchema(t *testing.T) {
 	t.Run("SetSSOOrgID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2CreateOrganizationRequestSchema{}
+		obj := &CreateOrganizationRequestSchema{}
 		var fernTestValueSSOOrgID *string
 
 		// Act
@@ -249,9 +249,9 @@ func TestSettersMarkExplicitV2CreateOrganizationRequestSchema(t *testing.T) {
 
 }
 
-func TestSettersV2UpdateOrganizationRequestSchema(t *testing.T) {
+func TestSettersUpdateOrganizationRequestSchema(t *testing.T) {
 	t.Run("SetClientID", func(t *testing.T) {
-		obj := &V2UpdateOrganizationRequestSchema{}
+		obj := &UpdateOrganizationRequestSchema{}
 		var fernTestValueClientID *string
 		obj.SetClientID(fernTestValueClientID)
 		assert.Equal(t, fernTestValueClientID, obj.ClientID)
@@ -259,7 +259,7 @@ func TestSettersV2UpdateOrganizationRequestSchema(t *testing.T) {
 	})
 
 	t.Run("SetClientSecret", func(t *testing.T) {
-		obj := &V2UpdateOrganizationRequestSchema{}
+		obj := &UpdateOrganizationRequestSchema{}
 		var fernTestValueClientSecret *string
 		obj.SetClientSecret(fernTestValueClientSecret)
 		assert.Equal(t, fernTestValueClientSecret, obj.ClientSecret)
@@ -267,7 +267,7 @@ func TestSettersV2UpdateOrganizationRequestSchema(t *testing.T) {
 	})
 
 	t.Run("SetIssuer", func(t *testing.T) {
-		obj := &V2UpdateOrganizationRequestSchema{}
+		obj := &UpdateOrganizationRequestSchema{}
 		var fernTestValueIssuer *string
 		obj.SetIssuer(fernTestValueIssuer)
 		assert.Equal(t, fernTestValueIssuer, obj.Issuer)
@@ -275,7 +275,7 @@ func TestSettersV2UpdateOrganizationRequestSchema(t *testing.T) {
 	})
 
 	t.Run("SetName", func(t *testing.T) {
-		obj := &V2UpdateOrganizationRequestSchema{}
+		obj := &UpdateOrganizationRequestSchema{}
 		var fernTestValueName string
 		obj.SetName(fernTestValueName)
 		assert.Equal(t, fernTestValueName, obj.Name)
@@ -283,7 +283,7 @@ func TestSettersV2UpdateOrganizationRequestSchema(t *testing.T) {
 	})
 
 	t.Run("SetSSODomain", func(t *testing.T) {
-		obj := &V2UpdateOrganizationRequestSchema{}
+		obj := &UpdateOrganizationRequestSchema{}
 		var fernTestValueSSODomain *string
 		obj.SetSSODomain(fernTestValueSSODomain)
 		assert.Equal(t, fernTestValueSSODomain, obj.SSODomain)
@@ -291,7 +291,7 @@ func TestSettersV2UpdateOrganizationRequestSchema(t *testing.T) {
 	})
 
 	t.Run("SetSSOOrgID", func(t *testing.T) {
-		obj := &V2UpdateOrganizationRequestSchema{}
+		obj := &UpdateOrganizationRequestSchema{}
 		var fernTestValueSSOOrgID *string
 		obj.SetSSOOrgID(fernTestValueSSOOrgID)
 		assert.Equal(t, fernTestValueSSOOrgID, obj.SSOOrgID)
@@ -300,11 +300,11 @@ func TestSettersV2UpdateOrganizationRequestSchema(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitV2UpdateOrganizationRequestSchema(t *testing.T) {
+func TestSettersMarkExplicitUpdateOrganizationRequestSchema(t *testing.T) {
 	t.Run("SetClientID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2UpdateOrganizationRequestSchema{}
+		obj := &UpdateOrganizationRequestSchema{}
 		var fernTestValueClientID *string
 
 		// Act
@@ -335,7 +335,7 @@ func TestSettersMarkExplicitV2UpdateOrganizationRequestSchema(t *testing.T) {
 	t.Run("SetClientSecret_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2UpdateOrganizationRequestSchema{}
+		obj := &UpdateOrganizationRequestSchema{}
 		var fernTestValueClientSecret *string
 
 		// Act
@@ -366,7 +366,7 @@ func TestSettersMarkExplicitV2UpdateOrganizationRequestSchema(t *testing.T) {
 	t.Run("SetIssuer_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2UpdateOrganizationRequestSchema{}
+		obj := &UpdateOrganizationRequestSchema{}
 		var fernTestValueIssuer *string
 
 		// Act
@@ -397,7 +397,7 @@ func TestSettersMarkExplicitV2UpdateOrganizationRequestSchema(t *testing.T) {
 	t.Run("SetName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2UpdateOrganizationRequestSchema{}
+		obj := &UpdateOrganizationRequestSchema{}
 		var fernTestValueName string
 
 		// Act
@@ -428,7 +428,7 @@ func TestSettersMarkExplicitV2UpdateOrganizationRequestSchema(t *testing.T) {
 	t.Run("SetSSODomain_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2UpdateOrganizationRequestSchema{}
+		obj := &UpdateOrganizationRequestSchema{}
 		var fernTestValueSSODomain *string
 
 		// Act
@@ -459,7 +459,7 @@ func TestSettersMarkExplicitV2UpdateOrganizationRequestSchema(t *testing.T) {
 	t.Run("SetSSOOrgID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2UpdateOrganizationRequestSchema{}
+		obj := &UpdateOrganizationRequestSchema{}
 		var fernTestValueSSOOrgID *string
 
 		// Act
@@ -489,9 +489,9 @@ func TestSettersMarkExplicitV2UpdateOrganizationRequestSchema(t *testing.T) {
 
 }
 
-func TestSettersV2Organization(t *testing.T) {
+func TestSettersOrganization(t *testing.T) {
 	t.Run("SetID", func(t *testing.T) {
-		obj := &V2Organization{}
+		obj := &Organization{}
 		var fernTestValueID *string
 		obj.SetID(fernTestValueID)
 		assert.Equal(t, fernTestValueID, obj.ID)
@@ -499,7 +499,7 @@ func TestSettersV2Organization(t *testing.T) {
 	})
 
 	t.Run("SetIssuer", func(t *testing.T) {
-		obj := &V2Organization{}
+		obj := &Organization{}
 		var fernTestValueIssuer *string
 		obj.SetIssuer(fernTestValueIssuer)
 		assert.Equal(t, fernTestValueIssuer, obj.Issuer)
@@ -507,7 +507,7 @@ func TestSettersV2Organization(t *testing.T) {
 	})
 
 	t.Run("SetName", func(t *testing.T) {
-		obj := &V2Organization{}
+		obj := &Organization{}
 		var fernTestValueName *string
 		obj.SetName(fernTestValueName)
 		assert.Equal(t, fernTestValueName, obj.Name)
@@ -515,7 +515,7 @@ func TestSettersV2Organization(t *testing.T) {
 	})
 
 	t.Run("SetSSODomain", func(t *testing.T) {
-		obj := &V2Organization{}
+		obj := &Organization{}
 		var fernTestValueSSODomain *string
 		obj.SetSSODomain(fernTestValueSSODomain)
 		assert.Equal(t, fernTestValueSSODomain, obj.SSODomain)
@@ -523,7 +523,7 @@ func TestSettersV2Organization(t *testing.T) {
 	})
 
 	t.Run("SetSSOOrgID", func(t *testing.T) {
-		obj := &V2Organization{}
+		obj := &Organization{}
 		var fernTestValueSSOOrgID *string
 		obj.SetSSOOrgID(fernTestValueSSOOrgID)
 		assert.Equal(t, fernTestValueSSOOrgID, obj.SSOOrgID)
@@ -532,11 +532,11 @@ func TestSettersV2Organization(t *testing.T) {
 
 }
 
-func TestGettersV2Organization(t *testing.T) {
+func TestGettersOrganization(t *testing.T) {
 	t.Run("GetID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2Organization{}
+		obj := &Organization{}
 		var expected *string
 		obj.ID = expected
 
@@ -547,7 +547,7 @@ func TestGettersV2Organization(t *testing.T) {
 	t.Run("GetID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2Organization{}
+		obj := &Organization{}
 		obj.ID = nil
 
 		// Act & Assert
@@ -556,7 +556,7 @@ func TestGettersV2Organization(t *testing.T) {
 
 	t.Run("GetID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V2Organization
+		var obj *Organization
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -569,7 +569,7 @@ func TestGettersV2Organization(t *testing.T) {
 	t.Run("GetIssuer", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2Organization{}
+		obj := &Organization{}
 		var expected *string
 		obj.Issuer = expected
 
@@ -580,7 +580,7 @@ func TestGettersV2Organization(t *testing.T) {
 	t.Run("GetIssuer_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2Organization{}
+		obj := &Organization{}
 		obj.Issuer = nil
 
 		// Act & Assert
@@ -589,7 +589,7 @@ func TestGettersV2Organization(t *testing.T) {
 
 	t.Run("GetIssuer_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V2Organization
+		var obj *Organization
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -602,7 +602,7 @@ func TestGettersV2Organization(t *testing.T) {
 	t.Run("GetName", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2Organization{}
+		obj := &Organization{}
 		var expected *string
 		obj.Name = expected
 
@@ -613,7 +613,7 @@ func TestGettersV2Organization(t *testing.T) {
 	t.Run("GetName_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2Organization{}
+		obj := &Organization{}
 		obj.Name = nil
 
 		// Act & Assert
@@ -622,7 +622,7 @@ func TestGettersV2Organization(t *testing.T) {
 
 	t.Run("GetName_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V2Organization
+		var obj *Organization
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -635,7 +635,7 @@ func TestGettersV2Organization(t *testing.T) {
 	t.Run("GetSSODomain", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2Organization{}
+		obj := &Organization{}
 		var expected *string
 		obj.SSODomain = expected
 
@@ -646,7 +646,7 @@ func TestGettersV2Organization(t *testing.T) {
 	t.Run("GetSSODomain_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2Organization{}
+		obj := &Organization{}
 		obj.SSODomain = nil
 
 		// Act & Assert
@@ -655,7 +655,7 @@ func TestGettersV2Organization(t *testing.T) {
 
 	t.Run("GetSSODomain_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V2Organization
+		var obj *Organization
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -668,7 +668,7 @@ func TestGettersV2Organization(t *testing.T) {
 	t.Run("GetSSOOrgID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2Organization{}
+		obj := &Organization{}
 		var expected *string
 		obj.SSOOrgID = expected
 
@@ -679,7 +679,7 @@ func TestGettersV2Organization(t *testing.T) {
 	t.Run("GetSSOOrgID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2Organization{}
+		obj := &Organization{}
 		obj.SSOOrgID = nil
 
 		// Act & Assert
@@ -688,7 +688,7 @@ func TestGettersV2Organization(t *testing.T) {
 
 	t.Run("GetSSOOrgID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V2Organization
+		var obj *Organization
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -700,11 +700,11 @@ func TestGettersV2Organization(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitV2Organization(t *testing.T) {
+func TestSettersMarkExplicitOrganization(t *testing.T) {
 	t.Run("SetID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2Organization{}
+		obj := &Organization{}
 		var fernTestValueID *string
 
 		// Act
@@ -735,7 +735,7 @@ func TestSettersMarkExplicitV2Organization(t *testing.T) {
 	t.Run("SetIssuer_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2Organization{}
+		obj := &Organization{}
 		var fernTestValueIssuer *string
 
 		// Act
@@ -766,7 +766,7 @@ func TestSettersMarkExplicitV2Organization(t *testing.T) {
 	t.Run("SetName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2Organization{}
+		obj := &Organization{}
 		var fernTestValueName *string
 
 		// Act
@@ -797,7 +797,7 @@ func TestSettersMarkExplicitV2Organization(t *testing.T) {
 	t.Run("SetSSODomain_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2Organization{}
+		obj := &Organization{}
 		var fernTestValueSSODomain *string
 
 		// Act
@@ -828,7 +828,7 @@ func TestSettersMarkExplicitV2Organization(t *testing.T) {
 	t.Run("SetSSOOrgID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2Organization{}
+		obj := &Organization{}
 		var fernTestValueSSOOrgID *string
 
 		// Act
@@ -858,10 +858,10 @@ func TestSettersMarkExplicitV2Organization(t *testing.T) {
 
 }
 
-func TestSettersV2OrganizationEnvelope(t *testing.T) {
+func TestSettersOrganizationEnvelope(t *testing.T) {
 	t.Run("SetData", func(t *testing.T) {
-		obj := &V2OrganizationEnvelope{}
-		var fernTestValueData *V2Organization
+		obj := &OrganizationEnvelope{}
+		var fernTestValueData *Organization
 		obj.SetData(fernTestValueData)
 		assert.Equal(t, fernTestValueData, obj.Data)
 		assert.NotNil(t, obj.explicitFields)
@@ -869,12 +869,12 @@ func TestSettersV2OrganizationEnvelope(t *testing.T) {
 
 }
 
-func TestGettersV2OrganizationEnvelope(t *testing.T) {
+func TestGettersOrganizationEnvelope(t *testing.T) {
 	t.Run("GetData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2OrganizationEnvelope{}
-		var expected *V2Organization
+		obj := &OrganizationEnvelope{}
+		var expected *Organization
 		obj.Data = expected
 
 		// Act & Assert
@@ -884,7 +884,7 @@ func TestGettersV2OrganizationEnvelope(t *testing.T) {
 	t.Run("GetData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2OrganizationEnvelope{}
+		obj := &OrganizationEnvelope{}
 		obj.Data = nil
 
 		// Act & Assert
@@ -893,7 +893,7 @@ func TestGettersV2OrganizationEnvelope(t *testing.T) {
 
 	t.Run("GetData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V2OrganizationEnvelope
+		var obj *OrganizationEnvelope
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -905,12 +905,12 @@ func TestGettersV2OrganizationEnvelope(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitV2OrganizationEnvelope(t *testing.T) {
+func TestSettersMarkExplicitOrganizationEnvelope(t *testing.T) {
 	t.Run("SetData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2OrganizationEnvelope{}
-		var fernTestValueData *V2Organization
+		obj := &OrganizationEnvelope{}
+		var fernTestValueData *Organization
 
 		// Act
 		obj.SetData(fernTestValueData)
@@ -939,10 +939,10 @@ func TestSettersMarkExplicitV2OrganizationEnvelope(t *testing.T) {
 
 }
 
-func TestSettersV2OrganizationsEnvelope(t *testing.T) {
+func TestSettersOrganizationsEnvelope(t *testing.T) {
 	t.Run("SetData", func(t *testing.T) {
-		obj := &V2OrganizationsEnvelope{}
-		var fernTestValueData []*V2Organization
+		obj := &OrganizationsEnvelope{}
+		var fernTestValueData []*Organization
 		obj.SetData(fernTestValueData)
 		assert.Equal(t, fernTestValueData, obj.Data)
 		assert.NotNil(t, obj.explicitFields)
@@ -950,12 +950,12 @@ func TestSettersV2OrganizationsEnvelope(t *testing.T) {
 
 }
 
-func TestGettersV2OrganizationsEnvelope(t *testing.T) {
+func TestGettersOrganizationsEnvelope(t *testing.T) {
 	t.Run("GetData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2OrganizationsEnvelope{}
-		var expected []*V2Organization
+		obj := &OrganizationsEnvelope{}
+		var expected []*Organization
 		obj.Data = expected
 
 		// Act & Assert
@@ -965,7 +965,7 @@ func TestGettersV2OrganizationsEnvelope(t *testing.T) {
 	t.Run("GetData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2OrganizationsEnvelope{}
+		obj := &OrganizationsEnvelope{}
 		obj.Data = nil
 
 		// Act & Assert
@@ -974,7 +974,7 @@ func TestGettersV2OrganizationsEnvelope(t *testing.T) {
 
 	t.Run("GetData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V2OrganizationsEnvelope
+		var obj *OrganizationsEnvelope
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -986,12 +986,12 @@ func TestGettersV2OrganizationsEnvelope(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitV2OrganizationsEnvelope(t *testing.T) {
+func TestSettersMarkExplicitOrganizationsEnvelope(t *testing.T) {
 	t.Run("SetData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2OrganizationsEnvelope{}
-		var fernTestValueData []*V2Organization
+		obj := &OrganizationsEnvelope{}
+		var fernTestValueData []*Organization
 
 		// Act
 		obj.SetData(fernTestValueData)
@@ -1020,11 +1020,11 @@ func TestSettersMarkExplicitV2OrganizationsEnvelope(t *testing.T) {
 
 }
 
-func TestJSONMarshalingV2Organization(t *testing.T) {
+func TestJSONMarshalingOrganization(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2Organization{}
+		obj := &Organization{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -1033,31 +1033,31 @@ func TestJSONMarshalingV2Organization(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled V2Organization
+		var unmarshaled Organization
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj V2Organization
+		var obj Organization
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj V2Organization
+		var obj Organization
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingV2OrganizationEnvelope(t *testing.T) {
+func TestJSONMarshalingOrganizationEnvelope(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2OrganizationEnvelope{}
+		obj := &OrganizationEnvelope{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -1066,31 +1066,31 @@ func TestJSONMarshalingV2OrganizationEnvelope(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled V2OrganizationEnvelope
+		var unmarshaled OrganizationEnvelope
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj V2OrganizationEnvelope
+		var obj OrganizationEnvelope
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj V2OrganizationEnvelope
+		var obj OrganizationEnvelope
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingV2OrganizationsEnvelope(t *testing.T) {
+func TestJSONMarshalingOrganizationsEnvelope(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2OrganizationsEnvelope{}
+		obj := &OrganizationsEnvelope{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -1099,78 +1099,78 @@ func TestJSONMarshalingV2OrganizationsEnvelope(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled V2OrganizationsEnvelope
+		var unmarshaled OrganizationsEnvelope
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj V2OrganizationsEnvelope
+		var obj OrganizationsEnvelope
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj V2OrganizationsEnvelope
+		var obj OrganizationsEnvelope
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestStringV2Organization(t *testing.T) {
+func TestStringOrganization(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &V2Organization{}
+		obj := &Organization{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V2Organization
+		var obj *Organization
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringV2OrganizationEnvelope(t *testing.T) {
+func TestStringOrganizationEnvelope(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &V2OrganizationEnvelope{}
+		obj := &OrganizationEnvelope{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V2OrganizationEnvelope
+		var obj *OrganizationEnvelope
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringV2OrganizationsEnvelope(t *testing.T) {
+func TestStringOrganizationsEnvelope(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &V2OrganizationsEnvelope{}
+		obj := &OrganizationsEnvelope{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V2OrganizationsEnvelope
+		var obj *OrganizationsEnvelope
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestExtraPropertiesV2Organization(t *testing.T) {
+func TestExtraPropertiesOrganization(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &V2Organization{}
+		obj := &Organization{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -1184,16 +1184,16 @@ func TestExtraPropertiesV2Organization(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V2Organization
+		var obj *Organization
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesV2OrganizationEnvelope(t *testing.T) {
+func TestExtraPropertiesOrganizationEnvelope(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &V2OrganizationEnvelope{}
+		obj := &OrganizationEnvelope{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -1207,16 +1207,16 @@ func TestExtraPropertiesV2OrganizationEnvelope(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V2OrganizationEnvelope
+		var obj *OrganizationEnvelope
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesV2OrganizationsEnvelope(t *testing.T) {
+func TestExtraPropertiesOrganizationsEnvelope(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &V2OrganizationsEnvelope{}
+		obj := &OrganizationsEnvelope{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -1230,7 +1230,7 @@ func TestExtraPropertiesV2OrganizationsEnvelope(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V2OrganizationsEnvelope
+		var obj *OrganizationsEnvelope
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

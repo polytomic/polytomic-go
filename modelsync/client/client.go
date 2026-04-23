@@ -49,9 +49,9 @@ func (c *Client) GetSource(
 	ctx context.Context,
 	// Unique identifier of the connection.
 	id string,
-	request *polytomic.GetSourceModelSyncRequest,
+	request *polytomic.ModelSyncGetSourceRequest,
 	opts ...option.RequestOption,
-) (*polytomic.V4GetSyncSourceMetaEnvelope, error) {
+) (*polytomic.GetModelSyncSourceMetaEnvelope, error) {
 	response, err := c.WithRawResponse.GetSource(
 		ctx,
 		id,
@@ -80,9 +80,9 @@ func (c *Client) GetSourceFields(
 	ctx context.Context,
 	// Unique identifier of the connection.
 	id string,
-	request *polytomic.GetSourceFieldsModelSyncRequest,
+	request *polytomic.ModelSyncGetSourceFieldsRequest,
 	opts ...option.RequestOption,
-) (*polytomic.V2ModelFieldResponse, error) {
+) (*polytomic.ModelFieldResponse, error) {
 	response, err := c.WithRawResponse.GetSourceFields(
 		ctx,
 		id,
@@ -111,9 +111,9 @@ func (c *Client) GetSourceFields(
 // [`GET /api/syncs/{id}`](../../api-reference/model-sync/get).
 func (c *Client) List(
 	ctx context.Context,
-	request *polytomic.ListModelSyncRequest,
+	request *polytomic.ModelSyncListRequest,
 	opts ...option.RequestOption,
-) (*polytomic.V2ListSyncResponseEnvelope, error) {
+) (*polytomic.ListModelSyncResponseEnvelope, error) {
 	response, err := c.WithRawResponse.List(
 		ctx,
 		request,
@@ -189,9 +189,9 @@ func (c *Client) List(
 // a connection supports target creation.
 func (c *Client) Create(
 	ctx context.Context,
-	request *polytomic.V2CreateSyncRequest,
+	request *polytomic.CreateModelSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomic.V2SyncResponseEnvelope, error) {
+) (*polytomic.ModelSyncResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
@@ -211,7 +211,7 @@ func (c *Client) Create(
 func (c *Client) GetScheduleOptions(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomic.V2ScheduleOptionResponseEnvelope, error) {
+) (*polytomic.ScheduleOptionResponseEnvelope, error) {
 	response, err := c.WithRawResponse.GetScheduleOptions(
 		ctx,
 		opts...,
@@ -231,7 +231,7 @@ func (c *Client) Get(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.V2SyncResponseEnvelope, error) {
+) (*polytomic.ModelSyncResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		id,
@@ -261,9 +261,9 @@ func (c *Client) Get(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *polytomic.V2UpdateSyncRequest,
+	request *polytomic.UpdateModelSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomic.V2SyncResponseEnvelope, error) {
+) (*polytomic.ModelSyncResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Update(
 		ctx,
 		id,
@@ -308,9 +308,9 @@ func (c *Client) Remove(
 func (c *Client) Activate(
 	ctx context.Context,
 	id string,
-	request *polytomic.V2ActivateSyncInput,
+	request *polytomic.ActivateSyncInput,
 	opts ...option.RequestOption,
-) (*polytomic.V2ActivateSyncEnvelope, error) {
+) (*polytomic.ActivateSyncEnvelope, error) {
 	response, err := c.WithRawResponse.Activate(
 		ctx,
 		id,
@@ -335,7 +335,7 @@ func (c *Client) Cancel(
 	// The active execution of this sync ID will be cancelled.
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.V2CancelSyncResponseEnvelope, error) {
+) (*polytomic.CancelModelSyncResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Cancel(
 		ctx,
 		id,
@@ -355,9 +355,9 @@ func (c *Client) Cancel(
 func (c *Client) Start(
 	ctx context.Context,
 	id string,
-	request *polytomic.V2StartSyncRequest,
+	request *polytomic.StartModelSyncRequest,
 	opts ...option.RequestOption,
-) (*polytomic.V2StartSyncResponseEnvelope, error) {
+) (*polytomic.StartModelSyncResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Start(
 		ctx,
 		id,
@@ -379,7 +379,7 @@ func (c *Client) GetStatus(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.V2SyncStatusEnvelope, error) {
+) (*polytomic.SyncStatusEnvelope, error) {
 	response, err := c.WithRawResponse.GetStatus(
 		ctx,
 		id,

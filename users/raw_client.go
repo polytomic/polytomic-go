@@ -36,7 +36,7 @@ func (r *RawClient) List(
 	// Unique identifier of the organization whose users should be listed.
 	orgID string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2ListUsersEnvelope], error) {
+) (*core.Response[*polytomic.ListUsersEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -51,7 +51,7 @@ func (r *RawClient) List(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V2ListUsersEnvelope
+	var response *polytomic.ListUsersEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -69,7 +69,7 @@ func (r *RawClient) List(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2ListUsersEnvelope]{
+	return &core.Response[*polytomic.ListUsersEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -80,9 +80,9 @@ func (r *RawClient) Create(
 	ctx context.Context,
 	// Unique identifier of the organization the user belongs to.
 	orgID string,
-	request *polytomic.V2CreateUserRequestSchema,
+	request *polytomic.CreateUserRequestSchema,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2UserEnvelope], error) {
+) (*core.Response[*polytomic.UserEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -98,7 +98,7 @@ func (r *RawClient) Create(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.V2UserEnvelope
+	var response *polytomic.UserEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -117,7 +117,7 @@ func (r *RawClient) Create(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2UserEnvelope]{
+	return &core.Response[*polytomic.UserEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -131,7 +131,7 @@ func (r *RawClient) Get(
 	// Unique identifier of the user.
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2UserEnvelope], error) {
+) (*core.Response[*polytomic.UserEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -147,7 +147,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V2UserEnvelope
+	var response *polytomic.UserEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -165,7 +165,7 @@ func (r *RawClient) Get(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2UserEnvelope]{
+	return &core.Response[*polytomic.UserEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -178,9 +178,9 @@ func (r *RawClient) Update(
 	orgID string,
 	// Unique identifier of the user to update.
 	id string,
-	request *polytomic.V2UpdateUserRequestSchema,
+	request *polytomic.UpdateUserRequestSchema,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2UserEnvelope], error) {
+) (*core.Response[*polytomic.UserEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -197,7 +197,7 @@ func (r *RawClient) Update(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.V2UserEnvelope
+	var response *polytomic.UserEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -216,7 +216,7 @@ func (r *RawClient) Update(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2UserEnvelope]{
+	return &core.Response[*polytomic.UserEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -230,7 +230,7 @@ func (r *RawClient) Remove(
 	// Unique identifier of the user.
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2UserEnvelope], error) {
+) (*core.Response[*polytomic.UserEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -246,7 +246,7 @@ func (r *RawClient) Remove(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V2UserEnvelope
+	var response *polytomic.UserEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -264,7 +264,7 @@ func (r *RawClient) Remove(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2UserEnvelope]{
+	return &core.Response[*polytomic.UserEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -277,9 +277,9 @@ func (r *RawClient) CreateAPIKey(
 	orgID string,
 	// Unique identifier of the user the key will be issued for.
 	id string,
-	request *polytomic.CreateAPIKeyUsersRequest,
+	request *polytomic.UsersCreateAPIKeyRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2APIKeyResponseEnvelope], error) {
+) (*core.Response[*polytomic.APIKeyResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -302,7 +302,7 @@ func (r *RawClient) CreateAPIKey(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V2APIKeyResponseEnvelope
+	var response *polytomic.APIKeyResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -320,7 +320,7 @@ func (r *RawClient) CreateAPIKey(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2APIKeyResponseEnvelope]{
+	return &core.Response[*polytomic.APIKeyResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

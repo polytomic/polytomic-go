@@ -10,9 +10,9 @@ import (
 	time "time"
 )
 
-func TestSettersV4SetPrimaryKeysRequest(t *testing.T) {
+func TestSettersSetPrimaryKeysRequest(t *testing.T) {
 	t.Run("SetFields", func(t *testing.T) {
-		obj := &V4SetPrimaryKeysRequest{}
+		obj := &SetPrimaryKeysRequest{}
 		var fernTestValueFields []*SchemaPrimaryKeyOverrideInput
 		obj.SetFields(fernTestValueFields)
 		assert.Equal(t, fernTestValueFields, obj.Fields)
@@ -21,11 +21,11 @@ func TestSettersV4SetPrimaryKeysRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitV4SetPrimaryKeysRequest(t *testing.T) {
+func TestSettersMarkExplicitSetPrimaryKeysRequest(t *testing.T) {
 	t.Run("SetFields_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V4SetPrimaryKeysRequest{}
+		obj := &SetPrimaryKeysRequest{}
 		var fernTestValueFields []*SchemaPrimaryKeyOverrideInput
 
 		// Act
@@ -55,9 +55,9 @@ func TestSettersMarkExplicitV4SetPrimaryKeysRequest(t *testing.T) {
 
 }
 
-func TestSettersV4UpsertSchemaFieldRequest(t *testing.T) {
+func TestSettersUpsertSchemaFieldRequest(t *testing.T) {
 	t.Run("SetFields", func(t *testing.T) {
-		obj := &V4UpsertSchemaFieldRequest{}
+		obj := &UpsertSchemaFieldRequest{}
 		var fernTestValueFields []*V4UserFieldRequest
 		obj.SetFields(fernTestValueFields)
 		assert.Equal(t, fernTestValueFields, obj.Fields)
@@ -66,15 +66,402 @@ func TestSettersV4UpsertSchemaFieldRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitV4UpsertSchemaFieldRequest(t *testing.T) {
+func TestSettersMarkExplicitUpsertSchemaFieldRequest(t *testing.T) {
 	t.Run("SetFields_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V4UpsertSchemaFieldRequest{}
+		obj := &UpsertSchemaFieldRequest{}
 		var fernTestValueFields []*V4UserFieldRequest
 
 		// Act
 		obj.SetFields(fernTestValueFields)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+}
+
+func TestSettersBulkSyncSourceSchemaEnvelope(t *testing.T) {
+	t.Run("SetData", func(t *testing.T) {
+		obj := &BulkSyncSourceSchemaEnvelope{}
+		var fernTestValueData *Schema
+		obj.SetData(fernTestValueData)
+		assert.Equal(t, fernTestValueData, obj.Data)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+}
+
+func TestGettersBulkSyncSourceSchemaEnvelope(t *testing.T) {
+	t.Run("GetData", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceSchemaEnvelope{}
+		var expected *Schema
+		obj.Data = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetData(), "getter should return the property value")
+	})
+
+	t.Run("GetData_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceSchemaEnvelope{}
+		obj.Data = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetData(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetData_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *BulkSyncSourceSchemaEnvelope
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetData() // Should return zero value
+	})
+
+}
+
+func TestSettersMarkExplicitBulkSyncSourceSchemaEnvelope(t *testing.T) {
+	t.Run("SetData_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceSchemaEnvelope{}
+		var fernTestValueData *Schema
+
+		// Act
+		obj.SetData(fernTestValueData)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+}
+
+func TestSettersBulkSyncSourceStatus(t *testing.T) {
+	t.Run("SetCacheStatus", func(t *testing.T) {
+		obj := &BulkSyncSourceStatus{}
+		var fernTestValueCacheStatus *string
+		obj.SetCacheStatus(fernTestValueCacheStatus)
+		assert.Equal(t, fernTestValueCacheStatus, obj.CacheStatus)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetLastRefreshFinished", func(t *testing.T) {
+		obj := &BulkSyncSourceStatus{}
+		var fernTestValueLastRefreshFinished *time.Time
+		obj.SetLastRefreshFinished(fernTestValueLastRefreshFinished)
+		assert.Equal(t, fernTestValueLastRefreshFinished, obj.LastRefreshFinished)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetLastRefreshStarted", func(t *testing.T) {
+		obj := &BulkSyncSourceStatus{}
+		var fernTestValueLastRefreshStarted *time.Time
+		obj.SetLastRefreshStarted(fernTestValueLastRefreshStarted)
+		assert.Equal(t, fernTestValueLastRefreshStarted, obj.LastRefreshStarted)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+}
+
+func TestGettersBulkSyncSourceStatus(t *testing.T) {
+	t.Run("GetCacheStatus", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceStatus{}
+		var expected *string
+		obj.CacheStatus = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetCacheStatus(), "getter should return the property value")
+	})
+
+	t.Run("GetCacheStatus_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceStatus{}
+		obj.CacheStatus = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCacheStatus(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetCacheStatus_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *BulkSyncSourceStatus
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetCacheStatus() // Should return zero value
+	})
+
+	t.Run("GetLastRefreshFinished", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceStatus{}
+		var expected *time.Time
+		obj.LastRefreshFinished = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetLastRefreshFinished(), "getter should return the property value")
+	})
+
+	t.Run("GetLastRefreshFinished_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceStatus{}
+		obj.LastRefreshFinished = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetLastRefreshFinished(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetLastRefreshFinished_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *BulkSyncSourceStatus
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetLastRefreshFinished() // Should return zero value
+	})
+
+	t.Run("GetLastRefreshStarted", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceStatus{}
+		var expected *time.Time
+		obj.LastRefreshStarted = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetLastRefreshStarted(), "getter should return the property value")
+	})
+
+	t.Run("GetLastRefreshStarted_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceStatus{}
+		obj.LastRefreshStarted = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetLastRefreshStarted(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetLastRefreshStarted_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *BulkSyncSourceStatus
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetLastRefreshStarted() // Should return zero value
+	})
+
+}
+
+func TestSettersMarkExplicitBulkSyncSourceStatus(t *testing.T) {
+	t.Run("SetCacheStatus_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceStatus{}
+		var fernTestValueCacheStatus *string
+
+		// Act
+		obj.SetCacheStatus(fernTestValueCacheStatus)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetLastRefreshFinished_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceStatus{}
+		var fernTestValueLastRefreshFinished *time.Time
+
+		// Act
+		obj.SetLastRefreshFinished(fernTestValueLastRefreshFinished)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetLastRefreshStarted_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceStatus{}
+		var fernTestValueLastRefreshStarted *time.Time
+
+		// Act
+		obj.SetLastRefreshStarted(fernTestValueLastRefreshStarted)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+}
+
+func TestSettersBulkSyncSourceStatusEnvelope(t *testing.T) {
+	t.Run("SetData", func(t *testing.T) {
+		obj := &BulkSyncSourceStatusEnvelope{}
+		var fernTestValueData *BulkSyncSourceStatus
+		obj.SetData(fernTestValueData)
+		assert.Equal(t, fernTestValueData, obj.Data)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+}
+
+func TestGettersBulkSyncSourceStatusEnvelope(t *testing.T) {
+	t.Run("GetData", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceStatusEnvelope{}
+		var expected *BulkSyncSourceStatus
+		obj.Data = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetData(), "getter should return the property value")
+	})
+
+	t.Run("GetData_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceStatusEnvelope{}
+		obj.Data = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetData(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetData_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *BulkSyncSourceStatusEnvelope
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetData() // Should return zero value
+	})
+
+}
+
+func TestSettersMarkExplicitBulkSyncSourceStatusEnvelope(t *testing.T) {
+	t.Run("SetData_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceStatusEnvelope{}
+		var fernTestValueData *BulkSyncSourceStatus
+
+		// Act
+		obj.SetData(fernTestValueData)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -233,396 +620,9 @@ func TestSettersMarkExplicitSchemaPrimaryKeyOverrideInput(t *testing.T) {
 
 }
 
-func TestSettersV3BulkSyncSourceSchemaEnvelope(t *testing.T) {
+func TestSettersSchemaRecordsResponseEnvelope(t *testing.T) {
 	t.Run("SetData", func(t *testing.T) {
-		obj := &V3BulkSyncSourceSchemaEnvelope{}
-		var fernTestValueData *V3Schema
-		obj.SetData(fernTestValueData)
-		assert.Equal(t, fernTestValueData, obj.Data)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-}
-
-func TestGettersV3BulkSyncSourceSchemaEnvelope(t *testing.T) {
-	t.Run("GetData", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3BulkSyncSourceSchemaEnvelope{}
-		var expected *V3Schema
-		obj.Data = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetData(), "getter should return the property value")
-	})
-
-	t.Run("GetData_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3BulkSyncSourceSchemaEnvelope{}
-		obj.Data = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetData(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetData_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *V3BulkSyncSourceSchemaEnvelope
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetData() // Should return zero value
-	})
-
-}
-
-func TestSettersMarkExplicitV3BulkSyncSourceSchemaEnvelope(t *testing.T) {
-	t.Run("SetData_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3BulkSyncSourceSchemaEnvelope{}
-		var fernTestValueData *V3Schema
-
-		// Act
-		obj.SetData(fernTestValueData)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-}
-
-func TestSettersV3BulkSyncSourceStatus(t *testing.T) {
-	t.Run("SetCacheStatus", func(t *testing.T) {
-		obj := &V3BulkSyncSourceStatus{}
-		var fernTestValueCacheStatus *string
-		obj.SetCacheStatus(fernTestValueCacheStatus)
-		assert.Equal(t, fernTestValueCacheStatus, obj.CacheStatus)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetLastRefreshFinished", func(t *testing.T) {
-		obj := &V3BulkSyncSourceStatus{}
-		var fernTestValueLastRefreshFinished *time.Time
-		obj.SetLastRefreshFinished(fernTestValueLastRefreshFinished)
-		assert.Equal(t, fernTestValueLastRefreshFinished, obj.LastRefreshFinished)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetLastRefreshStarted", func(t *testing.T) {
-		obj := &V3BulkSyncSourceStatus{}
-		var fernTestValueLastRefreshStarted *time.Time
-		obj.SetLastRefreshStarted(fernTestValueLastRefreshStarted)
-		assert.Equal(t, fernTestValueLastRefreshStarted, obj.LastRefreshStarted)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-}
-
-func TestGettersV3BulkSyncSourceStatus(t *testing.T) {
-	t.Run("GetCacheStatus", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3BulkSyncSourceStatus{}
-		var expected *string
-		obj.CacheStatus = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetCacheStatus(), "getter should return the property value")
-	})
-
-	t.Run("GetCacheStatus_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3BulkSyncSourceStatus{}
-		obj.CacheStatus = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetCacheStatus(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetCacheStatus_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *V3BulkSyncSourceStatus
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetCacheStatus() // Should return zero value
-	})
-
-	t.Run("GetLastRefreshFinished", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3BulkSyncSourceStatus{}
-		var expected *time.Time
-		obj.LastRefreshFinished = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetLastRefreshFinished(), "getter should return the property value")
-	})
-
-	t.Run("GetLastRefreshFinished_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3BulkSyncSourceStatus{}
-		obj.LastRefreshFinished = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetLastRefreshFinished(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetLastRefreshFinished_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *V3BulkSyncSourceStatus
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetLastRefreshFinished() // Should return zero value
-	})
-
-	t.Run("GetLastRefreshStarted", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3BulkSyncSourceStatus{}
-		var expected *time.Time
-		obj.LastRefreshStarted = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetLastRefreshStarted(), "getter should return the property value")
-	})
-
-	t.Run("GetLastRefreshStarted_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3BulkSyncSourceStatus{}
-		obj.LastRefreshStarted = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetLastRefreshStarted(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetLastRefreshStarted_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *V3BulkSyncSourceStatus
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetLastRefreshStarted() // Should return zero value
-	})
-
-}
-
-func TestSettersMarkExplicitV3BulkSyncSourceStatus(t *testing.T) {
-	t.Run("SetCacheStatus_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3BulkSyncSourceStatus{}
-		var fernTestValueCacheStatus *string
-
-		// Act
-		obj.SetCacheStatus(fernTestValueCacheStatus)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetLastRefreshFinished_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3BulkSyncSourceStatus{}
-		var fernTestValueLastRefreshFinished *time.Time
-
-		// Act
-		obj.SetLastRefreshFinished(fernTestValueLastRefreshFinished)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetLastRefreshStarted_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3BulkSyncSourceStatus{}
-		var fernTestValueLastRefreshStarted *time.Time
-
-		// Act
-		obj.SetLastRefreshStarted(fernTestValueLastRefreshStarted)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-}
-
-func TestSettersV3BulkSyncSourceStatusEnvelope(t *testing.T) {
-	t.Run("SetData", func(t *testing.T) {
-		obj := &V3BulkSyncSourceStatusEnvelope{}
-		var fernTestValueData *V3BulkSyncSourceStatus
-		obj.SetData(fernTestValueData)
-		assert.Equal(t, fernTestValueData, obj.Data)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-}
-
-func TestGettersV3BulkSyncSourceStatusEnvelope(t *testing.T) {
-	t.Run("GetData", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3BulkSyncSourceStatusEnvelope{}
-		var expected *V3BulkSyncSourceStatus
-		obj.Data = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetData(), "getter should return the property value")
-	})
-
-	t.Run("GetData_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3BulkSyncSourceStatusEnvelope{}
-		obj.Data = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetData(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetData_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *V3BulkSyncSourceStatusEnvelope
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetData() // Should return zero value
-	})
-
-}
-
-func TestSettersMarkExplicitV3BulkSyncSourceStatusEnvelope(t *testing.T) {
-	t.Run("SetData_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3BulkSyncSourceStatusEnvelope{}
-		var fernTestValueData *V3BulkSyncSourceStatus
-
-		// Act
-		obj.SetData(fernTestValueData)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-}
-
-func TestSettersV3SchemaRecordsResponseEnvelope(t *testing.T) {
-	t.Run("SetData", func(t *testing.T) {
-		obj := &V3SchemaRecordsResponseEnvelope{}
+		obj := &SchemaRecordsResponseEnvelope{}
 		var fernTestValueData []map[string]any
 		obj.SetData(fernTestValueData)
 		assert.Equal(t, fernTestValueData, obj.Data)
@@ -631,11 +631,11 @@ func TestSettersV3SchemaRecordsResponseEnvelope(t *testing.T) {
 
 }
 
-func TestGettersV3SchemaRecordsResponseEnvelope(t *testing.T) {
+func TestGettersSchemaRecordsResponseEnvelope(t *testing.T) {
 	t.Run("GetData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V3SchemaRecordsResponseEnvelope{}
+		obj := &SchemaRecordsResponseEnvelope{}
 		var expected []map[string]any
 		obj.Data = expected
 
@@ -646,7 +646,7 @@ func TestGettersV3SchemaRecordsResponseEnvelope(t *testing.T) {
 	t.Run("GetData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V3SchemaRecordsResponseEnvelope{}
+		obj := &SchemaRecordsResponseEnvelope{}
 		obj.Data = nil
 
 		// Act & Assert
@@ -655,7 +655,7 @@ func TestGettersV3SchemaRecordsResponseEnvelope(t *testing.T) {
 
 	t.Run("GetData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V3SchemaRecordsResponseEnvelope
+		var obj *SchemaRecordsResponseEnvelope
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -667,11 +667,11 @@ func TestGettersV3SchemaRecordsResponseEnvelope(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitV3SchemaRecordsResponseEnvelope(t *testing.T) {
+func TestSettersMarkExplicitSchemaRecordsResponseEnvelope(t *testing.T) {
 	t.Run("SetData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V3SchemaRecordsResponseEnvelope{}
+		obj := &SchemaRecordsResponseEnvelope{}
 		var fernTestValueData []map[string]any
 
 		// Act
@@ -1030,6 +1030,105 @@ func TestSettersMarkExplicitV4UserFieldRequest(t *testing.T) {
 
 }
 
+func TestJSONMarshalingBulkSyncSourceSchemaEnvelope(t *testing.T) {
+	t.Run("MarshalUnmarshal", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceSchemaEnvelope{}
+
+		// Act - Marshal to JSON
+		data, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed")
+		assert.NotNil(t, data, "marshaled data should not be nil")
+		assert.NotEmpty(t, data, "marshaled data should not be empty")
+
+		// Unmarshal back and verify round-trip
+		var unmarshaled BulkSyncSourceSchemaEnvelope
+		err = json.Unmarshal(data, &unmarshaled)
+		assert.NoError(t, err, "round-trip unmarshal should succeed")
+	})
+
+	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
+		t.Parallel()
+		var obj BulkSyncSourceSchemaEnvelope
+		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
+		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
+	})
+
+	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
+		t.Parallel()
+		var obj BulkSyncSourceSchemaEnvelope
+		err := json.Unmarshal([]byte(`{}`), &obj)
+		assert.NoError(t, err, "unmarshaling empty object should succeed")
+	})
+}
+
+func TestJSONMarshalingBulkSyncSourceStatus(t *testing.T) {
+	t.Run("MarshalUnmarshal", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceStatus{}
+
+		// Act - Marshal to JSON
+		data, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed")
+		assert.NotNil(t, data, "marshaled data should not be nil")
+		assert.NotEmpty(t, data, "marshaled data should not be empty")
+
+		// Unmarshal back and verify round-trip
+		var unmarshaled BulkSyncSourceStatus
+		err = json.Unmarshal(data, &unmarshaled)
+		assert.NoError(t, err, "round-trip unmarshal should succeed")
+	})
+
+	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
+		t.Parallel()
+		var obj BulkSyncSourceStatus
+		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
+		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
+	})
+
+	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
+		t.Parallel()
+		var obj BulkSyncSourceStatus
+		err := json.Unmarshal([]byte(`{}`), &obj)
+		assert.NoError(t, err, "unmarshaling empty object should succeed")
+	})
+}
+
+func TestJSONMarshalingBulkSyncSourceStatusEnvelope(t *testing.T) {
+	t.Run("MarshalUnmarshal", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncSourceStatusEnvelope{}
+
+		// Act - Marshal to JSON
+		data, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed")
+		assert.NotNil(t, data, "marshaled data should not be nil")
+		assert.NotEmpty(t, data, "marshaled data should not be empty")
+
+		// Unmarshal back and verify round-trip
+		var unmarshaled BulkSyncSourceStatusEnvelope
+		err = json.Unmarshal(data, &unmarshaled)
+		assert.NoError(t, err, "round-trip unmarshal should succeed")
+	})
+
+	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
+		t.Parallel()
+		var obj BulkSyncSourceStatusEnvelope
+		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
+		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
+	})
+
+	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
+		t.Parallel()
+		var obj BulkSyncSourceStatusEnvelope
+		err := json.Unmarshal([]byte(`{}`), &obj)
+		assert.NoError(t, err, "unmarshaling empty object should succeed")
+	})
+}
+
 func TestJSONMarshalingSchemaPrimaryKeyOverrideInput(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
@@ -1063,11 +1162,11 @@ func TestJSONMarshalingSchemaPrimaryKeyOverrideInput(t *testing.T) {
 	})
 }
 
-func TestJSONMarshalingV3BulkSyncSourceSchemaEnvelope(t *testing.T) {
+func TestJSONMarshalingSchemaRecordsResponseEnvelope(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V3BulkSyncSourceSchemaEnvelope{}
+		obj := &SchemaRecordsResponseEnvelope{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -1076,120 +1175,21 @@ func TestJSONMarshalingV3BulkSyncSourceSchemaEnvelope(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled V3BulkSyncSourceSchemaEnvelope
+		var unmarshaled SchemaRecordsResponseEnvelope
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj V3BulkSyncSourceSchemaEnvelope
+		var obj SchemaRecordsResponseEnvelope
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj V3BulkSyncSourceSchemaEnvelope
-		err := json.Unmarshal([]byte(`{}`), &obj)
-		assert.NoError(t, err, "unmarshaling empty object should succeed")
-	})
-}
-
-func TestJSONMarshalingV3BulkSyncSourceStatus(t *testing.T) {
-	t.Run("MarshalUnmarshal", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3BulkSyncSourceStatus{}
-
-		// Act - Marshal to JSON
-		data, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed")
-		assert.NotNil(t, data, "marshaled data should not be nil")
-		assert.NotEmpty(t, data, "marshaled data should not be empty")
-
-		// Unmarshal back and verify round-trip
-		var unmarshaled V3BulkSyncSourceStatus
-		err = json.Unmarshal(data, &unmarshaled)
-		assert.NoError(t, err, "round-trip unmarshal should succeed")
-	})
-
-	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
-		t.Parallel()
-		var obj V3BulkSyncSourceStatus
-		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
-		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
-	})
-
-	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
-		t.Parallel()
-		var obj V3BulkSyncSourceStatus
-		err := json.Unmarshal([]byte(`{}`), &obj)
-		assert.NoError(t, err, "unmarshaling empty object should succeed")
-	})
-}
-
-func TestJSONMarshalingV3BulkSyncSourceStatusEnvelope(t *testing.T) {
-	t.Run("MarshalUnmarshal", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3BulkSyncSourceStatusEnvelope{}
-
-		// Act - Marshal to JSON
-		data, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed")
-		assert.NotNil(t, data, "marshaled data should not be nil")
-		assert.NotEmpty(t, data, "marshaled data should not be empty")
-
-		// Unmarshal back and verify round-trip
-		var unmarshaled V3BulkSyncSourceStatusEnvelope
-		err = json.Unmarshal(data, &unmarshaled)
-		assert.NoError(t, err, "round-trip unmarshal should succeed")
-	})
-
-	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
-		t.Parallel()
-		var obj V3BulkSyncSourceStatusEnvelope
-		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
-		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
-	})
-
-	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
-		t.Parallel()
-		var obj V3BulkSyncSourceStatusEnvelope
-		err := json.Unmarshal([]byte(`{}`), &obj)
-		assert.NoError(t, err, "unmarshaling empty object should succeed")
-	})
-}
-
-func TestJSONMarshalingV3SchemaRecordsResponseEnvelope(t *testing.T) {
-	t.Run("MarshalUnmarshal", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &V3SchemaRecordsResponseEnvelope{}
-
-		// Act - Marshal to JSON
-		data, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed")
-		assert.NotNil(t, data, "marshaled data should not be nil")
-		assert.NotEmpty(t, data, "marshaled data should not be empty")
-
-		// Unmarshal back and verify round-trip
-		var unmarshaled V3SchemaRecordsResponseEnvelope
-		err = json.Unmarshal(data, &unmarshaled)
-		assert.NoError(t, err, "round-trip unmarshal should succeed")
-	})
-
-	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
-		t.Parallel()
-		var obj V3SchemaRecordsResponseEnvelope
-		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
-		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
-	})
-
-	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
-		t.Parallel()
-		var obj V3SchemaRecordsResponseEnvelope
+		var obj SchemaRecordsResponseEnvelope
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
@@ -1228,6 +1228,54 @@ func TestJSONMarshalingV4UserFieldRequest(t *testing.T) {
 	})
 }
 
+func TestStringBulkSyncSourceSchemaEnvelope(t *testing.T) {
+	t.Run("StringMethod", func(t *testing.T) {
+		t.Parallel()
+		obj := &BulkSyncSourceSchemaEnvelope{}
+		result := obj.String()
+		assert.NotEmpty(t, result, "String() should return a non-empty representation")
+	})
+
+	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *BulkSyncSourceSchemaEnvelope
+		result := obj.String()
+		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
+	})
+}
+
+func TestStringBulkSyncSourceStatus(t *testing.T) {
+	t.Run("StringMethod", func(t *testing.T) {
+		t.Parallel()
+		obj := &BulkSyncSourceStatus{}
+		result := obj.String()
+		assert.NotEmpty(t, result, "String() should return a non-empty representation")
+	})
+
+	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *BulkSyncSourceStatus
+		result := obj.String()
+		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
+	})
+}
+
+func TestStringBulkSyncSourceStatusEnvelope(t *testing.T) {
+	t.Run("StringMethod", func(t *testing.T) {
+		t.Parallel()
+		obj := &BulkSyncSourceStatusEnvelope{}
+		result := obj.String()
+		assert.NotEmpty(t, result, "String() should return a non-empty representation")
+	})
+
+	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *BulkSyncSourceStatusEnvelope
+		result := obj.String()
+		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
+	})
+}
+
 func TestStringSchemaPrimaryKeyOverrideInput(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
@@ -1244,65 +1292,17 @@ func TestStringSchemaPrimaryKeyOverrideInput(t *testing.T) {
 	})
 }
 
-func TestStringV3BulkSyncSourceSchemaEnvelope(t *testing.T) {
+func TestStringSchemaRecordsResponseEnvelope(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &V3BulkSyncSourceSchemaEnvelope{}
+		obj := &SchemaRecordsResponseEnvelope{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V3BulkSyncSourceSchemaEnvelope
-		result := obj.String()
-		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
-	})
-}
-
-func TestStringV3BulkSyncSourceStatus(t *testing.T) {
-	t.Run("StringMethod", func(t *testing.T) {
-		t.Parallel()
-		obj := &V3BulkSyncSourceStatus{}
-		result := obj.String()
-		assert.NotEmpty(t, result, "String() should return a non-empty representation")
-	})
-
-	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *V3BulkSyncSourceStatus
-		result := obj.String()
-		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
-	})
-}
-
-func TestStringV3BulkSyncSourceStatusEnvelope(t *testing.T) {
-	t.Run("StringMethod", func(t *testing.T) {
-		t.Parallel()
-		obj := &V3BulkSyncSourceStatusEnvelope{}
-		result := obj.String()
-		assert.NotEmpty(t, result, "String() should return a non-empty representation")
-	})
-
-	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *V3BulkSyncSourceStatusEnvelope
-		result := obj.String()
-		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
-	})
-}
-
-func TestStringV3SchemaRecordsResponseEnvelope(t *testing.T) {
-	t.Run("StringMethod", func(t *testing.T) {
-		t.Parallel()
-		obj := &V3SchemaRecordsResponseEnvelope{}
-		result := obj.String()
-		assert.NotEmpty(t, result, "String() should return a non-empty representation")
-	})
-
-	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *V3SchemaRecordsResponseEnvelope
+		var obj *SchemaRecordsResponseEnvelope
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
@@ -1321,6 +1321,75 @@ func TestStringV4UserFieldRequest(t *testing.T) {
 		var obj *V4UserFieldRequest
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
+	})
+}
+
+func TestExtraPropertiesBulkSyncSourceSchemaEnvelope(t *testing.T) {
+	t.Run("GetExtraProperties", func(t *testing.T) {
+		t.Parallel()
+		obj := &BulkSyncSourceSchemaEnvelope{}
+		// Should not panic when calling GetExtraProperties()
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("GetExtraProperties() panicked: %v", r)
+			}
+		}()
+		extraProps := obj.GetExtraProperties()
+		// Result can be nil or an empty/non-empty map
+		_ = extraProps
+	})
+
+	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *BulkSyncSourceSchemaEnvelope
+		extraProps := obj.GetExtraProperties()
+		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
+	})
+}
+
+func TestExtraPropertiesBulkSyncSourceStatus(t *testing.T) {
+	t.Run("GetExtraProperties", func(t *testing.T) {
+		t.Parallel()
+		obj := &BulkSyncSourceStatus{}
+		// Should not panic when calling GetExtraProperties()
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("GetExtraProperties() panicked: %v", r)
+			}
+		}()
+		extraProps := obj.GetExtraProperties()
+		// Result can be nil or an empty/non-empty map
+		_ = extraProps
+	})
+
+	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *BulkSyncSourceStatus
+		extraProps := obj.GetExtraProperties()
+		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
+	})
+}
+
+func TestExtraPropertiesBulkSyncSourceStatusEnvelope(t *testing.T) {
+	t.Run("GetExtraProperties", func(t *testing.T) {
+		t.Parallel()
+		obj := &BulkSyncSourceStatusEnvelope{}
+		// Should not panic when calling GetExtraProperties()
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("GetExtraProperties() panicked: %v", r)
+			}
+		}()
+		extraProps := obj.GetExtraProperties()
+		// Result can be nil or an empty/non-empty map
+		_ = extraProps
+	})
+
+	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *BulkSyncSourceStatusEnvelope
+		extraProps := obj.GetExtraProperties()
+		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
@@ -1347,10 +1416,10 @@ func TestExtraPropertiesSchemaPrimaryKeyOverrideInput(t *testing.T) {
 	})
 }
 
-func TestExtraPropertiesV3BulkSyncSourceSchemaEnvelope(t *testing.T) {
+func TestExtraPropertiesSchemaRecordsResponseEnvelope(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &V3BulkSyncSourceSchemaEnvelope{}
+		obj := &SchemaRecordsResponseEnvelope{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -1364,76 +1433,7 @@ func TestExtraPropertiesV3BulkSyncSourceSchemaEnvelope(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V3BulkSyncSourceSchemaEnvelope
-		extraProps := obj.GetExtraProperties()
-		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
-	})
-}
-
-func TestExtraPropertiesV3BulkSyncSourceStatus(t *testing.T) {
-	t.Run("GetExtraProperties", func(t *testing.T) {
-		t.Parallel()
-		obj := &V3BulkSyncSourceStatus{}
-		// Should not panic when calling GetExtraProperties()
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("GetExtraProperties() panicked: %v", r)
-			}
-		}()
-		extraProps := obj.GetExtraProperties()
-		// Result can be nil or an empty/non-empty map
-		_ = extraProps
-	})
-
-	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *V3BulkSyncSourceStatus
-		extraProps := obj.GetExtraProperties()
-		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
-	})
-}
-
-func TestExtraPropertiesV3BulkSyncSourceStatusEnvelope(t *testing.T) {
-	t.Run("GetExtraProperties", func(t *testing.T) {
-		t.Parallel()
-		obj := &V3BulkSyncSourceStatusEnvelope{}
-		// Should not panic when calling GetExtraProperties()
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("GetExtraProperties() panicked: %v", r)
-			}
-		}()
-		extraProps := obj.GetExtraProperties()
-		// Result can be nil or an empty/non-empty map
-		_ = extraProps
-	})
-
-	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *V3BulkSyncSourceStatusEnvelope
-		extraProps := obj.GetExtraProperties()
-		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
-	})
-}
-
-func TestExtraPropertiesV3SchemaRecordsResponseEnvelope(t *testing.T) {
-	t.Run("GetExtraProperties", func(t *testing.T) {
-		t.Parallel()
-		obj := &V3SchemaRecordsResponseEnvelope{}
-		// Should not panic when calling GetExtraProperties()
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("GetExtraProperties() panicked: %v", r)
-			}
-		}()
-		extraProps := obj.GetExtraProperties()
-		// Result can be nil or an empty/non-empty map
-		_ = extraProps
-	})
-
-	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *V3SchemaRecordsResponseEnvelope
+		var obj *SchemaRecordsResponseEnvelope
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

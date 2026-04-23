@@ -36,9 +36,9 @@ func (r *RawClient) GetTarget(
 	ctx context.Context,
 	// Unique identifier of the connection.
 	id string,
-	request *modelsync.GetTargetTargetsRequest,
+	request *modelsync.TargetsGetTargetRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2GetConnectionMetaEnvelope], error) {
+) (*core.Response[*polytomic.GetConnectionMetaEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -60,7 +60,7 @@ func (r *RawClient) GetTarget(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V2GetConnectionMetaEnvelope
+	var response *polytomic.GetConnectionMetaEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -78,7 +78,7 @@ func (r *RawClient) GetTarget(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2GetConnectionMetaEnvelope]{
+	return &core.Response[*polytomic.GetConnectionMetaEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -89,9 +89,9 @@ func (r *RawClient) GetTargetFields(
 	ctx context.Context,
 	// Unique identifier of the connection.
 	id string,
-	request *modelsync.GetTargetFieldsTargetsRequest,
+	request *modelsync.TargetsGetTargetFieldsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2TargetResponseEnvelope], error) {
+) (*core.Response[*polytomic.TargetResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -113,7 +113,7 @@ func (r *RawClient) GetTargetFields(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V2TargetResponseEnvelope
+	var response *polytomic.TargetResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -131,7 +131,7 @@ func (r *RawClient) GetTargetFields(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2TargetResponseEnvelope]{
+	return &core.Response[*polytomic.TargetResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

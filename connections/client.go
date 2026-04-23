@@ -44,7 +44,7 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) GetTypes(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomic.V2ConnectionTypeResponseEnvelope, error) {
+) (*polytomic.ConnectionTypeResponseEnvelope, error) {
 	response, err := c.WithRawResponse.GetTypes(
 		ctx,
 		opts...,
@@ -92,9 +92,9 @@ func (c *Client) GetConnectionTypeSchema(
 func (c *Client) GetTypeParameterValues(
 	ctx context.Context,
 	type_ string,
-	request *polytomic.V2GetConnectionTypeParameterValuesRequestSchema,
+	request *polytomic.GetConnectionTypeParameterValuesRequestSchema,
 	opts ...option.RequestOption,
-) (*polytomic.V2ConnectionParameterValuesResponseEnvelope, error) {
+) (*polytomic.ConnectionParameterValuesResponseEnvelope, error) {
 	response, err := c.WithRawResponse.GetTypeParameterValues(
 		ctx,
 		type_,
@@ -120,7 +120,7 @@ func (c *Client) GetTypeParameterValues(
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomic.V2ConnectionListResponseEnvelope, error) {
+) (*polytomic.ConnectionListResponseEnvelope, error) {
 	response, err := c.WithRawResponse.List(
 		ctx,
 		opts...,
@@ -144,9 +144,9 @@ func (c *Client) List(
 // > endpoint cannot be reached.
 func (c *Client) Create(
 	ctx context.Context,
-	request *polytomic.V2CreateConnectionRequestSchema,
+	request *polytomic.CreateConnectionRequestSchema,
 	opts ...option.RequestOption,
-) (*polytomic.V2CreateConnectionResponseEnvelope, error) {
+) (*polytomic.CreateConnectionResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
@@ -165,9 +165,9 @@ func (c *Client) Create(
 // - [Embedding authentication](../../../guides/embedding-authentication), a guide to using Polytomic Connect.
 func (c *Client) Connect(
 	ctx context.Context,
-	request *polytomic.V3ConnectCardRequest,
+	request *polytomic.ConnectCardRequest,
 	opts ...option.RequestOption,
-) (*polytomic.V3ConnectCardResponseEnvelope, error) {
+) (*polytomic.ConnectCardResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Connect(
 		ctx,
 		request,
@@ -193,7 +193,7 @@ func (c *Client) Connect(
 // succeeds.
 func (c *Client) TestConnection(
 	ctx context.Context,
-	request *polytomic.V4TestConnectionRequest,
+	request *polytomic.TestConnectionRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.TestConnection(
@@ -217,7 +217,7 @@ func (c *Client) Get(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.V2ConnectionResponseEnvelope, error) {
+) (*polytomic.ConnectionResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		id,
@@ -246,9 +246,9 @@ func (c *Client) Get(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *polytomic.V2UpdateConnectionRequestSchema,
+	request *polytomic.UpdateConnectionRequestSchema,
 	opts ...option.RequestOption,
-) (*polytomic.V2CreateConnectionResponseEnvelope, error) {
+) (*polytomic.CreateConnectionResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Update(
 		ctx,
 		id,
@@ -270,7 +270,7 @@ func (c *Client) Update(
 func (c *Client) Remove(
 	ctx context.Context,
 	id string,
-	request *polytomic.RemoveConnectionsRequest,
+	request *polytomic.ConnectionsRemoveRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.Remove(
@@ -299,7 +299,7 @@ func (c *Client) GetParameterValues(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.V2ConnectionParameterValuesResponseEnvelope, error) {
+) (*polytomic.ConnectionParameterValuesResponseEnvelope, error) {
 	response, err := c.WithRawResponse.GetParameterValues(
 		ctx,
 		id,
@@ -319,7 +319,7 @@ func (c *Client) GetParameterValues(
 func (c *Client) CreateSharedConnection(
 	ctx context.Context,
 	parentConnectionID string,
-	request *polytomic.V2CreateSharedConnectionRequestSchema,
+	request *polytomic.APIRequest,
 	opts ...option.RequestOption,
 ) (*polytomic.V2CreateSharedConnectionResponseEnvelope, error) {
 	response, err := c.WithRawResponse.CreateSharedConnection(
@@ -339,7 +339,7 @@ func (c *Client) ListSharedConnections(
 	ctx context.Context,
 	parentConnectionID string,
 	opts ...option.RequestOption,
-) (*polytomic.V2ConnectionListResponseEnvelope, error) {
+) (*polytomic.ConnectionListResponseEnvelope, error) {
 	response, err := c.WithRawResponse.ListSharedConnections(
 		ctx,
 		parentConnectionID,

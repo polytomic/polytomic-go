@@ -7,11 +7,11 @@ import (
 )
 
 var (
-	getTargetTargetsRequestFieldType   = big.NewInt(1 << 0)
-	getTargetTargetsRequestFieldSearch = big.NewInt(1 << 1)
+	targetsGetTargetRequestFieldType   = big.NewInt(1 << 0)
+	targetsGetTargetRequestFieldSearch = big.NewInt(1 << 1)
 )
 
-type GetTargetTargetsRequest struct {
+type TargetsGetTargetRequest struct {
 	// Target object type to query (e.g. schema name). When supplied, the response is narrowed to objects matching this type.
 	Type *string `json:"-" url:"type,omitempty"`
 	// Substring filter applied to target object names. Combine with type to browse large schemas.
@@ -21,33 +21,33 @@ type GetTargetTargetsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetTargetTargetsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (t *TargetsGetTargetRequest) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	t.explicitFields.Or(t.explicitFields, field)
 }
 
 // SetType sets the Type field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTargetTargetsRequest) SetType(type_ *string) {
-	g.Type = type_
-	g.require(getTargetTargetsRequestFieldType)
+func (t *TargetsGetTargetRequest) SetType(type_ *string) {
+	t.Type = type_
+	t.require(targetsGetTargetRequestFieldType)
 }
 
 // SetSearch sets the Search field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTargetTargetsRequest) SetSearch(search *string) {
-	g.Search = search
-	g.require(getTargetTargetsRequestFieldSearch)
+func (t *TargetsGetTargetRequest) SetSearch(search *string) {
+	t.Search = search
+	t.require(targetsGetTargetRequestFieldSearch)
 }
 
 var (
-	getTargetFieldsTargetsRequestFieldTarget  = big.NewInt(1 << 0)
-	getTargetFieldsTargetsRequestFieldRefresh = big.NewInt(1 << 1)
+	targetsGetTargetFieldsRequestFieldTarget  = big.NewInt(1 << 0)
+	targetsGetTargetFieldsRequestFieldRefresh = big.NewInt(1 << 1)
 )
 
-type GetTargetFieldsTargetsRequest struct {
+type TargetsGetTargetFieldsRequest struct {
 	// Identifier of the target object (e.g. schema.table for a database destination, object name for a SaaS destination).
 	Target string `json:"-" url:"target"`
 	// When true, force a cache refresh of the target's schema before returning its fields.
@@ -57,23 +57,23 @@ type GetTargetFieldsTargetsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetTargetFieldsTargetsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (t *TargetsGetTargetFieldsRequest) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	t.explicitFields.Or(t.explicitFields, field)
 }
 
 // SetTarget sets the Target field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTargetFieldsTargetsRequest) SetTarget(target string) {
-	g.Target = target
-	g.require(getTargetFieldsTargetsRequestFieldTarget)
+func (t *TargetsGetTargetFieldsRequest) SetTarget(target string) {
+	t.Target = target
+	t.require(targetsGetTargetFieldsRequestFieldTarget)
 }
 
 // SetRefresh sets the Refresh field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTargetFieldsTargetsRequest) SetRefresh(refresh *bool) {
-	g.Refresh = refresh
-	g.require(getTargetFieldsTargetsRequestFieldRefresh)
+func (t *TargetsGetTargetFieldsRequest) SetRefresh(refresh *bool) {
+	t.Refresh = refresh
+	t.require(targetsGetTargetFieldsRequestFieldRefresh)
 }

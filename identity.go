@@ -10,11 +10,11 @@ import (
 )
 
 var (
-	v2GetIdentityResponseEnvelopeFieldData = big.NewInt(1 << 0)
+	getIdentityResponseEnvelopeFieldData = big.NewInt(1 << 0)
 )
 
-type V2GetIdentityResponseEnvelope struct {
-	Data *V2GetIdentityResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+type GetIdentityResponseEnvelope struct {
+	Data *GetIdentityResponseSchema `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -23,89 +23,89 @@ type V2GetIdentityResponseEnvelope struct {
 	rawJSON         json.RawMessage
 }
 
-func (v *V2GetIdentityResponseEnvelope) GetData() *V2GetIdentityResponseSchema {
-	if v == nil {
+func (g *GetIdentityResponseEnvelope) GetData() *GetIdentityResponseSchema {
+	if g == nil {
 		return nil
 	}
-	return v.Data
+	return g.Data
 }
 
-func (v *V2GetIdentityResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
+func (g *GetIdentityResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if g == nil {
 		return nil
 	}
-	return v.extraProperties
+	return g.extraProperties
 }
 
-func (v *V2GetIdentityResponseEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
+func (g *GetIdentityResponseEnvelope) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
 	}
-	v.explicitFields.Or(v.explicitFields, field)
+	g.explicitFields.Or(g.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetIdentityResponseEnvelope) SetData(data *V2GetIdentityResponseSchema) {
-	v.Data = data
-	v.require(v2GetIdentityResponseEnvelopeFieldData)
+func (g *GetIdentityResponseEnvelope) SetData(data *GetIdentityResponseSchema) {
+	g.Data = data
+	g.require(getIdentityResponseEnvelopeFieldData)
 }
 
-func (v *V2GetIdentityResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2GetIdentityResponseEnvelope
+func (g *GetIdentityResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetIdentityResponseEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = V2GetIdentityResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	*g = GetIdentityResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
 	if err != nil {
 		return err
 	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2GetIdentityResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V2GetIdentityResponseEnvelope
+func (g *GetIdentityResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed GetIdentityResponseEnvelope
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*v),
+		embed: embed(*g),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (v *V2GetIdentityResponseEnvelope) String() string {
-	if v == nil {
+func (g *GetIdentityResponseEnvelope) String() string {
+	if g == nil {
 		return "<nil>"
 	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(v); err == nil {
+	if value, err := internal.StringifyJSON(g); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", g)
 }
 
 var (
-	v2GetIdentityResponseSchemaFieldEmail            = big.NewInt(1 << 0)
-	v2GetIdentityResponseSchemaFieldID               = big.NewInt(1 << 1)
-	v2GetIdentityResponseSchemaFieldIsOrganization   = big.NewInt(1 << 2)
-	v2GetIdentityResponseSchemaFieldIsPartner        = big.NewInt(1 << 3)
-	v2GetIdentityResponseSchemaFieldIsSystem         = big.NewInt(1 << 4)
-	v2GetIdentityResponseSchemaFieldIsUser           = big.NewInt(1 << 5)
-	v2GetIdentityResponseSchemaFieldOrganizationID   = big.NewInt(1 << 6)
-	v2GetIdentityResponseSchemaFieldOrganizationName = big.NewInt(1 << 7)
-	v2GetIdentityResponseSchemaFieldRole             = big.NewInt(1 << 8)
+	getIdentityResponseSchemaFieldEmail            = big.NewInt(1 << 0)
+	getIdentityResponseSchemaFieldID               = big.NewInt(1 << 1)
+	getIdentityResponseSchemaFieldIsOrganization   = big.NewInt(1 << 2)
+	getIdentityResponseSchemaFieldIsPartner        = big.NewInt(1 << 3)
+	getIdentityResponseSchemaFieldIsSystem         = big.NewInt(1 << 4)
+	getIdentityResponseSchemaFieldIsUser           = big.NewInt(1 << 5)
+	getIdentityResponseSchemaFieldOrganizationID   = big.NewInt(1 << 6)
+	getIdentityResponseSchemaFieldOrganizationName = big.NewInt(1 << 7)
+	getIdentityResponseSchemaFieldRole             = big.NewInt(1 << 8)
 )
 
-type V2GetIdentityResponseSchema struct {
+type GetIdentityResponseSchema struct {
 	// The email of the caller.
 	Email *string `json:"email,omitempty" url:"email,omitempty"`
 	// The ID of the caller; this will be omitted for non-user callers.
@@ -132,184 +132,184 @@ type V2GetIdentityResponseSchema struct {
 	rawJSON         json.RawMessage
 }
 
-func (v *V2GetIdentityResponseSchema) GetEmail() *string {
-	if v == nil {
+func (g *GetIdentityResponseSchema) GetEmail() *string {
+	if g == nil {
 		return nil
 	}
-	return v.Email
+	return g.Email
 }
 
-func (v *V2GetIdentityResponseSchema) GetID() *string {
-	if v == nil {
+func (g *GetIdentityResponseSchema) GetID() *string {
+	if g == nil {
 		return nil
 	}
-	return v.ID
+	return g.ID
 }
 
-func (v *V2GetIdentityResponseSchema) GetIsOrganization() *bool {
-	if v == nil {
+func (g *GetIdentityResponseSchema) GetIsOrganization() *bool {
+	if g == nil {
 		return nil
 	}
-	return v.IsOrganization
+	return g.IsOrganization
 }
 
-func (v *V2GetIdentityResponseSchema) GetIsPartner() *bool {
-	if v == nil {
+func (g *GetIdentityResponseSchema) GetIsPartner() *bool {
+	if g == nil {
 		return nil
 	}
-	return v.IsPartner
+	return g.IsPartner
 }
 
-func (v *V2GetIdentityResponseSchema) GetIsSystem() *bool {
-	if v == nil {
+func (g *GetIdentityResponseSchema) GetIsSystem() *bool {
+	if g == nil {
 		return nil
 	}
-	return v.IsSystem
+	return g.IsSystem
 }
 
-func (v *V2GetIdentityResponseSchema) GetIsUser() *bool {
-	if v == nil {
+func (g *GetIdentityResponseSchema) GetIsUser() *bool {
+	if g == nil {
 		return nil
 	}
-	return v.IsUser
+	return g.IsUser
 }
 
-func (v *V2GetIdentityResponseSchema) GetOrganizationID() *string {
-	if v == nil {
+func (g *GetIdentityResponseSchema) GetOrganizationID() *string {
+	if g == nil {
 		return nil
 	}
-	return v.OrganizationID
+	return g.OrganizationID
 }
 
-func (v *V2GetIdentityResponseSchema) GetOrganizationName() *string {
-	if v == nil {
+func (g *GetIdentityResponseSchema) GetOrganizationName() *string {
+	if g == nil {
 		return nil
 	}
-	return v.OrganizationName
+	return g.OrganizationName
 }
 
-func (v *V2GetIdentityResponseSchema) GetRole() *string {
-	if v == nil {
+func (g *GetIdentityResponseSchema) GetRole() *string {
+	if g == nil {
 		return nil
 	}
-	return v.Role
+	return g.Role
 }
 
-func (v *V2GetIdentityResponseSchema) GetExtraProperties() map[string]interface{} {
-	if v == nil {
+func (g *GetIdentityResponseSchema) GetExtraProperties() map[string]interface{} {
+	if g == nil {
 		return nil
 	}
-	return v.extraProperties
+	return g.extraProperties
 }
 
-func (v *V2GetIdentityResponseSchema) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
+func (g *GetIdentityResponseSchema) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
 	}
-	v.explicitFields.Or(v.explicitFields, field)
+	g.explicitFields.Or(g.explicitFields, field)
 }
 
 // SetEmail sets the Email field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetIdentityResponseSchema) SetEmail(email *string) {
-	v.Email = email
-	v.require(v2GetIdentityResponseSchemaFieldEmail)
+func (g *GetIdentityResponseSchema) SetEmail(email *string) {
+	g.Email = email
+	g.require(getIdentityResponseSchemaFieldEmail)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetIdentityResponseSchema) SetID(id *string) {
-	v.ID = id
-	v.require(v2GetIdentityResponseSchemaFieldID)
+func (g *GetIdentityResponseSchema) SetID(id *string) {
+	g.ID = id
+	g.require(getIdentityResponseSchemaFieldID)
 }
 
 // SetIsOrganization sets the IsOrganization field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetIdentityResponseSchema) SetIsOrganization(isOrganization *bool) {
-	v.IsOrganization = isOrganization
-	v.require(v2GetIdentityResponseSchemaFieldIsOrganization)
+func (g *GetIdentityResponseSchema) SetIsOrganization(isOrganization *bool) {
+	g.IsOrganization = isOrganization
+	g.require(getIdentityResponseSchemaFieldIsOrganization)
 }
 
 // SetIsPartner sets the IsPartner field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetIdentityResponseSchema) SetIsPartner(isPartner *bool) {
-	v.IsPartner = isPartner
-	v.require(v2GetIdentityResponseSchemaFieldIsPartner)
+func (g *GetIdentityResponseSchema) SetIsPartner(isPartner *bool) {
+	g.IsPartner = isPartner
+	g.require(getIdentityResponseSchemaFieldIsPartner)
 }
 
 // SetIsSystem sets the IsSystem field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetIdentityResponseSchema) SetIsSystem(isSystem *bool) {
-	v.IsSystem = isSystem
-	v.require(v2GetIdentityResponseSchemaFieldIsSystem)
+func (g *GetIdentityResponseSchema) SetIsSystem(isSystem *bool) {
+	g.IsSystem = isSystem
+	g.require(getIdentityResponseSchemaFieldIsSystem)
 }
 
 // SetIsUser sets the IsUser field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetIdentityResponseSchema) SetIsUser(isUser *bool) {
-	v.IsUser = isUser
-	v.require(v2GetIdentityResponseSchemaFieldIsUser)
+func (g *GetIdentityResponseSchema) SetIsUser(isUser *bool) {
+	g.IsUser = isUser
+	g.require(getIdentityResponseSchemaFieldIsUser)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetIdentityResponseSchema) SetOrganizationID(organizationID *string) {
-	v.OrganizationID = organizationID
-	v.require(v2GetIdentityResponseSchemaFieldOrganizationID)
+func (g *GetIdentityResponseSchema) SetOrganizationID(organizationID *string) {
+	g.OrganizationID = organizationID
+	g.require(getIdentityResponseSchemaFieldOrganizationID)
 }
 
 // SetOrganizationName sets the OrganizationName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetIdentityResponseSchema) SetOrganizationName(organizationName *string) {
-	v.OrganizationName = organizationName
-	v.require(v2GetIdentityResponseSchemaFieldOrganizationName)
+func (g *GetIdentityResponseSchema) SetOrganizationName(organizationName *string) {
+	g.OrganizationName = organizationName
+	g.require(getIdentityResponseSchemaFieldOrganizationName)
 }
 
 // SetRole sets the Role field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetIdentityResponseSchema) SetRole(role *string) {
-	v.Role = role
-	v.require(v2GetIdentityResponseSchemaFieldRole)
+func (g *GetIdentityResponseSchema) SetRole(role *string) {
+	g.Role = role
+	g.require(getIdentityResponseSchemaFieldRole)
 }
 
-func (v *V2GetIdentityResponseSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2GetIdentityResponseSchema
+func (g *GetIdentityResponseSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetIdentityResponseSchema
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = V2GetIdentityResponseSchema(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	*g = GetIdentityResponseSchema(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
 	if err != nil {
 		return err
 	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2GetIdentityResponseSchema) MarshalJSON() ([]byte, error) {
-	type embed V2GetIdentityResponseSchema
+func (g *GetIdentityResponseSchema) MarshalJSON() ([]byte, error) {
+	type embed GetIdentityResponseSchema
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*v),
+		embed: embed(*g),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (v *V2GetIdentityResponseSchema) String() string {
-	if v == nil {
+func (g *GetIdentityResponseSchema) String() string {
+	if g == nil {
 		return "<nil>"
 	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(v); err == nil {
+	if value, err := internal.StringifyJSON(g); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", g)
 }

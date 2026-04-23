@@ -10,10 +10,10 @@ import (
 )
 
 var (
-	getQueryQueryRunnerRequestFieldPage = big.NewInt(1 << 0)
+	queryRunnerGetQueryRequestFieldPage = big.NewInt(1 << 0)
 )
 
-type GetQueryQueryRunnerRequest struct {
+type QueryRunnerGetQueryRequest struct {
 	// Opaque pagination token returned in the links.next or links.previous URL of the previous response.
 	Page *string `json:"-" url:"page,omitempty"`
 
@@ -21,18 +21,18 @@ type GetQueryQueryRunnerRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetQueryQueryRunnerRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (q *QueryRunnerGetQueryRequest) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	q.explicitFields.Or(q.explicitFields, field)
 }
 
 // SetPage sets the Page field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetQueryQueryRunnerRequest) SetPage(page *string) {
-	g.Page = page
-	g.require(getQueryQueryRunnerRequestFieldPage)
+func (q *QueryRunnerGetQueryRequest) SetPage(page *string) {
+	q.Page = page
+	q.require(queryRunnerGetQueryRequestFieldPage)
 }
 
 var (
@@ -83,13 +83,115 @@ func (v *V4RunQueryRequest) MarshalJSON() ([]byte, error) {
 }
 
 var (
+	paginationFieldNext     = big.NewInt(1 << 0)
+	paginationFieldPrevious = big.NewInt(1 << 1)
+)
+
+type Pagination struct {
+	// URL to the next page of results, if available. This may be returned as a host relative path.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// URL to the previous page of results, if available. This may be returned as a host relative path.
+	Previous *string `json:"previous,omitempty" url:"previous,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *Pagination) GetNext() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Next
+}
+
+func (p *Pagination) GetPrevious() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Previous
+}
+
+func (p *Pagination) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *Pagination) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetNext sets the Next field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *Pagination) SetNext(next *string) {
+	p.Next = next
+	p.require(paginationFieldNext)
+}
+
+// SetPrevious sets the Previous field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *Pagination) SetPrevious(previous *string) {
+	p.Previous = previous
+	p.require(paginationFieldPrevious)
+}
+
+func (p *Pagination) UnmarshalJSON(data []byte) error {
+	type unmarshaler Pagination
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = Pagination(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *Pagination) MarshalJSON() ([]byte, error) {
+	type embed Pagination
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *Pagination) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
 	v4QueryResultsEnvelopeFieldData  = big.NewInt(1 << 0)
 	v4QueryResultsEnvelopeFieldLinks = big.NewInt(1 << 1)
 )
 
 type V4QueryResultsEnvelope struct {
-	Data  *V4RunQueryResult     `json:"data,omitempty" url:"data,omitempty"`
-	Links *V4RunQueryPagination `json:"links,omitempty" url:"links,omitempty"`
+	Data  *V4RunQueryResult `json:"data,omitempty" url:"data,omitempty"`
+	Links *Pagination       `json:"links,omitempty" url:"links,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -105,7 +207,7 @@ func (v *V4QueryResultsEnvelope) GetData() *V4RunQueryResult {
 	return v.Data
 }
 
-func (v *V4QueryResultsEnvelope) GetLinks() *V4RunQueryPagination {
+func (v *V4QueryResultsEnvelope) GetLinks() *Pagination {
 	if v == nil {
 		return nil
 	}
@@ -135,7 +237,7 @@ func (v *V4QueryResultsEnvelope) SetData(data *V4RunQueryResult) {
 
 // SetLinks sets the Links field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4QueryResultsEnvelope) SetLinks(links *V4RunQueryPagination) {
+func (v *V4QueryResultsEnvelope) SetLinks(links *Pagination) {
 	v.Links = links
 	v.require(v4QueryResultsEnvelopeFieldLinks)
 }
@@ -267,108 +369,6 @@ func (v *V4RunQueryEnvelope) String() string {
 }
 
 var (
-	v4RunQueryPaginationFieldNext     = big.NewInt(1 << 0)
-	v4RunQueryPaginationFieldPrevious = big.NewInt(1 << 1)
-)
-
-type V4RunQueryPagination struct {
-	// URL to the next page of results, if available. This may be returned as a host relative path.
-	Next *string `json:"next,omitempty" url:"next,omitempty"`
-	// URL to the previous page of results, if available. This may be returned as a host relative path.
-	Previous *string `json:"previous,omitempty" url:"previous,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V4RunQueryPagination) GetNext() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Next
-}
-
-func (v *V4RunQueryPagination) GetPrevious() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Previous
-}
-
-func (v *V4RunQueryPagination) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V4RunQueryPagination) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetNext sets the Next field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4RunQueryPagination) SetNext(next *string) {
-	v.Next = next
-	v.require(v4RunQueryPaginationFieldNext)
-}
-
-// SetPrevious sets the Previous field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4RunQueryPagination) SetPrevious(previous *string) {
-	v.Previous = previous
-	v.require(v4RunQueryPaginationFieldPrevious)
-}
-
-func (v *V4RunQueryPagination) UnmarshalJSON(data []byte) error {
-	type unmarshaler V4RunQueryPagination
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V4RunQueryPagination(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V4RunQueryPagination) MarshalJSON() ([]byte, error) {
-	type embed V4RunQueryPagination
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V4RunQueryPagination) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
 	v4RunQueryResultFieldCount   = big.NewInt(1 << 0)
 	v4RunQueryResultFieldError   = big.NewInt(1 << 1)
 	v4RunQueryResultFieldExpires = big.NewInt(1 << 2)
@@ -380,7 +380,7 @@ var (
 
 type V4RunQueryResult struct {
 	// The number of rows returned by the query. This will not be returned until the query completes.
-	Count *int `json:"count,omitempty" url:"count,omitempty"`
+	Count *int64 `json:"count,omitempty" url:"count,omitempty"`
 	// Error message if the query failed.
 	Error *string `json:"error,omitempty" url:"error,omitempty"`
 	// The time at which the query will expire and be deleted. This will not be returned until the query completes.
@@ -400,7 +400,7 @@ type V4RunQueryResult struct {
 	rawJSON         json.RawMessage
 }
 
-func (v *V4RunQueryResult) GetCount() *int {
+func (v *V4RunQueryResult) GetCount() *int64 {
 	if v == nil {
 		return nil
 	}
@@ -465,7 +465,7 @@ func (v *V4RunQueryResult) require(field *big.Int) {
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4RunQueryResult) SetCount(count *int) {
+func (v *V4RunQueryResult) SetCount(count *int64) {
 	v.Count = count
 	v.require(v4RunQueryResultFieldCount)
 }

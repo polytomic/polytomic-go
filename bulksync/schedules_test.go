@@ -10,9 +10,9 @@ import (
 	testing "testing"
 )
 
-func TestSettersV4CreateScheduleRequest(t *testing.T) {
+func TestSettersCreateScheduleRequest(t *testing.T) {
 	t.Run("SetSchedule", func(t *testing.T) {
-		obj := &V4CreateScheduleRequest{}
+		obj := &CreateScheduleRequest{}
 		var fernTestValueSchedule *v24.V4BulkSyncScheduleAPI
 		obj.SetSchedule(fernTestValueSchedule)
 		assert.Equal(t, fernTestValueSchedule, obj.Schedule)
@@ -21,11 +21,11 @@ func TestSettersV4CreateScheduleRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitV4CreateScheduleRequest(t *testing.T) {
+func TestSettersMarkExplicitCreateScheduleRequest(t *testing.T) {
 	t.Run("SetSchedule_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V4CreateScheduleRequest{}
+		obj := &CreateScheduleRequest{}
 		var fernTestValueSchedule *v24.V4BulkSyncScheduleAPI
 
 		// Act
@@ -55,9 +55,9 @@ func TestSettersMarkExplicitV4CreateScheduleRequest(t *testing.T) {
 
 }
 
-func TestSettersV4UpdateScheduleRequest(t *testing.T) {
+func TestSettersUpdateScheduleRequest(t *testing.T) {
 	t.Run("SetSchedule", func(t *testing.T) {
-		obj := &V4UpdateScheduleRequest{}
+		obj := &UpdateScheduleRequest{}
 		var fernTestValueSchedule *v24.V4BulkSyncScheduleAPI
 		obj.SetSchedule(fernTestValueSchedule)
 		assert.Equal(t, fernTestValueSchedule, obj.Schedule)
@@ -66,11 +66,11 @@ func TestSettersV4UpdateScheduleRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitV4UpdateScheduleRequest(t *testing.T) {
+func TestSettersMarkExplicitUpdateScheduleRequest(t *testing.T) {
 	t.Run("SetSchedule_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V4UpdateScheduleRequest{}
+		obj := &UpdateScheduleRequest{}
 		var fernTestValueSchedule *v24.V4BulkSyncScheduleAPI
 
 		// Act

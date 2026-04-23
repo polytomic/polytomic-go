@@ -9,10 +9,10 @@ import (
 	testing "testing"
 )
 
-func TestSettersV2JobResponseEnvelope(t *testing.T) {
+func TestSettersJobResponseEnvelope(t *testing.T) {
 	t.Run("SetData", func(t *testing.T) {
-		obj := &V2JobResponseEnvelope{}
-		var fernTestValueData *V2JobResponse
+		obj := &JobResponseEnvelope{}
+		var fernTestValueData *JobResponse
 		obj.SetData(fernTestValueData)
 		assert.Equal(t, fernTestValueData, obj.Data)
 		assert.NotNil(t, obj.explicitFields)
@@ -20,12 +20,12 @@ func TestSettersV2JobResponseEnvelope(t *testing.T) {
 
 }
 
-func TestGettersV2JobResponseEnvelope(t *testing.T) {
+func TestGettersJobResponseEnvelope(t *testing.T) {
 	t.Run("GetData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2JobResponseEnvelope{}
-		var expected *V2JobResponse
+		obj := &JobResponseEnvelope{}
+		var expected *JobResponse
 		obj.Data = expected
 
 		// Act & Assert
@@ -35,7 +35,7 @@ func TestGettersV2JobResponseEnvelope(t *testing.T) {
 	t.Run("GetData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2JobResponseEnvelope{}
+		obj := &JobResponseEnvelope{}
 		obj.Data = nil
 
 		// Act & Assert
@@ -44,7 +44,7 @@ func TestGettersV2JobResponseEnvelope(t *testing.T) {
 
 	t.Run("GetData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V2JobResponseEnvelope
+		var obj *JobResponseEnvelope
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -56,12 +56,12 @@ func TestGettersV2JobResponseEnvelope(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitV2JobResponseEnvelope(t *testing.T) {
+func TestSettersMarkExplicitJobResponseEnvelope(t *testing.T) {
 	t.Run("SetData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2JobResponseEnvelope{}
-		var fernTestValueData *V2JobResponse
+		obj := &JobResponseEnvelope{}
+		var fernTestValueData *JobResponse
 
 		// Act
 		obj.SetData(fernTestValueData)
@@ -90,11 +90,11 @@ func TestSettersMarkExplicitV2JobResponseEnvelope(t *testing.T) {
 
 }
 
-func TestJSONMarshalingV2JobResponseEnvelope(t *testing.T) {
+func TestJSONMarshalingJobResponseEnvelope(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2JobResponseEnvelope{}
+		obj := &JobResponseEnvelope{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -103,46 +103,46 @@ func TestJSONMarshalingV2JobResponseEnvelope(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled V2JobResponseEnvelope
+		var unmarshaled JobResponseEnvelope
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj V2JobResponseEnvelope
+		var obj JobResponseEnvelope
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj V2JobResponseEnvelope
+		var obj JobResponseEnvelope
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestStringV2JobResponseEnvelope(t *testing.T) {
+func TestStringJobResponseEnvelope(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &V2JobResponseEnvelope{}
+		obj := &JobResponseEnvelope{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V2JobResponseEnvelope
+		var obj *JobResponseEnvelope
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestExtraPropertiesV2JobResponseEnvelope(t *testing.T) {
+func TestExtraPropertiesJobResponseEnvelope(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &V2JobResponseEnvelope{}
+		obj := &JobResponseEnvelope{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -156,7 +156,7 @@ func TestExtraPropertiesV2JobResponseEnvelope(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *V2JobResponseEnvelope
+		var obj *JobResponseEnvelope
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

@@ -37,7 +37,7 @@ func (r *RawClient) List(
 	// Unique identifier of the bulk sync whose schedules should be returned.
 	syncID string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V4SchedulesEnvelope], error) {
+) (*core.Response[*polytomic.SchedulesEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -52,7 +52,7 @@ func (r *RawClient) List(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V4SchedulesEnvelope
+	var response *polytomic.SchedulesEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -70,7 +70,7 @@ func (r *RawClient) List(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V4SchedulesEnvelope]{
+	return &core.Response[*polytomic.SchedulesEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -81,9 +81,9 @@ func (r *RawClient) Create(
 	ctx context.Context,
 	// Unique identifier of the bulk sync to add a schedule to.
 	syncID string,
-	request *bulksync.V4CreateScheduleRequest,
+	request *bulksync.CreateScheduleRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V4ScheduleEnvelope], error) {
+) (*core.Response[*polytomic.ScheduleEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -99,7 +99,7 @@ func (r *RawClient) Create(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.V4ScheduleEnvelope
+	var response *polytomic.ScheduleEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -118,7 +118,7 @@ func (r *RawClient) Create(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V4ScheduleEnvelope]{
+	return &core.Response[*polytomic.ScheduleEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -132,7 +132,7 @@ func (r *RawClient) Get(
 	// Unique identifier of the schedule.
 	scheduleID string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V4ScheduleEnvelope], error) {
+) (*core.Response[*polytomic.ScheduleEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -148,7 +148,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V4ScheduleEnvelope
+	var response *polytomic.ScheduleEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -166,7 +166,7 @@ func (r *RawClient) Get(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V4ScheduleEnvelope]{
+	return &core.Response[*polytomic.ScheduleEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -179,9 +179,9 @@ func (r *RawClient) Update(
 	syncID string,
 	// Unique identifier of the schedule to update.
 	scheduleID string,
-	request *bulksync.V4UpdateScheduleRequest,
+	request *bulksync.UpdateScheduleRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V4ScheduleEnvelope], error) {
+) (*core.Response[*polytomic.ScheduleEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -198,7 +198,7 @@ func (r *RawClient) Update(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.V4ScheduleEnvelope
+	var response *polytomic.ScheduleEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -217,7 +217,7 @@ func (r *RawClient) Update(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V4ScheduleEnvelope]{
+	return &core.Response[*polytomic.ScheduleEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

@@ -10,12 +10,12 @@ import (
 )
 
 var (
-	listExecutionsRequestFieldPageToken     = big.NewInt(1 << 0)
-	listExecutionsRequestFieldOnlyCompleted = big.NewInt(1 << 1)
-	listExecutionsRequestFieldAscending     = big.NewInt(1 << 2)
+	executionsListRequestFieldPageToken     = big.NewInt(1 << 0)
+	executionsListRequestFieldOnlyCompleted = big.NewInt(1 << 1)
+	executionsListRequestFieldAscending     = big.NewInt(1 << 2)
 )
 
-type ListExecutionsRequest struct {
+type ExecutionsListRequest struct {
 	PageToken     *string `json:"-" url:"page_token,omitempty"`
 	OnlyCompleted *bool   `json:"-" url:"only_completed,omitempty"`
 	Ascending     *bool   `json:"-" url:"ascending,omitempty"`
@@ -24,76 +24,76 @@ type ListExecutionsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (l *ListExecutionsRequest) require(field *big.Int) {
-	if l.explicitFields == nil {
-		l.explicitFields = big.NewInt(0)
+func (e *ExecutionsListRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
 	}
-	l.explicitFields.Or(l.explicitFields, field)
+	e.explicitFields.Or(e.explicitFields, field)
 }
 
 // SetPageToken sets the PageToken field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListExecutionsRequest) SetPageToken(pageToken *string) {
-	l.PageToken = pageToken
-	l.require(listExecutionsRequestFieldPageToken)
+func (e *ExecutionsListRequest) SetPageToken(pageToken *string) {
+	e.PageToken = pageToken
+	e.require(executionsListRequestFieldPageToken)
 }
 
 // SetOnlyCompleted sets the OnlyCompleted field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListExecutionsRequest) SetOnlyCompleted(onlyCompleted *bool) {
-	l.OnlyCompleted = onlyCompleted
-	l.require(listExecutionsRequestFieldOnlyCompleted)
+func (e *ExecutionsListRequest) SetOnlyCompleted(onlyCompleted *bool) {
+	e.OnlyCompleted = onlyCompleted
+	e.require(executionsListRequestFieldOnlyCompleted)
 }
 
 // SetAscending sets the Ascending field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListExecutionsRequest) SetAscending(ascending *bool) {
-	l.Ascending = ascending
-	l.require(listExecutionsRequestFieldAscending)
+func (e *ExecutionsListRequest) SetAscending(ascending *bool) {
+	e.Ascending = ascending
+	e.require(executionsListRequestFieldAscending)
 }
 
 var (
-	v2UpdateExecutionRequestFieldStatus = big.NewInt(1 << 0)
+	updateExecutionRequestFieldStatus = big.NewInt(1 << 0)
 )
 
-type V2UpdateExecutionRequest struct {
-	Status v24.UtilExecutionStatus `json:"status" url:"-"`
+type UpdateExecutionRequest struct {
+	Status v24.ExecutionStatus `json:"status" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (v *V2UpdateExecutionRequest) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
+func (u *UpdateExecutionRequest) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	v.explicitFields.Or(v.explicitFields, field)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2UpdateExecutionRequest) SetStatus(status v24.UtilExecutionStatus) {
-	v.Status = status
-	v.require(v2UpdateExecutionRequestFieldStatus)
+func (u *UpdateExecutionRequest) SetStatus(status v24.ExecutionStatus) {
+	u.Status = status
+	u.require(updateExecutionRequestFieldStatus)
 }
 
-func (v *V2UpdateExecutionRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2UpdateExecutionRequest
+func (u *UpdateExecutionRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateExecutionRequest
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*v = V2UpdateExecutionRequest(body)
+	*u = UpdateExecutionRequest(body)
 	return nil
 }
 
-func (v *V2UpdateExecutionRequest) MarshalJSON() ([]byte, error) {
-	type embed V2UpdateExecutionRequest
+func (u *UpdateExecutionRequest) MarshalJSON() ([]byte, error) {
+	type embed UpdateExecutionRequest
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*v),
+		embed: embed(*u),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }

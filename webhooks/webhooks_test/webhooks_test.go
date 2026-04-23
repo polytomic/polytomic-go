@@ -110,7 +110,7 @@ func TestWebhooksCreateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.V2CreateWebhooksSchema{
+	request := &polytomic.CreateWebhooksSchema{
 		Endpoint: "https://example.com/webhook",
 		Secret:   "secret",
 	}
@@ -160,7 +160,7 @@ func TestWebhooksUpdateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.V2UpdateWebhooksSchema{
+	request := &polytomic.UpdateWebhooksSchema{
 		Endpoint: "https://example.com/webhook",
 		Secret:   "secret",
 	}

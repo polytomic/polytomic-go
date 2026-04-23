@@ -50,7 +50,7 @@ func (c *Client) UpsertField(
 	connectionID string,
 	// Identifier of the schema the fields belong to.
 	schemaID string,
-	request *polytomic.V4UpsertSchemaFieldRequest,
+	request *polytomic.UpsertSchemaFieldRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.UpsertField(
@@ -117,7 +117,7 @@ func (c *Client) SetPrimaryKeys(
 	connectionID string,
 	// Identifier of the schema whose primary keys are being overridden.
 	schemaID string,
-	request *polytomic.V4SetPrimaryKeysRequest,
+	request *polytomic.SetPrimaryKeysRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.SetPrimaryKeys(
@@ -217,7 +217,7 @@ func (c *Client) GetStatus(
 	// Unique identifier of the connection whose schema cache status should be returned.
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.V3BulkSyncSourceStatusEnvelope, error) {
+) (*polytomic.BulkSyncSourceStatusEnvelope, error) {
 	response, err := c.WithRawResponse.GetStatus(
 		ctx,
 		id,
@@ -245,7 +245,7 @@ func (c *Client) Get(
 	// Identifier of the schema within the connection. Format depends on the connection type (e.g. schema.table for databases, object name for SaaS backends).
 	schemaID string,
 	opts ...option.RequestOption,
-) (*polytomic.V3BulkSyncSourceSchemaEnvelope, error) {
+) (*polytomic.BulkSyncSourceSchemaEnvelope, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		id,
@@ -277,7 +277,7 @@ func (c *Client) GetRecords(
 	// Identifier of the schema within the connection.
 	schemaID string,
 	opts ...option.RequestOption,
-) (*polytomic.V3SchemaRecordsResponseEnvelope, error) {
+) (*polytomic.SchemaRecordsResponseEnvelope, error) {
 	response, err := c.WithRawResponse.GetRecords(
 		ctx,
 		id,

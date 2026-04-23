@@ -10,11 +10,11 @@ import (
 )
 
 var (
-	v2JobResponseEnvelopeFieldData = big.NewInt(1 << 0)
+	jobResponseEnvelopeFieldData = big.NewInt(1 << 0)
 )
 
-type V2JobResponseEnvelope struct {
-	Data *V2JobResponse `json:"data,omitempty" url:"data,omitempty"`
+type JobResponseEnvelope struct {
+	Data *JobResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -23,72 +23,72 @@ type V2JobResponseEnvelope struct {
 	rawJSON         json.RawMessage
 }
 
-func (v *V2JobResponseEnvelope) GetData() *V2JobResponse {
-	if v == nil {
+func (j *JobResponseEnvelope) GetData() *JobResponse {
+	if j == nil {
 		return nil
 	}
-	return v.Data
+	return j.Data
 }
 
-func (v *V2JobResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
+func (j *JobResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if j == nil {
 		return nil
 	}
-	return v.extraProperties
+	return j.extraProperties
 }
 
-func (v *V2JobResponseEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
+func (j *JobResponseEnvelope) require(field *big.Int) {
+	if j.explicitFields == nil {
+		j.explicitFields = big.NewInt(0)
 	}
-	v.explicitFields.Or(v.explicitFields, field)
+	j.explicitFields.Or(j.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2JobResponseEnvelope) SetData(data *V2JobResponse) {
-	v.Data = data
-	v.require(v2JobResponseEnvelopeFieldData)
+func (j *JobResponseEnvelope) SetData(data *JobResponse) {
+	j.Data = data
+	j.require(jobResponseEnvelopeFieldData)
 }
 
-func (v *V2JobResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2JobResponseEnvelope
+func (j *JobResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler JobResponseEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = V2JobResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	*j = JobResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *j)
 	if err != nil {
 		return err
 	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
+	j.extraProperties = extraProperties
+	j.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2JobResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V2JobResponseEnvelope
+func (j *JobResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed JobResponseEnvelope
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*v),
+		embed: embed(*j),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, j.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (v *V2JobResponseEnvelope) String() string {
-	if v == nil {
+func (j *JobResponseEnvelope) String() string {
+	if j == nil {
 		return "<nil>"
 	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+	if len(j.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(j.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(v); err == nil {
+	if value, err := internal.StringifyJSON(j); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", j)
 }

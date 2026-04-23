@@ -33,9 +33,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) List(
 	ctx context.Context,
-	request *polytomic.ListEventsRequest,
+	request *polytomic.EventsListRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2EventsEnvelope], error) {
+) (*core.Response[*polytomic.EventsEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -54,7 +54,7 @@ func (r *RawClient) List(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V2EventsEnvelope
+	var response *polytomic.EventsEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -72,7 +72,7 @@ func (r *RawClient) List(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2EventsEnvelope]{
+	return &core.Response[*polytomic.EventsEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -82,7 +82,7 @@ func (r *RawClient) List(
 func (r *RawClient) GetTypes(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2EventTypesEnvelope], error) {
+) (*core.Response[*polytomic.EventTypesEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -94,7 +94,7 @@ func (r *RawClient) GetTypes(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V2EventTypesEnvelope
+	var response *polytomic.EventTypesEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -112,7 +112,7 @@ func (r *RawClient) GetTypes(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2EventTypesEnvelope]{
+	return &core.Response[*polytomic.EventTypesEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

@@ -1,6 +1,6 @@
 # Reference
 ## BulkSync
-<details><summary><code>client.BulkSync.List() -> *polytomic.V2BulkSyncListEnvelope</code></summary>
+<details><summary><code>client.BulkSync.List() -> *polytomic.BulkSyncListEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -38,7 +38,7 @@ later.
 <dd>
 
 ```go
-request := &polytomic.ListBulkSyncRequest{
+request := &polytomic.BulkSyncListRequest{
         Active: polytomic.Bool(
             true,
         ),
@@ -74,7 +74,7 @@ client.BulkSync.List(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.Create(request) -> *polytomic.V2BulkSyncResponseEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Create(request) -> *polytomic.BulkSyncResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -142,7 +142,7 @@ When omitted, automatic discovery defaults are conservative:
 <dd>
 
 ```go
-request := &polytomic.V2CreateBulkSyncRequest{
+request := &polytomic.CreateBulkSyncRequest{
         DestinationConfiguration: map[string]any{
             "schema": "my_schema",
         },
@@ -244,7 +244,7 @@ client.BulkSync.Create(
 <dl>
 <dd>
 
-**mode:** `*polytomic.BulkSyncTargetMode` 
+**mode:** `*polytomic.BulkSyncMode` 
     
 </dd>
 </dl>
@@ -328,7 +328,7 @@ client.BulkSync.Create(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.Get(ID) -> *polytomic.V2BulkSyncResponseEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Get(ID) -> *polytomic.BulkSyncResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -363,7 +363,7 @@ schedules, and discovery settings.
 <dd>
 
 ```go
-request := &polytomic.GetBulkSyncRequest{
+request := &polytomic.BulkSyncGetRequest{
         RefreshSchemas: polytomic.Bool(
             true,
         ),
@@ -408,7 +408,7 @@ client.BulkSync.Get(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.Update(ID, request) -> *polytomic.V2BulkSyncResponseEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Update(ID, request) -> *polytomic.BulkSyncResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -469,7 +469,7 @@ non-empty setting, including schema and field selections.
 <dd>
 
 ```go
-request := &polytomic.V2UpdateBulkSyncRequest{
+request := &polytomic.UpdateBulkSyncRequest{
         DestinationConfiguration: map[string]any{
             "schema": "my_schema",
         },
@@ -580,7 +580,7 @@ client.BulkSync.Update(
 <dl>
 <dd>
 
-**mode:** `*polytomic.BulkSyncTargetMode` 
+**mode:** `*polytomic.BulkSyncMode` 
     
 </dd>
 </dl>
@@ -697,7 +697,7 @@ removed.
 <dd>
 
 ```go
-request := &polytomic.RemoveBulkSyncRequest{
+request := &polytomic.BulkSyncRemoveRequest{
         RefreshSchemas: polytomic.Bool(
             true,
         ),
@@ -742,7 +742,7 @@ client.BulkSync.Remove(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.Activate(ID, request) -> *polytomic.V2ActivateSyncEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Activate(ID, request) -> *polytomic.ActivateSyncEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -778,7 +778,7 @@ any execution that is currently in progress.
 <dd>
 
 ```go
-request := &polytomic.V2ActivateSyncInput{
+request := &polytomic.ActivateSyncInput{
         Active: true,
     }
 client.BulkSync.Activate(
@@ -809,7 +809,7 @@ client.BulkSync.Activate(
 <dl>
 <dd>
 
-**request:** `*polytomic.V2ActivateSyncInput` 
+**request:** `*polytomic.ActivateSyncInput` 
     
 </dd>
 </dl>
@@ -821,7 +821,7 @@ client.BulkSync.Activate(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.Cancel(ID) -> *polytomic.V2CancelBulkSyncResponseEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Cancel(ID) -> *polytomic.CancelBulkSyncResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -885,7 +885,7 @@ client.BulkSync.Cancel(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.Start(ID, request) -> *polytomic.V3BulkSyncExecutionEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Start(ID, request) -> *polytomic.BulkSyncExecutionEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -927,7 +927,7 @@ If another execution is already running, the endpoint returns `409 Conflict`.
 <dd>
 
 ```go
-request := &polytomic.V3StartBulkSyncRequest{}
+request := &polytomic.StartBulkSyncRequest{}
 client.BulkSync.Start(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -956,7 +956,7 @@ client.BulkSync.Start(
 <dl>
 <dd>
 
-**fetchMode:** `*polytomic.V3BulkFetchMode` 
+**fetchMode:** `*polytomic.BulkFetchMode` 
     
 </dd>
 </dl>
@@ -1000,7 +1000,7 @@ client.BulkSync.Start(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.GetStatus(ID) -> *polytomic.V3BulkSyncStatusEnvelope</code></summary>
+<details><summary><code>client.BulkSync.GetStatus(ID) -> *polytomic.BulkSyncStatusEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -1068,7 +1068,7 @@ client.BulkSync.GetStatus(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.GetSource(ID) -> *polytomic.V3BulkSyncSourceEnvelope</code></summary>
+<details><summary><code>client.BulkSync.GetSource(ID) -> *polytomic.BulkSyncSourceEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -1108,7 +1108,7 @@ large sources.
 <dd>
 
 ```go
-request := &polytomic.GetSourceBulkSyncRequest{
+request := &polytomic.BulkSyncGetSourceRequest{
         IncludeFields: polytomic.Bool(
             true,
         ),
@@ -1153,7 +1153,7 @@ client.BulkSync.GetSource(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.GetDestination(ID) -> *polytomic.V2BulkSyncDestEnvelope</code></summary>
+<details><summary><code>client.BulkSync.GetDestination(ID) -> *polytomic.BulkSyncDestEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -1222,7 +1222,7 @@ client.BulkSync.GetDestination(
 </details>
 
 ## Connections
-<details><summary><code>client.Connections.GetTypes() -> *polytomic.V2ConnectionTypeResponseEnvelope</code></summary>
+<details><summary><code>client.Connections.GetTypes() -> *polytomic.ConnectionTypeResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -1336,7 +1336,7 @@ client.Connections.GetConnectionTypeSchema(
 </dl>
 </details>
 
-<details><summary><code>client.Connections.GetTypeParameterValues(Type, request) -> *polytomic.V2ConnectionParameterValuesResponseEnvelope</code></summary>
+<details><summary><code>client.Connections.GetTypeParameterValues(Type, request) -> *polytomic.ConnectionParameterValuesResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -1371,7 +1371,7 @@ authorization flow first and call the endpoint again.
 <dd>
 
 ```go
-request := &polytomic.V2GetConnectionTypeParameterValuesRequestSchema{
+request := &polytomic.GetConnectionTypeParameterValuesRequestSchema{
         Field: "field",
     }
 client.Connections.GetTypeParameterValues(
@@ -1438,7 +1438,7 @@ client.Connections.GetTypeParameterValues(
 </dl>
 </details>
 
-<details><summary><code>client.Connections.List() -> *polytomic.V2ConnectionListResponseEnvelope</code></summary>
+<details><summary><code>client.Connections.List() -> *polytomic.ConnectionListResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -1489,7 +1489,7 @@ client.Connections.List(
 </dl>
 </details>
 
-<details><summary><code>client.Connections.Create(request) -> *polytomic.V2CreateConnectionResponseEnvelope</code></summary>
+<details><summary><code>client.Connections.Create(request) -> *polytomic.CreateConnectionResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -1526,7 +1526,7 @@ for the required and optional fields for each type.
 <dd>
 
 ```go
-request := &polytomic.V2CreateConnectionRequestSchema{
+request := &polytomic.CreateConnectionRequestSchema{
         Configuration: map[string]any{
             "database": "example",
             "hostname": "postgres.example.com",
@@ -1624,7 +1624,7 @@ client.Connections.Create(
 </dl>
 </details>
 
-<details><summary><code>client.Connections.Connect(request) -> *polytomic.V3ConnectCardResponseEnvelope</code></summary>
+<details><summary><code>client.Connections.Connect(request) -> *polytomic.ConnectCardResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -1655,7 +1655,7 @@ See also:
 <dd>
 
 ```go
-request := &polytomic.V3ConnectCardRequest{
+request := &polytomic.ConnectCardRequest{
         Name: "Salesforce Connection",
         RedirectURL: "redirect_url",
     }
@@ -1776,7 +1776,7 @@ succeeds.
 <dd>
 
 ```go
-request := &polytomic.V4TestConnectionRequest{
+request := &polytomic.TestConnectionRequest{
         Configuration: map[string]any{
             "database": "example",
             "hostname": "postgres.example.com",
@@ -1833,7 +1833,7 @@ client.Connections.TestConnection(
 </dl>
 </details>
 
-<details><summary><code>client.Connections.Get(ID) -> *polytomic.V2ConnectionResponseEnvelope</code></summary>
+<details><summary><code>client.Connections.Get(ID) -> *polytomic.ConnectionResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -1896,7 +1896,7 @@ client.Connections.Get(
 </dl>
 </details>
 
-<details><summary><code>client.Connections.Update(ID, request) -> *polytomic.V2CreateConnectionResponseEnvelope</code></summary>
+<details><summary><code>client.Connections.Update(ID, request) -> *polytomic.CreateConnectionResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -1936,7 +1936,7 @@ interrupted; the updated configuration takes effect on their next execution.
 <dd>
 
 ```go
-request := &polytomic.V2UpdateConnectionRequestSchema{
+request := &polytomic.UpdateConnectionRequestSchema{
         Configuration: map[string]any{
             "database": "example",
             "hostname": "postgres.example.com",
@@ -2074,7 +2074,7 @@ Deletes a connection.
 <dd>
 
 ```go
-request := &polytomic.RemoveConnectionsRequest{
+request := &polytomic.ConnectionsRemoveRequest{
         Force: polytomic.Bool(
             true,
         ),
@@ -2119,7 +2119,7 @@ client.Connections.Remove(
 </dl>
 </details>
 
-<details><summary><code>client.Connections.GetParameterValues(ID) -> *polytomic.V2ConnectionParameterValuesResponseEnvelope</code></summary>
+<details><summary><code>client.Connections.GetParameterValues(ID) -> *polytomic.ConnectionParameterValuesResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -2217,7 +2217,7 @@ Shares a connection with another organization in the caller's partner account.
 <dd>
 
 ```go
-request := &polytomic.V2CreateSharedConnectionRequestSchema{
+request := &polytomic.APIRequest{
         ChildOrganizationID: "248df4b7-aa70-47b8-a036-33ac447e668d",
     }
 client.Connections.CreateSharedConnection(
@@ -2268,7 +2268,7 @@ client.Connections.CreateSharedConnection(
 </dl>
 </details>
 
-<details><summary><code>client.Connections.ListSharedConnections(ParentConnectionID) -> *polytomic.V2ConnectionListResponseEnvelope</code></summary>
+<details><summary><code>client.Connections.ListSharedConnections(ParentConnectionID) -> *polytomic.ConnectionListResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -2446,7 +2446,7 @@ the endpoint returns `404`.
 <dd>
 
 ```go
-request := &polytomic.GetQueryQueryRunnerRequest{
+request := &polytomic.QueryRunnerGetQueryRequest{
         Page: polytomic.String(
             "page",
         ),
@@ -2529,7 +2529,7 @@ the whole batch was applied uniformly.
 <dd>
 
 ```go
-request := &polytomic.V4UpsertSchemaFieldRequest{}
+request := &polytomic.UpsertSchemaFieldRequest{}
 client.Schemas.UpsertField(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -2702,7 +2702,7 @@ identifier for your use case.
 <dd>
 
 ```go
-request := &polytomic.V4SetPrimaryKeysRequest{}
+request := &polytomic.SetPrimaryKeysRequest{}
 client.Schemas.SetPrimaryKeys(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -2900,7 +2900,7 @@ client.Schemas.Refresh(
 </dl>
 </details>
 
-<details><summary><code>client.Schemas.GetStatus(ID) -> *polytomic.V3BulkSyncSourceStatusEnvelope</code></summary>
+<details><summary><code>client.Schemas.GetStatus(ID) -> *polytomic.BulkSyncSourceStatusEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -2974,7 +2974,7 @@ client.Schemas.GetStatus(
 </dl>
 </details>
 
-<details><summary><code>client.Schemas.Get(ID, SchemaID) -> *polytomic.V3BulkSyncSourceSchemaEnvelope</code></summary>
+<details><summary><code>client.Schemas.Get(ID, SchemaID) -> *polytomic.BulkSyncSourceSchemaEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -3049,7 +3049,7 @@ client.Schemas.Get(
 </dl>
 </details>
 
-<details><summary><code>client.Schemas.GetRecords(ID, SchemaID) -> *polytomic.V3SchemaRecordsResponseEnvelope</code></summary>
+<details><summary><code>client.Schemas.GetRecords(ID, SchemaID) -> *polytomic.SchemaRecordsResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -3128,7 +3128,7 @@ client.Schemas.GetRecords(
 </details>
 
 ## Models
-<details><summary><code>client.Models.GetEnrichmentSource(ID) -> *polytomic.V4GetSyncSourceMetaEnvelope</code></summary>
+<details><summary><code>client.Models.GetEnrichmentSource(ID) -> *polytomic.GetModelSyncSourceMetaEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -3167,7 +3167,7 @@ configuration fields required to set it up. Pass those values in the
 <dd>
 
 ```go
-request := &polytomic.GetEnrichmentSourceModelsRequest{}
+request := &polytomic.ModelsGetEnrichmentSourceRequest{}
 client.Models.GetEnrichmentSource(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -3241,7 +3241,7 @@ expected inputs.
 <dd>
 
 ```go
-request := &polytomic.V2EnrichmentInputFieldsRequest{}
+request := &polytomic.GetEnrichmentInputFieldsRequest{}
 client.Models.Post(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -3282,7 +3282,7 @@ client.Models.Post(
 </dl>
 </details>
 
-<details><summary><code>client.Models.Preview(request) -> *polytomic.V2ModelResponseEnvelope</code></summary>
+<details><summary><code>client.Models.Preview(request) -> *polytomic.ModelResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -3314,11 +3314,11 @@ configuration before calling [`POST /api/models`](../../api-reference/models/cre
 <dd>
 
 ```go
-request := &polytomic.PreviewModelsRequest{
+request := &polytomic.ModelsPreviewRequest{
         Async: polytomic.Bool(
             true,
         ),
-        Body: &polytomic.V2CreateModelRequest{
+        Body: &polytomic.CreateModelRequest{
             Configuration: map[string]any{
                 "table": "public.users",
             },
@@ -3353,7 +3353,7 @@ client.Models.Preview(
 <dl>
 <dd>
 
-**request:** `*polytomic.V2CreateModelRequest` 
+**request:** `*polytomic.CreateModelRequest` 
     
 </dd>
 </dl>
@@ -3365,7 +3365,7 @@ client.Models.Preview(
 </dl>
 </details>
 
-<details><summary><code>client.Models.List() -> *polytomic.V2ModelListResponseEnvelope</code></summary>
+<details><summary><code>client.Models.List() -> *polytomic.ModelListResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -3416,7 +3416,7 @@ client.Models.List(
 </dl>
 </details>
 
-<details><summary><code>client.Models.Create(request) -> *polytomic.V2ModelResponseEnvelope</code></summary>
+<details><summary><code>client.Models.Create(request) -> *polytomic.ModelResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -3451,11 +3451,11 @@ whether a connection type supports use as a source.
 <dd>
 
 ```go
-request := &polytomic.CreateModelsRequest{
+request := &polytomic.ModelsCreateRequest{
         Async: polytomic.Bool(
             true,
         ),
-        Body: &polytomic.V2CreateModelRequest{
+        Body: &polytomic.CreateModelRequest{
             Configuration: map[string]any{
                 "table": "public.users",
             },
@@ -3490,7 +3490,7 @@ client.Models.Create(
 <dl>
 <dd>
 
-**request:** `*polytomic.V2CreateModelRequest` 
+**request:** `*polytomic.CreateModelRequest` 
     
 </dd>
 </dl>
@@ -3502,7 +3502,7 @@ client.Models.Create(
 </dl>
 </details>
 
-<details><summary><code>client.Models.Get(ID) -> *polytomic.V2ModelResponseEnvelope</code></summary>
+<details><summary><code>client.Models.Get(ID) -> *polytomic.ModelResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -3533,7 +3533,7 @@ changes, use [`GET /api/models/{id}/sample`](../../../api-reference/models/sampl
 <dd>
 
 ```go
-request := &polytomic.GetModelsRequest{
+request := &polytomic.ModelsGetRequest{
         Async: polytomic.Bool(
             true,
         ),
@@ -3578,7 +3578,7 @@ client.Models.Get(
 </dl>
 </details>
 
-<details><summary><code>client.Models.Update(ID, request) -> *polytomic.V2ModelResponseEnvelope</code></summary>
+<details><summary><code>client.Models.Update(ID, request) -> *polytomic.ModelResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -3616,7 +3616,7 @@ next sync execution that uses this model.
 <dd>
 
 ```go
-request := &polytomic.V2UpdateModelRequest{
+request := &polytomic.UpdateModelRequest{
         Async: polytomic.Bool(
             false,
         ),
@@ -3686,7 +3686,7 @@ client.Models.Update(
 <dl>
 <dd>
 
-**enricher:** `*polytomic.V2Enrichment` 
+**enricher:** `*polytomic.Enrichment` 
     
 </dd>
 </dl>
@@ -3800,7 +3800,7 @@ Deletes a model.
 <dd>
 
 ```go
-request := &polytomic.RemoveModelsRequest{
+request := &polytomic.ModelsRemoveRequest{
         Async: polytomic.Bool(
             true,
         ),
@@ -3845,7 +3845,7 @@ client.Models.Remove(
 </dl>
 </details>
 
-<details><summary><code>client.Models.Sample(ID) -> *polytomic.V2ModelSampleResponseEnvelope</code></summary>
+<details><summary><code>client.Models.Sample(ID) -> *polytomic.ModelSampleResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -3876,7 +3876,7 @@ work runs as a background job.
 <dd>
 
 ```go
-request := &polytomic.SampleModelsRequest{
+request := &polytomic.ModelsSampleRequest{
         Async: polytomic.Bool(
             true,
         ),
@@ -3922,7 +3922,7 @@ client.Models.Sample(
 </details>
 
 ## ModelSync
-<details><summary><code>client.ModelSync.GetSource(ID) -> *polytomic.V4GetSyncSourceMetaEnvelope</code></summary>
+<details><summary><code>client.ModelSync.GetSource(ID) -> *polytomic.GetModelSyncSourceMetaEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -3954,7 +3954,7 @@ sync mapping with
 <dd>
 
 ```go
-request := &polytomic.GetSourceModelSyncRequest{}
+request := &polytomic.ModelSyncGetSourceRequest{}
 client.ModelSync.GetSource(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -3995,7 +3995,7 @@ client.ModelSync.GetSource(
 </dl>
 </details>
 
-<details><summary><code>client.ModelSync.GetSourceFields(ID) -> *polytomic.V2ModelFieldResponse</code></summary>
+<details><summary><code>client.ModelSync.GetSourceFields(ID) -> *polytomic.ModelFieldResponse</code></summary>
 <dl>
 <dd>
 
@@ -4033,7 +4033,7 @@ The available source configuration parameters are described by
 <dd>
 
 ```go
-request := &polytomic.GetSourceFieldsModelSyncRequest{}
+request := &polytomic.ModelSyncGetSourceFieldsRequest{}
 client.ModelSync.GetSourceFields(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -4074,7 +4074,7 @@ client.ModelSync.GetSourceFields(
 </dl>
 </details>
 
-<details><summary><code>client.ModelSync.List() -> *polytomic.V2ListSyncResponseEnvelope</code></summary>
+<details><summary><code>client.ModelSync.List() -> *polytomic.ListModelSyncResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -4114,11 +4114,11 @@ To inspect a specific sync in more detail, follow up with
 <dd>
 
 ```go
-request := &polytomic.ListModelSyncRequest{
+request := &polytomic.ModelSyncListRequest{
         Active: polytomic.Bool(
             true,
         ),
-        Mode: polytomic.ModelsyncSyncTargetModeCreate.Ptr(),
+        Mode: polytomic.ModelSyncModeCreate.Ptr(),
         TargetConnectionID: polytomic.String(
             "0b155265-c537-44c9-9359-a3ceb468a4da",
         ),
@@ -4150,7 +4150,7 @@ client.ModelSync.List(
 <dl>
 <dd>
 
-**mode:** `*polytomic.ModelsyncSyncTargetMode` 
+**mode:** `*polytomic.ModelSyncMode` 
     
 </dd>
 </dl>
@@ -4170,7 +4170,7 @@ client.ModelSync.List(
 </dl>
 </details>
 
-<details><summary><code>client.ModelSync.Create(request) -> *polytomic.V2SyncResponseEnvelope</code></summary>
+<details><summary><code>client.ModelSync.Create(request) -> *polytomic.ModelSyncResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -4254,16 +4254,16 @@ a connection supports target creation.
 <dd>
 
 ```go
-request := &polytomic.V2CreateSyncRequest{
-        Fields: []*polytomic.V2SyncField{
-            &polytomic.V2SyncField{
+request := &polytomic.CreateModelSyncRequest{
+        Fields: []*polytomic.ModelSyncField{
+            &polytomic.ModelSyncField{
                 Target: "name",
             },
         },
-        Mode: polytomic.ModelsyncSyncTargetModeCreate,
+        Mode: polytomic.ModelSyncModeCreate,
         Name: "Users Sync",
         Schedule: &polytomic.Schedule{},
-        Target: &polytomic.V2Target{
+        Target: &polytomic.Target{
             ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
         },
     }
@@ -4302,7 +4302,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**fields:** `[]*polytomic.V2SyncField` — Fields to sync from source to destination.
+**fields:** `[]*polytomic.ModelSyncField` — Fields to sync from source to destination.
     
 </dd>
 </dl>
@@ -4318,7 +4318,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**filters:** `[]*polytomic.V2Filter` — Filters to apply to the source data.
+**filters:** `[]*polytomic.Filter` — Filters to apply to the source data.
     
 </dd>
 </dl>
@@ -4326,7 +4326,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**identity:** `*polytomic.V2Identity` 
+**identity:** `*polytomic.Identity` 
     
 </dd>
 </dl>
@@ -4334,7 +4334,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**mode:** `*polytomic.ModelsyncSyncTargetMode` 
+**mode:** `*polytomic.ModelSyncMode` 
     
 </dd>
 </dl>
@@ -4366,7 +4366,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**overrideFields:** `[]*polytomic.V2SyncField` — Values to set in the target unconditionally.
+**overrideFields:** `[]*polytomic.ModelSyncField` — Values to set in the target unconditionally.
     
 </dd>
 </dl>
@@ -4374,7 +4374,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**overrides:** `[]*polytomic.V2Override` — Conditional value replacement for fields.
+**overrides:** `[]*polytomic.Override` — Conditional value replacement for fields.
     
 </dd>
 </dl>
@@ -4414,7 +4414,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**target:** `*polytomic.V2Target` 
+**target:** `*polytomic.Target` 
     
 </dd>
 </dl>
@@ -4426,7 +4426,7 @@ client.ModelSync.Create(
 </dl>
 </details>
 
-<details><summary><code>client.ModelSync.GetScheduleOptions() -> *polytomic.V2ScheduleOptionResponseEnvelope</code></summary>
+<details><summary><code>client.ModelSync.GetScheduleOptions() -> *polytomic.ScheduleOptionResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -4472,7 +4472,7 @@ client.ModelSync.GetScheduleOptions(
 </dl>
 </details>
 
-<details><summary><code>client.ModelSync.Get(ID) -> *polytomic.V2SyncResponseEnvelope</code></summary>
+<details><summary><code>client.ModelSync.Get(ID) -> *polytomic.ModelSyncResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -4534,7 +4534,7 @@ client.ModelSync.Get(
 </dl>
 </details>
 
-<details><summary><code>client.ModelSync.Update(ID, request) -> *polytomic.V2SyncResponseEnvelope</code></summary>
+<details><summary><code>client.ModelSync.Update(ID, request) -> *polytomic.ModelSyncResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -4575,16 +4575,16 @@ take effect on the sync's next execution.
 <dd>
 
 ```go
-request := &polytomic.V2UpdateSyncRequest{
-        Fields: []*polytomic.V2SyncField{
-            &polytomic.V2SyncField{
+request := &polytomic.UpdateModelSyncRequest{
+        Fields: []*polytomic.ModelSyncField{
+            &polytomic.ModelSyncField{
                 Target: "name",
             },
         },
-        Mode: polytomic.ModelsyncSyncTargetModeCreate,
+        Mode: polytomic.ModelSyncModeCreate,
         Name: "Users Sync",
         Schedule: &polytomic.Schedule{},
-        Target: &polytomic.V2Target{
+        Target: &polytomic.Target{
             ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
         },
     }
@@ -4632,7 +4632,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**fields:** `[]*polytomic.V2SyncField` — Fields to sync from source to destination.
+**fields:** `[]*polytomic.ModelSyncField` — Fields to sync from source to destination.
     
 </dd>
 </dl>
@@ -4648,7 +4648,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**filters:** `[]*polytomic.V2Filter` — Filters to apply to the source data.
+**filters:** `[]*polytomic.Filter` — Filters to apply to the source data.
     
 </dd>
 </dl>
@@ -4656,7 +4656,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**identity:** `*polytomic.V2Identity` 
+**identity:** `*polytomic.Identity` 
     
 </dd>
 </dl>
@@ -4664,7 +4664,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**mode:** `*polytomic.ModelsyncSyncTargetMode` 
+**mode:** `*polytomic.ModelSyncMode` 
     
 </dd>
 </dl>
@@ -4696,7 +4696,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**overrideFields:** `[]*polytomic.V2SyncField` — Values to set in the target unconditionally.
+**overrideFields:** `[]*polytomic.ModelSyncField` — Values to set in the target unconditionally.
     
 </dd>
 </dl>
@@ -4704,7 +4704,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**overrides:** `[]*polytomic.V2Override` — Conditional value replacement for fields.
+**overrides:** `[]*polytomic.Override` — Conditional value replacement for fields.
     
 </dd>
 </dl>
@@ -4744,7 +4744,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**target:** `*polytomic.V2Target` 
+**target:** `*polytomic.Target` 
     
 </dd>
 </dl>
@@ -4818,7 +4818,7 @@ client.ModelSync.Remove(
 </dl>
 </details>
 
-<details><summary><code>client.ModelSync.Activate(ID, request) -> *polytomic.V2ActivateSyncEnvelope</code></summary>
+<details><summary><code>client.ModelSync.Activate(ID, request) -> *polytomic.ActivateSyncEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -4852,7 +4852,7 @@ Only active syncs execute on schedule or in response to a manual trigger. Set
 <dd>
 
 ```go
-request := &polytomic.V2ActivateSyncInput{
+request := &polytomic.ActivateSyncInput{
         Active: true,
     }
 client.ModelSync.Activate(
@@ -4883,7 +4883,7 @@ client.ModelSync.Activate(
 <dl>
 <dd>
 
-**request:** `*polytomic.V2ActivateSyncInput` 
+**request:** `*polytomic.ActivateSyncInput` 
     
 </dd>
 </dl>
@@ -4895,7 +4895,7 @@ client.ModelSync.Activate(
 </dl>
 </details>
 
-<details><summary><code>client.ModelSync.Cancel(ID) -> *polytomic.V2CancelSyncResponseEnvelope</code></summary>
+<details><summary><code>client.ModelSync.Cancel(ID) -> *polytomic.CancelModelSyncResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -4959,7 +4959,7 @@ client.ModelSync.Cancel(
 </dl>
 </details>
 
-<details><summary><code>client.ModelSync.Start(ID, request) -> *polytomic.V2StartSyncResponseEnvelope</code></summary>
+<details><summary><code>client.ModelSync.Start(ID, request) -> *polytomic.StartModelSyncResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -4990,7 +4990,7 @@ Starts a new execution of a model sync.
 <dd>
 
 ```go
-request := &polytomic.V2StartSyncRequest{}
+request := &polytomic.StartModelSyncRequest{}
 client.ModelSync.Start(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -5047,7 +5047,7 @@ client.ModelSync.Start(
 </dl>
 </details>
 
-<details><summary><code>client.ModelSync.GetStatus(ID) -> *polytomic.V2SyncStatusEnvelope</code></summary>
+<details><summary><code>client.ModelSync.GetStatus(ID) -> *polytomic.SyncStatusEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -5110,7 +5110,7 @@ client.ModelSync.GetStatus(
 </details>
 
 ## Events
-<details><summary><code>client.Events.List() -> *polytomic.V2EventsEnvelope</code></summary>
+<details><summary><code>client.Events.List() -> *polytomic.EventsEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -5148,7 +5148,7 @@ narrow results to a specific category of activity.
 <dd>
 
 ```go
-request := &polytomic.ListEventsRequest{
+request := &polytomic.EventsListRequest{
         OrganizationID: polytomic.String(
             "248df4b7-aa70-47b8-a036-33ac447e668d",
         ),
@@ -5232,7 +5232,7 @@ client.Events.List(
 </dl>
 </details>
 
-<details><summary><code>client.Events.GetTypes() -> *polytomic.V2EventTypesEnvelope</code></summary>
+<details><summary><code>client.Events.GetTypes() -> *polytomic.EventTypesEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -5278,7 +5278,7 @@ client.Events.GetTypes(
 </details>
 
 ## Jobs
-<details><summary><code>client.Jobs.Get(Type, ID) -> *polytomic.V2JobResponseEnvelope</code></summary>
+<details><summary><code>client.Jobs.Get(Type, ID) -> *polytomic.JobResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -5356,7 +5356,7 @@ client.Jobs.Get(
 </details>
 
 ## Identity
-<details><summary><code>client.Identity.Get() -> *polytomic.V2GetIdentityResponseEnvelope</code></summary>
+<details><summary><code>client.Identity.Get() -> *polytomic.GetIdentityResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -5520,7 +5520,7 @@ client.Notifications.SetGlobalErrorSubscribers(
 </details>
 
 ## Organization
-<details><summary><code>client.Organization.List() -> *polytomic.V2OrganizationsEnvelope</code></summary>
+<details><summary><code>client.Organization.List() -> *polytomic.OrganizationsEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -5574,7 +5574,7 @@ client.Organization.List(
 </dl>
 </details>
 
-<details><summary><code>client.Organization.Create(request) -> *polytomic.V2OrganizationEnvelope</code></summary>
+<details><summary><code>client.Organization.Create(request) -> *polytomic.OrganizationEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -5605,7 +5605,7 @@ Creates a new organization under the calling partner account, optionally configu
 <dd>
 
 ```go
-request := &polytomic.V2CreateOrganizationRequestSchema{
+request := &polytomic.CreateOrganizationRequestSchema{
         Name: "My Organization",
     }
 client.Organization.Create(
@@ -5679,7 +5679,7 @@ client.Organization.Create(
 </dl>
 </details>
 
-<details><summary><code>client.Organization.Get(ID) -> *polytomic.V2OrganizationEnvelope</code></summary>
+<details><summary><code>client.Organization.Get(ID) -> *polytomic.OrganizationEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -5741,7 +5741,7 @@ client.Organization.Get(
 </dl>
 </details>
 
-<details><summary><code>client.Organization.Update(ID, request) -> *polytomic.V2OrganizationEnvelope</code></summary>
+<details><summary><code>client.Organization.Update(ID, request) -> *polytomic.OrganizationEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -5772,7 +5772,7 @@ Updates an organization's configuration.
 <dd>
 
 ```go
-request := &polytomic.V2UpdateOrganizationRequestSchema{
+request := &polytomic.UpdateOrganizationRequestSchema{
         Name: "My Organization",
     }
 client.Organization.Update(
@@ -5920,7 +5920,7 @@ client.Organization.Remove(
 </details>
 
 ## Users
-<details><summary><code>client.Users.List(OrgID) -> *polytomic.V2ListUsersEnvelope</code></summary>
+<details><summary><code>client.Users.List(OrgID) -> *polytomic.ListUsersEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -5982,7 +5982,7 @@ client.Users.List(
 </dl>
 </details>
 
-<details><summary><code>client.Users.Create(OrgID, request) -> *polytomic.V2UserEnvelope</code></summary>
+<details><summary><code>client.Users.Create(OrgID, request) -> *polytomic.UserEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -6013,7 +6013,7 @@ Creates a new user in the specified organization and assigns the requested permi
 <dd>
 
 ```go
-request := &polytomic.V2CreateUserRequestSchema{
+request := &polytomic.CreateUserRequestSchema{
         Email: "mail@example.com",
     }
 client.Users.Create(
@@ -6072,7 +6072,7 @@ client.Users.Create(
 </dl>
 </details>
 
-<details><summary><code>client.Users.Get(OrgID, ID) -> *polytomic.V2UserEnvelope</code></summary>
+<details><summary><code>client.Users.Get(OrgID, ID) -> *polytomic.UserEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -6143,7 +6143,7 @@ client.Users.Get(
 </dl>
 </details>
 
-<details><summary><code>client.Users.Update(OrgID, ID, request) -> *polytomic.V2UserEnvelope</code></summary>
+<details><summary><code>client.Users.Update(OrgID, ID, request) -> *polytomic.UserEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -6174,7 +6174,7 @@ Updates a user's assigned permissions roles.
 <dd>
 
 ```go
-request := &polytomic.V2UpdateUserRequestSchema{
+request := &polytomic.UpdateUserRequestSchema{
         Email: "mail@example.com",
     }
 client.Users.Update(
@@ -6242,7 +6242,7 @@ client.Users.Update(
 </dl>
 </details>
 
-<details><summary><code>client.Users.Remove(OrgID, ID) -> *polytomic.V2UserEnvelope</code></summary>
+<details><summary><code>client.Users.Remove(OrgID, ID) -> *polytomic.UserEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -6313,7 +6313,7 @@ client.Users.Remove(
 </dl>
 </details>
 
-<details><summary><code>client.Users.CreateAPIKey(OrgID, ID) -> *polytomic.V2APIKeyResponseEnvelope</code></summary>
+<details><summary><code>client.Users.CreateAPIKey(OrgID, ID) -> *polytomic.APIKeyResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -6344,7 +6344,7 @@ Issues a new API key for the specified user.
 <dd>
 
 ```go
-request := &polytomic.CreateAPIKeyUsersRequest{
+request := &polytomic.UsersCreateAPIKeyRequest{
         Force: polytomic.Bool(
             true,
         ),
@@ -6399,7 +6399,7 @@ client.Users.CreateAPIKey(
 </details>
 
 ## Webhooks
-<details><summary><code>client.Webhooks.List() -> *polytomic.V2WebhookListEnvelope</code></summary>
+<details><summary><code>client.Webhooks.List() -> *polytomic.WebhookListEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -6448,7 +6448,7 @@ client.Webhooks.List(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.Create(request) -> *polytomic.V2WebhookEnvelope</code></summary>
+<details><summary><code>client.Webhooks.Create(request) -> *polytomic.WebhookEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -6482,7 +6482,7 @@ Creates the organization's webhook.
 <dd>
 
 ```go
-request := &polytomic.V2CreateWebhooksSchema{
+request := &polytomic.CreateWebhooksSchema{
         Endpoint: "https://example.com/webhook",
         Secret: "secret",
     }
@@ -6533,7 +6533,7 @@ client.Webhooks.Create(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.Get(ID) -> *polytomic.V2WebhookEnvelope</code></summary>
+<details><summary><code>client.Webhooks.Get(ID) -> *polytomic.WebhookEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -6598,7 +6598,7 @@ client.Webhooks.Get(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.Update(ID, request) -> *polytomic.V2WebhookEnvelope</code></summary>
+<details><summary><code>client.Webhooks.Update(ID, request) -> *polytomic.WebhookEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -6632,7 +6632,7 @@ Updates an existing webhook.
 <dd>
 
 ```go
-request := &polytomic.V2UpdateWebhooksSchema{
+request := &polytomic.UpdateWebhooksSchema{
         Endpoint: "https://example.com/webhook",
         Secret: "secret",
     }
@@ -6761,7 +6761,7 @@ client.Webhooks.Remove(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.Disable(ID) -> *polytomic.V2WebhookEnvelope</code></summary>
+<details><summary><code>client.Webhooks.Disable(ID) -> *polytomic.WebhookEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -6831,7 +6831,7 @@ client.Webhooks.Disable(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.Enable(ID) -> *polytomic.V2WebhookEnvelope</code></summary>
+<details><summary><code>client.Webhooks.Enable(ID) -> *polytomic.WebhookEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -6900,7 +6900,7 @@ client.Webhooks.Enable(
 </details>
 
 ## BulkSync Executions
-<details><summary><code>client.BulkSync.Executions.ListStatus() -> *polytomic.V4ListBulkSyncExecutionsStatusEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Executions.ListStatus() -> *polytomic.ListBulkSyncExecutionStatusEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -6939,7 +6939,7 @@ expands the request to the caller's organization scope.
 <dd>
 
 ```go
-request := &bulksync.ListStatusExecutionsRequest{
+request := &bulksync.ExecutionsListStatusRequest{
         All: polytomic.Bool(
             true,
         ),
@@ -6999,7 +6999,7 @@ client.BulkSync.Executions.ListStatus(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.Executions.List(ID) -> *polytomic.V3ListBulkSyncExecutionsEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Executions.List(ID) -> *polytomic.ListBulkSyncExecutionsEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -7040,7 +7040,7 @@ use [`GET /api/bulk/syncs/{id}/executions/{exec_id}`](../../../../../api-referen
 <dd>
 
 ```go
-request := &bulksync.ListExecutionsRequest{
+request := &bulksync.ExecutionsListRequest{
         PageToken: polytomic.String(
             "AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==",
         ),
@@ -7118,7 +7118,7 @@ client.BulkSync.Executions.List(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.Executions.Get(ID, ExecID) -> *polytomic.V3BulkSyncExecutionEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Executions.Get(ID, ExecID) -> *polytomic.BulkSyncExecutionEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -7190,7 +7190,7 @@ client.BulkSync.Executions.Get(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.Executions.Cancel(ID, ExecID) -> *polytomic.V2CancelBulkSyncResponseEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Executions.Cancel(ID, ExecID) -> *polytomic.CancelBulkSyncResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -7378,7 +7378,7 @@ Starts an asynchronous job that packages the log files for a single bulk sync ex
 <dd>
 
 ```go
-request := &bulksync.ExportLogsExecutionsRequest{
+request := &bulksync.ExecutionsExportLogsRequest{
         Notify: polytomic.Bool(
             true,
         ),
@@ -7433,7 +7433,7 @@ client.BulkSync.Executions.ExportLogs(
 </details>
 
 ## BulkSync Schemas
-<details><summary><code>client.BulkSync.Schemas.List(ID) -> *polytomic.V3ListBulkSchemaEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Schemas.List(ID) -> *polytomic.ListBulkSchema</code></summary>
 <dl>
 <dd>
 
@@ -7471,7 +7471,7 @@ or
 <dd>
 
 ```go
-request := &bulksync.ListSchemasRequest{}
+request := &bulksync.SchemasListRequest{}
 client.BulkSync.Schemas.List(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -7512,7 +7512,7 @@ client.BulkSync.Schemas.List(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.Schemas.Patch(ID, request) -> *polytomic.V3ListBulkSchemaEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Schemas.Patch(ID, request) -> *polytomic.ListBulkSchema</code></summary>
 <dl>
 <dd>
 
@@ -7553,7 +7553,7 @@ with explicit `enabled` values for each field.
 <dd>
 
 ```go
-request := &bulksync.V3BulkSyncSchemasRequest{}
+request := &bulksync.BulkSyncSchemasRequest{}
 client.BulkSync.Schemas.Patch(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -7582,7 +7582,7 @@ client.BulkSync.Schemas.Patch(
 <dl>
 <dd>
 
-**schemas:** `[]*polytomic.V3BulkSchema` — Schemas to patch. Schemas are matched by id; only schemas present in this list are updated.
+**schemas:** `[]*polytomic.BulkSchema` — Schemas to patch. Schemas are matched by id; only schemas present in this list are updated.
     
 </dd>
 </dl>
@@ -7594,7 +7594,7 @@ client.BulkSync.Schemas.Patch(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.Schemas.Get(ID, SchemaID) -> *polytomic.V3BulkSchemaEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Schemas.Get(ID, SchemaID) -> *polytomic.BulkSchemaEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -7670,7 +7670,7 @@ client.BulkSync.Schemas.Get(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.Schemas.Update(ID, SchemaID, request) -> *polytomic.V3BulkSchemaEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Schemas.Update(ID, SchemaID, request) -> *polytomic.BulkSchemaEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -7711,7 +7711,7 @@ fields are enabled, include the `fields` array with explicit `enabled` values.
 <dd>
 
 ```go
-request := &bulksync.V3UpdateBulkSchema{}
+request := &bulksync.UpdateBulkSchema{}
 client.BulkSync.Schemas.Update(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -7773,7 +7773,7 @@ client.BulkSync.Schemas.Update(
 <dl>
 <dd>
 
-**fields:** `[]*polytomic.V3UpdateBulkField` — Field-level configuration. Supplying an empty list enables every field discovered on the source.
+**fields:** `[]*polytomic.UpdateBulkField` — Field-level configuration. Supplying an empty list enables every field discovered on the source.
     
 </dd>
 </dl>
@@ -7817,7 +7817,7 @@ client.BulkSync.Schemas.Update(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.Schemas.Cancel(ID, SchemaID) -> *polytomic.V2CancelBulkSyncResponseEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Schemas.Cancel(ID, SchemaID) -> *polytomic.CancelBulkSyncResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -7892,7 +7892,7 @@ client.BulkSync.Schemas.Cancel(
 </details>
 
 ## BulkSync Schedules
-<details><summary><code>client.BulkSync.Schedules.List(SyncID) -> *polytomic.V4SchedulesEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Schedules.List(SyncID) -> *polytomic.SchedulesEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -7953,7 +7953,7 @@ client.BulkSync.Schedules.List(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.Schedules.Create(SyncID, request) -> *polytomic.V4ScheduleEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Schedules.Create(SyncID, request) -> *polytomic.ScheduleEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -7987,7 +7987,7 @@ sync immediately, call
 <dd>
 
 ```go
-request := &bulksync.V4CreateScheduleRequest{
+request := &bulksync.CreateScheduleRequest{
         Schedule: &polytomic.V4BulkSyncScheduleAPI{
             Frequency: polytomic.ScheduleFrequencyManual,
         },
@@ -8032,7 +8032,7 @@ client.BulkSync.Schedules.Create(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.Schedules.Get(SyncID, ScheduleID) -> *polytomic.V4ScheduleEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Schedules.Get(SyncID, ScheduleID) -> *polytomic.ScheduleEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -8106,7 +8106,7 @@ client.BulkSync.Schedules.Get(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.Schedules.Update(SyncID, ScheduleID, request) -> *polytomic.V4ScheduleEnvelope</code></summary>
+<details><summary><code>client.BulkSync.Schedules.Update(SyncID, ScheduleID, request) -> *polytomic.ScheduleEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -8137,7 +8137,7 @@ interpreted in UTC.
 <dd>
 
 ```go
-request := &bulksync.V4UpdateScheduleRequest{
+request := &bulksync.UpdateScheduleRequest{
         Schedule: &polytomic.V4BulkSyncScheduleAPI{
             Frequency: polytomic.ScheduleFrequencyManual,
         },
@@ -8262,7 +8262,7 @@ client.BulkSync.Schedules.Delete(
 </details>
 
 ## ModelSync Targets
-<details><summary><code>client.ModelSync.Targets.GetTarget(ID) -> *polytomic.V2GetConnectionMetaEnvelope</code></summary>
+<details><summary><code>client.ModelSync.Targets.GetTarget(ID) -> *polytomic.GetConnectionMetaEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -8293,7 +8293,7 @@ Returns target metadata for a connection.
 <dd>
 
 ```go
-request := &modelsync.GetTargetTargetsRequest{
+request := &modelsync.TargetsGetTargetRequest{
         Type: polytomic.String(
             "type",
         ),
@@ -8349,7 +8349,7 @@ client.ModelSync.Targets.GetTarget(
 </dl>
 </details>
 
-<details><summary><code>client.ModelSync.Targets.GetTargetFields(ID) -> *polytomic.V2TargetResponseEnvelope</code></summary>
+<details><summary><code>client.ModelSync.Targets.GetTargetFields(ID) -> *polytomic.TargetResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -8388,7 +8388,7 @@ before calling this endpoint.
 <dd>
 
 ```go
-request := &modelsync.GetTargetFieldsTargetsRequest{
+request := &modelsync.TargetsGetTargetFieldsRequest{
         Target: "database.table",
         Refresh: polytomic.Bool(
             false,
@@ -8615,7 +8615,7 @@ client.ModelSync.Targets.GetCreateProperty(
 </details>
 
 ## ModelSync Executions
-<details><summary><code>client.ModelSync.Executions.List(SyncID) -> *polytomic.V2ListExecutionResponseEnvelope</code></summary>
+<details><summary><code>client.ModelSync.Executions.List(SyncID) -> *polytomic.ListExecutionResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -8652,7 +8652,7 @@ summaries — use
 <dd>
 
 ```go
-request := &modelsync.ListExecutionsRequest{
+request := &modelsync.ExecutionsListRequest{
         PageToken: polytomic.String(
             "AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==",
         ),
@@ -8719,7 +8719,7 @@ client.ModelSync.Executions.List(
 </dl>
 </details>
 
-<details><summary><code>client.ModelSync.Executions.Get(SyncID, ID) -> *polytomic.V2GetExecutionResponseEnvelope</code></summary>
+<details><summary><code>client.ModelSync.Executions.Get(SyncID, ID) -> *polytomic.GetExecutionResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -8790,7 +8790,7 @@ client.ModelSync.Executions.Get(
 </dl>
 </details>
 
-<details><summary><code>client.ModelSync.Executions.Update(SyncID, ID, request) -> *polytomic.V2GetExecutionResponseEnvelope</code></summary>
+<details><summary><code>client.ModelSync.Executions.Update(SyncID, ID, request) -> *polytomic.GetExecutionResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -8817,8 +8817,8 @@ Updates a model sync execution's state, used to retry or resolve stalled executi
 <dd>
 
 ```go
-request := &modelsync.V2UpdateExecutionRequest{
-        Status: polytomic.UtilExecutionStatusCreated,
+request := &modelsync.UpdateExecutionRequest{
+        Status: polytomic.ExecutionStatusCreated,
     }
 client.ModelSync.Executions.Update(
         context.TODO(),
@@ -8857,7 +8857,7 @@ client.ModelSync.Executions.Update(
 <dl>
 <dd>
 
-**status:** `*polytomic.UtilExecutionStatus` 
+**status:** `*polytomic.ExecutionStatus` 
     
 </dd>
 </dl>
@@ -8869,7 +8869,7 @@ client.ModelSync.Executions.Update(
 </dl>
 </details>
 
-<details><summary><code>client.ModelSync.Executions.GetLogURLs(SyncID, ID, Type) -> *polytomic.V2ExecutionLogsResponseEnvelope</code></summary>
+<details><summary><code>client.ModelSync.Executions.GetLogURLs(SyncID, ID, Type) -> *polytomic.ExecutionLogsResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -9041,7 +9041,7 @@ client.ModelSync.Executions.GetLogs(
 </details>
 
 ## Permissions Policies
-<details><summary><code>client.Permissions.Policies.List() -> *polytomic.V2ListPoliciesResponseEnvelope</code></summary>
+<details><summary><code>client.Permissions.Policies.List() -> *polytomic.ListPoliciesResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -9089,7 +9089,7 @@ client.Permissions.Policies.List(
 </dl>
 </details>
 
-<details><summary><code>client.Permissions.Policies.Create(request) -> *polytomic.V2PolicyResponseEnvelope</code></summary>
+<details><summary><code>client.Permissions.Policies.Create(request) -> *polytomic.PolicyResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -9121,7 +9121,7 @@ they are referenced in a policy; create roles using
 <dd>
 
 ```go
-request := &permissions.V2CreatePolicyRequest{
+request := &permissions.CreatePolicyRequest{
         Name: "Custom",
     }
 client.Permissions.Policies.Create(
@@ -9159,7 +9159,7 @@ client.Permissions.Policies.Create(
 <dl>
 <dd>
 
-**policyActions:** `[]*polytomic.V2PolicyAction` 
+**policyActions:** `[]*polytomic.PolicyAction` 
     
 </dd>
 </dl>
@@ -9171,7 +9171,7 @@ client.Permissions.Policies.Create(
 </dl>
 </details>
 
-<details><summary><code>client.Permissions.Policies.Get(ID) -> *polytomic.V2PolicyResponseEnvelope</code></summary>
+<details><summary><code>client.Permissions.Policies.Get(ID) -> *polytomic.PolicyResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -9232,7 +9232,7 @@ client.Permissions.Policies.Get(
 </dl>
 </details>
 
-<details><summary><code>client.Permissions.Policies.Update(ID, request) -> *polytomic.V2PolicyResponseEnvelope</code></summary>
+<details><summary><code>client.Permissions.Policies.Update(ID, request) -> *polytomic.PolicyResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -9265,7 +9265,7 @@ and send the complete object back.
 <dd>
 
 ```go
-request := &permissions.V2UpdatePolicyRequest{
+request := &permissions.UpdatePolicyRequest{
         Name: "Custom",
     }
 client.Permissions.Policies.Update(
@@ -9312,7 +9312,7 @@ client.Permissions.Policies.Update(
 <dl>
 <dd>
 
-**policyActions:** `[]*polytomic.V2PolicyAction` 
+**policyActions:** `[]*polytomic.PolicyAction` 
     
 </dd>
 </dl>
@@ -9386,7 +9386,7 @@ client.Permissions.Policies.Remove(
 </details>
 
 ## Permissions Roles
-<details><summary><code>client.Permissions.Roles.List() -> *polytomic.V2RoleListResponseEnvelope</code></summary>
+<details><summary><code>client.Permissions.Roles.List() -> *polytomic.RoleListResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -9435,7 +9435,7 @@ client.Permissions.Roles.List(
 </dl>
 </details>
 
-<details><summary><code>client.Permissions.Roles.Create(request) -> *polytomic.V2RoleResponseEnvelope</code></summary>
+<details><summary><code>client.Permissions.Roles.Create(request) -> *polytomic.RoleResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -9468,7 +9468,7 @@ To attach the role to resources, create or update a policy using
 <dd>
 
 ```go
-request := &permissions.V2CreateRoleRequest{
+request := &permissions.CreateRoleRequest{
         Name: "Custom",
     }
 client.Permissions.Roles.Create(
@@ -9510,7 +9510,7 @@ client.Permissions.Roles.Create(
 </dl>
 </details>
 
-<details><summary><code>client.Permissions.Roles.Get(ID) -> *polytomic.V2RoleResponseEnvelope</code></summary>
+<details><summary><code>client.Permissions.Roles.Get(ID) -> *polytomic.RoleResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -9570,7 +9570,7 @@ client.Permissions.Roles.Get(
 </dl>
 </details>
 
-<details><summary><code>client.Permissions.Roles.Update(ID, request) -> *polytomic.V2RoleResponseEnvelope</code></summary>
+<details><summary><code>client.Permissions.Roles.Update(ID, request) -> *polytomic.RoleResponseEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -9602,7 +9602,7 @@ The update is a **full replacement** of the role definition.
 <dd>
 
 ```go
-request := &permissions.V2UpdateRoleRequest{
+request := &permissions.UpdateRoleRequest{
         Name: "Custom",
     }
 client.Permissions.Roles.Update(

@@ -110,7 +110,7 @@ func TestOrganizationCreateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.V2CreateOrganizationRequestSchema{
+	request := &polytomic.CreateOrganizationRequestSchema{
 		Name: "My Organization",
 	}
 	_, invocationErr := client.Organization.Create(
@@ -159,7 +159,7 @@ func TestOrganizationUpdateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.V2UpdateOrganizationRequestSchema{
+	request := &polytomic.UpdateOrganizationRequestSchema{
 		Name: "My Organization",
 	}
 	_, invocationErr := client.Organization.Update(

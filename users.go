@@ -10,12 +10,12 @@ import (
 )
 
 var (
-	v2CreateUserRequestSchemaFieldEmail   = big.NewInt(1 << 0)
-	v2CreateUserRequestSchemaFieldRole    = big.NewInt(1 << 1)
-	v2CreateUserRequestSchemaFieldRoleIDs = big.NewInt(1 << 2)
+	createUserRequestSchemaFieldEmail   = big.NewInt(1 << 0)
+	createUserRequestSchemaFieldRole    = big.NewInt(1 << 1)
+	createUserRequestSchemaFieldRoleIDs = big.NewInt(1 << 2)
 )
 
-type V2CreateUserRequestSchema struct {
+type CreateUserRequestSchema struct {
 	// Email address used to sign the user in and receive notifications.
 	Email string `json:"email" url:"-"`
 	// Deprecated legacy role name. Use role_ids instead; setting both role and role_ids in the same request is rejected.
@@ -27,60 +27,60 @@ type V2CreateUserRequestSchema struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (v *V2CreateUserRequestSchema) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
+func (c *CreateUserRequestSchema) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
 	}
-	v.explicitFields.Or(v.explicitFields, field)
+	c.explicitFields.Or(c.explicitFields, field)
 }
 
 // SetEmail sets the Email field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2CreateUserRequestSchema) SetEmail(email string) {
-	v.Email = email
-	v.require(v2CreateUserRequestSchemaFieldEmail)
+func (c *CreateUserRequestSchema) SetEmail(email string) {
+	c.Email = email
+	c.require(createUserRequestSchemaFieldEmail)
 }
 
 // SetRole sets the Role field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2CreateUserRequestSchema) SetRole(role *string) {
-	v.Role = role
-	v.require(v2CreateUserRequestSchemaFieldRole)
+func (c *CreateUserRequestSchema) SetRole(role *string) {
+	c.Role = role
+	c.require(createUserRequestSchemaFieldRole)
 }
 
 // SetRoleIDs sets the RoleIDs field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2CreateUserRequestSchema) SetRoleIDs(roleIDs []string) {
-	v.RoleIDs = roleIDs
-	v.require(v2CreateUserRequestSchemaFieldRoleIDs)
+func (c *CreateUserRequestSchema) SetRoleIDs(roleIDs []string) {
+	c.RoleIDs = roleIDs
+	c.require(createUserRequestSchemaFieldRoleIDs)
 }
 
-func (v *V2CreateUserRequestSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2CreateUserRequestSchema
+func (c *CreateUserRequestSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateUserRequestSchema
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*v = V2CreateUserRequestSchema(body)
+	*c = CreateUserRequestSchema(body)
 	return nil
 }
 
-func (v *V2CreateUserRequestSchema) MarshalJSON() ([]byte, error) {
-	type embed V2CreateUserRequestSchema
+func (c *CreateUserRequestSchema) MarshalJSON() ([]byte, error) {
+	type embed CreateUserRequestSchema
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*v),
+		embed: embed(*c),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	createAPIKeyUsersRequestFieldForce = big.NewInt(1 << 0)
+	usersCreateAPIKeyRequestFieldForce = big.NewInt(1 << 0)
 )
 
-type CreateAPIKeyUsersRequest struct {
+type UsersCreateAPIKeyRequest struct {
 	// If true, revoke any existing API key for the user before creating a new one.
 	Force *bool `json:"-" url:"force,omitempty"`
 
@@ -88,27 +88,27 @@ type CreateAPIKeyUsersRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CreateAPIKeyUsersRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (u *UsersCreateAPIKeyRequest) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetForce sets the Force field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateAPIKeyUsersRequest) SetForce(force *bool) {
-	c.Force = force
-	c.require(createAPIKeyUsersRequestFieldForce)
+func (u *UsersCreateAPIKeyRequest) SetForce(force *bool) {
+	u.Force = force
+	u.require(usersCreateAPIKeyRequestFieldForce)
 }
 
 var (
-	v2UpdateUserRequestSchemaFieldEmail   = big.NewInt(1 << 0)
-	v2UpdateUserRequestSchemaFieldRole    = big.NewInt(1 << 1)
-	v2UpdateUserRequestSchemaFieldRoleIDs = big.NewInt(1 << 2)
+	updateUserRequestSchemaFieldEmail   = big.NewInt(1 << 0)
+	updateUserRequestSchemaFieldRole    = big.NewInt(1 << 1)
+	updateUserRequestSchemaFieldRoleIDs = big.NewInt(1 << 2)
 )
 
-type V2UpdateUserRequestSchema struct {
+type UpdateUserRequestSchema struct {
 	// Email address used to sign the user in and receive notifications.
 	Email string `json:"email" url:"-"`
 	// Deprecated legacy role name. Use role_ids instead; setting both role and role_ids in the same request is rejected.
@@ -120,60 +120,60 @@ type V2UpdateUserRequestSchema struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (v *V2UpdateUserRequestSchema) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
+func (u *UpdateUserRequestSchema) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	v.explicitFields.Or(v.explicitFields, field)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetEmail sets the Email field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2UpdateUserRequestSchema) SetEmail(email string) {
-	v.Email = email
-	v.require(v2UpdateUserRequestSchemaFieldEmail)
+func (u *UpdateUserRequestSchema) SetEmail(email string) {
+	u.Email = email
+	u.require(updateUserRequestSchemaFieldEmail)
 }
 
 // SetRole sets the Role field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2UpdateUserRequestSchema) SetRole(role *string) {
-	v.Role = role
-	v.require(v2UpdateUserRequestSchemaFieldRole)
+func (u *UpdateUserRequestSchema) SetRole(role *string) {
+	u.Role = role
+	u.require(updateUserRequestSchemaFieldRole)
 }
 
 // SetRoleIDs sets the RoleIDs field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2UpdateUserRequestSchema) SetRoleIDs(roleIDs []string) {
-	v.RoleIDs = roleIDs
-	v.require(v2UpdateUserRequestSchemaFieldRoleIDs)
+func (u *UpdateUserRequestSchema) SetRoleIDs(roleIDs []string) {
+	u.RoleIDs = roleIDs
+	u.require(updateUserRequestSchemaFieldRoleIDs)
 }
 
-func (v *V2UpdateUserRequestSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2UpdateUserRequestSchema
+func (u *UpdateUserRequestSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateUserRequestSchema
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*v = V2UpdateUserRequestSchema(body)
+	*u = UpdateUserRequestSchema(body)
 	return nil
 }
 
-func (v *V2UpdateUserRequestSchema) MarshalJSON() ([]byte, error) {
-	type embed V2UpdateUserRequestSchema
+func (u *UpdateUserRequestSchema) MarshalJSON() ([]byte, error) {
+	type embed UpdateUserRequestSchema
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*v),
+		embed: embed(*u),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	v2APIKeyResponseFieldValue = big.NewInt(1 << 0)
+	aPIKeyResponseFieldValue = big.NewInt(1 << 0)
 )
 
-type V2APIKeyResponse struct {
+type APIKeyResponse struct {
 	// Newly created API key. This value is shown only once; store it securely.
 	Value *string `json:"value,omitempty" url:"value,omitempty"`
 
@@ -184,82 +184,82 @@ type V2APIKeyResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (v *V2APIKeyResponse) GetValue() *string {
-	if v == nil {
+func (a *APIKeyResponse) GetValue() *string {
+	if a == nil {
 		return nil
 	}
-	return v.Value
+	return a.Value
 }
 
-func (v *V2APIKeyResponse) GetExtraProperties() map[string]interface{} {
-	if v == nil {
+func (a *APIKeyResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
 		return nil
 	}
-	return v.extraProperties
+	return a.extraProperties
 }
 
-func (v *V2APIKeyResponse) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
+func (a *APIKeyResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
 	}
-	v.explicitFields.Or(v.explicitFields, field)
+	a.explicitFields.Or(a.explicitFields, field)
 }
 
 // SetValue sets the Value field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2APIKeyResponse) SetValue(value *string) {
-	v.Value = value
-	v.require(v2APIKeyResponseFieldValue)
+func (a *APIKeyResponse) SetValue(value *string) {
+	a.Value = value
+	a.require(aPIKeyResponseFieldValue)
 }
 
-func (v *V2APIKeyResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2APIKeyResponse
+func (a *APIKeyResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler APIKeyResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = V2APIKeyResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	*a = APIKeyResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
 	if err != nil {
 		return err
 	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2APIKeyResponse) MarshalJSON() ([]byte, error) {
-	type embed V2APIKeyResponse
+func (a *APIKeyResponse) MarshalJSON() ([]byte, error) {
+	type embed APIKeyResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*v),
+		embed: embed(*a),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (v *V2APIKeyResponse) String() string {
-	if v == nil {
+func (a *APIKeyResponse) String() string {
+	if a == nil {
 		return "<nil>"
 	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(v); err == nil {
+	if value, err := internal.StringifyJSON(a); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", a)
 }
 
 var (
-	v2APIKeyResponseEnvelopeFieldData = big.NewInt(1 << 0)
+	aPIKeyResponseEnvelopeFieldData = big.NewInt(1 << 0)
 )
 
-type V2APIKeyResponseEnvelope struct {
-	Data *V2APIKeyResponse `json:"data,omitempty" url:"data,omitempty"`
+type APIKeyResponseEnvelope struct {
+	Data *APIKeyResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -268,82 +268,82 @@ type V2APIKeyResponseEnvelope struct {
 	rawJSON         json.RawMessage
 }
 
-func (v *V2APIKeyResponseEnvelope) GetData() *V2APIKeyResponse {
-	if v == nil {
+func (a *APIKeyResponseEnvelope) GetData() *APIKeyResponse {
+	if a == nil {
 		return nil
 	}
-	return v.Data
+	return a.Data
 }
 
-func (v *V2APIKeyResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
+func (a *APIKeyResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if a == nil {
 		return nil
 	}
-	return v.extraProperties
+	return a.extraProperties
 }
 
-func (v *V2APIKeyResponseEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
+func (a *APIKeyResponseEnvelope) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
 	}
-	v.explicitFields.Or(v.explicitFields, field)
+	a.explicitFields.Or(a.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2APIKeyResponseEnvelope) SetData(data *V2APIKeyResponse) {
-	v.Data = data
-	v.require(v2APIKeyResponseEnvelopeFieldData)
+func (a *APIKeyResponseEnvelope) SetData(data *APIKeyResponse) {
+	a.Data = data
+	a.require(aPIKeyResponseEnvelopeFieldData)
 }
 
-func (v *V2APIKeyResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2APIKeyResponseEnvelope
+func (a *APIKeyResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler APIKeyResponseEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = V2APIKeyResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	*a = APIKeyResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
 	if err != nil {
 		return err
 	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2APIKeyResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V2APIKeyResponseEnvelope
+func (a *APIKeyResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed APIKeyResponseEnvelope
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*v),
+		embed: embed(*a),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (v *V2APIKeyResponseEnvelope) String() string {
-	if v == nil {
+func (a *APIKeyResponseEnvelope) String() string {
+	if a == nil {
 		return "<nil>"
 	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(v); err == nil {
+	if value, err := internal.StringifyJSON(a); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", a)
 }
 
 var (
-	v2ListUsersEnvelopeFieldData = big.NewInt(1 << 0)
+	listUsersEnvelopeFieldData = big.NewInt(1 << 0)
 )
 
-type V2ListUsersEnvelope struct {
-	Data []*V2User `json:"data,omitempty" url:"data,omitempty"`
+type ListUsersEnvelope struct {
+	Data []*User `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -352,85 +352,85 @@ type V2ListUsersEnvelope struct {
 	rawJSON         json.RawMessage
 }
 
-func (v *V2ListUsersEnvelope) GetData() []*V2User {
-	if v == nil {
+func (l *ListUsersEnvelope) GetData() []*User {
+	if l == nil {
 		return nil
 	}
-	return v.Data
+	return l.Data
 }
 
-func (v *V2ListUsersEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
+func (l *ListUsersEnvelope) GetExtraProperties() map[string]interface{} {
+	if l == nil {
 		return nil
 	}
-	return v.extraProperties
+	return l.extraProperties
 }
 
-func (v *V2ListUsersEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
+func (l *ListUsersEnvelope) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	v.explicitFields.Or(v.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ListUsersEnvelope) SetData(data []*V2User) {
-	v.Data = data
-	v.require(v2ListUsersEnvelopeFieldData)
+func (l *ListUsersEnvelope) SetData(data []*User) {
+	l.Data = data
+	l.require(listUsersEnvelopeFieldData)
 }
 
-func (v *V2ListUsersEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ListUsersEnvelope
+func (l *ListUsersEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListUsersEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = V2ListUsersEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	*l = ListUsersEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
 	if err != nil {
 		return err
 	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2ListUsersEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V2ListUsersEnvelope
+func (l *ListUsersEnvelope) MarshalJSON() ([]byte, error) {
+	type embed ListUsersEnvelope
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*v),
+		embed: embed(*l),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (v *V2ListUsersEnvelope) String() string {
-	if v == nil {
+func (l *ListUsersEnvelope) String() string {
+	if l == nil {
 		return "<nil>"
 	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(v); err == nil {
+	if value, err := internal.StringifyJSON(l); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", l)
 }
 
 var (
-	v2UserFieldEmail          = big.NewInt(1 << 0)
-	v2UserFieldID             = big.NewInt(1 << 1)
-	v2UserFieldOrganizationID = big.NewInt(1 << 2)
-	v2UserFieldRole           = big.NewInt(1 << 3)
-	v2UserFieldRoleIDs        = big.NewInt(1 << 4)
+	userFieldEmail          = big.NewInt(1 << 0)
+	userFieldID             = big.NewInt(1 << 1)
+	userFieldOrganizationID = big.NewInt(1 << 2)
+	userFieldRole           = big.NewInt(1 << 3)
+	userFieldRoleIDs        = big.NewInt(1 << 4)
 )
 
-type V2User struct {
+type User struct {
 	// Email address used to sign in and receive notifications.
 	Email *string `json:"email,omitempty" url:"email,omitempty"`
 	// Unique identifier of the user.
@@ -449,138 +449,138 @@ type V2User struct {
 	rawJSON         json.RawMessage
 }
 
-func (v *V2User) GetEmail() *string {
-	if v == nil {
+func (u *User) GetEmail() *string {
+	if u == nil {
 		return nil
 	}
-	return v.Email
+	return u.Email
 }
 
-func (v *V2User) GetID() *string {
-	if v == nil {
+func (u *User) GetID() *string {
+	if u == nil {
 		return nil
 	}
-	return v.ID
+	return u.ID
 }
 
-func (v *V2User) GetOrganizationID() *string {
-	if v == nil {
+func (u *User) GetOrganizationID() *string {
+	if u == nil {
 		return nil
 	}
-	return v.OrganizationID
+	return u.OrganizationID
 }
 
-func (v *V2User) GetRole() *string {
-	if v == nil {
+func (u *User) GetRole() *string {
+	if u == nil {
 		return nil
 	}
-	return v.Role
+	return u.Role
 }
 
-func (v *V2User) GetRoleIDs() []string {
-	if v == nil {
+func (u *User) GetRoleIDs() []string {
+	if u == nil {
 		return nil
 	}
-	return v.RoleIDs
+	return u.RoleIDs
 }
 
-func (v *V2User) GetExtraProperties() map[string]interface{} {
-	if v == nil {
+func (u *User) GetExtraProperties() map[string]interface{} {
+	if u == nil {
 		return nil
 	}
-	return v.extraProperties
+	return u.extraProperties
 }
 
-func (v *V2User) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
+func (u *User) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	v.explicitFields.Or(v.explicitFields, field)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetEmail sets the Email field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2User) SetEmail(email *string) {
-	v.Email = email
-	v.require(v2UserFieldEmail)
+func (u *User) SetEmail(email *string) {
+	u.Email = email
+	u.require(userFieldEmail)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2User) SetID(id *string) {
-	v.ID = id
-	v.require(v2UserFieldID)
+func (u *User) SetID(id *string) {
+	u.ID = id
+	u.require(userFieldID)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2User) SetOrganizationID(organizationID *string) {
-	v.OrganizationID = organizationID
-	v.require(v2UserFieldOrganizationID)
+func (u *User) SetOrganizationID(organizationID *string) {
+	u.OrganizationID = organizationID
+	u.require(userFieldOrganizationID)
 }
 
 // SetRole sets the Role field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2User) SetRole(role *string) {
-	v.Role = role
-	v.require(v2UserFieldRole)
+func (u *User) SetRole(role *string) {
+	u.Role = role
+	u.require(userFieldRole)
 }
 
 // SetRoleIDs sets the RoleIDs field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2User) SetRoleIDs(roleIDs []string) {
-	v.RoleIDs = roleIDs
-	v.require(v2UserFieldRoleIDs)
+func (u *User) SetRoleIDs(roleIDs []string) {
+	u.RoleIDs = roleIDs
+	u.require(userFieldRoleIDs)
 }
 
-func (v *V2User) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2User
+func (u *User) UnmarshalJSON(data []byte) error {
+	type unmarshaler User
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = V2User(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	*u = User(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2User) MarshalJSON() ([]byte, error) {
-	type embed V2User
+func (u *User) MarshalJSON() ([]byte, error) {
+	type embed User
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*v),
+		embed: embed(*u),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (v *V2User) String() string {
-	if v == nil {
+func (u *User) String() string {
+	if u == nil {
 		return "<nil>"
 	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(v); err == nil {
+	if value, err := internal.StringifyJSON(u); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", u)
 }
 
 var (
-	v2UserEnvelopeFieldData = big.NewInt(1 << 0)
+	userEnvelopeFieldData = big.NewInt(1 << 0)
 )
 
-type V2UserEnvelope struct {
-	Data *V2User `json:"data,omitempty" url:"data,omitempty"`
+type UserEnvelope struct {
+	Data *User `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -589,72 +589,72 @@ type V2UserEnvelope struct {
 	rawJSON         json.RawMessage
 }
 
-func (v *V2UserEnvelope) GetData() *V2User {
-	if v == nil {
+func (u *UserEnvelope) GetData() *User {
+	if u == nil {
 		return nil
 	}
-	return v.Data
+	return u.Data
 }
 
-func (v *V2UserEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
+func (u *UserEnvelope) GetExtraProperties() map[string]interface{} {
+	if u == nil {
 		return nil
 	}
-	return v.extraProperties
+	return u.extraProperties
 }
 
-func (v *V2UserEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
+func (u *UserEnvelope) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	v.explicitFields.Or(v.explicitFields, field)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2UserEnvelope) SetData(data *V2User) {
-	v.Data = data
-	v.require(v2UserEnvelopeFieldData)
+func (u *UserEnvelope) SetData(data *User) {
+	u.Data = data
+	u.require(userEnvelopeFieldData)
 }
 
-func (v *V2UserEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2UserEnvelope
+func (u *UserEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = V2UserEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	*u = UserEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v *V2UserEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V2UserEnvelope
+func (u *UserEnvelope) MarshalJSON() ([]byte, error) {
+	type embed UserEnvelope
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*v),
+		embed: embed(*u),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (v *V2UserEnvelope) String() string {
-	if v == nil {
+func (u *UserEnvelope) String() string {
+	if u == nil {
 		return "<nil>"
 	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(v); err == nil {
+	if value, err := internal.StringifyJSON(u); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", v)
+	return fmt.Sprintf("%#v", u)
 }

@@ -89,7 +89,7 @@ func TestModelSyncExecutionsListWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &modelsync.ListExecutionsRequest{
+	request := &modelsync.ExecutionsListRequest{
 		PageToken: polytomic.String(
 			"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==",
 		),
@@ -148,8 +148,8 @@ func TestModelSyncExecutionsUpdateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &modelsync.V2UpdateExecutionRequest{
-		Status: polytomic.UtilExecutionStatusCreated,
+	request := &modelsync.UpdateExecutionRequest{
+		Status: polytomic.ExecutionStatusCreated,
 	}
 	_, invocationErr := client.ModelSync.Executions.Update(
 		context.TODO(),

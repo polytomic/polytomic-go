@@ -9,9 +9,9 @@ import (
 	testing "testing"
 )
 
-func TestSettersV2CreateRoleRequest(t *testing.T) {
+func TestSettersCreateRoleRequest(t *testing.T) {
 	t.Run("SetName", func(t *testing.T) {
-		obj := &V2CreateRoleRequest{}
+		obj := &CreateRoleRequest{}
 		var fernTestValueName string
 		obj.SetName(fernTestValueName)
 		assert.Equal(t, fernTestValueName, obj.Name)
@@ -19,7 +19,7 @@ func TestSettersV2CreateRoleRequest(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &V2CreateRoleRequest{}
+		obj := &CreateRoleRequest{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -28,11 +28,11 @@ func TestSettersV2CreateRoleRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitV2CreateRoleRequest(t *testing.T) {
+func TestSettersMarkExplicitCreateRoleRequest(t *testing.T) {
 	t.Run("SetName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2CreateRoleRequest{}
+		obj := &CreateRoleRequest{}
 		var fernTestValueName string
 
 		// Act
@@ -63,7 +63,7 @@ func TestSettersMarkExplicitV2CreateRoleRequest(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2CreateRoleRequest{}
+		obj := &CreateRoleRequest{}
 		var fernTestValueOrganizationID *string
 
 		// Act
@@ -93,9 +93,9 @@ func TestSettersMarkExplicitV2CreateRoleRequest(t *testing.T) {
 
 }
 
-func TestSettersV2UpdateRoleRequest(t *testing.T) {
+func TestSettersUpdateRoleRequest(t *testing.T) {
 	t.Run("SetName", func(t *testing.T) {
-		obj := &V2UpdateRoleRequest{}
+		obj := &UpdateRoleRequest{}
 		var fernTestValueName string
 		obj.SetName(fernTestValueName)
 		assert.Equal(t, fernTestValueName, obj.Name)
@@ -103,7 +103,7 @@ func TestSettersV2UpdateRoleRequest(t *testing.T) {
 	})
 
 	t.Run("SetOrganizationID", func(t *testing.T) {
-		obj := &V2UpdateRoleRequest{}
+		obj := &UpdateRoleRequest{}
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
@@ -112,11 +112,11 @@ func TestSettersV2UpdateRoleRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitV2UpdateRoleRequest(t *testing.T) {
+func TestSettersMarkExplicitUpdateRoleRequest(t *testing.T) {
 	t.Run("SetName_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2UpdateRoleRequest{}
+		obj := &UpdateRoleRequest{}
 		var fernTestValueName string
 
 		// Act
@@ -147,7 +147,7 @@ func TestSettersMarkExplicitV2UpdateRoleRequest(t *testing.T) {
 	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &V2UpdateRoleRequest{}
+		obj := &UpdateRoleRequest{}
 		var fernTestValueOrganizationID *string
 
 		// Act

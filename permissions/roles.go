@@ -9,11 +9,11 @@ import (
 )
 
 var (
-	v2CreateRoleRequestFieldName           = big.NewInt(1 << 0)
-	v2CreateRoleRequestFieldOrganizationID = big.NewInt(1 << 1)
+	createRoleRequestFieldName           = big.NewInt(1 << 0)
+	createRoleRequestFieldOrganizationID = big.NewInt(1 << 1)
 )
 
-type V2CreateRoleRequest struct {
+type CreateRoleRequest struct {
 	Name           string  `json:"name" url:"-"`
 	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
 
@@ -21,54 +21,54 @@ type V2CreateRoleRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (v *V2CreateRoleRequest) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
+func (c *CreateRoleRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
 	}
-	v.explicitFields.Or(v.explicitFields, field)
+	c.explicitFields.Or(c.explicitFields, field)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2CreateRoleRequest) SetName(name string) {
-	v.Name = name
-	v.require(v2CreateRoleRequestFieldName)
+func (c *CreateRoleRequest) SetName(name string) {
+	c.Name = name
+	c.require(createRoleRequestFieldName)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2CreateRoleRequest) SetOrganizationID(organizationID *string) {
-	v.OrganizationID = organizationID
-	v.require(v2CreateRoleRequestFieldOrganizationID)
+func (c *CreateRoleRequest) SetOrganizationID(organizationID *string) {
+	c.OrganizationID = organizationID
+	c.require(createRoleRequestFieldOrganizationID)
 }
 
-func (v *V2CreateRoleRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2CreateRoleRequest
+func (c *CreateRoleRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateRoleRequest
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*v = V2CreateRoleRequest(body)
+	*c = CreateRoleRequest(body)
 	return nil
 }
 
-func (v *V2CreateRoleRequest) MarshalJSON() ([]byte, error) {
-	type embed V2CreateRoleRequest
+func (c *CreateRoleRequest) MarshalJSON() ([]byte, error) {
+	type embed CreateRoleRequest
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*v),
+		embed: embed(*c),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 var (
-	v2UpdateRoleRequestFieldName           = big.NewInt(1 << 0)
-	v2UpdateRoleRequestFieldOrganizationID = big.NewInt(1 << 1)
+	updateRoleRequestFieldName           = big.NewInt(1 << 0)
+	updateRoleRequestFieldOrganizationID = big.NewInt(1 << 1)
 )
 
-type V2UpdateRoleRequest struct {
+type UpdateRoleRequest struct {
 	Name           string  `json:"name" url:"-"`
 	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
 
@@ -76,44 +76,44 @@ type V2UpdateRoleRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (v *V2UpdateRoleRequest) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
+func (u *UpdateRoleRequest) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	v.explicitFields.Or(v.explicitFields, field)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2UpdateRoleRequest) SetName(name string) {
-	v.Name = name
-	v.require(v2UpdateRoleRequestFieldName)
+func (u *UpdateRoleRequest) SetName(name string) {
+	u.Name = name
+	u.require(updateRoleRequestFieldName)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2UpdateRoleRequest) SetOrganizationID(organizationID *string) {
-	v.OrganizationID = organizationID
-	v.require(v2UpdateRoleRequestFieldOrganizationID)
+func (u *UpdateRoleRequest) SetOrganizationID(organizationID *string) {
+	u.OrganizationID = organizationID
+	u.require(updateRoleRequestFieldOrganizationID)
 }
 
-func (v *V2UpdateRoleRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2UpdateRoleRequest
+func (u *UpdateRoleRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateRoleRequest
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*v = V2UpdateRoleRequest(body)
+	*u = UpdateRoleRequest(body)
 	return nil
 }
 
-func (v *V2UpdateRoleRequest) MarshalJSON() ([]byte, error) {
-	type embed V2UpdateRoleRequest
+func (u *UpdateRoleRequest) MarshalJSON() ([]byte, error) {
+	type embed UpdateRoleRequest
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*v),
+		embed: embed(*u),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }

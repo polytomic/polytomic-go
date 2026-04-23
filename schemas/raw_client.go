@@ -37,7 +37,7 @@ func (r *RawClient) UpsertField(
 	connectionID string,
 	// Identifier of the schema the fields belong to.
 	schemaID string,
-	request *polytomic.V4UpsertSchemaFieldRequest,
+	request *polytomic.UpsertSchemaFieldRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -135,7 +135,7 @@ func (r *RawClient) SetPrimaryKeys(
 	connectionID string,
 	// Identifier of the schema whose primary keys are being overridden.
 	schemaID string,
-	request *polytomic.V4SetPrimaryKeysRequest,
+	request *polytomic.SetPrimaryKeysRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -272,7 +272,7 @@ func (r *RawClient) GetStatus(
 	// Unique identifier of the connection whose schema cache status should be returned.
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V3BulkSyncSourceStatusEnvelope], error) {
+) (*core.Response[*polytomic.BulkSyncSourceStatusEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -287,7 +287,7 @@ func (r *RawClient) GetStatus(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V3BulkSyncSourceStatusEnvelope
+	var response *polytomic.BulkSyncSourceStatusEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -305,7 +305,7 @@ func (r *RawClient) GetStatus(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V3BulkSyncSourceStatusEnvelope]{
+	return &core.Response[*polytomic.BulkSyncSourceStatusEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -319,7 +319,7 @@ func (r *RawClient) Get(
 	// Identifier of the schema within the connection. Format depends on the connection type (e.g. schema.table for databases, object name for SaaS backends).
 	schemaID string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V3BulkSyncSourceSchemaEnvelope], error) {
+) (*core.Response[*polytomic.BulkSyncSourceSchemaEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -335,7 +335,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V3BulkSyncSourceSchemaEnvelope
+	var response *polytomic.BulkSyncSourceSchemaEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -353,7 +353,7 @@ func (r *RawClient) Get(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V3BulkSyncSourceSchemaEnvelope]{
+	return &core.Response[*polytomic.BulkSyncSourceSchemaEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -367,7 +367,7 @@ func (r *RawClient) GetRecords(
 	// Identifier of the schema within the connection.
 	schemaID string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V3SchemaRecordsResponseEnvelope], error) {
+) (*core.Response[*polytomic.SchemaRecordsResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -383,7 +383,7 @@ func (r *RawClient) GetRecords(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V3SchemaRecordsResponseEnvelope
+	var response *polytomic.SchemaRecordsResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -401,7 +401,7 @@ func (r *RawClient) GetRecords(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V3SchemaRecordsResponseEnvelope]{
+	return &core.Response[*polytomic.SchemaRecordsResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

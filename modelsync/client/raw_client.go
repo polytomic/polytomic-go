@@ -35,9 +35,9 @@ func (r *RawClient) GetSource(
 	ctx context.Context,
 	// Unique identifier of the connection.
 	id string,
-	request *polytomic.GetSourceModelSyncRequest,
+	request *polytomic.ModelSyncGetSourceRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V4GetSyncSourceMetaEnvelope], error) {
+) (*core.Response[*polytomic.GetModelSyncSourceMetaEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -59,7 +59,7 @@ func (r *RawClient) GetSource(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V4GetSyncSourceMetaEnvelope
+	var response *polytomic.GetModelSyncSourceMetaEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -77,7 +77,7 @@ func (r *RawClient) GetSource(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V4GetSyncSourceMetaEnvelope]{
+	return &core.Response[*polytomic.GetModelSyncSourceMetaEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -88,9 +88,9 @@ func (r *RawClient) GetSourceFields(
 	ctx context.Context,
 	// Unique identifier of the connection.
 	id string,
-	request *polytomic.GetSourceFieldsModelSyncRequest,
+	request *polytomic.ModelSyncGetSourceFieldsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2ModelFieldResponse], error) {
+) (*core.Response[*polytomic.ModelFieldResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -112,7 +112,7 @@ func (r *RawClient) GetSourceFields(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V2ModelFieldResponse
+	var response *polytomic.ModelFieldResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -130,7 +130,7 @@ func (r *RawClient) GetSourceFields(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2ModelFieldResponse]{
+	return &core.Response[*polytomic.ModelFieldResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -139,9 +139,9 @@ func (r *RawClient) GetSourceFields(
 
 func (r *RawClient) List(
 	ctx context.Context,
-	request *polytomic.ListModelSyncRequest,
+	request *polytomic.ModelSyncListRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2ListSyncResponseEnvelope], error) {
+) (*core.Response[*polytomic.ListModelSyncResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -160,7 +160,7 @@ func (r *RawClient) List(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V2ListSyncResponseEnvelope
+	var response *polytomic.ListModelSyncResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -178,7 +178,7 @@ func (r *RawClient) List(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2ListSyncResponseEnvelope]{
+	return &core.Response[*polytomic.ListModelSyncResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -187,9 +187,9 @@ func (r *RawClient) List(
 
 func (r *RawClient) Create(
 	ctx context.Context,
-	request *polytomic.V2CreateSyncRequest,
+	request *polytomic.CreateModelSyncRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2SyncResponseEnvelope], error) {
+) (*core.Response[*polytomic.ModelSyncResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -202,7 +202,7 @@ func (r *RawClient) Create(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.V2SyncResponseEnvelope
+	var response *polytomic.ModelSyncResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -221,7 +221,7 @@ func (r *RawClient) Create(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2SyncResponseEnvelope]{
+	return &core.Response[*polytomic.ModelSyncResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -231,7 +231,7 @@ func (r *RawClient) Create(
 func (r *RawClient) GetScheduleOptions(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2ScheduleOptionResponseEnvelope], error) {
+) (*core.Response[*polytomic.ScheduleOptionResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -243,7 +243,7 @@ func (r *RawClient) GetScheduleOptions(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V2ScheduleOptionResponseEnvelope
+	var response *polytomic.ScheduleOptionResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -261,7 +261,7 @@ func (r *RawClient) GetScheduleOptions(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2ScheduleOptionResponseEnvelope]{
+	return &core.Response[*polytomic.ScheduleOptionResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -272,7 +272,7 @@ func (r *RawClient) Get(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2SyncResponseEnvelope], error) {
+) (*core.Response[*polytomic.ModelSyncResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -287,7 +287,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V2SyncResponseEnvelope
+	var response *polytomic.ModelSyncResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -305,7 +305,7 @@ func (r *RawClient) Get(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2SyncResponseEnvelope]{
+	return &core.Response[*polytomic.ModelSyncResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -315,9 +315,9 @@ func (r *RawClient) Get(
 func (r *RawClient) Update(
 	ctx context.Context,
 	id string,
-	request *polytomic.V2UpdateSyncRequest,
+	request *polytomic.UpdateModelSyncRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2SyncResponseEnvelope], error) {
+) (*core.Response[*polytomic.ModelSyncResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -333,7 +333,7 @@ func (r *RawClient) Update(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.V2SyncResponseEnvelope
+	var response *polytomic.ModelSyncResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -352,7 +352,7 @@ func (r *RawClient) Update(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2SyncResponseEnvelope]{
+	return &core.Response[*polytomic.ModelSyncResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -404,9 +404,9 @@ func (r *RawClient) Remove(
 func (r *RawClient) Activate(
 	ctx context.Context,
 	id string,
-	request *polytomic.V2ActivateSyncInput,
+	request *polytomic.ActivateSyncInput,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2ActivateSyncEnvelope], error) {
+) (*core.Response[*polytomic.ActivateSyncEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -421,7 +421,7 @@ func (r *RawClient) Activate(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V2ActivateSyncEnvelope
+	var response *polytomic.ActivateSyncEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -440,7 +440,7 @@ func (r *RawClient) Activate(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2ActivateSyncEnvelope]{
+	return &core.Response[*polytomic.ActivateSyncEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -452,7 +452,7 @@ func (r *RawClient) Cancel(
 	// The active execution of this sync ID will be cancelled.
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2CancelSyncResponseEnvelope], error) {
+) (*core.Response[*polytomic.CancelModelSyncResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -467,7 +467,7 @@ func (r *RawClient) Cancel(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V2CancelSyncResponseEnvelope
+	var response *polytomic.CancelModelSyncResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -485,7 +485,7 @@ func (r *RawClient) Cancel(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2CancelSyncResponseEnvelope]{
+	return &core.Response[*polytomic.CancelModelSyncResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -495,9 +495,9 @@ func (r *RawClient) Cancel(
 func (r *RawClient) Start(
 	ctx context.Context,
 	id string,
-	request *polytomic.V2StartSyncRequest,
+	request *polytomic.StartModelSyncRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2StartSyncResponseEnvelope], error) {
+) (*core.Response[*polytomic.StartModelSyncResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -513,7 +513,7 @@ func (r *RawClient) Start(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.V2StartSyncResponseEnvelope
+	var response *polytomic.StartModelSyncResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -532,7 +532,7 @@ func (r *RawClient) Start(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2StartSyncResponseEnvelope]{
+	return &core.Response[*polytomic.StartModelSyncResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -543,7 +543,7 @@ func (r *RawClient) GetStatus(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.V2SyncStatusEnvelope], error) {
+) (*core.Response[*polytomic.SyncStatusEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -558,7 +558,7 @@ func (r *RawClient) GetStatus(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.V2SyncStatusEnvelope
+	var response *polytomic.SyncStatusEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -576,7 +576,7 @@ func (r *RawClient) GetStatus(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.V2SyncStatusEnvelope]{
+	return &core.Response[*polytomic.SyncStatusEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

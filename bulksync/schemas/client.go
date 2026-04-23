@@ -50,9 +50,9 @@ func (c *Client) List(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
 	id string,
-	request *bulksync.ListSchemasRequest,
+	request *bulksync.SchemasListRequest,
 	opts ...option.RequestOption,
-) (*polytomic.V3ListBulkSchemaEnvelope, error) {
+) (*polytomic.ListBulkSchema, error) {
 	response, err := c.WithRawResponse.List(
 		ctx,
 		id,
@@ -84,9 +84,9 @@ func (c *Client) Patch(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
 	id string,
-	request *bulksync.V3BulkSyncSchemasRequest,
+	request *bulksync.BulkSyncSchemasRequest,
 	opts ...option.RequestOption,
-) (*polytomic.V3ListBulkSchemaEnvelope, error) {
+) (*polytomic.ListBulkSchema, error) {
 	response, err := c.WithRawResponse.Patch(
 		ctx,
 		id,
@@ -116,7 +116,7 @@ func (c *Client) Get(
 	// Source-side schema identifier.
 	schemaID string,
 	opts ...option.RequestOption,
-) (*polytomic.V3BulkSchemaEnvelope, error) {
+) (*polytomic.BulkSchemaEnvelope, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		id,
@@ -150,9 +150,9 @@ func (c *Client) Update(
 	id string,
 	// Source-side schema identifier.
 	schemaID string,
-	request *bulksync.V3UpdateBulkSchema,
+	request *bulksync.UpdateBulkSchema,
 	opts ...option.RequestOption,
-) (*polytomic.V3BulkSchemaEnvelope, error) {
+) (*polytomic.BulkSchemaEnvelope, error) {
 	response, err := c.WithRawResponse.Update(
 		ctx,
 		id,
@@ -181,7 +181,7 @@ func (c *Client) Cancel(
 	// The schema ID to cancel for the bulk sync.
 	schemaID string,
 	opts ...option.RequestOption,
-) (*polytomic.V2CancelBulkSyncResponseEnvelope, error) {
+) (*polytomic.CancelBulkSyncResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Cancel(
 		ctx,
 		id,

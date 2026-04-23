@@ -11,6 +11,274 @@ import (
 )
 
 var (
+	activateSyncEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type ActivateSyncEnvelope struct {
+	Data *ActivateSyncOutput `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *ActivateSyncEnvelope) GetData() *ActivateSyncOutput {
+	if a == nil {
+		return nil
+	}
+	return a.Data
+}
+
+func (a *ActivateSyncEnvelope) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
+	return a.extraProperties
+}
+
+func (a *ActivateSyncEnvelope) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ActivateSyncEnvelope) SetData(data *ActivateSyncOutput) {
+	a.Data = data
+	a.require(activateSyncEnvelopeFieldData)
+}
+
+func (a *ActivateSyncEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ActivateSyncEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = ActivateSyncEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *ActivateSyncEnvelope) MarshalJSON() ([]byte, error) {
+	type embed ActivateSyncEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *ActivateSyncEnvelope) String() string {
+	if a == nil {
+		return "<nil>"
+	}
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
+	activateSyncInputFieldActive = big.NewInt(1 << 0)
+)
+
+type ActivateSyncInput struct {
+	Active bool `json:"active" url:"active"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *ActivateSyncInput) GetActive() bool {
+	if a == nil {
+		return false
+	}
+	return a.Active
+}
+
+func (a *ActivateSyncInput) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
+	return a.extraProperties
+}
+
+func (a *ActivateSyncInput) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetActive sets the Active field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ActivateSyncInput) SetActive(active bool) {
+	a.Active = active
+	a.require(activateSyncInputFieldActive)
+}
+
+func (a *ActivateSyncInput) UnmarshalJSON(data []byte) error {
+	type unmarshaler ActivateSyncInput
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = ActivateSyncInput(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *ActivateSyncInput) MarshalJSON() ([]byte, error) {
+	type embed ActivateSyncInput
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *ActivateSyncInput) String() string {
+	if a == nil {
+		return "<nil>"
+	}
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
+	activateSyncOutputFieldActive = big.NewInt(1 << 0)
+	activateSyncOutputFieldID     = big.NewInt(1 << 1)
+)
+
+type ActivateSyncOutput struct {
+	Active *bool   `json:"active,omitempty" url:"active,omitempty"`
+	ID     *string `json:"id,omitempty" url:"id,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *ActivateSyncOutput) GetActive() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.Active
+}
+
+func (a *ActivateSyncOutput) GetID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ID
+}
+
+func (a *ActivateSyncOutput) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
+	return a.extraProperties
+}
+
+func (a *ActivateSyncOutput) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetActive sets the Active field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ActivateSyncOutput) SetActive(active *bool) {
+	a.Active = active
+	a.require(activateSyncOutputFieldActive)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ActivateSyncOutput) SetID(id *string) {
+	a.ID = id
+	a.require(activateSyncOutputFieldID)
+}
+
+func (a *ActivateSyncOutput) UnmarshalJSON(data []byte) error {
+	type unmarshaler ActivateSyncOutput
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = ActivateSyncOutput(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *ActivateSyncOutput) MarshalJSON() ([]byte, error) {
+	type embed ActivateSyncOutput
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *ActivateSyncOutput) String() string {
+	if a == nil {
+		return "<nil>"
+	}
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
 	aPIErrorFieldKey      = big.NewInt(1 << 0)
 	aPIErrorFieldMessage  = big.NewInt(1 << 1)
 	aPIErrorFieldMetadata = big.NewInt(1 << 2)
@@ -547,6 +815,180 @@ func (b BulkExecutionStatus) Ptr() *BulkExecutionStatus {
 	return &b
 }
 
+// How the data is fetched. 'none' is normal operation for Polytomic. 'incremental' and 'full' apply to syncs from Salesforce. 'incremental' indicates the data is synced incrementally using record modification time. 'full' is necessary to catch up to the latest values for formula fields and rollup fields whose updates don't show up in incremental runs due to limitations in Salesforce.
+type BulkFetchMode string
+
+const (
+	BulkFetchModeNone        BulkFetchMode = "none"
+	BulkFetchModeIncremental BulkFetchMode = "incremental"
+	BulkFetchModeFull        BulkFetchMode = "full"
+)
+
+func NewBulkFetchModeFromString(s string) (BulkFetchMode, error) {
+	switch s {
+	case "none":
+		return BulkFetchModeNone, nil
+	case "incremental":
+		return BulkFetchModeIncremental, nil
+	case "full":
+		return BulkFetchModeFull, nil
+	}
+	var t BulkFetchMode
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BulkFetchMode) Ptr() *BulkFetchMode {
+	return &b
+}
+
+var (
+	bulkFieldFieldEnabled        = big.NewInt(1 << 0)
+	bulkFieldFieldID             = big.NewInt(1 << 1)
+	bulkFieldFieldObfuscated     = big.NewInt(1 << 2)
+	bulkFieldFieldOutputName     = big.NewInt(1 << 3)
+	bulkFieldFieldUserOutputName = big.NewInt(1 << 4)
+)
+
+type BulkField struct {
+	Enabled        *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
+	ID             *string `json:"id,omitempty" url:"id,omitempty"`
+	Obfuscated     *bool   `json:"obfuscated,omitempty" url:"obfuscated,omitempty"`
+	OutputName     *string `json:"output_name,omitempty" url:"output_name,omitempty"`
+	UserOutputName *string `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkField) GetEnabled() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.Enabled
+}
+
+func (b *BulkField) GetID() *string {
+	if b == nil {
+		return nil
+	}
+	return b.ID
+}
+
+func (b *BulkField) GetObfuscated() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.Obfuscated
+}
+
+func (b *BulkField) GetOutputName() *string {
+	if b == nil {
+		return nil
+	}
+	return b.OutputName
+}
+
+func (b *BulkField) GetUserOutputName() *string {
+	if b == nil {
+		return nil
+	}
+	return b.UserOutputName
+}
+
+func (b *BulkField) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.extraProperties
+}
+
+func (b *BulkField) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkField) SetEnabled(enabled *bool) {
+	b.Enabled = enabled
+	b.require(bulkFieldFieldEnabled)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkField) SetID(id *string) {
+	b.ID = id
+	b.require(bulkFieldFieldID)
+}
+
+// SetObfuscated sets the Obfuscated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkField) SetObfuscated(obfuscated *bool) {
+	b.Obfuscated = obfuscated
+	b.require(bulkFieldFieldObfuscated)
+}
+
+// SetOutputName sets the OutputName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkField) SetOutputName(outputName *string) {
+	b.OutputName = outputName
+	b.require(bulkFieldFieldOutputName)
+}
+
+// SetUserOutputName sets the UserOutputName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkField) SetUserOutputName(userOutputName *string) {
+	b.UserOutputName = userOutputName
+	b.require(bulkFieldFieldUserOutputName)
+}
+
+func (b *BulkField) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkField
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkField(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkField) MarshalJSON() ([]byte, error) {
+	type embed BulkField
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BulkField) String() string {
+	if b == nil {
+		return "<nil>"
+	}
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 var (
 	bulkFilterFieldFieldID  = big.NewInt(1 << 0)
 	bulkFilterFieldFunction = big.NewInt(1 << 1)
@@ -717,6 +1159,328 @@ func (b BulkScheduleSyncMode) Ptr() *BulkScheduleSyncMode {
 	return &b
 }
 
+var (
+	bulkSchemaFieldDataCutoffTimestamp = big.NewInt(1 << 0)
+	bulkSchemaFieldDisableDataCutoff   = big.NewInt(1 << 1)
+	bulkSchemaFieldEnabled             = big.NewInt(1 << 2)
+	bulkSchemaFieldFields              = big.NewInt(1 << 3)
+	bulkSchemaFieldFilters             = big.NewInt(1 << 4)
+	bulkSchemaFieldID                  = big.NewInt(1 << 5)
+	bulkSchemaFieldOutputName          = big.NewInt(1 << 6)
+	bulkSchemaFieldPartitionKey        = big.NewInt(1 << 7)
+	bulkSchemaFieldTrackingField       = big.NewInt(1 << 8)
+	bulkSchemaFieldUserOutputName      = big.NewInt(1 << 9)
+)
+
+type BulkSchema struct {
+	DataCutoffTimestamp *time.Time `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
+	DisableDataCutoff   *bool      `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
+	Enabled             *bool      `json:"enabled,omitempty" url:"enabled,omitempty"`
+	// fields is not populated on the list endpoint and will be removed in a future version; retrieve individual schemas for fields.
+	Fields []*BulkField `json:"fields,omitempty" url:"fields,omitempty"`
+	// filters is not populated on the list endpoint and will be removed in a future version; retrieve individual schemas for filters.
+	Filters        []*BulkFilter `json:"filters,omitempty" url:"filters,omitempty"`
+	ID             *string       `json:"id,omitempty" url:"id,omitempty"`
+	OutputName     *string       `json:"output_name,omitempty" url:"output_name,omitempty"`
+	PartitionKey   *string       `json:"partition_key,omitempty" url:"partition_key,omitempty"`
+	TrackingField  *string       `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
+	UserOutputName *string       `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSchema) GetDataCutoffTimestamp() *time.Time {
+	if b == nil {
+		return nil
+	}
+	return b.DataCutoffTimestamp
+}
+
+func (b *BulkSchema) GetDisableDataCutoff() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.DisableDataCutoff
+}
+
+func (b *BulkSchema) GetEnabled() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.Enabled
+}
+
+func (b *BulkSchema) GetFields() []*BulkField {
+	if b == nil {
+		return nil
+	}
+	return b.Fields
+}
+
+func (b *BulkSchema) GetFilters() []*BulkFilter {
+	if b == nil {
+		return nil
+	}
+	return b.Filters
+}
+
+func (b *BulkSchema) GetID() *string {
+	if b == nil {
+		return nil
+	}
+	return b.ID
+}
+
+func (b *BulkSchema) GetOutputName() *string {
+	if b == nil {
+		return nil
+	}
+	return b.OutputName
+}
+
+func (b *BulkSchema) GetPartitionKey() *string {
+	if b == nil {
+		return nil
+	}
+	return b.PartitionKey
+}
+
+func (b *BulkSchema) GetTrackingField() *string {
+	if b == nil {
+		return nil
+	}
+	return b.TrackingField
+}
+
+func (b *BulkSchema) GetUserOutputName() *string {
+	if b == nil {
+		return nil
+	}
+	return b.UserOutputName
+}
+
+func (b *BulkSchema) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.extraProperties
+}
+
+func (b *BulkSchema) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetDataCutoffTimestamp sets the DataCutoffTimestamp field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSchema) SetDataCutoffTimestamp(dataCutoffTimestamp *time.Time) {
+	b.DataCutoffTimestamp = dataCutoffTimestamp
+	b.require(bulkSchemaFieldDataCutoffTimestamp)
+}
+
+// SetDisableDataCutoff sets the DisableDataCutoff field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSchema) SetDisableDataCutoff(disableDataCutoff *bool) {
+	b.DisableDataCutoff = disableDataCutoff
+	b.require(bulkSchemaFieldDisableDataCutoff)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSchema) SetEnabled(enabled *bool) {
+	b.Enabled = enabled
+	b.require(bulkSchemaFieldEnabled)
+}
+
+// SetFields sets the Fields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSchema) SetFields(fields []*BulkField) {
+	b.Fields = fields
+	b.require(bulkSchemaFieldFields)
+}
+
+// SetFilters sets the Filters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSchema) SetFilters(filters []*BulkFilter) {
+	b.Filters = filters
+	b.require(bulkSchemaFieldFilters)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSchema) SetID(id *string) {
+	b.ID = id
+	b.require(bulkSchemaFieldID)
+}
+
+// SetOutputName sets the OutputName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSchema) SetOutputName(outputName *string) {
+	b.OutputName = outputName
+	b.require(bulkSchemaFieldOutputName)
+}
+
+// SetPartitionKey sets the PartitionKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSchema) SetPartitionKey(partitionKey *string) {
+	b.PartitionKey = partitionKey
+	b.require(bulkSchemaFieldPartitionKey)
+}
+
+// SetTrackingField sets the TrackingField field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSchema) SetTrackingField(trackingField *string) {
+	b.TrackingField = trackingField
+	b.require(bulkSchemaFieldTrackingField)
+}
+
+// SetUserOutputName sets the UserOutputName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSchema) SetUserOutputName(userOutputName *string) {
+	b.UserOutputName = userOutputName
+	b.require(bulkSchemaFieldUserOutputName)
+}
+
+func (b *BulkSchema) UnmarshalJSON(data []byte) error {
+	type embed BulkSchema
+	var unmarshaler = struct {
+		embed
+		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BulkSchema(unmarshaler.embed)
+	b.DataCutoffTimestamp = unmarshaler.DataCutoffTimestamp.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSchema) MarshalJSON() ([]byte, error) {
+	type embed BulkSchema
+	var marshaler = struct {
+		embed
+		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
+	}{
+		embed:               embed(*b),
+		DataCutoffTimestamp: internal.NewOptionalDateTime(b.DataCutoffTimestamp),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BulkSchema) String() string {
+	if b == nil {
+		return "<nil>"
+	}
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+var (
+	bulkSchemaEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type BulkSchemaEnvelope struct {
+	Data *BulkSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSchemaEnvelope) GetData() *BulkSchema {
+	if b == nil {
+		return nil
+	}
+	return b.Data
+}
+
+func (b *BulkSchemaEnvelope) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.extraProperties
+}
+
+func (b *BulkSchemaEnvelope) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSchemaEnvelope) SetData(data *BulkSchema) {
+	b.Data = data
+	b.require(bulkSchemaEnvelopeFieldData)
+}
+
+func (b *BulkSchemaEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSchemaEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSchemaEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSchemaEnvelope) MarshalJSON() ([]byte, error) {
+	type embed BulkSchemaEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BulkSchemaEnvelope) String() string {
+	if b == nil {
+		return "<nil>"
+	}
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 type BulkSchemaExecutionStatus string
 
 const (
@@ -783,6 +1547,1257 @@ func NewBulkSelectiveModeFromString(s string) (BulkSelectiveMode, error) {
 
 func (b BulkSelectiveMode) Ptr() *BulkSelectiveMode {
 	return &b
+}
+
+var (
+	bulkSyncExecutionFieldCompletedAt       = big.NewInt(1 << 0)
+	bulkSyncExecutionFieldCreatedAt         = big.NewInt(1 << 1)
+	bulkSyncExecutionFieldErrorCount        = big.NewInt(1 << 2)
+	bulkSyncExecutionFieldFetchMode         = big.NewInt(1 << 3)
+	bulkSyncExecutionFieldID                = big.NewInt(1 << 4)
+	bulkSyncExecutionFieldIsPartial         = big.NewInt(1 << 5)
+	bulkSyncExecutionFieldIsResync          = big.NewInt(1 << 6)
+	bulkSyncExecutionFieldIsTest            = big.NewInt(1 << 7)
+	bulkSyncExecutionFieldOutputDisposition = big.NewInt(1 << 8)
+	bulkSyncExecutionFieldRecordCount       = big.NewInt(1 << 9)
+	bulkSyncExecutionFieldSchemas           = big.NewInt(1 << 10)
+	bulkSyncExecutionFieldStartedAt         = big.NewInt(1 << 11)
+	bulkSyncExecutionFieldStatus            = big.NewInt(1 << 12)
+	bulkSyncExecutionFieldStatusMessage     = big.NewInt(1 << 13)
+	bulkSyncExecutionFieldType              = big.NewInt(1 << 14)
+	bulkSyncExecutionFieldUpdatedAt         = big.NewInt(1 << 15)
+	bulkSyncExecutionFieldWarningCount      = big.NewInt(1 << 16)
+)
+
+type BulkSyncExecution struct {
+	CompletedAt       *time.Time                 `json:"completed_at,omitempty" url:"completed_at,omitempty"`
+	CreatedAt         *time.Time                 `json:"created_at,omitempty" url:"created_at,omitempty"`
+	ErrorCount        *int64                     `json:"error_count,omitempty" url:"error_count,omitempty"`
+	FetchMode         *BulkFetchMode             `json:"fetch_mode,omitempty" url:"fetch_mode,omitempty"`
+	ID                *string                    `json:"id,omitempty" url:"id,omitempty"`
+	IsPartial         *bool                      `json:"is_partial,omitempty" url:"is_partial,omitempty"`
+	IsResync          *bool                      `json:"is_resync,omitempty" url:"is_resync,omitempty"`
+	IsTest            *bool                      `json:"is_test,omitempty" url:"is_test,omitempty"`
+	OutputDisposition *BulkOutputDisposition     `json:"output_disposition,omitempty" url:"output_disposition,omitempty"`
+	RecordCount       *int64                     `json:"record_count,omitempty" url:"record_count,omitempty"`
+	Schemas           []*BulkSyncSchemaExecution `json:"schemas,omitempty" url:"schemas,omitempty"`
+	StartedAt         *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
+	Status            *BulkExecutionStatus       `json:"status,omitempty" url:"status,omitempty"`
+	StatusMessage     *string                    `json:"status_message,omitempty" url:"status_message,omitempty"`
+	Type              *string                    `json:"type,omitempty" url:"type,omitempty"`
+	UpdatedAt         *time.Time                 `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	WarningCount      *int64                     `json:"warning_count,omitempty" url:"warning_count,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSyncExecution) GetCompletedAt() *time.Time {
+	if b == nil {
+		return nil
+	}
+	return b.CompletedAt
+}
+
+func (b *BulkSyncExecution) GetCreatedAt() *time.Time {
+	if b == nil {
+		return nil
+	}
+	return b.CreatedAt
+}
+
+func (b *BulkSyncExecution) GetErrorCount() *int64 {
+	if b == nil {
+		return nil
+	}
+	return b.ErrorCount
+}
+
+func (b *BulkSyncExecution) GetFetchMode() *BulkFetchMode {
+	if b == nil {
+		return nil
+	}
+	return b.FetchMode
+}
+
+func (b *BulkSyncExecution) GetID() *string {
+	if b == nil {
+		return nil
+	}
+	return b.ID
+}
+
+func (b *BulkSyncExecution) GetIsPartial() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.IsPartial
+}
+
+func (b *BulkSyncExecution) GetIsResync() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.IsResync
+}
+
+func (b *BulkSyncExecution) GetIsTest() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.IsTest
+}
+
+func (b *BulkSyncExecution) GetOutputDisposition() *BulkOutputDisposition {
+	if b == nil {
+		return nil
+	}
+	return b.OutputDisposition
+}
+
+func (b *BulkSyncExecution) GetRecordCount() *int64 {
+	if b == nil {
+		return nil
+	}
+	return b.RecordCount
+}
+
+func (b *BulkSyncExecution) GetSchemas() []*BulkSyncSchemaExecution {
+	if b == nil {
+		return nil
+	}
+	return b.Schemas
+}
+
+func (b *BulkSyncExecution) GetStartedAt() *time.Time {
+	if b == nil {
+		return nil
+	}
+	return b.StartedAt
+}
+
+func (b *BulkSyncExecution) GetStatus() *BulkExecutionStatus {
+	if b == nil {
+		return nil
+	}
+	return b.Status
+}
+
+func (b *BulkSyncExecution) GetStatusMessage() *string {
+	if b == nil {
+		return nil
+	}
+	return b.StatusMessage
+}
+
+func (b *BulkSyncExecution) GetType() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Type
+}
+
+func (b *BulkSyncExecution) GetUpdatedAt() *time.Time {
+	if b == nil {
+		return nil
+	}
+	return b.UpdatedAt
+}
+
+func (b *BulkSyncExecution) GetWarningCount() *int64 {
+	if b == nil {
+		return nil
+	}
+	return b.WarningCount
+}
+
+func (b *BulkSyncExecution) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.extraProperties
+}
+
+func (b *BulkSyncExecution) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetCompletedAt sets the CompletedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecution) SetCompletedAt(completedAt *time.Time) {
+	b.CompletedAt = completedAt
+	b.require(bulkSyncExecutionFieldCompletedAt)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecution) SetCreatedAt(createdAt *time.Time) {
+	b.CreatedAt = createdAt
+	b.require(bulkSyncExecutionFieldCreatedAt)
+}
+
+// SetErrorCount sets the ErrorCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecution) SetErrorCount(errorCount *int64) {
+	b.ErrorCount = errorCount
+	b.require(bulkSyncExecutionFieldErrorCount)
+}
+
+// SetFetchMode sets the FetchMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecution) SetFetchMode(fetchMode *BulkFetchMode) {
+	b.FetchMode = fetchMode
+	b.require(bulkSyncExecutionFieldFetchMode)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecution) SetID(id *string) {
+	b.ID = id
+	b.require(bulkSyncExecutionFieldID)
+}
+
+// SetIsPartial sets the IsPartial field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecution) SetIsPartial(isPartial *bool) {
+	b.IsPartial = isPartial
+	b.require(bulkSyncExecutionFieldIsPartial)
+}
+
+// SetIsResync sets the IsResync field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecution) SetIsResync(isResync *bool) {
+	b.IsResync = isResync
+	b.require(bulkSyncExecutionFieldIsResync)
+}
+
+// SetIsTest sets the IsTest field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecution) SetIsTest(isTest *bool) {
+	b.IsTest = isTest
+	b.require(bulkSyncExecutionFieldIsTest)
+}
+
+// SetOutputDisposition sets the OutputDisposition field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecution) SetOutputDisposition(outputDisposition *BulkOutputDisposition) {
+	b.OutputDisposition = outputDisposition
+	b.require(bulkSyncExecutionFieldOutputDisposition)
+}
+
+// SetRecordCount sets the RecordCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecution) SetRecordCount(recordCount *int64) {
+	b.RecordCount = recordCount
+	b.require(bulkSyncExecutionFieldRecordCount)
+}
+
+// SetSchemas sets the Schemas field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecution) SetSchemas(schemas []*BulkSyncSchemaExecution) {
+	b.Schemas = schemas
+	b.require(bulkSyncExecutionFieldSchemas)
+}
+
+// SetStartedAt sets the StartedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecution) SetStartedAt(startedAt *time.Time) {
+	b.StartedAt = startedAt
+	b.require(bulkSyncExecutionFieldStartedAt)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecution) SetStatus(status *BulkExecutionStatus) {
+	b.Status = status
+	b.require(bulkSyncExecutionFieldStatus)
+}
+
+// SetStatusMessage sets the StatusMessage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecution) SetStatusMessage(statusMessage *string) {
+	b.StatusMessage = statusMessage
+	b.require(bulkSyncExecutionFieldStatusMessage)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecution) SetType(type_ *string) {
+	b.Type = type_
+	b.require(bulkSyncExecutionFieldType)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecution) SetUpdatedAt(updatedAt *time.Time) {
+	b.UpdatedAt = updatedAt
+	b.require(bulkSyncExecutionFieldUpdatedAt)
+}
+
+// SetWarningCount sets the WarningCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecution) SetWarningCount(warningCount *int64) {
+	b.WarningCount = warningCount
+	b.require(bulkSyncExecutionFieldWarningCount)
+}
+
+func (b *BulkSyncExecution) UnmarshalJSON(data []byte) error {
+	type embed BulkSyncExecution
+	var unmarshaler = struct {
+		embed
+		CompletedAt *internal.DateTime `json:"completed_at,omitempty"`
+		CreatedAt   *internal.DateTime `json:"created_at,omitempty"`
+		StartedAt   *internal.DateTime `json:"started_at,omitempty"`
+		UpdatedAt   *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BulkSyncExecution(unmarshaler.embed)
+	b.CompletedAt = unmarshaler.CompletedAt.TimePtr()
+	b.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	b.StartedAt = unmarshaler.StartedAt.TimePtr()
+	b.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncExecution) MarshalJSON() ([]byte, error) {
+	type embed BulkSyncExecution
+	var marshaler = struct {
+		embed
+		CompletedAt *internal.DateTime `json:"completed_at,omitempty"`
+		CreatedAt   *internal.DateTime `json:"created_at,omitempty"`
+		StartedAt   *internal.DateTime `json:"started_at,omitempty"`
+		UpdatedAt   *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:       embed(*b),
+		CompletedAt: internal.NewOptionalDateTime(b.CompletedAt),
+		CreatedAt:   internal.NewOptionalDateTime(b.CreatedAt),
+		StartedAt:   internal.NewOptionalDateTime(b.StartedAt),
+		UpdatedAt:   internal.NewOptionalDateTime(b.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BulkSyncExecution) String() string {
+	if b == nil {
+		return "<nil>"
+	}
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+var (
+	bulkSyncExecutionEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type BulkSyncExecutionEnvelope struct {
+	Data *BulkSyncExecution `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSyncExecutionEnvelope) GetData() *BulkSyncExecution {
+	if b == nil {
+		return nil
+	}
+	return b.Data
+}
+
+func (b *BulkSyncExecutionEnvelope) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.extraProperties
+}
+
+func (b *BulkSyncExecutionEnvelope) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecutionEnvelope) SetData(data *BulkSyncExecution) {
+	b.Data = data
+	b.require(bulkSyncExecutionEnvelopeFieldData)
+}
+
+func (b *BulkSyncExecutionEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncExecutionEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncExecutionEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncExecutionEnvelope) MarshalJSON() ([]byte, error) {
+	type embed BulkSyncExecutionEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BulkSyncExecutionEnvelope) String() string {
+	if b == nil {
+		return "<nil>"
+	}
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+var (
+	bulkSyncExecutionStatusFieldNextExecutionTime = big.NewInt(1 << 0)
+	bulkSyncExecutionStatusFieldSchemas           = big.NewInt(1 << 1)
+	bulkSyncExecutionStatusFieldStatus            = big.NewInt(1 << 2)
+	bulkSyncExecutionStatusFieldSyncID            = big.NewInt(1 << 3)
+)
+
+type BulkSyncExecutionStatus struct {
+	// Next scheduled execution time, if the sync has a schedule configured.
+	NextExecutionTime *time.Time `json:"nextExecutionTime,omitempty" url:"nextExecutionTime,omitempty"`
+	// Most recent execution status for each enabled schema in the sync.
+	Schemas []*BulkSyncSchemaExecutionStatus `json:"schemas,omitempty" url:"schemas,omitempty"`
+	Status  *BulkExecutionStatus             `json:"status,omitempty" url:"status,omitempty"`
+	// Unique identifier of the bulk sync.
+	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSyncExecutionStatus) GetNextExecutionTime() *time.Time {
+	if b == nil {
+		return nil
+	}
+	return b.NextExecutionTime
+}
+
+func (b *BulkSyncExecutionStatus) GetSchemas() []*BulkSyncSchemaExecutionStatus {
+	if b == nil {
+		return nil
+	}
+	return b.Schemas
+}
+
+func (b *BulkSyncExecutionStatus) GetStatus() *BulkExecutionStatus {
+	if b == nil {
+		return nil
+	}
+	return b.Status
+}
+
+func (b *BulkSyncExecutionStatus) GetSyncID() *string {
+	if b == nil {
+		return nil
+	}
+	return b.SyncID
+}
+
+func (b *BulkSyncExecutionStatus) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.extraProperties
+}
+
+func (b *BulkSyncExecutionStatus) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetNextExecutionTime sets the NextExecutionTime field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecutionStatus) SetNextExecutionTime(nextExecutionTime *time.Time) {
+	b.NextExecutionTime = nextExecutionTime
+	b.require(bulkSyncExecutionStatusFieldNextExecutionTime)
+}
+
+// SetSchemas sets the Schemas field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecutionStatus) SetSchemas(schemas []*BulkSyncSchemaExecutionStatus) {
+	b.Schemas = schemas
+	b.require(bulkSyncExecutionStatusFieldSchemas)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecutionStatus) SetStatus(status *BulkExecutionStatus) {
+	b.Status = status
+	b.require(bulkSyncExecutionStatusFieldStatus)
+}
+
+// SetSyncID sets the SyncID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncExecutionStatus) SetSyncID(syncID *string) {
+	b.SyncID = syncID
+	b.require(bulkSyncExecutionStatusFieldSyncID)
+}
+
+func (b *BulkSyncExecutionStatus) UnmarshalJSON(data []byte) error {
+	type embed BulkSyncExecutionStatus
+	var unmarshaler = struct {
+		embed
+		NextExecutionTime *internal.DateTime `json:"nextExecutionTime,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BulkSyncExecutionStatus(unmarshaler.embed)
+	b.NextExecutionTime = unmarshaler.NextExecutionTime.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncExecutionStatus) MarshalJSON() ([]byte, error) {
+	type embed BulkSyncExecutionStatus
+	var marshaler = struct {
+		embed
+		NextExecutionTime *internal.DateTime `json:"nextExecutionTime,omitempty"`
+	}{
+		embed:             embed(*b),
+		NextExecutionTime: internal.NewOptionalDateTime(b.NextExecutionTime),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BulkSyncExecutionStatus) String() string {
+	if b == nil {
+		return "<nil>"
+	}
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+var (
+	bulkSyncSchemaExecutionFieldCompletedAt   = big.NewInt(1 << 0)
+	bulkSyncSchemaExecutionFieldCreatedAt     = big.NewInt(1 << 1)
+	bulkSyncSchemaExecutionFieldErrorCount    = big.NewInt(1 << 2)
+	bulkSyncSchemaExecutionFieldOutputName    = big.NewInt(1 << 3)
+	bulkSyncSchemaExecutionFieldRecordCount   = big.NewInt(1 << 4)
+	bulkSyncSchemaExecutionFieldSchema        = big.NewInt(1 << 5)
+	bulkSyncSchemaExecutionFieldStartedAt     = big.NewInt(1 << 6)
+	bulkSyncSchemaExecutionFieldStatus        = big.NewInt(1 << 7)
+	bulkSyncSchemaExecutionFieldStatusMessage = big.NewInt(1 << 8)
+	bulkSyncSchemaExecutionFieldUpdatedAt     = big.NewInt(1 << 9)
+	bulkSyncSchemaExecutionFieldWarningCount  = big.NewInt(1 << 10)
+)
+
+type BulkSyncSchemaExecution struct {
+	CompletedAt   *time.Time                 `json:"completed_at,omitempty" url:"completed_at,omitempty"`
+	CreatedAt     *time.Time                 `json:"created_at,omitempty" url:"created_at,omitempty"`
+	ErrorCount    *int64                     `json:"error_count,omitempty" url:"error_count,omitempty"`
+	OutputName    *string                    `json:"output_name,omitempty" url:"output_name,omitempty"`
+	RecordCount   *int64                     `json:"record_count,omitempty" url:"record_count,omitempty"`
+	Schema        *string                    `json:"schema,omitempty" url:"schema,omitempty"`
+	StartedAt     *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
+	Status        *BulkSchemaExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	StatusMessage *string                    `json:"status_message,omitempty" url:"status_message,omitempty"`
+	UpdatedAt     *time.Time                 `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	WarningCount  *int64                     `json:"warning_count,omitempty" url:"warning_count,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSyncSchemaExecution) GetCompletedAt() *time.Time {
+	if b == nil {
+		return nil
+	}
+	return b.CompletedAt
+}
+
+func (b *BulkSyncSchemaExecution) GetCreatedAt() *time.Time {
+	if b == nil {
+		return nil
+	}
+	return b.CreatedAt
+}
+
+func (b *BulkSyncSchemaExecution) GetErrorCount() *int64 {
+	if b == nil {
+		return nil
+	}
+	return b.ErrorCount
+}
+
+func (b *BulkSyncSchemaExecution) GetOutputName() *string {
+	if b == nil {
+		return nil
+	}
+	return b.OutputName
+}
+
+func (b *BulkSyncSchemaExecution) GetRecordCount() *int64 {
+	if b == nil {
+		return nil
+	}
+	return b.RecordCount
+}
+
+func (b *BulkSyncSchemaExecution) GetSchema() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Schema
+}
+
+func (b *BulkSyncSchemaExecution) GetStartedAt() *time.Time {
+	if b == nil {
+		return nil
+	}
+	return b.StartedAt
+}
+
+func (b *BulkSyncSchemaExecution) GetStatus() *BulkSchemaExecutionStatus {
+	if b == nil {
+		return nil
+	}
+	return b.Status
+}
+
+func (b *BulkSyncSchemaExecution) GetStatusMessage() *string {
+	if b == nil {
+		return nil
+	}
+	return b.StatusMessage
+}
+
+func (b *BulkSyncSchemaExecution) GetUpdatedAt() *time.Time {
+	if b == nil {
+		return nil
+	}
+	return b.UpdatedAt
+}
+
+func (b *BulkSyncSchemaExecution) GetWarningCount() *int64 {
+	if b == nil {
+		return nil
+	}
+	return b.WarningCount
+}
+
+func (b *BulkSyncSchemaExecution) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.extraProperties
+}
+
+func (b *BulkSyncSchemaExecution) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetCompletedAt sets the CompletedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecution) SetCompletedAt(completedAt *time.Time) {
+	b.CompletedAt = completedAt
+	b.require(bulkSyncSchemaExecutionFieldCompletedAt)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecution) SetCreatedAt(createdAt *time.Time) {
+	b.CreatedAt = createdAt
+	b.require(bulkSyncSchemaExecutionFieldCreatedAt)
+}
+
+// SetErrorCount sets the ErrorCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecution) SetErrorCount(errorCount *int64) {
+	b.ErrorCount = errorCount
+	b.require(bulkSyncSchemaExecutionFieldErrorCount)
+}
+
+// SetOutputName sets the OutputName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecution) SetOutputName(outputName *string) {
+	b.OutputName = outputName
+	b.require(bulkSyncSchemaExecutionFieldOutputName)
+}
+
+// SetRecordCount sets the RecordCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecution) SetRecordCount(recordCount *int64) {
+	b.RecordCount = recordCount
+	b.require(bulkSyncSchemaExecutionFieldRecordCount)
+}
+
+// SetSchema sets the Schema field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecution) SetSchema(schema *string) {
+	b.Schema = schema
+	b.require(bulkSyncSchemaExecutionFieldSchema)
+}
+
+// SetStartedAt sets the StartedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecution) SetStartedAt(startedAt *time.Time) {
+	b.StartedAt = startedAt
+	b.require(bulkSyncSchemaExecutionFieldStartedAt)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecution) SetStatus(status *BulkSchemaExecutionStatus) {
+	b.Status = status
+	b.require(bulkSyncSchemaExecutionFieldStatus)
+}
+
+// SetStatusMessage sets the StatusMessage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecution) SetStatusMessage(statusMessage *string) {
+	b.StatusMessage = statusMessage
+	b.require(bulkSyncSchemaExecutionFieldStatusMessage)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecution) SetUpdatedAt(updatedAt *time.Time) {
+	b.UpdatedAt = updatedAt
+	b.require(bulkSyncSchemaExecutionFieldUpdatedAt)
+}
+
+// SetWarningCount sets the WarningCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecution) SetWarningCount(warningCount *int64) {
+	b.WarningCount = warningCount
+	b.require(bulkSyncSchemaExecutionFieldWarningCount)
+}
+
+func (b *BulkSyncSchemaExecution) UnmarshalJSON(data []byte) error {
+	type embed BulkSyncSchemaExecution
+	var unmarshaler = struct {
+		embed
+		CompletedAt *internal.DateTime `json:"completed_at,omitempty"`
+		CreatedAt   *internal.DateTime `json:"created_at,omitempty"`
+		StartedAt   *internal.DateTime `json:"started_at,omitempty"`
+		UpdatedAt   *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BulkSyncSchemaExecution(unmarshaler.embed)
+	b.CompletedAt = unmarshaler.CompletedAt.TimePtr()
+	b.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	b.StartedAt = unmarshaler.StartedAt.TimePtr()
+	b.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncSchemaExecution) MarshalJSON() ([]byte, error) {
+	type embed BulkSyncSchemaExecution
+	var marshaler = struct {
+		embed
+		CompletedAt *internal.DateTime `json:"completed_at,omitempty"`
+		CreatedAt   *internal.DateTime `json:"created_at,omitempty"`
+		StartedAt   *internal.DateTime `json:"started_at,omitempty"`
+		UpdatedAt   *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:       embed(*b),
+		CompletedAt: internal.NewOptionalDateTime(b.CompletedAt),
+		CreatedAt:   internal.NewOptionalDateTime(b.CreatedAt),
+		StartedAt:   internal.NewOptionalDateTime(b.StartedAt),
+		UpdatedAt:   internal.NewOptionalDateTime(b.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BulkSyncSchemaExecution) String() string {
+	if b == nil {
+		return "<nil>"
+	}
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+var (
+	bulkSyncSchemaExecutionStatusFieldCompletedAt   = big.NewInt(1 << 0)
+	bulkSyncSchemaExecutionStatusFieldErrorCount    = big.NewInt(1 << 1)
+	bulkSyncSchemaExecutionStatusFieldExecutionID   = big.NewInt(1 << 2)
+	bulkSyncSchemaExecutionStatusFieldRecordCount   = big.NewInt(1 << 3)
+	bulkSyncSchemaExecutionStatusFieldSchema        = big.NewInt(1 << 4)
+	bulkSyncSchemaExecutionStatusFieldStartedAt     = big.NewInt(1 << 5)
+	bulkSyncSchemaExecutionStatusFieldStatus        = big.NewInt(1 << 6)
+	bulkSyncSchemaExecutionStatusFieldStatusMessage = big.NewInt(1 << 7)
+	bulkSyncSchemaExecutionStatusFieldWarningCount  = big.NewInt(1 << 8)
+)
+
+type BulkSyncSchemaExecutionStatus struct {
+	// Timestamp when the most recent execution finished. Null while the execution is still running.
+	CompletedAt *time.Time `json:"completed_at,omitempty" url:"completed_at,omitempty"`
+	// Number of errors emitted during the most recent execution.
+	ErrorCount *int64 `json:"error_count,omitempty" url:"error_count,omitempty"`
+	// ID of the most recent execution for the schema.
+	ExecutionID *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	// Number of records processed in the most recent execution.
+	RecordCount *int64 `json:"record_count,omitempty" url:"record_count,omitempty"`
+	// Schema (table or object) identifier.
+	Schema *string `json:"schema,omitempty" url:"schema,omitempty"`
+	// Timestamp when the most recent execution started.
+	StartedAt *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
+	Status    *BulkSchemaExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	// Human-readable detail for the current status (e.g. an error message when status is failed).
+	StatusMessage *string `json:"status_message,omitempty" url:"status_message,omitempty"`
+	// Number of warnings emitted during the most recent execution.
+	WarningCount *int64 `json:"warning_count,omitempty" url:"warning_count,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSyncSchemaExecutionStatus) GetCompletedAt() *time.Time {
+	if b == nil {
+		return nil
+	}
+	return b.CompletedAt
+}
+
+func (b *BulkSyncSchemaExecutionStatus) GetErrorCount() *int64 {
+	if b == nil {
+		return nil
+	}
+	return b.ErrorCount
+}
+
+func (b *BulkSyncSchemaExecutionStatus) GetExecutionID() *string {
+	if b == nil {
+		return nil
+	}
+	return b.ExecutionID
+}
+
+func (b *BulkSyncSchemaExecutionStatus) GetRecordCount() *int64 {
+	if b == nil {
+		return nil
+	}
+	return b.RecordCount
+}
+
+func (b *BulkSyncSchemaExecutionStatus) GetSchema() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Schema
+}
+
+func (b *BulkSyncSchemaExecutionStatus) GetStartedAt() *time.Time {
+	if b == nil {
+		return nil
+	}
+	return b.StartedAt
+}
+
+func (b *BulkSyncSchemaExecutionStatus) GetStatus() *BulkSchemaExecutionStatus {
+	if b == nil {
+		return nil
+	}
+	return b.Status
+}
+
+func (b *BulkSyncSchemaExecutionStatus) GetStatusMessage() *string {
+	if b == nil {
+		return nil
+	}
+	return b.StatusMessage
+}
+
+func (b *BulkSyncSchemaExecutionStatus) GetWarningCount() *int64 {
+	if b == nil {
+		return nil
+	}
+	return b.WarningCount
+}
+
+func (b *BulkSyncSchemaExecutionStatus) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.extraProperties
+}
+
+func (b *BulkSyncSchemaExecutionStatus) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetCompletedAt sets the CompletedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecutionStatus) SetCompletedAt(completedAt *time.Time) {
+	b.CompletedAt = completedAt
+	b.require(bulkSyncSchemaExecutionStatusFieldCompletedAt)
+}
+
+// SetErrorCount sets the ErrorCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecutionStatus) SetErrorCount(errorCount *int64) {
+	b.ErrorCount = errorCount
+	b.require(bulkSyncSchemaExecutionStatusFieldErrorCount)
+}
+
+// SetExecutionID sets the ExecutionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecutionStatus) SetExecutionID(executionID *string) {
+	b.ExecutionID = executionID
+	b.require(bulkSyncSchemaExecutionStatusFieldExecutionID)
+}
+
+// SetRecordCount sets the RecordCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecutionStatus) SetRecordCount(recordCount *int64) {
+	b.RecordCount = recordCount
+	b.require(bulkSyncSchemaExecutionStatusFieldRecordCount)
+}
+
+// SetSchema sets the Schema field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecutionStatus) SetSchema(schema *string) {
+	b.Schema = schema
+	b.require(bulkSyncSchemaExecutionStatusFieldSchema)
+}
+
+// SetStartedAt sets the StartedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecutionStatus) SetStartedAt(startedAt *time.Time) {
+	b.StartedAt = startedAt
+	b.require(bulkSyncSchemaExecutionStatusFieldStartedAt)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecutionStatus) SetStatus(status *BulkSchemaExecutionStatus) {
+	b.Status = status
+	b.require(bulkSyncSchemaExecutionStatusFieldStatus)
+}
+
+// SetStatusMessage sets the StatusMessage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecutionStatus) SetStatusMessage(statusMessage *string) {
+	b.StatusMessage = statusMessage
+	b.require(bulkSyncSchemaExecutionStatusFieldStatusMessage)
+}
+
+// SetWarningCount sets the WarningCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSchemaExecutionStatus) SetWarningCount(warningCount *int64) {
+	b.WarningCount = warningCount
+	b.require(bulkSyncSchemaExecutionStatusFieldWarningCount)
+}
+
+func (b *BulkSyncSchemaExecutionStatus) UnmarshalJSON(data []byte) error {
+	type embed BulkSyncSchemaExecutionStatus
+	var unmarshaler = struct {
+		embed
+		CompletedAt *internal.DateTime `json:"completed_at,omitempty"`
+		StartedAt   *internal.DateTime `json:"started_at,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BulkSyncSchemaExecutionStatus(unmarshaler.embed)
+	b.CompletedAt = unmarshaler.CompletedAt.TimePtr()
+	b.StartedAt = unmarshaler.StartedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncSchemaExecutionStatus) MarshalJSON() ([]byte, error) {
+	type embed BulkSyncSchemaExecutionStatus
+	var marshaler = struct {
+		embed
+		CompletedAt *internal.DateTime `json:"completed_at,omitempty"`
+		StartedAt   *internal.DateTime `json:"started_at,omitempty"`
+	}{
+		embed:       embed(*b),
+		CompletedAt: internal.NewOptionalDateTime(b.CompletedAt),
+		StartedAt:   internal.NewOptionalDateTime(b.StartedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BulkSyncSchemaExecutionStatus) String() string {
+	if b == nil {
+		return "<nil>"
+	}
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+var (
+	cancelBulkSyncResponseFieldMessage = big.NewInt(1 << 0)
+)
+
+type CancelBulkSyncResponse struct {
+	Message *string `json:"message,omitempty" url:"message,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CancelBulkSyncResponse) GetMessage() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Message
+}
+
+func (c *CancelBulkSyncResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *CancelBulkSyncResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CancelBulkSyncResponse) SetMessage(message *string) {
+	c.Message = message
+	c.require(cancelBulkSyncResponseFieldMessage)
+}
+
+func (c *CancelBulkSyncResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler CancelBulkSyncResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CancelBulkSyncResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CancelBulkSyncResponse) MarshalJSON() ([]byte, error) {
+	type embed CancelBulkSyncResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CancelBulkSyncResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	cancelBulkSyncResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type CancelBulkSyncResponseEnvelope struct {
+	Data *CancelBulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CancelBulkSyncResponseEnvelope) GetData() *CancelBulkSyncResponse {
+	if c == nil {
+		return nil
+	}
+	return c.Data
+}
+
+func (c *CancelBulkSyncResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *CancelBulkSyncResponseEnvelope) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CancelBulkSyncResponseEnvelope) SetData(data *CancelBulkSyncResponse) {
+	c.Data = data
+	c.require(cancelBulkSyncResponseEnvelopeFieldData)
+}
+
+func (c *CancelBulkSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler CancelBulkSyncResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CancelBulkSyncResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CancelBulkSyncResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed CancelBulkSyncResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CancelBulkSyncResponseEnvelope) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
 }
 
 var (
@@ -883,6 +2898,659 @@ func (c *ConfigurationValue) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	connectionMetaFieldHasItems      = big.NewInt(1 << 0)
+	connectionMetaFieldItems         = big.NewInt(1 << 1)
+	connectionMetaFieldRequiresOneOf = big.NewInt(1 << 2)
+)
+
+type ConnectionMeta struct {
+	HasItems      *bool    `json:"has_items,omitempty" url:"has_items,omitempty"`
+	Items         []any    `json:"items,omitempty" url:"items,omitempty"`
+	RequiresOneOf []string `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ConnectionMeta) GetHasItems() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.HasItems
+}
+
+func (c *ConnectionMeta) GetItems() []any {
+	if c == nil {
+		return nil
+	}
+	return c.Items
+}
+
+func (c *ConnectionMeta) GetRequiresOneOf() []string {
+	if c == nil {
+		return nil
+	}
+	return c.RequiresOneOf
+}
+
+func (c *ConnectionMeta) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *ConnectionMeta) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetHasItems sets the HasItems field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionMeta) SetHasItems(hasItems *bool) {
+	c.HasItems = hasItems
+	c.require(connectionMetaFieldHasItems)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionMeta) SetItems(items []any) {
+	c.Items = items
+	c.require(connectionMetaFieldItems)
+}
+
+// SetRequiresOneOf sets the RequiresOneOf field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionMeta) SetRequiresOneOf(requiresOneOf []string) {
+	c.RequiresOneOf = requiresOneOf
+	c.require(connectionMetaFieldRequiresOneOf)
+}
+
+func (c *ConnectionMeta) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionMeta
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionMeta(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionMeta) MarshalJSON() ([]byte, error) {
+	type embed ConnectionMeta
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ConnectionMeta) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	connectionMetaResponseFieldConfiguration = big.NewInt(1 << 0)
+	connectionMetaResponseFieldItems         = big.NewInt(1 << 1)
+	connectionMetaResponseFieldRequiresOneOf = big.NewInt(1 << 2)
+)
+
+type ConnectionMetaResponse struct {
+	Configuration map[string]*ConfigurationValue `json:"configuration,omitempty" url:"configuration,omitempty"`
+	Items         map[string]*ConnectionMeta     `json:"items,omitempty" url:"items,omitempty"`
+	RequiresOneOf []string                       `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ConnectionMetaResponse) GetConfiguration() map[string]*ConfigurationValue {
+	if c == nil {
+		return nil
+	}
+	return c.Configuration
+}
+
+func (c *ConnectionMetaResponse) GetItems() map[string]*ConnectionMeta {
+	if c == nil {
+		return nil
+	}
+	return c.Items
+}
+
+func (c *ConnectionMetaResponse) GetRequiresOneOf() []string {
+	if c == nil {
+		return nil
+	}
+	return c.RequiresOneOf
+}
+
+func (c *ConnectionMetaResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *ConnectionMetaResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetConfiguration sets the Configuration field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionMetaResponse) SetConfiguration(configuration map[string]*ConfigurationValue) {
+	c.Configuration = configuration
+	c.require(connectionMetaResponseFieldConfiguration)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionMetaResponse) SetItems(items map[string]*ConnectionMeta) {
+	c.Items = items
+	c.require(connectionMetaResponseFieldItems)
+}
+
+// SetRequiresOneOf sets the RequiresOneOf field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionMetaResponse) SetRequiresOneOf(requiresOneOf []string) {
+	c.RequiresOneOf = requiresOneOf
+	c.require(connectionMetaResponseFieldRequiresOneOf)
+}
+
+func (c *ConnectionMetaResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionMetaResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionMetaResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionMetaResponse) MarshalJSON() ([]byte, error) {
+	type embed ConnectionMetaResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ConnectionMetaResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	executionCountsFieldDelete   = big.NewInt(1 << 0)
+	executionCountsFieldError    = big.NewInt(1 << 1)
+	executionCountsFieldInsert   = big.NewInt(1 << 2)
+	executionCountsFieldTotal    = big.NewInt(1 << 3)
+	executionCountsFieldUpdate   = big.NewInt(1 << 4)
+	executionCountsFieldUpserts  = big.NewInt(1 << 5)
+	executionCountsFieldWarnings = big.NewInt(1 << 6)
+)
+
+type ExecutionCounts struct {
+	Delete   *int64 `json:"delete,omitempty" url:"delete,omitempty"`
+	Error    *int64 `json:"error,omitempty" url:"error,omitempty"`
+	Insert   *int64 `json:"insert,omitempty" url:"insert,omitempty"`
+	Total    *int64 `json:"total,omitempty" url:"total,omitempty"`
+	Update   *int64 `json:"update,omitempty" url:"update,omitempty"`
+	Upserts  *int64 `json:"upserts,omitempty" url:"upserts,omitempty"`
+	Warnings *int64 `json:"warnings,omitempty" url:"warnings,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (e *ExecutionCounts) GetDelete() *int64 {
+	if e == nil {
+		return nil
+	}
+	return e.Delete
+}
+
+func (e *ExecutionCounts) GetError() *int64 {
+	if e == nil {
+		return nil
+	}
+	return e.Error
+}
+
+func (e *ExecutionCounts) GetInsert() *int64 {
+	if e == nil {
+		return nil
+	}
+	return e.Insert
+}
+
+func (e *ExecutionCounts) GetTotal() *int64 {
+	if e == nil {
+		return nil
+	}
+	return e.Total
+}
+
+func (e *ExecutionCounts) GetUpdate() *int64 {
+	if e == nil {
+		return nil
+	}
+	return e.Update
+}
+
+func (e *ExecutionCounts) GetUpserts() *int64 {
+	if e == nil {
+		return nil
+	}
+	return e.Upserts
+}
+
+func (e *ExecutionCounts) GetWarnings() *int64 {
+	if e == nil {
+		return nil
+	}
+	return e.Warnings
+}
+
+func (e *ExecutionCounts) GetExtraProperties() map[string]interface{} {
+	if e == nil {
+		return nil
+	}
+	return e.extraProperties
+}
+
+func (e *ExecutionCounts) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetDelete sets the Delete field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecutionCounts) SetDelete(delete *int64) {
+	e.Delete = delete
+	e.require(executionCountsFieldDelete)
+}
+
+// SetError sets the Error field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecutionCounts) SetError(error_ *int64) {
+	e.Error = error_
+	e.require(executionCountsFieldError)
+}
+
+// SetInsert sets the Insert field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecutionCounts) SetInsert(insert *int64) {
+	e.Insert = insert
+	e.require(executionCountsFieldInsert)
+}
+
+// SetTotal sets the Total field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecutionCounts) SetTotal(total *int64) {
+	e.Total = total
+	e.require(executionCountsFieldTotal)
+}
+
+// SetUpdate sets the Update field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecutionCounts) SetUpdate(update *int64) {
+	e.Update = update
+	e.require(executionCountsFieldUpdate)
+}
+
+// SetUpserts sets the Upserts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecutionCounts) SetUpserts(upserts *int64) {
+	e.Upserts = upserts
+	e.require(executionCountsFieldUpserts)
+}
+
+// SetWarnings sets the Warnings field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecutionCounts) SetWarnings(warnings *int64) {
+	e.Warnings = warnings
+	e.require(executionCountsFieldWarnings)
+}
+
+func (e *ExecutionCounts) UnmarshalJSON(data []byte) error {
+	type unmarshaler ExecutionCounts
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = ExecutionCounts(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
+	if err != nil {
+		return err
+	}
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *ExecutionCounts) MarshalJSON() ([]byte, error) {
+	type embed ExecutionCounts
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*e),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (e *ExecutionCounts) String() string {
+	if e == nil {
+		return "<nil>"
+	}
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+var (
+	executionLogResponseFieldExpires = big.NewInt(1 << 0)
+	executionLogResponseFieldURLs    = big.NewInt(1 << 1)
+)
+
+type ExecutionLogResponse struct {
+	Expires *time.Time `json:"expires,omitempty" url:"expires,omitempty"`
+	URLs    []string   `json:"urls,omitempty" url:"urls,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (e *ExecutionLogResponse) GetExpires() *time.Time {
+	if e == nil {
+		return nil
+	}
+	return e.Expires
+}
+
+func (e *ExecutionLogResponse) GetURLs() []string {
+	if e == nil {
+		return nil
+	}
+	return e.URLs
+}
+
+func (e *ExecutionLogResponse) GetExtraProperties() map[string]interface{} {
+	if e == nil {
+		return nil
+	}
+	return e.extraProperties
+}
+
+func (e *ExecutionLogResponse) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetExpires sets the Expires field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecutionLogResponse) SetExpires(expires *time.Time) {
+	e.Expires = expires
+	e.require(executionLogResponseFieldExpires)
+}
+
+// SetURLs sets the URLs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecutionLogResponse) SetURLs(urls []string) {
+	e.URLs = urls
+	e.require(executionLogResponseFieldURLs)
+}
+
+func (e *ExecutionLogResponse) UnmarshalJSON(data []byte) error {
+	type embed ExecutionLogResponse
+	var unmarshaler = struct {
+		embed
+		Expires *internal.DateTime `json:"expires,omitempty"`
+	}{
+		embed: embed(*e),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*e = ExecutionLogResponse(unmarshaler.embed)
+	e.Expires = unmarshaler.Expires.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
+	if err != nil {
+		return err
+	}
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *ExecutionLogResponse) MarshalJSON() ([]byte, error) {
+	type embed ExecutionLogResponse
+	var marshaler = struct {
+		embed
+		Expires *internal.DateTime `json:"expires,omitempty"`
+	}{
+		embed:   embed(*e),
+		Expires: internal.NewOptionalDateTime(e.Expires),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (e *ExecutionLogResponse) String() string {
+	if e == nil {
+		return "<nil>"
+	}
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+var (
+	executionLogsResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type ExecutionLogsResponseEnvelope struct {
+	Data *ExecutionLogResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (e *ExecutionLogsResponseEnvelope) GetData() *ExecutionLogResponse {
+	if e == nil {
+		return nil
+	}
+	return e.Data
+}
+
+func (e *ExecutionLogsResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if e == nil {
+		return nil
+	}
+	return e.extraProperties
+}
+
+func (e *ExecutionLogsResponseEnvelope) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecutionLogsResponseEnvelope) SetData(data *ExecutionLogResponse) {
+	e.Data = data
+	e.require(executionLogsResponseEnvelopeFieldData)
+}
+
+func (e *ExecutionLogsResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ExecutionLogsResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = ExecutionLogsResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
+	if err != nil {
+		return err
+	}
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *ExecutionLogsResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed ExecutionLogsResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*e),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (e *ExecutionLogsResponseEnvelope) String() string {
+	if e == nil {
+		return "<nil>"
+	}
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+type ExecutionStatus string
+
+const (
+	ExecutionStatusCreated     ExecutionStatus = "created"
+	ExecutionStatusScheduled   ExecutionStatus = "scheduled"
+	ExecutionStatusQueued      ExecutionStatus = "queued"
+	ExecutionStatusWaiting     ExecutionStatus = "waiting"
+	ExecutionStatusRunning     ExecutionStatus = "running"
+	ExecutionStatusProcessing  ExecutionStatus = "processing"
+	ExecutionStatusCanceling   ExecutionStatus = "canceling"
+	ExecutionStatusCanceled    ExecutionStatus = "canceled"
+	ExecutionStatusCompleted   ExecutionStatus = "completed"
+	ExecutionStatusFailed      ExecutionStatus = "failed"
+	ExecutionStatusInterrupted ExecutionStatus = "interrupted"
+)
+
+func NewExecutionStatusFromString(s string) (ExecutionStatus, error) {
+	switch s {
+	case "created":
+		return ExecutionStatusCreated, nil
+	case "scheduled":
+		return ExecutionStatusScheduled, nil
+	case "queued":
+		return ExecutionStatusQueued, nil
+	case "waiting":
+		return ExecutionStatusWaiting, nil
+	case "running":
+		return ExecutionStatusRunning, nil
+	case "processing":
+		return ExecutionStatusProcessing, nil
+	case "canceling":
+		return ExecutionStatusCanceling, nil
+	case "canceled":
+		return ExecutionStatusCanceled, nil
+	case "completed":
+		return ExecutionStatusCompleted, nil
+	case "failed":
+		return ExecutionStatusFailed, nil
+	case "interrupted":
+		return ExecutionStatusInterrupted, nil
+	}
+	var t ExecutionStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (e ExecutionStatus) Ptr() *ExecutionStatus {
+	return &e
 }
 
 type FilterFunction string
@@ -988,41 +3656,1764 @@ func (f FilterFunction) Ptr() *FilterFunction {
 	return &f
 }
 
-type ModelsyncSyncTargetMode string
-
-const (
-	ModelsyncSyncTargetModeCreate         ModelsyncSyncTargetMode = "create"
-	ModelsyncSyncTargetModeUpdate         ModelsyncSyncTargetMode = "update"
-	ModelsyncSyncTargetModeUpdateOrCreate ModelsyncSyncTargetMode = "updateOrCreate"
-	ModelsyncSyncTargetModeReplace        ModelsyncSyncTargetMode = "replace"
-	ModelsyncSyncTargetModeAppend         ModelsyncSyncTargetMode = "append"
-	ModelsyncSyncTargetModeRemove         ModelsyncSyncTargetMode = "remove"
-	ModelsyncSyncTargetModeSnapshot       ModelsyncSyncTargetMode = "snapshot"
+var (
+	getConnectionMetaEnvelopeFieldData = big.NewInt(1 << 0)
 )
 
-func NewModelsyncSyncTargetModeFromString(s string) (ModelsyncSyncTargetMode, error) {
+type GetConnectionMetaEnvelope struct {
+	Data *ConnectionMetaResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetConnectionMetaEnvelope) GetData() *ConnectionMetaResponse {
+	if g == nil {
+		return nil
+	}
+	return g.Data
+}
+
+func (g *GetConnectionMetaEnvelope) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
+	return g.extraProperties
+}
+
+func (g *GetConnectionMetaEnvelope) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetConnectionMetaEnvelope) SetData(data *ConnectionMetaResponse) {
+	g.Data = data
+	g.require(getConnectionMetaEnvelopeFieldData)
+}
+
+func (g *GetConnectionMetaEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetConnectionMetaEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetConnectionMetaEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetConnectionMetaEnvelope) MarshalJSON() ([]byte, error) {
+	type embed GetConnectionMetaEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetConnectionMetaEnvelope) String() string {
+	if g == nil {
+		return "<nil>"
+	}
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getExecutionResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type GetExecutionResponseEnvelope struct {
+	Data *GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetExecutionResponseEnvelope) GetData() *GetExecutionResponseSchema {
+	if g == nil {
+		return nil
+	}
+	return g.Data
+}
+
+func (g *GetExecutionResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
+	return g.extraProperties
+}
+
+func (g *GetExecutionResponseEnvelope) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetExecutionResponseEnvelope) SetData(data *GetExecutionResponseSchema) {
+	g.Data = data
+	g.require(getExecutionResponseEnvelopeFieldData)
+}
+
+func (g *GetExecutionResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetExecutionResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetExecutionResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetExecutionResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed GetExecutionResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetExecutionResponseEnvelope) String() string {
+	if g == nil {
+		return "<nil>"
+	}
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getExecutionResponseSchemaFieldCompletedAt = big.NewInt(1 << 0)
+	getExecutionResponseSchemaFieldCounts      = big.NewInt(1 << 1)
+	getExecutionResponseSchemaFieldCreatedAt   = big.NewInt(1 << 2)
+	getExecutionResponseSchemaFieldErrors      = big.NewInt(1 << 3)
+	getExecutionResponseSchemaFieldID          = big.NewInt(1 << 4)
+	getExecutionResponseSchemaFieldStartedAt   = big.NewInt(1 << 5)
+	getExecutionResponseSchemaFieldStatus      = big.NewInt(1 << 6)
+	getExecutionResponseSchemaFieldType        = big.NewInt(1 << 7)
+)
+
+type GetExecutionResponseSchema struct {
+	CompletedAt *time.Time       `json:"completed_at,omitempty" url:"completed_at,omitempty"`
+	Counts      *ExecutionCounts `json:"counts,omitempty" url:"counts,omitempty"`
+	CreatedAt   *time.Time       `json:"created_at,omitempty" url:"created_at,omitempty"`
+	Errors      []string         `json:"errors,omitempty" url:"errors,omitempty"`
+	ID          *string          `json:"id,omitempty" url:"id,omitempty"`
+	StartedAt   *time.Time       `json:"started_at,omitempty" url:"started_at,omitempty"`
+	Status      *ExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	Type        *string          `json:"type,omitempty" url:"type,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetExecutionResponseSchema) GetCompletedAt() *time.Time {
+	if g == nil {
+		return nil
+	}
+	return g.CompletedAt
+}
+
+func (g *GetExecutionResponseSchema) GetCounts() *ExecutionCounts {
+	if g == nil {
+		return nil
+	}
+	return g.Counts
+}
+
+func (g *GetExecutionResponseSchema) GetCreatedAt() *time.Time {
+	if g == nil {
+		return nil
+	}
+	return g.CreatedAt
+}
+
+func (g *GetExecutionResponseSchema) GetErrors() []string {
+	if g == nil {
+		return nil
+	}
+	return g.Errors
+}
+
+func (g *GetExecutionResponseSchema) GetID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ID
+}
+
+func (g *GetExecutionResponseSchema) GetStartedAt() *time.Time {
+	if g == nil {
+		return nil
+	}
+	return g.StartedAt
+}
+
+func (g *GetExecutionResponseSchema) GetStatus() *ExecutionStatus {
+	if g == nil {
+		return nil
+	}
+	return g.Status
+}
+
+func (g *GetExecutionResponseSchema) GetType() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Type
+}
+
+func (g *GetExecutionResponseSchema) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
+	return g.extraProperties
+}
+
+func (g *GetExecutionResponseSchema) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetCompletedAt sets the CompletedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetExecutionResponseSchema) SetCompletedAt(completedAt *time.Time) {
+	g.CompletedAt = completedAt
+	g.require(getExecutionResponseSchemaFieldCompletedAt)
+}
+
+// SetCounts sets the Counts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetExecutionResponseSchema) SetCounts(counts *ExecutionCounts) {
+	g.Counts = counts
+	g.require(getExecutionResponseSchemaFieldCounts)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetExecutionResponseSchema) SetCreatedAt(createdAt *time.Time) {
+	g.CreatedAt = createdAt
+	g.require(getExecutionResponseSchemaFieldCreatedAt)
+}
+
+// SetErrors sets the Errors field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetExecutionResponseSchema) SetErrors(errors []string) {
+	g.Errors = errors
+	g.require(getExecutionResponseSchemaFieldErrors)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetExecutionResponseSchema) SetID(id *string) {
+	g.ID = id
+	g.require(getExecutionResponseSchemaFieldID)
+}
+
+// SetStartedAt sets the StartedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetExecutionResponseSchema) SetStartedAt(startedAt *time.Time) {
+	g.StartedAt = startedAt
+	g.require(getExecutionResponseSchemaFieldStartedAt)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetExecutionResponseSchema) SetStatus(status *ExecutionStatus) {
+	g.Status = status
+	g.require(getExecutionResponseSchemaFieldStatus)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetExecutionResponseSchema) SetType(type_ *string) {
+	g.Type = type_
+	g.require(getExecutionResponseSchemaFieldType)
+}
+
+func (g *GetExecutionResponseSchema) UnmarshalJSON(data []byte) error {
+	type embed GetExecutionResponseSchema
+	var unmarshaler = struct {
+		embed
+		CompletedAt *internal.DateTime `json:"completed_at,omitempty"`
+		CreatedAt   *internal.DateTime `json:"created_at,omitempty"`
+		StartedAt   *internal.DateTime `json:"started_at,omitempty"`
+	}{
+		embed: embed(*g),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*g = GetExecutionResponseSchema(unmarshaler.embed)
+	g.CompletedAt = unmarshaler.CompletedAt.TimePtr()
+	g.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	g.StartedAt = unmarshaler.StartedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetExecutionResponseSchema) MarshalJSON() ([]byte, error) {
+	type embed GetExecutionResponseSchema
+	var marshaler = struct {
+		embed
+		CompletedAt *internal.DateTime `json:"completed_at,omitempty"`
+		CreatedAt   *internal.DateTime `json:"created_at,omitempty"`
+		StartedAt   *internal.DateTime `json:"started_at,omitempty"`
+	}{
+		embed:       embed(*g),
+		CompletedAt: internal.NewOptionalDateTime(g.CompletedAt),
+		CreatedAt:   internal.NewOptionalDateTime(g.CreatedAt),
+		StartedAt:   internal.NewOptionalDateTime(g.StartedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetExecutionResponseSchema) String() string {
+	if g == nil {
+		return "<nil>"
+	}
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getModelSyncSourceMetaEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type GetModelSyncSourceMetaEnvelope struct {
+	Data *ModelSyncSourceMetaResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetModelSyncSourceMetaEnvelope) GetData() *ModelSyncSourceMetaResponse {
+	if g == nil {
+		return nil
+	}
+	return g.Data
+}
+
+func (g *GetModelSyncSourceMetaEnvelope) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
+	return g.extraProperties
+}
+
+func (g *GetModelSyncSourceMetaEnvelope) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetModelSyncSourceMetaEnvelope) SetData(data *ModelSyncSourceMetaResponse) {
+	g.Data = data
+	g.require(getModelSyncSourceMetaEnvelopeFieldData)
+}
+
+func (g *GetModelSyncSourceMetaEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetModelSyncSourceMetaEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetModelSyncSourceMetaEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetModelSyncSourceMetaEnvelope) MarshalJSON() ([]byte, error) {
+	type embed GetModelSyncSourceMetaEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetModelSyncSourceMetaEnvelope) String() string {
+	if g == nil {
+		return "<nil>"
+	}
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	identityFunctionFieldID    = big.NewInt(1 << 0)
+	identityFunctionFieldLabel = big.NewInt(1 << 1)
+)
+
+type IdentityFunction struct {
+	ID    *string `json:"id,omitempty" url:"id,omitempty"`
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *IdentityFunction) GetID() *string {
+	if i == nil {
+		return nil
+	}
+	return i.ID
+}
+
+func (i *IdentityFunction) GetLabel() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Label
+}
+
+func (i *IdentityFunction) GetExtraProperties() map[string]interface{} {
+	if i == nil {
+		return nil
+	}
+	return i.extraProperties
+}
+
+func (i *IdentityFunction) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityFunction) SetID(id *string) {
+	i.ID = id
+	i.require(identityFunctionFieldID)
+}
+
+// SetLabel sets the Label field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityFunction) SetLabel(label *string) {
+	i.Label = label
+	i.require(identityFunctionFieldLabel)
+}
+
+func (i *IdentityFunction) UnmarshalJSON(data []byte) error {
+	type unmarshaler IdentityFunction
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = IdentityFunction(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *IdentityFunction) MarshalJSON() ([]byte, error) {
+	type embed IdentityFunction
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*i),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *IdentityFunction) String() string {
+	if i == nil {
+		return "<nil>"
+	}
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+var (
+	jobResponseFieldError  = big.NewInt(1 << 0)
+	jobResponseFieldJobID  = big.NewInt(1 << 1)
+	jobResponseFieldResult = big.NewInt(1 << 2)
+	jobResponseFieldStatus = big.NewInt(1 << 3)
+	jobResponseFieldType   = big.NewInt(1 << 4)
+)
+
+type JobResponse struct {
+	// Error message if the job failed.
+	Error *string `json:"error,omitempty" url:"error,omitempty"`
+	// Identifier of the job.
+	JobID *string `json:"job_id,omitempty" url:"job_id,omitempty"`
+	// Job result. Shape depends on the job type; only populated once status is done.
+	Result any             `json:"result,omitempty" url:"result,omitempty"`
+	Status *WorkTaskStatus `json:"status,omitempty" url:"status,omitempty"`
+	// Job type. Matches the type used to fetch the job.
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (j *JobResponse) GetError() *string {
+	if j == nil {
+		return nil
+	}
+	return j.Error
+}
+
+func (j *JobResponse) GetJobID() *string {
+	if j == nil {
+		return nil
+	}
+	return j.JobID
+}
+
+func (j *JobResponse) GetResult() any {
+	if j == nil {
+		return nil
+	}
+	return j.Result
+}
+
+func (j *JobResponse) GetStatus() *WorkTaskStatus {
+	if j == nil {
+		return nil
+	}
+	return j.Status
+}
+
+func (j *JobResponse) GetType() *string {
+	if j == nil {
+		return nil
+	}
+	return j.Type
+}
+
+func (j *JobResponse) GetExtraProperties() map[string]interface{} {
+	if j == nil {
+		return nil
+	}
+	return j.extraProperties
+}
+
+func (j *JobResponse) require(field *big.Int) {
+	if j.explicitFields == nil {
+		j.explicitFields = big.NewInt(0)
+	}
+	j.explicitFields.Or(j.explicitFields, field)
+}
+
+// SetError sets the Error field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (j *JobResponse) SetError(error_ *string) {
+	j.Error = error_
+	j.require(jobResponseFieldError)
+}
+
+// SetJobID sets the JobID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (j *JobResponse) SetJobID(jobID *string) {
+	j.JobID = jobID
+	j.require(jobResponseFieldJobID)
+}
+
+// SetResult sets the Result field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (j *JobResponse) SetResult(result any) {
+	j.Result = result
+	j.require(jobResponseFieldResult)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (j *JobResponse) SetStatus(status *WorkTaskStatus) {
+	j.Status = status
+	j.require(jobResponseFieldStatus)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (j *JobResponse) SetType(type_ *string) {
+	j.Type = type_
+	j.require(jobResponseFieldType)
+}
+
+func (j *JobResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler JobResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*j = JobResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *j)
+	if err != nil {
+		return err
+	}
+	j.extraProperties = extraProperties
+	j.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (j *JobResponse) MarshalJSON() ([]byte, error) {
+	type embed JobResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*j),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, j.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (j *JobResponse) String() string {
+	if j == nil {
+		return "<nil>"
+	}
+	if len(j.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(j.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(j); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", j)
+}
+
+var (
+	listBulkSchemaFieldData = big.NewInt(1 << 0)
+)
+
+type ListBulkSchema struct {
+	Data []*BulkSchema `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListBulkSchema) GetData() []*BulkSchema {
+	if l == nil {
+		return nil
+	}
+	return l.Data
+}
+
+func (l *ListBulkSchema) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
+	return l.extraProperties
+}
+
+func (l *ListBulkSchema) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBulkSchema) SetData(data []*BulkSchema) {
+	l.Data = data
+	l.require(listBulkSchemaFieldData)
+}
+
+func (l *ListBulkSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListBulkSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListBulkSchema(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListBulkSchema) MarshalJSON() ([]byte, error) {
+	type embed ListBulkSchema
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListBulkSchema) String() string {
+	if l == nil {
+		return "<nil>"
+	}
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	listBulkSyncExecutionStatusEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type ListBulkSyncExecutionStatusEnvelope struct {
+	Data []*BulkSyncExecutionStatus `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListBulkSyncExecutionStatusEnvelope) GetData() []*BulkSyncExecutionStatus {
+	if l == nil {
+		return nil
+	}
+	return l.Data
+}
+
+func (l *ListBulkSyncExecutionStatusEnvelope) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
+	return l.extraProperties
+}
+
+func (l *ListBulkSyncExecutionStatusEnvelope) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBulkSyncExecutionStatusEnvelope) SetData(data []*BulkSyncExecutionStatus) {
+	l.Data = data
+	l.require(listBulkSyncExecutionStatusEnvelopeFieldData)
+}
+
+func (l *ListBulkSyncExecutionStatusEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListBulkSyncExecutionStatusEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListBulkSyncExecutionStatusEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListBulkSyncExecutionStatusEnvelope) MarshalJSON() ([]byte, error) {
+	type embed ListBulkSyncExecutionStatusEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListBulkSyncExecutionStatusEnvelope) String() string {
+	if l == nil {
+		return "<nil>"
+	}
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	listBulkSyncExecutionsEnvelopeFieldData       = big.NewInt(1 << 0)
+	listBulkSyncExecutionsEnvelopeFieldPagination = big.NewInt(1 << 1)
+)
+
+type ListBulkSyncExecutionsEnvelope struct {
+	Data       []*BulkSyncExecution `json:"data,omitempty" url:"data,omitempty"`
+	Pagination *PaginationDetails   `json:"pagination,omitempty" url:"pagination,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListBulkSyncExecutionsEnvelope) GetData() []*BulkSyncExecution {
+	if l == nil {
+		return nil
+	}
+	return l.Data
+}
+
+func (l *ListBulkSyncExecutionsEnvelope) GetPagination() *PaginationDetails {
+	if l == nil {
+		return nil
+	}
+	return l.Pagination
+}
+
+func (l *ListBulkSyncExecutionsEnvelope) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
+	return l.extraProperties
+}
+
+func (l *ListBulkSyncExecutionsEnvelope) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBulkSyncExecutionsEnvelope) SetData(data []*BulkSyncExecution) {
+	l.Data = data
+	l.require(listBulkSyncExecutionsEnvelopeFieldData)
+}
+
+// SetPagination sets the Pagination field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBulkSyncExecutionsEnvelope) SetPagination(pagination *PaginationDetails) {
+	l.Pagination = pagination
+	l.require(listBulkSyncExecutionsEnvelopeFieldPagination)
+}
+
+func (l *ListBulkSyncExecutionsEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListBulkSyncExecutionsEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListBulkSyncExecutionsEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListBulkSyncExecutionsEnvelope) MarshalJSON() ([]byte, error) {
+	type embed ListBulkSyncExecutionsEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListBulkSyncExecutionsEnvelope) String() string {
+	if l == nil {
+		return "<nil>"
+	}
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	listExecutionResponseEnvelopeFieldData       = big.NewInt(1 << 0)
+	listExecutionResponseEnvelopeFieldPagination = big.NewInt(1 << 1)
+)
+
+type ListExecutionResponseEnvelope struct {
+	Data       []*GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+	Pagination *PaginationDetails            `json:"pagination,omitempty" url:"pagination,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListExecutionResponseEnvelope) GetData() []*GetExecutionResponseSchema {
+	if l == nil {
+		return nil
+	}
+	return l.Data
+}
+
+func (l *ListExecutionResponseEnvelope) GetPagination() *PaginationDetails {
+	if l == nil {
+		return nil
+	}
+	return l.Pagination
+}
+
+func (l *ListExecutionResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
+	return l.extraProperties
+}
+
+func (l *ListExecutionResponseEnvelope) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListExecutionResponseEnvelope) SetData(data []*GetExecutionResponseSchema) {
+	l.Data = data
+	l.require(listExecutionResponseEnvelopeFieldData)
+}
+
+// SetPagination sets the Pagination field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListExecutionResponseEnvelope) SetPagination(pagination *PaginationDetails) {
+	l.Pagination = pagination
+	l.require(listExecutionResponseEnvelopeFieldPagination)
+}
+
+func (l *ListExecutionResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListExecutionResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListExecutionResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListExecutionResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed ListExecutionResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListExecutionResponseEnvelope) String() string {
+	if l == nil {
+		return "<nil>"
+	}
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	listPoliciesResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type ListPoliciesResponseEnvelope struct {
+	Data []*PolicyResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListPoliciesResponseEnvelope) GetData() []*PolicyResponse {
+	if l == nil {
+		return nil
+	}
+	return l.Data
+}
+
+func (l *ListPoliciesResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
+	return l.extraProperties
+}
+
+func (l *ListPoliciesResponseEnvelope) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPoliciesResponseEnvelope) SetData(data []*PolicyResponse) {
+	l.Data = data
+	l.require(listPoliciesResponseEnvelopeFieldData)
+}
+
+func (l *ListPoliciesResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListPoliciesResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListPoliciesResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListPoliciesResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed ListPoliciesResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListPoliciesResponseEnvelope) String() string {
+	if l == nil {
+		return "<nil>"
+	}
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	modeFieldDescription           = big.NewInt(1 << 0)
+	modeFieldLabel                 = big.NewInt(1 << 1)
+	modeFieldMode                  = big.NewInt(1 << 2)
+	modeFieldRequiresIdentity      = big.NewInt(1 << 3)
+	modeFieldSupportsFieldSyncMode = big.NewInt(1 << 4)
+	modeFieldSupportsTargetFilters = big.NewInt(1 << 5)
+)
+
+type Mode struct {
+	Description           *string `json:"description,omitempty" url:"description,omitempty"`
+	Label                 *string `json:"label,omitempty" url:"label,omitempty"`
+	Mode                  *string `json:"mode,omitempty" url:"mode,omitempty"`
+	RequiresIdentity      *bool   `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
+	SupportsFieldSyncMode *bool   `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
+	SupportsTargetFilters *bool   `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *Mode) GetDescription() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Description
+}
+
+func (m *Mode) GetLabel() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Label
+}
+
+func (m *Mode) GetMode() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Mode
+}
+
+func (m *Mode) GetRequiresIdentity() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.RequiresIdentity
+}
+
+func (m *Mode) GetSupportsFieldSyncMode() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.SupportsFieldSyncMode
+}
+
+func (m *Mode) GetSupportsTargetFilters() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.SupportsTargetFilters
+}
+
+func (m *Mode) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *Mode) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *Mode) SetDescription(description *string) {
+	m.Description = description
+	m.require(modeFieldDescription)
+}
+
+// SetLabel sets the Label field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *Mode) SetLabel(label *string) {
+	m.Label = label
+	m.require(modeFieldLabel)
+}
+
+// SetMode sets the Mode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *Mode) SetMode(mode *string) {
+	m.Mode = mode
+	m.require(modeFieldMode)
+}
+
+// SetRequiresIdentity sets the RequiresIdentity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *Mode) SetRequiresIdentity(requiresIdentity *bool) {
+	m.RequiresIdentity = requiresIdentity
+	m.require(modeFieldRequiresIdentity)
+}
+
+// SetSupportsFieldSyncMode sets the SupportsFieldSyncMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *Mode) SetSupportsFieldSyncMode(supportsFieldSyncMode *bool) {
+	m.SupportsFieldSyncMode = supportsFieldSyncMode
+	m.require(modeFieldSupportsFieldSyncMode)
+}
+
+// SetSupportsTargetFilters sets the SupportsTargetFilters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *Mode) SetSupportsTargetFilters(supportsTargetFilters *bool) {
+	m.SupportsTargetFilters = supportsTargetFilters
+	m.require(modeFieldSupportsTargetFilters)
+}
+
+func (m *Mode) UnmarshalJSON(data []byte) error {
+	type unmarshaler Mode
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = Mode(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *Mode) MarshalJSON() ([]byte, error) {
+	type embed Mode
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *Mode) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+var (
+	modelFieldFieldCreatedAt   = big.NewInt(1 << 0)
+	modelFieldFieldCreatedBy   = big.NewInt(1 << 1)
+	modelFieldFieldDescription = big.NewInt(1 << 2)
+	modelFieldFieldExample     = big.NewInt(1 << 3)
+	modelFieldFieldID          = big.NewInt(1 << 4)
+	modelFieldFieldLabel       = big.NewInt(1 << 5)
+	modelFieldFieldName        = big.NewInt(1 << 6)
+	modelFieldFieldRemoteType  = big.NewInt(1 << 7)
+	modelFieldFieldType        = big.NewInt(1 << 8)
+	modelFieldFieldUnique      = big.NewInt(1 << 9)
+	modelFieldFieldUpdatedAt   = big.NewInt(1 << 10)
+	modelFieldFieldUserAdded   = big.NewInt(1 << 11)
+)
+
+type ModelField struct {
+	CreatedAt   *time.Time   `json:"created_at,omitempty" url:"created_at,omitempty"`
+	CreatedBy   *OutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
+	Description *string      `json:"description,omitempty" url:"description,omitempty"`
+	Example     any          `json:"example,omitempty" url:"example,omitempty"`
+	ID          *string      `json:"id,omitempty" url:"id,omitempty"`
+	Label       *string      `json:"label,omitempty" url:"label,omitempty"`
+	Name        *string      `json:"name,omitempty" url:"name,omitempty"`
+	RemoteType  *string      `json:"remote_type,omitempty" url:"remote_type,omitempty"`
+	Type        *string      `json:"type,omitempty" url:"type,omitempty"`
+	Unique      *bool        `json:"unique,omitempty" url:"unique,omitempty"`
+	UpdatedAt   *time.Time   `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	UserAdded   *bool        `json:"user_added,omitempty" url:"user_added,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelField) GetCreatedAt() *time.Time {
+	if m == nil {
+		return nil
+	}
+	return m.CreatedAt
+}
+
+func (m *ModelField) GetCreatedBy() *OutputActor {
+	if m == nil {
+		return nil
+	}
+	return m.CreatedBy
+}
+
+func (m *ModelField) GetDescription() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Description
+}
+
+func (m *ModelField) GetExample() any {
+	if m == nil {
+		return nil
+	}
+	return m.Example
+}
+
+func (m *ModelField) GetID() *string {
+	if m == nil {
+		return nil
+	}
+	return m.ID
+}
+
+func (m *ModelField) GetLabel() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Label
+}
+
+func (m *ModelField) GetName() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Name
+}
+
+func (m *ModelField) GetRemoteType() *string {
+	if m == nil {
+		return nil
+	}
+	return m.RemoteType
+}
+
+func (m *ModelField) GetType() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Type
+}
+
+func (m *ModelField) GetUnique() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.Unique
+}
+
+func (m *ModelField) GetUpdatedAt() *time.Time {
+	if m == nil {
+		return nil
+	}
+	return m.UpdatedAt
+}
+
+func (m *ModelField) GetUserAdded() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.UserAdded
+}
+
+func (m *ModelField) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *ModelField) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelField) SetCreatedAt(createdAt *time.Time) {
+	m.CreatedAt = createdAt
+	m.require(modelFieldFieldCreatedAt)
+}
+
+// SetCreatedBy sets the CreatedBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelField) SetCreatedBy(createdBy *OutputActor) {
+	m.CreatedBy = createdBy
+	m.require(modelFieldFieldCreatedBy)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelField) SetDescription(description *string) {
+	m.Description = description
+	m.require(modelFieldFieldDescription)
+}
+
+// SetExample sets the Example field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelField) SetExample(example any) {
+	m.Example = example
+	m.require(modelFieldFieldExample)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelField) SetID(id *string) {
+	m.ID = id
+	m.require(modelFieldFieldID)
+}
+
+// SetLabel sets the Label field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelField) SetLabel(label *string) {
+	m.Label = label
+	m.require(modelFieldFieldLabel)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelField) SetName(name *string) {
+	m.Name = name
+	m.require(modelFieldFieldName)
+}
+
+// SetRemoteType sets the RemoteType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelField) SetRemoteType(remoteType *string) {
+	m.RemoteType = remoteType
+	m.require(modelFieldFieldRemoteType)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelField) SetType(type_ *string) {
+	m.Type = type_
+	m.require(modelFieldFieldType)
+}
+
+// SetUnique sets the Unique field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelField) SetUnique(unique *bool) {
+	m.Unique = unique
+	m.require(modelFieldFieldUnique)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelField) SetUpdatedAt(updatedAt *time.Time) {
+	m.UpdatedAt = updatedAt
+	m.require(modelFieldFieldUpdatedAt)
+}
+
+// SetUserAdded sets the UserAdded field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelField) SetUserAdded(userAdded *bool) {
+	m.UserAdded = userAdded
+	m.require(modelFieldFieldUserAdded)
+}
+
+func (m *ModelField) UnmarshalJSON(data []byte) error {
+	type embed ModelField
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*m),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*m = ModelField(unmarshaler.embed)
+	m.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	m.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelField) MarshalJSON() ([]byte, error) {
+	type embed ModelField
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:     embed(*m),
+		CreatedAt: internal.NewOptionalDateTime(m.CreatedAt),
+		UpdatedAt: internal.NewOptionalDateTime(m.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *ModelField) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type ModelSyncMode string
+
+const (
+	ModelSyncModeCreate         ModelSyncMode = "create"
+	ModelSyncModeUpdate         ModelSyncMode = "update"
+	ModelSyncModeUpdateOrCreate ModelSyncMode = "updateOrCreate"
+	ModelSyncModeReplace        ModelSyncMode = "replace"
+	ModelSyncModeAppend         ModelSyncMode = "append"
+	ModelSyncModeRemove         ModelSyncMode = "remove"
+	ModelSyncModeSnapshot       ModelSyncMode = "snapshot"
+)
+
+func NewModelSyncModeFromString(s string) (ModelSyncMode, error) {
 	switch s {
 	case "create":
-		return ModelsyncSyncTargetModeCreate, nil
+		return ModelSyncModeCreate, nil
 	case "update":
-		return ModelsyncSyncTargetModeUpdate, nil
+		return ModelSyncModeUpdate, nil
 	case "updateOrCreate":
-		return ModelsyncSyncTargetModeUpdateOrCreate, nil
+		return ModelSyncModeUpdateOrCreate, nil
 	case "replace":
-		return ModelsyncSyncTargetModeReplace, nil
+		return ModelSyncModeReplace, nil
 	case "append":
-		return ModelsyncSyncTargetModeAppend, nil
+		return ModelSyncModeAppend, nil
 	case "remove":
-		return ModelsyncSyncTargetModeRemove, nil
+		return ModelSyncModeRemove, nil
 	case "snapshot":
-		return ModelsyncSyncTargetModeSnapshot, nil
+		return ModelSyncModeSnapshot, nil
 	}
-	var t ModelsyncSyncTargetMode
+	var t ModelSyncMode
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (m ModelsyncSyncTargetMode) Ptr() *ModelsyncSyncTargetMode {
+func (m ModelSyncMode) Ptr() *ModelSyncMode {
 	return &m
+}
+
+var (
+	modelSyncSourceMetaResponseFieldConfiguration = big.NewInt(1 << 0)
+	modelSyncSourceMetaResponseFieldItems         = big.NewInt(1 << 1)
+	modelSyncSourceMetaResponseFieldRequiresOneOf = big.NewInt(1 << 2)
+)
+
+type ModelSyncSourceMetaResponse struct {
+	// Additional configuration fields available for this source, keyed by field name.
+	Configuration map[string]*ConfigurationValue `json:"configuration,omitempty" url:"configuration,omitempty"`
+	// Map of configuration item name to its metadata (available values, required-one-of groups).
+	Items map[string]*SourceMeta `json:"items,omitempty" url:"items,omitempty"`
+	// Configuration items where exactly one must be selected by the caller.
+	RequiresOneOf []string `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelSyncSourceMetaResponse) GetConfiguration() map[string]*ConfigurationValue {
+	if m == nil {
+		return nil
+	}
+	return m.Configuration
+}
+
+func (m *ModelSyncSourceMetaResponse) GetItems() map[string]*SourceMeta {
+	if m == nil {
+		return nil
+	}
+	return m.Items
+}
+
+func (m *ModelSyncSourceMetaResponse) GetRequiresOneOf() []string {
+	if m == nil {
+		return nil
+	}
+	return m.RequiresOneOf
+}
+
+func (m *ModelSyncSourceMetaResponse) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *ModelSyncSourceMetaResponse) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetConfiguration sets the Configuration field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncSourceMetaResponse) SetConfiguration(configuration map[string]*ConfigurationValue) {
+	m.Configuration = configuration
+	m.require(modelSyncSourceMetaResponseFieldConfiguration)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncSourceMetaResponse) SetItems(items map[string]*SourceMeta) {
+	m.Items = items
+	m.require(modelSyncSourceMetaResponseFieldItems)
+}
+
+// SetRequiresOneOf sets the RequiresOneOf field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncSourceMetaResponse) SetRequiresOneOf(requiresOneOf []string) {
+	m.RequiresOneOf = requiresOneOf
+	m.require(modelSyncSourceMetaResponseFieldRequiresOneOf)
+}
+
+func (m *ModelSyncSourceMetaResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelSyncSourceMetaResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelSyncSourceMetaResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelSyncSourceMetaResponse) MarshalJSON() ([]byte, error) {
+	type embed ModelSyncSourceMetaResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *ModelSyncSourceMetaResponse) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
 }
 
 var (
@@ -1226,6 +5617,438 @@ func (p *PaginationDetails) String() string {
 }
 
 var (
+	pickValueFieldLabel = big.NewInt(1 << 0)
+	pickValueFieldValue = big.NewInt(1 << 1)
+)
+
+type PickValue struct {
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	Value *string `json:"value,omitempty" url:"value,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PickValue) GetLabel() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Label
+}
+
+func (p *PickValue) GetValue() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Value
+}
+
+func (p *PickValue) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PickValue) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetLabel sets the Label field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PickValue) SetLabel(label *string) {
+	p.Label = label
+	p.require(pickValueFieldLabel)
+}
+
+// SetValue sets the Value field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PickValue) SetValue(value *string) {
+	p.Value = value
+	p.require(pickValueFieldValue)
+}
+
+func (p *PickValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler PickValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PickValue(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PickValue) MarshalJSON() ([]byte, error) {
+	type embed PickValue
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PickValue) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	policyActionFieldAction  = big.NewInt(1 << 0)
+	policyActionFieldRoleIDs = big.NewInt(1 << 1)
+)
+
+type PolicyAction struct {
+	Action  string   `json:"action" url:"action"`
+	RoleIDs []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PolicyAction) GetAction() string {
+	if p == nil {
+		return ""
+	}
+	return p.Action
+}
+
+func (p *PolicyAction) GetRoleIDs() []string {
+	if p == nil {
+		return nil
+	}
+	return p.RoleIDs
+}
+
+func (p *PolicyAction) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PolicyAction) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetAction sets the Action field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PolicyAction) SetAction(action string) {
+	p.Action = action
+	p.require(policyActionFieldAction)
+}
+
+// SetRoleIDs sets the RoleIDs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PolicyAction) SetRoleIDs(roleIDs []string) {
+	p.RoleIDs = roleIDs
+	p.require(policyActionFieldRoleIDs)
+}
+
+func (p *PolicyAction) UnmarshalJSON(data []byte) error {
+	type unmarshaler PolicyAction
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PolicyAction(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PolicyAction) MarshalJSON() ([]byte, error) {
+	type embed PolicyAction
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PolicyAction) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	policyResponseFieldID             = big.NewInt(1 << 0)
+	policyResponseFieldName           = big.NewInt(1 << 1)
+	policyResponseFieldOrganizationID = big.NewInt(1 << 2)
+	policyResponseFieldPolicyActions  = big.NewInt(1 << 3)
+	policyResponseFieldSystem         = big.NewInt(1 << 4)
+)
+
+type PolicyResponse struct {
+	ID             *string         `json:"id,omitempty" url:"id,omitempty"`
+	Name           *string         `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationID *string         `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	PolicyActions  []*PolicyAction `json:"policy_actions,omitempty" url:"policy_actions,omitempty"`
+	System         *bool           `json:"system,omitempty" url:"system,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PolicyResponse) GetID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ID
+}
+
+func (p *PolicyResponse) GetName() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Name
+}
+
+func (p *PolicyResponse) GetOrganizationID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.OrganizationID
+}
+
+func (p *PolicyResponse) GetPolicyActions() []*PolicyAction {
+	if p == nil {
+		return nil
+	}
+	return p.PolicyActions
+}
+
+func (p *PolicyResponse) GetSystem() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.System
+}
+
+func (p *PolicyResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PolicyResponse) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PolicyResponse) SetID(id *string) {
+	p.ID = id
+	p.require(policyResponseFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PolicyResponse) SetName(name *string) {
+	p.Name = name
+	p.require(policyResponseFieldName)
+}
+
+// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PolicyResponse) SetOrganizationID(organizationID *string) {
+	p.OrganizationID = organizationID
+	p.require(policyResponseFieldOrganizationID)
+}
+
+// SetPolicyActions sets the PolicyActions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PolicyResponse) SetPolicyActions(policyActions []*PolicyAction) {
+	p.PolicyActions = policyActions
+	p.require(policyResponseFieldPolicyActions)
+}
+
+// SetSystem sets the System field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PolicyResponse) SetSystem(system *bool) {
+	p.System = system
+	p.require(policyResponseFieldSystem)
+}
+
+func (p *PolicyResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler PolicyResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PolicyResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PolicyResponse) MarshalJSON() ([]byte, error) {
+	type embed PolicyResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PolicyResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	policyResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type PolicyResponseEnvelope struct {
+	Data *PolicyResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PolicyResponseEnvelope) GetData() *PolicyResponse {
+	if p == nil {
+		return nil
+	}
+	return p.Data
+}
+
+func (p *PolicyResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PolicyResponseEnvelope) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PolicyResponseEnvelope) SetData(data *PolicyResponse) {
+	p.Data = data
+	p.require(policyResponseEnvelopeFieldData)
+}
+
+func (p *PolicyResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler PolicyResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PolicyResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PolicyResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed PolicyResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PolicyResponseEnvelope) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
 	restErrResponseFieldCode    = big.NewInt(1 << 0)
 	restErrResponseFieldContext = big.NewInt(1 << 1)
 	restErrResponseFieldError   = big.NewInt(1 << 2)
@@ -1361,6 +6184,390 @@ func (r *RestErrResponse) String() string {
 	return fmt.Sprintf("%#v", r)
 }
 
+var (
+	roleListResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type RoleListResponseEnvelope struct {
+	Data []*RoleResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RoleListResponseEnvelope) GetData() []*RoleResponse {
+	if r == nil {
+		return nil
+	}
+	return r.Data
+}
+
+func (r *RoleListResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.extraProperties
+}
+
+func (r *RoleListResponseEnvelope) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RoleListResponseEnvelope) SetData(data []*RoleResponse) {
+	r.Data = data
+	r.require(roleListResponseEnvelopeFieldData)
+}
+
+func (r *RoleListResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler RoleListResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RoleListResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RoleListResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed RoleListResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RoleListResponseEnvelope) String() string {
+	if r == nil {
+		return "<nil>"
+	}
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	roleResponseFieldID             = big.NewInt(1 << 0)
+	roleResponseFieldName           = big.NewInt(1 << 1)
+	roleResponseFieldOrganizationID = big.NewInt(1 << 2)
+	roleResponseFieldSystem         = big.NewInt(1 << 3)
+)
+
+type RoleResponse struct {
+	ID             *string `json:"id,omitempty" url:"id,omitempty"`
+	Name           *string `json:"name,omitempty" url:"name,omitempty"`
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	System         *bool   `json:"system,omitempty" url:"system,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RoleResponse) GetID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.ID
+}
+
+func (r *RoleResponse) GetName() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Name
+}
+
+func (r *RoleResponse) GetOrganizationID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.OrganizationID
+}
+
+func (r *RoleResponse) GetSystem() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.System
+}
+
+func (r *RoleResponse) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.extraProperties
+}
+
+func (r *RoleResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RoleResponse) SetID(id *string) {
+	r.ID = id
+	r.require(roleResponseFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RoleResponse) SetName(name *string) {
+	r.Name = name
+	r.require(roleResponseFieldName)
+}
+
+// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RoleResponse) SetOrganizationID(organizationID *string) {
+	r.OrganizationID = organizationID
+	r.require(roleResponseFieldOrganizationID)
+}
+
+// SetSystem sets the System field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RoleResponse) SetSystem(system *bool) {
+	r.System = system
+	r.require(roleResponseFieldSystem)
+}
+
+func (r *RoleResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler RoleResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RoleResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RoleResponse) MarshalJSON() ([]byte, error) {
+	type embed RoleResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RoleResponse) String() string {
+	if r == nil {
+		return "<nil>"
+	}
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	roleResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type RoleResponseEnvelope struct {
+	Data *RoleResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RoleResponseEnvelope) GetData() *RoleResponse {
+	if r == nil {
+		return nil
+	}
+	return r.Data
+}
+
+func (r *RoleResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.extraProperties
+}
+
+func (r *RoleResponseEnvelope) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RoleResponseEnvelope) SetData(data *RoleResponse) {
+	r.Data = data
+	r.require(roleResponseEnvelopeFieldData)
+}
+
+func (r *RoleResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler RoleResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RoleResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RoleResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed RoleResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RoleResponseEnvelope) String() string {
+	if r == nil {
+		return "<nil>"
+	}
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	scheduleEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type ScheduleEnvelope struct {
+	Data *BulkBulkSyncSchedule `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *ScheduleEnvelope) GetData() *BulkBulkSyncSchedule {
+	if s == nil {
+		return nil
+	}
+	return s.Data
+}
+
+func (s *ScheduleEnvelope) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *ScheduleEnvelope) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ScheduleEnvelope) SetData(data *BulkBulkSyncSchedule) {
+	s.Data = data
+	s.require(scheduleEnvelopeFieldData)
+}
+
+func (s *ScheduleEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ScheduleEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = ScheduleEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *ScheduleEnvelope) MarshalJSON() ([]byte, error) {
+	type embed ScheduleEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *ScheduleEnvelope) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
 type ScheduleFrequency string
 
 const (
@@ -1405,6 +6612,206 @@ func NewScheduleFrequencyFromString(s string) (ScheduleFrequency, error) {
 
 func (s ScheduleFrequency) Ptr() *ScheduleFrequency {
 	return &s
+}
+
+var (
+	schedulesEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type SchedulesEnvelope struct {
+	Data []*BulkBulkSyncSchedule `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SchedulesEnvelope) GetData() []*BulkBulkSyncSchedule {
+	if s == nil {
+		return nil
+	}
+	return s.Data
+}
+
+func (s *SchedulesEnvelope) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *SchedulesEnvelope) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SchedulesEnvelope) SetData(data []*BulkBulkSyncSchedule) {
+	s.Data = data
+	s.require(schedulesEnvelopeFieldData)
+}
+
+func (s *SchedulesEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler SchedulesEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SchedulesEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SchedulesEnvelope) MarshalJSON() ([]byte, error) {
+	type embed SchedulesEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SchedulesEnvelope) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+var (
+	schemaFieldFields = big.NewInt(1 << 0)
+	schemaFieldID     = big.NewInt(1 << 1)
+	schemaFieldName   = big.NewInt(1 << 2)
+)
+
+type Schema struct {
+	Fields []*SchemaField `json:"fields,omitempty" url:"fields,omitempty"`
+	ID     *string        `json:"id,omitempty" url:"id,omitempty"`
+	Name   *string        `json:"name,omitempty" url:"name,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *Schema) GetFields() []*SchemaField {
+	if s == nil {
+		return nil
+	}
+	return s.Fields
+}
+
+func (s *Schema) GetID() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ID
+}
+
+func (s *Schema) GetName() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Name
+}
+
+func (s *Schema) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *Schema) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetFields sets the Fields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *Schema) SetFields(fields []*SchemaField) {
+	s.Fields = fields
+	s.require(schemaFieldFields)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *Schema) SetID(id *string) {
+	s.ID = id
+	s.require(schemaFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *Schema) SetName(name *string) {
+	s.Name = name
+	s.require(schemaFieldName)
+}
+
+func (s *Schema) UnmarshalJSON(data []byte) error {
+	type unmarshaler Schema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = Schema(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *Schema) MarshalJSON() ([]byte, error) {
+	type embed Schema
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *Schema) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
 }
 
 var (
@@ -1525,6 +6932,458 @@ func (s *SchemaAssociation) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SchemaAssociation) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+var (
+	schemaFieldFieldAssociation  = big.NewInt(1 << 0)
+	schemaFieldFieldID           = big.NewInt(1 << 1)
+	schemaFieldFieldIsPrimaryKey = big.NewInt(1 << 2)
+	schemaFieldFieldName         = big.NewInt(1 << 3)
+	schemaFieldFieldRemoteType   = big.NewInt(1 << 4)
+	schemaFieldFieldType         = big.NewInt(1 << 5)
+	schemaFieldFieldTypeSpec     = big.NewInt(1 << 6)
+	schemaFieldFieldValues       = big.NewInt(1 << 7)
+)
+
+type SchemaField struct {
+	Association *SchemaAssociation `json:"association,omitempty" url:"association,omitempty"`
+	ID          *string            `json:"id,omitempty" url:"id,omitempty"`
+	// Whether this field is part of the schema's primary key.
+	IsPrimaryKey *bool   `json:"is_primary_key,omitempty" url:"is_primary_key,omitempty"`
+	Name         *string `json:"name,omitempty" url:"name,omitempty"`
+	// The type of the field from the remote system.
+	RemoteType *string        `json:"remote_type,omitempty" url:"remote_type,omitempty"`
+	Type       *UtilFieldType `json:"type,omitempty" url:"type,omitempty"`
+	TypeSpec   *TypesType     `json:"type_spec,omitempty" url:"type_spec,omitempty"`
+	Values     []*PickValue   `json:"values,omitempty" url:"values,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SchemaField) GetAssociation() *SchemaAssociation {
+	if s == nil {
+		return nil
+	}
+	return s.Association
+}
+
+func (s *SchemaField) GetID() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ID
+}
+
+func (s *SchemaField) GetIsPrimaryKey() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.IsPrimaryKey
+}
+
+func (s *SchemaField) GetName() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Name
+}
+
+func (s *SchemaField) GetRemoteType() *string {
+	if s == nil {
+		return nil
+	}
+	return s.RemoteType
+}
+
+func (s *SchemaField) GetType() *UtilFieldType {
+	if s == nil {
+		return nil
+	}
+	return s.Type
+}
+
+func (s *SchemaField) GetTypeSpec() *TypesType {
+	if s == nil {
+		return nil
+	}
+	return s.TypeSpec
+}
+
+func (s *SchemaField) GetValues() []*PickValue {
+	if s == nil {
+		return nil
+	}
+	return s.Values
+}
+
+func (s *SchemaField) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *SchemaField) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetAssociation sets the Association field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SchemaField) SetAssociation(association *SchemaAssociation) {
+	s.Association = association
+	s.require(schemaFieldFieldAssociation)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SchemaField) SetID(id *string) {
+	s.ID = id
+	s.require(schemaFieldFieldID)
+}
+
+// SetIsPrimaryKey sets the IsPrimaryKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SchemaField) SetIsPrimaryKey(isPrimaryKey *bool) {
+	s.IsPrimaryKey = isPrimaryKey
+	s.require(schemaFieldFieldIsPrimaryKey)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SchemaField) SetName(name *string) {
+	s.Name = name
+	s.require(schemaFieldFieldName)
+}
+
+// SetRemoteType sets the RemoteType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SchemaField) SetRemoteType(remoteType *string) {
+	s.RemoteType = remoteType
+	s.require(schemaFieldFieldRemoteType)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SchemaField) SetType(type_ *UtilFieldType) {
+	s.Type = type_
+	s.require(schemaFieldFieldType)
+}
+
+// SetTypeSpec sets the TypeSpec field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SchemaField) SetTypeSpec(typeSpec *TypesType) {
+	s.TypeSpec = typeSpec
+	s.require(schemaFieldFieldTypeSpec)
+}
+
+// SetValues sets the Values field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SchemaField) SetValues(values []*PickValue) {
+	s.Values = values
+	s.require(schemaFieldFieldValues)
+}
+
+func (s *SchemaField) UnmarshalJSON(data []byte) error {
+	type unmarshaler SchemaField
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SchemaField(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SchemaField) MarshalJSON() ([]byte, error) {
+	type embed SchemaField
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SchemaField) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+var (
+	sourceMetaFieldHasItems      = big.NewInt(1 << 0)
+	sourceMetaFieldItems         = big.NewInt(1 << 1)
+	sourceMetaFieldRequiresOneOf = big.NewInt(1 << 2)
+)
+
+type SourceMeta struct {
+	// True when items is non-empty. Callers should present the values as a picker.
+	HasItems *bool `json:"has_items,omitempty" url:"has_items,omitempty"`
+	// Valid values the caller may choose for this configuration item.
+	Items []any `json:"items,omitempty" url:"items,omitempty"`
+	// Other configuration items this item depends on; exactly one of the listed items must also be selected.
+	RequiresOneOf []string `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SourceMeta) GetHasItems() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.HasItems
+}
+
+func (s *SourceMeta) GetItems() []any {
+	if s == nil {
+		return nil
+	}
+	return s.Items
+}
+
+func (s *SourceMeta) GetRequiresOneOf() []string {
+	if s == nil {
+		return nil
+	}
+	return s.RequiresOneOf
+}
+
+func (s *SourceMeta) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *SourceMeta) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetHasItems sets the HasItems field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SourceMeta) SetHasItems(hasItems *bool) {
+	s.HasItems = hasItems
+	s.require(sourceMetaFieldHasItems)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SourceMeta) SetItems(items []any) {
+	s.Items = items
+	s.require(sourceMetaFieldItems)
+}
+
+// SetRequiresOneOf sets the RequiresOneOf field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SourceMeta) SetRequiresOneOf(requiresOneOf []string) {
+	s.RequiresOneOf = requiresOneOf
+	s.require(sourceMetaFieldRequiresOneOf)
+}
+
+func (s *SourceMeta) UnmarshalJSON(data []byte) error {
+	type unmarshaler SourceMeta
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SourceMeta(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SourceMeta) MarshalJSON() ([]byte, error) {
+	type embed SourceMeta
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SourceMeta) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+var (
+	supportedModeFieldID                    = big.NewInt(1 << 0)
+	supportedModeFieldRequiresIdentity      = big.NewInt(1 << 1)
+	supportedModeFieldSupportsPerFieldMode  = big.NewInt(1 << 2)
+	supportedModeFieldSupportsTargetFilters = big.NewInt(1 << 3)
+)
+
+type SupportedMode struct {
+	ID *ModelSyncMode `json:"id,omitempty" url:"id,omitempty"`
+	// True if the sync mode requires an identity field mapping.
+	RequiresIdentity *bool `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
+	// True if the target supports per-field sync modes.
+	SupportsPerFieldMode *bool `json:"supports_per_field_mode,omitempty" url:"supports_per_field_mode,omitempty"`
+	// True if the sync mode supports target filters.
+	SupportsTargetFilters *bool `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SupportedMode) GetID() *ModelSyncMode {
+	if s == nil {
+		return nil
+	}
+	return s.ID
+}
+
+func (s *SupportedMode) GetRequiresIdentity() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.RequiresIdentity
+}
+
+func (s *SupportedMode) GetSupportsPerFieldMode() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.SupportsPerFieldMode
+}
+
+func (s *SupportedMode) GetSupportsTargetFilters() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.SupportsTargetFilters
+}
+
+func (s *SupportedMode) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *SupportedMode) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SupportedMode) SetID(id *ModelSyncMode) {
+	s.ID = id
+	s.require(supportedModeFieldID)
+}
+
+// SetRequiresIdentity sets the RequiresIdentity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SupportedMode) SetRequiresIdentity(requiresIdentity *bool) {
+	s.RequiresIdentity = requiresIdentity
+	s.require(supportedModeFieldRequiresIdentity)
+}
+
+// SetSupportsPerFieldMode sets the SupportsPerFieldMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SupportedMode) SetSupportsPerFieldMode(supportsPerFieldMode *bool) {
+	s.SupportsPerFieldMode = supportsPerFieldMode
+	s.require(supportedModeFieldSupportsPerFieldMode)
+}
+
+// SetSupportsTargetFilters sets the SupportsTargetFilters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SupportedMode) SetSupportsTargetFilters(supportsTargetFilters *bool) {
+	s.SupportsTargetFilters = supportsTargetFilters
+	s.require(supportedModeFieldSupportsTargetFilters)
+}
+
+func (s *SupportedMode) UnmarshalJSON(data []byte) error {
+	type unmarshaler SupportedMode
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SupportedMode(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SupportedMode) MarshalJSON() ([]byte, error) {
+	type embed SupportedMode
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SupportedMode) String() string {
 	if s == nil {
 		return "<nil>"
 	}
@@ -1934,7 +7793,790 @@ func (t *TargetCreateInput) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
+var (
+	targetFieldFieldAssociation       = big.NewInt(1 << 0)
+	targetFieldFieldCreateable        = big.NewInt(1 << 1)
+	targetFieldFieldDescription       = big.NewInt(1 << 2)
+	targetFieldFieldEncryptable       = big.NewInt(1 << 3)
+	targetFieldFieldFilterable        = big.NewInt(1 << 4)
+	targetFieldFieldID                = big.NewInt(1 << 5)
+	targetFieldFieldIdentityFunctions = big.NewInt(1 << 6)
+	targetFieldFieldName              = big.NewInt(1 << 7)
+	targetFieldFieldRequired          = big.NewInt(1 << 8)
+	targetFieldFieldSourceType        = big.NewInt(1 << 9)
+	targetFieldFieldSupportsIdentity  = big.NewInt(1 << 10)
+	targetFieldFieldType              = big.NewInt(1 << 11)
+	targetFieldFieldUpdateable        = big.NewInt(1 << 12)
+)
+
+type TargetField struct {
+	Association       *bool               `json:"association,omitempty" url:"association,omitempty"`
+	Createable        *bool               `json:"createable,omitempty" url:"createable,omitempty"`
+	Description       *string             `json:"description,omitempty" url:"description,omitempty"`
+	Encryptable       *bool               `json:"encryptable,omitempty" url:"encryptable,omitempty"`
+	Filterable        *bool               `json:"filterable,omitempty" url:"filterable,omitempty"`
+	ID                *string             `json:"id,omitempty" url:"id,omitempty"`
+	IdentityFunctions []*IdentityFunction `json:"identity_functions,omitempty" url:"identity_functions,omitempty"`
+	Name              *string             `json:"name,omitempty" url:"name,omitempty"`
+	Required          *bool               `json:"required,omitempty" url:"required,omitempty"`
+	SourceType        *string             `json:"source_type,omitempty" url:"source_type,omitempty"`
+	SupportsIdentity  *bool               `json:"supports_identity,omitempty" url:"supports_identity,omitempty"`
+	Type              *string             `json:"type,omitempty" url:"type,omitempty"`
+	Updateable        *bool               `json:"updateable,omitempty" url:"updateable,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TargetField) GetAssociation() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.Association
+}
+
+func (t *TargetField) GetCreateable() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.Createable
+}
+
+func (t *TargetField) GetDescription() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Description
+}
+
+func (t *TargetField) GetEncryptable() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.Encryptable
+}
+
+func (t *TargetField) GetFilterable() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.Filterable
+}
+
+func (t *TargetField) GetID() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ID
+}
+
+func (t *TargetField) GetIdentityFunctions() []*IdentityFunction {
+	if t == nil {
+		return nil
+	}
+	return t.IdentityFunctions
+}
+
+func (t *TargetField) GetName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Name
+}
+
+func (t *TargetField) GetRequired() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.Required
+}
+
+func (t *TargetField) GetSourceType() *string {
+	if t == nil {
+		return nil
+	}
+	return t.SourceType
+}
+
+func (t *TargetField) GetSupportsIdentity() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.SupportsIdentity
+}
+
+func (t *TargetField) GetType() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Type
+}
+
+func (t *TargetField) GetUpdateable() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.Updateable
+}
+
+func (t *TargetField) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.extraProperties
+}
+
+func (t *TargetField) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetAssociation sets the Association field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetField) SetAssociation(association *bool) {
+	t.Association = association
+	t.require(targetFieldFieldAssociation)
+}
+
+// SetCreateable sets the Createable field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetField) SetCreateable(createable *bool) {
+	t.Createable = createable
+	t.require(targetFieldFieldCreateable)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetField) SetDescription(description *string) {
+	t.Description = description
+	t.require(targetFieldFieldDescription)
+}
+
+// SetEncryptable sets the Encryptable field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetField) SetEncryptable(encryptable *bool) {
+	t.Encryptable = encryptable
+	t.require(targetFieldFieldEncryptable)
+}
+
+// SetFilterable sets the Filterable field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetField) SetFilterable(filterable *bool) {
+	t.Filterable = filterable
+	t.require(targetFieldFieldFilterable)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetField) SetID(id *string) {
+	t.ID = id
+	t.require(targetFieldFieldID)
+}
+
+// SetIdentityFunctions sets the IdentityFunctions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetField) SetIdentityFunctions(identityFunctions []*IdentityFunction) {
+	t.IdentityFunctions = identityFunctions
+	t.require(targetFieldFieldIdentityFunctions)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetField) SetName(name *string) {
+	t.Name = name
+	t.require(targetFieldFieldName)
+}
+
+// SetRequired sets the Required field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetField) SetRequired(required *bool) {
+	t.Required = required
+	t.require(targetFieldFieldRequired)
+}
+
+// SetSourceType sets the SourceType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetField) SetSourceType(sourceType *string) {
+	t.SourceType = sourceType
+	t.require(targetFieldFieldSourceType)
+}
+
+// SetSupportsIdentity sets the SupportsIdentity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetField) SetSupportsIdentity(supportsIdentity *bool) {
+	t.SupportsIdentity = supportsIdentity
+	t.require(targetFieldFieldSupportsIdentity)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetField) SetType(type_ *string) {
+	t.Type = type_
+	t.require(targetFieldFieldType)
+}
+
+// SetUpdateable sets the Updateable field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetField) SetUpdateable(updateable *bool) {
+	t.Updateable = updateable
+	t.require(targetFieldFieldUpdateable)
+}
+
+func (t *TargetField) UnmarshalJSON(data []byte) error {
+	type unmarshaler TargetField
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TargetField(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TargetField) MarshalJSON() ([]byte, error) {
+	type embed TargetField
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TargetField) String() string {
+	if t == nil {
+		return "<nil>"
+	}
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+var (
+	targetObjectFieldID    = big.NewInt(1 << 0)
+	targetObjectFieldModes = big.NewInt(1 << 1)
+	targetObjectFieldName  = big.NewInt(1 << 2)
+)
+
+type TargetObject struct {
+	// The identifier of the target object.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// The supported sync modes and their properties for the target object.
+	Modes []*SupportedMode `json:"modes,omitempty" url:"modes,omitempty"`
+	// The name of the target object.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TargetObject) GetID() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ID
+}
+
+func (t *TargetObject) GetModes() []*SupportedMode {
+	if t == nil {
+		return nil
+	}
+	return t.Modes
+}
+
+func (t *TargetObject) GetName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Name
+}
+
+func (t *TargetObject) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.extraProperties
+}
+
+func (t *TargetObject) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetObject) SetID(id *string) {
+	t.ID = id
+	t.require(targetObjectFieldID)
+}
+
+// SetModes sets the Modes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetObject) SetModes(modes []*SupportedMode) {
+	t.Modes = modes
+	t.require(targetObjectFieldModes)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetObject) SetName(name *string) {
+	t.Name = name
+	t.require(targetObjectFieldName)
+}
+
+func (t *TargetObject) UnmarshalJSON(data []byte) error {
+	type unmarshaler TargetObject
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TargetObject(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TargetObject) MarshalJSON() ([]byte, error) {
+	type embed TargetObject
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TargetObject) String() string {
+	if t == nil {
+		return "<nil>"
+	}
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+var (
+	targetResponseFieldFields      = big.NewInt(1 << 0)
+	targetResponseFieldID          = big.NewInt(1 << 1)
+	targetResponseFieldModes       = big.NewInt(1 << 2)
+	targetResponseFieldName        = big.NewInt(1 << 3)
+	targetResponseFieldProperties  = big.NewInt(1 << 4)
+	targetResponseFieldRefreshedAt = big.NewInt(1 << 5)
+)
+
+type TargetResponse struct {
+	Fields      []*TargetField             `json:"fields,omitempty" url:"fields,omitempty"`
+	ID          *string                    `json:"id,omitempty" url:"id,omitempty"`
+	Modes       []*Mode                    `json:"modes,omitempty" url:"modes,omitempty"`
+	Name        *string                    `json:"name,omitempty" url:"name,omitempty"`
+	Properties  *SyncDestinationProperties `json:"properties,omitempty" url:"properties,omitempty"`
+	RefreshedAt *time.Time                 `json:"refreshed_at,omitempty" url:"refreshed_at,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TargetResponse) GetFields() []*TargetField {
+	if t == nil {
+		return nil
+	}
+	return t.Fields
+}
+
+func (t *TargetResponse) GetID() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ID
+}
+
+func (t *TargetResponse) GetModes() []*Mode {
+	if t == nil {
+		return nil
+	}
+	return t.Modes
+}
+
+func (t *TargetResponse) GetName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Name
+}
+
+func (t *TargetResponse) GetProperties() *SyncDestinationProperties {
+	if t == nil {
+		return nil
+	}
+	return t.Properties
+}
+
+func (t *TargetResponse) GetRefreshedAt() *time.Time {
+	if t == nil {
+		return nil
+	}
+	return t.RefreshedAt
+}
+
+func (t *TargetResponse) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.extraProperties
+}
+
+func (t *TargetResponse) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetFields sets the Fields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetResponse) SetFields(fields []*TargetField) {
+	t.Fields = fields
+	t.require(targetResponseFieldFields)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetResponse) SetID(id *string) {
+	t.ID = id
+	t.require(targetResponseFieldID)
+}
+
+// SetModes sets the Modes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetResponse) SetModes(modes []*Mode) {
+	t.Modes = modes
+	t.require(targetResponseFieldModes)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetResponse) SetName(name *string) {
+	t.Name = name
+	t.require(targetResponseFieldName)
+}
+
+// SetProperties sets the Properties field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetResponse) SetProperties(properties *SyncDestinationProperties) {
+	t.Properties = properties
+	t.require(targetResponseFieldProperties)
+}
+
+// SetRefreshedAt sets the RefreshedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetResponse) SetRefreshedAt(refreshedAt *time.Time) {
+	t.RefreshedAt = refreshedAt
+	t.require(targetResponseFieldRefreshedAt)
+}
+
+func (t *TargetResponse) UnmarshalJSON(data []byte) error {
+	type embed TargetResponse
+	var unmarshaler = struct {
+		embed
+		RefreshedAt *internal.DateTime `json:"refreshed_at,omitempty"`
+	}{
+		embed: embed(*t),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*t = TargetResponse(unmarshaler.embed)
+	t.RefreshedAt = unmarshaler.RefreshedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TargetResponse) MarshalJSON() ([]byte, error) {
+	type embed TargetResponse
+	var marshaler = struct {
+		embed
+		RefreshedAt *internal.DateTime `json:"refreshed_at,omitempty"`
+	}{
+		embed:       embed(*t),
+		RefreshedAt: internal.NewOptionalDateTime(t.RefreshedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TargetResponse) String() string {
+	if t == nil {
+		return "<nil>"
+	}
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+var (
+	targetResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type TargetResponseEnvelope struct {
+	Data *TargetResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TargetResponseEnvelope) GetData() *TargetResponse {
+	if t == nil {
+		return nil
+	}
+	return t.Data
+}
+
+func (t *TargetResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.extraProperties
+}
+
+func (t *TargetResponseEnvelope) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetResponseEnvelope) SetData(data *TargetResponse) {
+	t.Data = data
+	t.require(targetResponseEnvelopeFieldData)
+}
+
+func (t *TargetResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler TargetResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TargetResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TargetResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed TargetResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TargetResponseEnvelope) String() string {
+	if t == nil {
+		return "<nil>"
+	}
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
 type TypesType = any
+
+var (
+	updateBulkFieldFieldEnabled        = big.NewInt(1 << 0)
+	updateBulkFieldFieldID             = big.NewInt(1 << 1)
+	updateBulkFieldFieldObfuscated     = big.NewInt(1 << 2)
+	updateBulkFieldFieldUserOutputName = big.NewInt(1 << 3)
+)
+
+type UpdateBulkField struct {
+	Enabled        *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
+	ID             *string `json:"id,omitempty" url:"id,omitempty"`
+	Obfuscated     *bool   `json:"obfuscated,omitempty" url:"obfuscated,omitempty"`
+	UserOutputName *string `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateBulkField) GetEnabled() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.Enabled
+}
+
+func (u *UpdateBulkField) GetID() *string {
+	if u == nil {
+		return nil
+	}
+	return u.ID
+}
+
+func (u *UpdateBulkField) GetObfuscated() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.Obfuscated
+}
+
+func (u *UpdateBulkField) GetUserOutputName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.UserOutputName
+}
+
+func (u *UpdateBulkField) GetExtraProperties() map[string]interface{} {
+	if u == nil {
+		return nil
+	}
+	return u.extraProperties
+}
+
+func (u *UpdateBulkField) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateBulkField) SetEnabled(enabled *bool) {
+	u.Enabled = enabled
+	u.require(updateBulkFieldFieldEnabled)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateBulkField) SetID(id *string) {
+	u.ID = id
+	u.require(updateBulkFieldFieldID)
+}
+
+// SetObfuscated sets the Obfuscated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateBulkField) SetObfuscated(obfuscated *bool) {
+	u.Obfuscated = obfuscated
+	u.require(updateBulkFieldFieldObfuscated)
+}
+
+// SetUserOutputName sets the UserOutputName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateBulkField) SetUserOutputName(userOutputName *string) {
+	u.UserOutputName = userOutputName
+	u.require(updateBulkFieldFieldUserOutputName)
+}
+
+func (u *UpdateBulkField) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateBulkField
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateBulkField(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateBulkField) MarshalJSON() ([]byte, error) {
+	type embed UpdateBulkField
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UpdateBulkField) String() string {
+	if u == nil {
+		return "<nil>"
+	}
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
 
 var (
 	utilEnumValueFieldLabel = big.NewInt(1 << 0)
@@ -2036,55 +8678,6 @@ func (u *UtilEnumValue) String() string {
 	return fmt.Sprintf("%#v", u)
 }
 
-type UtilExecutionStatus string
-
-const (
-	UtilExecutionStatusCreated     UtilExecutionStatus = "created"
-	UtilExecutionStatusScheduled   UtilExecutionStatus = "scheduled"
-	UtilExecutionStatusQueued      UtilExecutionStatus = "queued"
-	UtilExecutionStatusWaiting     UtilExecutionStatus = "waiting"
-	UtilExecutionStatusRunning     UtilExecutionStatus = "running"
-	UtilExecutionStatusProcessing  UtilExecutionStatus = "processing"
-	UtilExecutionStatusCanceling   UtilExecutionStatus = "canceling"
-	UtilExecutionStatusCanceled    UtilExecutionStatus = "canceled"
-	UtilExecutionStatusCompleted   UtilExecutionStatus = "completed"
-	UtilExecutionStatusFailed      UtilExecutionStatus = "failed"
-	UtilExecutionStatusInterrupted UtilExecutionStatus = "interrupted"
-)
-
-func NewUtilExecutionStatusFromString(s string) (UtilExecutionStatus, error) {
-	switch s {
-	case "created":
-		return UtilExecutionStatusCreated, nil
-	case "scheduled":
-		return UtilExecutionStatusScheduled, nil
-	case "queued":
-		return UtilExecutionStatusQueued, nil
-	case "waiting":
-		return UtilExecutionStatusWaiting, nil
-	case "running":
-		return UtilExecutionStatusRunning, nil
-	case "processing":
-		return UtilExecutionStatusProcessing, nil
-	case "canceling":
-		return UtilExecutionStatusCanceling, nil
-	case "canceled":
-		return UtilExecutionStatusCanceled, nil
-	case "completed":
-		return UtilExecutionStatusCompleted, nil
-	case "failed":
-		return UtilExecutionStatusFailed, nil
-	case "interrupted":
-		return UtilExecutionStatusInterrupted, nil
-	}
-	var t UtilExecutionStatus
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (u UtilExecutionStatus) Ptr() *UtilExecutionStatus {
-	return &u
-}
-
 type UtilFieldType string
 
 const (
@@ -2125,962 +8718,6 @@ func (u UtilFieldType) Ptr() *UtilFieldType {
 	return &u
 }
 
-var (
-	v2ActivateSyncEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type V2ActivateSyncEnvelope struct {
-	Data *V2ActivateSyncOutput `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2ActivateSyncEnvelope) GetData() *V2ActivateSyncOutput {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V2ActivateSyncEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2ActivateSyncEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ActivateSyncEnvelope) SetData(data *V2ActivateSyncOutput) {
-	v.Data = data
-	v.require(v2ActivateSyncEnvelopeFieldData)
-}
-
-func (v *V2ActivateSyncEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ActivateSyncEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ActivateSyncEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ActivateSyncEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V2ActivateSyncEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2ActivateSyncEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2ActivateSyncInputFieldActive = big.NewInt(1 << 0)
-)
-
-type V2ActivateSyncInput struct {
-	Active bool `json:"active" url:"active"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2ActivateSyncInput) GetActive() bool {
-	if v == nil {
-		return false
-	}
-	return v.Active
-}
-
-func (v *V2ActivateSyncInput) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2ActivateSyncInput) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetActive sets the Active field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ActivateSyncInput) SetActive(active bool) {
-	v.Active = active
-	v.require(v2ActivateSyncInputFieldActive)
-}
-
-func (v *V2ActivateSyncInput) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ActivateSyncInput
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ActivateSyncInput(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ActivateSyncInput) MarshalJSON() ([]byte, error) {
-	type embed V2ActivateSyncInput
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2ActivateSyncInput) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2ActivateSyncOutputFieldActive = big.NewInt(1 << 0)
-	v2ActivateSyncOutputFieldID     = big.NewInt(1 << 1)
-)
-
-type V2ActivateSyncOutput struct {
-	Active *bool   `json:"active,omitempty" url:"active,omitempty"`
-	ID     *string `json:"id,omitempty" url:"id,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2ActivateSyncOutput) GetActive() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.Active
-}
-
-func (v *V2ActivateSyncOutput) GetID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ID
-}
-
-func (v *V2ActivateSyncOutput) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2ActivateSyncOutput) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetActive sets the Active field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ActivateSyncOutput) SetActive(active *bool) {
-	v.Active = active
-	v.require(v2ActivateSyncOutputFieldActive)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ActivateSyncOutput) SetID(id *string) {
-	v.ID = id
-	v.require(v2ActivateSyncOutputFieldID)
-}
-
-func (v *V2ActivateSyncOutput) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ActivateSyncOutput
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ActivateSyncOutput(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ActivateSyncOutput) MarshalJSON() ([]byte, error) {
-	type embed V2ActivateSyncOutput
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2ActivateSyncOutput) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2CancelBulkSyncResponseFieldMessage = big.NewInt(1 << 0)
-)
-
-type V2CancelBulkSyncResponse struct {
-	Message *string `json:"message,omitempty" url:"message,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2CancelBulkSyncResponse) GetMessage() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Message
-}
-
-func (v *V2CancelBulkSyncResponse) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2CancelBulkSyncResponse) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetMessage sets the Message field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2CancelBulkSyncResponse) SetMessage(message *string) {
-	v.Message = message
-	v.require(v2CancelBulkSyncResponseFieldMessage)
-}
-
-func (v *V2CancelBulkSyncResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2CancelBulkSyncResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2CancelBulkSyncResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2CancelBulkSyncResponse) MarshalJSON() ([]byte, error) {
-	type embed V2CancelBulkSyncResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2CancelBulkSyncResponse) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2CancelBulkSyncResponseEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type V2CancelBulkSyncResponseEnvelope struct {
-	Data *V2CancelBulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2CancelBulkSyncResponseEnvelope) GetData() *V2CancelBulkSyncResponse {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V2CancelBulkSyncResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2CancelBulkSyncResponseEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2CancelBulkSyncResponseEnvelope) SetData(data *V2CancelBulkSyncResponse) {
-	v.Data = data
-	v.require(v2CancelBulkSyncResponseEnvelopeFieldData)
-}
-
-func (v *V2CancelBulkSyncResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2CancelBulkSyncResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2CancelBulkSyncResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2CancelBulkSyncResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V2CancelBulkSyncResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2CancelBulkSyncResponseEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2ConnectionMetaFieldHasItems      = big.NewInt(1 << 0)
-	v2ConnectionMetaFieldItems         = big.NewInt(1 << 1)
-	v2ConnectionMetaFieldRequiresOneOf = big.NewInt(1 << 2)
-)
-
-type V2ConnectionMeta struct {
-	HasItems      *bool    `json:"has_items,omitempty" url:"has_items,omitempty"`
-	Items         []any    `json:"items,omitempty" url:"items,omitempty"`
-	RequiresOneOf []string `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2ConnectionMeta) GetHasItems() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.HasItems
-}
-
-func (v *V2ConnectionMeta) GetItems() []any {
-	if v == nil {
-		return nil
-	}
-	return v.Items
-}
-
-func (v *V2ConnectionMeta) GetRequiresOneOf() []string {
-	if v == nil {
-		return nil
-	}
-	return v.RequiresOneOf
-}
-
-func (v *V2ConnectionMeta) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2ConnectionMeta) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetHasItems sets the HasItems field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ConnectionMeta) SetHasItems(hasItems *bool) {
-	v.HasItems = hasItems
-	v.require(v2ConnectionMetaFieldHasItems)
-}
-
-// SetItems sets the Items field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ConnectionMeta) SetItems(items []any) {
-	v.Items = items
-	v.require(v2ConnectionMetaFieldItems)
-}
-
-// SetRequiresOneOf sets the RequiresOneOf field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ConnectionMeta) SetRequiresOneOf(requiresOneOf []string) {
-	v.RequiresOneOf = requiresOneOf
-	v.require(v2ConnectionMetaFieldRequiresOneOf)
-}
-
-func (v *V2ConnectionMeta) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ConnectionMeta
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ConnectionMeta(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ConnectionMeta) MarshalJSON() ([]byte, error) {
-	type embed V2ConnectionMeta
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2ConnectionMeta) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2ConnectionMetaResponseFieldConfiguration = big.NewInt(1 << 0)
-	v2ConnectionMetaResponseFieldItems         = big.NewInt(1 << 1)
-	v2ConnectionMetaResponseFieldRequiresOneOf = big.NewInt(1 << 2)
-)
-
-type V2ConnectionMetaResponse struct {
-	Configuration map[string]*ConfigurationValue `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Items         map[string]*V2ConnectionMeta   `json:"items,omitempty" url:"items,omitempty"`
-	RequiresOneOf []string                       `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2ConnectionMetaResponse) GetConfiguration() map[string]*ConfigurationValue {
-	if v == nil {
-		return nil
-	}
-	return v.Configuration
-}
-
-func (v *V2ConnectionMetaResponse) GetItems() map[string]*V2ConnectionMeta {
-	if v == nil {
-		return nil
-	}
-	return v.Items
-}
-
-func (v *V2ConnectionMetaResponse) GetRequiresOneOf() []string {
-	if v == nil {
-		return nil
-	}
-	return v.RequiresOneOf
-}
-
-func (v *V2ConnectionMetaResponse) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2ConnectionMetaResponse) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetConfiguration sets the Configuration field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ConnectionMetaResponse) SetConfiguration(configuration map[string]*ConfigurationValue) {
-	v.Configuration = configuration
-	v.require(v2ConnectionMetaResponseFieldConfiguration)
-}
-
-// SetItems sets the Items field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ConnectionMetaResponse) SetItems(items map[string]*V2ConnectionMeta) {
-	v.Items = items
-	v.require(v2ConnectionMetaResponseFieldItems)
-}
-
-// SetRequiresOneOf sets the RequiresOneOf field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ConnectionMetaResponse) SetRequiresOneOf(requiresOneOf []string) {
-	v.RequiresOneOf = requiresOneOf
-	v.require(v2ConnectionMetaResponseFieldRequiresOneOf)
-}
-
-func (v *V2ConnectionMetaResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ConnectionMetaResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ConnectionMetaResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ConnectionMetaResponse) MarshalJSON() ([]byte, error) {
-	type embed V2ConnectionMetaResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2ConnectionMetaResponse) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2ExecutionCountsFieldDelete   = big.NewInt(1 << 0)
-	v2ExecutionCountsFieldError    = big.NewInt(1 << 1)
-	v2ExecutionCountsFieldInsert   = big.NewInt(1 << 2)
-	v2ExecutionCountsFieldTotal    = big.NewInt(1 << 3)
-	v2ExecutionCountsFieldUpdate   = big.NewInt(1 << 4)
-	v2ExecutionCountsFieldUpserts  = big.NewInt(1 << 5)
-	v2ExecutionCountsFieldWarnings = big.NewInt(1 << 6)
-)
-
-type V2ExecutionCounts struct {
-	Delete   *int `json:"delete,omitempty" url:"delete,omitempty"`
-	Error    *int `json:"error,omitempty" url:"error,omitempty"`
-	Insert   *int `json:"insert,omitempty" url:"insert,omitempty"`
-	Total    *int `json:"total,omitempty" url:"total,omitempty"`
-	Update   *int `json:"update,omitempty" url:"update,omitempty"`
-	Upserts  *int `json:"upserts,omitempty" url:"upserts,omitempty"`
-	Warnings *int `json:"warnings,omitempty" url:"warnings,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2ExecutionCounts) GetDelete() *int {
-	if v == nil {
-		return nil
-	}
-	return v.Delete
-}
-
-func (v *V2ExecutionCounts) GetError() *int {
-	if v == nil {
-		return nil
-	}
-	return v.Error
-}
-
-func (v *V2ExecutionCounts) GetInsert() *int {
-	if v == nil {
-		return nil
-	}
-	return v.Insert
-}
-
-func (v *V2ExecutionCounts) GetTotal() *int {
-	if v == nil {
-		return nil
-	}
-	return v.Total
-}
-
-func (v *V2ExecutionCounts) GetUpdate() *int {
-	if v == nil {
-		return nil
-	}
-	return v.Update
-}
-
-func (v *V2ExecutionCounts) GetUpserts() *int {
-	if v == nil {
-		return nil
-	}
-	return v.Upserts
-}
-
-func (v *V2ExecutionCounts) GetWarnings() *int {
-	if v == nil {
-		return nil
-	}
-	return v.Warnings
-}
-
-func (v *V2ExecutionCounts) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2ExecutionCounts) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetDelete sets the Delete field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ExecutionCounts) SetDelete(delete *int) {
-	v.Delete = delete
-	v.require(v2ExecutionCountsFieldDelete)
-}
-
-// SetError sets the Error field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ExecutionCounts) SetError(error_ *int) {
-	v.Error = error_
-	v.require(v2ExecutionCountsFieldError)
-}
-
-// SetInsert sets the Insert field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ExecutionCounts) SetInsert(insert *int) {
-	v.Insert = insert
-	v.require(v2ExecutionCountsFieldInsert)
-}
-
-// SetTotal sets the Total field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ExecutionCounts) SetTotal(total *int) {
-	v.Total = total
-	v.require(v2ExecutionCountsFieldTotal)
-}
-
-// SetUpdate sets the Update field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ExecutionCounts) SetUpdate(update *int) {
-	v.Update = update
-	v.require(v2ExecutionCountsFieldUpdate)
-}
-
-// SetUpserts sets the Upserts field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ExecutionCounts) SetUpserts(upserts *int) {
-	v.Upserts = upserts
-	v.require(v2ExecutionCountsFieldUpserts)
-}
-
-// SetWarnings sets the Warnings field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ExecutionCounts) SetWarnings(warnings *int) {
-	v.Warnings = warnings
-	v.require(v2ExecutionCountsFieldWarnings)
-}
-
-func (v *V2ExecutionCounts) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ExecutionCounts
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ExecutionCounts(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ExecutionCounts) MarshalJSON() ([]byte, error) {
-	type embed V2ExecutionCounts
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2ExecutionCounts) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2ExecutionLogResponseFieldExpires = big.NewInt(1 << 0)
-	v2ExecutionLogResponseFieldURLs    = big.NewInt(1 << 1)
-)
-
-type V2ExecutionLogResponse struct {
-	Expires *time.Time `json:"expires,omitempty" url:"expires,omitempty"`
-	URLs    []string   `json:"urls,omitempty" url:"urls,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2ExecutionLogResponse) GetExpires() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.Expires
-}
-
-func (v *V2ExecutionLogResponse) GetURLs() []string {
-	if v == nil {
-		return nil
-	}
-	return v.URLs
-}
-
-func (v *V2ExecutionLogResponse) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2ExecutionLogResponse) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetExpires sets the Expires field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ExecutionLogResponse) SetExpires(expires *time.Time) {
-	v.Expires = expires
-	v.require(v2ExecutionLogResponseFieldExpires)
-}
-
-// SetURLs sets the URLs field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ExecutionLogResponse) SetURLs(urls []string) {
-	v.URLs = urls
-	v.require(v2ExecutionLogResponseFieldURLs)
-}
-
-func (v *V2ExecutionLogResponse) UnmarshalJSON(data []byte) error {
-	type embed V2ExecutionLogResponse
-	var unmarshaler = struct {
-		embed
-		Expires *internal.DateTime `json:"expires,omitempty"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*v = V2ExecutionLogResponse(unmarshaler.embed)
-	v.Expires = unmarshaler.Expires.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ExecutionLogResponse) MarshalJSON() ([]byte, error) {
-	type embed V2ExecutionLogResponse
-	var marshaler = struct {
-		embed
-		Expires *internal.DateTime `json:"expires,omitempty"`
-	}{
-		embed:   embed(*v),
-		Expires: internal.NewOptionalDateTime(v.Expires),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2ExecutionLogResponse) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
 type V2ExecutionLogType string
 
 const (
@@ -3113,4440 +8750,6 @@ func NewV2ExecutionLogTypeFromString(s string) (V2ExecutionLogType, error) {
 
 func (v V2ExecutionLogType) Ptr() *V2ExecutionLogType {
 	return &v
-}
-
-var (
-	v2ExecutionLogsResponseEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type V2ExecutionLogsResponseEnvelope struct {
-	Data *V2ExecutionLogResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2ExecutionLogsResponseEnvelope) GetData() *V2ExecutionLogResponse {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V2ExecutionLogsResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2ExecutionLogsResponseEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ExecutionLogsResponseEnvelope) SetData(data *V2ExecutionLogResponse) {
-	v.Data = data
-	v.require(v2ExecutionLogsResponseEnvelopeFieldData)
-}
-
-func (v *V2ExecutionLogsResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ExecutionLogsResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ExecutionLogsResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ExecutionLogsResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V2ExecutionLogsResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2ExecutionLogsResponseEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2GetConnectionMetaEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type V2GetConnectionMetaEnvelope struct {
-	Data *V2ConnectionMetaResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2GetConnectionMetaEnvelope) GetData() *V2ConnectionMetaResponse {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V2GetConnectionMetaEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2GetConnectionMetaEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetConnectionMetaEnvelope) SetData(data *V2ConnectionMetaResponse) {
-	v.Data = data
-	v.require(v2GetConnectionMetaEnvelopeFieldData)
-}
-
-func (v *V2GetConnectionMetaEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2GetConnectionMetaEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2GetConnectionMetaEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2GetConnectionMetaEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V2GetConnectionMetaEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2GetConnectionMetaEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2GetExecutionResponseEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type V2GetExecutionResponseEnvelope struct {
-	Data *V2GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2GetExecutionResponseEnvelope) GetData() *V2GetExecutionResponseSchema {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V2GetExecutionResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2GetExecutionResponseEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetExecutionResponseEnvelope) SetData(data *V2GetExecutionResponseSchema) {
-	v.Data = data
-	v.require(v2GetExecutionResponseEnvelopeFieldData)
-}
-
-func (v *V2GetExecutionResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2GetExecutionResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2GetExecutionResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2GetExecutionResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V2GetExecutionResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2GetExecutionResponseEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2GetExecutionResponseSchemaFieldCompletedAt = big.NewInt(1 << 0)
-	v2GetExecutionResponseSchemaFieldCounts      = big.NewInt(1 << 1)
-	v2GetExecutionResponseSchemaFieldCreatedAt   = big.NewInt(1 << 2)
-	v2GetExecutionResponseSchemaFieldErrors      = big.NewInt(1 << 3)
-	v2GetExecutionResponseSchemaFieldID          = big.NewInt(1 << 4)
-	v2GetExecutionResponseSchemaFieldStartedAt   = big.NewInt(1 << 5)
-	v2GetExecutionResponseSchemaFieldStatus      = big.NewInt(1 << 6)
-	v2GetExecutionResponseSchemaFieldType        = big.NewInt(1 << 7)
-)
-
-type V2GetExecutionResponseSchema struct {
-	CompletedAt *time.Time           `json:"completed_at,omitempty" url:"completed_at,omitempty"`
-	Counts      *V2ExecutionCounts   `json:"counts,omitempty" url:"counts,omitempty"`
-	CreatedAt   *time.Time           `json:"created_at,omitempty" url:"created_at,omitempty"`
-	Errors      []string             `json:"errors,omitempty" url:"errors,omitempty"`
-	ID          *string              `json:"id,omitempty" url:"id,omitempty"`
-	StartedAt   *time.Time           `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status      *UtilExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-	Type        *string              `json:"type,omitempty" url:"type,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2GetExecutionResponseSchema) GetCompletedAt() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.CompletedAt
-}
-
-func (v *V2GetExecutionResponseSchema) GetCounts() *V2ExecutionCounts {
-	if v == nil {
-		return nil
-	}
-	return v.Counts
-}
-
-func (v *V2GetExecutionResponseSchema) GetCreatedAt() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.CreatedAt
-}
-
-func (v *V2GetExecutionResponseSchema) GetErrors() []string {
-	if v == nil {
-		return nil
-	}
-	return v.Errors
-}
-
-func (v *V2GetExecutionResponseSchema) GetID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ID
-}
-
-func (v *V2GetExecutionResponseSchema) GetStartedAt() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.StartedAt
-}
-
-func (v *V2GetExecutionResponseSchema) GetStatus() *UtilExecutionStatus {
-	if v == nil {
-		return nil
-	}
-	return v.Status
-}
-
-func (v *V2GetExecutionResponseSchema) GetType() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Type
-}
-
-func (v *V2GetExecutionResponseSchema) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2GetExecutionResponseSchema) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetCompletedAt sets the CompletedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetExecutionResponseSchema) SetCompletedAt(completedAt *time.Time) {
-	v.CompletedAt = completedAt
-	v.require(v2GetExecutionResponseSchemaFieldCompletedAt)
-}
-
-// SetCounts sets the Counts field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetExecutionResponseSchema) SetCounts(counts *V2ExecutionCounts) {
-	v.Counts = counts
-	v.require(v2GetExecutionResponseSchemaFieldCounts)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetExecutionResponseSchema) SetCreatedAt(createdAt *time.Time) {
-	v.CreatedAt = createdAt
-	v.require(v2GetExecutionResponseSchemaFieldCreatedAt)
-}
-
-// SetErrors sets the Errors field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetExecutionResponseSchema) SetErrors(errors []string) {
-	v.Errors = errors
-	v.require(v2GetExecutionResponseSchemaFieldErrors)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetExecutionResponseSchema) SetID(id *string) {
-	v.ID = id
-	v.require(v2GetExecutionResponseSchemaFieldID)
-}
-
-// SetStartedAt sets the StartedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetExecutionResponseSchema) SetStartedAt(startedAt *time.Time) {
-	v.StartedAt = startedAt
-	v.require(v2GetExecutionResponseSchemaFieldStartedAt)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetExecutionResponseSchema) SetStatus(status *UtilExecutionStatus) {
-	v.Status = status
-	v.require(v2GetExecutionResponseSchemaFieldStatus)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2GetExecutionResponseSchema) SetType(type_ *string) {
-	v.Type = type_
-	v.require(v2GetExecutionResponseSchemaFieldType)
-}
-
-func (v *V2GetExecutionResponseSchema) UnmarshalJSON(data []byte) error {
-	type embed V2GetExecutionResponseSchema
-	var unmarshaler = struct {
-		embed
-		CompletedAt *internal.DateTime `json:"completed_at,omitempty"`
-		CreatedAt   *internal.DateTime `json:"created_at,omitempty"`
-		StartedAt   *internal.DateTime `json:"started_at,omitempty"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*v = V2GetExecutionResponseSchema(unmarshaler.embed)
-	v.CompletedAt = unmarshaler.CompletedAt.TimePtr()
-	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	v.StartedAt = unmarshaler.StartedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2GetExecutionResponseSchema) MarshalJSON() ([]byte, error) {
-	type embed V2GetExecutionResponseSchema
-	var marshaler = struct {
-		embed
-		CompletedAt *internal.DateTime `json:"completed_at,omitempty"`
-		CreatedAt   *internal.DateTime `json:"created_at,omitempty"`
-		StartedAt   *internal.DateTime `json:"started_at,omitempty"`
-	}{
-		embed:       embed(*v),
-		CompletedAt: internal.NewOptionalDateTime(v.CompletedAt),
-		CreatedAt:   internal.NewOptionalDateTime(v.CreatedAt),
-		StartedAt:   internal.NewOptionalDateTime(v.StartedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2GetExecutionResponseSchema) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2IdentityFunctionFieldID    = big.NewInt(1 << 0)
-	v2IdentityFunctionFieldLabel = big.NewInt(1 << 1)
-)
-
-type V2IdentityFunction struct {
-	ID    *string `json:"id,omitempty" url:"id,omitempty"`
-	Label *string `json:"label,omitempty" url:"label,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2IdentityFunction) GetID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ID
-}
-
-func (v *V2IdentityFunction) GetLabel() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Label
-}
-
-func (v *V2IdentityFunction) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2IdentityFunction) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2IdentityFunction) SetID(id *string) {
-	v.ID = id
-	v.require(v2IdentityFunctionFieldID)
-}
-
-// SetLabel sets the Label field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2IdentityFunction) SetLabel(label *string) {
-	v.Label = label
-	v.require(v2IdentityFunctionFieldLabel)
-}
-
-func (v *V2IdentityFunction) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2IdentityFunction
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2IdentityFunction(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2IdentityFunction) MarshalJSON() ([]byte, error) {
-	type embed V2IdentityFunction
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2IdentityFunction) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2JobResponseFieldError  = big.NewInt(1 << 0)
-	v2JobResponseFieldJobID  = big.NewInt(1 << 1)
-	v2JobResponseFieldResult = big.NewInt(1 << 2)
-	v2JobResponseFieldStatus = big.NewInt(1 << 3)
-	v2JobResponseFieldType   = big.NewInt(1 << 4)
-)
-
-type V2JobResponse struct {
-	// Error message if the job failed.
-	Error *string `json:"error,omitempty" url:"error,omitempty"`
-	// Identifier of the job.
-	JobID *string `json:"job_id,omitempty" url:"job_id,omitempty"`
-	// Job result. Shape depends on the job type; only populated once status is done.
-	Result any             `json:"result,omitempty" url:"result,omitempty"`
-	Status *WorkTaskStatus `json:"status,omitempty" url:"status,omitempty"`
-	// Job type. Matches the type used to fetch the job.
-	Type *string `json:"type,omitempty" url:"type,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2JobResponse) GetError() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Error
-}
-
-func (v *V2JobResponse) GetJobID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.JobID
-}
-
-func (v *V2JobResponse) GetResult() any {
-	if v == nil {
-		return nil
-	}
-	return v.Result
-}
-
-func (v *V2JobResponse) GetStatus() *WorkTaskStatus {
-	if v == nil {
-		return nil
-	}
-	return v.Status
-}
-
-func (v *V2JobResponse) GetType() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Type
-}
-
-func (v *V2JobResponse) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2JobResponse) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetError sets the Error field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2JobResponse) SetError(error_ *string) {
-	v.Error = error_
-	v.require(v2JobResponseFieldError)
-}
-
-// SetJobID sets the JobID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2JobResponse) SetJobID(jobID *string) {
-	v.JobID = jobID
-	v.require(v2JobResponseFieldJobID)
-}
-
-// SetResult sets the Result field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2JobResponse) SetResult(result any) {
-	v.Result = result
-	v.require(v2JobResponseFieldResult)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2JobResponse) SetStatus(status *WorkTaskStatus) {
-	v.Status = status
-	v.require(v2JobResponseFieldStatus)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2JobResponse) SetType(type_ *string) {
-	v.Type = type_
-	v.require(v2JobResponseFieldType)
-}
-
-func (v *V2JobResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2JobResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2JobResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2JobResponse) MarshalJSON() ([]byte, error) {
-	type embed V2JobResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2JobResponse) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2ListExecutionResponseEnvelopeFieldData       = big.NewInt(1 << 0)
-	v2ListExecutionResponseEnvelopeFieldPagination = big.NewInt(1 << 1)
-)
-
-type V2ListExecutionResponseEnvelope struct {
-	Data       []*V2GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-	Pagination *PaginationDetails              `json:"pagination,omitempty" url:"pagination,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2ListExecutionResponseEnvelope) GetData() []*V2GetExecutionResponseSchema {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V2ListExecutionResponseEnvelope) GetPagination() *PaginationDetails {
-	if v == nil {
-		return nil
-	}
-	return v.Pagination
-}
-
-func (v *V2ListExecutionResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2ListExecutionResponseEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ListExecutionResponseEnvelope) SetData(data []*V2GetExecutionResponseSchema) {
-	v.Data = data
-	v.require(v2ListExecutionResponseEnvelopeFieldData)
-}
-
-// SetPagination sets the Pagination field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ListExecutionResponseEnvelope) SetPagination(pagination *PaginationDetails) {
-	v.Pagination = pagination
-	v.require(v2ListExecutionResponseEnvelopeFieldPagination)
-}
-
-func (v *V2ListExecutionResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ListExecutionResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ListExecutionResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ListExecutionResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V2ListExecutionResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2ListExecutionResponseEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2ListPoliciesResponseEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type V2ListPoliciesResponseEnvelope struct {
-	Data []*V2PolicyResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2ListPoliciesResponseEnvelope) GetData() []*V2PolicyResponse {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V2ListPoliciesResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2ListPoliciesResponseEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ListPoliciesResponseEnvelope) SetData(data []*V2PolicyResponse) {
-	v.Data = data
-	v.require(v2ListPoliciesResponseEnvelopeFieldData)
-}
-
-func (v *V2ListPoliciesResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2ListPoliciesResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2ListPoliciesResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ListPoliciesResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V2ListPoliciesResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2ListPoliciesResponseEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2ModeFieldDescription           = big.NewInt(1 << 0)
-	v2ModeFieldLabel                 = big.NewInt(1 << 1)
-	v2ModeFieldMode                  = big.NewInt(1 << 2)
-	v2ModeFieldRequiresIdentity      = big.NewInt(1 << 3)
-	v2ModeFieldSupportsFieldSyncMode = big.NewInt(1 << 4)
-	v2ModeFieldSupportsTargetFilters = big.NewInt(1 << 5)
-)
-
-type V2Mode struct {
-	Description           *string `json:"description,omitempty" url:"description,omitempty"`
-	Label                 *string `json:"label,omitempty" url:"label,omitempty"`
-	Mode                  *string `json:"mode,omitempty" url:"mode,omitempty"`
-	RequiresIdentity      *bool   `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
-	SupportsFieldSyncMode *bool   `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
-	SupportsTargetFilters *bool   `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2Mode) GetDescription() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Description
-}
-
-func (v *V2Mode) GetLabel() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Label
-}
-
-func (v *V2Mode) GetMode() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Mode
-}
-
-func (v *V2Mode) GetRequiresIdentity() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.RequiresIdentity
-}
-
-func (v *V2Mode) GetSupportsFieldSyncMode() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.SupportsFieldSyncMode
-}
-
-func (v *V2Mode) GetSupportsTargetFilters() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.SupportsTargetFilters
-}
-
-func (v *V2Mode) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2Mode) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetDescription sets the Description field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2Mode) SetDescription(description *string) {
-	v.Description = description
-	v.require(v2ModeFieldDescription)
-}
-
-// SetLabel sets the Label field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2Mode) SetLabel(label *string) {
-	v.Label = label
-	v.require(v2ModeFieldLabel)
-}
-
-// SetMode sets the Mode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2Mode) SetMode(mode *string) {
-	v.Mode = mode
-	v.require(v2ModeFieldMode)
-}
-
-// SetRequiresIdentity sets the RequiresIdentity field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2Mode) SetRequiresIdentity(requiresIdentity *bool) {
-	v.RequiresIdentity = requiresIdentity
-	v.require(v2ModeFieldRequiresIdentity)
-}
-
-// SetSupportsFieldSyncMode sets the SupportsFieldSyncMode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2Mode) SetSupportsFieldSyncMode(supportsFieldSyncMode *bool) {
-	v.SupportsFieldSyncMode = supportsFieldSyncMode
-	v.require(v2ModeFieldSupportsFieldSyncMode)
-}
-
-// SetSupportsTargetFilters sets the SupportsTargetFilters field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2Mode) SetSupportsTargetFilters(supportsTargetFilters *bool) {
-	v.SupportsTargetFilters = supportsTargetFilters
-	v.require(v2ModeFieldSupportsTargetFilters)
-}
-
-func (v *V2Mode) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2Mode
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2Mode(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2Mode) MarshalJSON() ([]byte, error) {
-	type embed V2Mode
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2Mode) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2ModelFieldFieldCreatedAt   = big.NewInt(1 << 0)
-	v2ModelFieldFieldCreatedBy   = big.NewInt(1 << 1)
-	v2ModelFieldFieldDescription = big.NewInt(1 << 2)
-	v2ModelFieldFieldExample     = big.NewInt(1 << 3)
-	v2ModelFieldFieldID          = big.NewInt(1 << 4)
-	v2ModelFieldFieldLabel       = big.NewInt(1 << 5)
-	v2ModelFieldFieldName        = big.NewInt(1 << 6)
-	v2ModelFieldFieldRemoteType  = big.NewInt(1 << 7)
-	v2ModelFieldFieldType        = big.NewInt(1 << 8)
-	v2ModelFieldFieldUnique      = big.NewInt(1 << 9)
-	v2ModelFieldFieldUpdatedAt   = big.NewInt(1 << 10)
-	v2ModelFieldFieldUserAdded   = big.NewInt(1 << 11)
-)
-
-type V2ModelField struct {
-	CreatedAt   *time.Time   `json:"created_at,omitempty" url:"created_at,omitempty"`
-	CreatedBy   *OutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
-	Description *string      `json:"description,omitempty" url:"description,omitempty"`
-	Example     any          `json:"example,omitempty" url:"example,omitempty"`
-	ID          *string      `json:"id,omitempty" url:"id,omitempty"`
-	Label       *string      `json:"label,omitempty" url:"label,omitempty"`
-	Name        *string      `json:"name,omitempty" url:"name,omitempty"`
-	RemoteType  *string      `json:"remote_type,omitempty" url:"remote_type,omitempty"`
-	Type        *string      `json:"type,omitempty" url:"type,omitempty"`
-	Unique      *bool        `json:"unique,omitempty" url:"unique,omitempty"`
-	UpdatedAt   *time.Time   `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	UserAdded   *bool        `json:"user_added,omitempty" url:"user_added,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2ModelField) GetCreatedAt() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.CreatedAt
-}
-
-func (v *V2ModelField) GetCreatedBy() *OutputActor {
-	if v == nil {
-		return nil
-	}
-	return v.CreatedBy
-}
-
-func (v *V2ModelField) GetDescription() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Description
-}
-
-func (v *V2ModelField) GetExample() any {
-	if v == nil {
-		return nil
-	}
-	return v.Example
-}
-
-func (v *V2ModelField) GetID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ID
-}
-
-func (v *V2ModelField) GetLabel() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Label
-}
-
-func (v *V2ModelField) GetName() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Name
-}
-
-func (v *V2ModelField) GetRemoteType() *string {
-	if v == nil {
-		return nil
-	}
-	return v.RemoteType
-}
-
-func (v *V2ModelField) GetType() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Type
-}
-
-func (v *V2ModelField) GetUnique() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.Unique
-}
-
-func (v *V2ModelField) GetUpdatedAt() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.UpdatedAt
-}
-
-func (v *V2ModelField) GetUserAdded() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.UserAdded
-}
-
-func (v *V2ModelField) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2ModelField) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ModelField) SetCreatedAt(createdAt *time.Time) {
-	v.CreatedAt = createdAt
-	v.require(v2ModelFieldFieldCreatedAt)
-}
-
-// SetCreatedBy sets the CreatedBy field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ModelField) SetCreatedBy(createdBy *OutputActor) {
-	v.CreatedBy = createdBy
-	v.require(v2ModelFieldFieldCreatedBy)
-}
-
-// SetDescription sets the Description field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ModelField) SetDescription(description *string) {
-	v.Description = description
-	v.require(v2ModelFieldFieldDescription)
-}
-
-// SetExample sets the Example field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ModelField) SetExample(example any) {
-	v.Example = example
-	v.require(v2ModelFieldFieldExample)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ModelField) SetID(id *string) {
-	v.ID = id
-	v.require(v2ModelFieldFieldID)
-}
-
-// SetLabel sets the Label field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ModelField) SetLabel(label *string) {
-	v.Label = label
-	v.require(v2ModelFieldFieldLabel)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ModelField) SetName(name *string) {
-	v.Name = name
-	v.require(v2ModelFieldFieldName)
-}
-
-// SetRemoteType sets the RemoteType field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ModelField) SetRemoteType(remoteType *string) {
-	v.RemoteType = remoteType
-	v.require(v2ModelFieldFieldRemoteType)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ModelField) SetType(type_ *string) {
-	v.Type = type_
-	v.require(v2ModelFieldFieldType)
-}
-
-// SetUnique sets the Unique field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ModelField) SetUnique(unique *bool) {
-	v.Unique = unique
-	v.require(v2ModelFieldFieldUnique)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ModelField) SetUpdatedAt(updatedAt *time.Time) {
-	v.UpdatedAt = updatedAt
-	v.require(v2ModelFieldFieldUpdatedAt)
-}
-
-// SetUserAdded sets the UserAdded field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2ModelField) SetUserAdded(userAdded *bool) {
-	v.UserAdded = userAdded
-	v.require(v2ModelFieldFieldUserAdded)
-}
-
-func (v *V2ModelField) UnmarshalJSON(data []byte) error {
-	type embed V2ModelField
-	var unmarshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*v = V2ModelField(unmarshaler.embed)
-	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	v.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2ModelField) MarshalJSON() ([]byte, error) {
-	type embed V2ModelField
-	var marshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed:     embed(*v),
-		CreatedAt: internal.NewOptionalDateTime(v.CreatedAt),
-		UpdatedAt: internal.NewOptionalDateTime(v.UpdatedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2ModelField) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2PolicyActionFieldAction  = big.NewInt(1 << 0)
-	v2PolicyActionFieldRoleIDs = big.NewInt(1 << 1)
-)
-
-type V2PolicyAction struct {
-	Action  string   `json:"action" url:"action"`
-	RoleIDs []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2PolicyAction) GetAction() string {
-	if v == nil {
-		return ""
-	}
-	return v.Action
-}
-
-func (v *V2PolicyAction) GetRoleIDs() []string {
-	if v == nil {
-		return nil
-	}
-	return v.RoleIDs
-}
-
-func (v *V2PolicyAction) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2PolicyAction) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetAction sets the Action field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2PolicyAction) SetAction(action string) {
-	v.Action = action
-	v.require(v2PolicyActionFieldAction)
-}
-
-// SetRoleIDs sets the RoleIDs field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2PolicyAction) SetRoleIDs(roleIDs []string) {
-	v.RoleIDs = roleIDs
-	v.require(v2PolicyActionFieldRoleIDs)
-}
-
-func (v *V2PolicyAction) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2PolicyAction
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2PolicyAction(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2PolicyAction) MarshalJSON() ([]byte, error) {
-	type embed V2PolicyAction
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2PolicyAction) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2PolicyResponseFieldID             = big.NewInt(1 << 0)
-	v2PolicyResponseFieldName           = big.NewInt(1 << 1)
-	v2PolicyResponseFieldOrganizationID = big.NewInt(1 << 2)
-	v2PolicyResponseFieldPolicyActions  = big.NewInt(1 << 3)
-	v2PolicyResponseFieldSystem         = big.NewInt(1 << 4)
-)
-
-type V2PolicyResponse struct {
-	ID             *string           `json:"id,omitempty" url:"id,omitempty"`
-	Name           *string           `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationID *string           `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	PolicyActions  []*V2PolicyAction `json:"policy_actions,omitempty" url:"policy_actions,omitempty"`
-	System         *bool             `json:"system,omitempty" url:"system,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2PolicyResponse) GetID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ID
-}
-
-func (v *V2PolicyResponse) GetName() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Name
-}
-
-func (v *V2PolicyResponse) GetOrganizationID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.OrganizationID
-}
-
-func (v *V2PolicyResponse) GetPolicyActions() []*V2PolicyAction {
-	if v == nil {
-		return nil
-	}
-	return v.PolicyActions
-}
-
-func (v *V2PolicyResponse) GetSystem() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.System
-}
-
-func (v *V2PolicyResponse) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2PolicyResponse) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2PolicyResponse) SetID(id *string) {
-	v.ID = id
-	v.require(v2PolicyResponseFieldID)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2PolicyResponse) SetName(name *string) {
-	v.Name = name
-	v.require(v2PolicyResponseFieldName)
-}
-
-// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2PolicyResponse) SetOrganizationID(organizationID *string) {
-	v.OrganizationID = organizationID
-	v.require(v2PolicyResponseFieldOrganizationID)
-}
-
-// SetPolicyActions sets the PolicyActions field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2PolicyResponse) SetPolicyActions(policyActions []*V2PolicyAction) {
-	v.PolicyActions = policyActions
-	v.require(v2PolicyResponseFieldPolicyActions)
-}
-
-// SetSystem sets the System field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2PolicyResponse) SetSystem(system *bool) {
-	v.System = system
-	v.require(v2PolicyResponseFieldSystem)
-}
-
-func (v *V2PolicyResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2PolicyResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2PolicyResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2PolicyResponse) MarshalJSON() ([]byte, error) {
-	type embed V2PolicyResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2PolicyResponse) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2PolicyResponseEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type V2PolicyResponseEnvelope struct {
-	Data *V2PolicyResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2PolicyResponseEnvelope) GetData() *V2PolicyResponse {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V2PolicyResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2PolicyResponseEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2PolicyResponseEnvelope) SetData(data *V2PolicyResponse) {
-	v.Data = data
-	v.require(v2PolicyResponseEnvelopeFieldData)
-}
-
-func (v *V2PolicyResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2PolicyResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2PolicyResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2PolicyResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V2PolicyResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2PolicyResponseEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2RoleListResponseEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type V2RoleListResponseEnvelope struct {
-	Data []*V2RoleResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2RoleListResponseEnvelope) GetData() []*V2RoleResponse {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V2RoleListResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2RoleListResponseEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2RoleListResponseEnvelope) SetData(data []*V2RoleResponse) {
-	v.Data = data
-	v.require(v2RoleListResponseEnvelopeFieldData)
-}
-
-func (v *V2RoleListResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2RoleListResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2RoleListResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2RoleListResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V2RoleListResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2RoleListResponseEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2RoleResponseFieldID             = big.NewInt(1 << 0)
-	v2RoleResponseFieldName           = big.NewInt(1 << 1)
-	v2RoleResponseFieldOrganizationID = big.NewInt(1 << 2)
-	v2RoleResponseFieldSystem         = big.NewInt(1 << 3)
-)
-
-type V2RoleResponse struct {
-	ID             *string `json:"id,omitempty" url:"id,omitempty"`
-	Name           *string `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	System         *bool   `json:"system,omitempty" url:"system,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2RoleResponse) GetID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ID
-}
-
-func (v *V2RoleResponse) GetName() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Name
-}
-
-func (v *V2RoleResponse) GetOrganizationID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.OrganizationID
-}
-
-func (v *V2RoleResponse) GetSystem() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.System
-}
-
-func (v *V2RoleResponse) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2RoleResponse) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2RoleResponse) SetID(id *string) {
-	v.ID = id
-	v.require(v2RoleResponseFieldID)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2RoleResponse) SetName(name *string) {
-	v.Name = name
-	v.require(v2RoleResponseFieldName)
-}
-
-// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2RoleResponse) SetOrganizationID(organizationID *string) {
-	v.OrganizationID = organizationID
-	v.require(v2RoleResponseFieldOrganizationID)
-}
-
-// SetSystem sets the System field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2RoleResponse) SetSystem(system *bool) {
-	v.System = system
-	v.require(v2RoleResponseFieldSystem)
-}
-
-func (v *V2RoleResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2RoleResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2RoleResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2RoleResponse) MarshalJSON() ([]byte, error) {
-	type embed V2RoleResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2RoleResponse) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2RoleResponseEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type V2RoleResponseEnvelope struct {
-	Data *V2RoleResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2RoleResponseEnvelope) GetData() *V2RoleResponse {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V2RoleResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2RoleResponseEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2RoleResponseEnvelope) SetData(data *V2RoleResponse) {
-	v.Data = data
-	v.require(v2RoleResponseEnvelopeFieldData)
-}
-
-func (v *V2RoleResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2RoleResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2RoleResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2RoleResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V2RoleResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2RoleResponseEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2TargetFieldFieldAssociation       = big.NewInt(1 << 0)
-	v2TargetFieldFieldCreateable        = big.NewInt(1 << 1)
-	v2TargetFieldFieldDescription       = big.NewInt(1 << 2)
-	v2TargetFieldFieldEncryptable       = big.NewInt(1 << 3)
-	v2TargetFieldFieldFilterable        = big.NewInt(1 << 4)
-	v2TargetFieldFieldID                = big.NewInt(1 << 5)
-	v2TargetFieldFieldIdentityFunctions = big.NewInt(1 << 6)
-	v2TargetFieldFieldName              = big.NewInt(1 << 7)
-	v2TargetFieldFieldRequired          = big.NewInt(1 << 8)
-	v2TargetFieldFieldSourceType        = big.NewInt(1 << 9)
-	v2TargetFieldFieldSupportsIdentity  = big.NewInt(1 << 10)
-	v2TargetFieldFieldType              = big.NewInt(1 << 11)
-	v2TargetFieldFieldUpdateable        = big.NewInt(1 << 12)
-)
-
-type V2TargetField struct {
-	Association       *bool                 `json:"association,omitempty" url:"association,omitempty"`
-	Createable        *bool                 `json:"createable,omitempty" url:"createable,omitempty"`
-	Description       *string               `json:"description,omitempty" url:"description,omitempty"`
-	Encryptable       *bool                 `json:"encryptable,omitempty" url:"encryptable,omitempty"`
-	Filterable        *bool                 `json:"filterable,omitempty" url:"filterable,omitempty"`
-	ID                *string               `json:"id,omitempty" url:"id,omitempty"`
-	IdentityFunctions []*V2IdentityFunction `json:"identity_functions,omitempty" url:"identity_functions,omitempty"`
-	Name              *string               `json:"name,omitempty" url:"name,omitempty"`
-	Required          *bool                 `json:"required,omitempty" url:"required,omitempty"`
-	SourceType        *string               `json:"source_type,omitempty" url:"source_type,omitempty"`
-	SupportsIdentity  *bool                 `json:"supports_identity,omitempty" url:"supports_identity,omitempty"`
-	Type              *string               `json:"type,omitempty" url:"type,omitempty"`
-	Updateable        *bool                 `json:"updateable,omitempty" url:"updateable,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2TargetField) GetAssociation() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.Association
-}
-
-func (v *V2TargetField) GetCreateable() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.Createable
-}
-
-func (v *V2TargetField) GetDescription() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Description
-}
-
-func (v *V2TargetField) GetEncryptable() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.Encryptable
-}
-
-func (v *V2TargetField) GetFilterable() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.Filterable
-}
-
-func (v *V2TargetField) GetID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ID
-}
-
-func (v *V2TargetField) GetIdentityFunctions() []*V2IdentityFunction {
-	if v == nil {
-		return nil
-	}
-	return v.IdentityFunctions
-}
-
-func (v *V2TargetField) GetName() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Name
-}
-
-func (v *V2TargetField) GetRequired() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.Required
-}
-
-func (v *V2TargetField) GetSourceType() *string {
-	if v == nil {
-		return nil
-	}
-	return v.SourceType
-}
-
-func (v *V2TargetField) GetSupportsIdentity() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.SupportsIdentity
-}
-
-func (v *V2TargetField) GetType() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Type
-}
-
-func (v *V2TargetField) GetUpdateable() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.Updateable
-}
-
-func (v *V2TargetField) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2TargetField) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetAssociation sets the Association field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetField) SetAssociation(association *bool) {
-	v.Association = association
-	v.require(v2TargetFieldFieldAssociation)
-}
-
-// SetCreateable sets the Createable field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetField) SetCreateable(createable *bool) {
-	v.Createable = createable
-	v.require(v2TargetFieldFieldCreateable)
-}
-
-// SetDescription sets the Description field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetField) SetDescription(description *string) {
-	v.Description = description
-	v.require(v2TargetFieldFieldDescription)
-}
-
-// SetEncryptable sets the Encryptable field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetField) SetEncryptable(encryptable *bool) {
-	v.Encryptable = encryptable
-	v.require(v2TargetFieldFieldEncryptable)
-}
-
-// SetFilterable sets the Filterable field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetField) SetFilterable(filterable *bool) {
-	v.Filterable = filterable
-	v.require(v2TargetFieldFieldFilterable)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetField) SetID(id *string) {
-	v.ID = id
-	v.require(v2TargetFieldFieldID)
-}
-
-// SetIdentityFunctions sets the IdentityFunctions field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetField) SetIdentityFunctions(identityFunctions []*V2IdentityFunction) {
-	v.IdentityFunctions = identityFunctions
-	v.require(v2TargetFieldFieldIdentityFunctions)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetField) SetName(name *string) {
-	v.Name = name
-	v.require(v2TargetFieldFieldName)
-}
-
-// SetRequired sets the Required field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetField) SetRequired(required *bool) {
-	v.Required = required
-	v.require(v2TargetFieldFieldRequired)
-}
-
-// SetSourceType sets the SourceType field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetField) SetSourceType(sourceType *string) {
-	v.SourceType = sourceType
-	v.require(v2TargetFieldFieldSourceType)
-}
-
-// SetSupportsIdentity sets the SupportsIdentity field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetField) SetSupportsIdentity(supportsIdentity *bool) {
-	v.SupportsIdentity = supportsIdentity
-	v.require(v2TargetFieldFieldSupportsIdentity)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetField) SetType(type_ *string) {
-	v.Type = type_
-	v.require(v2TargetFieldFieldType)
-}
-
-// SetUpdateable sets the Updateable field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetField) SetUpdateable(updateable *bool) {
-	v.Updateable = updateable
-	v.require(v2TargetFieldFieldUpdateable)
-}
-
-func (v *V2TargetField) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2TargetField
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2TargetField(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2TargetField) MarshalJSON() ([]byte, error) {
-	type embed V2TargetField
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2TargetField) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2TargetResponseFieldFields      = big.NewInt(1 << 0)
-	v2TargetResponseFieldID          = big.NewInt(1 << 1)
-	v2TargetResponseFieldModes       = big.NewInt(1 << 2)
-	v2TargetResponseFieldName        = big.NewInt(1 << 3)
-	v2TargetResponseFieldProperties  = big.NewInt(1 << 4)
-	v2TargetResponseFieldRefreshedAt = big.NewInt(1 << 5)
-)
-
-type V2TargetResponse struct {
-	Fields      []*V2TargetField           `json:"fields,omitempty" url:"fields,omitempty"`
-	ID          *string                    `json:"id,omitempty" url:"id,omitempty"`
-	Modes       []*V2Mode                  `json:"modes,omitempty" url:"modes,omitempty"`
-	Name        *string                    `json:"name,omitempty" url:"name,omitempty"`
-	Properties  *SyncDestinationProperties `json:"properties,omitempty" url:"properties,omitempty"`
-	RefreshedAt *time.Time                 `json:"refreshed_at,omitempty" url:"refreshed_at,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2TargetResponse) GetFields() []*V2TargetField {
-	if v == nil {
-		return nil
-	}
-	return v.Fields
-}
-
-func (v *V2TargetResponse) GetID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ID
-}
-
-func (v *V2TargetResponse) GetModes() []*V2Mode {
-	if v == nil {
-		return nil
-	}
-	return v.Modes
-}
-
-func (v *V2TargetResponse) GetName() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Name
-}
-
-func (v *V2TargetResponse) GetProperties() *SyncDestinationProperties {
-	if v == nil {
-		return nil
-	}
-	return v.Properties
-}
-
-func (v *V2TargetResponse) GetRefreshedAt() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.RefreshedAt
-}
-
-func (v *V2TargetResponse) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2TargetResponse) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetFields sets the Fields field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetResponse) SetFields(fields []*V2TargetField) {
-	v.Fields = fields
-	v.require(v2TargetResponseFieldFields)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetResponse) SetID(id *string) {
-	v.ID = id
-	v.require(v2TargetResponseFieldID)
-}
-
-// SetModes sets the Modes field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetResponse) SetModes(modes []*V2Mode) {
-	v.Modes = modes
-	v.require(v2TargetResponseFieldModes)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetResponse) SetName(name *string) {
-	v.Name = name
-	v.require(v2TargetResponseFieldName)
-}
-
-// SetProperties sets the Properties field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetResponse) SetProperties(properties *SyncDestinationProperties) {
-	v.Properties = properties
-	v.require(v2TargetResponseFieldProperties)
-}
-
-// SetRefreshedAt sets the RefreshedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetResponse) SetRefreshedAt(refreshedAt *time.Time) {
-	v.RefreshedAt = refreshedAt
-	v.require(v2TargetResponseFieldRefreshedAt)
-}
-
-func (v *V2TargetResponse) UnmarshalJSON(data []byte) error {
-	type embed V2TargetResponse
-	var unmarshaler = struct {
-		embed
-		RefreshedAt *internal.DateTime `json:"refreshed_at,omitempty"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*v = V2TargetResponse(unmarshaler.embed)
-	v.RefreshedAt = unmarshaler.RefreshedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2TargetResponse) MarshalJSON() ([]byte, error) {
-	type embed V2TargetResponse
-	var marshaler = struct {
-		embed
-		RefreshedAt *internal.DateTime `json:"refreshed_at,omitempty"`
-	}{
-		embed:       embed(*v),
-		RefreshedAt: internal.NewOptionalDateTime(v.RefreshedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2TargetResponse) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v2TargetResponseEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type V2TargetResponseEnvelope struct {
-	Data *V2TargetResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V2TargetResponseEnvelope) GetData() *V2TargetResponse {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V2TargetResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V2TargetResponseEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TargetResponseEnvelope) SetData(data *V2TargetResponse) {
-	v.Data = data
-	v.require(v2TargetResponseEnvelopeFieldData)
-}
-
-func (v *V2TargetResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V2TargetResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V2TargetResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V2TargetResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V2TargetResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V2TargetResponseEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-// How the data is fetched. 'none' is normal operation for Polytomic. 'incremental' and 'full' apply to syncs from Salesforce. 'incremental' indicates the data is synced incrementally using record modification time. 'full' is necessary to catch up to the latest values for formula fields and rollup fields whose updates don't show up in incremental runs due to limitations in Salesforce.
-type V3BulkFetchMode string
-
-const (
-	V3BulkFetchModeNone        V3BulkFetchMode = "none"
-	V3BulkFetchModeIncremental V3BulkFetchMode = "incremental"
-	V3BulkFetchModeFull        V3BulkFetchMode = "full"
-)
-
-func NewV3BulkFetchModeFromString(s string) (V3BulkFetchMode, error) {
-	switch s {
-	case "none":
-		return V3BulkFetchModeNone, nil
-	case "incremental":
-		return V3BulkFetchModeIncremental, nil
-	case "full":
-		return V3BulkFetchModeFull, nil
-	}
-	var t V3BulkFetchMode
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (v V3BulkFetchMode) Ptr() *V3BulkFetchMode {
-	return &v
-}
-
-var (
-	v3BulkFieldFieldEnabled        = big.NewInt(1 << 0)
-	v3BulkFieldFieldID             = big.NewInt(1 << 1)
-	v3BulkFieldFieldObfuscated     = big.NewInt(1 << 2)
-	v3BulkFieldFieldOutputName     = big.NewInt(1 << 3)
-	v3BulkFieldFieldUserOutputName = big.NewInt(1 << 4)
-)
-
-type V3BulkField struct {
-	Enabled        *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
-	ID             *string `json:"id,omitempty" url:"id,omitempty"`
-	Obfuscated     *bool   `json:"obfuscated,omitempty" url:"obfuscated,omitempty"`
-	OutputName     *string `json:"output_name,omitempty" url:"output_name,omitempty"`
-	UserOutputName *string `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V3BulkField) GetEnabled() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.Enabled
-}
-
-func (v *V3BulkField) GetID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ID
-}
-
-func (v *V3BulkField) GetObfuscated() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.Obfuscated
-}
-
-func (v *V3BulkField) GetOutputName() *string {
-	if v == nil {
-		return nil
-	}
-	return v.OutputName
-}
-
-func (v *V3BulkField) GetUserOutputName() *string {
-	if v == nil {
-		return nil
-	}
-	return v.UserOutputName
-}
-
-func (v *V3BulkField) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V3BulkField) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetEnabled sets the Enabled field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkField) SetEnabled(enabled *bool) {
-	v.Enabled = enabled
-	v.require(v3BulkFieldFieldEnabled)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkField) SetID(id *string) {
-	v.ID = id
-	v.require(v3BulkFieldFieldID)
-}
-
-// SetObfuscated sets the Obfuscated field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkField) SetObfuscated(obfuscated *bool) {
-	v.Obfuscated = obfuscated
-	v.require(v3BulkFieldFieldObfuscated)
-}
-
-// SetOutputName sets the OutputName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkField) SetOutputName(outputName *string) {
-	v.OutputName = outputName
-	v.require(v3BulkFieldFieldOutputName)
-}
-
-// SetUserOutputName sets the UserOutputName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkField) SetUserOutputName(userOutputName *string) {
-	v.UserOutputName = userOutputName
-	v.require(v3BulkFieldFieldUserOutputName)
-}
-
-func (v *V3BulkField) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3BulkField
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3BulkField(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkField) MarshalJSON() ([]byte, error) {
-	type embed V3BulkField
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V3BulkField) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v3BulkSchemaFieldDataCutoffTimestamp = big.NewInt(1 << 0)
-	v3BulkSchemaFieldDisableDataCutoff   = big.NewInt(1 << 1)
-	v3BulkSchemaFieldEnabled             = big.NewInt(1 << 2)
-	v3BulkSchemaFieldFields              = big.NewInt(1 << 3)
-	v3BulkSchemaFieldFilters             = big.NewInt(1 << 4)
-	v3BulkSchemaFieldID                  = big.NewInt(1 << 5)
-	v3BulkSchemaFieldOutputName          = big.NewInt(1 << 6)
-	v3BulkSchemaFieldPartitionKey        = big.NewInt(1 << 7)
-	v3BulkSchemaFieldTrackingField       = big.NewInt(1 << 8)
-	v3BulkSchemaFieldUserOutputName      = big.NewInt(1 << 9)
-)
-
-type V3BulkSchema struct {
-	DataCutoffTimestamp *time.Time `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
-	DisableDataCutoff   *bool      `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
-	Enabled             *bool      `json:"enabled,omitempty" url:"enabled,omitempty"`
-	// fields is not populated on the list endpoint and will be removed in a future version; retrieve individual schemas for fields.
-	Fields []*V3BulkField `json:"fields,omitempty" url:"fields,omitempty"`
-	// filters is not populated on the list endpoint and will be removed in a future version; retrieve individual schemas for filters.
-	Filters        []*BulkFilter `json:"filters,omitempty" url:"filters,omitempty"`
-	ID             *string       `json:"id,omitempty" url:"id,omitempty"`
-	OutputName     *string       `json:"output_name,omitempty" url:"output_name,omitempty"`
-	PartitionKey   *string       `json:"partition_key,omitempty" url:"partition_key,omitempty"`
-	TrackingField  *string       `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
-	UserOutputName *string       `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V3BulkSchema) GetDataCutoffTimestamp() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.DataCutoffTimestamp
-}
-
-func (v *V3BulkSchema) GetDisableDataCutoff() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.DisableDataCutoff
-}
-
-func (v *V3BulkSchema) GetEnabled() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.Enabled
-}
-
-func (v *V3BulkSchema) GetFields() []*V3BulkField {
-	if v == nil {
-		return nil
-	}
-	return v.Fields
-}
-
-func (v *V3BulkSchema) GetFilters() []*BulkFilter {
-	if v == nil {
-		return nil
-	}
-	return v.Filters
-}
-
-func (v *V3BulkSchema) GetID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ID
-}
-
-func (v *V3BulkSchema) GetOutputName() *string {
-	if v == nil {
-		return nil
-	}
-	return v.OutputName
-}
-
-func (v *V3BulkSchema) GetPartitionKey() *string {
-	if v == nil {
-		return nil
-	}
-	return v.PartitionKey
-}
-
-func (v *V3BulkSchema) GetTrackingField() *string {
-	if v == nil {
-		return nil
-	}
-	return v.TrackingField
-}
-
-func (v *V3BulkSchema) GetUserOutputName() *string {
-	if v == nil {
-		return nil
-	}
-	return v.UserOutputName
-}
-
-func (v *V3BulkSchema) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V3BulkSchema) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetDataCutoffTimestamp sets the DataCutoffTimestamp field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSchema) SetDataCutoffTimestamp(dataCutoffTimestamp *time.Time) {
-	v.DataCutoffTimestamp = dataCutoffTimestamp
-	v.require(v3BulkSchemaFieldDataCutoffTimestamp)
-}
-
-// SetDisableDataCutoff sets the DisableDataCutoff field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSchema) SetDisableDataCutoff(disableDataCutoff *bool) {
-	v.DisableDataCutoff = disableDataCutoff
-	v.require(v3BulkSchemaFieldDisableDataCutoff)
-}
-
-// SetEnabled sets the Enabled field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSchema) SetEnabled(enabled *bool) {
-	v.Enabled = enabled
-	v.require(v3BulkSchemaFieldEnabled)
-}
-
-// SetFields sets the Fields field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSchema) SetFields(fields []*V3BulkField) {
-	v.Fields = fields
-	v.require(v3BulkSchemaFieldFields)
-}
-
-// SetFilters sets the Filters field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSchema) SetFilters(filters []*BulkFilter) {
-	v.Filters = filters
-	v.require(v3BulkSchemaFieldFilters)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSchema) SetID(id *string) {
-	v.ID = id
-	v.require(v3BulkSchemaFieldID)
-}
-
-// SetOutputName sets the OutputName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSchema) SetOutputName(outputName *string) {
-	v.OutputName = outputName
-	v.require(v3BulkSchemaFieldOutputName)
-}
-
-// SetPartitionKey sets the PartitionKey field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSchema) SetPartitionKey(partitionKey *string) {
-	v.PartitionKey = partitionKey
-	v.require(v3BulkSchemaFieldPartitionKey)
-}
-
-// SetTrackingField sets the TrackingField field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSchema) SetTrackingField(trackingField *string) {
-	v.TrackingField = trackingField
-	v.require(v3BulkSchemaFieldTrackingField)
-}
-
-// SetUserOutputName sets the UserOutputName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSchema) SetUserOutputName(userOutputName *string) {
-	v.UserOutputName = userOutputName
-	v.require(v3BulkSchemaFieldUserOutputName)
-}
-
-func (v *V3BulkSchema) UnmarshalJSON(data []byte) error {
-	type embed V3BulkSchema
-	var unmarshaler = struct {
-		embed
-		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*v = V3BulkSchema(unmarshaler.embed)
-	v.DataCutoffTimestamp = unmarshaler.DataCutoffTimestamp.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkSchema) MarshalJSON() ([]byte, error) {
-	type embed V3BulkSchema
-	var marshaler = struct {
-		embed
-		DataCutoffTimestamp *internal.DateTime `json:"data_cutoff_timestamp,omitempty"`
-	}{
-		embed:               embed(*v),
-		DataCutoffTimestamp: internal.NewOptionalDateTime(v.DataCutoffTimestamp),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V3BulkSchema) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v3BulkSchemaEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type V3BulkSchemaEnvelope struct {
-	Data *V3BulkSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V3BulkSchemaEnvelope) GetData() *V3BulkSchema {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V3BulkSchemaEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V3BulkSchemaEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSchemaEnvelope) SetData(data *V3BulkSchema) {
-	v.Data = data
-	v.require(v3BulkSchemaEnvelopeFieldData)
-}
-
-func (v *V3BulkSchemaEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3BulkSchemaEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3BulkSchemaEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkSchemaEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V3BulkSchemaEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V3BulkSchemaEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v3BulkSyncExecutionFieldCompletedAt       = big.NewInt(1 << 0)
-	v3BulkSyncExecutionFieldCreatedAt         = big.NewInt(1 << 1)
-	v3BulkSyncExecutionFieldErrorCount        = big.NewInt(1 << 2)
-	v3BulkSyncExecutionFieldFetchMode         = big.NewInt(1 << 3)
-	v3BulkSyncExecutionFieldID                = big.NewInt(1 << 4)
-	v3BulkSyncExecutionFieldIsPartial         = big.NewInt(1 << 5)
-	v3BulkSyncExecutionFieldIsResync          = big.NewInt(1 << 6)
-	v3BulkSyncExecutionFieldIsTest            = big.NewInt(1 << 7)
-	v3BulkSyncExecutionFieldOutputDisposition = big.NewInt(1 << 8)
-	v3BulkSyncExecutionFieldRecordCount       = big.NewInt(1 << 9)
-	v3BulkSyncExecutionFieldSchemas           = big.NewInt(1 << 10)
-	v3BulkSyncExecutionFieldStartedAt         = big.NewInt(1 << 11)
-	v3BulkSyncExecutionFieldStatus            = big.NewInt(1 << 12)
-	v3BulkSyncExecutionFieldStatusMessage     = big.NewInt(1 << 13)
-	v3BulkSyncExecutionFieldType              = big.NewInt(1 << 14)
-	v3BulkSyncExecutionFieldUpdatedAt         = big.NewInt(1 << 15)
-	v3BulkSyncExecutionFieldWarningCount      = big.NewInt(1 << 16)
-)
-
-type V3BulkSyncExecution struct {
-	CompletedAt       *time.Time                   `json:"completed_at,omitempty" url:"completed_at,omitempty"`
-	CreatedAt         *time.Time                   `json:"created_at,omitempty" url:"created_at,omitempty"`
-	ErrorCount        *int                         `json:"error_count,omitempty" url:"error_count,omitempty"`
-	FetchMode         *V3BulkFetchMode             `json:"fetch_mode,omitempty" url:"fetch_mode,omitempty"`
-	ID                *string                      `json:"id,omitempty" url:"id,omitempty"`
-	IsPartial         *bool                        `json:"is_partial,omitempty" url:"is_partial,omitempty"`
-	IsResync          *bool                        `json:"is_resync,omitempty" url:"is_resync,omitempty"`
-	IsTest            *bool                        `json:"is_test,omitempty" url:"is_test,omitempty"`
-	OutputDisposition *BulkOutputDisposition       `json:"output_disposition,omitempty" url:"output_disposition,omitempty"`
-	RecordCount       *int                         `json:"record_count,omitempty" url:"record_count,omitempty"`
-	Schemas           []*V3BulkSyncSchemaExecution `json:"schemas,omitempty" url:"schemas,omitempty"`
-	StartedAt         *time.Time                   `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status            *BulkExecutionStatus         `json:"status,omitempty" url:"status,omitempty"`
-	StatusMessage     *string                      `json:"status_message,omitempty" url:"status_message,omitempty"`
-	Type              *string                      `json:"type,omitempty" url:"type,omitempty"`
-	UpdatedAt         *time.Time                   `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	WarningCount      *int                         `json:"warning_count,omitempty" url:"warning_count,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V3BulkSyncExecution) GetCompletedAt() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.CompletedAt
-}
-
-func (v *V3BulkSyncExecution) GetCreatedAt() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.CreatedAt
-}
-
-func (v *V3BulkSyncExecution) GetErrorCount() *int {
-	if v == nil {
-		return nil
-	}
-	return v.ErrorCount
-}
-
-func (v *V3BulkSyncExecution) GetFetchMode() *V3BulkFetchMode {
-	if v == nil {
-		return nil
-	}
-	return v.FetchMode
-}
-
-func (v *V3BulkSyncExecution) GetID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ID
-}
-
-func (v *V3BulkSyncExecution) GetIsPartial() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.IsPartial
-}
-
-func (v *V3BulkSyncExecution) GetIsResync() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.IsResync
-}
-
-func (v *V3BulkSyncExecution) GetIsTest() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.IsTest
-}
-
-func (v *V3BulkSyncExecution) GetOutputDisposition() *BulkOutputDisposition {
-	if v == nil {
-		return nil
-	}
-	return v.OutputDisposition
-}
-
-func (v *V3BulkSyncExecution) GetRecordCount() *int {
-	if v == nil {
-		return nil
-	}
-	return v.RecordCount
-}
-
-func (v *V3BulkSyncExecution) GetSchemas() []*V3BulkSyncSchemaExecution {
-	if v == nil {
-		return nil
-	}
-	return v.Schemas
-}
-
-func (v *V3BulkSyncExecution) GetStartedAt() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.StartedAt
-}
-
-func (v *V3BulkSyncExecution) GetStatus() *BulkExecutionStatus {
-	if v == nil {
-		return nil
-	}
-	return v.Status
-}
-
-func (v *V3BulkSyncExecution) GetStatusMessage() *string {
-	if v == nil {
-		return nil
-	}
-	return v.StatusMessage
-}
-
-func (v *V3BulkSyncExecution) GetType() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Type
-}
-
-func (v *V3BulkSyncExecution) GetUpdatedAt() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.UpdatedAt
-}
-
-func (v *V3BulkSyncExecution) GetWarningCount() *int {
-	if v == nil {
-		return nil
-	}
-	return v.WarningCount
-}
-
-func (v *V3BulkSyncExecution) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V3BulkSyncExecution) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetCompletedAt sets the CompletedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecution) SetCompletedAt(completedAt *time.Time) {
-	v.CompletedAt = completedAt
-	v.require(v3BulkSyncExecutionFieldCompletedAt)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecution) SetCreatedAt(createdAt *time.Time) {
-	v.CreatedAt = createdAt
-	v.require(v3BulkSyncExecutionFieldCreatedAt)
-}
-
-// SetErrorCount sets the ErrorCount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecution) SetErrorCount(errorCount *int) {
-	v.ErrorCount = errorCount
-	v.require(v3BulkSyncExecutionFieldErrorCount)
-}
-
-// SetFetchMode sets the FetchMode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecution) SetFetchMode(fetchMode *V3BulkFetchMode) {
-	v.FetchMode = fetchMode
-	v.require(v3BulkSyncExecutionFieldFetchMode)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecution) SetID(id *string) {
-	v.ID = id
-	v.require(v3BulkSyncExecutionFieldID)
-}
-
-// SetIsPartial sets the IsPartial field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecution) SetIsPartial(isPartial *bool) {
-	v.IsPartial = isPartial
-	v.require(v3BulkSyncExecutionFieldIsPartial)
-}
-
-// SetIsResync sets the IsResync field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecution) SetIsResync(isResync *bool) {
-	v.IsResync = isResync
-	v.require(v3BulkSyncExecutionFieldIsResync)
-}
-
-// SetIsTest sets the IsTest field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecution) SetIsTest(isTest *bool) {
-	v.IsTest = isTest
-	v.require(v3BulkSyncExecutionFieldIsTest)
-}
-
-// SetOutputDisposition sets the OutputDisposition field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecution) SetOutputDisposition(outputDisposition *BulkOutputDisposition) {
-	v.OutputDisposition = outputDisposition
-	v.require(v3BulkSyncExecutionFieldOutputDisposition)
-}
-
-// SetRecordCount sets the RecordCount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecution) SetRecordCount(recordCount *int) {
-	v.RecordCount = recordCount
-	v.require(v3BulkSyncExecutionFieldRecordCount)
-}
-
-// SetSchemas sets the Schemas field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecution) SetSchemas(schemas []*V3BulkSyncSchemaExecution) {
-	v.Schemas = schemas
-	v.require(v3BulkSyncExecutionFieldSchemas)
-}
-
-// SetStartedAt sets the StartedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecution) SetStartedAt(startedAt *time.Time) {
-	v.StartedAt = startedAt
-	v.require(v3BulkSyncExecutionFieldStartedAt)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecution) SetStatus(status *BulkExecutionStatus) {
-	v.Status = status
-	v.require(v3BulkSyncExecutionFieldStatus)
-}
-
-// SetStatusMessage sets the StatusMessage field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecution) SetStatusMessage(statusMessage *string) {
-	v.StatusMessage = statusMessage
-	v.require(v3BulkSyncExecutionFieldStatusMessage)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecution) SetType(type_ *string) {
-	v.Type = type_
-	v.require(v3BulkSyncExecutionFieldType)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecution) SetUpdatedAt(updatedAt *time.Time) {
-	v.UpdatedAt = updatedAt
-	v.require(v3BulkSyncExecutionFieldUpdatedAt)
-}
-
-// SetWarningCount sets the WarningCount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecution) SetWarningCount(warningCount *int) {
-	v.WarningCount = warningCount
-	v.require(v3BulkSyncExecutionFieldWarningCount)
-}
-
-func (v *V3BulkSyncExecution) UnmarshalJSON(data []byte) error {
-	type embed V3BulkSyncExecution
-	var unmarshaler = struct {
-		embed
-		CompletedAt *internal.DateTime `json:"completed_at,omitempty"`
-		CreatedAt   *internal.DateTime `json:"created_at,omitempty"`
-		StartedAt   *internal.DateTime `json:"started_at,omitempty"`
-		UpdatedAt   *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*v = V3BulkSyncExecution(unmarshaler.embed)
-	v.CompletedAt = unmarshaler.CompletedAt.TimePtr()
-	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	v.StartedAt = unmarshaler.StartedAt.TimePtr()
-	v.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkSyncExecution) MarshalJSON() ([]byte, error) {
-	type embed V3BulkSyncExecution
-	var marshaler = struct {
-		embed
-		CompletedAt *internal.DateTime `json:"completed_at,omitempty"`
-		CreatedAt   *internal.DateTime `json:"created_at,omitempty"`
-		StartedAt   *internal.DateTime `json:"started_at,omitempty"`
-		UpdatedAt   *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed:       embed(*v),
-		CompletedAt: internal.NewOptionalDateTime(v.CompletedAt),
-		CreatedAt:   internal.NewOptionalDateTime(v.CreatedAt),
-		StartedAt:   internal.NewOptionalDateTime(v.StartedAt),
-		UpdatedAt:   internal.NewOptionalDateTime(v.UpdatedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V3BulkSyncExecution) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v3BulkSyncExecutionEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type V3BulkSyncExecutionEnvelope struct {
-	Data *V3BulkSyncExecution `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V3BulkSyncExecutionEnvelope) GetData() *V3BulkSyncExecution {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V3BulkSyncExecutionEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V3BulkSyncExecutionEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncExecutionEnvelope) SetData(data *V3BulkSyncExecution) {
-	v.Data = data
-	v.require(v3BulkSyncExecutionEnvelopeFieldData)
-}
-
-func (v *V3BulkSyncExecutionEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3BulkSyncExecutionEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3BulkSyncExecutionEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkSyncExecutionEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V3BulkSyncExecutionEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V3BulkSyncExecutionEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v3BulkSyncSchemaExecutionFieldCompletedAt   = big.NewInt(1 << 0)
-	v3BulkSyncSchemaExecutionFieldCreatedAt     = big.NewInt(1 << 1)
-	v3BulkSyncSchemaExecutionFieldErrorCount    = big.NewInt(1 << 2)
-	v3BulkSyncSchemaExecutionFieldOutputName    = big.NewInt(1 << 3)
-	v3BulkSyncSchemaExecutionFieldRecordCount   = big.NewInt(1 << 4)
-	v3BulkSyncSchemaExecutionFieldSchema        = big.NewInt(1 << 5)
-	v3BulkSyncSchemaExecutionFieldStartedAt     = big.NewInt(1 << 6)
-	v3BulkSyncSchemaExecutionFieldStatus        = big.NewInt(1 << 7)
-	v3BulkSyncSchemaExecutionFieldStatusMessage = big.NewInt(1 << 8)
-	v3BulkSyncSchemaExecutionFieldUpdatedAt     = big.NewInt(1 << 9)
-	v3BulkSyncSchemaExecutionFieldWarningCount  = big.NewInt(1 << 10)
-)
-
-type V3BulkSyncSchemaExecution struct {
-	CompletedAt   *time.Time                 `json:"completed_at,omitempty" url:"completed_at,omitempty"`
-	CreatedAt     *time.Time                 `json:"created_at,omitempty" url:"created_at,omitempty"`
-	ErrorCount    *int                       `json:"error_count,omitempty" url:"error_count,omitempty"`
-	OutputName    *string                    `json:"output_name,omitempty" url:"output_name,omitempty"`
-	RecordCount   *int                       `json:"record_count,omitempty" url:"record_count,omitempty"`
-	Schema        *string                    `json:"schema,omitempty" url:"schema,omitempty"`
-	StartedAt     *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status        *BulkSchemaExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-	StatusMessage *string                    `json:"status_message,omitempty" url:"status_message,omitempty"`
-	UpdatedAt     *time.Time                 `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	WarningCount  *int                       `json:"warning_count,omitempty" url:"warning_count,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V3BulkSyncSchemaExecution) GetCompletedAt() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.CompletedAt
-}
-
-func (v *V3BulkSyncSchemaExecution) GetCreatedAt() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.CreatedAt
-}
-
-func (v *V3BulkSyncSchemaExecution) GetErrorCount() *int {
-	if v == nil {
-		return nil
-	}
-	return v.ErrorCount
-}
-
-func (v *V3BulkSyncSchemaExecution) GetOutputName() *string {
-	if v == nil {
-		return nil
-	}
-	return v.OutputName
-}
-
-func (v *V3BulkSyncSchemaExecution) GetRecordCount() *int {
-	if v == nil {
-		return nil
-	}
-	return v.RecordCount
-}
-
-func (v *V3BulkSyncSchemaExecution) GetSchema() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Schema
-}
-
-func (v *V3BulkSyncSchemaExecution) GetStartedAt() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.StartedAt
-}
-
-func (v *V3BulkSyncSchemaExecution) GetStatus() *BulkSchemaExecutionStatus {
-	if v == nil {
-		return nil
-	}
-	return v.Status
-}
-
-func (v *V3BulkSyncSchemaExecution) GetStatusMessage() *string {
-	if v == nil {
-		return nil
-	}
-	return v.StatusMessage
-}
-
-func (v *V3BulkSyncSchemaExecution) GetUpdatedAt() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.UpdatedAt
-}
-
-func (v *V3BulkSyncSchemaExecution) GetWarningCount() *int {
-	if v == nil {
-		return nil
-	}
-	return v.WarningCount
-}
-
-func (v *V3BulkSyncSchemaExecution) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V3BulkSyncSchemaExecution) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetCompletedAt sets the CompletedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncSchemaExecution) SetCompletedAt(completedAt *time.Time) {
-	v.CompletedAt = completedAt
-	v.require(v3BulkSyncSchemaExecutionFieldCompletedAt)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncSchemaExecution) SetCreatedAt(createdAt *time.Time) {
-	v.CreatedAt = createdAt
-	v.require(v3BulkSyncSchemaExecutionFieldCreatedAt)
-}
-
-// SetErrorCount sets the ErrorCount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncSchemaExecution) SetErrorCount(errorCount *int) {
-	v.ErrorCount = errorCount
-	v.require(v3BulkSyncSchemaExecutionFieldErrorCount)
-}
-
-// SetOutputName sets the OutputName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncSchemaExecution) SetOutputName(outputName *string) {
-	v.OutputName = outputName
-	v.require(v3BulkSyncSchemaExecutionFieldOutputName)
-}
-
-// SetRecordCount sets the RecordCount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncSchemaExecution) SetRecordCount(recordCount *int) {
-	v.RecordCount = recordCount
-	v.require(v3BulkSyncSchemaExecutionFieldRecordCount)
-}
-
-// SetSchema sets the Schema field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncSchemaExecution) SetSchema(schema *string) {
-	v.Schema = schema
-	v.require(v3BulkSyncSchemaExecutionFieldSchema)
-}
-
-// SetStartedAt sets the StartedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncSchemaExecution) SetStartedAt(startedAt *time.Time) {
-	v.StartedAt = startedAt
-	v.require(v3BulkSyncSchemaExecutionFieldStartedAt)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncSchemaExecution) SetStatus(status *BulkSchemaExecutionStatus) {
-	v.Status = status
-	v.require(v3BulkSyncSchemaExecutionFieldStatus)
-}
-
-// SetStatusMessage sets the StatusMessage field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncSchemaExecution) SetStatusMessage(statusMessage *string) {
-	v.StatusMessage = statusMessage
-	v.require(v3BulkSyncSchemaExecutionFieldStatusMessage)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncSchemaExecution) SetUpdatedAt(updatedAt *time.Time) {
-	v.UpdatedAt = updatedAt
-	v.require(v3BulkSyncSchemaExecutionFieldUpdatedAt)
-}
-
-// SetWarningCount sets the WarningCount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3BulkSyncSchemaExecution) SetWarningCount(warningCount *int) {
-	v.WarningCount = warningCount
-	v.require(v3BulkSyncSchemaExecutionFieldWarningCount)
-}
-
-func (v *V3BulkSyncSchemaExecution) UnmarshalJSON(data []byte) error {
-	type embed V3BulkSyncSchemaExecution
-	var unmarshaler = struct {
-		embed
-		CompletedAt *internal.DateTime `json:"completed_at,omitempty"`
-		CreatedAt   *internal.DateTime `json:"created_at,omitempty"`
-		StartedAt   *internal.DateTime `json:"started_at,omitempty"`
-		UpdatedAt   *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*v = V3BulkSyncSchemaExecution(unmarshaler.embed)
-	v.CompletedAt = unmarshaler.CompletedAt.TimePtr()
-	v.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	v.StartedAt = unmarshaler.StartedAt.TimePtr()
-	v.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3BulkSyncSchemaExecution) MarshalJSON() ([]byte, error) {
-	type embed V3BulkSyncSchemaExecution
-	var marshaler = struct {
-		embed
-		CompletedAt *internal.DateTime `json:"completed_at,omitempty"`
-		CreatedAt   *internal.DateTime `json:"created_at,omitempty"`
-		StartedAt   *internal.DateTime `json:"started_at,omitempty"`
-		UpdatedAt   *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed:       embed(*v),
-		CompletedAt: internal.NewOptionalDateTime(v.CompletedAt),
-		CreatedAt:   internal.NewOptionalDateTime(v.CreatedAt),
-		StartedAt:   internal.NewOptionalDateTime(v.StartedAt),
-		UpdatedAt:   internal.NewOptionalDateTime(v.UpdatedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V3BulkSyncSchemaExecution) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v3ListBulkSchemaEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type V3ListBulkSchemaEnvelope struct {
-	Data []*V3BulkSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V3ListBulkSchemaEnvelope) GetData() []*V3BulkSchema {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V3ListBulkSchemaEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V3ListBulkSchemaEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3ListBulkSchemaEnvelope) SetData(data []*V3BulkSchema) {
-	v.Data = data
-	v.require(v3ListBulkSchemaEnvelopeFieldData)
-}
-
-func (v *V3ListBulkSchemaEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3ListBulkSchemaEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3ListBulkSchemaEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3ListBulkSchemaEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V3ListBulkSchemaEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V3ListBulkSchemaEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v3ListBulkSyncExecutionsEnvelopeFieldData       = big.NewInt(1 << 0)
-	v3ListBulkSyncExecutionsEnvelopeFieldPagination = big.NewInt(1 << 1)
-)
-
-type V3ListBulkSyncExecutionsEnvelope struct {
-	Data       []*V3BulkSyncExecution `json:"data,omitempty" url:"data,omitempty"`
-	Pagination *PaginationDetails     `json:"pagination,omitempty" url:"pagination,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V3ListBulkSyncExecutionsEnvelope) GetData() []*V3BulkSyncExecution {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V3ListBulkSyncExecutionsEnvelope) GetPagination() *PaginationDetails {
-	if v == nil {
-		return nil
-	}
-	return v.Pagination
-}
-
-func (v *V3ListBulkSyncExecutionsEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V3ListBulkSyncExecutionsEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3ListBulkSyncExecutionsEnvelope) SetData(data []*V3BulkSyncExecution) {
-	v.Data = data
-	v.require(v3ListBulkSyncExecutionsEnvelopeFieldData)
-}
-
-// SetPagination sets the Pagination field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3ListBulkSyncExecutionsEnvelope) SetPagination(pagination *PaginationDetails) {
-	v.Pagination = pagination
-	v.require(v3ListBulkSyncExecutionsEnvelopeFieldPagination)
-}
-
-func (v *V3ListBulkSyncExecutionsEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3ListBulkSyncExecutionsEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3ListBulkSyncExecutionsEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3ListBulkSyncExecutionsEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V3ListBulkSyncExecutionsEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V3ListBulkSyncExecutionsEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v3PickValueFieldLabel = big.NewInt(1 << 0)
-	v3PickValueFieldValue = big.NewInt(1 << 1)
-)
-
-type V3PickValue struct {
-	Label *string `json:"label,omitempty" url:"label,omitempty"`
-	Value *string `json:"value,omitempty" url:"value,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V3PickValue) GetLabel() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Label
-}
-
-func (v *V3PickValue) GetValue() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Value
-}
-
-func (v *V3PickValue) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V3PickValue) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetLabel sets the Label field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3PickValue) SetLabel(label *string) {
-	v.Label = label
-	v.require(v3PickValueFieldLabel)
-}
-
-// SetValue sets the Value field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3PickValue) SetValue(value *string) {
-	v.Value = value
-	v.require(v3PickValueFieldValue)
-}
-
-func (v *V3PickValue) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3PickValue
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3PickValue(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3PickValue) MarshalJSON() ([]byte, error) {
-	type embed V3PickValue
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V3PickValue) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v3SchemaFieldFields = big.NewInt(1 << 0)
-	v3SchemaFieldID     = big.NewInt(1 << 1)
-	v3SchemaFieldName   = big.NewInt(1 << 2)
-)
-
-type V3Schema struct {
-	Fields []*V3SchemaField `json:"fields,omitempty" url:"fields,omitempty"`
-	ID     *string          `json:"id,omitempty" url:"id,omitempty"`
-	Name   *string          `json:"name,omitempty" url:"name,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V3Schema) GetFields() []*V3SchemaField {
-	if v == nil {
-		return nil
-	}
-	return v.Fields
-}
-
-func (v *V3Schema) GetID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ID
-}
-
-func (v *V3Schema) GetName() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Name
-}
-
-func (v *V3Schema) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V3Schema) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetFields sets the Fields field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3Schema) SetFields(fields []*V3SchemaField) {
-	v.Fields = fields
-	v.require(v3SchemaFieldFields)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3Schema) SetID(id *string) {
-	v.ID = id
-	v.require(v3SchemaFieldID)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3Schema) SetName(name *string) {
-	v.Name = name
-	v.require(v3SchemaFieldName)
-}
-
-func (v *V3Schema) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3Schema
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3Schema(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3Schema) MarshalJSON() ([]byte, error) {
-	type embed V3Schema
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V3Schema) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v3SchemaFieldFieldAssociation  = big.NewInt(1 << 0)
-	v3SchemaFieldFieldID           = big.NewInt(1 << 1)
-	v3SchemaFieldFieldIsPrimaryKey = big.NewInt(1 << 2)
-	v3SchemaFieldFieldName         = big.NewInt(1 << 3)
-	v3SchemaFieldFieldRemoteType   = big.NewInt(1 << 4)
-	v3SchemaFieldFieldType         = big.NewInt(1 << 5)
-	v3SchemaFieldFieldTypeSpec     = big.NewInt(1 << 6)
-	v3SchemaFieldFieldValues       = big.NewInt(1 << 7)
-)
-
-type V3SchemaField struct {
-	Association *SchemaAssociation `json:"association,omitempty" url:"association,omitempty"`
-	ID          *string            `json:"id,omitempty" url:"id,omitempty"`
-	// Whether this field is part of the schema's primary key.
-	IsPrimaryKey *bool   `json:"is_primary_key,omitempty" url:"is_primary_key,omitempty"`
-	Name         *string `json:"name,omitempty" url:"name,omitempty"`
-	// The type of the field from the remote system.
-	RemoteType *string        `json:"remote_type,omitempty" url:"remote_type,omitempty"`
-	Type       *UtilFieldType `json:"type,omitempty" url:"type,omitempty"`
-	TypeSpec   *TypesType     `json:"type_spec,omitempty" url:"type_spec,omitempty"`
-	Values     []*V3PickValue `json:"values,omitempty" url:"values,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V3SchemaField) GetAssociation() *SchemaAssociation {
-	if v == nil {
-		return nil
-	}
-	return v.Association
-}
-
-func (v *V3SchemaField) GetID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ID
-}
-
-func (v *V3SchemaField) GetIsPrimaryKey() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.IsPrimaryKey
-}
-
-func (v *V3SchemaField) GetName() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Name
-}
-
-func (v *V3SchemaField) GetRemoteType() *string {
-	if v == nil {
-		return nil
-	}
-	return v.RemoteType
-}
-
-func (v *V3SchemaField) GetType() *UtilFieldType {
-	if v == nil {
-		return nil
-	}
-	return v.Type
-}
-
-func (v *V3SchemaField) GetTypeSpec() *TypesType {
-	if v == nil {
-		return nil
-	}
-	return v.TypeSpec
-}
-
-func (v *V3SchemaField) GetValues() []*V3PickValue {
-	if v == nil {
-		return nil
-	}
-	return v.Values
-}
-
-func (v *V3SchemaField) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V3SchemaField) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetAssociation sets the Association field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3SchemaField) SetAssociation(association *SchemaAssociation) {
-	v.Association = association
-	v.require(v3SchemaFieldFieldAssociation)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3SchemaField) SetID(id *string) {
-	v.ID = id
-	v.require(v3SchemaFieldFieldID)
-}
-
-// SetIsPrimaryKey sets the IsPrimaryKey field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3SchemaField) SetIsPrimaryKey(isPrimaryKey *bool) {
-	v.IsPrimaryKey = isPrimaryKey
-	v.require(v3SchemaFieldFieldIsPrimaryKey)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3SchemaField) SetName(name *string) {
-	v.Name = name
-	v.require(v3SchemaFieldFieldName)
-}
-
-// SetRemoteType sets the RemoteType field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3SchemaField) SetRemoteType(remoteType *string) {
-	v.RemoteType = remoteType
-	v.require(v3SchemaFieldFieldRemoteType)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3SchemaField) SetType(type_ *UtilFieldType) {
-	v.Type = type_
-	v.require(v3SchemaFieldFieldType)
-}
-
-// SetTypeSpec sets the TypeSpec field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3SchemaField) SetTypeSpec(typeSpec *TypesType) {
-	v.TypeSpec = typeSpec
-	v.require(v3SchemaFieldFieldTypeSpec)
-}
-
-// SetValues sets the Values field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3SchemaField) SetValues(values []*V3PickValue) {
-	v.Values = values
-	v.require(v3SchemaFieldFieldValues)
-}
-
-func (v *V3SchemaField) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3SchemaField
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3SchemaField(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3SchemaField) MarshalJSON() ([]byte, error) {
-	type embed V3SchemaField
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V3SchemaField) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v3UpdateBulkFieldFieldEnabled        = big.NewInt(1 << 0)
-	v3UpdateBulkFieldFieldID             = big.NewInt(1 << 1)
-	v3UpdateBulkFieldFieldObfuscated     = big.NewInt(1 << 2)
-	v3UpdateBulkFieldFieldUserOutputName = big.NewInt(1 << 3)
-)
-
-type V3UpdateBulkField struct {
-	Enabled        *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
-	ID             *string `json:"id,omitempty" url:"id,omitempty"`
-	Obfuscated     *bool   `json:"obfuscated,omitempty" url:"obfuscated,omitempty"`
-	UserOutputName *string `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V3UpdateBulkField) GetEnabled() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.Enabled
-}
-
-func (v *V3UpdateBulkField) GetID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ID
-}
-
-func (v *V3UpdateBulkField) GetObfuscated() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.Obfuscated
-}
-
-func (v *V3UpdateBulkField) GetUserOutputName() *string {
-	if v == nil {
-		return nil
-	}
-	return v.UserOutputName
-}
-
-func (v *V3UpdateBulkField) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V3UpdateBulkField) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetEnabled sets the Enabled field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3UpdateBulkField) SetEnabled(enabled *bool) {
-	v.Enabled = enabled
-	v.require(v3UpdateBulkFieldFieldEnabled)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3UpdateBulkField) SetID(id *string) {
-	v.ID = id
-	v.require(v3UpdateBulkFieldFieldID)
-}
-
-// SetObfuscated sets the Obfuscated field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3UpdateBulkField) SetObfuscated(obfuscated *bool) {
-	v.Obfuscated = obfuscated
-	v.require(v3UpdateBulkFieldFieldObfuscated)
-}
-
-// SetUserOutputName sets the UserOutputName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V3UpdateBulkField) SetUserOutputName(userOutputName *string) {
-	v.UserOutputName = userOutputName
-	v.require(v3UpdateBulkFieldFieldUserOutputName)
-}
-
-func (v *V3UpdateBulkField) UnmarshalJSON(data []byte) error {
-	type unmarshaler V3UpdateBulkField
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V3UpdateBulkField(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V3UpdateBulkField) MarshalJSON() ([]byte, error) {
-	type embed V3UpdateBulkField
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V3UpdateBulkField) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
 }
 
 var (
@@ -7729,149 +8932,6 @@ func (v *V4BulkSyncExecutionLogsEnvelope) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V4BulkSyncExecutionLogsEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v4BulkSyncExecutionStatusFieldNextExecutionTime = big.NewInt(1 << 0)
-	v4BulkSyncExecutionStatusFieldSchemas           = big.NewInt(1 << 1)
-	v4BulkSyncExecutionStatusFieldStatus            = big.NewInt(1 << 2)
-	v4BulkSyncExecutionStatusFieldSyncID            = big.NewInt(1 << 3)
-)
-
-type V4BulkSyncExecutionStatus struct {
-	// Next scheduled execution time, if the sync has a schedule configured.
-	NextExecutionTime *time.Time `json:"nextExecutionTime,omitempty" url:"nextExecutionTime,omitempty"`
-	// Most recent execution status for each enabled schema in the sync.
-	Schemas []*V4BulkSyncSchemaExecutionStatus `json:"schemas,omitempty" url:"schemas,omitempty"`
-	Status  *BulkExecutionStatus               `json:"status,omitempty" url:"status,omitempty"`
-	// Unique identifier of the bulk sync.
-	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V4BulkSyncExecutionStatus) GetNextExecutionTime() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.NextExecutionTime
-}
-
-func (v *V4BulkSyncExecutionStatus) GetSchemas() []*V4BulkSyncSchemaExecutionStatus {
-	if v == nil {
-		return nil
-	}
-	return v.Schemas
-}
-
-func (v *V4BulkSyncExecutionStatus) GetStatus() *BulkExecutionStatus {
-	if v == nil {
-		return nil
-	}
-	return v.Status
-}
-
-func (v *V4BulkSyncExecutionStatus) GetSyncID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.SyncID
-}
-
-func (v *V4BulkSyncExecutionStatus) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V4BulkSyncExecutionStatus) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetNextExecutionTime sets the NextExecutionTime field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4BulkSyncExecutionStatus) SetNextExecutionTime(nextExecutionTime *time.Time) {
-	v.NextExecutionTime = nextExecutionTime
-	v.require(v4BulkSyncExecutionStatusFieldNextExecutionTime)
-}
-
-// SetSchemas sets the Schemas field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4BulkSyncExecutionStatus) SetSchemas(schemas []*V4BulkSyncSchemaExecutionStatus) {
-	v.Schemas = schemas
-	v.require(v4BulkSyncExecutionStatusFieldSchemas)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4BulkSyncExecutionStatus) SetStatus(status *BulkExecutionStatus) {
-	v.Status = status
-	v.require(v4BulkSyncExecutionStatusFieldStatus)
-}
-
-// SetSyncID sets the SyncID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4BulkSyncExecutionStatus) SetSyncID(syncID *string) {
-	v.SyncID = syncID
-	v.require(v4BulkSyncExecutionStatusFieldSyncID)
-}
-
-func (v *V4BulkSyncExecutionStatus) UnmarshalJSON(data []byte) error {
-	type embed V4BulkSyncExecutionStatus
-	var unmarshaler = struct {
-		embed
-		NextExecutionTime *internal.DateTime `json:"nextExecutionTime,omitempty"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*v = V4BulkSyncExecutionStatus(unmarshaler.embed)
-	v.NextExecutionTime = unmarshaler.NextExecutionTime.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V4BulkSyncExecutionStatus) MarshalJSON() ([]byte, error) {
-	type embed V4BulkSyncExecutionStatus
-	var marshaler = struct {
-		embed
-		NextExecutionTime *internal.DateTime `json:"nextExecutionTime,omitempty"`
-	}{
-		embed:             embed(*v),
-		NextExecutionTime: internal.NewOptionalDateTime(v.NextExecutionTime),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V4BulkSyncExecutionStatus) String() string {
 	if v == nil {
 		return "<nil>"
 	}
@@ -8072,245 +9132,13 @@ func (v *V4BulkSyncScheduleAPI) String() string {
 }
 
 var (
-	v4BulkSyncSchemaExecutionStatusFieldCompletedAt   = big.NewInt(1 << 0)
-	v4BulkSyncSchemaExecutionStatusFieldErrorCount    = big.NewInt(1 << 1)
-	v4BulkSyncSchemaExecutionStatusFieldExecutionID   = big.NewInt(1 << 2)
-	v4BulkSyncSchemaExecutionStatusFieldRecordCount   = big.NewInt(1 << 3)
-	v4BulkSyncSchemaExecutionStatusFieldSchema        = big.NewInt(1 << 4)
-	v4BulkSyncSchemaExecutionStatusFieldStartedAt     = big.NewInt(1 << 5)
-	v4BulkSyncSchemaExecutionStatusFieldStatus        = big.NewInt(1 << 6)
-	v4BulkSyncSchemaExecutionStatusFieldStatusMessage = big.NewInt(1 << 7)
-	v4BulkSyncSchemaExecutionStatusFieldWarningCount  = big.NewInt(1 << 8)
-)
-
-type V4BulkSyncSchemaExecutionStatus struct {
-	// Timestamp when the most recent execution finished. Null while the execution is still running.
-	CompletedAt *time.Time `json:"completed_at,omitempty" url:"completed_at,omitempty"`
-	// Number of errors emitted during the most recent execution.
-	ErrorCount *int `json:"error_count,omitempty" url:"error_count,omitempty"`
-	// ID of the most recent execution for the schema.
-	ExecutionID *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	// Number of records processed in the most recent execution.
-	RecordCount *int `json:"record_count,omitempty" url:"record_count,omitempty"`
-	// Schema (table or object) identifier.
-	Schema *string `json:"schema,omitempty" url:"schema,omitempty"`
-	// Timestamp when the most recent execution started.
-	StartedAt *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status    *BulkSchemaExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-	// Human-readable detail for the current status (e.g. an error message when status is failed).
-	StatusMessage *string `json:"status_message,omitempty" url:"status_message,omitempty"`
-	// Number of warnings emitted during the most recent execution.
-	WarningCount *int `json:"warning_count,omitempty" url:"warning_count,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V4BulkSyncSchemaExecutionStatus) GetCompletedAt() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.CompletedAt
-}
-
-func (v *V4BulkSyncSchemaExecutionStatus) GetErrorCount() *int {
-	if v == nil {
-		return nil
-	}
-	return v.ErrorCount
-}
-
-func (v *V4BulkSyncSchemaExecutionStatus) GetExecutionID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ExecutionID
-}
-
-func (v *V4BulkSyncSchemaExecutionStatus) GetRecordCount() *int {
-	if v == nil {
-		return nil
-	}
-	return v.RecordCount
-}
-
-func (v *V4BulkSyncSchemaExecutionStatus) GetSchema() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Schema
-}
-
-func (v *V4BulkSyncSchemaExecutionStatus) GetStartedAt() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.StartedAt
-}
-
-func (v *V4BulkSyncSchemaExecutionStatus) GetStatus() *BulkSchemaExecutionStatus {
-	if v == nil {
-		return nil
-	}
-	return v.Status
-}
-
-func (v *V4BulkSyncSchemaExecutionStatus) GetStatusMessage() *string {
-	if v == nil {
-		return nil
-	}
-	return v.StatusMessage
-}
-
-func (v *V4BulkSyncSchemaExecutionStatus) GetWarningCount() *int {
-	if v == nil {
-		return nil
-	}
-	return v.WarningCount
-}
-
-func (v *V4BulkSyncSchemaExecutionStatus) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V4BulkSyncSchemaExecutionStatus) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetCompletedAt sets the CompletedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4BulkSyncSchemaExecutionStatus) SetCompletedAt(completedAt *time.Time) {
-	v.CompletedAt = completedAt
-	v.require(v4BulkSyncSchemaExecutionStatusFieldCompletedAt)
-}
-
-// SetErrorCount sets the ErrorCount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4BulkSyncSchemaExecutionStatus) SetErrorCount(errorCount *int) {
-	v.ErrorCount = errorCount
-	v.require(v4BulkSyncSchemaExecutionStatusFieldErrorCount)
-}
-
-// SetExecutionID sets the ExecutionID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4BulkSyncSchemaExecutionStatus) SetExecutionID(executionID *string) {
-	v.ExecutionID = executionID
-	v.require(v4BulkSyncSchemaExecutionStatusFieldExecutionID)
-}
-
-// SetRecordCount sets the RecordCount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4BulkSyncSchemaExecutionStatus) SetRecordCount(recordCount *int) {
-	v.RecordCount = recordCount
-	v.require(v4BulkSyncSchemaExecutionStatusFieldRecordCount)
-}
-
-// SetSchema sets the Schema field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4BulkSyncSchemaExecutionStatus) SetSchema(schema *string) {
-	v.Schema = schema
-	v.require(v4BulkSyncSchemaExecutionStatusFieldSchema)
-}
-
-// SetStartedAt sets the StartedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4BulkSyncSchemaExecutionStatus) SetStartedAt(startedAt *time.Time) {
-	v.StartedAt = startedAt
-	v.require(v4BulkSyncSchemaExecutionStatusFieldStartedAt)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4BulkSyncSchemaExecutionStatus) SetStatus(status *BulkSchemaExecutionStatus) {
-	v.Status = status
-	v.require(v4BulkSyncSchemaExecutionStatusFieldStatus)
-}
-
-// SetStatusMessage sets the StatusMessage field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4BulkSyncSchemaExecutionStatus) SetStatusMessage(statusMessage *string) {
-	v.StatusMessage = statusMessage
-	v.require(v4BulkSyncSchemaExecutionStatusFieldStatusMessage)
-}
-
-// SetWarningCount sets the WarningCount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4BulkSyncSchemaExecutionStatus) SetWarningCount(warningCount *int) {
-	v.WarningCount = warningCount
-	v.require(v4BulkSyncSchemaExecutionStatusFieldWarningCount)
-}
-
-func (v *V4BulkSyncSchemaExecutionStatus) UnmarshalJSON(data []byte) error {
-	type embed V4BulkSyncSchemaExecutionStatus
-	var unmarshaler = struct {
-		embed
-		CompletedAt *internal.DateTime `json:"completed_at,omitempty"`
-		StartedAt   *internal.DateTime `json:"started_at,omitempty"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*v = V4BulkSyncSchemaExecutionStatus(unmarshaler.embed)
-	v.CompletedAt = unmarshaler.CompletedAt.TimePtr()
-	v.StartedAt = unmarshaler.StartedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V4BulkSyncSchemaExecutionStatus) MarshalJSON() ([]byte, error) {
-	type embed V4BulkSyncSchemaExecutionStatus
-	var marshaler = struct {
-		embed
-		CompletedAt *internal.DateTime `json:"completed_at,omitempty"`
-		StartedAt   *internal.DateTime `json:"started_at,omitempty"`
-	}{
-		embed:       embed(*v),
-		CompletedAt: internal.NewOptionalDateTime(v.CompletedAt),
-		StartedAt:   internal.NewOptionalDateTime(v.StartedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V4BulkSyncSchemaExecutionStatus) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
 	v4ExportSyncLogsEnvelopeFieldData = big.NewInt(1 << 0)
 	v4ExportSyncLogsEnvelopeFieldJob  = big.NewInt(1 << 1)
 )
 
 type V4ExportSyncLogsEnvelope struct {
 	Data *V4ExportSyncLogsResponse `json:"data,omitempty" url:"data,omitempty"`
-	Job  *V2JobResponse            `json:"job,omitempty" url:"job,omitempty"`
+	Job  *JobResponse              `json:"job,omitempty" url:"job,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -8326,7 +9154,7 @@ func (v *V4ExportSyncLogsEnvelope) GetData() *V4ExportSyncLogsResponse {
 	return v.Data
 }
 
-func (v *V4ExportSyncLogsEnvelope) GetJob() *V2JobResponse {
+func (v *V4ExportSyncLogsEnvelope) GetJob() *JobResponse {
 	if v == nil {
 		return nil
 	}
@@ -8356,7 +9184,7 @@ func (v *V4ExportSyncLogsEnvelope) SetData(data *V4ExportSyncLogsResponse) {
 
 // SetJob sets the Job field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4ExportSyncLogsEnvelope) SetJob(job *V2JobResponse) {
+func (v *V4ExportSyncLogsEnvelope) SetJob(job *JobResponse) {
 	v.Job = job
 	v.require(v4ExportSyncLogsEnvelopeFieldJob)
 }
@@ -8489,715 +9317,6 @@ func (v *V4ExportSyncLogsResponse) String() string {
 }
 
 var (
-	v4GetSyncSourceMetaEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type V4GetSyncSourceMetaEnvelope struct {
-	Data *V4SyncSourceMetaResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V4GetSyncSourceMetaEnvelope) GetData() *V4SyncSourceMetaResponse {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V4GetSyncSourceMetaEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V4GetSyncSourceMetaEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4GetSyncSourceMetaEnvelope) SetData(data *V4SyncSourceMetaResponse) {
-	v.Data = data
-	v.require(v4GetSyncSourceMetaEnvelopeFieldData)
-}
-
-func (v *V4GetSyncSourceMetaEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V4GetSyncSourceMetaEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V4GetSyncSourceMetaEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V4GetSyncSourceMetaEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V4GetSyncSourceMetaEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V4GetSyncSourceMetaEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v4ListBulkSyncExecutionsStatusEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type V4ListBulkSyncExecutionsStatusEnvelope struct {
-	Data []*V4BulkSyncExecutionStatus `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V4ListBulkSyncExecutionsStatusEnvelope) GetData() []*V4BulkSyncExecutionStatus {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V4ListBulkSyncExecutionsStatusEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V4ListBulkSyncExecutionsStatusEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4ListBulkSyncExecutionsStatusEnvelope) SetData(data []*V4BulkSyncExecutionStatus) {
-	v.Data = data
-	v.require(v4ListBulkSyncExecutionsStatusEnvelopeFieldData)
-}
-
-func (v *V4ListBulkSyncExecutionsStatusEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V4ListBulkSyncExecutionsStatusEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V4ListBulkSyncExecutionsStatusEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V4ListBulkSyncExecutionsStatusEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V4ListBulkSyncExecutionsStatusEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V4ListBulkSyncExecutionsStatusEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v4ScheduleEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type V4ScheduleEnvelope struct {
-	Data *BulkBulkSyncSchedule `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V4ScheduleEnvelope) GetData() *BulkBulkSyncSchedule {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V4ScheduleEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V4ScheduleEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4ScheduleEnvelope) SetData(data *BulkBulkSyncSchedule) {
-	v.Data = data
-	v.require(v4ScheduleEnvelopeFieldData)
-}
-
-func (v *V4ScheduleEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V4ScheduleEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V4ScheduleEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V4ScheduleEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V4ScheduleEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V4ScheduleEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v4SchedulesEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type V4SchedulesEnvelope struct {
-	Data []*BulkBulkSyncSchedule `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V4SchedulesEnvelope) GetData() []*BulkBulkSyncSchedule {
-	if v == nil {
-		return nil
-	}
-	return v.Data
-}
-
-func (v *V4SchedulesEnvelope) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V4SchedulesEnvelope) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4SchedulesEnvelope) SetData(data []*BulkBulkSyncSchedule) {
-	v.Data = data
-	v.require(v4SchedulesEnvelopeFieldData)
-}
-
-func (v *V4SchedulesEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler V4SchedulesEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V4SchedulesEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V4SchedulesEnvelope) MarshalJSON() ([]byte, error) {
-	type embed V4SchedulesEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V4SchedulesEnvelope) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v4SourceMetaFieldHasItems      = big.NewInt(1 << 0)
-	v4SourceMetaFieldItems         = big.NewInt(1 << 1)
-	v4SourceMetaFieldRequiresOneOf = big.NewInt(1 << 2)
-)
-
-type V4SourceMeta struct {
-	// True when items is non-empty. Callers should present the values as a picker.
-	HasItems *bool `json:"has_items,omitempty" url:"has_items,omitempty"`
-	// Valid values the caller may choose for this configuration item.
-	Items []any `json:"items,omitempty" url:"items,omitempty"`
-	// Other configuration items this item depends on; exactly one of the listed items must also be selected.
-	RequiresOneOf []string `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V4SourceMeta) GetHasItems() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.HasItems
-}
-
-func (v *V4SourceMeta) GetItems() []any {
-	if v == nil {
-		return nil
-	}
-	return v.Items
-}
-
-func (v *V4SourceMeta) GetRequiresOneOf() []string {
-	if v == nil {
-		return nil
-	}
-	return v.RequiresOneOf
-}
-
-func (v *V4SourceMeta) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V4SourceMeta) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetHasItems sets the HasItems field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4SourceMeta) SetHasItems(hasItems *bool) {
-	v.HasItems = hasItems
-	v.require(v4SourceMetaFieldHasItems)
-}
-
-// SetItems sets the Items field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4SourceMeta) SetItems(items []any) {
-	v.Items = items
-	v.require(v4SourceMetaFieldItems)
-}
-
-// SetRequiresOneOf sets the RequiresOneOf field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4SourceMeta) SetRequiresOneOf(requiresOneOf []string) {
-	v.RequiresOneOf = requiresOneOf
-	v.require(v4SourceMetaFieldRequiresOneOf)
-}
-
-func (v *V4SourceMeta) UnmarshalJSON(data []byte) error {
-	type unmarshaler V4SourceMeta
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V4SourceMeta(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V4SourceMeta) MarshalJSON() ([]byte, error) {
-	type embed V4SourceMeta
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V4SourceMeta) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v4SupportedModeFieldID                    = big.NewInt(1 << 0)
-	v4SupportedModeFieldRequiresIdentity      = big.NewInt(1 << 1)
-	v4SupportedModeFieldSupportsPerFieldMode  = big.NewInt(1 << 2)
-	v4SupportedModeFieldSupportsTargetFilters = big.NewInt(1 << 3)
-)
-
-type V4SupportedMode struct {
-	ID *ModelsyncSyncTargetMode `json:"id,omitempty" url:"id,omitempty"`
-	// True if the sync mode requires an identity field mapping.
-	RequiresIdentity *bool `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
-	// True if the target supports per-field sync modes.
-	SupportsPerFieldMode *bool `json:"supports_per_field_mode,omitempty" url:"supports_per_field_mode,omitempty"`
-	// True if the sync mode supports target filters.
-	SupportsTargetFilters *bool `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V4SupportedMode) GetID() *ModelsyncSyncTargetMode {
-	if v == nil {
-		return nil
-	}
-	return v.ID
-}
-
-func (v *V4SupportedMode) GetRequiresIdentity() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.RequiresIdentity
-}
-
-func (v *V4SupportedMode) GetSupportsPerFieldMode() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.SupportsPerFieldMode
-}
-
-func (v *V4SupportedMode) GetSupportsTargetFilters() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.SupportsTargetFilters
-}
-
-func (v *V4SupportedMode) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V4SupportedMode) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4SupportedMode) SetID(id *ModelsyncSyncTargetMode) {
-	v.ID = id
-	v.require(v4SupportedModeFieldID)
-}
-
-// SetRequiresIdentity sets the RequiresIdentity field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4SupportedMode) SetRequiresIdentity(requiresIdentity *bool) {
-	v.RequiresIdentity = requiresIdentity
-	v.require(v4SupportedModeFieldRequiresIdentity)
-}
-
-// SetSupportsPerFieldMode sets the SupportsPerFieldMode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4SupportedMode) SetSupportsPerFieldMode(supportsPerFieldMode *bool) {
-	v.SupportsPerFieldMode = supportsPerFieldMode
-	v.require(v4SupportedModeFieldSupportsPerFieldMode)
-}
-
-// SetSupportsTargetFilters sets the SupportsTargetFilters field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4SupportedMode) SetSupportsTargetFilters(supportsTargetFilters *bool) {
-	v.SupportsTargetFilters = supportsTargetFilters
-	v.require(v4SupportedModeFieldSupportsTargetFilters)
-}
-
-func (v *V4SupportedMode) UnmarshalJSON(data []byte) error {
-	type unmarshaler V4SupportedMode
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V4SupportedMode(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V4SupportedMode) MarshalJSON() ([]byte, error) {
-	type embed V4SupportedMode
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V4SupportedMode) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
-	v4SyncSourceMetaResponseFieldConfiguration = big.NewInt(1 << 0)
-	v4SyncSourceMetaResponseFieldItems         = big.NewInt(1 << 1)
-	v4SyncSourceMetaResponseFieldRequiresOneOf = big.NewInt(1 << 2)
-)
-
-type V4SyncSourceMetaResponse struct {
-	// Additional configuration fields available for this source, keyed by field name.
-	Configuration map[string]*ConfigurationValue `json:"configuration,omitempty" url:"configuration,omitempty"`
-	// Map of configuration item name to its metadata (available values, required-one-of groups).
-	Items map[string]*V4SourceMeta `json:"items,omitempty" url:"items,omitempty"`
-	// Configuration items where exactly one must be selected by the caller.
-	RequiresOneOf []string `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V4SyncSourceMetaResponse) GetConfiguration() map[string]*ConfigurationValue {
-	if v == nil {
-		return nil
-	}
-	return v.Configuration
-}
-
-func (v *V4SyncSourceMetaResponse) GetItems() map[string]*V4SourceMeta {
-	if v == nil {
-		return nil
-	}
-	return v.Items
-}
-
-func (v *V4SyncSourceMetaResponse) GetRequiresOneOf() []string {
-	if v == nil {
-		return nil
-	}
-	return v.RequiresOneOf
-}
-
-func (v *V4SyncSourceMetaResponse) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V4SyncSourceMetaResponse) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetConfiguration sets the Configuration field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4SyncSourceMetaResponse) SetConfiguration(configuration map[string]*ConfigurationValue) {
-	v.Configuration = configuration
-	v.require(v4SyncSourceMetaResponseFieldConfiguration)
-}
-
-// SetItems sets the Items field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4SyncSourceMetaResponse) SetItems(items map[string]*V4SourceMeta) {
-	v.Items = items
-	v.require(v4SyncSourceMetaResponseFieldItems)
-}
-
-// SetRequiresOneOf sets the RequiresOneOf field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4SyncSourceMetaResponse) SetRequiresOneOf(requiresOneOf []string) {
-	v.RequiresOneOf = requiresOneOf
-	v.require(v4SyncSourceMetaResponseFieldRequiresOneOf)
-}
-
-func (v *V4SyncSourceMetaResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler V4SyncSourceMetaResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V4SyncSourceMetaResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V4SyncSourceMetaResponse) MarshalJSON() ([]byte, error) {
-	type embed V4SyncSourceMetaResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V4SyncSourceMetaResponse) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
 	v4TargetCreatorFieldProperties = big.NewInt(1 << 0)
 	v4TargetCreatorFieldSupported  = big.NewInt(1 << 1)
 )
@@ -9300,132 +9419,13 @@ func (v *V4TargetCreator) String() string {
 }
 
 var (
-	v4TargetObjectFieldID    = big.NewInt(1 << 0)
-	v4TargetObjectFieldModes = big.NewInt(1 << 1)
-	v4TargetObjectFieldName  = big.NewInt(1 << 2)
-)
-
-type V4TargetObject struct {
-	// The identifier of the target object.
-	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// The supported sync modes and their properties for the target object.
-	Modes []*V4SupportedMode `json:"modes,omitempty" url:"modes,omitempty"`
-	// The name of the target object.
-	Name *string `json:"name,omitempty" url:"name,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *V4TargetObject) GetID() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ID
-}
-
-func (v *V4TargetObject) GetModes() []*V4SupportedMode {
-	if v == nil {
-		return nil
-	}
-	return v.Modes
-}
-
-func (v *V4TargetObject) GetName() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Name
-}
-
-func (v *V4TargetObject) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *V4TargetObject) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4TargetObject) SetID(id *string) {
-	v.ID = id
-	v.require(v4TargetObjectFieldID)
-}
-
-// SetModes sets the Modes field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4TargetObject) SetModes(modes []*V4SupportedMode) {
-	v.Modes = modes
-	v.require(v4TargetObjectFieldModes)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4TargetObject) SetName(name *string) {
-	v.Name = name
-	v.require(v4TargetObjectFieldName)
-}
-
-func (v *V4TargetObject) UnmarshalJSON(data []byte) error {
-	type unmarshaler V4TargetObject
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = V4TargetObject(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *V4TargetObject) MarshalJSON() ([]byte, error) {
-	type embed V4TargetObject
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *V4TargetObject) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-var (
 	v4TargetObjectsResponseEnvelopeFieldData           = big.NewInt(1 << 0)
 	v4TargetObjectsResponseEnvelopeFieldTargetCreation = big.NewInt(1 << 1)
 )
 
 type V4TargetObjectsResponseEnvelope struct {
-	Data           []*V4TargetObject `json:"data,omitempty" url:"data,omitempty"`
-	TargetCreation *V4TargetCreator  `json:"target_creation,omitempty" url:"target_creation,omitempty"`
+	Data           []*TargetObject  `json:"data,omitempty" url:"data,omitempty"`
+	TargetCreation *V4TargetCreator `json:"target_creation,omitempty" url:"target_creation,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -9434,7 +9434,7 @@ type V4TargetObjectsResponseEnvelope struct {
 	rawJSON         json.RawMessage
 }
 
-func (v *V4TargetObjectsResponseEnvelope) GetData() []*V4TargetObject {
+func (v *V4TargetObjectsResponseEnvelope) GetData() []*TargetObject {
 	if v == nil {
 		return nil
 	}
@@ -9464,7 +9464,7 @@ func (v *V4TargetObjectsResponseEnvelope) require(field *big.Int) {
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V4TargetObjectsResponseEnvelope) SetData(data []*V4TargetObject) {
+func (v *V4TargetObjectsResponseEnvelope) SetData(data []*TargetObject) {
 	v.Data = data
 	v.require(v4TargetObjectsResponseEnvelopeFieldData)
 }

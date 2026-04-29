@@ -116,13 +116,13 @@ func (c *Client) UpdateCurrentOrgUser(
 // > 🚧 This action is permanent. The user is immediately removed from the
 // > organization and loses access to all resources within it. This cannot be
 // > undone.
-func (c *Client) RemoveCurrentOrgUser(
+func (c *Client) DeleteCurrentOrgUser(
 	ctx context.Context,
 	// Unique identifier of the user.
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.UserEnvelope, error) {
-	response, err := c.WithRawResponse.RemoveCurrentOrgUser(
+	response, err := c.WithRawResponse.DeleteCurrentOrgUser(
 		ctx,
 		id,
 		opts...,
@@ -248,7 +248,7 @@ func (c *Client) Update(
 // > 🚧 This action is permanent. The user is immediately removed from the
 // > organization and loses access to all resources within it. This cannot be
 // > undone.
-func (c *Client) Remove(
+func (c *Client) Delete(
 	ctx context.Context,
 	// Unique identifier of the organization the user belongs to.
 	orgID string,
@@ -256,7 +256,7 @@ func (c *Client) Remove(
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.UserEnvelope, error) {
-	response, err := c.WithRawResponse.Remove(
+	response, err := c.WithRawResponse.Delete(
 		ctx,
 		orgID,
 		id,

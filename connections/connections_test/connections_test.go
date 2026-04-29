@@ -320,7 +320,7 @@ func TestConnectionsUpdateWithWireMock(
 	VerifyRequestCount(t, "TestConnectionsUpdateWithWireMock", "PUT", "/api/connections/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }
 
-func TestConnectionsRemoveWithWireMock(
+func TestConnectionsDeleteWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -331,22 +331,22 @@ func TestConnectionsRemoveWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.ConnectionsRemoveRequest{
+	request := &polytomic.ConnectionsDeleteRequest{
 		Force: polytomic.Bool(
 			true,
 		),
 	}
-	invocationErr := client.Connections.Remove(
+	invocationErr := client.Connections.Delete(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestConnectionsRemoveWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestConnectionsDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestConnectionsRemoveWithWireMock", "DELETE", "/api/connections/248df4b7-aa70-47b8-a036-33ac447e668d", map[string]interface{}{"force": "true"}, 1)
+	VerifyRequestCount(t, "TestConnectionsDeleteWithWireMock", "DELETE", "/api/connections/248df4b7-aa70-47b8-a036-33ac447e668d", map[string]interface{}{"force": "true"}, 1)
 }
 
 func TestConnectionsGetParameterValuesWithWireMock(

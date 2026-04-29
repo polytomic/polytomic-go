@@ -173,7 +173,7 @@ func TestUsersUpdateCurrentOrgUserWithWireMock(
 	VerifyRequestCount(t, "TestUsersUpdateCurrentOrgUserWithWireMock", "PUT", "/api/organization/users/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }
 
-func TestUsersRemoveCurrentOrgUserWithWireMock(
+func TestUsersDeleteCurrentOrgUserWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -184,16 +184,16 @@ func TestUsersRemoveCurrentOrgUserWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	_, invocationErr := client.Users.RemoveCurrentOrgUser(
+	_, invocationErr := client.Users.DeleteCurrentOrgUser(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestUsersRemoveCurrentOrgUserWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestUsersDeleteCurrentOrgUserWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestUsersRemoveCurrentOrgUserWithWireMock", "DELETE", "/api/organization/users/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
+	VerifyRequestCount(t, "TestUsersDeleteCurrentOrgUserWithWireMock", "DELETE", "/api/organization/users/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }
 
 func TestUsersListWithWireMock(
@@ -298,7 +298,7 @@ func TestUsersUpdateWithWireMock(
 	VerifyRequestCount(t, "TestUsersUpdateWithWireMock", "PUT", "/api/organizations/248df4b7-aa70-47b8-a036-33ac447e668d/users/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }
 
-func TestUsersRemoveWithWireMock(
+func TestUsersDeleteWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -309,17 +309,17 @@ func TestUsersRemoveWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	_, invocationErr := client.Users.Remove(
+	_, invocationErr := client.Users.Delete(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestUsersRemoveWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestUsersDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestUsersRemoveWithWireMock", "DELETE", "/api/organizations/248df4b7-aa70-47b8-a036-33ac447e668d/users/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
+	VerifyRequestCount(t, "TestUsersDeleteWithWireMock", "DELETE", "/api/organizations/248df4b7-aa70-47b8-a036-33ac447e668d/users/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }
 
 func TestUsersCreateAPIKeyWithWireMock(

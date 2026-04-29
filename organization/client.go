@@ -160,13 +160,13 @@ func (c *Client) Update(
 // Deletes an organization.
 //
 // Partner callers cannot delete their own owner organization.
-func (c *Client) Remove(
+func (c *Client) Delete(
 	ctx context.Context,
 	// Unique identifier of the organization.
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) error {
-	_, err := c.WithRawResponse.Remove(
+	_, err := c.WithRawResponse.Delete(
 		ctx,
 		id,
 		opts...,

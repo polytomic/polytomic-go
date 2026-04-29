@@ -283,7 +283,7 @@ func TestModelSyncUpdateWithWireMock(
 	VerifyRequestCount(t, "TestModelSyncUpdateWithWireMock", "PUT", "/api/syncs/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }
 
-func TestModelSyncRemoveWithWireMock(
+func TestModelSyncDeleteWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -294,16 +294,16 @@ func TestModelSyncRemoveWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	invocationErr := client.ModelSync.Remove(
+	invocationErr := client.ModelSync.Delete(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestModelSyncRemoveWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestModelSyncDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestModelSyncRemoveWithWireMock", "DELETE", "/api/syncs/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
+	VerifyRequestCount(t, "TestModelSyncDeleteWithWireMock", "DELETE", "/api/syncs/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }
 
 func TestModelSyncActivateWithWireMock(

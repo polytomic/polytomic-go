@@ -175,7 +175,7 @@ func TestPermissionsPoliciesUpdateWithWireMock(
 	VerifyRequestCount(t, "TestPermissionsPoliciesUpdateWithWireMock", "PUT", "/api/permissions/policies/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }
 
-func TestPermissionsPoliciesRemoveWithWireMock(
+func TestPermissionsPoliciesDeleteWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -186,14 +186,14 @@ func TestPermissionsPoliciesRemoveWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	invocationErr := client.Permissions.Policies.Remove(
+	invocationErr := client.Permissions.Policies.Delete(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPermissionsPoliciesRemoveWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPermissionsPoliciesDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPermissionsPoliciesRemoveWithWireMock", "DELETE", "/api/permissions/policies/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
+	VerifyRequestCount(t, "TestPermissionsPoliciesDeleteWithWireMock", "DELETE", "/api/permissions/policies/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }

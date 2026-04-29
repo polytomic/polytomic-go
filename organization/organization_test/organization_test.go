@@ -197,7 +197,7 @@ func TestOrganizationUpdateWithWireMock(
 	VerifyRequestCount(t, "TestOrganizationUpdateWithWireMock", "PUT", "/api/organizations/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }
 
-func TestOrganizationRemoveWithWireMock(
+func TestOrganizationDeleteWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -208,14 +208,14 @@ func TestOrganizationRemoveWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	invocationErr := client.Organization.Remove(
+	invocationErr := client.Organization.Delete(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestOrganizationRemoveWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestOrganizationDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestOrganizationRemoveWithWireMock", "DELETE", "/api/organizations/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
+	VerifyRequestCount(t, "TestOrganizationDeleteWithWireMock", "DELETE", "/api/organizations/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }

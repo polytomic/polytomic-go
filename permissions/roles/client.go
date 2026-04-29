@@ -131,12 +131,12 @@ func (c *Client) Update(
 // reference it. Update those policies separately using
 // [`PUT /api/permissions/policies/{id}`](../../../../api-reference/permissions/policies/update) to avoid
 // leaving stale role references.
-func (c *Client) Remove(
+func (c *Client) Delete(
 	ctx context.Context,
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) error {
-	_, err := c.WithRawResponse.Remove(
+	_, err := c.WithRawResponse.Delete(
 		ctx,
 		id,
 		opts...,

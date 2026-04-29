@@ -218,13 +218,13 @@ func (c *Client) Update(
 //
 // > 🚧 Deleting a model used by one or more syncs will break those syncs. Remove
 // > or reconfigure any syncs that reference this model before deleting it.
-func (c *Client) Remove(
+func (c *Client) Delete(
 	ctx context.Context,
 	id string,
-	request *polytomic.ModelsRemoveRequest,
+	request *polytomic.ModelsDeleteRequest,
 	opts ...option.IdempotentRequestOption,
 ) error {
-	_, err := c.WithRawResponse.Remove(
+	_, err := c.WithRawResponse.Delete(
 		ctx,
 		id,
 		request,

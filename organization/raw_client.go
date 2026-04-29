@@ -247,7 +247,7 @@ func (r *RawClient) Update(
 	}, nil
 }
 
-func (r *RawClient) Remove(
+func (r *RawClient) Delete(
 	ctx context.Context,
 	// Unique identifier of the organization.
 	id string,

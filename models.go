@@ -50,6 +50,31 @@ func (m *ModelsCreateRequest) MarshalJSON() ([]byte, error) {
 }
 
 var (
+	modelsDeleteRequestFieldAsync = big.NewInt(1 << 0)
+)
+
+type ModelsDeleteRequest struct {
+	Async *bool `json:"-" url:"async,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (m *ModelsDeleteRequest) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetAsync sets the Async field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelsDeleteRequest) SetAsync(async *bool) {
+	m.Async = async
+	m.require(modelsDeleteRequestFieldAsync)
+}
+
+var (
 	modelsGetRequestFieldAsync = big.NewInt(1 << 0)
 )
 
@@ -183,31 +208,6 @@ func (m *ModelsPreviewRequest) UnmarshalJSON(data []byte) error {
 
 func (m *ModelsPreviewRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(m.Body)
-}
-
-var (
-	modelsRemoveRequestFieldAsync = big.NewInt(1 << 0)
-)
-
-type ModelsRemoveRequest struct {
-	Async *bool `json:"-" url:"async,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (m *ModelsRemoveRequest) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
-	}
-	m.explicitFields.Or(m.explicitFields, field)
-}
-
-// SetAsync sets the Async field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelsRemoveRequest) SetAsync(async *bool) {
-	m.Async = async
-	m.require(modelsRemoveRequestFieldAsync)
 }
 
 var (

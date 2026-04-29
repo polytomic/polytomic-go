@@ -281,12 +281,12 @@ func (c *Client) Update(
 // Deletion is permanent. Any running execution is cancelled before the sync
 // record is removed. Deleted syncs cannot be recovered; recreate them using
 // [`POST /api/syncs`](../../../api-reference/model-sync/create) if needed.
-func (c *Client) Remove(
+func (c *Client) Delete(
 	ctx context.Context,
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) error {
-	_, err := c.WithRawResponse.Remove(
+	_, err := c.WithRawResponse.Delete(
 		ctx,
 		id,
 		opts...,

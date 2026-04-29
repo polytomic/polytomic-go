@@ -663,7 +663,7 @@ client.BulkSync.Update(
 </dl>
 </details>
 
-<details><summary><code>client.BulkSync.Remove(ID) -> error</code></summary>
+<details><summary><code>client.BulkSync.Delete(ID) -> error</code></summary>
 <dl>
 <dd>
 
@@ -696,12 +696,12 @@ removed.
 <dd>
 
 ```go
-request := &polytomic.BulkSyncRemoveRequest{
+request := &polytomic.BulkSyncDeleteRequest{
         RefreshSchemas: polytomic.Bool(
             true,
         ),
     }
-client.BulkSync.Remove(
+client.BulkSync.Delete(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
         request,
@@ -2033,7 +2033,7 @@ client.Connections.Update(
 </dl>
 </details>
 
-<details><summary><code>client.Connections.Remove(ID) -> error</code></summary>
+<details><summary><code>client.Connections.Delete(ID) -> error</code></summary>
 <dl>
 <dd>
 
@@ -2065,12 +2065,12 @@ Deletes a connection.
 <dd>
 
 ```go
-request := &polytomic.ConnectionsRemoveRequest{
+request := &polytomic.ConnectionsDeleteRequest{
         Force: polytomic.Bool(
             true,
         ),
     }
-client.Connections.Remove(
+client.Connections.Delete(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
         request,
@@ -2643,14 +2643,6 @@ client.QueryRunner.RunQuery(
 <dd>
 
 **query:** `*string` — The query to execute against the connection.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**runQueryRequestQuery:** `*string` — The query to execute against the connection.
     
 </dd>
 </dl>
@@ -4025,7 +4017,7 @@ client.Models.Update(
 </dl>
 </details>
 
-<details><summary><code>client.Models.Remove(ID) -> error</code></summary>
+<details><summary><code>client.Models.Delete(ID) -> error</code></summary>
 <dl>
 <dd>
 
@@ -4055,12 +4047,12 @@ Deletes a model.
 <dd>
 
 ```go
-request := &polytomic.ModelsRemoveRequest{
+request := &polytomic.ModelsDeleteRequest{
         Async: polytomic.Bool(
             true,
         ),
     }
-client.Models.Remove(
+client.Models.Delete(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
         request,
@@ -5033,7 +5025,7 @@ client.ModelSync.Update(
 </dl>
 </details>
 
-<details><summary><code>client.ModelSync.Remove(ID) -> error</code></summary>
+<details><summary><code>client.ModelSync.Delete(ID) -> error</code></summary>
 <dl>
 <dd>
 
@@ -5064,7 +5056,7 @@ record is removed. Deleted syncs cannot be recovered; recreate them using
 <dd>
 
 ```go
-client.ModelSync.Remove(
+client.ModelSync.Delete(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
     )
@@ -6386,7 +6378,7 @@ client.Organization.Update(
 </dl>
 </details>
 
-<details><summary><code>client.Organization.Remove(ID) -> error</code></summary>
+<details><summary><code>client.Organization.Delete(ID) -> error</code></summary>
 <dl>
 <dd>
 
@@ -6415,7 +6407,7 @@ Partner callers cannot delete their own owner organization.
 <dd>
 
 ```go
-client.Organization.Remove(
+client.Organization.Delete(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
     )
@@ -6708,7 +6700,7 @@ client.Users.UpdateCurrentOrgUser(
 </dl>
 </details>
 
-<details><summary><code>client.Users.RemoveCurrentOrgUser(ID) -> *polytomic.UserEnvelope</code></summary>
+<details><summary><code>client.Users.DeleteCurrentOrgUser(ID) -> *polytomic.UserEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -6739,7 +6731,7 @@ Deletes a user from the caller's current organization.
 <dd>
 
 ```go
-client.Users.RemoveCurrentOrgUser(
+client.Users.DeleteCurrentOrgUser(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
     )
@@ -7100,7 +7092,7 @@ client.Users.Update(
 </dl>
 </details>
 
-<details><summary><code>client.Users.Remove(OrgID, ID) -> *polytomic.UserEnvelope</code></summary>
+<details><summary><code>client.Users.Delete(OrgID, ID) -> *polytomic.UserEnvelope</code></summary>
 <dl>
 <dd>
 
@@ -7135,7 +7127,7 @@ Deletes a user from the specified organization.
 <dd>
 
 ```go
-client.Users.Remove(
+client.Users.Delete(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
         "248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -7553,7 +7545,7 @@ client.Webhooks.Update(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.Remove(ID) -> error</code></summary>
+<details><summary><code>client.Webhooks.Delete(ID) -> error</code></summary>
 <dl>
 <dd>
 
@@ -7591,7 +7583,7 @@ configuration, use
 <dd>
 
 ```go
-client.Webhooks.Remove(
+client.Webhooks.Delete(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
     )
@@ -10371,7 +10363,7 @@ client.Permissions.Policies.Update(
 </dl>
 </details>
 
-<details><summary><code>client.Permissions.Policies.Remove(ID) -> error</code></summary>
+<details><summary><code>client.Permissions.Policies.Delete(ID) -> error</code></summary>
 <dl>
 <dd>
 
@@ -10401,7 +10393,7 @@ is revoked immediately for all users who depended on it.
 <dd>
 
 ```go
-client.Permissions.Policies.Remove(
+client.Permissions.Policies.Delete(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
     )
@@ -10700,7 +10692,7 @@ client.Permissions.Roles.Update(
 </dl>
 </details>
 
-<details><summary><code>client.Permissions.Roles.Remove(ID) -> error</code></summary>
+<details><summary><code>client.Permissions.Roles.Delete(ID) -> error</code></summary>
 <dl>
 <dd>
 
@@ -10735,7 +10727,7 @@ leaving stale role references.
 <dd>
 
 ```go
-client.Permissions.Roles.Remove(
+client.Permissions.Roles.Delete(
         context.TODO(),
         "248df4b7-aa70-47b8-a036-33ac447e668d",
     )

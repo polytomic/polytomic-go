@@ -207,7 +207,7 @@ func (r *RawClient) UpdateCurrentOrgUser(
 	}, nil
 }
 
-func (r *RawClient) RemoveCurrentOrgUser(
+func (r *RawClient) DeleteCurrentOrgUser(
 	ctx context.Context,
 	// Unique identifier of the user.
 	id string,
@@ -444,7 +444,7 @@ func (r *RawClient) Update(
 	}, nil
 }
 
-func (r *RawClient) Remove(
+func (r *RawClient) Delete(
 	ctx context.Context,
 	// Unique identifier of the organization the user belongs to.
 	orgID string,

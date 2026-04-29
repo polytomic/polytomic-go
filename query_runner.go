@@ -36,15 +36,12 @@ func (q *QueryRunnerGetQueryRequest) SetPage(page *string) {
 }
 
 var (
-	runQueryRequestFieldQuery                = big.NewInt(1 << 0)
-	runQueryRequestFieldRunQueryRequestQuery = big.NewInt(1 << 1)
+	runQueryRequestFieldQuery = big.NewInt(1 << 0)
 )
 
 type RunQueryRequest struct {
 	// The query to execute against the connection.
 	Query *string `json:"-" url:"query,omitempty"`
-	// The query to execute against the connection.
-	RunQueryRequestQuery *string `json:"query,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -62,13 +59,6 @@ func (r *RunQueryRequest) require(field *big.Int) {
 func (r *RunQueryRequest) SetQuery(query *string) {
 	r.Query = query
 	r.require(runQueryRequestFieldQuery)
-}
-
-// SetRunQueryRequestQuery sets the RunQueryRequestQuery field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RunQueryRequest) SetRunQueryRequestQuery(runQueryRequestQuery *string) {
-	r.RunQueryRequestQuery = runQueryRequestQuery
-	r.require(runQueryRequestFieldRunQueryRequestQuery)
 }
 
 func (r *RunQueryRequest) UnmarshalJSON(data []byte) error {

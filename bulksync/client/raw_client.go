@@ -222,10 +222,10 @@ func (r *RawClient) Update(
 	}, nil
 }
 
-func (r *RawClient) Remove(
+func (r *RawClient) Delete(
 	ctx context.Context,
 	id string,
-	request *polytomic.BulkSyncRemoveRequest,
+	request *polytomic.BulkSyncDeleteRequest,
 	opts ...option.IdempotentRequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewIdempotentRequestOptions(opts...)

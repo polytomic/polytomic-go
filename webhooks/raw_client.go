@@ -205,7 +205,7 @@ func (r *RawClient) Update(
 	}, nil
 }
 
-func (r *RawClient) Remove(
+func (r *RawClient) Delete(
 	ctx context.Context,
 	id string,
 	opts ...option.IdempotentRequestOption,

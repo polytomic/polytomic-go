@@ -203,7 +203,7 @@ func TestBulkSyncUpdateWithWireMock(
 	VerifyRequestCount(t, "TestBulkSyncUpdateWithWireMock", "PUT", "/api/bulk/syncs/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }
 
-func TestBulkSyncRemoveWithWireMock(
+func TestBulkSyncDeleteWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -214,22 +214,22 @@ func TestBulkSyncRemoveWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.BulkSyncRemoveRequest{
+	request := &polytomic.BulkSyncDeleteRequest{
 		RefreshSchemas: polytomic.Bool(
 			true,
 		),
 	}
-	invocationErr := client.BulkSync.Remove(
+	invocationErr := client.BulkSync.Delete(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestBulkSyncRemoveWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestBulkSyncDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestBulkSyncRemoveWithWireMock", "DELETE", "/api/bulk/syncs/248df4b7-aa70-47b8-a036-33ac447e668d", map[string]interface{}{"refresh_schemas": "true"}, 1)
+	VerifyRequestCount(t, "TestBulkSyncDeleteWithWireMock", "DELETE", "/api/bulk/syncs/248df4b7-aa70-47b8-a036-33ac447e668d", map[string]interface{}{"refresh_schemas": "true"}, 1)
 }
 
 func TestBulkSyncActivateWithWireMock(

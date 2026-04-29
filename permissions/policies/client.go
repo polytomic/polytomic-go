@@ -126,12 +126,12 @@ func (c *Client) Update(
 //
 // Deletion is permanent. Any access that was granted solely through this policy
 // is revoked immediately for all users who depended on it.
-func (c *Client) Remove(
+func (c *Client) Delete(
 	ctx context.Context,
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) error {
-	_, err := c.WithRawResponse.Remove(
+	_, err := c.WithRawResponse.Delete(
 		ctx,
 		id,
 		opts...,

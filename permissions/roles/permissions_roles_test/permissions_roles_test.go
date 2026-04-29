@@ -175,7 +175,7 @@ func TestPermissionsRolesUpdateWithWireMock(
 	VerifyRequestCount(t, "TestPermissionsRolesUpdateWithWireMock", "PUT", "/api/permissions/roles/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }
 
-func TestPermissionsRolesRemoveWithWireMock(
+func TestPermissionsRolesDeleteWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -186,14 +186,14 @@ func TestPermissionsRolesRemoveWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	invocationErr := client.Permissions.Roles.Remove(
+	invocationErr := client.Permissions.Roles.Delete(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPermissionsRolesRemoveWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPermissionsRolesDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPermissionsRolesRemoveWithWireMock", "DELETE", "/api/permissions/roles/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
+	VerifyRequestCount(t, "TestPermissionsRolesDeleteWithWireMock", "DELETE", "/api/permissions/roles/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }

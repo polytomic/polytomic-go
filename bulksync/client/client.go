@@ -215,13 +215,13 @@ func (c *Client) Update(
 //
 // > 🚧 All associated schedules, schema configurations, and execution history are
 // > deleted along with the sync.
-func (c *Client) Remove(
+func (c *Client) Delete(
 	ctx context.Context,
 	id string,
-	request *polytomic.BulkSyncRemoveRequest,
+	request *polytomic.BulkSyncDeleteRequest,
 	opts ...option.IdempotentRequestOption,
 ) error {
-	_, err := c.WithRawResponse.Remove(
+	_, err := c.WithRawResponse.Delete(
 		ctx,
 		id,
 		request,

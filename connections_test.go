@@ -691,6 +691,51 @@ func TestSettersMarkExplicitPartnerCreateSharedConnectionRequestSchema(t *testin
 
 }
 
+func TestSettersConnectionsDeleteRequest(t *testing.T) {
+	t.Run("SetForce", func(t *testing.T) {
+		obj := &ConnectionsDeleteRequest{}
+		var fernTestValueForce *bool
+		obj.SetForce(fernTestValueForce)
+		assert.Equal(t, fernTestValueForce, obj.Force)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+}
+
+func TestSettersMarkExplicitConnectionsDeleteRequest(t *testing.T) {
+	t.Run("SetForce_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ConnectionsDeleteRequest{}
+		var fernTestValueForce *bool
+
+		// Act
+		obj.SetForce(fernTestValueForce)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+}
+
 func TestSettersExecuteConnectionProxyRequest(t *testing.T) {
 	t.Run("SetRequest", func(t *testing.T) {
 		obj := &ExecuteConnectionProxyRequest{}
@@ -873,51 +918,6 @@ func TestSettersMarkExplicitGetConnectionTypeParameterValuesRequestSchema(t *tes
 
 		// Act
 		obj.SetQuery(fernTestValueQuery)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-}
-
-func TestSettersConnectionsRemoveRequest(t *testing.T) {
-	t.Run("SetForce", func(t *testing.T) {
-		obj := &ConnectionsRemoveRequest{}
-		var fernTestValueForce *bool
-		obj.SetForce(fernTestValueForce)
-		assert.Equal(t, fernTestValueForce, obj.Force)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-}
-
-func TestSettersMarkExplicitConnectionsRemoveRequest(t *testing.T) {
-	t.Run("SetForce_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &ConnectionsRemoveRequest{}
-		var fernTestValueForce *bool
-
-		// Act
-		obj.SetForce(fernTestValueForce)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

@@ -267,13 +267,13 @@ func (c *Client) Update(
 // > syncs, or schedules returns `422 connection in use` unless you pass
 // > `force=true`. With `force=true`, the API deletes those dependent
 // > resources before removing the connection.
-func (c *Client) Remove(
+func (c *Client) Delete(
 	ctx context.Context,
 	id string,
-	request *polytomic.ConnectionsRemoveRequest,
+	request *polytomic.ConnectionsDeleteRequest,
 	opts ...option.IdempotentRequestOption,
 ) error {
-	_, err := c.WithRawResponse.Remove(
+	_, err := c.WithRawResponse.Delete(
 		ctx,
 		id,
 		request,

@@ -282,7 +282,7 @@ func TestModelsUpdateWithWireMock(
 	VerifyRequestCount(t, "TestModelsUpdateWithWireMock", "PUT", "/api/models/248df4b7-aa70-47b8-a036-33ac447e668d", map[string]interface{}{"async": "false"}, 1)
 }
 
-func TestModelsRemoveWithWireMock(
+func TestModelsDeleteWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -293,22 +293,22 @@ func TestModelsRemoveWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.ModelsRemoveRequest{
+	request := &polytomic.ModelsDeleteRequest{
 		Async: polytomic.Bool(
 			true,
 		),
 	}
-	invocationErr := client.Models.Remove(
+	invocationErr := client.Models.Delete(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestModelsRemoveWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestModelsDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestModelsRemoveWithWireMock", "DELETE", "/api/models/248df4b7-aa70-47b8-a036-33ac447e668d", map[string]interface{}{"async": "true"}, 1)
+	VerifyRequestCount(t, "TestModelsDeleteWithWireMock", "DELETE", "/api/models/248df4b7-aa70-47b8-a036-33ac447e668d", map[string]interface{}{"async": "true"}, 1)
 }
 
 func TestModelsSampleWithWireMock(

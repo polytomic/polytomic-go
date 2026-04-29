@@ -141,12 +141,12 @@ func (c *Client) Update(
 // Deletion is permanent. To stop delivery without losing the webhook
 // configuration, use
 // [`POST /api/webhooks/{id}/disable`](../../../api-reference/webhooks/disable) instead.
-func (c *Client) Remove(
+func (c *Client) Delete(
 	ctx context.Context,
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) error {
-	_, err := c.WithRawResponse.Remove(
+	_, err := c.WithRawResponse.Delete(
 		ctx,
 		id,
 		opts...,

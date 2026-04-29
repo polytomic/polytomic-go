@@ -235,6 +235,31 @@ func (c *CreateBulkSyncRequest) MarshalJSON() ([]byte, error) {
 }
 
 var (
+	bulkSyncDeleteRequestFieldRefreshSchemas = big.NewInt(1 << 0)
+)
+
+type BulkSyncDeleteRequest struct {
+	RefreshSchemas *bool `json:"-" url:"refresh_schemas,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (b *BulkSyncDeleteRequest) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetRefreshSchemas sets the RefreshSchemas field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncDeleteRequest) SetRefreshSchemas(refreshSchemas *bool) {
+	b.RefreshSchemas = refreshSchemas
+	b.require(bulkSyncDeleteRequestFieldRefreshSchemas)
+}
+
+var (
 	bulkSyncGetRequestFieldRefreshSchemas = big.NewInt(1 << 0)
 )
 
@@ -309,31 +334,6 @@ func (b *BulkSyncListRequest) require(field *big.Int) {
 func (b *BulkSyncListRequest) SetActive(active *bool) {
 	b.Active = active
 	b.require(bulkSyncListRequestFieldActive)
-}
-
-var (
-	bulkSyncRemoveRequestFieldRefreshSchemas = big.NewInt(1 << 0)
-)
-
-type BulkSyncRemoveRequest struct {
-	RefreshSchemas *bool `json:"-" url:"refresh_schemas,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (b *BulkSyncRemoveRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetRefreshSchemas sets the RefreshSchemas field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkSyncRemoveRequest) SetRefreshSchemas(refreshSchemas *bool) {
-	b.RefreshSchemas = refreshSchemas
-	b.require(bulkSyncRemoveRequestFieldRefreshSchemas)
 }
 
 var (

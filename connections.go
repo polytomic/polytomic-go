@@ -286,6 +286,31 @@ func (p *PartnerCreateSharedConnectionRequestSchema) MarshalJSON() ([]byte, erro
 }
 
 var (
+	connectionsDeleteRequestFieldForce = big.NewInt(1 << 0)
+)
+
+type ConnectionsDeleteRequest struct {
+	Force *bool `json:"-" url:"force,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (c *ConnectionsDeleteRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetForce sets the Force field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionsDeleteRequest) SetForce(force *bool) {
+	c.Force = force
+	c.require(connectionsDeleteRequestFieldForce)
+}
+
+var (
 	executeConnectionProxyRequestFieldRequest = big.NewInt(1 << 0)
 )
 
@@ -402,31 +427,6 @@ func (g *GetConnectionTypeParameterValuesRequestSchema) MarshalJSON() ([]byte, e
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
 	return json.Marshal(explicitMarshaler)
-}
-
-var (
-	connectionsRemoveRequestFieldForce = big.NewInt(1 << 0)
-)
-
-type ConnectionsRemoveRequest struct {
-	Force *bool `json:"-" url:"force,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (c *ConnectionsRemoveRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetForce sets the Force field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionsRemoveRequest) SetForce(force *bool) {
-	c.Force = force
-	c.require(connectionsRemoveRequestFieldForce)
 }
 
 var (

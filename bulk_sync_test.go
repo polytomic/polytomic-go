@@ -757,6 +757,51 @@ func TestSettersMarkExplicitCreateBulkSyncRequest(t *testing.T) {
 
 }
 
+func TestSettersBulkSyncDeleteRequest(t *testing.T) {
+	t.Run("SetRefreshSchemas", func(t *testing.T) {
+		obj := &BulkSyncDeleteRequest{}
+		var fernTestValueRefreshSchemas *bool
+		obj.SetRefreshSchemas(fernTestValueRefreshSchemas)
+		assert.Equal(t, fernTestValueRefreshSchemas, obj.RefreshSchemas)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+}
+
+func TestSettersMarkExplicitBulkSyncDeleteRequest(t *testing.T) {
+	t.Run("SetRefreshSchemas_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncDeleteRequest{}
+		var fernTestValueRefreshSchemas *bool
+
+		// Act
+		obj.SetRefreshSchemas(fernTestValueRefreshSchemas)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+}
+
 func TestSettersBulkSyncGetRequest(t *testing.T) {
 	t.Run("SetRefreshSchemas", func(t *testing.T) {
 		obj := &BulkSyncGetRequest{}
@@ -867,51 +912,6 @@ func TestSettersMarkExplicitBulkSyncListRequest(t *testing.T) {
 
 		// Act
 		obj.SetActive(fernTestValueActive)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-}
-
-func TestSettersBulkSyncRemoveRequest(t *testing.T) {
-	t.Run("SetRefreshSchemas", func(t *testing.T) {
-		obj := &BulkSyncRemoveRequest{}
-		var fernTestValueRefreshSchemas *bool
-		obj.SetRefreshSchemas(fernTestValueRefreshSchemas)
-		assert.Equal(t, fernTestValueRefreshSchemas, obj.RefreshSchemas)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-}
-
-func TestSettersMarkExplicitBulkSyncRemoveRequest(t *testing.T) {
-	t.Run("SetRefreshSchemas_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BulkSyncRemoveRequest{}
-		var fernTestValueRefreshSchemas *bool
-
-		// Act
-		obj.SetRefreshSchemas(fernTestValueRefreshSchemas)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

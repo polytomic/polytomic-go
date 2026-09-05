@@ -21,14 +21,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -78,6 +83,22 @@ func NewClient(options *core.RequestOptions) *Client {
 //
 // When `properties` is supplied, the `refresh` parameter is ignored — a
 // not-yet-created target has no cached schema to refresh.
+//
+// Example:
+//
+//	request := &modelsync.TargetsGetTargetFieldsRequest{
+//	    Target: polytomic.String(
+//	        "database.table",
+//	    ),
+//	    Refresh: polytomic.Bool(
+//	        false,
+//	    ),
+//	}
+//	client.ModelSync.Targets.GetTargetFields(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) GetTargetFields(
 	ctx context.Context,
 	// Unique identifier of the connection.
@@ -116,6 +137,19 @@ func (c *Client) GetTargetFields(
 // The sync mode determines which records are written to the destination for a
 // model sync. The `modes` array for a target object defines the `id` along with
 // what operations the mode supports.
+//
+// Example:
+//
+//	request := &modelsync.TargetsListRequest{
+//	    IncludeTargetCreationValues: polytomic.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.ModelSync.Targets.List(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) List(
 	ctx context.Context,
 	id string,
@@ -168,6 +202,14 @@ func (c *Client) List(
 //
 // The `value` for the selected option should be passed when [creating a
 // sync](../../../../../../../api-reference/model-sync/create).
+//
+// Example:
+//
+//	client.ModelSync.Targets.GetCreateProperty(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "property",
+//	)
 func (c *Client) GetCreateProperty(
 	ctx context.Context,
 	id string,

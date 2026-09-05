@@ -21,14 +21,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -38,6 +43,13 @@ func NewClient(options *core.RequestOptions) *Client {
 //
 // A bulk sync can have multiple schedules attached; this endpoint returns all
 // of them. Schedule times are returned in UTC.
+//
+// Example:
+//
+//	client.BulkSync.Schedules.List(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) List(
 	ctx context.Context,
 	// Unique identifier of the bulk sync whose schedules should be returned.
@@ -63,6 +75,19 @@ func (c *Client) List(
 // Creating a schedule only affects future automatic executions. To run the
 // sync immediately, call
 // [`POST /api/bulk/syncs/{id}/executions`](../../../../../api-reference/bulk-sync/start).
+//
+// Example:
+//
+//	request := &bulksync.CreateScheduleRequest{
+//	    Schedule: &polytomic.BulkSyncScheduleAPI{
+//	        Frequency: polytomic.ScheduleFrequencyManual,
+//	    },
+//	}
+//	client.BulkSync.Schedules.Create(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Create(
 	ctx context.Context,
 	// Unique identifier of the bulk sync to add a schedule to.
@@ -90,6 +115,14 @@ func (c *Client) Create(
 // [`GET /api/bulk/syncs/{sync_id}/schedules`](../../../../../../api-reference/bulk-sync/schedules/list).
 // To update the schedule, use
 // [`PUT /api/bulk/syncs/{sync_id}/schedules/{schedule_id}`](../../../../../../api-reference/bulk-sync/schedules/update).
+//
+// Example:
+//
+//	client.BulkSync.Schedules.Get(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
@@ -115,6 +148,20 @@ func (c *Client) Get(
 // Updates replace the stored schedule. Send the full schedule definition
 // rather than only the field you want to change. Schedule times are
 // interpreted in UTC.
+//
+// Example:
+//
+//	request := &bulksync.UpdateScheduleRequest{
+//	    Schedule: &polytomic.BulkSyncScheduleAPI{
+//	        Frequency: polytomic.ScheduleFrequencyManual,
+//	    },
+//	}
+//	client.BulkSync.Schedules.Update(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Update(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
@@ -141,6 +188,14 @@ func (c *Client) Update(
 //
 // Deleting a schedule only stops future automatic executions. It does not
 // cancel an execution that is already running.
+//
+// Example:
+//
+//	client.BulkSync.Schedules.Delete(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Delete(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.

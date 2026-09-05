@@ -21,14 +21,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -41,6 +46,12 @@ func NewClient(options *core.RequestOptions) *Client {
 //
 // To inspect a specific policy in detail, use
 // [`GET /api/permissions/policies/{id}`](../../../api-reference/permissions/policies/get).
+//
+// Example:
+//
+//	client.Permissions.Policies.List(
+//	    context.TODO(),
+//	)
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -61,6 +72,16 @@ func (c *Client) List(
 // hold those roles the actions defined by them. Roles must already exist before
 // they are referenced in a policy; create roles using
 // [`POST /api/permissions/roles`](../../../api-reference/permissions/roles/create).
+//
+// Example:
+//
+//	request := &permissions.CreatePolicyRequest{
+//	    Name: "Custom",
+//	}
+//	client.Permissions.Policies.Create(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Create(
 	ctx context.Context,
 	request *permissions.CreatePolicyRequest,
@@ -81,6 +102,13 @@ func (c *Client) Create(
 //
 // Returns the full set of action/role bindings defined by the policy, including
 // the resources it applies to.
+//
+// Example:
+//
+//	client.Permissions.Policies.Get(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
@@ -104,6 +132,17 @@ func (c *Client) Get(
 // partial change, fetch the current policy with
 // [`GET /api/permissions/policies/{id}`](../../../../api-reference/permissions/policies/get), modify the relevant bindings,
 // and send the complete object back.
+//
+// Example:
+//
+//	request := &permissions.UpdatePolicyRequest{
+//	    Name: "Custom",
+//	}
+//	client.Permissions.Policies.Update(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
@@ -126,6 +165,13 @@ func (c *Client) Update(
 //
 // Deletion is permanent. Any access that was granted solely through this policy
 // is revoked immediately for all users who depended on it.
+//
+// Example:
+//
+//	client.Permissions.Policies.Delete(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Delete(
 	ctx context.Context,
 	id string,

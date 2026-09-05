@@ -20,14 +20,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -43,6 +48,12 @@ func NewClient(options *core.RequestOptions) *Client {
 // If you need to enumerate or look up organizations across a partner account, use
 // [`GET /api/organizations`](../../api-reference/organization/list) or
 // [`GET /api/organizations/{id}`](../../api-reference/organization/get) instead.
+//
+// Example:
+//
+//	client.Organization.GetCurrent(
+//	    context.TODO(),
+//	)
 func (c *Client) GetCurrent(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -58,6 +69,12 @@ func (c *Client) GetCurrent(
 }
 
 // Returns the organization's record logging settings, including the connection record logs are delivered to.
+//
+// Example:
+//
+//	client.Organization.GetRecordLogging(
+//	    context.TODO(),
+//	)
 func (c *Client) GetRecordLogging(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -73,6 +90,16 @@ func (c *Client) GetRecordLogging(
 }
 
 // Replaces the organization's record logging settings. `deliveryConnectionId` is replaced, not merged: omitting it, or sending null, removes any destination previously configured.
+//
+// Example:
+//
+//	request := &polytomic.UpdateRecordLoggingSettingsRequest{
+//	    Enabled: true,
+//	}
+//	client.Organization.UpdateRecordLogging(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) UpdateRecordLogging(
 	ctx context.Context,
 	request *polytomic.UpdateRecordLoggingSettingsRequest,
@@ -100,6 +127,12 @@ func (c *Client) UpdateRecordLogging(
 //
 // If you need only the organization implied by the current credential, use
 // [`GET /api/organization`](../../api-reference/organization/get-current) instead.
+//
+// Example:
+//
+//	client.Organization.List(
+//	    context.TODO(),
+//	)
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -122,6 +155,16 @@ func (c *Client) List(
 //
 // SSO and OIDC settings supplied at creation time can be updated later via
 // `PUT /api/organizations/{id}`.
+//
+// Example:
+//
+//	request := &polytomic.CreateOrganizationRequestSchema{
+//	    Name: "My Organization",
+//	}
+//	client.Organization.Create(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Create(
 	ctx context.Context,
 	request *polytomic.CreateOrganizationRequestSchema,
@@ -145,6 +188,13 @@ func (c *Client) Create(
 // > Organization endpoints do not all share the same credential requirements.
 // > Check each endpoint's description for the caller scope that applies in that
 // > API version.
+//
+// Example:
+//
+//	client.Organization.Get(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	// Unique identifier of the organization.
@@ -170,6 +220,17 @@ func (c *Client) Get(
 //
 // > 📘 SSO and OIDC configuration is replaced in full on each update. Include all
 // > desired settings in the request body, not just the fields you want to change.
+//
+// Example:
+//
+//	request := &polytomic.UpdateOrganizationRequestSchema{
+//	    Name: "My Organization",
+//	}
+//	client.Organization.Update(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Update(
 	ctx context.Context,
 	// Unique identifier of the organization to update.
@@ -192,6 +253,13 @@ func (c *Client) Update(
 // Deletes an organization.
 //
 // Partner callers cannot delete their own owner organization.
+//
+// Example:
+//
+//	client.Organization.Delete(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Delete(
 	ctx context.Context,
 	// Unique identifier of the organization.

@@ -21,14 +21,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -66,6 +71,20 @@ func NewClient(options *core.RequestOptions) *Client {
 //
 // The response includes `proxyCallId`, which you can use to correlate the call
 // with audit logs.
+//
+// Example:
+//
+//	request := &connections.ExecuteConnectionProxyRequest{
+//	    Request: &polytomic.ConnectionProxyCall{
+//	        Method: "GET",
+//	        Path: "/v1/objects",
+//	    },
+//	}
+//	client.Connections.Proxy.ExecuteProxy(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) ExecuteProxy(
 	ctx context.Context,
 	// Unique identifier of the connection to proxy the request through.
@@ -100,6 +119,13 @@ func (c *Client) ExecuteProxy(
 // Sensitive inherited header and query values are redacted in the response. The
 // contract is still useful for discovering which keys are fixed by the
 // connection, even though their raw values are not exposed.
+//
+// Example:
+//
+//	client.Connections.Proxy.GetProxyInfo(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) GetProxyInfo(
 	ctx context.Context,
 	// Unique identifier of the connection whose proxy contract should be returned.
@@ -123,6 +149,13 @@ func (c *Client) GetProxyInfo(
 // shared connection, the response includes both the requested `connectionId` and the
 // `parentConnectionId` that controls proxy access. For non-shared connections,
 // `parentConnectionId` is omitted.
+//
+// Example:
+//
+//	client.Connections.Proxy.GetProxySettings(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) GetProxySettings(
 	ctx context.Context,
 	// Unique identifier of the connection whose proxy settings should be returned.
@@ -151,6 +184,17 @@ func (c *Client) GetProxySettings(
 // Disabling proxy access is allowed for any connection the caller can edit.
 //
 // Setting `enabled` to `false` prevents proxy calls for the connection.
+//
+// Example:
+//
+//	request := &connections.UpdateConnectionProxySettingsRequest{
+//	    Enabled: true,
+//	}
+//	client.Connections.Proxy.UpdateProxySettings(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) UpdateProxySettings(
 	ctx context.Context,
 	// Unique identifier of the connection whose proxy settings should be updated.

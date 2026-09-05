@@ -28,6 +28,10 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		Executions:      executions.NewClient(options),
 		ErrorHandling:   errorhandling.NewClient(options),
@@ -38,8 +42,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -56,6 +61,18 @@ func NewClient(options *core.RequestOptions) *Client {
 // > 📘 To retrieve a specific sync, use
 // > [`GET /api/bulk/syncs/{id}`](../../../api-reference/bulk-sync/get)
 // > instead of filtering the list client-side.
+//
+// Example:
+//
+//	request := &polytomic.BulkSyncListRequest{
+//	    Active: polytomic.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.BulkSync.List(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) List(
 	ctx context.Context,
 	request *polytomic.BulkSyncListRequest,
@@ -114,6 +131,24 @@ func (c *Client) List(
 //   - `automatically_add_new_fields` defaults to enabling newly discovered fields
 //     on already selected objects.
 //   - `normalize_names` defaults to enabled.
+//
+// Example:
+//
+//	request := &polytomic.CreateBulkSyncRequest{
+//	    DefaultSchedule: &polytomic.BulkSyncDefaultScheduleRequest{
+//	        Frequency: polytomic.ScheduleFrequencyManual,
+//	    },
+//	    DestinationConfiguration: map[string]any{
+//	        "schema": "my_schema",
+//	    },
+//	    DestinationConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    Name: "My Bulk Sync",
+//	    SourceConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	}
+//	client.BulkSync.Create(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Create(
 	ctx context.Context,
 	request *polytomic.CreateBulkSyncRequest,
@@ -139,6 +174,19 @@ func (c *Client) Create(
 //     use [`GET /api/bulk/syncs/{id}/status`](../../../../api-reference/bulk-sync/get-status).
 //   - To inspect which schemas are selected and how they are configured, use
 //     [`GET /api/bulk/syncs/{id}/schemas`](../../../../api-reference/bulk-sync/schemas/list).
+//
+// Example:
+//
+//	request := &polytomic.BulkSyncGetRequest{
+//	    RefreshSchemas: polytomic.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.BulkSync.Get(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
@@ -192,6 +240,25 @@ func (c *Client) Get(
 // > endpoint to change a subset of schemas, or
 // > [Update Bulk Sync Schema](../../../../api-reference/bulk-sync/schemas/update)
 // > to replace a single schema's configuration.
+//
+// Example:
+//
+//	request := &polytomic.UpdateBulkSyncRequest{
+//	    DefaultSchedule: &polytomic.BulkSyncDefaultScheduleRequest{
+//	        Frequency: polytomic.ScheduleFrequencyManual,
+//	    },
+//	    DestinationConfiguration: map[string]any{
+//	        "schema": "my_schema",
+//	    },
+//	    DestinationConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    Name: "My Bulk Sync",
+//	    SourceConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	}
+//	client.BulkSync.Update(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Update(
 	ctx context.Context,
 	// Unique identifier of the bulk sync to update.
@@ -218,6 +285,19 @@ func (c *Client) Update(
 //
 // > 🚧 All associated schedules, schema configurations, and execution history are
 // > deleted along with the sync.
+//
+// Example:
+//
+//	request := &polytomic.BulkSyncDeleteRequest{
+//	    RefreshSchemas: polytomic.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.BulkSync.Delete(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Delete(
 	ctx context.Context,
 	id string,
@@ -246,6 +326,17 @@ func (c *Client) Delete(
 // > [`POST /api/bulk/syncs/{id}/executions`](../../../../../api-reference/bulk-sync/start)
 // > or
 // > [`POST /api/bulk/syncs/{id}/cancel`](../../../../../api-reference/bulk-sync/cancel).
+//
+// Example:
+//
+//	request := &polytomic.ActivateSyncInput{
+//	    Active: true,
+//	}
+//	client.BulkSync.Activate(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Activate(
 	ctx context.Context,
 	id string,
@@ -271,6 +362,13 @@ func (c *Client) Activate(
 // processed. Poll `GET /api/bulk/syncs/{id}/status` until the current execution
 // reaches a terminal state (`completed`, `canceled`, or `failed`) to confirm
 // cancellation has taken effect.
+//
+// Example:
+//
+//	client.BulkSync.Cancel(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Cancel(
 	ctx context.Context,
 	// The active execution of this bulk sync ID will be cancelled.
@@ -304,6 +402,15 @@ func (c *Client) Cancel(
 // `resync_mode` instead.
 //
 // If another execution is already running, the endpoint returns `409 Conflict`.
+//
+// Example:
+//
+//	request := &polytomic.StartBulkSyncRequest{}
+//	client.BulkSync.Start(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Start(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
@@ -334,6 +441,13 @@ func (c *Client) Start(
 // [`GET /api/bulk/syncs/{id}/executions`](../../../../../api-reference/bulk-sync/executions/list).
 // For the full details of a specific run, including per-schema breakdowns, use
 // [`GET /api/bulk/syncs/{id}/executions/{exec_id}`](../../../../../api-reference/bulk-sync/executions/get).
+//
+// Example:
+//
+//	client.BulkSync.GetStatus(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) GetStatus(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
@@ -365,6 +479,19 @@ func (c *Client) GetStatus(
 // Pass `include_fields=true` to receive per-schema field details in a single call.
 // Omit it when you only need the schema list, as field enumeration can be slow for
 // large sources.
+//
+// Example:
+//
+//	request := &polytomic.BulkSyncGetSourceRequest{
+//	    IncludeFields: polytomic.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.BulkSync.GetSource(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) GetSource(
 	ctx context.Context,
 	// Unique identifier of the connection.
@@ -395,6 +522,13 @@ func (c *Client) GetSource(
 // > 📘 Fetch this endpoint once per connection type rather than once per sync.
 // > The configuration schema is the same for all syncs sharing the same
 // > destination connection.
+//
+// Example:
+//
+//	client.BulkSync.GetDestination(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) GetDestination(
 	ctx context.Context,
 	id string,

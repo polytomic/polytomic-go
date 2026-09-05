@@ -20,14 +20,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -80,6 +85,13 @@ func NewClient(options *core.RequestOptions) *Client {
 //
 // If the UUID does not exist, or exists outside the caller's scoped
 // organization, the endpoint returns `404`.
+//
+// Example:
+//
+//	client.Entities.Get(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	// UUID of the entity to resolve.
@@ -141,6 +153,13 @@ func (c *Client) Get(
 //     relationship.
 //
 // If the UUID does not exist, the endpoint returns `404`.
+//
+// Example:
+//
+//	client.Entities.GetForPartner(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) GetForPartner(
 	ctx context.Context,
 	// UUID of the entity to resolve.

@@ -26,6 +26,10 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		Targets:         targets.NewClient(options),
 		ErrorHandling:   errorhandling.NewClient(options),
@@ -35,8 +39,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -48,6 +53,15 @@ func NewClient(options *core.RequestOptions) *Client {
 // available. Once you have a configuration, resolve the fields available for
 // sync mapping with
 // [`GET /api/connections/{id}/modelsync/source/fields`](../../../../../api-reference/model-sync/get-source-fields).
+//
+// Example:
+//
+//	request := &polytomic.ModelSyncGetSourceRequest{}
+//	client.ModelSync.GetSource(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) GetSource(
 	ctx context.Context,
 	// Unique identifier of the connection.
@@ -79,6 +93,15 @@ func (c *Client) GetSource(
 //
 // The available source configuration parameters are described by
 // [`GET /api/connections/{id}/modelsync/source`](../../../../../../api-reference/model-sync/get-source).
+//
+// Example:
+//
+//	request := &polytomic.ModelSyncGetSourceFieldsRequest{}
+//	client.ModelSync.GetSourceFields(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) GetSourceFields(
 	ctx context.Context,
 	// Unique identifier of the connection.
@@ -112,6 +135,28 @@ func (c *Client) GetSourceFields(
 // This endpoint returns syncs visible to the current caller's organization scope.
 // To inspect a specific sync in more detail, follow up with
 // [`GET /api/syncs/{id}`](../../api-reference/model-sync/get).
+//
+// Example:
+//
+//	request := &polytomic.ModelSyncListRequest{
+//	    Active: polytomic.Bool(
+//	        true,
+//	    ),
+//	    Mode: polytomic.ModelsyncSyncTargetModeCreate.Ptr(),
+//	    TargetConnectionID: polytomic.String(
+//	        "0b155265-c537-44c9-9359-a3ceb468a4da",
+//	    ),
+//	    PageToken: polytomic.String(
+//	        "AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==",
+//	    ),
+//	    Limit: polytomic.Int(
+//	        50,
+//	    ),
+//	}
+//	client.ModelSync.List(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) List(
 	ctx context.Context,
 	request *polytomic.ModelSyncListRequest,
@@ -190,6 +235,26 @@ func (c *Client) List(
 //
 // The [Get Target List](../../api-reference/model-sync/targets/list) endpoint returns information about whether
 // a connection supports target creation.
+//
+// Example:
+//
+//	request := &polytomic.CreateModelSyncV5Request{
+//	    Fields: []*polytomic.SyncField{
+//	        &polytomic.SyncField{
+//	            Target: "name",
+//	        },
+//	    },
+//	    Mode: polytomic.ModelsyncSyncTargetModeCreate,
+//	    Name: "Users Sync",
+//	    Schedule: &polytomic.Schedule{},
+//	    Target: &polytomic.ModelSyncV5Target{
+//	        ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    },
+//	}
+//	client.ModelSync.Create(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Create(
 	ctx context.Context,
 	request *polytomic.CreateModelSyncV5Request,
@@ -211,6 +276,12 @@ func (c *Client) Create(
 // Use the `type` identifiers returned by this endpoint in the `schedule` field
 // when creating or updating a sync via
 // [`POST /api/syncs`](../../../api-reference/model-sync/create) or [`PUT /api/syncs/{id}`](../../../api-reference/model-sync/update).
+//
+// Example:
+//
+//	client.ModelSync.GetScheduleOptions(
+//	    context.TODO(),
+//	)
 func (c *Client) GetScheduleOptions(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -230,6 +301,13 @@ func (c *Client) GetScheduleOptions(
 // To check whether a sync is currently running or has recently completed, use
 // [`GET /api/syncs/{id}/status`](../../../api-reference/model-sync/get-status). For the full history of
 // executions, use [`GET /api/syncs/{id}/executions`](../../../api-reference/model-sync/executions/list).
+//
+// Example:
+//
+//	client.ModelSync.Get(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
@@ -261,6 +339,27 @@ func (c *Client) Get(
 // Updates to `active`, `schedule`, and `policies` take effect immediately.
 // Changes to source fields, target configuration, filters, or field mappings
 // take effect on the sync's next execution.
+//
+// Example:
+//
+//	request := &polytomic.UpdateModelSyncV5Request{
+//	    Fields: []*polytomic.SyncField{
+//	        &polytomic.SyncField{
+//	            Target: "name",
+//	        },
+//	    },
+//	    Mode: polytomic.ModelsyncSyncTargetModeCreate,
+//	    Name: "Users Sync",
+//	    Schedule: &polytomic.Schedule{},
+//	    Target: &polytomic.ModelSyncV5Target{
+//	        ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    },
+//	}
+//	client.ModelSync.Update(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
@@ -284,6 +383,13 @@ func (c *Client) Update(
 // Deletion is permanent. Any running execution is cancelled before the sync
 // record is removed. Deleted syncs cannot be recovered; recreate them using
 // [`POST /api/syncs`](../../../api-reference/model-sync/create) if needed.
+//
+// Example:
+//
+//	client.ModelSync.Delete(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Delete(
 	ctx context.Context,
 	id string,
@@ -308,6 +414,17 @@ func (c *Client) Delete(
 // > 📘 Deactivating a sync does not cancel an execution that is already in
 // > progress. Use [`POST /api/syncs/{id}/cancel`](../../../../api-reference/model-sync/cancel) to stop a
 // > running execution.
+//
+// Example:
+//
+//	request := &polytomic.ActivateSyncInput{
+//	    Active: true,
+//	}
+//	client.ModelSync.Activate(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Activate(
 	ctx context.Context,
 	id string,
@@ -333,6 +450,13 @@ func (c *Client) Activate(
 // processed. Poll `GET /api/syncs/{id}/status` until the current execution
 // reaches a terminal state (`completed`, `canceled`, or `failed`) to confirm
 // cancellation has taken effect.
+//
+// Example:
+//
+//	client.ModelSync.Cancel(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Cancel(
 	ctx context.Context,
 	// The active execution of this sync ID will be cancelled.
@@ -355,6 +479,15 @@ func (c *Client) Cancel(
 // > 🚧 Force full resync
 // >
 // > Use caution when setting the `resync` parameter to `true`. This will force a full resync of the data from the source system. This can be a time-consuming operation and may impact the performance of the source system. It is recommended to only use this option when necessary.
+//
+// Example:
+//
+//	request := &polytomic.StartSyncRequest{}
+//	client.ModelSync.Start(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Start(
 	ctx context.Context,
 	id string,
@@ -378,6 +511,13 @@ func (c *Client) Start(
 // The response includes a summary of the most recent execution, including its
 // start time, completion time, and record counts. For the complete execution
 // history, use [`GET /api/syncs/{id}/executions`](../../../../api-reference/model-sync/executions/list).
+//
+// Example:
+//
+//	client.ModelSync.GetStatus(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) GetStatus(
 	ctx context.Context,
 	id string,

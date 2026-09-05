@@ -20,14 +20,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -36,6 +41,12 @@ func NewClient(options *core.RequestOptions) *Client {
 // Lists every user in the caller's current organization.
 //
 // Returns user records including each user's ID, email, and assigned roles.
+//
+// Example:
+//
+//	client.Users.ListCurrentOrgUsers(
+//	    context.TODO(),
+//	)
 func (c *Client) ListCurrentOrgUsers(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -54,6 +65,16 @@ func (c *Client) ListCurrentOrgUsers(
 //
 // The new user receives an invitation email prompting them to set up their
 // account. Role assignments take effect as soon as the invitation is accepted.
+//
+// Example:
+//
+//	request := &polytomic.CurrentOrgCreateUserRequestSchema{
+//	    Email: "mail@example.com",
+//	}
+//	client.Users.CreateCurrentOrgUser(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) CreateCurrentOrgUser(
 	ctx context.Context,
 	request *polytomic.CurrentOrgCreateUserRequestSchema,
@@ -71,6 +92,13 @@ func (c *Client) CreateCurrentOrgUser(
 }
 
 // Returns a single user from the caller's current organization.
+//
+// Example:
+//
+//	client.Users.GetCurrentOrgUser(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) GetCurrentOrgUser(
 	ctx context.Context,
 	// Unique identifier of the user.
@@ -92,6 +120,15 @@ func (c *Client) GetCurrentOrgUser(
 //
 // Only the user's role assignments are modified. Profile information such as name
 // and email address is not affected by this endpoint.
+//
+// Example:
+//
+//	request := &polytomic.CurrentOrgUpdateUserRequestSchema{}
+//	client.Users.UpdateCurrentOrgUser(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) UpdateCurrentOrgUser(
 	ctx context.Context,
 	// Unique identifier of the user to update.
@@ -116,6 +153,13 @@ func (c *Client) UpdateCurrentOrgUser(
 // > 🚧 This action is permanent. The user is immediately removed from the
 // > organization and loses access to all resources within it. This cannot be
 // > undone.
+//
+// Example:
+//
+//	client.Users.DeleteCurrentOrgUser(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) DeleteCurrentOrgUser(
 	ctx context.Context,
 	// Unique identifier of the user.
@@ -140,6 +184,13 @@ func (c *Client) DeleteCurrentOrgUser(
 // > User endpoints are only accessible using [partner keys](../../../../guides/obtaining-api-keys#partner-keys).
 //
 // Returns user records including each user's ID, email, and assigned roles.
+//
+// Example:
+//
+//	client.Users.List(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) List(
 	ctx context.Context,
 	// Unique identifier of the organization whose users should be listed.
@@ -165,6 +216,17 @@ func (c *Client) List(
 //
 // The new user receives an invitation email prompting them to set up their
 // account. Role assignments take effect as soon as the invitation is accepted.
+//
+// Example:
+//
+//	request := &polytomic.CreateUserRequestSchema{
+//	    Email: "mail@example.com",
+//	}
+//	client.Users.Create(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Create(
 	ctx context.Context,
 	// Unique identifier of the organization the user belongs to.
@@ -189,6 +251,14 @@ func (c *Client) Create(
 // > 🚧 Requires partner key
 // >
 // > User endpoints are only accessible using [partner keys](../../../../../guides/obtaining-api-keys#partner-keys).
+//
+// Example:
+//
+//	client.Users.Get(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	// Unique identifier of the organization the user belongs to.
@@ -217,6 +287,18 @@ func (c *Client) Get(
 //
 // Only the user's role assignments are modified. Profile information such as name
 // and email address is not affected by this endpoint.
+//
+// Example:
+//
+//	request := &polytomic.UpdateUserRequestSchema{
+//	    Email: "mail@example.com",
+//	}
+//	client.Users.Update(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Update(
 	ctx context.Context,
 	// Unique identifier of the organization the user belongs to.
@@ -248,6 +330,14 @@ func (c *Client) Update(
 // > 🚧 This action is permanent. The user is immediately removed from the
 // > organization and loses access to all resources within it. This cannot be
 // > undone.
+//
+// Example:
+//
+//	client.Users.Delete(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Delete(
 	ctx context.Context,
 	// Unique identifier of the organization the user belongs to.
@@ -272,6 +362,20 @@ func (c *Client) Delete(
 //
 // > 🚧 The API key value is only included in the response at creation time and
 // > cannot be retrieved again. Store it securely immediately after creation.
+//
+// Example:
+//
+//	request := &polytomic.UsersCreateAPIKeyRequest{
+//	    Force: polytomic.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.Users.CreateAPIKey(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) CreateAPIKey(
 	ctx context.Context,
 	// Unique identifier of the organization the user belongs to.

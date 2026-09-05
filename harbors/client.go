@@ -20,20 +20,40 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
 }
 
 // Lists profile-authorized connections and capabilities for the current Harbor credential.
+//
+// Example:
+//
+//	request := &polytomic.HarborsListAuthorizedConnectionsRequest{
+//	    Limit: polytomic.Int(
+//	        1,
+//	    ),
+//	    PageToken: polytomic.String(
+//	        "page_token",
+//	    ),
+//	}
+//	client.Harbors.ListAuthorizedConnections(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) ListAuthorizedConnections(
 	ctx context.Context,
 	request *polytomic.HarborsListAuthorizedConnectionsRequest,
@@ -51,6 +71,22 @@ func (c *Client) ListAuthorizedConnections(
 }
 
 // Lists one bounded page of schema resources authorized by the current Harbor profile.
+//
+// Example:
+//
+//	request := &polytomic.HarborsListAuthorizedSchemasRequest{
+//	    Limit: polytomic.Int(
+//	        1,
+//	    ),
+//	    PageToken: polytomic.String(
+//	        "page_token",
+//	    ),
+//	}
+//	client.Harbors.ListAuthorizedSchemas(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) ListAuthorizedSchemas(
 	ctx context.Context,
 	connectionID string,
@@ -70,6 +106,16 @@ func (c *Client) ListAuthorizedSchemas(
 }
 
 // Returns one schema resource authorized by the current Harbor profile.
+//
+// Example:
+//
+//	request := &polytomic.HarborsGetAuthorizedSchemaRequest{}
+//	client.Harbors.GetAuthorizedSchema(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "schema_id",
+//	    request,
+//	)
 func (c *Client) GetAuthorizedSchema(
 	ctx context.Context,
 	connectionID string,
@@ -91,6 +137,14 @@ func (c *Client) GetAuthorizedSchema(
 }
 
 // Registers a service-attested MCP transport session for a scoped Harbor credential.
+//
+// Example:
+//
+//	request := &polytomic.RegisterHarborSessionRequest{}
+//	client.Harbors.RegisterSession(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) RegisterSession(
 	ctx context.Context,
 	request *polytomic.RegisterHarborSessionRequest,
@@ -108,6 +162,15 @@ func (c *Client) RegisterSession(
 }
 
 // Closes a service-attested Harbor MCP transport session.
+//
+// Example:
+//
+//	request := &polytomic.HarborsCloseSessionRequest{}
+//	client.Harbors.CloseSession(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) CloseSession(
 	ctx context.Context,
 	sessionID string,
@@ -129,6 +192,21 @@ func (c *Client) CloseSession(
 // Lists Harbors in the caller's current organization.
 //
 // Returns Harbors in creation order. Use `pagination.next_page_token` to continue when more results are available.
+//
+// Example:
+//
+//	request := &polytomic.HarborsListRequest{
+//	    Limit: polytomic.Int(
+//	        50,
+//	    ),
+//	    PageToken: polytomic.String(
+//	        "page_token",
+//	    ),
+//	}
+//	client.Harbors.List(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) List(
 	ctx context.Context,
 	request *polytomic.HarborsListRequest,
@@ -150,6 +228,17 @@ func (c *Client) List(
 // `generate_api_key` defaults to `true`. Polytomic returns a new plaintext credential only in this response. Set it to `false` to create the Harbor without a credential.
 //
 // For `customer_managed`, `backing_connection_id` must identify a queryable Connection that your credential can access.
+//
+// Example:
+//
+//	request := &polytomic.CreateHarborRequest{
+//	    BackingMode: "managed",
+//	    Name: "Revenue Operations",
+//	}
+//	client.Harbors.Create(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Create(
 	ctx context.Context,
 	request *polytomic.CreateHarborRequest,
@@ -169,6 +258,13 @@ func (c *Client) Create(
 // Returns one Harbor by its first-class Harbor ID.
 //
 // The response exposes the backing Connection ID but not the internal profile used to authorize Harbor credentials.
+//
+// Example:
+//
+//	client.Harbors.Get(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -189,6 +285,17 @@ func (c *Client) Get(
 // Updates a Harbor's name and description.
 //
 // This operation does not change `backing_mode` or `backing_connection_id`.
+//
+// Example:
+//
+//	request := &polytomic.UpdateHarborRequest{
+//	    Name: "Revenue Operations",
+//	}
+//	client.Harbors.Update(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Update(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -213,6 +320,13 @@ func (c *Client) Update(
 // > 🚧 Harbor deletion
 // >
 // > Deleting a Harbor revokes its credentials, context documents, and user assignments. A customer-managed backing Connection remains available. Polytomic deletes a managed backing Connection only when no other resource uses it.
+//
+// Example:
+//
+//	client.Harbors.Delete(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Delete(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -237,6 +351,22 @@ func (c *Client) Delete(
 //
 // A Harbor profile credential can read context only when `harbor_id` identifies
 // its own Harbor.
+//
+// Example:
+//
+//	request := &polytomic.HarborsListContextsRequest{
+//	    Limit: polytomic.Int(
+//	        50,
+//	    ),
+//	    PageToken: polytomic.String(
+//	        "page_token",
+//	    ),
+//	}
+//	client.Harbors.ListContexts(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) ListContexts(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -259,6 +389,18 @@ func (c *Client) ListContexts(
 // Creates and attaches a context document to a Harbor.
 //
 // The new document belongs only to this Harbor. Context documents cannot be attached to multiple Harbors.
+//
+// Example:
+//
+//	request := &polytomic.CreateHarborContextRequest{
+//	    Content: "Bookings use the contract signed date...",
+//	    Title: "Revenue definitions",
+//	}
+//	client.Harbors.CreateContext(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) CreateContext(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -287,6 +429,22 @@ func (c *Client) CreateContext(
 // Draft metadata does not include `content`. Fetch a selected draft through its
 // detail endpoint to read the complete candidate. Normal context list and detail
 // operations continue to return published content only.
+//
+// Example:
+//
+//	request := &polytomic.HarborsListContextDraftsRequest{
+//	    Limit: polytomic.Int(
+//	        50,
+//	    ),
+//	    PageToken: polytomic.String(
+//	        "page_token",
+//	    ),
+//	}
+//	client.Harbors.ListContextDrafts(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) ListContextDrafts(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -316,6 +474,18 @@ func (c *Client) ListContextDrafts(
 // context list/detail, GraphQL, entity lookup, and Harbor MCP reads until promoted.
 // Use the regular context creation endpoint instead when the initial payload should
 // be published immediately.
+//
+// Example:
+//
+//	request := &polytomic.CreateHarborContextDraftRequest{
+//	    Content: "Bookings use the contract signed date...",
+//	    Title: "Revenue definitions",
+//	}
+//	client.Harbors.CreateContextDraft(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) CreateContextDraft(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -342,6 +512,16 @@ func (c *Client) CreateContextDraft(
 //
 // A Harbor profile credential can read context only when `harbor_id` identifies
 // its own Harbor.
+//
+// Example:
+//
+//	request := &polytomic.HarborsGetContextRequest{}
+//	client.Harbors.GetContext(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) GetContext(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -370,6 +550,19 @@ func (c *Client) GetContext(
 // `change_note`.
 //
 // A direct publication leaves an existing draft unchanged.
+//
+// Example:
+//
+//	request := &polytomic.SaveHarborContextRequest{
+//	    Content: "Bookings use the contract signed date...",
+//	    Title: "Revenue definitions",
+//	}
+//	client.Harbors.UpdateContext(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) UpdateContext(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -395,6 +588,16 @@ func (c *Client) UpdateContext(
 // Deletes one context document from a Harbor.
 //
 // Deleting a context document does not affect the Harbor or its other context documents.
+//
+// Example:
+//
+//	request := &polytomic.HarborsDeleteContextRequest{}
+//	client.Harbors.DeleteContext(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) DeleteContext(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -423,6 +626,16 @@ func (c *Client) DeleteContext(
 // identifies the published revision from which the candidate was created. Normal
 // context reads and Harbor MCP tools continue to return the current published
 // version. Creator and updater IDs are null when their actor type is `system`.
+//
+// Example:
+//
+//	request := &polytomic.HarborsGetContextDraftRequest{}
+//	client.Harbors.GetContextDraft(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) GetContextDraft(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -456,6 +669,19 @@ func (c *Client) GetContextDraft(
 // a draft does not change published content or its `updated_at`. Creator and
 // updater provenance comes from the request actor; system actors have a null actor
 // ID.
+//
+// Example:
+//
+//	request := &polytomic.SaveHarborContextDraftRequest{
+//	    Content: "Bookings use the contract signed date...",
+//	    Title: "Revenue definitions",
+//	}
+//	client.Harbors.SaveContextDraft(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) SaveContextDraft(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -483,6 +709,16 @@ func (c *Client) SaveContextDraft(
 // Discarding a draft does not change the current published version or its
 // history. If the draft belongs to a context that has never been published,
 // discarding it also removes the otherwise empty context identity.
+//
+// Example:
+//
+//	request := &polytomic.HarborsDeleteContextDraftRequest{}
+//	client.Harbors.DeleteContextDraft(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) DeleteContextDraft(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -514,6 +750,16 @@ func (c *Client) DeleteContextDraft(
 // Promotion returns a conflict when the current published revision differs from
 // the draft's `base_revision_id`. The stale draft remains available so an author
 // can compare it with the current version before discarding and recreating it.
+//
+// Example:
+//
+//	request := &polytomic.HarborsPromoteContextDraftRequest{}
+//	client.Harbors.PromoteContextDraft(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) PromoteContextDraft(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -550,6 +796,23 @@ func (c *Client) PromoteContextDraft(
 //
 // A Harbor profile credential can read versions only when `harbor_id` identifies
 // its own Harbor.
+//
+// Example:
+//
+//	request := &polytomic.HarborsListContextVersionsRequest{
+//	    Limit: polytomic.Int(
+//	        50,
+//	    ),
+//	    PageToken: polytomic.String(
+//	        "page_token",
+//	    ),
+//	}
+//	client.Harbors.ListContextVersions(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) ListContextVersions(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -579,6 +842,17 @@ func (c *Client) ListContextVersions(
 //
 // Published versions cannot be changed or deleted. System publications have
 // `published_by_type: "system"` and a null `published_by`.
+//
+// Example:
+//
+//	request := &polytomic.HarborsGetContextVersionRequest{}
+//	client.Harbors.GetContextVersion(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) GetContextVersion(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -607,6 +881,22 @@ func (c *Client) GetContextVersion(
 // Lists active masked credentials for a Harbor.
 //
 // Each item contains a masked `key_hint`. Polytomic never returns a credential plaintext after creation.
+//
+// Example:
+//
+//	request := &polytomic.HarborsListKeysRequest{
+//	    Limit: polytomic.Int(
+//	        50,
+//	    ),
+//	    PageToken: polytomic.String(
+//	        "page_token",
+//	    ),
+//	}
+//	client.Harbors.ListKeys(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) ListKeys(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -629,6 +919,13 @@ func (c *Client) ListKeys(
 // Generates a new Harbor credential and returns its plaintext value once.
 //
 // Store the returned `value` securely. Polytomic returns it only in this response.
+//
+// Example:
+//
+//	client.Harbors.CreateKey(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) CreateKey(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -649,6 +946,14 @@ func (c *Client) CreateKey(
 // Revokes one Harbor credential by its credential ID.
 //
 // Revocation affects only the selected credential. Other active Harbor credentials remain valid.
+//
+// Example:
+//
+//	client.Harbors.DeleteKey(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) DeleteKey(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -670,6 +975,15 @@ func (c *Client) DeleteKey(
 }
 
 // Resolves documented source table and field identities to the names a Harbor's backing Connection accepts.
+//
+// Example:
+//
+//	request := &polytomic.ResolveHarborSourceMappingsRequest{}
+//	client.Harbors.ResolveSourceMappings(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) ResolveSourceMappings(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -722,6 +1036,13 @@ func (c *Client) ResolveSourceMappings(
 // Use absolute timestamps and the raw statuses to apply the maximum acceptable
 // staleness for your task. The endpoint does not classify datasets or the Harbor
 // as healthy, stale, or unhealthy.
+//
+// Example:
+//
+//	client.Harbors.GetStatus(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) GetStatus(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -742,6 +1063,22 @@ func (c *Client) GetStatus(
 // Lists Harbor-only users assigned to a Harbor.
 //
 // The response contains only Harbor-only users currently assigned to this Harbor.
+//
+// Example:
+//
+//	request := &polytomic.HarborsListUsersRequest{
+//	    Limit: polytomic.Int(
+//	        50,
+//	    ),
+//	    PageToken: polytomic.String(
+//	        "page_token",
+//	    ),
+//	}
+//	client.Harbors.ListUsers(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) ListUsers(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -764,6 +1101,17 @@ func (c *Client) ListUsers(
 // Invites and assigns a new Harbor-only user.
 //
 // The invited account is restricted to assigned Harbors and does not receive regular Polytomic application access.
+//
+// Example:
+//
+//	request := &polytomic.InviteHarborUserRequest{
+//	    Email: "analyst@example.com",
+//	}
+//	client.Harbors.InviteUser(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) InviteUser(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -786,6 +1134,14 @@ func (c *Client) InviteUser(
 // Assigns an existing Harbor-only user to a Harbor.
 //
 // The assignment is idempotent. Regular Polytomic users cannot be assigned because they already have application access to Harbors.
+//
+// Example:
+//
+//	client.Harbors.AssignUser(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) AssignUser(
 	ctx context.Context,
 	// Unique identifier of the Harbor.
@@ -809,6 +1165,14 @@ func (c *Client) AssignUser(
 // Removes a Harbor assignment without deleting the user.
 //
 // This removes only the Harbor assignment. The organization user remains available and may retain assignments to other Harbors.
+//
+// Example:
+//
+//	client.Harbors.UnassignUser(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) UnassignUser(
 	ctx context.Context,
 	// Unique identifier of the Harbor.

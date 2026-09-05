@@ -21,14 +21,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -46,6 +51,15 @@ func NewClient(options *core.RequestOptions) *Client {
 // [`PATCH /api/bulk/syncs/{id}/schemas`](../../../../../api-reference/bulk-sync/schemas/patch)
 // or
 // [`PUT /api/bulk/syncs/{id}/schemas/{schema_id}`](../../../../../api-reference/bulk-sync/schemas/update).
+//
+// Example:
+//
+//	request := &bulksync.SchemasListRequest{}
+//	client.BulkSync.Schemas.List(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) List(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
@@ -80,6 +94,15 @@ func (c *Client) List(
 // > omit), use
 // > [`PUT /api/bulk/syncs/{id}/schemas/{schema_id}`](../../../../../api-reference/bulk-sync/schemas/update)
 // > instead.
+//
+// Example:
+//
+//	request := &bulksync.UpdateBulkSyncSchemasRequest{}
+//	client.BulkSync.Schemas.Patch(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Patch(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
@@ -109,6 +132,14 @@ func (c *Client) Patch(
 // for a partial update across multiple schemas, or
 // [`PUT /api/bulk/syncs/{id}/schemas/{schema_id}`](../../../../../../api-reference/bulk-sync/schemas/update)
 // to fully replace this schema's configuration.
+//
+// Example:
+//
+//	client.BulkSync.Schemas.Get(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "Contact",
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
@@ -144,6 +175,16 @@ func (c *Client) Get(
 // > use the partial-update endpoint
 // > [`PATCH /api/bulk/syncs/{id}/schemas`](../../../../../../api-reference/bulk-sync/schemas/patch)
 // > instead.
+//
+// Example:
+//
+//	request := &bulksync.UpdateBulkSchema{}
+//	client.BulkSync.Schemas.Update(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "contact",
+//	    request,
+//	)
 func (c *Client) Update(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
@@ -174,6 +215,14 @@ func (c *Client) Update(
 // `GET /api/bulk/syncs/{id}/schemas/{schema_id}` and the parent execution via
 // `GET /api/bulk/syncs/{id}/status` to confirm the schema has reached a terminal
 // state.
+//
+// Example:
+//
+//	client.BulkSync.Schemas.Cancel(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "schema_id",
+//	)
 func (c *Client) Cancel(
 	ctx context.Context,
 	// The bulk sync ID.

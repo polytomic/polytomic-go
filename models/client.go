@@ -20,14 +20,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -46,6 +51,15 @@ func NewClient(options *core.RequestOptions) *Client {
 // When a connection does support enrichment, the response describes the
 // configuration fields required to set it up. Pass those values in the
 // `enrichment` block when creating or updating a model sync.
+//
+// Example:
+//
+//	request := &polytomic.ModelsGetEnrichmentSourceRequest{}
+//	client.Models.GetEnrichmentSource(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) GetEnrichmentSource(
 	ctx context.Context,
 	// Unique identifier of the connection.
@@ -72,6 +86,15 @@ func (c *Client) GetEnrichmentSource(
 // proposed enrichment configuration in the request body; the response lists the
 // valid input field sets that map your model's fields to the enrichment service's
 // expected inputs.
+//
+// Example:
+//
+//	request := &polytomic.EnrichmentInputFieldsRequest{}
+//	client.Models.Post(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Post(
 	ctx context.Context,
 	connectionID string,
@@ -96,6 +119,25 @@ func (c *Client) Post(
 // would expose. Poll the job until it completes to retrieve the field list. The
 // model is not persisted — this endpoint is useful for validating a query or
 // configuration before calling [`POST /api/models`](../../api-reference/models/create) to save it.
+//
+// Example:
+//
+//	request := &polytomic.ModelsPreviewRequest{
+//	    Async: polytomic.Bool(
+//	        true,
+//	    ),
+//	    Body: &polytomic.CreateModelRequest{
+//	        Configuration: map[string]any{
+//	            "table": "public.users",
+//	        },
+//	        ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	        Name: "Users",
+//	    },
+//	}
+//	client.Models.Preview(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Preview(
 	ctx context.Context,
 	request *polytomic.ModelsPreviewRequest,
@@ -122,6 +164,12 @@ func (c *Client) Preview(
 //
 // The `limit` is capped at 50. Values above that cap are reduced to 50, and
 // non-positive values fall back to the same default.
+//
+// Example:
+//
+//	client.Models.List(
+//	    context.TODO(),
+//	)
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -145,6 +193,25 @@ func (c *Client) List(
 // The connection referenced by `connection_id` must have source capabilities. Use
 // [`GET /api/connection_types/{id}`](../../api-reference/connections/get-connection-type-schema) to check
 // whether a connection type supports use as a source.
+//
+// Example:
+//
+//	request := &polytomic.ModelsCreateRequest{
+//	    Async: polytomic.Bool(
+//	        true,
+//	    ),
+//	    Body: &polytomic.CreateModelRequest{
+//	        Configuration: map[string]any{
+//	            "table": "public.users",
+//	        },
+//	        ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	        Name: "Users",
+//	    },
+//	}
+//	client.Models.Create(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Create(
 	ctx context.Context,
 	request *polytomic.ModelsCreateRequest,
@@ -166,6 +233,19 @@ func (c *Client) Create(
 // The response includes the model's source fields, identity column, and any
 // configured filters. To preview the data a model would return without saving
 // changes, use [`GET /api/models/{id}/sample`](../../../api-reference/models/sample).
+//
+// Example:
+//
+//	request := &polytomic.ModelsGetRequest{
+//	    Async: polytomic.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.Models.Get(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
@@ -196,6 +276,24 @@ func (c *Client) Get(
 //
 // Changes to source fields, filters, or the identity column take effect on the
 // next sync execution that uses this model.
+//
+// Example:
+//
+//	request := &polytomic.UpdateModelRequest{
+//	    Async: polytomic.Bool(
+//	        false,
+//	    ),
+//	    Configuration: map[string]any{
+//	        "table": "public.users",
+//	    },
+//	    ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    Name: "Users",
+//	}
+//	client.Models.Update(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
@@ -218,6 +316,19 @@ func (c *Client) Update(
 //
 // > 🚧 Deleting a model used by one or more syncs will break those syncs. Remove
 // > or reconfigure any syncs that reference this model before deleting it.
+//
+// Example:
+//
+//	request := &polytomic.ModelsDeleteRequest{
+//	    Async: polytomic.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.Models.Delete(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Delete(
 	ctx context.Context,
 	id string,
@@ -241,6 +352,19 @@ func (c *Client) Delete(
 // Synchronous requests must complete within 10 seconds. If the source query or
 // enrichment step can exceed that budget, use the asynchronous option so the
 // work runs as a background job.
+//
+// Example:
+//
+//	request := &polytomic.ModelsSampleRequest{
+//	    Async: polytomic.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.Models.Sample(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Sample(
 	ctx context.Context,
 	id string,

@@ -21,14 +21,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -43,6 +48,13 @@ func NewClient(options *core.RequestOptions) *Client {
 // Creating a new shared copy is a separate operation. Use
 // [`POST /api/organizations/{org_id}/connections/{connection_id}/share`](../../../../api-reference/connections/create-shared-connection)
 // for the v5 partner-scoped flow.
+//
+// Example:
+//
+//	client.Connections.SharedConnections.ListSharedConnections(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) ListSharedConnections(
 	ctx context.Context,
 	// Unique identifier of the parent connection whose shared copies should be listed.
@@ -69,6 +81,14 @@ func (c *Client) ListSharedConnections(
 // This endpoint is useful in partner workflows where the parent connection is in
 // the partner owner organization and the caller needs to audit which child
 // organizations already have a shared copy.
+//
+// Example:
+//
+//	client.Connections.SharedConnections.ListSharedConnectionsForPartner(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) ListSharedConnectionsForPartner(
 	ctx context.Context,
 	// Unique identifier of the organization that owns the parent connection.
@@ -90,6 +110,18 @@ func (c *Client) ListSharedConnectionsForPartner(
 }
 
 // Shares a connection with another organization in the caller's partner account.
+//
+// Example:
+//
+//	request := &connections.PartnerCreateSharedConnectionRequestSchema{
+//	    ChildOrganizationID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	}
+//	client.Connections.SharedConnections.CreateSharedConnection(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) CreateSharedConnection(
 	ctx context.Context,
 	// Unique identifier of the organization that owns the parent connection.

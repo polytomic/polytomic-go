@@ -20,14 +20,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -41,6 +46,12 @@ func NewClient(options *core.RequestOptions) *Client {
 // > produced in that organization. See the
 // > [Events documentation](../../guides/events) for the
 // > list of event types and payload shapes.
+//
+// Example:
+//
+//	client.Webhooks.List(
+//	    context.TODO(),
+//	)
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -63,6 +74,17 @@ func (c *Client) List(
 // > produced in that organization. See the
 // > [Events documentation](../../guides/events) for the
 // > list of event types and payload shapes.
+//
+// Example:
+//
+//	request := &polytomic.CreateWebhooksSchema{
+//	    Endpoint: "https://example.com/webhook",
+//	    Secret: "secret",
+//	}
+//	client.Webhooks.Create(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Create(
 	ctx context.Context,
 	request *polytomic.CreateWebhooksSchema,
@@ -87,6 +109,13 @@ func (c *Client) Create(
 // > produced in that organization. See the
 // > [Events documentation](../../../guides/events) for the
 // > list of event types and payload shapes.
+//
+// Example:
+//
+//	client.Webhooks.Get(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
@@ -111,6 +140,18 @@ func (c *Client) Get(
 // > produced in that organization. See the
 // > [Events documentation](../../../guides/events) for the
 // > list of event types and payload shapes.
+//
+// Example:
+//
+//	request := &polytomic.UpdateWebhooksSchema{
+//	    Endpoint: "https://example.com/webhook",
+//	    Secret: "secret",
+//	}
+//	client.Webhooks.Update(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
@@ -141,6 +182,13 @@ func (c *Client) Update(
 // Deletion is permanent. To stop delivery without losing the webhook
 // configuration, use
 // [`POST /api/webhooks/{id}/disable`](../../../api-reference/webhooks/disable) instead.
+//
+// Example:
+//
+//	client.Webhooks.Delete(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Delete(
 	ctx context.Context,
 	id string,
@@ -170,6 +218,13 @@ func (c *Client) Delete(
 // during the disabled period is not delivered retroactively. To resume
 // delivery, re-enable the webhook using
 // [`POST /api/webhooks/{id}/enable`](../../../../api-reference/webhooks/enable).
+//
+// Example:
+//
+//	client.Webhooks.Disable(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Disable(
 	ctx context.Context,
 	id string,
@@ -197,6 +252,13 @@ func (c *Client) Disable(
 //
 // Delivery resumes from the next event generated after this call. Events that
 // occurred while the webhook was disabled are not replayed.
+//
+// Example:
+//
+//	client.Webhooks.Enable(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Enable(
 	ctx context.Context,
 	id string,

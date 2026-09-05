@@ -21,14 +21,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -47,6 +52,26 @@ func NewClient(options *core.RequestOptions) *Client {
 //
 // Setting `all=true` or `active=true` ignores any explicit `sync_id` filters and
 // expands the request to the caller's organization scope.
+//
+// Example:
+//
+//	request := &bulksync.ExecutionsListStatusRequest{
+//	    All: polytomic.Bool(
+//	        true,
+//	    ),
+//	    Active: polytomic.Bool(
+//	        true,
+//	    ),
+//	    SyncID: []*string{
+//	        polytomic.String(
+//	            "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	        ),
+//	    },
+//	}
+//	client.BulkSync.Executions.ListStatus(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) ListStatus(
 	ctx context.Context,
 	request *bulksync.ExecutionsListStatusRequest,
@@ -78,6 +103,28 @@ func (c *Client) ListStatus(
 //
 // For the full details of a single run — including per-schema execution status —
 // use [`GET /api/bulk/syncs/{id}/executions/{exec_id}`](../../../../../api-reference/bulk-sync/executions/get).
+//
+// Example:
+//
+//	request := &bulksync.ExecutionsListRequest{
+//	    PageToken: polytomic.String(
+//	        "AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==",
+//	    ),
+//	    OnlyTerminal: polytomic.Bool(
+//	        true,
+//	    ),
+//	    Ascending: polytomic.Bool(
+//	        true,
+//	    ),
+//	    Limit: polytomic.Int(
+//	        100,
+//	    ),
+//	}
+//	client.BulkSync.Executions.List(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) List(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
@@ -103,6 +150,14 @@ func (c *Client) List(
 // participated in the execution, with its individual status, row counts, and any
 // error details. This makes it suitable for diagnosing partial failures where
 // some schemas succeeded while others did not.
+//
+// Example:
+//
+//	client.BulkSync.Executions.Get(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
@@ -130,6 +185,14 @@ func (c *Client) Get(
 // processed. Poll `GET /api/bulk/syncs/{id}/executions/{exec_id}` until the
 // execution reaches a terminal state (`completed`, `canceled`, or `failed`) to
 // confirm cancellation has taken effect.
+//
+// Example:
+//
+//	client.BulkSync.Executions.Cancel(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Cancel(
 	ctx context.Context,
 	// The bulk sync ID.
@@ -151,6 +214,23 @@ func (c *Client) Cancel(
 }
 
 // Fetch the latest console log entries for a bulk sync execution. Returns the most recent 50 entries.
+//
+// Example:
+//
+//	request := &bulksync.ExecutionsGetConsoleLogsRequest{
+//	    Limit: polytomic.Int(
+//	        50,
+//	    ),
+//	    After: polytomic.String(
+//	        "1744311099250-0",
+//	    ),
+//	}
+//	client.BulkSync.Executions.GetConsoleLogs(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "0ecd09c1-b901-4d27-9053-f0367c427254",
+//	    request,
+//	)
 func (c *Client) GetConsoleLogs(
 	ctx context.Context,
 	syncID string,
@@ -181,6 +261,14 @@ func (c *Client) GetConsoleLogs(
 // > 📘 To export logs asynchronously to a destination of your choice, use
 // > [`POST /api/bulk/syncs/{sync_id}/executions/{execution_id}/logs/export`](../../../../../../../api-reference/bulk-sync/executions/export-logs)
 // > instead.
+//
+// Example:
+//
+//	client.BulkSync.Executions.GetLogs(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) GetLogs(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
@@ -214,6 +302,20 @@ func (c *Client) GetLogs(
 // >
 // > Set `notify=true` to also email the requesting user when the archive is
 // > ready.
+//
+// Example:
+//
+//	request := &bulksync.ExecutionsExportLogsRequest{
+//	    Notify: polytomic.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.BulkSync.Executions.ExportLogs(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) ExportLogs(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
@@ -237,6 +339,24 @@ func (c *Client) ExportLogs(
 }
 
 // Fetch the latest console log entries for a schema within a bulk sync execution. Returnst the most recent 50 entries.
+//
+// Example:
+//
+//	request := &bulksync.ExecutionsGetSchemaConsoleLogsRequest{
+//	    Limit: polytomic.Int(
+//	        50,
+//	    ),
+//	    After: polytomic.String(
+//	        "1744311099250-0",
+//	    ),
+//	}
+//	client.BulkSync.Executions.GetSchemaConsoleLogs(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "0ecd09c1-b901-4d27-9053-f0367c427254",
+//	    "users",
+//	    request,
+//	)
 func (c *Client) GetSchemaConsoleLogs(
 	ctx context.Context,
 	syncID string,
@@ -261,6 +381,25 @@ func (c *Client) GetSchemaConsoleLogs(
 }
 
 // Fetch the latest console log entries for ingestion scoped by connection and optional bulk sync. Returns the most recent 50 entries.
+//
+// Example:
+//
+//	request := &bulksync.ExecutionsGetIngestConsoleLogsRequest{
+//	    SyncID: polytomic.String(
+//	        "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    ),
+//	    Limit: polytomic.Int(
+//	        50,
+//	    ),
+//	    After: polytomic.String(
+//	        "1744311099250-0",
+//	    ),
+//	}
+//	client.BulkSync.Executions.GetIngestConsoleLogs(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) GetIngestConsoleLogs(
 	ctx context.Context,
 	connectionID string,

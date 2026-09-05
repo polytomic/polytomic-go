@@ -20,14 +20,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -44,6 +49,12 @@ func NewClient(options *core.RequestOptions) *Client {
 //
 // This endpoint is especially useful when debugging why a request is being
 // accepted or rejected by endpoints that are limited to particular caller types.
+//
+// Example:
+//
+//	client.Identity.Get(
+//	    context.TODO(),
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	opts ...option.RequestOption,

@@ -20,14 +20,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -44,6 +49,16 @@ func NewClient(options *core.RequestOptions) *Client {
 // If some fields succeed and others fail, the endpoint can return a partial
 // success response. Validate the response status and message rather than assuming
 // the whole batch was applied uniformly.
+//
+// Example:
+//
+//	request := &polytomic.UpsertSchemaFieldRequest{}
+//	client.Schemas.UpsertField(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "public.users",
+//	    request,
+//	)
 func (c *Client) UpsertField(
 	ctx context.Context,
 	// Unique identifier of the connection.
@@ -76,6 +91,15 @@ func (c *Client) UpsertField(
 // > 🚧 Deleting a field that is referenced in an active sync mapping may cause
 // > that sync to error on its next execution. Remove or update any dependent
 // > mappings before deleting the field.
+//
+// Example:
+//
+//	client.Schemas.DeleteField(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "public.users",
+//	    "first_name",
+//	)
 func (c *Client) DeleteField(
 	ctx context.Context,
 	// Unique identifier of the connection.
@@ -100,6 +124,17 @@ func (c *Client) DeleteField(
 }
 
 // Edits a single field on a schema, creating an override for a detected field if needed.
+//
+// Example:
+//
+//	request := &polytomic.PatchSchemaFieldRequest{}
+//	client.Schemas.PatchField(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "schema_id",
+//	    "field_id",
+//	    request,
+//	)
 func (c *Client) PatchField(
 	ctx context.Context,
 	// Connection holding the schema.
@@ -137,6 +172,16 @@ func (c *Client) PatchField(
 //
 // > 📘 To revert to the source-detected primary keys and remove all overrides,
 // > use [`DELETE /api/connections/{connection_id}/schemas/{schema_id}/primary_keys`](../../../../../../api-reference/schemas/reset-primary-keys).
+//
+// Example:
+//
+//	request := &polytomic.SetPrimaryKeysRequest{}
+//	client.Schemas.SetPrimaryKeys(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "public.users",
+//	    request,
+//	)
 func (c *Client) SetPrimaryKeys(
 	ctx context.Context,
 	// Unique identifier of the connection.
@@ -164,6 +209,14 @@ func (c *Client) SetPrimaryKeys(
 // To replace the overrides with a new set rather than clearing them entirely,
 // use [`PUT /api/connections/{connection_id}/schemas/{schema_id}/primary_keys`](../../../../../../api-reference/schemas/set-primary-keys)
 // instead.
+//
+// Example:
+//
+//	client.Schemas.ResetPrimaryKeys(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "public.users",
+//	)
 func (c *Client) ResetPrimaryKeys(
 	ctx context.Context,
 	// Unique identifier of the connection.
@@ -204,6 +257,13 @@ func (c *Client) ResetPrimaryKeys(
 // > `last_refresh_started`) to observe completion.
 // >
 // > Only connections whose current health status is healthy may be refreshed.
+//
+// Example:
+//
+//	client.Schemas.Refresh(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Refresh(
 	ctx context.Context,
 	// Unique identifier of the connection whose schema cache should be refreshed.
@@ -238,6 +298,13 @@ func (c *Client) Refresh(
 // > `last_refresh_started`) to observe completion.
 // >
 // > Only connections whose current health status is healthy may be refreshed.
+//
+// Example:
+//
+//	client.Schemas.GetStatus(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) GetStatus(
 	ctx context.Context,
 	// Unique identifier of the connection whose schema cache status should be returned.
@@ -264,6 +331,14 @@ func (c *Client) GetStatus(
 // > 📘 Trigger [`POST /api/connections/{id}/schemas/refresh`](../../../../../api-reference/schemas/refresh)
 // > and wait for it to complete before fetching this endpoint if you need
 // > up-to-date field definitions.
+//
+// Example:
+//
+//	client.Schemas.Get(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "public.users",
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	// Unique identifier of the connection.
@@ -296,6 +371,14 @@ func (c *Client) Get(
 // > 📘 If the schema's field definitions are stale, refresh them first with
 // > [`POST /api/connections/{id}/schemas/refresh`](../../../../../../api-reference/schemas/refresh) to ensure
 // > the sample aligns with the current schema structure.
+//
+// Example:
+//
+//	client.Schemas.GetRecords(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "public.users",
+//	)
 func (c *Client) GetRecords(
 	ctx context.Context,
 	// Unique identifier of the connection.

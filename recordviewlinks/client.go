@@ -20,20 +20,38 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
 }
 
 // Creates a short-lived capability link for viewing one stored record snapshot.
+//
+// Example:
+//
+//	request := &polytomic.CreateRecordViewLinkRequest{
+//	    ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    LookupKeyField: "lookup_key_field",
+//	    LookupKeyValue: "lookup_key_value",
+//	    SchemaID: "schema_id",
+//	}
+//	client.RecordViewLinks.Create(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Create(
 	ctx context.Context,
 	request *polytomic.CreateRecordViewLinkRequest,
@@ -51,6 +69,17 @@ func (c *Client) Create(
 }
 
 // Checks whether record-view links can be created for a connection schema.
+//
+// Example:
+//
+//	request := &polytomic.RecordViewLinksGetCapabilitiesRequest{
+//	    ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    SchemaID: "schema_id",
+//	}
+//	client.RecordViewLinks.GetCapabilities(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) GetCapabilities(
 	ctx context.Context,
 	request *polytomic.RecordViewLinksGetCapabilitiesRequest,

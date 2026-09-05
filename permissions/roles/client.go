@@ -21,14 +21,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -42,6 +47,12 @@ func NewClient(options *core.RequestOptions) *Client {
 //
 // To inspect or modify a specific role, use
 // [`GET /api/permissions/roles/{id}`](../../../api-reference/permissions/roles/get).
+//
+// Example:
+//
+//	client.Permissions.Roles.List(
+//	    context.TODO(),
+//	)
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -63,6 +74,16 @@ func (c *Client) List(
 //
 // To attach the role to resources, create or update a policy using
 // [`POST /api/permissions/policies`](../../../api-reference/permissions/policies/create).
+//
+// Example:
+//
+//	request := &permissions.CreateRoleRequest{
+//	    Name: "Custom",
+//	}
+//	client.Permissions.Roles.Create(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Create(
 	ctx context.Context,
 	request *permissions.CreateRoleRequest,
@@ -82,6 +103,13 @@ func (c *Client) Create(
 // Returns a single permissions role by ID.
 //
 // Returns the role's name, action set, and whether it is a built-in system role.
+//
+// Example:
+//
+//	client.Permissions.Roles.Get(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
@@ -104,6 +132,17 @@ func (c *Client) Get(
 //
 // > 🚧 Built-in system roles (such as Admin and Member) cannot be updated.
 // > Attempting to modify a system role returns an error.
+//
+// Example:
+//
+//	request := &permissions.UpdateRoleRequest{
+//	    Name: "Custom",
+//	}
+//	client.Permissions.Roles.Update(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
@@ -131,6 +170,13 @@ func (c *Client) Update(
 // reference it. Update those policies separately using
 // [`PUT /api/permissions/policies/{id}`](../../../../api-reference/permissions/policies/update) to avoid
 // leaving stale role references.
+//
+// Example:
+//
+//	client.Permissions.Roles.Delete(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Delete(
 	ctx context.Context,
 	id string,

@@ -24,6 +24,10 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		Proxy:             proxy.NewClient(options),
 		SharedConnections: sharedconnections.NewClient(options),
@@ -32,8 +36,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:           options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -47,6 +52,12 @@ func NewClient(options *core.RequestOptions) *Client {
 // - Its category.
 // - Whether the connection type is enabled for the caller's organization.
 // - Which modes (source, destination, enrichment) it can act as.
+//
+// Example:
+//
+//	client.Connections.GetTypes(
+//	    context.TODO(),
+//	)
 func (c *Client) GetTypes(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -69,6 +80,13 @@ func (c *Client) GetTypes(
 //
 // The response is metadata about the shape of the configuration, not a live
 // connection instance and not a set of current credential values.
+//
+// Example:
+//
+//	client.Connections.GetConnectionTypeSchema(
+//	    context.TODO(),
+//	    "postgresql",
+//	)
 func (c *Client) GetConnectionTypeSchema(
 	ctx context.Context,
 	// Connection type identifier (e.g. postgresql, salesforce, hubspot).
@@ -95,6 +113,17 @@ func (c *Client) GetConnectionTypeSchema(
 // When an endpoint requires upstream authorization before it can return values,
 // Polytomic returns an error instead of guessing. In that case, complete the
 // authorization flow first and call the endpoint again.
+//
+// Example:
+//
+//	request := &polytomic.GetConnectionTypeParameterValuesRequestSchema{
+//	    Field: "field",
+//	}
+//	client.Connections.GetTypeParameterValues(
+//	    context.TODO(),
+//	    "type",
+//	    request,
+//	)
 func (c *Client) GetTypeParameterValues(
 	ctx context.Context,
 	type_ string,
@@ -123,6 +152,12 @@ func (c *Client) GetTypeParameterValues(
 // To inspect the data objects available on a specific connection, use
 // [`POST /api/connections/{id}/schemas/refresh`](../../api-reference/schemas/refresh)
 // followed by [`GET /api/connections/{id}/schemas/status`](../../api-reference/schemas/get-status).
+//
+// Example:
+//
+//	client.Connections.List(
+//	    context.TODO(),
+//	)
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -148,6 +183,24 @@ func (c *Client) List(
 // > 📘 Polytomic validates the connection against the upstream service
 // > immediately on creation. The request will fail if the credentials or
 // > endpoint cannot be reached.
+//
+// Example:
+//
+//	request := &polytomic.CreateConnectionRequestSchema{
+//	    Configuration: map[string]any{
+//	        "database": "example",
+//	        "hostname": "postgres.example.com",
+//	        "password": "********",
+//	        "port": 5432,
+//	        "username": "user",
+//	    },
+//	    Name: "My Postgres Connection",
+//	    Type: "postgresql",
+//	}
+//	client.Connections.Create(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Create(
 	ctx context.Context,
 	request *polytomic.CreateConnectionRequestSchema,
@@ -175,6 +228,17 @@ func (c *Client) Create(
 // See also:
 //
 // - [Embedding authentication](../../../guides/embedding-authentication), a guide to using Polytomic Connect.
+//
+// Example:
+//
+//	request := &polytomic.ConnectCardRequest{
+//	    Name: "Salesforce Connection",
+//	    RedirectURL: "redirect_url",
+//	}
+//	client.Connections.Connect(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Connect(
 	ctx context.Context,
 	request *polytomic.ConnectCardRequest,
@@ -196,6 +260,12 @@ func (c *Client) Connect(
 // Returns the trusted metadata stored for a Polytomic Connect session. Authenticate with the opaque Connect token in the `token` query parameter.
 //
 // The response includes the server-enforced connection name, fixed type or whitelist, bound connection ID, completion redirect, branding, and absolute expiration time.
+//
+// Example:
+//
+//	client.Connections.GetConnectSession(
+//	    context.TODO(),
+//	)
 func (c *Client) GetConnectSession(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -222,6 +292,23 @@ func (c *Client) GetConnectSession(
 //
 // The request does not persist any configuration changes even when validation
 // succeeds.
+//
+// Example:
+//
+//	request := &polytomic.TestConnectionRequest{
+//	    Configuration: map[string]any{
+//	        "database": "example",
+//	        "hostname": "postgres.example.com",
+//	        "password": "password",
+//	        "port": 5432,
+//	        "username": "user",
+//	    },
+//	    Type: "postgresql",
+//	}
+//	client.Connections.TestConnection(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) TestConnection(
 	ctx context.Context,
 	request *polytomic.TestConnectionRequest,
@@ -244,6 +331,13 @@ func (c *Client) TestConnection(
 // [`POST /api/connections/{id}/schemas/refresh`](../../../api-reference/schemas/refresh) and
 // track progress via
 // [`GET /api/connections/{id}/schemas/status`](../../../api-reference/schemas/get-status).
+//
+// Example:
+//
+//	client.Connections.Get(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	id string,
@@ -274,6 +368,24 @@ func (c *Client) Get(
 //
 // Syncs that are already running when the update is submitted are not
 // interrupted; the updated configuration takes effect on their next execution.
+//
+// Example:
+//
+//	request := &polytomic.UpdateConnectionRequestSchema{
+//	    Configuration: map[string]any{
+//	        "database": "example",
+//	        "hostname": "postgres.example.com",
+//	        "password": "********",
+//	        "port": 5432,
+//	        "username": "user",
+//	    },
+//	    Name: "My Postgres Connection",
+//	}
+//	client.Connections.Update(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
@@ -298,6 +410,19 @@ func (c *Client) Update(
 // > syncs, or schedules returns `422 connection in use` unless you pass
 // > `force=true`. With `force=true`, the API deletes those dependent
 // > resources before removing the connection.
+//
+// Example:
+//
+//	request := &polytomic.ConnectionsDeleteRequest{
+//	    Force: polytomic.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.Connections.Delete(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Delete(
 	ctx context.Context,
 	id string,
@@ -326,6 +451,13 @@ func (c *Client) Delete(
 // For new setup flows, prefer
 // [`POST /api/connection_types/{type}/parameter_values`](../../../../api-reference/connections/get-type-parameter-values),
 // which lets you resolve completions before the connection has been created.
+//
+// Example:
+//
+//	client.Connections.GetParameterValues(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) GetParameterValues(
 	ctx context.Context,
 	id string,
@@ -357,6 +489,13 @@ func (c *Client) GetParameterValues(
 // integration may report an entirely different set or none at all. Treat `key`
 // as an opaque, backend-defined identifier and use `label` for display; do not
 // assume a fixed vocabulary across connection types.
+//
+// Example:
+//
+//	client.Connections.GetUsage(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) GetUsage(
 	ctx context.Context,
 	// Unique identifier of the connection whose API consumption should be returned.

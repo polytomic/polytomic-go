@@ -21,14 +21,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -45,6 +50,25 @@ func NewClient(options *core.RequestOptions) *Client {
 // For full details about a specific execution — including record counts and error
 // summaries — use
 // [`GET /api/syncs/{sync_id}/executions/{id}`](../../../../api-reference/model-sync/executions/get).
+//
+// Example:
+//
+//	request := &modelsync.ExecutionsListRequest{
+//	    PageToken: polytomic.String(
+//	        "AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==",
+//	    ),
+//	    OnlyCompleted: polytomic.Bool(
+//	        true,
+//	    ),
+//	    Ascending: polytomic.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.ModelSync.Executions.List(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) List(
 	ctx context.Context,
 	syncID string,
@@ -68,6 +92,14 @@ func (c *Client) List(
 // For the log files produced by this execution, use
 // [`GET /api/syncs/{sync_id}/executions/{id}/{type}`](../../../../../api-reference/model-sync/executions/get-log-urls) to retrieve
 // signed URLs grouped by log category.
+//
+// Example:
+//
+//	client.ModelSync.Executions.Get(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	syncID string,
@@ -87,6 +119,14 @@ func (c *Client) Get(
 }
 
 // Requests cancellation of a model sync execution.
+//
+// Example:
+//
+//	client.ModelSync.Executions.Cancel(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Cancel(
 	ctx context.Context,
 	syncID string,
@@ -107,6 +147,23 @@ func (c *Client) Cancel(
 }
 
 // Fetch the latest console log entries for a sync execution. Returns the most recent 50 entries.
+//
+// Example:
+//
+//	request := &modelsync.ExecutionsGetConsoleLogsRequest{
+//	    Limit: polytomic.Int(
+//	        50,
+//	    ),
+//	    After: polytomic.String(
+//	        "1744311099250-0",
+//	    ),
+//	}
+//	client.ModelSync.Executions.GetConsoleLogs(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "0ecd09c1-b901-4d27-9053-f0367c427254",
+//	    request,
+//	)
 func (c *Client) GetConsoleLogs(
 	ctx context.Context,
 	syncID string,
@@ -128,6 +185,14 @@ func (c *Client) GetConsoleLogs(
 }
 
 // Returns an index of the record-log types produced by this model sync execution, with the per-type endpoint to retrieve signed URLs for each type's segment files.
+//
+// Example:
+//
+//	client.ModelSync.Executions.GetLogsIndex(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) GetLogsIndex(
 	ctx context.Context,
 	// Unique identifier of the model sync.
@@ -156,6 +221,15 @@ func (c *Client) GetLogsIndex(
 // > 🚧 Signed URLs expire after a short period. If a URL has expired, re-request
 // > it from this endpoint. To fetch a single file's URL directly, use
 // > [`GET /api/syncs/{sync_id}/executions/{id}/{type}/{filename}`](../../../../../../api-reference/model-sync/executions/get-logs).
+//
+// Example:
+//
+//	client.ModelSync.Executions.GetLogURLs(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    polytomic.ExecutionLogTypeRecords.Ptr(),
+//	)
 func (c *Client) GetLogURLs(
 	ctx context.Context,
 	syncID string,
@@ -182,6 +256,16 @@ func (c *Client) GetLogURLs(
 // in the `Location` header, and the response body is empty. The URL expires
 // after a short period, so call this endpoint again to obtain a fresh URL if it
 // expires before you download the file.
+//
+// Example:
+//
+//	client.ModelSync.Executions.GetLogs(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    "0ecd09c1-b901-4d27-9053-f0367c427254",
+//	    polytomic.ExecutionLogTypeRecords.Ptr(),
+//	    "file.json",
+//	)
 func (c *Client) GetLogs(
 	ctx context.Context,
 	syncID string,

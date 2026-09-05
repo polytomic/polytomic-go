@@ -21,20 +21,32 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
 }
 
 // Returns the error handling settings for a bulk sync.
+//
+// Example:
+//
+//	client.BulkSync.ErrorHandling.Get(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.
@@ -53,6 +65,15 @@ func (c *Client) Get(
 }
 
 // Updates the error handling settings for a bulk sync.
+//
+// Example:
+//
+//	request := &bulksync.UpdateBulkSyncErrorHandlingRequest{}
+//	client.BulkSync.ErrorHandling.Update(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) Update(
 	ctx context.Context,
 	// Unique identifier of the bulk sync.

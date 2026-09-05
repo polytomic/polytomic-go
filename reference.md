@@ -38,15 +38,14 @@ optional, and the default and maximum page size is 50 syncs.
 
 ```go
 request := &polytomic.BulkSyncListRequest{
-        Active: polytomic.Bool(
-            true,
-        ),
-    }
-client.BulkSync.List(
-        context.TODO(),
-        request,
-    )
+    Active: polytomic.Bool(
+        true,
+    ),
 }
+client.BulkSync.List(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -142,21 +141,20 @@ When omitted, automatic discovery defaults are conservative:
 
 ```go
 request := &polytomic.CreateBulkSyncRequest{
-        DefaultSchedule: &polytomic.BulkSyncDefaultScheduleRequest{
-            Frequency: polytomic.ScheduleFrequencyManual,
-        },
-        DestinationConfiguration: map[string]any{
-            "schema": "my_schema",
-        },
-        DestinationConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
-        Name: "My Bulk Sync",
-        SourceConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
-    }
-client.BulkSync.Create(
-        context.TODO(),
-        request,
-    )
+    DefaultSchedule: &polytomic.BulkSyncDefaultScheduleRequest{
+        Frequency: polytomic.ScheduleFrequencyManual,
+    },
+    DestinationConfiguration: map[string]any{
+        "schema": "my_schema",
+    },
+    DestinationConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+    Name: "My Bulk Sync",
+    SourceConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
 }
+client.BulkSync.Create(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -363,16 +361,15 @@ schedules, and discovery settings.
 
 ```go
 request := &polytomic.BulkSyncGetRequest{
-        RefreshSchemas: polytomic.Bool(
-            true,
-        ),
-    }
-client.BulkSync.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    RefreshSchemas: polytomic.Bool(
+        true,
+    ),
 }
+client.BulkSync.Get(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -469,22 +466,21 @@ non-empty setting, including schema and field selections.
 
 ```go
 request := &polytomic.UpdateBulkSyncRequest{
-        DefaultSchedule: &polytomic.BulkSyncDefaultScheduleRequest{
-            Frequency: polytomic.ScheduleFrequencyManual,
-        },
-        DestinationConfiguration: map[string]any{
-            "schema": "my_schema",
-        },
-        DestinationConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
-        Name: "My Bulk Sync",
-        SourceConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
-    }
-client.BulkSync.Update(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    DefaultSchedule: &polytomic.BulkSyncDefaultScheduleRequest{
+        Frequency: polytomic.ScheduleFrequencyManual,
+    },
+    DestinationConfiguration: map[string]any{
+        "schema": "my_schema",
+    },
+    DestinationConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+    Name: "My Bulk Sync",
+    SourceConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
 }
+client.BulkSync.Update(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -697,16 +693,15 @@ removed.
 
 ```go
 request := &polytomic.BulkSyncDeleteRequest{
-        RefreshSchemas: polytomic.Bool(
-            true,
-        ),
-    }
-client.BulkSync.Delete(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    RefreshSchemas: polytomic.Bool(
+        true,
+    ),
 }
+client.BulkSync.Delete(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -778,14 +773,13 @@ any execution that is currently in progress.
 
 ```go
 request := &polytomic.ActivateSyncInput{
-        Active: true,
-    }
-client.BulkSync.Activate(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Active: true,
 }
+client.BulkSync.Activate(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -854,10 +848,9 @@ cancellation has taken effect.
 
 ```go
 client.BulkSync.Cancel(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -928,11 +921,10 @@ If another execution is already running, the endpoint returns `409 Conflict`.
 ```go
 request := &polytomic.StartBulkSyncRequest{}
 client.BulkSync.Start(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -1029,10 +1021,9 @@ For the full details of a specific run, including per-schema breakdowns, use
 
 ```go
 client.BulkSync.GetStatus(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -1100,16 +1091,15 @@ large sources.
 
 ```go
 request := &polytomic.BulkSyncGetSourceRequest{
-        IncludeFields: polytomic.Bool(
-            true,
-        ),
-    }
-client.BulkSync.GetSource(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    IncludeFields: polytomic.Bool(
+        true,
+    ),
 }
+client.BulkSync.GetSource(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -1182,10 +1172,9 @@ connection as its destination. Required fields vary by connection type.
 
 ```go
 client.BulkSync.GetDestination(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -1248,9 +1237,8 @@ Each entry includes per-type metadata:
 
 ```go
 client.Connections.GetTypes(
-        context.TODO(),
-    )
-}
+    context.TODO(),
+)
 ```
 </dd>
 </dl>
@@ -1297,10 +1285,9 @@ connection instance and not a set of current credential values.
 
 ```go
 client.Connections.GetConnectionTypeSchema(
-        context.TODO(),
-        "postgresql",
-    )
-}
+    context.TODO(),
+    "postgresql",
+)
 ```
 </dd>
 </dl>
@@ -1363,14 +1350,13 @@ authorization flow first and call the endpoint again.
 
 ```go
 request := &polytomic.GetConnectionTypeParameterValuesRequestSchema{
-        Field: "field",
-    }
-client.Connections.GetTypeParameterValues(
-        context.TODO(),
-        "type",
-        request,
-    )
+    Field: "field",
 }
+client.Connections.GetTypeParameterValues(
+    context.TODO(),
+    "type",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -1466,9 +1452,8 @@ followed by [`GET /api/connections/{id}/schemas/status`](../../api-reference/sch
 
 ```go
 client.Connections.List(
-        context.TODO(),
-    )
-}
+    context.TODO(),
+)
 ```
 </dd>
 </dl>
@@ -1518,21 +1503,20 @@ for the required and optional fields for each type.
 
 ```go
 request := &polytomic.CreateConnectionRequestSchema{
-        Configuration: map[string]any{
-            "database": "example",
-            "hostname": "postgres.example.com",
-            "password": "********",
-            "port": 5432,
-            "username": "user",
-        },
-        Name: "My Postgres Connection",
-        Type: "postgresql",
-    }
-client.Connections.Create(
-        context.TODO(),
-        request,
-    )
+    Configuration: map[string]any{
+        "database": "example",
+        "hostname": "postgres.example.com",
+        "password": "********",
+        "port": 5432,
+        "username": "user",
+    },
+    Name: "My Postgres Connection",
+    Type: "postgresql",
 }
+client.Connections.Create(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -1653,14 +1637,13 @@ See also:
 
 ```go
 request := &polytomic.ConnectCardRequest{
-        Name: "Salesforce Connection",
-        RedirectURL: "redirect_url",
-    }
-client.Connections.Connect(
-        context.TODO(),
-        request,
-    )
+    Name: "Salesforce Connection",
+    RedirectURL: "redirect_url",
 }
+client.Connections.Connect(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -1783,9 +1766,8 @@ The response includes the server-enforced connection name, fixed type or whiteli
 
 ```go
 client.Connections.GetConnectSession(
-        context.TODO(),
-    )
-}
+    context.TODO(),
+)
 ```
 </dd>
 </dl>
@@ -1836,20 +1818,19 @@ succeeds.
 
 ```go
 request := &polytomic.TestConnectionRequest{
-        Configuration: map[string]any{
-            "database": "example",
-            "hostname": "postgres.example.com",
-            "password": "password",
-            "port": 5432,
-            "username": "user",
-        },
-        Type: "postgresql",
-    }
-client.Connections.TestConnection(
-        context.TODO(),
-        request,
-    )
+    Configuration: map[string]any{
+        "database": "example",
+        "hostname": "postgres.example.com",
+        "password": "password",
+        "port": 5432,
+        "username": "user",
+    },
+    Type: "postgresql",
 }
+client.Connections.TestConnection(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -1925,10 +1906,9 @@ track progress via
 
 ```go
 client.Connections.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -1996,21 +1976,20 @@ interrupted; the updated configuration takes effect on their next execution.
 
 ```go
 request := &polytomic.UpdateConnectionRequestSchema{
-        Configuration: map[string]any{
-            "database": "example",
-            "hostname": "postgres.example.com",
-            "password": "********",
-            "port": 5432,
-            "username": "user",
-        },
-        Name: "My Postgres Connection",
-    }
-client.Connections.Update(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Configuration: map[string]any{
+        "database": "example",
+        "hostname": "postgres.example.com",
+        "password": "********",
+        "port": 5432,
+        "username": "user",
+    },
+    Name: "My Postgres Connection",
 }
+client.Connections.Update(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -2134,16 +2113,15 @@ Deletes a connection.
 
 ```go
 request := &polytomic.ConnectionsDeleteRequest{
-        Force: polytomic.Bool(
-            true,
-        ),
-    }
-client.Connections.Delete(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Force: polytomic.Bool(
+        true,
+    ),
 }
+client.Connections.Delete(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -2215,10 +2193,9 @@ which lets you resolve completions before the connection has been created.
 
 ```go
 client.Connections.GetParameterValues(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -2287,10 +2264,9 @@ assume a fixed vocabulary across connection types.
 
 ```go
 client.Connections.GetUsage(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -2354,16 +2330,15 @@ endpoint to understand how long they will remain available.
 
 ```go
 request := &polytomic.RunQueryRequest{
-        Query: polytomic.String(
-            "SELECT * FROM table",
-        ),
-    }
-client.QueryRunner.RunQuery(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Query: polytomic.String(
+        "SELECT * FROM table",
+    ),
 }
+client.QueryRunner.RunQuery(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -2438,16 +2413,15 @@ the endpoint returns `404`.
 
 ```go
 request := &polytomic.QueryRunnerGetQueryRequest{
-        Page: polytomic.String(
-            "page",
-        ),
-    }
-client.QueryRunner.GetQuery(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Page: polytomic.String(
+        "page",
+    ),
 }
+client.QueryRunner.GetQuery(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -2522,12 +2496,11 @@ the whole batch was applied uniformly.
 ```go
 request := &polytomic.UpsertSchemaFieldRequest{}
 client.Schemas.UpsertField(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "public.users",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "public.users",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -2607,12 +2580,11 @@ the source cannot be deleted here; they are managed through schema refresh.
 
 ```go
 client.Schemas.DeleteField(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "public.users",
-        "first_name",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "public.users",
+    "first_name",
+)
 ```
 </dd>
 </dl>
@@ -2684,13 +2656,12 @@ Edits a single field on a schema, creating an override for a detected field if n
 ```go
 request := &polytomic.PatchSchemaFieldRequest{}
 client.Schemas.PatchField(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "schema_id",
-        "field_id",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "schema_id",
+    "field_id",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -2813,12 +2784,11 @@ identifier for your use case.
 ```go
 request := &polytomic.SetPrimaryKeysRequest{}
 client.Schemas.SetPrimaryKeys(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "public.users",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "public.users",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -2893,11 +2863,10 @@ instead.
 
 ```go
 client.Schemas.ResetPrimaryKeys(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "public.users",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "public.users",
+)
 ```
 </dd>
 </dl>
@@ -2979,10 +2948,9 @@ until the refresh completes, then fetch the schemas you need.
 
 ```go
 client.Schemas.Refresh(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -3053,10 +3021,9 @@ are available for use in sync configuration.
 
 ```go
 client.Schemas.GetStatus(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -3119,11 +3086,10 @@ stale.
 
 ```go
 client.Schemas.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "public.users",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "public.users",
+)
 ```
 </dd>
 </dl>
@@ -3197,11 +3163,10 @@ committing to a sync configuration, not for full data export.
 
 ```go
 client.Schemas.GetRecords(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "public.users",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "public.users",
+)
 ```
 </dd>
 </dl>
@@ -3278,11 +3243,10 @@ configuration fields required to set it up. Pass those values in the
 ```go
 request := &polytomic.ModelsGetEnrichmentSourceRequest{}
 client.Models.GetEnrichmentSource(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -3352,11 +3316,10 @@ expected inputs.
 ```go
 request := &polytomic.EnrichmentInputFieldsRequest{}
 client.Models.Post(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -3424,22 +3387,21 @@ configuration before calling [`POST /api/models`](../../api-reference/models/cre
 
 ```go
 request := &polytomic.ModelsPreviewRequest{
-        Async: polytomic.Bool(
-            true,
-        ),
-        Body: &polytomic.CreateModelRequest{
-            Configuration: map[string]any{
-                "table": "public.users",
-            },
-            ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
-            Name: "Users",
+    Async: polytomic.Bool(
+        true,
+    ),
+    Body: &polytomic.CreateModelRequest{
+        Configuration: map[string]any{
+            "table": "public.users",
         },
-    }
-client.Models.Preview(
-        context.TODO(),
-        request,
-    )
+        ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+        Name: "Users",
+    },
 }
+client.Models.Preview(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -3511,9 +3473,8 @@ non-positive values fall back to the same default.
 
 ```go
 client.Models.List(
-        context.TODO(),
-    )
-}
+    context.TODO(),
+)
 ```
 </dd>
 </dl>
@@ -3561,22 +3522,21 @@ whether a connection type supports use as a source.
 
 ```go
 request := &polytomic.ModelsCreateRequest{
-        Async: polytomic.Bool(
-            true,
-        ),
-        Body: &polytomic.CreateModelRequest{
-            Configuration: map[string]any{
-                "table": "public.users",
-            },
-            ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
-            Name: "Users",
+    Async: polytomic.Bool(
+        true,
+    ),
+    Body: &polytomic.CreateModelRequest{
+        Configuration: map[string]any{
+            "table": "public.users",
         },
-    }
-client.Models.Create(
-        context.TODO(),
-        request,
-    )
+        ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+        Name: "Users",
+    },
 }
+client.Models.Create(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -3643,16 +3603,15 @@ changes, use [`GET /api/models/{id}/sample`](../../../api-reference/models/sampl
 
 ```go
 request := &polytomic.ModelsGetRequest{
-        Async: polytomic.Bool(
-            true,
-        ),
-    }
-client.Models.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Async: polytomic.Bool(
+        true,
+    ),
 }
+client.Models.Get(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -3726,21 +3685,20 @@ next sync execution that uses this model.
 
 ```go
 request := &polytomic.UpdateModelRequest{
-        Async: polytomic.Bool(
-            false,
-        ),
-        Configuration: map[string]any{
-            "table": "public.users",
-        },
-        ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
-        Name: "Users",
-    }
-client.Models.Update(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Async: polytomic.Bool(
+        false,
+    ),
+    Configuration: map[string]any{
+        "table": "public.users",
+    },
+    ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+    Name: "Users",
 }
+client.Models.Update(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -3910,16 +3868,15 @@ Deletes a model.
 
 ```go
 request := &polytomic.ModelsDeleteRequest{
-        Async: polytomic.Bool(
-            true,
-        ),
-    }
-client.Models.Delete(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Async: polytomic.Bool(
+        true,
+    ),
 }
+client.Models.Delete(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -3986,16 +3943,15 @@ work runs as a background job.
 
 ```go
 request := &polytomic.ModelsSampleRequest{
-        Async: polytomic.Bool(
-            true,
-        ),
-    }
-client.Models.Sample(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Async: polytomic.Bool(
+        true,
+    ),
 }
+client.Models.Sample(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -4065,11 +4021,10 @@ sync mapping with
 ```go
 request := &polytomic.ModelSyncGetSourceRequest{}
 client.ModelSync.GetSource(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -4144,11 +4099,10 @@ The available source configuration parameters are described by
 ```go
 request := &polytomic.ModelSyncGetSourceFieldsRequest{}
 client.ModelSync.GetSourceFields(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -4224,25 +4178,24 @@ To inspect a specific sync in more detail, follow up with
 
 ```go
 request := &polytomic.ModelSyncListRequest{
-        Active: polytomic.Bool(
-            true,
-        ),
-        Mode: polytomic.ModelsyncSyncTargetModeCreate.Ptr(),
-        TargetConnectionID: polytomic.String(
-            "0b155265-c537-44c9-9359-a3ceb468a4da",
-        ),
-        PageToken: polytomic.String(
-            "AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==",
-        ),
-        Limit: polytomic.Int(
-            50,
-        ),
-    }
-client.ModelSync.List(
-        context.TODO(),
-        request,
-    )
+    Active: polytomic.Bool(
+        true,
+    ),
+    Mode: polytomic.ModelsyncSyncTargetModeCreate.Ptr(),
+    TargetConnectionID: polytomic.String(
+        "0b155265-c537-44c9-9359-a3ceb468a4da",
+    ),
+    PageToken: polytomic.String(
+        "AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==",
+    ),
+    Limit: polytomic.Int(
+        50,
+    ),
 }
+client.ModelSync.List(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -4386,23 +4339,22 @@ a connection supports target creation.
 
 ```go
 request := &polytomic.CreateModelSyncV5Request{
-        Fields: []*polytomic.SyncField{
-            &polytomic.SyncField{
-                Target: "name",
-            },
+    Fields: []*polytomic.SyncField{
+        &polytomic.SyncField{
+            Target: "name",
         },
-        Mode: polytomic.ModelsyncSyncTargetModeCreate,
-        Name: "Users Sync",
-        Schedule: &polytomic.Schedule{},
-        Target: &polytomic.ModelSyncV5Target{
-            ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
-        },
-    }
-client.ModelSync.Create(
-        context.TODO(),
-        request,
-    )
+    },
+    Mode: polytomic.ModelsyncSyncTargetModeCreate,
+    Name: "Users Sync",
+    Schedule: &polytomic.Schedule{},
+    Target: &polytomic.ModelSyncV5Target{
+        ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+    },
 }
+client.ModelSync.Create(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -4605,9 +4557,8 @@ when creating or updating a sync via
 
 ```go
 client.ModelSync.GetScheduleOptions(
-        context.TODO(),
-    )
-}
+    context.TODO(),
+)
 ```
 </dd>
 </dl>
@@ -4651,10 +4602,9 @@ executions, use [`GET /api/syncs/{id}/executions`](../../../api-reference/model-
 
 ```go
 client.ModelSync.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -4723,24 +4673,23 @@ take effect on the sync's next execution.
 
 ```go
 request := &polytomic.UpdateModelSyncV5Request{
-        Fields: []*polytomic.SyncField{
-            &polytomic.SyncField{
-                Target: "name",
-            },
+    Fields: []*polytomic.SyncField{
+        &polytomic.SyncField{
+            Target: "name",
         },
-        Mode: polytomic.ModelsyncSyncTargetModeCreate,
-        Name: "Users Sync",
-        Schedule: &polytomic.Schedule{},
-        Target: &polytomic.ModelSyncV5Target{
-            ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
-        },
-    }
-client.ModelSync.Update(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    },
+    Mode: polytomic.ModelsyncSyncTargetModeCreate,
+    Name: "Users Sync",
+    Schedule: &polytomic.Schedule{},
+    Target: &polytomic.ModelSyncV5Target{
+        ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+    },
 }
+client.ModelSync.Update(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -4951,10 +4900,9 @@ record is removed. Deleted syncs cannot be recovered; recreate them using
 
 ```go
 client.ModelSync.Delete(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -5016,14 +4964,13 @@ Only active syncs execute on schedule or in response to a manual trigger. Set
 
 ```go
 request := &polytomic.ActivateSyncInput{
-        Active: true,
-    }
-client.ModelSync.Activate(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Active: true,
 }
+client.ModelSync.Activate(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -5092,10 +5039,9 @@ cancellation has taken effect.
 
 ```go
 client.ModelSync.Cancel(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -5155,11 +5101,10 @@ Starts a new execution of a model sync.
 ```go
 request := &polytomic.StartSyncRequest{}
 client.ModelSync.Start(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -5242,10 +5187,9 @@ history, use [`GET /api/syncs/{id}/executions`](../../../../api-reference/model-
 
 ```go
 client.ModelSync.GetStatus(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -5347,10 +5291,9 @@ organization, the endpoint returns `404`.
 
 ```go
 client.Entities.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -5448,10 +5391,9 @@ If the UUID does not exist, the endpoint returns `404`.
 
 ```go
 client.Entities.GetForPartner(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -5518,31 +5460,30 @@ narrow results to a specific category of activity.
 
 ```go
 request := &polytomic.EventsListRequest{
-        OrganizationID: polytomic.String(
-            "248df4b7-aa70-47b8-a036-33ac447e668d",
+    OrganizationID: polytomic.String(
+        "248df4b7-aa70-47b8-a036-33ac447e668d",
+    ),
+    Type: polytomic.String(
+        "type",
+    ),
+    StartingAfter: polytomic.Time(
+        polytomic.MustParseDateTime(
+            "2020-01-01T00:00:00Z",
         ),
-        Type: polytomic.String(
-            "type",
+    ),
+    EndingBefore: polytomic.Time(
+        polytomic.MustParseDateTime(
+            "2020-01-01T00:00:00Z",
         ),
-        StartingAfter: polytomic.Time(
-            polytomic.MustParseDateTime(
-                "2020-01-01T00:00:00Z",
-            ),
-        ),
-        EndingBefore: polytomic.Time(
-            polytomic.MustParseDateTime(
-                "2020-01-01T00:00:00Z",
-            ),
-        ),
-        Limit: polytomic.Int(
-            1,
-        ),
-    }
-client.Events.List(
-        context.TODO(),
-        request,
-    )
+    ),
+    Limit: polytomic.Int(
+        1,
+    ),
 }
+client.Events.List(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -5632,9 +5573,8 @@ Use the identifiers returned here as the `event_type` filter value when calling
 
 ```go
 client.Events.GetTypes(
-        context.TODO(),
-    )
-}
+    context.TODO(),
+)
 ```
 </dd>
 </dl>
@@ -5675,18 +5615,17 @@ Lists profile-authorized connections and capabilities for the current Harbor cre
 
 ```go
 request := &polytomic.HarborsListAuthorizedConnectionsRequest{
-        Limit: polytomic.Int(
-            1,
-        ),
-        PageToken: polytomic.String(
-            "page_token",
-        ),
-    }
-client.Harbors.ListAuthorizedConnections(
-        context.TODO(),
-        request,
-    )
+    Limit: polytomic.Int(
+        1,
+    ),
+    PageToken: polytomic.String(
+        "page_token",
+    ),
 }
+client.Harbors.ListAuthorizedConnections(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -5765,19 +5704,18 @@ Lists one bounded page of schema resources authorized by the current Harbor prof
 
 ```go
 request := &polytomic.HarborsListAuthorizedSchemasRequest{
-        Limit: polytomic.Int(
-            1,
-        ),
-        PageToken: polytomic.String(
-            "page_token",
-        ),
-    }
-client.Harbors.ListAuthorizedSchemas(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Limit: polytomic.Int(
+        1,
+    ),
+    PageToken: polytomic.String(
+        "page_token",
+    ),
 }
+client.Harbors.ListAuthorizedSchemas(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -5865,12 +5803,11 @@ Returns one schema resource authorized by the current Harbor profile.
 ```go
 request := &polytomic.HarborsGetAuthorizedSchemaRequest{}
 client.Harbors.GetAuthorizedSchema(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "schema_id",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "schema_id",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -5950,10 +5887,9 @@ Registers a service-attested MCP transport session for a scoped Harbor credentia
 ```go
 request := &polytomic.RegisterHarborSessionRequest{}
 client.Harbors.RegisterSession(
-        context.TODO(),
-        request,
-    )
-}
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -6065,11 +6001,10 @@ Closes a service-attested Harbor MCP transport session.
 ```go
 request := &polytomic.HarborsCloseSessionRequest{}
 client.Harbors.CloseSession(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -6174,18 +6109,17 @@ Returns Harbors in creation order. Use `pagination.next_page_token` to continue 
 
 ```go
 request := &polytomic.HarborsListRequest{
-        Limit: polytomic.Int(
-            50,
-        ),
-        PageToken: polytomic.String(
-            "page_token",
-        ),
-    }
-client.Harbors.List(
-        context.TODO(),
-        request,
-    )
+    Limit: polytomic.Int(
+        50,
+    ),
+    PageToken: polytomic.String(
+        "page_token",
+    ),
 }
+client.Harbors.List(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -6252,14 +6186,13 @@ For `customer_managed`, `backing_connection_id` must identify a queryable Connec
 
 ```go
 request := &polytomic.CreateHarborRequest{
-        BackingMode: "managed",
-        Name: "Revenue Operations",
-    }
-client.Harbors.Create(
-        context.TODO(),
-        request,
-    )
+    BackingMode: "managed",
+    Name: "Revenue Operations",
 }
+client.Harbors.Create(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -6348,10 +6281,9 @@ The response exposes the backing Connection ID but not the internal profile used
 
 ```go
 client.Harbors.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -6408,14 +6340,13 @@ This operation does not change `backing_mode` or `backing_connection_id`.
 
 ```go
 request := &polytomic.UpdateHarborRequest{
-        Name: "Revenue Operations",
-    }
-client.Harbors.Update(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Name: "Revenue Operations",
 }
+client.Harbors.Update(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -6490,10 +6421,9 @@ Deletes a Harbor and revokes its credentials.
 
 ```go
 client.Harbors.Delete(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -6554,19 +6484,18 @@ its own Harbor.
 
 ```go
 request := &polytomic.HarborsListContextsRequest{
-        Limit: polytomic.Int(
-            50,
-        ),
-        PageToken: polytomic.String(
-            "page_token",
-        ),
-    }
-client.Harbors.ListContexts(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Limit: polytomic.Int(
+        50,
+    ),
+    PageToken: polytomic.String(
+        "page_token",
+    ),
 }
+client.Harbors.ListContexts(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -6655,15 +6584,14 @@ The new document belongs only to this Harbor. Context documents cannot be attach
 
 ```go
 request := &polytomic.CreateHarborContextRequest{
-        Content: "Bookings use the contract signed date...",
-        Title: "Revenue definitions",
-    }
-client.Harbors.CreateContext(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Content: "Bookings use the contract signed date...",
+    Title: "Revenue definitions",
 }
+client.Harbors.CreateContext(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -6750,19 +6678,18 @@ operations continue to return published content only.
 
 ```go
 request := &polytomic.HarborsListContextDraftsRequest{
-        Limit: polytomic.Int(
-            50,
-        ),
-        PageToken: polytomic.String(
-            "page_token",
-        ),
-    }
-client.Harbors.ListContextDrafts(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Limit: polytomic.Int(
+        50,
+    ),
+    PageToken: polytomic.String(
+        "page_token",
+    ),
 }
+client.Harbors.ListContextDrafts(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -6842,15 +6769,14 @@ be published immediately.
 
 ```go
 request := &polytomic.CreateHarborContextDraftRequest{
-        Content: "Bookings use the contract signed date...",
-        Title: "Revenue definitions",
-    }
-client.Harbors.CreateContextDraft(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Content: "Bookings use the contract signed date...",
+    Title: "Revenue definitions",
 }
+client.Harbors.CreateContextDraft(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -6944,12 +6870,11 @@ its own Harbor.
 ```go
 request := &polytomic.HarborsGetContextRequest{}
 client.Harbors.GetContext(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -7033,16 +6958,15 @@ A direct publication leaves an existing draft unchanged.
 
 ```go
 request := &polytomic.SaveHarborContextRequest{
-        Content: "Bookings use the contract signed date...",
-        Title: "Revenue definitions",
-    }
-client.Harbors.UpdateContext(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Content: "Bookings use the contract signed date...",
+    Title: "Revenue definitions",
 }
+client.Harbors.UpdateContext(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -7156,12 +7080,11 @@ Deleting a context document does not affect the Harbor or its other context docu
 ```go
 request := &polytomic.HarborsDeleteContextRequest{}
 client.Harbors.DeleteContext(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -7246,12 +7169,11 @@ version. Creator and updater IDs are null when their actor type is `system`.
 ```go
 request := &polytomic.HarborsGetContextDraftRequest{}
 client.Harbors.GetContextDraft(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -7340,16 +7262,15 @@ ID.
 
 ```go
 request := &polytomic.SaveHarborContextDraftRequest{
-        Content: "Bookings use the contract signed date...",
-        Title: "Revenue definitions",
-    }
-client.Harbors.SaveContextDraft(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Content: "Bookings use the contract signed date...",
+    Title: "Revenue definitions",
 }
+client.Harbors.SaveContextDraft(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -7465,12 +7386,11 @@ discarding it also removes the otherwise empty context identity.
 ```go
 request := &polytomic.HarborsDeleteContextDraftRequest{}
 client.Harbors.DeleteContextDraft(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -7558,12 +7478,11 @@ can compare it with the current version before discarding and recreating it.
 ```go
 request := &polytomic.HarborsPromoteContextDraftRequest{}
 client.Harbors.PromoteContextDraft(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -7655,20 +7574,19 @@ its own Harbor.
 
 ```go
 request := &polytomic.HarborsListContextVersionsRequest{
-        Limit: polytomic.Int(
-            50,
-        ),
-        PageToken: polytomic.String(
-            "page_token",
-        ),
-    }
-client.Harbors.ListContextVersions(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Limit: polytomic.Int(
+        50,
+    ),
+    PageToken: polytomic.String(
+        "page_token",
+    ),
 }
+client.Harbors.ListContextVersions(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -7770,13 +7688,12 @@ Published versions cannot be changed or deleted. System publications have
 ```go
 request := &polytomic.HarborsGetContextVersionRequest{}
 client.Harbors.GetContextVersion(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -7865,19 +7782,18 @@ Each item contains a masked `key_hint`. Polytomic never returns a credential pla
 
 ```go
 request := &polytomic.HarborsListKeysRequest{
-        Limit: polytomic.Int(
-            50,
-        ),
-        PageToken: polytomic.String(
-            "page_token",
-        ),
-    }
-client.Harbors.ListKeys(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Limit: polytomic.Int(
+        50,
+    ),
+    PageToken: polytomic.String(
+        "page_token",
+    ),
 }
+client.Harbors.ListKeys(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -7950,10 +7866,9 @@ Store the returned `value` securely. Polytomic returns it only in this response.
 
 ```go
 client.Harbors.CreateKey(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -8010,11 +7925,10 @@ Revocation affects only the selected credential. Other active Harbor credentials
 
 ```go
 client.Harbors.DeleteKey(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -8078,11 +7992,10 @@ Resolves documented source table and field identities to the names a Harbor's ba
 ```go
 request := &polytomic.ResolveHarborSourceMappingsRequest{}
 client.Harbors.ResolveSourceMappings(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -8177,10 +8090,9 @@ as healthy, stale, or unhealthy.
 
 ```go
 client.Harbors.GetStatus(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -8237,19 +8149,18 @@ The response contains only Harbor-only users currently assigned to this Harbor.
 
 ```go
 request := &polytomic.HarborsListUsersRequest{
-        Limit: polytomic.Int(
-            50,
-        ),
-        PageToken: polytomic.String(
-            "page_token",
-        ),
-    }
-client.Harbors.ListUsers(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Limit: polytomic.Int(
+        50,
+    ),
+    PageToken: polytomic.String(
+        "page_token",
+    ),
 }
+client.Harbors.ListUsers(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -8322,14 +8233,13 @@ The invited account is restricted to assigned Harbors and does not receive regul
 
 ```go
 request := &polytomic.InviteHarborUserRequest{
-        Email: "analyst@example.com",
-    }
-client.Harbors.InviteUser(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Email: "analyst@example.com",
 }
+client.Harbors.InviteUser(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -8394,11 +8304,10 @@ The assignment is idempotent. Regular Polytomic users cannot be assigned because
 
 ```go
 client.Harbors.AssignUser(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -8463,11 +8372,10 @@ This removes only the Harbor assignment. The organization user remains available
 
 ```go
 client.Harbors.UnassignUser(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -8541,11 +8449,10 @@ Only specific job types are supported by this endpoint. Passing an unknown
 
 ```go
 client.Jobs.Get(
-        context.TODO(),
-        "createmodel",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "createmodel",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -8619,9 +8526,8 @@ accepted or rejected by endpoints that are limited to particular caller types.
 
 ```go
 client.Identity.Get(
-        context.TODO(),
-    )
-}
+    context.TODO(),
+)
 ```
 </dd>
 </dl>
@@ -8665,9 +8571,8 @@ To update the subscriber list, use
 
 ```go
 client.Notifications.GetGlobalErrorSubscribers(
-        context.TODO(),
-    )
-}
+    context.TODO(),
+)
 ```
 </dd>
 </dl>
@@ -8714,10 +8619,9 @@ and send the modified list back.
 ```go
 request := &polytomic.GlobalErrorSubscribersRequest{}
 client.Notifications.SetGlobalErrorSubscribers(
-        context.TODO(),
-        request,
-    )
-}
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -8782,9 +8686,8 @@ If you need to enumerate or look up organizations across a partner account, use
 
 ```go
 client.Organization.GetCurrent(
-        context.TODO(),
-    )
-}
+    context.TODO(),
+)
 ```
 </dd>
 </dl>
@@ -8824,9 +8727,8 @@ Returns the organization's record logging settings, including the connection rec
 
 ```go
 client.Organization.GetRecordLogging(
-        context.TODO(),
-    )
-}
+    context.TODO(),
+)
 ```
 </dd>
 </dl>
@@ -8866,13 +8768,12 @@ Replaces the organization's record logging settings. `deliveryConnectionId` is r
 
 ```go
 request := &polytomic.UpdateRecordLoggingSettingsRequest{
-        Enabled: true,
-    }
-client.Organization.UpdateRecordLogging(
-        context.TODO(),
-        request,
-    )
+    Enabled: true,
 }
+client.Organization.UpdateRecordLogging(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -8945,9 +8846,8 @@ If you need only the organization implied by the current credential, use
 
 ```go
 client.Organization.List(
-        context.TODO(),
-    )
-}
+    context.TODO(),
+)
 ```
 </dd>
 </dl>
@@ -8994,13 +8894,12 @@ SSO and OIDC settings supplied at creation time can be updated later via
 
 ```go
 request := &polytomic.CreateOrganizationRequestSchema{
-        Name: "My Organization",
-    }
-client.Organization.Create(
-        context.TODO(),
-        request,
-    )
+    Name: "My Organization",
 }
+client.Organization.Create(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -9101,10 +9000,9 @@ Returns a single organization by ID.
 
 ```go
 client.Organization.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -9166,14 +9064,13 @@ Updates an organization's name and SSO or OIDC configuration.
 
 ```go
 request := &polytomic.UpdateOrganizationRequestSchema{
-        Name: "My Organization",
-    }
-client.Organization.Update(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Name: "My Organization",
 }
+client.Organization.Update(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -9278,10 +9175,9 @@ Partner callers cannot delete their own owner organization.
 
 ```go
 client.Organization.Delete(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -9339,9 +9235,8 @@ Returns user records including each user's ID, email, and assigned roles.
 
 ```go
 client.Users.ListCurrentOrgUsers(
-        context.TODO(),
-    )
-}
+    context.TODO(),
+)
 ```
 </dd>
 </dl>
@@ -9384,13 +9279,12 @@ account. Role assignments take effect as soon as the invitation is accepted.
 
 ```go
 request := &polytomic.CurrentOrgCreateUserRequestSchema{
-        Email: "mail@example.com",
-    }
-client.Users.CreateCurrentOrgUser(
-        context.TODO(),
-        request,
-    )
+    Email: "mail@example.com",
 }
+client.Users.CreateCurrentOrgUser(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -9461,10 +9355,9 @@ Returns a single user from the caller's current organization.
 
 ```go
 client.Users.GetCurrentOrgUser(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -9523,11 +9416,10 @@ and email address is not affected by this endpoint.
 ```go
 request := &polytomic.CurrentOrgUpdateUserRequestSchema{}
 client.Users.UpdateCurrentOrgUser(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -9602,10 +9494,9 @@ Deletes a user from the caller's current organization.
 
 ```go
 client.Users.DeleteCurrentOrgUser(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -9666,10 +9557,9 @@ Returns user records including each user's ID, email, and assigned roles.
 
 ```go
 client.Users.List(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -9731,14 +9621,13 @@ account. Role assignments take effect as soon as the invitation is accepted.
 
 ```go
 request := &polytomic.CreateUserRequestSchema{
-        Email: "mail@example.com",
-    }
-client.Users.Create(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Email: "mail@example.com",
 }
+client.Users.Create(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -9821,11 +9710,10 @@ Returns a single user in the specified organization.
 
 ```go
 client.Users.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -9895,15 +9783,14 @@ and email address is not affected by this endpoint.
 
 ```go
 request := &polytomic.UpdateUserRequestSchema{
-        Email: "mail@example.com",
-    }
-client.Users.Update(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Email: "mail@example.com",
 }
+client.Users.Update(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -9998,11 +9885,10 @@ Deletes a user from the specified organization.
 
 ```go
 client.Users.Delete(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -10068,17 +9954,16 @@ Issues a new API key for the specified user.
 
 ```go
 request := &polytomic.UsersCreateAPIKeyRequest{
-        Force: polytomic.Bool(
-            true,
-        ),
-    }
-client.Users.CreateAPIKey(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Force: polytomic.Bool(
+        true,
+    ),
 }
+client.Users.CreateAPIKey(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -10150,16 +10035,15 @@ Creates a short-lived capability link for viewing one stored record snapshot.
 
 ```go
 request := &polytomic.CreateRecordViewLinkRequest{
-        ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
-        LookupKeyField: "lookup_key_field",
-        LookupKeyValue: "lookup_key_value",
-        SchemaID: "schema_id",
-    }
-client.RecordViewLinks.Create(
-        context.TODO(),
-        request,
-    )
+    ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+    LookupKeyField: "lookup_key_field",
+    LookupKeyValue: "lookup_key_value",
+    SchemaID: "schema_id",
 }
+client.RecordViewLinks.Create(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -10262,14 +10146,13 @@ Checks whether record-view links can be created for a connection schema.
 
 ```go
 request := &polytomic.RecordViewLinksGetCapabilitiesRequest{
-        ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
-        SchemaID: "schema_id",
-    }
-client.RecordViewLinks.GetCapabilities(
-        context.TODO(),
-        request,
-    )
+    ConnectionID: "248df4b7-aa70-47b8-a036-33ac447e668d",
+    SchemaID: "schema_id",
 }
+client.RecordViewLinks.GetCapabilities(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -10389,15 +10272,14 @@ keeps its credential ID according to the normal API usage retention period.
 
 ```go
 request := &polytomic.CreateTemporaryCredentialRequest{
-        Subject: &polytomic.TemporaryCredentialSubject{
-            Type: polytomic.TemporaryCredentialSubjectTypeUser,
-        },
-    }
-client.TemporaryCredentials.Create(
-        context.TODO(),
-        request,
-    )
+    Subject: &polytomic.TemporaryCredentialSubject{
+        Type: polytomic.TemporaryCredentialSubjectTypeUser,
+    },
 }
+client.TemporaryCredentials.Create(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -10476,9 +10358,8 @@ Lists the webhooks for the caller's organization.
 
 ```go
 client.Webhooks.List(
-        context.TODO(),
-    )
-}
+    context.TODO(),
+)
 ```
 </dd>
 </dl>
@@ -10525,14 +10406,13 @@ Creates the organization's webhook.
 
 ```go
 request := &polytomic.CreateWebhooksSchema{
-        Endpoint: "https://example.com/webhook",
-        Secret: "secret",
-    }
-client.Webhooks.Create(
-        context.TODO(),
-        request,
-    )
+    Endpoint: "https://example.com/webhook",
+    Secret: "secret",
 }
+client.Webhooks.Create(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -10610,10 +10490,9 @@ Returns a single webhook by ID.
 
 ```go
 client.Webhooks.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -10675,15 +10554,14 @@ Updates an existing webhook.
 
 ```go
 request := &polytomic.UpdateWebhooksSchema{
-        Endpoint: "https://example.com/webhook",
-        Secret: "secret",
-    }
-client.Webhooks.Update(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Endpoint: "https://example.com/webhook",
+    Secret: "secret",
 }
+client.Webhooks.Update(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -10773,10 +10651,9 @@ configuration, use
 
 ```go
 client.Webhooks.Delete(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -10843,10 +10720,9 @@ delivery, re-enable the webhook using
 
 ```go
 client.Webhooks.Disable(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -10911,10 +10787,9 @@ occurred while the webhook was disabled are not replayed.
 
 ```go
 client.Webhooks.Enable(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -10982,23 +10857,22 @@ expands the request to the caller's organization scope.
 
 ```go
 request := &bulksync.ExecutionsListStatusRequest{
-        All: polytomic.Bool(
-            true,
+    All: polytomic.Bool(
+        true,
+    ),
+    Active: polytomic.Bool(
+        true,
+    ),
+    SyncID: []*string{
+        polytomic.String(
+            "248df4b7-aa70-47b8-a036-33ac447e668d",
         ),
-        Active: polytomic.Bool(
-            true,
-        ),
-        SyncID: []*string{
-            polytomic.String(
-                "248df4b7-aa70-47b8-a036-33ac447e668d",
-            ),
-        },
-    }
-client.BulkSync.Executions.ListStatus(
-        context.TODO(),
-        request,
-    )
+    },
 }
+client.BulkSync.Executions.ListStatus(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -11083,25 +10957,24 @@ use [`GET /api/bulk/syncs/{id}/executions/{exec_id}`](../../../../../api-referen
 
 ```go
 request := &bulksync.ExecutionsListRequest{
-        PageToken: polytomic.String(
-            "AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==",
-        ),
-        OnlyTerminal: polytomic.Bool(
-            true,
-        ),
-        Ascending: polytomic.Bool(
-            true,
-        ),
-        Limit: polytomic.Int(
-            100,
-        ),
-    }
-client.BulkSync.Executions.List(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    PageToken: polytomic.String(
+        "AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==",
+    ),
+    OnlyTerminal: polytomic.Bool(
+        true,
+    ),
+    Ascending: polytomic.Bool(
+        true,
+    ),
+    Limit: polytomic.Int(
+        100,
+    ),
 }
+client.BulkSync.Executions.List(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -11193,11 +11066,10 @@ some schemas succeeded while others did not.
 
 ```go
 client.BulkSync.Executions.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -11266,11 +11138,10 @@ confirm cancellation has taken effect.
 
 ```go
 client.BulkSync.Executions.Cancel(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -11333,20 +11204,19 @@ Fetch the latest console log entries for a bulk sync execution. Returns the most
 
 ```go
 request := &bulksync.ExecutionsGetConsoleLogsRequest{
-        Limit: polytomic.Int(
-            50,
-        ),
-        After: polytomic.String(
-            "1744311099250-0",
-        ),
-    }
-client.BulkSync.Executions.GetConsoleLogs(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "0ecd09c1-b901-4d27-9053-f0367c427254",
-        request,
-    )
+    Limit: polytomic.Int(
+        50,
+    ),
+    After: polytomic.String(
+        "1744311099250-0",
+    ),
 }
+client.BulkSync.Executions.GetConsoleLogs(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "0ecd09c1-b901-4d27-9053-f0367c427254",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -11434,11 +11304,10 @@ of signed URLs.
 
 ```go
 client.BulkSync.Executions.GetLogs(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -11513,17 +11382,16 @@ Starts an asynchronous job that packages the log files for a single bulk sync ex
 
 ```go
 request := &bulksync.ExecutionsExportLogsRequest{
-        Notify: polytomic.Bool(
-            true,
-        ),
-    }
-client.BulkSync.Executions.ExportLogs(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Notify: polytomic.Bool(
+        true,
+    ),
 }
+client.BulkSync.Executions.ExportLogs(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -11594,21 +11462,20 @@ Fetch the latest console log entries for a schema within a bulk sync execution. 
 
 ```go
 request := &bulksync.ExecutionsGetSchemaConsoleLogsRequest{
-        Limit: polytomic.Int(
-            50,
-        ),
-        After: polytomic.String(
-            "1744311099250-0",
-        ),
-    }
-client.BulkSync.Executions.GetSchemaConsoleLogs(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "0ecd09c1-b901-4d27-9053-f0367c427254",
-        "users",
-        request,
-    )
+    Limit: polytomic.Int(
+        50,
+    ),
+    After: polytomic.String(
+        "1744311099250-0",
+    ),
 }
+client.BulkSync.Executions.GetSchemaConsoleLogs(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "0ecd09c1-b901-4d27-9053-f0367c427254",
+    "users",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -11695,22 +11562,21 @@ Fetch the latest console log entries for ingestion scoped by connection and opti
 
 ```go
 request := &bulksync.ExecutionsGetIngestConsoleLogsRequest{
-        SyncID: polytomic.String(
-            "248df4b7-aa70-47b8-a036-33ac447e668d",
-        ),
-        Limit: polytomic.Int(
-            50,
-        ),
-        After: polytomic.String(
-            "1744311099250-0",
-        ),
-    }
-client.BulkSync.Executions.GetIngestConsoleLogs(
-        context.TODO(),
+    SyncID: polytomic.String(
         "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    ),
+    Limit: polytomic.Int(
+        50,
+    ),
+    After: polytomic.String(
+        "1744311099250-0",
+    ),
 }
+client.BulkSync.Executions.GetIngestConsoleLogs(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -11790,10 +11656,9 @@ Returns the error handling settings for a bulk sync.
 
 ```go
 client.BulkSync.ErrorHandling.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -11849,11 +11714,10 @@ Updates the error handling settings for a bulk sync.
 ```go
 request := &bulksync.UpdateBulkSyncErrorHandlingRequest{}
 client.BulkSync.ErrorHandling.Update(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -11929,11 +11793,10 @@ or
 ```go
 request := &bulksync.SchemasListRequest{}
 client.BulkSync.Schemas.List(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -12011,11 +11874,10 @@ with explicit `enabled` values for each field.
 ```go
 request := &bulksync.UpdateBulkSyncSchemasRequest{}
 client.BulkSync.Schemas.Patch(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -12087,11 +11949,10 @@ to fully replace this schema's configuration.
 
 ```go
 client.BulkSync.Schemas.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "Contact",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "Contact",
+)
 ```
 </dd>
 </dl>
@@ -12169,12 +12030,11 @@ fields are enabled, include the `fields` array with explicit `enabled` values.
 ```go
 request := &bulksync.UpdateBulkSchema{}
 client.BulkSync.Schemas.Update(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "contact",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "contact",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -12308,11 +12168,10 @@ state.
 
 ```go
 client.BulkSync.Schemas.Cancel(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "schema_id",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "schema_id",
+)
 ```
 </dd>
 </dl>
@@ -12379,10 +12238,9 @@ of them. Schedule times are returned in UTC.
 
 ```go
 client.BulkSync.Schedules.List(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -12444,16 +12302,15 @@ sync immediately, call
 
 ```go
 request := &bulksync.CreateScheduleRequest{
-        Schedule: &polytomic.BulkSyncScheduleAPI{
-            Frequency: polytomic.ScheduleFrequencyManual,
-        },
-    }
-client.BulkSync.Schedules.Create(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Schedule: &polytomic.BulkSyncScheduleAPI{
+        Frequency: polytomic.ScheduleFrequencyManual,
+    },
 }
+client.BulkSync.Schedules.Create(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -12523,11 +12380,10 @@ To update the schedule, use
 
 ```go
 client.BulkSync.Schedules.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -12594,17 +12450,16 @@ interpreted in UTC.
 
 ```go
 request := &bulksync.UpdateScheduleRequest{
-        Schedule: &polytomic.BulkSyncScheduleAPI{
-            Frequency: polytomic.ScheduleFrequencyManual,
-        },
-    }
-client.BulkSync.Schedules.Update(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Schedule: &polytomic.BulkSyncScheduleAPI{
+        Frequency: polytomic.ScheduleFrequencyManual,
+    },
 }
+client.BulkSync.Schedules.Update(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -12678,11 +12533,10 @@ cancel an execution that is already running.
 
 ```go
 client.BulkSync.Schedules.Delete(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -12777,17 +12631,16 @@ with audit logs.
 
 ```go
 request := &connections.ExecuteConnectionProxyRequest{
-        Request: &polytomic.ConnectionProxyCall{
-            Method: "GET",
-            Path: "/v1/objects",
-        },
-    }
-client.Connections.Proxy.ExecuteProxy(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Request: &polytomic.ConnectionProxyCall{
+        Method: "GET",
+        Path: "/v1/objects",
+    },
 }
+client.Connections.Proxy.ExecuteProxy(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -12872,10 +12725,9 @@ connection, even though their raw values are not exposed.
 
 ```go
 client.Connections.Proxy.GetProxyInfo(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -12935,10 +12787,9 @@ shared connection, the response includes both the requested `connectionId` and t
 
 ```go
 client.Connections.Proxy.GetProxySettings(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -13003,14 +12854,13 @@ Setting `enabled` to `false` prevents proxy calls for the connection.
 
 ```go
 request := &connections.UpdateConnectionProxySettingsRequest{
-        Enabled: true,
-    }
-client.Connections.Proxy.UpdateProxySettings(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Enabled: true,
 }
+client.Connections.Proxy.UpdateProxySettings(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -13082,10 +12932,9 @@ for the v5 partner-scoped flow.
 
 ```go
 client.Connections.SharedConnections.ListSharedConnections(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -13148,11 +12997,10 @@ organizations already have a shared copy.
 
 ```go
 client.Connections.SharedConnections.ListSharedConnectionsForPartner(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -13215,15 +13063,14 @@ Shares a connection with another organization in the caller's partner account.
 
 ```go
 request := &connections.PartnerCreateSharedConnectionRequestSchema{
-        ChildOrganizationID: "248df4b7-aa70-47b8-a036-33ac447e668d",
-    }
-client.Connections.SharedConnections.CreateSharedConnection(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    ChildOrganizationID: "248df4b7-aa70-47b8-a036-33ac447e668d",
 }
+client.Connections.SharedConnections.CreateSharedConnection(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -13344,19 +13191,18 @@ not-yet-created target has no cached schema to refresh.
 
 ```go
 request := &modelsync.TargetsGetTargetFieldsRequest{
-        Target: polytomic.String(
-            "database.table",
-        ),
-        Refresh: polytomic.Bool(
-            false,
-        ),
-    }
-client.ModelSync.Targets.GetTargetFields(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Target: polytomic.String(
+        "database.table",
+    ),
+    Refresh: polytomic.Bool(
+        false,
+    ),
 }
+client.ModelSync.Targets.GetTargetFields(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -13453,16 +13299,15 @@ what operations the mode supports.
 
 ```go
 request := &modelsync.TargetsListRequest{
-        IncludeTargetCreationValues: polytomic.Bool(
-            true,
-        ),
-    }
-client.ModelSync.Targets.List(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    IncludeTargetCreationValues: polytomic.Bool(
+        true,
+    ),
 }
+client.ModelSync.Targets.List(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -13556,11 +13401,10 @@ sync](../../../../../../../api-reference/model-sync/create).
 
 ```go
 client.ModelSync.Targets.GetCreateProperty(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "property",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "property",
+)
 ```
 </dd>
 </dl>
@@ -13624,10 +13468,9 @@ Returns the error handling settings for a model sync.
 
 ```go
 client.ModelSync.ErrorHandling.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -13683,11 +13526,10 @@ Updates the error handling settings for a model sync.
 ```go
 request := &modelsync.UpdateSyncErrorHandlingRequest{}
 client.ModelSync.ErrorHandling.Update(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -13785,22 +13627,21 @@ summaries — use
 
 ```go
 request := &modelsync.ExecutionsListRequest{
-        PageToken: polytomic.String(
-            "AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==",
-        ),
-        OnlyCompleted: polytomic.Bool(
-            true,
-        ),
-        Ascending: polytomic.Bool(
-            true,
-        ),
-    }
-client.ModelSync.Executions.List(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    PageToken: polytomic.String(
+        "AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==",
+    ),
+    OnlyCompleted: polytomic.Bool(
+        true,
+    ),
+    Ascending: polytomic.Bool(
+        true,
+    ),
 }
+client.ModelSync.Executions.List(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -13883,11 +13724,10 @@ signed URLs grouped by log category.
 
 ```go
 client.ModelSync.Executions.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -13950,11 +13790,10 @@ Requests cancellation of a model sync execution.
 
 ```go
 client.ModelSync.Executions.Cancel(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -14017,20 +13856,19 @@ Fetch the latest console log entries for a sync execution. Returns the most rece
 
 ```go
 request := &modelsync.ExecutionsGetConsoleLogsRequest{
-        Limit: polytomic.Int(
-            50,
-        ),
-        After: polytomic.String(
-            "1744311099250-0",
-        ),
-    }
-client.ModelSync.Executions.GetConsoleLogs(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "0ecd09c1-b901-4d27-9053-f0367c427254",
-        request,
-    )
+    Limit: polytomic.Int(
+        50,
+    ),
+    After: polytomic.String(
+        "1744311099250-0",
+    ),
 }
+client.ModelSync.Executions.GetConsoleLogs(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "0ecd09c1-b901-4d27-9053-f0367c427254",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -14109,11 +13947,10 @@ Returns an index of the record-log types produced by this model sync execution, 
 
 ```go
 client.ModelSync.Executions.GetLogsIndex(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -14183,12 +14020,11 @@ response contains a signed URL for each log file in that category.
 
 ```go
 client.ModelSync.Executions.GetLogURLs(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        polytomic.ExecutionLogTypeRecords.Ptr(),
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    polytomic.ExecutionLogTypeRecords.Ptr(),
+)
 ```
 </dd>
 </dl>
@@ -14264,13 +14100,12 @@ expires before you download the file.
 
 ```go
 client.ModelSync.Executions.GetLogs(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        "0ecd09c1-b901-4d27-9053-f0367c427254",
-        polytomic.ExecutionLogTypeRecords.Ptr(),
-        "file.json",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    "0ecd09c1-b901-4d27-9053-f0367c427254",
+    polytomic.ExecutionLogTypeRecords.Ptr(),
+    "file.json",
+)
 ```
 </dd>
 </dl>
@@ -14356,9 +14191,8 @@ To inspect a specific policy in detail, use
 
 ```go
 client.Permissions.Policies.List(
-        context.TODO(),
-    )
-}
+    context.TODO(),
+)
 ```
 </dd>
 </dl>
@@ -14403,13 +14237,12 @@ they are referenced in a policy; create roles using
 
 ```go
 request := &permissions.CreatePolicyRequest{
-        Name: "Custom",
-    }
-client.Permissions.Policies.Create(
-        context.TODO(),
-        request,
-    )
+    Name: "Custom",
 }
+client.Permissions.Policies.Create(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -14483,10 +14316,9 @@ the resources it applies to.
 
 ```go
 client.Permissions.Policies.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -14547,14 +14379,13 @@ and send the complete object back.
 
 ```go
 request := &permissions.UpdatePolicyRequest{
-        Name: "Custom",
-    }
-client.Permissions.Policies.Update(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Name: "Custom",
 }
+client.Permissions.Policies.Update(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -14636,10 +14467,9 @@ is revoked immediately for all users who depended on it.
 
 ```go
 client.Permissions.Policies.Delete(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -14702,9 +14532,8 @@ To inspect or modify a specific role, use
 
 ```go
 client.Permissions.Roles.List(
-        context.TODO(),
-    )
-}
+    context.TODO(),
+)
 ```
 </dd>
 </dl>
@@ -14750,13 +14579,12 @@ To attach the role to resources, create or update a policy using
 
 ```go
 request := &permissions.CreateRoleRequest{
-        Name: "Custom",
-    }
-client.Permissions.Roles.Create(
-        context.TODO(),
-        request,
-    )
+    Name: "Custom",
 }
+client.Permissions.Roles.Create(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -14821,10 +14649,9 @@ Returns the role's name, action set, and whether it is a built-in system role.
 
 ```go
 client.Permissions.Roles.Get(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>
@@ -14884,14 +14711,13 @@ The update is a **full replacement** of the role definition.
 
 ```go
 request := &permissions.UpdateRoleRequest{
-        Name: "Custom",
-    }
-client.Permissions.Roles.Update(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-        request,
-    )
+    Name: "Custom",
 }
+client.Permissions.Roles.Update(
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -14970,10 +14796,9 @@ leaving stale role references.
 
 ```go
 client.Permissions.Roles.Delete(
-        context.TODO(),
-        "248df4b7-aa70-47b8-a036-33ac447e668d",
-    )
-}
+    context.TODO(),
+    "248df4b7-aa70-47b8-a036-33ac447e668d",
+)
 ```
 </dd>
 </dl>

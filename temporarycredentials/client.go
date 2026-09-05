@@ -20,14 +20,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -74,6 +79,18 @@ func NewClient(options *core.RequestOptions) *Client {
 //
 // Polytomic periodically removes expired credential records. API usage history
 // keeps its credential ID according to the normal API usage retention period.
+//
+// Example:
+//
+//	request := &polytomic.CreateTemporaryCredentialRequest{
+//	    Subject: &polytomic.TemporaryCredentialSubject{
+//	        Type: polytomic.TemporaryCredentialSubjectTypeUser,
+//	    },
+//	}
+//	client.TemporaryCredentials.Create(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Create(
 	ctx context.Context,
 	request *polytomic.CreateTemporaryCredentialRequest,

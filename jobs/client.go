@@ -20,14 +20,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -44,6 +49,14 @@ func NewClient(options *core.RequestOptions) *Client {
 //
 // Only specific job types are supported by this endpoint. Passing an unknown
 // `type` returns `400`.
+//
+// Example:
+//
+//	client.Jobs.Get(
+//	    context.TODO(),
+//	    "createmodel",
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	)
 func (c *Client) Get(
 	ctx context.Context,
 	// Job type. One of: createmodel, updatemodel, previewmodel, samplemodel, exportlogs, connectionproxy.

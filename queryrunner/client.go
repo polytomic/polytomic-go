@@ -20,14 +20,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -42,6 +47,19 @@ func NewClient(options *core.RequestOptions) *Client {
 // Only the user who created the query can fetch its results later. Query results
 // are stored temporarily and may expire; use the `expires` field from the result
 // endpoint to understand how long they will remain available.
+//
+// Example:
+//
+//	request := &polytomic.RunQueryRequest{
+//	    Query: polytomic.String(
+//	        "SELECT * FROM table",
+//	    ),
+//	}
+//	client.QueryRunner.RunQuery(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) RunQuery(
 	ctx context.Context,
 	// Unique identifier of the connection to run the query against.
@@ -74,6 +92,19 @@ func (c *Client) RunQuery(
 // If the query is still running, the response may include only status metadata.
 // If the task is complete but the caller is not the same user that created it,
 // the endpoint returns `404`.
+//
+// Example:
+//
+//	request := &polytomic.QueryRunnerGetQueryRequest{
+//	    Page: polytomic.String(
+//	        "page",
+//	    ),
+//	}
+//	client.QueryRunner.GetQuery(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
 func (c *Client) GetQuery(
 	ctx context.Context,
 	// Unique identifier of the query task, as returned by POST /api/connections/{connection_id}/query.

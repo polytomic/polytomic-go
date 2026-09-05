@@ -20,14 +20,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -45,6 +50,34 @@ func NewClient(options *core.RequestOptions) *Client {
 //
 // > 📘 Events reflect audit activity scoped to the caller's organization.
 // > The log captures both user-initiated and API-initiated actions.
+//
+// Example:
+//
+//	request := &polytomic.EventsListRequest{
+//	    OrganizationID: polytomic.String(
+//	        "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    ),
+//	    Type: polytomic.String(
+//	        "type",
+//	    ),
+//	    StartingAfter: polytomic.Time(
+//	        polytomic.MustParseDateTime(
+//	            "2020-01-01T00:00:00Z",
+//	        ),
+//	    ),
+//	    EndingBefore: polytomic.Time(
+//	        polytomic.MustParseDateTime(
+//	            "2020-01-01T00:00:00Z",
+//	        ),
+//	    ),
+//	    Limit: polytomic.Int(
+//	        1,
+//	    ),
+//	}
+//	client.Events.List(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) List(
 	ctx context.Context,
 	request *polytomic.EventsListRequest,
@@ -65,6 +98,12 @@ func (c *Client) List(
 //
 // Use the identifiers returned here as the `event_type` filter value when calling
 // [`GET /api/events`](../../api-reference/events/list).
+//
+// Example:
+//
+//	client.Events.GetTypes(
+//	    context.TODO(),
+//	)
 func (c *Client) GetTypes(
 	ctx context.Context,
 	opts ...option.RequestOption,

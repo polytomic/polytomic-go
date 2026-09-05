@@ -20,14 +20,19 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.Version == nil {
+		versionDefault := "2025-09-18"
+		options.Version = &versionDefault
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -37,6 +42,12 @@ func NewClient(options *core.RequestOptions) *Client {
 //
 // To update the subscriber list, use
 // [`PUT /api/notifications/global-error-subscribers`](../../../api-reference/notifications/set-global-error-subscribers).
+//
+// Example:
+//
+//	client.Notifications.GetGlobalErrorSubscribers(
+//	    context.TODO(),
+//	)
 func (c *Client) GetGlobalErrorSubscribers(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -58,6 +69,14 @@ func (c *Client) GetGlobalErrorSubscribers(
 // fetch the current list with
 // [`GET /api/notifications/global-error-subscribers`](../../../api-reference/notifications/get-global-error-subscribers), apply your change,
 // and send the modified list back.
+//
+// Example:
+//
+//	request := &polytomic.GlobalErrorSubscribersRequest{}
+//	client.Notifications.SetGlobalErrorSubscribers(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) SetGlobalErrorSubscribers(
 	ctx context.Context,
 	request *polytomic.GlobalErrorSubscribersRequest,

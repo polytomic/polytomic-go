@@ -150,7 +150,7 @@ func (c *Client) Cancel(
 	return response.Body, nil
 }
 
-// Fetch the latest console log entries for a bulk sync execution. Returns at most the most recent 50 entries retained in Redis.
+// Fetch the latest console log entries for a bulk sync execution. Returns the most recent 50 entries.
 func (c *Client) GetConsoleLogs(
 	ctx context.Context,
 	syncID string,
@@ -236,7 +236,7 @@ func (c *Client) ExportLogs(
 	return response.Body, nil
 }
 
-// Fetch the latest console log entries for a schema within a bulk sync execution. Returns at most the most recent 50 entries retained in Redis.
+// Fetch the latest console log entries for a schema within a bulk sync execution. Returnst the most recent 50 entries.
 func (c *Client) GetSchemaConsoleLogs(
 	ctx context.Context,
 	syncID string,
@@ -251,6 +251,25 @@ func (c *Client) GetSchemaConsoleLogs(
 		syncID,
 		executionID,
 		schemaID,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Fetch the latest console log entries for ingestion scoped by connection and optional bulk sync. Returns the most recent 50 entries.
+func (c *Client) GetIngestConsoleLogs(
+	ctx context.Context,
+	connectionID string,
+	request *bulksync.ExecutionsGetIngestConsoleLogsRequest,
+	opts ...option.RequestOption,
+) (*polytomic.ExecutionConsoleLogsResponseEnvelope, error) {
+	response, err := c.WithRawResponse.GetIngestConsoleLogs(
+		ctx,
+		connectionID,
 		request,
 		opts...,
 	)

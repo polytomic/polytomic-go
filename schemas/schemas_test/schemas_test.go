@@ -128,6 +128,33 @@ func TestSchemasDeleteFieldWithWireMock(
 	VerifyRequestCount(t, "TestSchemasDeleteFieldWithWireMock", "DELETE", "/api/connections/248df4b7-aa70-47b8-a036-33ac447e668d/schemas/public.users/fields/first_name", nil, 1)
 }
 
+func TestSchemasPatchFieldWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &polytomic.PatchSchemaFieldRequest{}
+	_, invocationErr := client.Schemas.PatchField(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		"schema_id",
+		"field_id",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestSchemasPatchFieldWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestSchemasPatchFieldWithWireMock", "PATCH", "/api/connections/248df4b7-aa70-47b8-a036-33ac447e668d/schemas/schema_id/fields/field_id", nil, 1)
+}
+
 func TestSchemasSetPrimaryKeysWithWireMock(
 	t *testing.T,
 ) {

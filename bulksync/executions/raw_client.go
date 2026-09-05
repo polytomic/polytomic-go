@@ -443,3 +443,55 @@ func (r *RawClient) GetSchemaConsoleLogs(
 		Body:       response,
 	}, nil
 }
+
+func (r *RawClient) GetIngestConsoleLogs(
+	ctx context.Context,
+	connectionID string,
+	request *bulksync.ExecutionsGetIngestConsoleLogsRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*polytomic.ExecutionConsoleLogsResponseEnvelope], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/connections/%v/ingest/consolelog",
+		connectionID,
+	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *polytomic.ExecutionConsoleLogsResponseEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(bulksync.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.ExecutionConsoleLogsResponseEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}

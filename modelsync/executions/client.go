@@ -106,7 +106,7 @@ func (c *Client) Cancel(
 	return response.Body, nil
 }
 
-// Fetch the latest console log entries for a sync execution. Returns at most the most recent 50 entries retained in Redis.
+// Fetch the latest console log entries for a sync execution. Returns the most recent 50 entries.
 func (c *Client) GetConsoleLogs(
 	ctx context.Context,
 	syncID string,
@@ -119,6 +119,27 @@ func (c *Client) GetConsoleLogs(
 		syncID,
 		id,
 		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Returns an index of the record-log types produced by this model sync execution, with the per-type endpoint to retrieve signed URLs for each type's segment files.
+func (c *Client) GetLogsIndex(
+	ctx context.Context,
+	// Unique identifier of the model sync.
+	syncID string,
+	// Unique identifier of the execution whose logs are being indexed.
+	id string,
+	opts ...option.RequestOption,
+) (*polytomic.LogsIndexResponseEnvelope, error) {
+	response, err := c.WithRawResponse.GetLogsIndex(
+		ctx,
+		syncID,
+		id,
 		opts...,
 	)
 	if err != nil {
@@ -155,10 +176,12 @@ func (c *Client) GetLogURLs(
 	return response.Body, nil
 }
 
-// Returns a signed URL for a specific log file produced by a model sync execution.
+// Redirects to a signed URL for a specific log file produced by a model sync execution.
 //
-// The URL is signed and expires after a short period. If it has expired before
-// you download the file, call this endpoint again to obtain a fresh URL.
+// This endpoint responds with a `302 Found` redirect; the signed URL is returned
+// in the `Location` header, and the response body is empty. The URL expires
+// after a short period, so call this endpoint again to obtain a fresh URL if it
+// expires before you download the file.
 func (c *Client) GetLogs(
 	ctx context.Context,
 	syncID string,

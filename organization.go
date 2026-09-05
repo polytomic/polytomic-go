@@ -204,6 +204,63 @@ func (u *UpdateOrganizationRequestSchema) MarshalJSON() ([]byte, error) {
 }
 
 var (
+	updateRecordLoggingSettingsRequestFieldDeliveryConnectionID = big.NewInt(1 << 0)
+	updateRecordLoggingSettingsRequestFieldEnabled              = big.NewInt(1 << 1)
+)
+
+type UpdateRecordLoggingSettingsRequest struct {
+	// Blobstorage connection that receives record logs after each model sync execution. Omit or send null to deliver nowhere; this field is replaced, not merged.
+	DeliveryConnectionID *string `json:"deliveryConnectionId,omitempty" url:"-"`
+	// Whether record logging is enabled for the organization.
+	Enabled bool `json:"enabled" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (u *UpdateRecordLoggingSettingsRequest) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetDeliveryConnectionID sets the DeliveryConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateRecordLoggingSettingsRequest) SetDeliveryConnectionID(deliveryConnectionID *string) {
+	u.DeliveryConnectionID = deliveryConnectionID
+	u.require(updateRecordLoggingSettingsRequestFieldDeliveryConnectionID)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateRecordLoggingSettingsRequest) SetEnabled(enabled bool) {
+	u.Enabled = enabled
+	u.require(updateRecordLoggingSettingsRequestFieldEnabled)
+}
+
+func (u *UpdateRecordLoggingSettingsRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateRecordLoggingSettingsRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UpdateRecordLoggingSettingsRequest(body)
+	return nil
+}
+
+func (u *UpdateRecordLoggingSettingsRequest) MarshalJSON() ([]byte, error) {
+	type embed UpdateRecordLoggingSettingsRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+var (
 	organizationFieldID        = big.NewInt(1 << 0)
 	organizationFieldIssuer    = big.NewInt(1 << 1)
 	organizationFieldName      = big.NewInt(1 << 2)
@@ -522,4 +579,207 @@ func (o *OrganizationsEnvelope) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", o)
+}
+
+var (
+	recordLoggingSettingsEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type RecordLoggingSettingsEnvelope struct {
+	Data *RecordLoggingSettingsResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RecordLoggingSettingsEnvelope) GetData() *RecordLoggingSettingsResponse {
+	if r == nil {
+		return nil
+	}
+	return r.Data
+}
+
+func (r *RecordLoggingSettingsEnvelope) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.extraProperties
+}
+
+func (r *RecordLoggingSettingsEnvelope) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RecordLoggingSettingsEnvelope) SetData(data *RecordLoggingSettingsResponse) {
+	r.Data = data
+	r.require(recordLoggingSettingsEnvelopeFieldData)
+}
+
+func (r *RecordLoggingSettingsEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler RecordLoggingSettingsEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RecordLoggingSettingsEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RecordLoggingSettingsEnvelope) MarshalJSON() ([]byte, error) {
+	type embed RecordLoggingSettingsEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RecordLoggingSettingsEnvelope) String() string {
+	if r == nil {
+		return "<nil>"
+	}
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	recordLoggingSettingsResponseFieldDeliveryConnectionID   = big.NewInt(1 << 0)
+	recordLoggingSettingsResponseFieldDeliveryConnectionName = big.NewInt(1 << 1)
+	recordLoggingSettingsResponseFieldEnabled                = big.NewInt(1 << 2)
+)
+
+type RecordLoggingSettingsResponse struct {
+	// Blobstorage connection receiving record log deliveries, if one is configured.
+	DeliveryConnectionID *string `json:"deliveryConnectionId,omitempty" url:"deliveryConnectionId,omitempty"`
+	// Name of the destination connection, for display. Omitted when no destination is configured or the connection has been deleted.
+	DeliveryConnectionName *string `json:"deliveryConnectionName,omitempty" url:"deliveryConnectionName,omitempty"`
+	// True when record logging is enabled for the organization.
+	Enabled *bool `json:"enabled,omitempty" url:"enabled,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RecordLoggingSettingsResponse) GetDeliveryConnectionID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.DeliveryConnectionID
+}
+
+func (r *RecordLoggingSettingsResponse) GetDeliveryConnectionName() *string {
+	if r == nil {
+		return nil
+	}
+	return r.DeliveryConnectionName
+}
+
+func (r *RecordLoggingSettingsResponse) GetEnabled() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.Enabled
+}
+
+func (r *RecordLoggingSettingsResponse) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.extraProperties
+}
+
+func (r *RecordLoggingSettingsResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetDeliveryConnectionID sets the DeliveryConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RecordLoggingSettingsResponse) SetDeliveryConnectionID(deliveryConnectionID *string) {
+	r.DeliveryConnectionID = deliveryConnectionID
+	r.require(recordLoggingSettingsResponseFieldDeliveryConnectionID)
+}
+
+// SetDeliveryConnectionName sets the DeliveryConnectionName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RecordLoggingSettingsResponse) SetDeliveryConnectionName(deliveryConnectionName *string) {
+	r.DeliveryConnectionName = deliveryConnectionName
+	r.require(recordLoggingSettingsResponseFieldDeliveryConnectionName)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RecordLoggingSettingsResponse) SetEnabled(enabled *bool) {
+	r.Enabled = enabled
+	r.require(recordLoggingSettingsResponseFieldEnabled)
+}
+
+func (r *RecordLoggingSettingsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler RecordLoggingSettingsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RecordLoggingSettingsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RecordLoggingSettingsResponse) MarshalJSON() ([]byte, error) {
+	type embed RecordLoggingSettingsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RecordLoggingSettingsResponse) String() string {
+	if r == nil {
+		return "<nil>"
+	}
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
 }

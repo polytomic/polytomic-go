@@ -8,6 +8,7 @@ import (
 	polytomic "github.com/polytomic/polytomic-go/v25"
 	core "github.com/polytomic/polytomic-go/v25/core"
 	internal "github.com/polytomic/polytomic-go/v25/internal"
+	errorhandling "github.com/polytomic/polytomic-go/v25/modelsync/errorhandling"
 	executions "github.com/polytomic/polytomic-go/v25/modelsync/executions"
 	targets "github.com/polytomic/polytomic-go/v25/modelsync/targets"
 	option "github.com/polytomic/polytomic-go/v25/option"
@@ -16,6 +17,7 @@ import (
 type Client struct {
 	WithRawResponse *RawClient
 	Targets         *targets.Client
+	ErrorHandling   *errorhandling.Client
 	Executions      *executions.Client
 
 	options *core.RequestOptions
@@ -26,6 +28,7 @@ type Client struct {
 func NewClient(options *core.RequestOptions) *Client {
 	return &Client{
 		Targets:         targets.NewClient(options),
+		ErrorHandling:   errorhandling.NewClient(options),
 		Executions:      executions.NewClient(options),
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -189,9 +192,9 @@ func (c *Client) List(
 // a connection supports target creation.
 func (c *Client) Create(
 	ctx context.Context,
-	request *polytomic.CreateSyncRequest,
+	request *polytomic.CreateModelSyncV5Request,
 	opts ...option.IdempotentRequestOption,
-) (*polytomic.SyncResponseEnvelope, error) {
+) (*polytomic.ModelSyncV5ResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
@@ -231,7 +234,7 @@ func (c *Client) Get(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.SyncResponseEnvelope, error) {
+) (*polytomic.ModelSyncV5ResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		id,
@@ -261,9 +264,9 @@ func (c *Client) Get(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *polytomic.UpdateSyncRequest,
+	request *polytomic.UpdateModelSyncV5Request,
 	opts ...option.IdempotentRequestOption,
-) (*polytomic.SyncResponseEnvelope, error) {
+) (*polytomic.ModelSyncV5ResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Update(
 		ctx,
 		id,

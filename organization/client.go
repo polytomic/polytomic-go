@@ -57,6 +57,38 @@ func (c *Client) GetCurrent(
 	return response.Body, nil
 }
 
+// Returns the organization's record logging settings, including the connection record logs are delivered to.
+func (c *Client) GetRecordLogging(
+	ctx context.Context,
+	opts ...option.RequestOption,
+) (*polytomic.RecordLoggingSettingsEnvelope, error) {
+	response, err := c.WithRawResponse.GetRecordLogging(
+		ctx,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Replaces the organization's record logging settings. `deliveryConnectionId` is replaced, not merged: omitting it, or sending null, removes any destination previously configured.
+func (c *Client) UpdateRecordLogging(
+	ctx context.Context,
+	request *polytomic.UpdateRecordLoggingSettingsRequest,
+	opts ...option.IdempotentRequestOption,
+) (*polytomic.RecordLoggingSettingsEnvelope, error) {
+	response, err := c.WithRawResponse.UpdateRecordLogging(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Lists every organization accessible to the calling partner, with the partner's owner organization first.
 //
 // In `2025-09-18`, this endpoint is partner-scoped rather than a general

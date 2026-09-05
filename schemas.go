@@ -11,6 +11,92 @@ import (
 )
 
 var (
+	patchSchemaFieldRequestFieldDefinition = big.NewInt(1 << 0)
+	patchSchemaFieldRequestFieldExample    = big.NewInt(1 << 1)
+	patchSchemaFieldRequestFieldLabel      = big.NewInt(1 << 2)
+	patchSchemaFieldRequestFieldPath       = big.NewInt(1 << 3)
+	patchSchemaFieldRequestFieldType       = big.NewInt(1 << 4)
+)
+
+type PatchSchemaFieldRequest struct {
+	Definition *TypesDefinition `json:"definition,omitempty" url:"-"`
+	// Sample value surfaced in the UI.
+	Example any `json:"example,omitempty" url:"-"`
+	// Human-readable label for the field.
+	Label *string `json:"label,omitempty" url:"-"`
+	// JSONPath used to extract the field from each source record; only meaningful for document-style backends. Pass an empty string to clear an existing path.
+	Path *string `json:"path,omitempty" url:"-"`
+	// One of: string, number, boolean, datetime, array, object, binary. Changing the type without supplying a matching definition clears any prior detailed type metadata.
+	Type *string `json:"type,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (p *PatchSchemaFieldRequest) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetDefinition sets the Definition field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PatchSchemaFieldRequest) SetDefinition(definition *TypesDefinition) {
+	p.Definition = definition
+	p.require(patchSchemaFieldRequestFieldDefinition)
+}
+
+// SetExample sets the Example field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PatchSchemaFieldRequest) SetExample(example any) {
+	p.Example = example
+	p.require(patchSchemaFieldRequestFieldExample)
+}
+
+// SetLabel sets the Label field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PatchSchemaFieldRequest) SetLabel(label *string) {
+	p.Label = label
+	p.require(patchSchemaFieldRequestFieldLabel)
+}
+
+// SetPath sets the Path field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PatchSchemaFieldRequest) SetPath(path *string) {
+	p.Path = path
+	p.require(patchSchemaFieldRequestFieldPath)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PatchSchemaFieldRequest) SetType(type_ *string) {
+	p.Type = type_
+	p.require(patchSchemaFieldRequestFieldType)
+}
+
+func (p *PatchSchemaFieldRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler PatchSchemaFieldRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*p = PatchSchemaFieldRequest(body)
+	return nil
+}
+
+func (p *PatchSchemaFieldRequest) MarshalJSON() ([]byte, error) {
+	type embed PatchSchemaFieldRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+var (
 	setPrimaryKeysRequestFieldFields = big.NewInt(1 << 0)
 )
 
@@ -401,6 +487,90 @@ func (b *BulkSyncSourceStatusEnvelope) String() string {
 }
 
 var (
+	schemaFieldResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type SchemaFieldResponseEnvelope struct {
+	Data *SchemaField `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SchemaFieldResponseEnvelope) GetData() *SchemaField {
+	if s == nil {
+		return nil
+	}
+	return s.Data
+}
+
+func (s *SchemaFieldResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *SchemaFieldResponseEnvelope) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SchemaFieldResponseEnvelope) SetData(data *SchemaField) {
+	s.Data = data
+	s.require(schemaFieldResponseEnvelopeFieldData)
+}
+
+func (s *SchemaFieldResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler SchemaFieldResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SchemaFieldResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SchemaFieldResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed SchemaFieldResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SchemaFieldResponseEnvelope) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+var (
 	schemaPrimaryKeyOverrideInputFieldFieldID      = big.NewInt(1 << 0)
 	schemaPrimaryKeyOverrideInputFieldIsPrimaryKey = big.NewInt(1 << 1)
 )
@@ -583,6 +753,8 @@ func (s *SchemaRecordsResponseEnvelope) String() string {
 	}
 	return fmt.Sprintf("%#v", s)
 }
+
+type TypesDefinition = map[string]any
 
 var (
 	userFieldRequestFieldExample = big.NewInt(1 << 0)

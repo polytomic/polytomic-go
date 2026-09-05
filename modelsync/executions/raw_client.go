@@ -231,6 +231,54 @@ func (r *RawClient) GetConsoleLogs(
 	}, nil
 }
 
+func (r *RawClient) GetLogsIndex(
+	ctx context.Context,
+	// Unique identifier of the model sync.
+	syncID string,
+	// Unique identifier of the execution whose logs are being indexed.
+	id string,
+	opts ...option.RequestOption,
+) (*core.Response[*polytomic.LogsIndexResponseEnvelope], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/syncs/%v/executions/%v/logs",
+		syncID,
+		id,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *polytomic.LogsIndexResponseEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(modelsync.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.LogsIndexResponseEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
 func (r *RawClient) GetLogURLs(
 	ctx context.Context,
 	syncID string,

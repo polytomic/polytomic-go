@@ -348,7 +348,7 @@ type StartBulkSyncRequest struct {
 	ResyncMode *BulkResyncMode `json:"resync_mode,omitempty" url:"-"`
 	// Optional list of schema IDs to include in this execution. If empty, all enabled schemas are included.
 	Schemas []string `json:"schemas,omitempty" url:"-"`
-	// When true, runs a test execution that validates the configuration without writing to the destination. Mutually exclusive with resync_mode.
+	// When true, runs a test execution that validates the configuration and syncs up to 5 records per schema. Mutually exclusive with resync_mode.
 	Test *bool `json:"test,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2871,10 +2871,13 @@ func (b *BulkSyncSource) String() string {
 }
 
 var (
-	bulkSyncSourceCapabilitiesFieldSupportsTrackingFields = big.NewInt(1 << 0)
+	bulkSyncSourceCapabilitiesFieldSupportsNamespaces     = big.NewInt(1 << 0)
+	bulkSyncSourceCapabilitiesFieldSupportsTrackingFields = big.NewInt(1 << 1)
 )
 
 type BulkSyncSourceCapabilities struct {
+	// When true, the portion of a schema ID before its last dot is that schema's namespace.
+	SupportsNamespaces     *bool `json:"supports_namespaces,omitempty" url:"supports_namespaces,omitempty"`
 	SupportsTrackingFields *bool `json:"supports_tracking_fields,omitempty" url:"supports_tracking_fields,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2882,6 +2885,13 @@ type BulkSyncSourceCapabilities struct {
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (b *BulkSyncSourceCapabilities) GetSupportsNamespaces() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.SupportsNamespaces
 }
 
 func (b *BulkSyncSourceCapabilities) GetSupportsTrackingFields() *bool {
@@ -2903,6 +2913,13 @@ func (b *BulkSyncSourceCapabilities) require(field *big.Int) {
 		b.explicitFields = big.NewInt(0)
 	}
 	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetSupportsNamespaces sets the SupportsNamespaces field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSourceCapabilities) SetSupportsNamespaces(supportsNamespaces *bool) {
+	b.SupportsNamespaces = supportsNamespaces
+	b.require(bulkSyncSourceCapabilitiesFieldSupportsNamespaces)
 }
 
 // SetSupportsTrackingFields sets the SupportsTrackingFields field and marks it as non-optional;

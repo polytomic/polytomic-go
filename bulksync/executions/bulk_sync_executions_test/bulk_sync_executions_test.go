@@ -320,3 +320,38 @@ func TestBulkSyncExecutionsGetSchemaConsoleLogsWithWireMock(
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestBulkSyncExecutionsGetSchemaConsoleLogsWithWireMock", "GET", "/api/bulk/syncs/248df4b7-aa70-47b8-a036-33ac447e668d/executions/0ecd09c1-b901-4d27-9053-f0367c427254/schemas/users/consolelog", map[string]interface{}{"limit": "50", "after": "1744311099250-0"}, 1)
 }
+
+func TestBulkSyncExecutionsGetIngestConsoleLogsWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &bulksync.ExecutionsGetIngestConsoleLogsRequest{
+		SyncID: polytomic.String(
+			"248df4b7-aa70-47b8-a036-33ac447e668d",
+		),
+		Limit: polytomic.Int(
+			50,
+		),
+		After: polytomic.String(
+			"1744311099250-0",
+		),
+	}
+	_, invocationErr := client.BulkSync.Executions.GetIngestConsoleLogs(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestBulkSyncExecutionsGetIngestConsoleLogsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestBulkSyncExecutionsGetIngestConsoleLogsWithWireMock", "GET", "/api/connections/248df4b7-aa70-47b8-a036-33ac447e668d/ingest/consolelog", map[string]interface{}{"sync_id": "248df4b7-aa70-47b8-a036-33ac447e668d", "limit": "50", "after": "1744311099250-0"}, 1)
+}

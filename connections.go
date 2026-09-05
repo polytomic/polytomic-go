@@ -11,13 +11,15 @@ import (
 )
 
 var (
-	connectCardRequestFieldConnection     = big.NewInt(1 << 0)
-	connectCardRequestFieldDark           = big.NewInt(1 << 1)
-	connectCardRequestFieldName           = big.NewInt(1 << 2)
-	connectCardRequestFieldOrganizationID = big.NewInt(1 << 3)
-	connectCardRequestFieldRedirectURL    = big.NewInt(1 << 4)
-	connectCardRequestFieldType           = big.NewInt(1 << 5)
-	connectCardRequestFieldWhitelist      = big.NewInt(1 << 6)
+	connectCardRequestFieldConnection          = big.NewInt(1 << 0)
+	connectCardRequestFieldDark                = big.NewInt(1 << 1)
+	connectCardRequestFieldName                = big.NewInt(1 << 2)
+	connectCardRequestFieldOrganizationID      = big.NewInt(1 << 3)
+	connectCardRequestFieldRedirectURL         = big.NewInt(1 << 4)
+	connectCardRequestFieldTTL                 = big.NewInt(1 << 5)
+	connectCardRequestFieldType                = big.NewInt(1 << 6)
+	connectCardRequestFieldUseOrganizationName = big.NewInt(1 << 7)
+	connectCardRequestFieldWhitelist           = big.NewInt(1 << 8)
 )
 
 type ConnectCardRequest struct {
@@ -30,8 +32,12 @@ type ConnectCardRequest struct {
 	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
 	// URL to redirect to after connection is created.
 	RedirectURL string `json:"redirect_url" url:"-"`
+	// Connect session lifetime in seconds. Defaults to 300 and cannot exceed 604800.
+	TTL *int `json:"ttl,omitempty" url:"-"`
 	// Connection type to create.
 	Type *string `json:"type,omitempty" url:"-"`
+	// Whether to display the target organization name instead of the partner name in the Connect modal. Defaults to false; organizations without a partner always display their organization name.
+	UseOrganizationName *bool `json:"use_organization_name,omitempty" url:"-"`
 	// List of connection types which are allowed to be created. Ignored if type is set.
 	Whitelist []string `json:"whitelist,omitempty" url:"-"`
 
@@ -81,11 +87,25 @@ func (c *ConnectCardRequest) SetRedirectURL(redirectURL string) {
 	c.require(connectCardRequestFieldRedirectURL)
 }
 
+// SetTTL sets the TTL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectCardRequest) SetTTL(ttl *int) {
+	c.TTL = ttl
+	c.require(connectCardRequestFieldTTL)
+}
+
 // SetType sets the Type field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *ConnectCardRequest) SetType(type_ *string) {
 	c.Type = type_
 	c.require(connectCardRequestFieldType)
+}
+
+// SetUseOrganizationName sets the UseOrganizationName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectCardRequest) SetUseOrganizationName(useOrganizationName *bool) {
+	c.UseOrganizationName = useOrganizationName
+	c.require(connectCardRequestFieldUseOrganizationName)
 }
 
 // SetWhitelist sets the Whitelist field and marks it as non-optional;
@@ -229,63 +249,6 @@ func (c *CreateConnectionRequestSchema) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	partnerCreateSharedConnectionRequestSchemaFieldChildOrganizationID = big.NewInt(1 << 0)
-	partnerCreateSharedConnectionRequestSchemaFieldName                = big.NewInt(1 << 1)
-)
-
-type PartnerCreateSharedConnectionRequestSchema struct {
-	// Unique identifier of the child organization that should receive the shared connection.
-	ChildOrganizationID string `json:"child_organization_id" url:"-"`
-	// Optional name for the shared copy. Defaults to the parent connection name.
-	Name *string `json:"name,omitempty" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (p *PartnerCreateSharedConnectionRequestSchema) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetChildOrganizationID sets the ChildOrganizationID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PartnerCreateSharedConnectionRequestSchema) SetChildOrganizationID(childOrganizationID string) {
-	p.ChildOrganizationID = childOrganizationID
-	p.require(partnerCreateSharedConnectionRequestSchemaFieldChildOrganizationID)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PartnerCreateSharedConnectionRequestSchema) SetName(name *string) {
-	p.Name = name
-	p.require(partnerCreateSharedConnectionRequestSchemaFieldName)
-}
-
-func (p *PartnerCreateSharedConnectionRequestSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler PartnerCreateSharedConnectionRequestSchema
-	var body unmarshaler
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	*p = PartnerCreateSharedConnectionRequestSchema(body)
-	return nil
-}
-
-func (p *PartnerCreateSharedConnectionRequestSchema) MarshalJSON() ([]byte, error) {
-	type embed PartnerCreateSharedConnectionRequestSchema
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-var (
 	connectionsDeleteRequestFieldForce = big.NewInt(1 << 0)
 )
 
@@ -308,52 +271,6 @@ func (c *ConnectionsDeleteRequest) require(field *big.Int) {
 func (c *ConnectionsDeleteRequest) SetForce(force *bool) {
 	c.Force = force
 	c.require(connectionsDeleteRequestFieldForce)
-}
-
-var (
-	executeConnectionProxyRequestFieldRequest = big.NewInt(1 << 0)
-)
-
-type ExecuteConnectionProxyRequest struct {
-	Request *ConnectionProxyCall `json:"request" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (e *ExecuteConnectionProxyRequest) require(field *big.Int) {
-	if e.explicitFields == nil {
-		e.explicitFields = big.NewInt(0)
-	}
-	e.explicitFields.Or(e.explicitFields, field)
-}
-
-// SetRequest sets the Request field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ExecuteConnectionProxyRequest) SetRequest(request *ConnectionProxyCall) {
-	e.Request = request
-	e.require(executeConnectionProxyRequestFieldRequest)
-}
-
-func (e *ExecuteConnectionProxyRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler ExecuteConnectionProxyRequest
-	var body unmarshaler
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	*e = ExecuteConnectionProxyRequest(body)
-	return nil
-}
-
-func (e *ExecuteConnectionProxyRequest) MarshalJSON() ([]byte, error) {
-	type embed ExecuteConnectionProxyRequest
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*e),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
-	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -610,13 +527,15 @@ func (u *UpdateConnectionRequestSchema) MarshalJSON() ([]byte, error) {
 var (
 	backendConnectionCapabilitiesFieldDestination   = big.NewInt(1 << 0)
 	backendConnectionCapabilitiesFieldEnrichment    = big.NewInt(1 << 1)
-	backendConnectionCapabilitiesFieldOrchestration = big.NewInt(1 << 2)
-	backendConnectionCapabilitiesFieldSource        = big.NewInt(1 << 3)
+	backendConnectionCapabilitiesFieldLogging       = big.NewInt(1 << 2)
+	backendConnectionCapabilitiesFieldOrchestration = big.NewInt(1 << 3)
+	backendConnectionCapabilitiesFieldSource        = big.NewInt(1 << 4)
 )
 
 type BackendConnectionCapabilities struct {
 	Destination   bool `json:"destination" url:"destination"`
 	Enrichment    bool `json:"enrichment" url:"enrichment"`
+	Logging       bool `json:"logging" url:"logging"`
 	Orchestration bool `json:"orchestration" url:"orchestration"`
 	Source        bool `json:"source" url:"source"`
 
@@ -639,6 +558,13 @@ func (b *BackendConnectionCapabilities) GetEnrichment() bool {
 		return false
 	}
 	return b.Enrichment
+}
+
+func (b *BackendConnectionCapabilities) GetLogging() bool {
+	if b == nil {
+		return false
+	}
+	return b.Logging
 }
 
 func (b *BackendConnectionCapabilities) GetOrchestration() bool {
@@ -681,6 +607,13 @@ func (b *BackendConnectionCapabilities) SetDestination(destination bool) {
 func (b *BackendConnectionCapabilities) SetEnrichment(enrichment bool) {
 	b.Enrichment = enrichment
 	b.require(backendConnectionCapabilitiesFieldEnrichment)
+}
+
+// SetLogging sets the Logging field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BackendConnectionCapabilities) SetLogging(logging bool) {
+	b.Logging = logging
+	b.require(backendConnectionCapabilitiesFieldLogging)
 }
 
 // SetOrchestration sets the Orchestration field and marks it as non-optional;
@@ -861,9 +794,9 @@ var (
 )
 
 type ConnectCardResponse struct {
-	// URL to redirect the user to in order to create the new connection.
+	// URL that opens the Polytomic Connect flow for creating or reconnecting a Connection.
 	RedirectURL *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
-	// Opaque single-use token identifying the Connect session.
+	// Token for the Polytomic Connect session.
 	Token *string `json:"token,omitempty" url:"token,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1042,6 +975,336 @@ func (c *ConnectCardResponseEnvelope) String() string {
 }
 
 var (
+	connectSessionResponseFieldConnectionID     = big.NewInt(1 << 0)
+	connectSessionResponseFieldDark             = big.NewInt(1 << 1)
+	connectSessionResponseFieldExpiresAt        = big.NewInt(1 << 2)
+	connectSessionResponseFieldID               = big.NewInt(1 << 3)
+	connectSessionResponseFieldLogo             = big.NewInt(1 << 4)
+	connectSessionResponseFieldName             = big.NewInt(1 << 5)
+	connectSessionResponseFieldOrganizationName = big.NewInt(1 << 6)
+	connectSessionResponseFieldRedirectURL      = big.NewInt(1 << 7)
+	connectSessionResponseFieldType             = big.NewInt(1 << 8)
+	connectSessionResponseFieldWhitelist        = big.NewInt(1 << 9)
+)
+
+type ConnectSessionResponse struct {
+	// Existing or newly-created connection bound to this session.
+	ConnectionID *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	// Whether the Connect modal uses the dark theme.
+	Dark *bool `json:"dark,omitempty" url:"dark,omitempty"`
+	// Absolute time when the Connect session expires.
+	ExpiresAt *time.Time `json:"expires_at,omitempty" url:"expires_at,omitempty"`
+	// Stable identifier for this Connect session.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Trusted logo URL displayed by the Connect modal.
+	Logo *string `json:"logo,omitempty" url:"logo,omitempty"`
+	// Trusted connection name for this session.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Trusted organization or partner name displayed by the Connect modal.
+	OrganizationName *string `json:"organization_name,omitempty" url:"organization_name,omitempty"`
+	// URL to redirect to after the Connect flow finishes.
+	RedirectURL *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
+	// Fixed connection type for this session, if any.
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
+	// Connection types allowed for this session when type is empty.
+	Whitelist []string `json:"whitelist,omitempty" url:"whitelist,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ConnectSessionResponse) GetConnectionID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ConnectionID
+}
+
+func (c *ConnectSessionResponse) GetDark() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.Dark
+}
+
+func (c *ConnectSessionResponse) GetExpiresAt() *time.Time {
+	if c == nil {
+		return nil
+	}
+	return c.ExpiresAt
+}
+
+func (c *ConnectSessionResponse) GetID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ID
+}
+
+func (c *ConnectSessionResponse) GetLogo() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Logo
+}
+
+func (c *ConnectSessionResponse) GetName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Name
+}
+
+func (c *ConnectSessionResponse) GetOrganizationName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.OrganizationName
+}
+
+func (c *ConnectSessionResponse) GetRedirectURL() *string {
+	if c == nil {
+		return nil
+	}
+	return c.RedirectURL
+}
+
+func (c *ConnectSessionResponse) GetType() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Type
+}
+
+func (c *ConnectSessionResponse) GetWhitelist() []string {
+	if c == nil {
+		return nil
+	}
+	return c.Whitelist
+}
+
+func (c *ConnectSessionResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *ConnectSessionResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetConnectionID sets the ConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectSessionResponse) SetConnectionID(connectionID *string) {
+	c.ConnectionID = connectionID
+	c.require(connectSessionResponseFieldConnectionID)
+}
+
+// SetDark sets the Dark field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectSessionResponse) SetDark(dark *bool) {
+	c.Dark = dark
+	c.require(connectSessionResponseFieldDark)
+}
+
+// SetExpiresAt sets the ExpiresAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectSessionResponse) SetExpiresAt(expiresAt *time.Time) {
+	c.ExpiresAt = expiresAt
+	c.require(connectSessionResponseFieldExpiresAt)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectSessionResponse) SetID(id *string) {
+	c.ID = id
+	c.require(connectSessionResponseFieldID)
+}
+
+// SetLogo sets the Logo field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectSessionResponse) SetLogo(logo *string) {
+	c.Logo = logo
+	c.require(connectSessionResponseFieldLogo)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectSessionResponse) SetName(name *string) {
+	c.Name = name
+	c.require(connectSessionResponseFieldName)
+}
+
+// SetOrganizationName sets the OrganizationName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectSessionResponse) SetOrganizationName(organizationName *string) {
+	c.OrganizationName = organizationName
+	c.require(connectSessionResponseFieldOrganizationName)
+}
+
+// SetRedirectURL sets the RedirectURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectSessionResponse) SetRedirectURL(redirectURL *string) {
+	c.RedirectURL = redirectURL
+	c.require(connectSessionResponseFieldRedirectURL)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectSessionResponse) SetType(type_ *string) {
+	c.Type = type_
+	c.require(connectSessionResponseFieldType)
+}
+
+// SetWhitelist sets the Whitelist field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectSessionResponse) SetWhitelist(whitelist []string) {
+	c.Whitelist = whitelist
+	c.require(connectSessionResponseFieldWhitelist)
+}
+
+func (c *ConnectSessionResponse) UnmarshalJSON(data []byte) error {
+	type embed ConnectSessionResponse
+	var unmarshaler = struct {
+		embed
+		ExpiresAt *internal.DateTime `json:"expires_at,omitempty"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ConnectSessionResponse(unmarshaler.embed)
+	c.ExpiresAt = unmarshaler.ExpiresAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectSessionResponse) MarshalJSON() ([]byte, error) {
+	type embed ConnectSessionResponse
+	var marshaler = struct {
+		embed
+		ExpiresAt *internal.DateTime `json:"expires_at,omitempty"`
+	}{
+		embed:     embed(*c),
+		ExpiresAt: internal.NewOptionalDateTime(c.ExpiresAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ConnectSessionResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	connectSessionResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type ConnectSessionResponseEnvelope struct {
+	Data *ConnectSessionResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ConnectSessionResponseEnvelope) GetData() *ConnectSessionResponse {
+	if c == nil {
+		return nil
+	}
+	return c.Data
+}
+
+func (c *ConnectSessionResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *ConnectSessionResponseEnvelope) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectSessionResponseEnvelope) SetData(data *ConnectSessionResponse) {
+	c.Data = data
+	c.require(connectSessionResponseEnvelopeFieldData)
+}
+
+func (c *ConnectSessionResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectSessionResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectSessionResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectSessionResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed ConnectSessionResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ConnectSessionResponseEnvelope) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
 	connectionFormFieldJsonschema = big.NewInt(1 << 0)
 	connectionFormFieldUischema   = big.NewInt(1 << 1)
 )
@@ -1142,96 +1405,14 @@ func (c *ConnectionForm) String() string {
 }
 
 var (
-	connectionListResponseEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type ConnectionListResponseEnvelope struct {
-	Data []*ConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionListResponseEnvelope) GetData() []*ConnectionResponseSchema {
-	if c == nil {
-		return nil
-	}
-	return c.Data
-}
-
-func (c *ConnectionListResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionListResponseEnvelope) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionListResponseEnvelope) SetData(data []*ConnectionResponseSchema) {
-	c.Data = data
-	c.require(connectionListResponseEnvelopeFieldData)
-}
-
-func (c *ConnectionListResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionListResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionListResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionListResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed ConnectionListResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionListResponseEnvelope) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
 	connectionParameterValueFieldLabel = big.NewInt(1 << 0)
-	connectionParameterValueFieldValue = big.NewInt(1 << 1)
+	connectionParameterValueFieldPath  = big.NewInt(1 << 1)
+	connectionParameterValueFieldValue = big.NewInt(1 << 2)
 )
 
 type ConnectionParameterValue struct {
 	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	Path  *string `json:"path,omitempty" url:"path,omitempty"`
 	Value any     `json:"value,omitempty" url:"value,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1246,6 +1427,13 @@ func (c *ConnectionParameterValue) GetLabel() *string {
 		return nil
 	}
 	return c.Label
+}
+
+func (c *ConnectionParameterValue) GetPath() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Path
 }
 
 func (c *ConnectionParameterValue) GetValue() any {
@@ -1274,6 +1462,13 @@ func (c *ConnectionParameterValue) require(field *big.Int) {
 func (c *ConnectionParameterValue) SetLabel(label *string) {
 	c.Label = label
 	c.require(connectionParameterValueFieldLabel)
+}
+
+// SetPath sets the Path field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionParameterValue) SetPath(path *string) {
+	c.Path = path
+	c.require(connectionParameterValueFieldPath)
 }
 
 // SetValue sets the Value field and marks it as non-optional;
@@ -1510,1319 +1705,6 @@ func (c *ConnectionParameterValuesResponseEnvelope) String() string {
 }
 
 var (
-	connectionProxyCallFieldBody     = big.NewInt(1 << 0)
-	connectionProxyCallFieldHeaders  = big.NewInt(1 << 1)
-	connectionProxyCallFieldMethod   = big.NewInt(1 << 2)
-	connectionProxyCallFieldPath     = big.NewInt(1 << 3)
-	connectionProxyCallFieldQuery    = big.NewInt(1 << 4)
-	connectionProxyCallFieldRawQuery = big.NewInt(1 << 5)
-)
-
-type ConnectionProxyCall struct {
-	// Request body. May be a string, a JSON object, or null.
-	Body any `json:"body,omitempty" url:"body,omitempty"`
-	// Additional request headers to send upstream. Headers listed in the connection's blockedRequestHeaders are rejected, and inherited auth headers cannot be overridden.
-	Headers map[string]string `json:"headers,omitempty" url:"headers,omitempty"`
-	// HTTP method. Must be one of GET, POST, PUT, PATCH, DELETE.
-	Method string `json:"method" url:"method"`
-	// Relative upstream path. Query strings must be passed in request.query or request.rawQuery.
-	Path string `json:"path" url:"path"`
-	// Structured query parameters. Keys and values are URL-encoded before forwarding. Mutually exclusive with rawQuery.
-	Query map[string]any `json:"query,omitempty" url:"query,omitempty"`
-	// Exact query string fragment appended as-is after inherited query parameters. Do not include a leading '?'. Caller is responsible for encoding and syntax. Mutually exclusive with query.
-	RawQuery *string `json:"rawQuery,omitempty" url:"rawQuery,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionProxyCall) GetBody() any {
-	if c == nil {
-		return nil
-	}
-	return c.Body
-}
-
-func (c *ConnectionProxyCall) GetHeaders() map[string]string {
-	if c == nil {
-		return nil
-	}
-	return c.Headers
-}
-
-func (c *ConnectionProxyCall) GetMethod() string {
-	if c == nil {
-		return ""
-	}
-	return c.Method
-}
-
-func (c *ConnectionProxyCall) GetPath() string {
-	if c == nil {
-		return ""
-	}
-	return c.Path
-}
-
-func (c *ConnectionProxyCall) GetQuery() map[string]any {
-	if c == nil {
-		return nil
-	}
-	return c.Query
-}
-
-func (c *ConnectionProxyCall) GetRawQuery() *string {
-	if c == nil {
-		return nil
-	}
-	return c.RawQuery
-}
-
-func (c *ConnectionProxyCall) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionProxyCall) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetBody sets the Body field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyCall) SetBody(body any) {
-	c.Body = body
-	c.require(connectionProxyCallFieldBody)
-}
-
-// SetHeaders sets the Headers field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyCall) SetHeaders(headers map[string]string) {
-	c.Headers = headers
-	c.require(connectionProxyCallFieldHeaders)
-}
-
-// SetMethod sets the Method field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyCall) SetMethod(method string) {
-	c.Method = method
-	c.require(connectionProxyCallFieldMethod)
-}
-
-// SetPath sets the Path field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyCall) SetPath(path string) {
-	c.Path = path
-	c.require(connectionProxyCallFieldPath)
-}
-
-// SetQuery sets the Query field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyCall) SetQuery(query map[string]any) {
-	c.Query = query
-	c.require(connectionProxyCallFieldQuery)
-}
-
-// SetRawQuery sets the RawQuery field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyCall) SetRawQuery(rawQuery *string) {
-	c.RawQuery = rawQuery
-	c.require(connectionProxyCallFieldRawQuery)
-}
-
-func (c *ConnectionProxyCall) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionProxyCall
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionProxyCall(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionProxyCall) MarshalJSON() ([]byte, error) {
-	type embed ConnectionProxyCall
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionProxyCall) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	connectionProxyContractFieldAllowedMethods         = big.NewInt(1 << 0)
-	connectionProxyContractFieldBlockedRequestHeaders  = big.NewInt(1 << 1)
-	connectionProxyContractFieldBlockedResponseHeaders = big.NewInt(1 << 2)
-	connectionProxyContractFieldBodyTypes              = big.NewInt(1 << 3)
-	connectionProxyContractFieldMaxRequestBodyBytes    = big.NewInt(1 << 4)
-	connectionProxyContractFieldMaxResponseBodyBytes   = big.NewInt(1 << 5)
-	connectionProxyContractFieldPathRule               = big.NewInt(1 << 6)
-	connectionProxyContractFieldQueryModes             = big.NewInt(1 << 7)
-	connectionProxyContractFieldQueryValueTypes        = big.NewInt(1 << 8)
-	connectionProxyContractFieldRateLimitPerMinute     = big.NewInt(1 << 9)
-	connectionProxyContractFieldRawQueryRule           = big.NewInt(1 << 10)
-	connectionProxyContractFieldTimeoutMs              = big.NewInt(1 << 11)
-)
-
-type ConnectionProxyContract struct {
-	// HTTP methods the proxy accepts.
-	AllowedMethods []string `json:"allowedMethods,omitempty" url:"allowedMethods,omitempty"`
-	// Headers the proxy strips from caller-supplied requests before forwarding.
-	BlockedRequestHeaders []string `json:"blockedRequestHeaders,omitempty" url:"blockedRequestHeaders,omitempty"`
-	// Headers the proxy strips from upstream responses before returning them.
-	BlockedResponseHeaders []string `json:"blockedResponseHeaders,omitempty" url:"blockedResponseHeaders,omitempty"`
-	// Supported JSON types for request.body (e.g. object, string, null).
-	BodyTypes []string `json:"bodyTypes,omitempty" url:"bodyTypes,omitempty"`
-	// Maximum accepted request body size in bytes.
-	MaxRequestBodyBytes *int `json:"maxRequestBodyBytes,omitempty" url:"maxRequestBodyBytes,omitempty"`
-	// Maximum response body size in bytes. Larger responses are truncated.
-	MaxResponseBodyBytes *int `json:"maxResponseBodyBytes,omitempty" url:"maxResponseBodyBytes,omitempty"`
-	// Rule the caller-supplied path must satisfy.
-	PathRule *string `json:"pathRule,omitempty" url:"pathRule,omitempty"`
-	// Supported request query inputs. Use query for structured URL-encoded parameters or rawQuery for exact passthrough.
-	QueryModes []string `json:"queryModes,omitempty" url:"queryModes,omitempty"`
-	// Supported value types for request.query.
-	QueryValueTypes []string `json:"queryValueTypes,omitempty" url:"queryValueTypes,omitempty"`
-	// Maximum proxied requests per minute per connection before the proxy returns 429.
-	RateLimitPerMinute *int `json:"rateLimitPerMinute,omitempty" url:"rateLimitPerMinute,omitempty"`
-	// How request.rawQuery is appended and who is responsible for encoding.
-	RawQueryRule *string `json:"rawQueryRule,omitempty" url:"rawQueryRule,omitempty"`
-	// Per-request timeout in milliseconds.
-	TimeoutMs *int `json:"timeoutMs,omitempty" url:"timeoutMs,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionProxyContract) GetAllowedMethods() []string {
-	if c == nil {
-		return nil
-	}
-	return c.AllowedMethods
-}
-
-func (c *ConnectionProxyContract) GetBlockedRequestHeaders() []string {
-	if c == nil {
-		return nil
-	}
-	return c.BlockedRequestHeaders
-}
-
-func (c *ConnectionProxyContract) GetBlockedResponseHeaders() []string {
-	if c == nil {
-		return nil
-	}
-	return c.BlockedResponseHeaders
-}
-
-func (c *ConnectionProxyContract) GetBodyTypes() []string {
-	if c == nil {
-		return nil
-	}
-	return c.BodyTypes
-}
-
-func (c *ConnectionProxyContract) GetMaxRequestBodyBytes() *int {
-	if c == nil {
-		return nil
-	}
-	return c.MaxRequestBodyBytes
-}
-
-func (c *ConnectionProxyContract) GetMaxResponseBodyBytes() *int {
-	if c == nil {
-		return nil
-	}
-	return c.MaxResponseBodyBytes
-}
-
-func (c *ConnectionProxyContract) GetPathRule() *string {
-	if c == nil {
-		return nil
-	}
-	return c.PathRule
-}
-
-func (c *ConnectionProxyContract) GetQueryModes() []string {
-	if c == nil {
-		return nil
-	}
-	return c.QueryModes
-}
-
-func (c *ConnectionProxyContract) GetQueryValueTypes() []string {
-	if c == nil {
-		return nil
-	}
-	return c.QueryValueTypes
-}
-
-func (c *ConnectionProxyContract) GetRateLimitPerMinute() *int {
-	if c == nil {
-		return nil
-	}
-	return c.RateLimitPerMinute
-}
-
-func (c *ConnectionProxyContract) GetRawQueryRule() *string {
-	if c == nil {
-		return nil
-	}
-	return c.RawQueryRule
-}
-
-func (c *ConnectionProxyContract) GetTimeoutMs() *int {
-	if c == nil {
-		return nil
-	}
-	return c.TimeoutMs
-}
-
-func (c *ConnectionProxyContract) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionProxyContract) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetAllowedMethods sets the AllowedMethods field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyContract) SetAllowedMethods(allowedMethods []string) {
-	c.AllowedMethods = allowedMethods
-	c.require(connectionProxyContractFieldAllowedMethods)
-}
-
-// SetBlockedRequestHeaders sets the BlockedRequestHeaders field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyContract) SetBlockedRequestHeaders(blockedRequestHeaders []string) {
-	c.BlockedRequestHeaders = blockedRequestHeaders
-	c.require(connectionProxyContractFieldBlockedRequestHeaders)
-}
-
-// SetBlockedResponseHeaders sets the BlockedResponseHeaders field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyContract) SetBlockedResponseHeaders(blockedResponseHeaders []string) {
-	c.BlockedResponseHeaders = blockedResponseHeaders
-	c.require(connectionProxyContractFieldBlockedResponseHeaders)
-}
-
-// SetBodyTypes sets the BodyTypes field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyContract) SetBodyTypes(bodyTypes []string) {
-	c.BodyTypes = bodyTypes
-	c.require(connectionProxyContractFieldBodyTypes)
-}
-
-// SetMaxRequestBodyBytes sets the MaxRequestBodyBytes field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyContract) SetMaxRequestBodyBytes(maxRequestBodyBytes *int) {
-	c.MaxRequestBodyBytes = maxRequestBodyBytes
-	c.require(connectionProxyContractFieldMaxRequestBodyBytes)
-}
-
-// SetMaxResponseBodyBytes sets the MaxResponseBodyBytes field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyContract) SetMaxResponseBodyBytes(maxResponseBodyBytes *int) {
-	c.MaxResponseBodyBytes = maxResponseBodyBytes
-	c.require(connectionProxyContractFieldMaxResponseBodyBytes)
-}
-
-// SetPathRule sets the PathRule field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyContract) SetPathRule(pathRule *string) {
-	c.PathRule = pathRule
-	c.require(connectionProxyContractFieldPathRule)
-}
-
-// SetQueryModes sets the QueryModes field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyContract) SetQueryModes(queryModes []string) {
-	c.QueryModes = queryModes
-	c.require(connectionProxyContractFieldQueryModes)
-}
-
-// SetQueryValueTypes sets the QueryValueTypes field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyContract) SetQueryValueTypes(queryValueTypes []string) {
-	c.QueryValueTypes = queryValueTypes
-	c.require(connectionProxyContractFieldQueryValueTypes)
-}
-
-// SetRateLimitPerMinute sets the RateLimitPerMinute field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyContract) SetRateLimitPerMinute(rateLimitPerMinute *int) {
-	c.RateLimitPerMinute = rateLimitPerMinute
-	c.require(connectionProxyContractFieldRateLimitPerMinute)
-}
-
-// SetRawQueryRule sets the RawQueryRule field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyContract) SetRawQueryRule(rawQueryRule *string) {
-	c.RawQueryRule = rawQueryRule
-	c.require(connectionProxyContractFieldRawQueryRule)
-}
-
-// SetTimeoutMs sets the TimeoutMs field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyContract) SetTimeoutMs(timeoutMs *int) {
-	c.TimeoutMs = timeoutMs
-	c.require(connectionProxyContractFieldTimeoutMs)
-}
-
-func (c *ConnectionProxyContract) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionProxyContract
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionProxyContract(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionProxyContract) MarshalJSON() ([]byte, error) {
-	type embed ConnectionProxyContract
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionProxyContract) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	connectionProxyInfoResponseFieldBackendType     = big.NewInt(1 << 0)
-	connectionProxyInfoResponseFieldConnectionID    = big.NewInt(1 << 1)
-	connectionProxyInfoResponseFieldInheritedBase   = big.NewInt(1 << 2)
-	connectionProxyInfoResponseFieldMergeRules      = big.NewInt(1 << 3)
-	connectionProxyInfoResponseFieldRequestContract = big.NewInt(1 << 4)
-	connectionProxyInfoResponseFieldStats           = big.NewInt(1 << 5)
-)
-
-type ConnectionProxyInfoResponse struct {
-	// Connection backend identifier (e.g. hubspot, salesforce).
-	BackendType *string `json:"backendType,omitempty" url:"backendType,omitempty"`
-	// Unique identifier of the connection the proxy contract applies to.
-	ConnectionID    *string                       `json:"connectionId,omitempty" url:"connectionId,omitempty"`
-	InheritedBase   *ConnectionProxyInheritedBase `json:"inheritedBase,omitempty" url:"inheritedBase,omitempty"`
-	MergeRules      *ConnectionProxyMergeRules    `json:"mergeRules,omitempty" url:"mergeRules,omitempty"`
-	RequestContract *ConnectionProxyContract      `json:"requestContract,omitempty" url:"requestContract,omitempty"`
-	Stats           *ConnectionProxyStats         `json:"stats,omitempty" url:"stats,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionProxyInfoResponse) GetBackendType() *string {
-	if c == nil {
-		return nil
-	}
-	return c.BackendType
-}
-
-func (c *ConnectionProxyInfoResponse) GetConnectionID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ConnectionID
-}
-
-func (c *ConnectionProxyInfoResponse) GetInheritedBase() *ConnectionProxyInheritedBase {
-	if c == nil {
-		return nil
-	}
-	return c.InheritedBase
-}
-
-func (c *ConnectionProxyInfoResponse) GetMergeRules() *ConnectionProxyMergeRules {
-	if c == nil {
-		return nil
-	}
-	return c.MergeRules
-}
-
-func (c *ConnectionProxyInfoResponse) GetRequestContract() *ConnectionProxyContract {
-	if c == nil {
-		return nil
-	}
-	return c.RequestContract
-}
-
-func (c *ConnectionProxyInfoResponse) GetStats() *ConnectionProxyStats {
-	if c == nil {
-		return nil
-	}
-	return c.Stats
-}
-
-func (c *ConnectionProxyInfoResponse) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionProxyInfoResponse) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetBackendType sets the BackendType field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyInfoResponse) SetBackendType(backendType *string) {
-	c.BackendType = backendType
-	c.require(connectionProxyInfoResponseFieldBackendType)
-}
-
-// SetConnectionID sets the ConnectionID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyInfoResponse) SetConnectionID(connectionID *string) {
-	c.ConnectionID = connectionID
-	c.require(connectionProxyInfoResponseFieldConnectionID)
-}
-
-// SetInheritedBase sets the InheritedBase field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyInfoResponse) SetInheritedBase(inheritedBase *ConnectionProxyInheritedBase) {
-	c.InheritedBase = inheritedBase
-	c.require(connectionProxyInfoResponseFieldInheritedBase)
-}
-
-// SetMergeRules sets the MergeRules field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyInfoResponse) SetMergeRules(mergeRules *ConnectionProxyMergeRules) {
-	c.MergeRules = mergeRules
-	c.require(connectionProxyInfoResponseFieldMergeRules)
-}
-
-// SetRequestContract sets the RequestContract field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyInfoResponse) SetRequestContract(requestContract *ConnectionProxyContract) {
-	c.RequestContract = requestContract
-	c.require(connectionProxyInfoResponseFieldRequestContract)
-}
-
-// SetStats sets the Stats field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyInfoResponse) SetStats(stats *ConnectionProxyStats) {
-	c.Stats = stats
-	c.require(connectionProxyInfoResponseFieldStats)
-}
-
-func (c *ConnectionProxyInfoResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionProxyInfoResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionProxyInfoResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionProxyInfoResponse) MarshalJSON() ([]byte, error) {
-	type embed ConnectionProxyInfoResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionProxyInfoResponse) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	connectionProxyInheritedBaseFieldBaseURL       = big.NewInt(1 << 0)
-	connectionProxyInheritedBaseFieldLockedHeaders = big.NewInt(1 << 1)
-	connectionProxyInheritedBaseFieldLockedQuery   = big.NewInt(1 << 2)
-)
-
-type ConnectionProxyInheritedBase struct {
-	// Base URL all proxied requests are sent to. Caller-supplied paths are appended to this URL.
-	BaseURL *string `json:"baseUrl,omitempty" url:"baseUrl,omitempty"`
-	// Headers that are always attached to proxied requests. Sensitive values are redacted.
-	LockedHeaders []*ConnectionProxyLockedHeader `json:"lockedHeaders,omitempty" url:"lockedHeaders,omitempty"`
-	// Query parameters that are always attached to proxied requests. Values are redacted.
-	LockedQuery map[string]any `json:"lockedQuery,omitempty" url:"lockedQuery,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionProxyInheritedBase) GetBaseURL() *string {
-	if c == nil {
-		return nil
-	}
-	return c.BaseURL
-}
-
-func (c *ConnectionProxyInheritedBase) GetLockedHeaders() []*ConnectionProxyLockedHeader {
-	if c == nil {
-		return nil
-	}
-	return c.LockedHeaders
-}
-
-func (c *ConnectionProxyInheritedBase) GetLockedQuery() map[string]any {
-	if c == nil {
-		return nil
-	}
-	return c.LockedQuery
-}
-
-func (c *ConnectionProxyInheritedBase) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionProxyInheritedBase) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetBaseURL sets the BaseURL field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyInheritedBase) SetBaseURL(baseURL *string) {
-	c.BaseURL = baseURL
-	c.require(connectionProxyInheritedBaseFieldBaseURL)
-}
-
-// SetLockedHeaders sets the LockedHeaders field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyInheritedBase) SetLockedHeaders(lockedHeaders []*ConnectionProxyLockedHeader) {
-	c.LockedHeaders = lockedHeaders
-	c.require(connectionProxyInheritedBaseFieldLockedHeaders)
-}
-
-// SetLockedQuery sets the LockedQuery field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyInheritedBase) SetLockedQuery(lockedQuery map[string]any) {
-	c.LockedQuery = lockedQuery
-	c.require(connectionProxyInheritedBaseFieldLockedQuery)
-}
-
-func (c *ConnectionProxyInheritedBase) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionProxyInheritedBase
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionProxyInheritedBase(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionProxyInheritedBase) MarshalJSON() ([]byte, error) {
-	type embed ConnectionProxyInheritedBase
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionProxyInheritedBase) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	connectionProxyLockedHeaderFieldName     = big.NewInt(1 << 0)
-	connectionProxyLockedHeaderFieldRedacted = big.NewInt(1 << 1)
-	connectionProxyLockedHeaderFieldValue    = big.NewInt(1 << 2)
-)
-
-type ConnectionProxyLockedHeader struct {
-	// Header name.
-	Name *string `json:"name,omitempty" url:"name,omitempty"`
-	// True when the header value was redacted before returning it.
-	Redacted *bool `json:"redacted,omitempty" url:"redacted,omitempty"`
-	// Header value. Replaced with [REDACTED] if the header is sensitive.
-	Value *string `json:"value,omitempty" url:"value,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionProxyLockedHeader) GetName() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Name
-}
-
-func (c *ConnectionProxyLockedHeader) GetRedacted() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.Redacted
-}
-
-func (c *ConnectionProxyLockedHeader) GetValue() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Value
-}
-
-func (c *ConnectionProxyLockedHeader) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionProxyLockedHeader) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyLockedHeader) SetName(name *string) {
-	c.Name = name
-	c.require(connectionProxyLockedHeaderFieldName)
-}
-
-// SetRedacted sets the Redacted field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyLockedHeader) SetRedacted(redacted *bool) {
-	c.Redacted = redacted
-	c.require(connectionProxyLockedHeaderFieldRedacted)
-}
-
-// SetValue sets the Value field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyLockedHeader) SetValue(value *string) {
-	c.Value = value
-	c.require(connectionProxyLockedHeaderFieldValue)
-}
-
-func (c *ConnectionProxyLockedHeader) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionProxyLockedHeader
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionProxyLockedHeader(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionProxyLockedHeader) MarshalJSON() ([]byte, error) {
-	type embed ConnectionProxyLockedHeader
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionProxyLockedHeader) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	connectionProxyMergeRulesFieldHeaders = big.NewInt(1 << 0)
-	connectionProxyMergeRulesFieldQuery   = big.NewInt(1 << 1)
-)
-
-type ConnectionProxyMergeRules struct {
-	// How caller-supplied headers are merged with the connection's inherited headers.
-	Headers *string `json:"headers,omitempty" url:"headers,omitempty"`
-	// How caller-supplied query parameters are merged with the connection's inherited query parameters.
-	Query *string `json:"query,omitempty" url:"query,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionProxyMergeRules) GetHeaders() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Headers
-}
-
-func (c *ConnectionProxyMergeRules) GetQuery() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Query
-}
-
-func (c *ConnectionProxyMergeRules) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionProxyMergeRules) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetHeaders sets the Headers field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyMergeRules) SetHeaders(headers *string) {
-	c.Headers = headers
-	c.require(connectionProxyMergeRulesFieldHeaders)
-}
-
-// SetQuery sets the Query field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyMergeRules) SetQuery(query *string) {
-	c.Query = query
-	c.require(connectionProxyMergeRulesFieldQuery)
-}
-
-func (c *ConnectionProxyMergeRules) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionProxyMergeRules
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionProxyMergeRules(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionProxyMergeRules) MarshalJSON() ([]byte, error) {
-	type embed ConnectionProxyMergeRules
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionProxyMergeRules) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	connectionProxyResponseFieldBody        = big.NewInt(1 << 0)
-	connectionProxyResponseFieldContentType = big.NewInt(1 << 1)
-	connectionProxyResponseFieldHeaders     = big.NewInt(1 << 2)
-	connectionProxyResponseFieldLatencyMs   = big.NewInt(1 << 3)
-	connectionProxyResponseFieldProxyCallID = big.NewInt(1 << 4)
-	connectionProxyResponseFieldStatus      = big.NewInt(1 << 5)
-	connectionProxyResponseFieldTruncated   = big.NewInt(1 << 6)
-)
-
-type ConnectionProxyResponse struct {
-	// Upstream response body. If the upstream returned JSON, the body is returned as-is; otherwise it is returned as a string.
-	Body *string `json:"body,omitempty" url:"body,omitempty"`
-	// Content-Type of the upstream response.
-	ContentType *string `json:"contentType,omitempty" url:"contentType,omitempty"`
-	// Response headers returned by the upstream service. Headers listed in blockedResponseHeaders are removed.
-	Headers map[string]*string `json:"headers,omitempty" url:"headers,omitempty"`
-	// End-to-end latency of the proxied request in milliseconds.
-	LatencyMs *int64 `json:"latencyMs,omitempty" url:"latencyMs,omitempty"`
-	// Identifier for this proxy call, suitable for correlating with audit logs.
-	ProxyCallID *string `json:"proxyCallId,omitempty" url:"proxyCallId,omitempty"`
-	// HTTP status code returned by the upstream service.
-	Status *int `json:"status,omitempty" url:"status,omitempty"`
-	// True if the response body was truncated because it exceeded maxResponseBodyBytes.
-	Truncated *bool `json:"truncated,omitempty" url:"truncated,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionProxyResponse) GetBody() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Body
-}
-
-func (c *ConnectionProxyResponse) GetContentType() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ContentType
-}
-
-func (c *ConnectionProxyResponse) GetHeaders() map[string]*string {
-	if c == nil {
-		return nil
-	}
-	return c.Headers
-}
-
-func (c *ConnectionProxyResponse) GetLatencyMs() *int64 {
-	if c == nil {
-		return nil
-	}
-	return c.LatencyMs
-}
-
-func (c *ConnectionProxyResponse) GetProxyCallID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ProxyCallID
-}
-
-func (c *ConnectionProxyResponse) GetStatus() *int {
-	if c == nil {
-		return nil
-	}
-	return c.Status
-}
-
-func (c *ConnectionProxyResponse) GetTruncated() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.Truncated
-}
-
-func (c *ConnectionProxyResponse) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionProxyResponse) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetBody sets the Body field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyResponse) SetBody(body *string) {
-	c.Body = body
-	c.require(connectionProxyResponseFieldBody)
-}
-
-// SetContentType sets the ContentType field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyResponse) SetContentType(contentType *string) {
-	c.ContentType = contentType
-	c.require(connectionProxyResponseFieldContentType)
-}
-
-// SetHeaders sets the Headers field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyResponse) SetHeaders(headers map[string]*string) {
-	c.Headers = headers
-	c.require(connectionProxyResponseFieldHeaders)
-}
-
-// SetLatencyMs sets the LatencyMs field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyResponse) SetLatencyMs(latencyMs *int64) {
-	c.LatencyMs = latencyMs
-	c.require(connectionProxyResponseFieldLatencyMs)
-}
-
-// SetProxyCallID sets the ProxyCallID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyResponse) SetProxyCallID(proxyCallID *string) {
-	c.ProxyCallID = proxyCallID
-	c.require(connectionProxyResponseFieldProxyCallID)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyResponse) SetStatus(status *int) {
-	c.Status = status
-	c.require(connectionProxyResponseFieldStatus)
-}
-
-// SetTruncated sets the Truncated field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyResponse) SetTruncated(truncated *bool) {
-	c.Truncated = truncated
-	c.require(connectionProxyResponseFieldTruncated)
-}
-
-func (c *ConnectionProxyResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionProxyResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ConnectionProxyResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionProxyResponse) MarshalJSON() ([]byte, error) {
-	type embed ConnectionProxyResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionProxyResponse) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	connectionProxyStatsFieldCallsLast24H      = big.NewInt(1 << 0)
-	connectionProxyStatsFieldLastProxyCallAt   = big.NewInt(1 << 1)
-	connectionProxyStatsFieldProxy2XxLast24H   = big.NewInt(1 << 2)
-	connectionProxyStatsFieldProxy4XxLast24H   = big.NewInt(1 << 3)
-	connectionProxyStatsFieldProxy5XxLast24H   = big.NewInt(1 << 4)
-	connectionProxyStatsFieldProxyCallsLast24H = big.NewInt(1 << 5)
-)
-
-type ConnectionProxyStats struct {
-	// Total backend API calls made through this connection (including non-proxy calls) over the last 24 hours.
-	CallsLast24H *int `json:"callsLast24h,omitempty" url:"callsLast24h,omitempty"`
-	// Timestamp of the most recent proxy call, or null if none have occurred.
-	LastProxyCallAt *time.Time `json:"lastProxyCallAt,omitempty" url:"lastProxyCallAt,omitempty"`
-	// Proxy calls that returned a 2xx status in the last 24 hours.
-	Proxy2XxLast24H *int `json:"proxy2xxLast24h,omitempty" url:"proxy2xxLast24h,omitempty"`
-	// Proxy calls that returned a 4xx status in the last 24 hours.
-	Proxy4XxLast24H *int `json:"proxy4xxLast24h,omitempty" url:"proxy4xxLast24h,omitempty"`
-	// Proxy calls that returned a 5xx status in the last 24 hours.
-	Proxy5XxLast24H *int `json:"proxy5xxLast24h,omitempty" url:"proxy5xxLast24h,omitempty"`
-	// Proxy calls made in the last 24 hours.
-	ProxyCallsLast24H *int `json:"proxyCallsLast24h,omitempty" url:"proxyCallsLast24h,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionProxyStats) GetCallsLast24H() *int {
-	if c == nil {
-		return nil
-	}
-	return c.CallsLast24H
-}
-
-func (c *ConnectionProxyStats) GetLastProxyCallAt() *time.Time {
-	if c == nil {
-		return nil
-	}
-	return c.LastProxyCallAt
-}
-
-func (c *ConnectionProxyStats) GetProxy2XxLast24H() *int {
-	if c == nil {
-		return nil
-	}
-	return c.Proxy2XxLast24H
-}
-
-func (c *ConnectionProxyStats) GetProxy4XxLast24H() *int {
-	if c == nil {
-		return nil
-	}
-	return c.Proxy4XxLast24H
-}
-
-func (c *ConnectionProxyStats) GetProxy5XxLast24H() *int {
-	if c == nil {
-		return nil
-	}
-	return c.Proxy5XxLast24H
-}
-
-func (c *ConnectionProxyStats) GetProxyCallsLast24H() *int {
-	if c == nil {
-		return nil
-	}
-	return c.ProxyCallsLast24H
-}
-
-func (c *ConnectionProxyStats) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionProxyStats) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetCallsLast24H sets the CallsLast24H field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyStats) SetCallsLast24H(callsLast24H *int) {
-	c.CallsLast24H = callsLast24H
-	c.require(connectionProxyStatsFieldCallsLast24H)
-}
-
-// SetLastProxyCallAt sets the LastProxyCallAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyStats) SetLastProxyCallAt(lastProxyCallAt *time.Time) {
-	c.LastProxyCallAt = lastProxyCallAt
-	c.require(connectionProxyStatsFieldLastProxyCallAt)
-}
-
-// SetProxy2XxLast24H sets the Proxy2XxLast24H field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyStats) SetProxy2XxLast24H(proxy2XxLast24H *int) {
-	c.Proxy2XxLast24H = proxy2XxLast24H
-	c.require(connectionProxyStatsFieldProxy2XxLast24H)
-}
-
-// SetProxy4XxLast24H sets the Proxy4XxLast24H field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyStats) SetProxy4XxLast24H(proxy4XxLast24H *int) {
-	c.Proxy4XxLast24H = proxy4XxLast24H
-	c.require(connectionProxyStatsFieldProxy4XxLast24H)
-}
-
-// SetProxy5XxLast24H sets the Proxy5XxLast24H field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyStats) SetProxy5XxLast24H(proxy5XxLast24H *int) {
-	c.Proxy5XxLast24H = proxy5XxLast24H
-	c.require(connectionProxyStatsFieldProxy5XxLast24H)
-}
-
-// SetProxyCallsLast24H sets the ProxyCallsLast24H field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionProxyStats) SetProxyCallsLast24H(proxyCallsLast24H *int) {
-	c.ProxyCallsLast24H = proxyCallsLast24H
-	c.require(connectionProxyStatsFieldProxyCallsLast24H)
-}
-
-func (c *ConnectionProxyStats) UnmarshalJSON(data []byte) error {
-	type embed ConnectionProxyStats
-	var unmarshaler = struct {
-		embed
-		LastProxyCallAt *internal.DateTime `json:"lastProxyCallAt,omitempty"`
-	}{
-		embed: embed(*c),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*c = ConnectionProxyStats(unmarshaler.embed)
-	c.LastProxyCallAt = unmarshaler.LastProxyCallAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionProxyStats) MarshalJSON() ([]byte, error) {
-	type embed ConnectionProxyStats
-	var marshaler = struct {
-		embed
-		LastProxyCallAt *internal.DateTime `json:"lastProxyCallAt,omitempty"`
-	}{
-		embed:           embed(*c),
-		LastProxyCallAt: internal.NewOptionalDateTime(c.LastProxyCallAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionProxyStats) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
 	connectionResponseEnvelopeFieldData = big.NewInt(1 << 0)
 )
 
@@ -2907,337 +1789,16 @@ func (c *ConnectionResponseEnvelope) String() string {
 }
 
 var (
-	connectionResponseSchemaFieldAPICallsLast24Hours = big.NewInt(1 << 0)
-	connectionResponseSchemaFieldConfiguration       = big.NewInt(1 << 1)
-	connectionResponseSchemaFieldCreatedAt           = big.NewInt(1 << 2)
-	connectionResponseSchemaFieldCreatedBy           = big.NewInt(1 << 3)
-	connectionResponseSchemaFieldID                  = big.NewInt(1 << 4)
-	connectionResponseSchemaFieldName                = big.NewInt(1 << 5)
-	connectionResponseSchemaFieldOrganizationID      = big.NewInt(1 << 6)
-	connectionResponseSchemaFieldParentConnectionID  = big.NewInt(1 << 7)
-	connectionResponseSchemaFieldPolicies            = big.NewInt(1 << 8)
-	connectionResponseSchemaFieldSaved               = big.NewInt(1 << 9)
-	connectionResponseSchemaFieldStatus              = big.NewInt(1 << 10)
-	connectionResponseSchemaFieldStatusError         = big.NewInt(1 << 11)
-	connectionResponseSchemaFieldType                = big.NewInt(1 << 12)
-	connectionResponseSchemaFieldUpdatedAt           = big.NewInt(1 << 13)
-	connectionResponseSchemaFieldUpdatedBy           = big.NewInt(1 << 14)
-)
-
-type ConnectionResponseSchema struct {
-	// API calls made to service in the last 24h (supported integrations only).
-	APICallsLast24Hours *int           `json:"api_calls_last_24_hours,omitempty" url:"api_calls_last_24_hours,omitempty"`
-	Configuration       map[string]any `json:"configuration,omitempty" url:"configuration,omitempty"`
-	CreatedAt           *time.Time     `json:"created_at,omitempty" url:"created_at,omitempty"`
-	CreatedBy           *OutputActor   `json:"created_by,omitempty" url:"created_by,omitempty"`
-	ID                  *string        `json:"id,omitempty" url:"id,omitempty"`
-	Name                *string        `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationID      *string        `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	// For shared connections, the ID of the parent connection.
-	ParentConnectionID *string               `json:"parent_connection_id,omitempty" url:"parent_connection_id,omitempty"`
-	Policies           []string              `json:"policies,omitempty" url:"policies,omitempty"`
-	Saved              *bool                 `json:"saved,omitempty" url:"saved,omitempty"`
-	Status             *string               `json:"status,omitempty" url:"status,omitempty"`
-	StatusError        *string               `json:"status_error,omitempty" url:"status_error,omitempty"`
-	Type               *ConnectionTypeSchema `json:"type,omitempty" url:"type,omitempty"`
-	UpdatedAt          *time.Time            `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	UpdatedBy          *OutputActor          `json:"updated_by,omitempty" url:"updated_by,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ConnectionResponseSchema) GetAPICallsLast24Hours() *int {
-	if c == nil {
-		return nil
-	}
-	return c.APICallsLast24Hours
-}
-
-func (c *ConnectionResponseSchema) GetConfiguration() map[string]any {
-	if c == nil {
-		return nil
-	}
-	return c.Configuration
-}
-
-func (c *ConnectionResponseSchema) GetCreatedAt() *time.Time {
-	if c == nil {
-		return nil
-	}
-	return c.CreatedAt
-}
-
-func (c *ConnectionResponseSchema) GetCreatedBy() *OutputActor {
-	if c == nil {
-		return nil
-	}
-	return c.CreatedBy
-}
-
-func (c *ConnectionResponseSchema) GetID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ID
-}
-
-func (c *ConnectionResponseSchema) GetName() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Name
-}
-
-func (c *ConnectionResponseSchema) GetOrganizationID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.OrganizationID
-}
-
-func (c *ConnectionResponseSchema) GetParentConnectionID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ParentConnectionID
-}
-
-func (c *ConnectionResponseSchema) GetPolicies() []string {
-	if c == nil {
-		return nil
-	}
-	return c.Policies
-}
-
-func (c *ConnectionResponseSchema) GetSaved() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.Saved
-}
-
-func (c *ConnectionResponseSchema) GetStatus() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Status
-}
-
-func (c *ConnectionResponseSchema) GetStatusError() *string {
-	if c == nil {
-		return nil
-	}
-	return c.StatusError
-}
-
-func (c *ConnectionResponseSchema) GetType() *ConnectionTypeSchema {
-	if c == nil {
-		return nil
-	}
-	return c.Type
-}
-
-func (c *ConnectionResponseSchema) GetUpdatedAt() *time.Time {
-	if c == nil {
-		return nil
-	}
-	return c.UpdatedAt
-}
-
-func (c *ConnectionResponseSchema) GetUpdatedBy() *OutputActor {
-	if c == nil {
-		return nil
-	}
-	return c.UpdatedBy
-}
-
-func (c *ConnectionResponseSchema) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ConnectionResponseSchema) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetAPICallsLast24Hours sets the APICallsLast24Hours field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetAPICallsLast24Hours(apiCallsLast24Hours *int) {
-	c.APICallsLast24Hours = apiCallsLast24Hours
-	c.require(connectionResponseSchemaFieldAPICallsLast24Hours)
-}
-
-// SetConfiguration sets the Configuration field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetConfiguration(configuration map[string]any) {
-	c.Configuration = configuration
-	c.require(connectionResponseSchemaFieldConfiguration)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetCreatedAt(createdAt *time.Time) {
-	c.CreatedAt = createdAt
-	c.require(connectionResponseSchemaFieldCreatedAt)
-}
-
-// SetCreatedBy sets the CreatedBy field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetCreatedBy(createdBy *OutputActor) {
-	c.CreatedBy = createdBy
-	c.require(connectionResponseSchemaFieldCreatedBy)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetID(id *string) {
-	c.ID = id
-	c.require(connectionResponseSchemaFieldID)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetName(name *string) {
-	c.Name = name
-	c.require(connectionResponseSchemaFieldName)
-}
-
-// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetOrganizationID(organizationID *string) {
-	c.OrganizationID = organizationID
-	c.require(connectionResponseSchemaFieldOrganizationID)
-}
-
-// SetParentConnectionID sets the ParentConnectionID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetParentConnectionID(parentConnectionID *string) {
-	c.ParentConnectionID = parentConnectionID
-	c.require(connectionResponseSchemaFieldParentConnectionID)
-}
-
-// SetPolicies sets the Policies field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetPolicies(policies []string) {
-	c.Policies = policies
-	c.require(connectionResponseSchemaFieldPolicies)
-}
-
-// SetSaved sets the Saved field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetSaved(saved *bool) {
-	c.Saved = saved
-	c.require(connectionResponseSchemaFieldSaved)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetStatus(status *string) {
-	c.Status = status
-	c.require(connectionResponseSchemaFieldStatus)
-}
-
-// SetStatusError sets the StatusError field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetStatusError(statusError *string) {
-	c.StatusError = statusError
-	c.require(connectionResponseSchemaFieldStatusError)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetType(type_ *ConnectionTypeSchema) {
-	c.Type = type_
-	c.require(connectionResponseSchemaFieldType)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetUpdatedAt(updatedAt *time.Time) {
-	c.UpdatedAt = updatedAt
-	c.require(connectionResponseSchemaFieldUpdatedAt)
-}
-
-// SetUpdatedBy sets the UpdatedBy field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionResponseSchema) SetUpdatedBy(updatedBy *OutputActor) {
-	c.UpdatedBy = updatedBy
-	c.require(connectionResponseSchemaFieldUpdatedBy)
-}
-
-func (c *ConnectionResponseSchema) UnmarshalJSON(data []byte) error {
-	type embed ConnectionResponseSchema
-	var unmarshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed: embed(*c),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*c = ConnectionResponseSchema(unmarshaler.embed)
-	c.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	c.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ConnectionResponseSchema) MarshalJSON() ([]byte, error) {
-	type embed ConnectionResponseSchema
-	var marshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed:     embed(*c),
-		CreatedAt: internal.NewOptionalDateTime(c.CreatedAt),
-		UpdatedAt: internal.NewOptionalDateTime(c.UpdatedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ConnectionResponseSchema) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
 	connectionTypeFieldCapabilities         = big.NewInt(1 << 0)
 	connectionTypeFieldConfigurationForm    = big.NewInt(1 << 1)
 	connectionTypeFieldEnvConfig            = big.NewInt(1 << 2)
 	connectionTypeFieldID                   = big.NewInt(1 << 3)
 	connectionTypeFieldInitialConfiguration = big.NewInt(1 << 4)
-	connectionTypeFieldLogoURL              = big.NewInt(1 << 5)
-	connectionTypeFieldName                 = big.NewInt(1 << 6)
-	connectionTypeFieldOauthPrompt          = big.NewInt(1 << 7)
-	connectionTypeFieldUseOauth             = big.NewInt(1 << 8)
+	connectionTypeFieldLogoDarkURL          = big.NewInt(1 << 5)
+	connectionTypeFieldLogoURL              = big.NewInt(1 << 6)
+	connectionTypeFieldName                 = big.NewInt(1 << 7)
+	connectionTypeFieldOauthPrompt          = big.NewInt(1 << 8)
+	connectionTypeFieldUseOauth             = big.NewInt(1 << 9)
 )
 
 type ConnectionType struct {
@@ -3246,6 +1807,7 @@ type ConnectionType struct {
 	EnvConfig            map[string]any                 `json:"envConfig,omitempty" url:"envConfig,omitempty"`
 	ID                   *string                        `json:"id,omitempty" url:"id,omitempty"`
 	InitialConfiguration map[string]any                 `json:"initialConfiguration,omitempty" url:"initialConfiguration,omitempty"`
+	LogoDarkURL          *string                        `json:"logo_dark_url,omitempty" url:"logo_dark_url,omitempty"`
 	LogoURL              *string                        `json:"logo_url,omitempty" url:"logo_url,omitempty"`
 	Name                 *string                        `json:"name,omitempty" url:"name,omitempty"`
 	OauthPrompt          *BackendOAuthPrompt            `json:"oauth_prompt,omitempty" url:"oauth_prompt,omitempty"`
@@ -3291,6 +1853,13 @@ func (c *ConnectionType) GetInitialConfiguration() map[string]any {
 		return nil
 	}
 	return c.InitialConfiguration
+}
+
+func (c *ConnectionType) GetLogoDarkURL() *string {
+	if c == nil {
+		return nil
+	}
+	return c.LogoDarkURL
 }
 
 func (c *ConnectionType) GetLogoURL() *string {
@@ -3368,6 +1937,13 @@ func (c *ConnectionType) SetID(id *string) {
 func (c *ConnectionType) SetInitialConfiguration(initialConfiguration map[string]any) {
 	c.InitialConfiguration = initialConfiguration
 	c.require(connectionTypeFieldInitialConfiguration)
+}
+
+// SetLogoDarkURL sets the LogoDarkURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionType) SetLogoDarkURL(logoDarkURL *string) {
+	c.LogoDarkURL = logoDarkURL
+	c.require(connectionTypeFieldLogoDarkURL)
 }
 
 // SetLogoURL sets the LogoURL field and marks it as non-optional;
@@ -3525,17 +2101,18 @@ func (c *ConnectionTypeResponseEnvelope) String() string {
 }
 
 var (
-	connectionTypeSchemaFieldID         = big.NewInt(1 << 0)
-	connectionTypeSchemaFieldLogoURL    = big.NewInt(1 << 1)
-	connectionTypeSchemaFieldName       = big.NewInt(1 << 2)
-	connectionTypeSchemaFieldOperations = big.NewInt(1 << 3)
+	connectionUsageCategoryStatsFieldCalls = big.NewInt(1 << 0)
+	connectionUsageCategoryStatsFieldKey   = big.NewInt(1 << 1)
+	connectionUsageCategoryStatsFieldLabel = big.NewInt(1 << 2)
 )
 
-type ConnectionTypeSchema struct {
-	ID         *string  `json:"id,omitempty" url:"id,omitempty"`
-	LogoURL    *string  `json:"logo_url,omitempty" url:"logo_url,omitempty"`
-	Name       *string  `json:"name,omitempty" url:"name,omitempty"`
-	Operations []string `json:"operations,omitempty" url:"operations,omitempty"`
+type ConnectionUsageCategoryStats struct {
+	// Calls the sync spent in this category over the last 24 hours.
+	Calls *int `json:"calls,omitempty" url:"calls,omitempty"`
+	// Backend-defined category identifier (e.g. rest, bulk).
+	Key *string `json:"key,omitempty" url:"key,omitempty"`
+	// Human-readable category name for display.
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3544,83 +2121,69 @@ type ConnectionTypeSchema struct {
 	rawJSON         json.RawMessage
 }
 
-func (c *ConnectionTypeSchema) GetID() *string {
+func (c *ConnectionUsageCategoryStats) GetCalls() *int {
 	if c == nil {
 		return nil
 	}
-	return c.ID
+	return c.Calls
 }
 
-func (c *ConnectionTypeSchema) GetLogoURL() *string {
+func (c *ConnectionUsageCategoryStats) GetKey() *string {
 	if c == nil {
 		return nil
 	}
-	return c.LogoURL
+	return c.Key
 }
 
-func (c *ConnectionTypeSchema) GetName() *string {
+func (c *ConnectionUsageCategoryStats) GetLabel() *string {
 	if c == nil {
 		return nil
 	}
-	return c.Name
+	return c.Label
 }
 
-func (c *ConnectionTypeSchema) GetOperations() []string {
-	if c == nil {
-		return nil
-	}
-	return c.Operations
-}
-
-func (c *ConnectionTypeSchema) GetExtraProperties() map[string]interface{} {
+func (c *ConnectionUsageCategoryStats) GetExtraProperties() map[string]interface{} {
 	if c == nil {
 		return nil
 	}
 	return c.extraProperties
 }
 
-func (c *ConnectionTypeSchema) require(field *big.Int) {
+func (c *ConnectionUsageCategoryStats) require(field *big.Int) {
 	if c.explicitFields == nil {
 		c.explicitFields = big.NewInt(0)
 	}
 	c.explicitFields.Or(c.explicitFields, field)
 }
 
-// SetID sets the ID field and marks it as non-optional;
+// SetCalls sets the Calls field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionTypeSchema) SetID(id *string) {
-	c.ID = id
-	c.require(connectionTypeSchemaFieldID)
+func (c *ConnectionUsageCategoryStats) SetCalls(calls *int) {
+	c.Calls = calls
+	c.require(connectionUsageCategoryStatsFieldCalls)
 }
 
-// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// SetKey sets the Key field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionTypeSchema) SetLogoURL(logoURL *string) {
-	c.LogoURL = logoURL
-	c.require(connectionTypeSchemaFieldLogoURL)
+func (c *ConnectionUsageCategoryStats) SetKey(key *string) {
+	c.Key = key
+	c.require(connectionUsageCategoryStatsFieldKey)
 }
 
-// SetName sets the Name field and marks it as non-optional;
+// SetLabel sets the Label field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionTypeSchema) SetName(name *string) {
-	c.Name = name
-	c.require(connectionTypeSchemaFieldName)
+func (c *ConnectionUsageCategoryStats) SetLabel(label *string) {
+	c.Label = label
+	c.require(connectionUsageCategoryStatsFieldLabel)
 }
 
-// SetOperations sets the Operations field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectionTypeSchema) SetOperations(operations []string) {
-	c.Operations = operations
-	c.require(connectionTypeSchemaFieldOperations)
-}
-
-func (c *ConnectionTypeSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConnectionTypeSchema
+func (c *ConnectionUsageCategoryStats) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionUsageCategoryStats
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*c = ConnectionTypeSchema(value)
+	*c = ConnectionUsageCategoryStats(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
 	if err != nil {
 		return err
@@ -3630,8 +2193,8 @@ func (c *ConnectionTypeSchema) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (c *ConnectionTypeSchema) MarshalJSON() ([]byte, error) {
-	type embed ConnectionTypeSchema
+func (c *ConnectionUsageCategoryStats) MarshalJSON() ([]byte, error) {
+	type embed ConnectionUsageCategoryStats
 	var marshaler = struct {
 		embed
 	}{
@@ -3641,7 +2204,321 @@ func (c *ConnectionTypeSchema) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (c *ConnectionTypeSchema) String() string {
+func (c *ConnectionUsageCategoryStats) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	connectionUsageResponseFieldBySync           = big.NewInt(1 << 0)
+	connectionUsageResponseFieldCallsLast24H     = big.NewInt(1 << 1)
+	connectionUsageResponseFieldConnectionID     = big.NewInt(1 << 2)
+	connectionUsageResponseFieldReportsSyncStats = big.NewInt(1 << 3)
+)
+
+type ConnectionUsageResponse struct {
+	// Per-sync breakdown of API calls spent against this connection in the last 24 hours, sorted by total calls descending.
+	BySync []*ConnectionUsageSyncStats `json:"bySync,omitempty" url:"bySync,omitempty"`
+	// Total backend API calls made through this connection over the last 24 hours, or null if the backend does not report usage.
+	CallsLast24H *int `json:"callsLast24h,omitempty" url:"callsLast24h,omitempty"`
+	// Unique identifier of the connection the usage applies to.
+	ConnectionID *string `json:"connectionId,omitempty" url:"connectionId,omitempty"`
+	// True when the backend can break its API consumption down per sync; otherwise only the 24h total is reported.
+	ReportsSyncStats *bool `json:"reportsSyncStats,omitempty" url:"reportsSyncStats,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ConnectionUsageResponse) GetBySync() []*ConnectionUsageSyncStats {
+	if c == nil {
+		return nil
+	}
+	return c.BySync
+}
+
+func (c *ConnectionUsageResponse) GetCallsLast24H() *int {
+	if c == nil {
+		return nil
+	}
+	return c.CallsLast24H
+}
+
+func (c *ConnectionUsageResponse) GetConnectionID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ConnectionID
+}
+
+func (c *ConnectionUsageResponse) GetReportsSyncStats() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.ReportsSyncStats
+}
+
+func (c *ConnectionUsageResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *ConnectionUsageResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetBySync sets the BySync field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionUsageResponse) SetBySync(bySync []*ConnectionUsageSyncStats) {
+	c.BySync = bySync
+	c.require(connectionUsageResponseFieldBySync)
+}
+
+// SetCallsLast24H sets the CallsLast24H field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionUsageResponse) SetCallsLast24H(callsLast24H *int) {
+	c.CallsLast24H = callsLast24H
+	c.require(connectionUsageResponseFieldCallsLast24H)
+}
+
+// SetConnectionID sets the ConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionUsageResponse) SetConnectionID(connectionID *string) {
+	c.ConnectionID = connectionID
+	c.require(connectionUsageResponseFieldConnectionID)
+}
+
+// SetReportsSyncStats sets the ReportsSyncStats field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionUsageResponse) SetReportsSyncStats(reportsSyncStats *bool) {
+	c.ReportsSyncStats = reportsSyncStats
+	c.require(connectionUsageResponseFieldReportsSyncStats)
+}
+
+func (c *ConnectionUsageResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionUsageResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionUsageResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionUsageResponse) MarshalJSON() ([]byte, error) {
+	type embed ConnectionUsageResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ConnectionUsageResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	connectionUsageSyncStatsFieldCategories = big.NewInt(1 << 0)
+	connectionUsageSyncStatsFieldLastRunAt  = big.NewInt(1 << 1)
+	connectionUsageSyncStatsFieldSyncID     = big.NewInt(1 << 2)
+	connectionUsageSyncStatsFieldSyncName   = big.NewInt(1 << 3)
+	connectionUsageSyncStatsFieldSyncType   = big.NewInt(1 << 4)
+	connectionUsageSyncStatsFieldTotalCalls = big.NewInt(1 << 5)
+)
+
+type ConnectionUsageSyncStats struct {
+	// Per-category breakdown of the sync's calls, sorted by calls descending.
+	Categories []*ConnectionUsageCategoryStats `json:"categories,omitempty" url:"categories,omitempty"`
+	// Start time of the sync's most recent execution, or null if it has never run.
+	LastRunAt *time.Time `json:"lastRunAt,omitempty" url:"lastRunAt,omitempty"`
+	// Unique identifier of the sync that spent the calls.
+	SyncID *string `json:"syncId,omitempty" url:"syncId,omitempty"`
+	// Human-readable name of the sync, or empty if it could not be resolved.
+	SyncName *string `json:"syncName,omitempty" url:"syncName,omitempty"`
+	// Kind of sync that spent the calls (model or bulk).
+	SyncType *string `json:"syncType,omitempty" url:"syncType,omitempty"`
+	// Total API calls the sync spent against this connection in the last 24 hours.
+	TotalCalls *int `json:"totalCalls,omitempty" url:"totalCalls,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ConnectionUsageSyncStats) GetCategories() []*ConnectionUsageCategoryStats {
+	if c == nil {
+		return nil
+	}
+	return c.Categories
+}
+
+func (c *ConnectionUsageSyncStats) GetLastRunAt() *time.Time {
+	if c == nil {
+		return nil
+	}
+	return c.LastRunAt
+}
+
+func (c *ConnectionUsageSyncStats) GetSyncID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.SyncID
+}
+
+func (c *ConnectionUsageSyncStats) GetSyncName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.SyncName
+}
+
+func (c *ConnectionUsageSyncStats) GetSyncType() *string {
+	if c == nil {
+		return nil
+	}
+	return c.SyncType
+}
+
+func (c *ConnectionUsageSyncStats) GetTotalCalls() *int {
+	if c == nil {
+		return nil
+	}
+	return c.TotalCalls
+}
+
+func (c *ConnectionUsageSyncStats) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *ConnectionUsageSyncStats) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetCategories sets the Categories field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionUsageSyncStats) SetCategories(categories []*ConnectionUsageCategoryStats) {
+	c.Categories = categories
+	c.require(connectionUsageSyncStatsFieldCategories)
+}
+
+// SetLastRunAt sets the LastRunAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionUsageSyncStats) SetLastRunAt(lastRunAt *time.Time) {
+	c.LastRunAt = lastRunAt
+	c.require(connectionUsageSyncStatsFieldLastRunAt)
+}
+
+// SetSyncID sets the SyncID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionUsageSyncStats) SetSyncID(syncID *string) {
+	c.SyncID = syncID
+	c.require(connectionUsageSyncStatsFieldSyncID)
+}
+
+// SetSyncName sets the SyncName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionUsageSyncStats) SetSyncName(syncName *string) {
+	c.SyncName = syncName
+	c.require(connectionUsageSyncStatsFieldSyncName)
+}
+
+// SetSyncType sets the SyncType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionUsageSyncStats) SetSyncType(syncType *string) {
+	c.SyncType = syncType
+	c.require(connectionUsageSyncStatsFieldSyncType)
+}
+
+// SetTotalCalls sets the TotalCalls field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionUsageSyncStats) SetTotalCalls(totalCalls *int) {
+	c.TotalCalls = totalCalls
+	c.require(connectionUsageSyncStatsFieldTotalCalls)
+}
+
+func (c *ConnectionUsageSyncStats) UnmarshalJSON(data []byte) error {
+	type embed ConnectionUsageSyncStats
+	var unmarshaler = struct {
+		embed
+		LastRunAt *internal.DateTime `json:"lastRunAt,omitempty"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ConnectionUsageSyncStats(unmarshaler.embed)
+	c.LastRunAt = unmarshaler.LastRunAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionUsageSyncStats) MarshalJSON() ([]byte, error) {
+	type embed ConnectionUsageSyncStats
+	var marshaler = struct {
+		embed
+		LastRunAt *internal.DateTime `json:"lastRunAt,omitempty"`
+	}{
+		embed:     embed(*c),
+		LastRunAt: internal.NewOptionalDateTime(c.LastRunAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ConnectionUsageSyncStats) String() string {
 	if c == nil {
 		return "<nil>"
 	}
@@ -4004,11 +2881,11 @@ func (c *CreateConnectionResponseSchema) String() string {
 }
 
 var (
-	createSharedConnectionResponseEnvelopeFieldData = big.NewInt(1 << 0)
+	getConnectionUsageEnvelopeFieldData = big.NewInt(1 << 0)
 )
 
-type CreateSharedConnectionResponseEnvelope struct {
-	Data *CreateSharedConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+type GetConnectionUsageEnvelope struct {
+	Data *ConnectionUsageResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4017,273 +2894,21 @@ type CreateSharedConnectionResponseEnvelope struct {
 	rawJSON         json.RawMessage
 }
 
-func (c *CreateSharedConnectionResponseEnvelope) GetData() *CreateSharedConnectionResponseSchema {
-	if c == nil {
-		return nil
-	}
-	return c.Data
-}
-
-func (c *CreateSharedConnectionResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *CreateSharedConnectionResponseEnvelope) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSharedConnectionResponseEnvelope) SetData(data *CreateSharedConnectionResponseSchema) {
-	c.Data = data
-	c.require(createSharedConnectionResponseEnvelopeFieldData)
-}
-
-func (c *CreateSharedConnectionResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateSharedConnectionResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CreateSharedConnectionResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CreateSharedConnectionResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed CreateSharedConnectionResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *CreateSharedConnectionResponseEnvelope) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	createSharedConnectionResponseSchemaFieldID = big.NewInt(1 << 0)
-)
-
-type CreateSharedConnectionResponseSchema struct {
-	ID *string `json:"id,omitempty" url:"id,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *CreateSharedConnectionResponseSchema) GetID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ID
-}
-
-func (c *CreateSharedConnectionResponseSchema) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *CreateSharedConnectionResponseSchema) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSharedConnectionResponseSchema) SetID(id *string) {
-	c.ID = id
-	c.require(createSharedConnectionResponseSchemaFieldID)
-}
-
-func (c *CreateSharedConnectionResponseSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateSharedConnectionResponseSchema
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CreateSharedConnectionResponseSchema(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CreateSharedConnectionResponseSchema) MarshalJSON() ([]byte, error) {
-	type embed CreateSharedConnectionResponseSchema
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *CreateSharedConnectionResponseSchema) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	executeConnectionProxyEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type ExecuteConnectionProxyEnvelope struct {
-	Data *ConnectionProxyResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (e *ExecuteConnectionProxyEnvelope) GetData() *ConnectionProxyResponse {
-	if e == nil {
-		return nil
-	}
-	return e.Data
-}
-
-func (e *ExecuteConnectionProxyEnvelope) GetExtraProperties() map[string]interface{} {
-	if e == nil {
-		return nil
-	}
-	return e.extraProperties
-}
-
-func (e *ExecuteConnectionProxyEnvelope) require(field *big.Int) {
-	if e.explicitFields == nil {
-		e.explicitFields = big.NewInt(0)
-	}
-	e.explicitFields.Or(e.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ExecuteConnectionProxyEnvelope) SetData(data *ConnectionProxyResponse) {
-	e.Data = data
-	e.require(executeConnectionProxyEnvelopeFieldData)
-}
-
-func (e *ExecuteConnectionProxyEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler ExecuteConnectionProxyEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*e = ExecuteConnectionProxyEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *e)
-	if err != nil {
-		return err
-	}
-	e.extraProperties = extraProperties
-	e.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (e *ExecuteConnectionProxyEnvelope) MarshalJSON() ([]byte, error) {
-	type embed ExecuteConnectionProxyEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*e),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (e *ExecuteConnectionProxyEnvelope) String() string {
-	if e == nil {
-		return "<nil>"
-	}
-	if len(e.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(e); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", e)
-}
-
-var (
-	getConnectionProxyInfoEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type GetConnectionProxyInfoEnvelope struct {
-	Data *ConnectionProxyInfoResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetConnectionProxyInfoEnvelope) GetData() *ConnectionProxyInfoResponse {
+func (g *GetConnectionUsageEnvelope) GetData() *ConnectionUsageResponse {
 	if g == nil {
 		return nil
 	}
 	return g.Data
 }
 
-func (g *GetConnectionProxyInfoEnvelope) GetExtraProperties() map[string]interface{} {
+func (g *GetConnectionUsageEnvelope) GetExtraProperties() map[string]interface{} {
 	if g == nil {
 		return nil
 	}
 	return g.extraProperties
 }
 
-func (g *GetConnectionProxyInfoEnvelope) require(field *big.Int) {
+func (g *GetConnectionUsageEnvelope) require(field *big.Int) {
 	if g.explicitFields == nil {
 		g.explicitFields = big.NewInt(0)
 	}
@@ -4292,18 +2917,18 @@ func (g *GetConnectionProxyInfoEnvelope) require(field *big.Int) {
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetConnectionProxyInfoEnvelope) SetData(data *ConnectionProxyInfoResponse) {
+func (g *GetConnectionUsageEnvelope) SetData(data *ConnectionUsageResponse) {
 	g.Data = data
-	g.require(getConnectionProxyInfoEnvelopeFieldData)
+	g.require(getConnectionUsageEnvelopeFieldData)
 }
 
-func (g *GetConnectionProxyInfoEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetConnectionProxyInfoEnvelope
+func (g *GetConnectionUsageEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetConnectionUsageEnvelope
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetConnectionProxyInfoEnvelope(value)
+	*g = GetConnectionUsageEnvelope(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *g)
 	if err != nil {
 		return err
@@ -4313,8 +2938,8 @@ func (g *GetConnectionProxyInfoEnvelope) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (g *GetConnectionProxyInfoEnvelope) MarshalJSON() ([]byte, error) {
-	type embed GetConnectionProxyInfoEnvelope
+func (g *GetConnectionUsageEnvelope) MarshalJSON() ([]byte, error) {
+	type embed GetConnectionUsageEnvelope
 	var marshaler = struct {
 		embed
 	}{
@@ -4324,7 +2949,7 @@ func (g *GetConnectionProxyInfoEnvelope) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetConnectionProxyInfoEnvelope) String() string {
+func (g *GetConnectionUsageEnvelope) String() string {
 	if g == nil {
 		return "<nil>"
 	}

@@ -129,6 +129,60 @@ func (r *RawClient) DeleteField(
 	}, nil
 }
 
+func (r *RawClient) PatchField(
+	ctx context.Context,
+	// Connection holding the schema.
+	connectionID string,
+	// Schema identifier.
+	schemaID string,
+	// Field identifier within the schema.
+	fieldID string,
+	request *polytomic.PatchSchemaFieldRequest,
+	opts ...option.IdempotentRequestOption,
+) (*core.Response[*polytomic.SchemaFieldResponseEnvelope], error) {
+	options := core.NewIdempotentRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/connections/%v/schemas/%v/fields/%v",
+		connectionID,
+		schemaID,
+		fieldID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("Content-Type", "application/json")
+	var response *polytomic.SchemaFieldResponseEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPatch,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.SchemaFieldResponseEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
 func (r *RawClient) SetPrimaryKeys(
 	ctx context.Context,
 	// Unique identifier of the connection.

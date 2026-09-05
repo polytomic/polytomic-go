@@ -34,7 +34,7 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-// Returns the fields of a specific target object on a connection.
+// Returns the fields, modes, and properties of a target object on a connection.
 //
 // Pass the target object identifier to retrieve the fields available for
 // mapping on that object. These are the destination fields you can reference
@@ -47,6 +47,37 @@ func NewClient(options *core.RequestOptions) *Client {
 // upstream object schema has changed, trigger a schema refresh with
 // [`POST /api/connections/{id}/schemas/refresh`](../../../../../../api-reference/schemas/refresh)
 // before calling this endpoint.
+//
+// ## Fields for a target that hasn't been created yet
+//
+// Some connections support creating a new destination object as part of a
+// model sync — for example, a Facebook Ads custom audience or a LinkedIn Ads
+// contact list. In that case there is no existing target identifier to pass;
+// instead, describe the new target with the same properties returned in the
+// `target_creation` block of
+// [`GET /api/connections/{id}/modelsync/targetobjects`](../../../../../../api-reference/model-sync/targets/list),
+// and this endpoint will return the fields the new target will expose.
+//
+// Exactly one of `target` or `properties` must be supplied. Each input is
+// sent as a separate `properties[key]=value` query parameter. For a Facebook
+// Ads connection that requires an `account` and a `name`:
+//
+// ```
+// GET /api/connections/{id}/modelsync/target/fields
+//
+//	?properties[account]=act_1234567
+//	&properties[name]=My%20new%20audience
+//
+// ```
+//
+// The response shape is identical to the existing-target form. For backends
+// where the new target's field set is fixed (most ads platforms), `fields`
+// contains those fields; for backends where the columns are user-defined
+// (e.g. a SQL database), `fields` will be empty and the caller defines the
+// columns at mapping time.
+//
+// When `properties` is supplied, the `refresh` parameter is ignored — a
+// not-yet-created target has no cached schema to refresh.
 func (c *Client) GetTargetFields(
 	ctx context.Context,
 	// Unique identifier of the connection.
@@ -76,7 +107,9 @@ func (c *Client) GetTargetFields(
 // the property has a fixed set of valid values. When `enum` is `true`, the [Target
 // Creation Property
 // Values](../../../../../api-reference/model-sync/targets/get-create-property)
-// endpoint can be used to retrieve the valid values.
+// endpoint can be used to retrieve the valid values. Alternatively, pass
+// `include_target_creation_values=true` to inline the `values` array for each
+// enum property directly in this response.
 //
 // ## Sync modes
 //
@@ -86,11 +119,13 @@ func (c *Client) GetTargetFields(
 func (c *Client) List(
 	ctx context.Context,
 	id string,
+	request *modelsync.TargetsListRequest,
 	opts ...option.RequestOption,
 ) (*polytomic.TargetObjectsResponseEnvelope, error) {
 	response, err := c.WithRawResponse.List(
 		ctx,
 		id,
+		request,
 		opts...,
 	)
 	if err != nil {

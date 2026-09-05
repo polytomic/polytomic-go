@@ -187,9 +187,9 @@ func (r *RawClient) List(
 
 func (r *RawClient) Create(
 	ctx context.Context,
-	request *polytomic.CreateSyncRequest,
+	request *polytomic.CreateModelSyncV5Request,
 	opts ...option.IdempotentRequestOption,
-) (*core.Response[*polytomic.SyncResponseEnvelope], error) {
+) (*core.Response[*polytomic.ModelSyncV5ResponseEnvelope], error) {
 	options := core.NewIdempotentRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -202,7 +202,7 @@ func (r *RawClient) Create(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.SyncResponseEnvelope
+	var response *polytomic.ModelSyncV5ResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -221,7 +221,7 @@ func (r *RawClient) Create(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.SyncResponseEnvelope]{
+	return &core.Response[*polytomic.ModelSyncV5ResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -272,7 +272,7 @@ func (r *RawClient) Get(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.SyncResponseEnvelope], error) {
+) (*core.Response[*polytomic.ModelSyncV5ResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -287,7 +287,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.SyncResponseEnvelope
+	var response *polytomic.ModelSyncV5ResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -305,7 +305,7 @@ func (r *RawClient) Get(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.SyncResponseEnvelope]{
+	return &core.Response[*polytomic.ModelSyncV5ResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -315,9 +315,9 @@ func (r *RawClient) Get(
 func (r *RawClient) Update(
 	ctx context.Context,
 	id string,
-	request *polytomic.UpdateSyncRequest,
+	request *polytomic.UpdateModelSyncV5Request,
 	opts ...option.IdempotentRequestOption,
-) (*core.Response[*polytomic.SyncResponseEnvelope], error) {
+) (*core.Response[*polytomic.ModelSyncV5ResponseEnvelope], error) {
 	options := core.NewIdempotentRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -333,7 +333,7 @@ func (r *RawClient) Update(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *polytomic.SyncResponseEnvelope
+	var response *polytomic.ModelSyncV5ResponseEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -352,7 +352,7 @@ func (r *RawClient) Update(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.SyncResponseEnvelope]{
+	return &core.Response[*polytomic.ModelSyncV5ResponseEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

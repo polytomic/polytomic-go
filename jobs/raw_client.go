@@ -33,7 +33,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) Get(
 	ctx context.Context,
-	// Job type. One of: createmodel, updatemodel, previewmodel, samplemodel, exportlogs.
+	// Job type. One of: createmodel, updatemodel, previewmodel, samplemodel, exportlogs, connectionproxy.
 	type_ string,
 	// Unique identifier of the job (usually returned by whichever endpoint started the job).
 	id string,

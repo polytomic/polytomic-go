@@ -11,45 +11,48 @@ import (
 )
 
 var (
-	createSyncRequestFieldActive               = big.NewInt(1 << 0)
-	createSyncRequestFieldEncryptionPassphrase = big.NewInt(1 << 1)
-	createSyncRequestFieldFields               = big.NewInt(1 << 2)
-	createSyncRequestFieldFilterLogic          = big.NewInt(1 << 3)
-	createSyncRequestFieldFilters              = big.NewInt(1 << 4)
-	createSyncRequestFieldIdentity             = big.NewInt(1 << 5)
-	createSyncRequestFieldMode                 = big.NewInt(1 << 6)
-	createSyncRequestFieldName                 = big.NewInt(1 << 7)
-	createSyncRequestFieldOnlyEnrichUpdates    = big.NewInt(1 << 8)
-	createSyncRequestFieldOrganizationID       = big.NewInt(1 << 9)
-	createSyncRequestFieldOverrideFields       = big.NewInt(1 << 10)
-	createSyncRequestFieldOverrides            = big.NewInt(1 << 11)
-	createSyncRequestFieldPolicies             = big.NewInt(1 << 12)
-	createSyncRequestFieldSchedule             = big.NewInt(1 << 13)
-	createSyncRequestFieldSkipInitialBackfill  = big.NewInt(1 << 14)
-	createSyncRequestFieldSyncAllRecords       = big.NewInt(1 << 15)
-	createSyncRequestFieldTarget               = big.NewInt(1 << 16)
+	createModelSyncV5RequestFieldActive               = big.NewInt(1 << 0)
+	createModelSyncV5RequestFieldEncryptionPassphrase = big.NewInt(1 << 1)
+	createModelSyncV5RequestFieldFields               = big.NewInt(1 << 2)
+	createModelSyncV5RequestFieldFilterLogic          = big.NewInt(1 << 3)
+	createModelSyncV5RequestFieldFilters              = big.NewInt(1 << 4)
+	createModelSyncV5RequestFieldIdentity             = big.NewInt(1 << 5)
+	createModelSyncV5RequestFieldMode                 = big.NewInt(1 << 6)
+	createModelSyncV5RequestFieldModelFilters         = big.NewInt(1 << 7)
+	createModelSyncV5RequestFieldName                 = big.NewInt(1 << 8)
+	createModelSyncV5RequestFieldOnlyEnrichUpdates    = big.NewInt(1 << 9)
+	createModelSyncV5RequestFieldOrganizationID       = big.NewInt(1 << 10)
+	createModelSyncV5RequestFieldOverrideFields       = big.NewInt(1 << 11)
+	createModelSyncV5RequestFieldOverrides            = big.NewInt(1 << 12)
+	createModelSyncV5RequestFieldPolicies             = big.NewInt(1 << 13)
+	createModelSyncV5RequestFieldSchedule             = big.NewInt(1 << 14)
+	createModelSyncV5RequestFieldSkipInitialBackfill  = big.NewInt(1 << 15)
+	createModelSyncV5RequestFieldSyncAllRecords       = big.NewInt(1 << 16)
+	createModelSyncV5RequestFieldTarget               = big.NewInt(1 << 17)
+	createModelSyncV5RequestFieldTargetFilters        = big.NewInt(1 << 18)
 )
 
-type CreateSyncRequest struct {
+type CreateModelSyncV5Request struct {
 	// Whether the sync is enabled and scheduled.
 	Active *bool `json:"active,omitempty" url:"-"`
 	// Passphrase for encrypting the sync data.
 	EncryptionPassphrase *string `json:"encryption_passphrase,omitempty" url:"-"`
 	// Fields to sync from source to destination.
 	Fields []*SyncField `json:"fields" url:"-"`
-	// Logical expression to combine filters.
+	// Deprecated. Use 'model_filters.logic'. Combines the model filters in 'filters' only.
 	FilterLogic *string `json:"filter_logic,omitempty" url:"-"`
-	// Filters to apply to the source data.
-	Filters  []*Filter               `json:"filters,omitempty" url:"-"`
-	Identity *Identity               `json:"identity,omitempty" url:"-"`
-	Mode     ModelsyncSyncTargetMode `json:"mode" url:"-"`
-	Name     string                  `json:"name" url:"-"`
+	// Deprecated. Use 'model_filters.conditions' and 'target_filters.conditions', which say which kind each condition is rather than inferring it. Ignored when either of those is present, except that a request carrying both shapes is rejected if they describe different filters.
+	Filters      []*Filter               `json:"filters,omitempty" url:"-"`
+	Identity     *Identity               `json:"identity,omitempty" url:"-"`
+	Mode         ModelsyncSyncTargetMode `json:"mode" url:"-"`
+	ModelFilters *ModelFilters           `json:"model_filters,omitempty" url:"-"`
+	Name         string                  `json:"name" url:"-"`
 	// Whether to use enrichment models as a source of possible changes to sync. If true, only changes to the base models will cause a record to sync.
 	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"-"`
 	// Organization ID for the sync; read-only with a partner key.
 	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
-	// Values to set in the target unconditionally.
-	OverrideFields []*SyncField `json:"override_fields,omitempty" url:"-"`
+	// Target fields which are set to a fixed value for every record, rather than mapped from a model field.
+	OverrideFields []*OverrideFieldInput `json:"override_fields,omitempty" url:"-"`
 	// Conditional value replacement for fields.
 	Overrides []*Override `json:"overrides,omitempty" url:"-"`
 	Policies  []string    `json:"policies,omitempty" url:"-"`
@@ -57,14 +60,15 @@ type CreateSyncRequest struct {
 	// Whether to skip the initial backfill of records; if true only records seen after the sync is enabled will be synced.
 	SkipInitialBackfill *bool `json:"skip_initial_backfill,omitempty" url:"-"`
 	// Whether to sync all records from the source, regardless of whether they've changed since the previous execution.
-	SyncAllRecords *bool   `json:"sync_all_records,omitempty" url:"-"`
-	Target         *Target `json:"target" url:"-"`
+	SyncAllRecords *bool              `json:"sync_all_records,omitempty" url:"-"`
+	Target         *ModelSyncV5Target `json:"target" url:"-"`
+	TargetFilters  *TargetFilters     `json:"target_filters,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CreateSyncRequest) require(field *big.Int) {
+func (c *CreateModelSyncV5Request) require(field *big.Int) {
 	if c.explicitFields == nil {
 		c.explicitFields = big.NewInt(0)
 	}
@@ -73,135 +77,149 @@ func (c *CreateSyncRequest) require(field *big.Int) {
 
 // SetActive sets the Active field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSyncRequest) SetActive(active *bool) {
+func (c *CreateModelSyncV5Request) SetActive(active *bool) {
 	c.Active = active
-	c.require(createSyncRequestFieldActive)
+	c.require(createModelSyncV5RequestFieldActive)
 }
 
 // SetEncryptionPassphrase sets the EncryptionPassphrase field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSyncRequest) SetEncryptionPassphrase(encryptionPassphrase *string) {
+func (c *CreateModelSyncV5Request) SetEncryptionPassphrase(encryptionPassphrase *string) {
 	c.EncryptionPassphrase = encryptionPassphrase
-	c.require(createSyncRequestFieldEncryptionPassphrase)
+	c.require(createModelSyncV5RequestFieldEncryptionPassphrase)
 }
 
 // SetFields sets the Fields field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSyncRequest) SetFields(fields []*SyncField) {
+func (c *CreateModelSyncV5Request) SetFields(fields []*SyncField) {
 	c.Fields = fields
-	c.require(createSyncRequestFieldFields)
+	c.require(createModelSyncV5RequestFieldFields)
 }
 
 // SetFilterLogic sets the FilterLogic field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSyncRequest) SetFilterLogic(filterLogic *string) {
+func (c *CreateModelSyncV5Request) SetFilterLogic(filterLogic *string) {
 	c.FilterLogic = filterLogic
-	c.require(createSyncRequestFieldFilterLogic)
+	c.require(createModelSyncV5RequestFieldFilterLogic)
 }
 
 // SetFilters sets the Filters field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSyncRequest) SetFilters(filters []*Filter) {
+func (c *CreateModelSyncV5Request) SetFilters(filters []*Filter) {
 	c.Filters = filters
-	c.require(createSyncRequestFieldFilters)
+	c.require(createModelSyncV5RequestFieldFilters)
 }
 
 // SetIdentity sets the Identity field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSyncRequest) SetIdentity(identity *Identity) {
+func (c *CreateModelSyncV5Request) SetIdentity(identity *Identity) {
 	c.Identity = identity
-	c.require(createSyncRequestFieldIdentity)
+	c.require(createModelSyncV5RequestFieldIdentity)
 }
 
 // SetMode sets the Mode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSyncRequest) SetMode(mode ModelsyncSyncTargetMode) {
+func (c *CreateModelSyncV5Request) SetMode(mode ModelsyncSyncTargetMode) {
 	c.Mode = mode
-	c.require(createSyncRequestFieldMode)
+	c.require(createModelSyncV5RequestFieldMode)
+}
+
+// SetModelFilters sets the ModelFilters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateModelSyncV5Request) SetModelFilters(modelFilters *ModelFilters) {
+	c.ModelFilters = modelFilters
+	c.require(createModelSyncV5RequestFieldModelFilters)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSyncRequest) SetName(name string) {
+func (c *CreateModelSyncV5Request) SetName(name string) {
 	c.Name = name
-	c.require(createSyncRequestFieldName)
+	c.require(createModelSyncV5RequestFieldName)
 }
 
 // SetOnlyEnrichUpdates sets the OnlyEnrichUpdates field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSyncRequest) SetOnlyEnrichUpdates(onlyEnrichUpdates *bool) {
+func (c *CreateModelSyncV5Request) SetOnlyEnrichUpdates(onlyEnrichUpdates *bool) {
 	c.OnlyEnrichUpdates = onlyEnrichUpdates
-	c.require(createSyncRequestFieldOnlyEnrichUpdates)
+	c.require(createModelSyncV5RequestFieldOnlyEnrichUpdates)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSyncRequest) SetOrganizationID(organizationID *string) {
+func (c *CreateModelSyncV5Request) SetOrganizationID(organizationID *string) {
 	c.OrganizationID = organizationID
-	c.require(createSyncRequestFieldOrganizationID)
+	c.require(createModelSyncV5RequestFieldOrganizationID)
 }
 
 // SetOverrideFields sets the OverrideFields field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSyncRequest) SetOverrideFields(overrideFields []*SyncField) {
+func (c *CreateModelSyncV5Request) SetOverrideFields(overrideFields []*OverrideFieldInput) {
 	c.OverrideFields = overrideFields
-	c.require(createSyncRequestFieldOverrideFields)
+	c.require(createModelSyncV5RequestFieldOverrideFields)
 }
 
 // SetOverrides sets the Overrides field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSyncRequest) SetOverrides(overrides []*Override) {
+func (c *CreateModelSyncV5Request) SetOverrides(overrides []*Override) {
 	c.Overrides = overrides
-	c.require(createSyncRequestFieldOverrides)
+	c.require(createModelSyncV5RequestFieldOverrides)
 }
 
 // SetPolicies sets the Policies field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSyncRequest) SetPolicies(policies []string) {
+func (c *CreateModelSyncV5Request) SetPolicies(policies []string) {
 	c.Policies = policies
-	c.require(createSyncRequestFieldPolicies)
+	c.require(createModelSyncV5RequestFieldPolicies)
 }
 
 // SetSchedule sets the Schedule field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSyncRequest) SetSchedule(schedule *Schedule) {
+func (c *CreateModelSyncV5Request) SetSchedule(schedule *Schedule) {
 	c.Schedule = schedule
-	c.require(createSyncRequestFieldSchedule)
+	c.require(createModelSyncV5RequestFieldSchedule)
 }
 
 // SetSkipInitialBackfill sets the SkipInitialBackfill field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSyncRequest) SetSkipInitialBackfill(skipInitialBackfill *bool) {
+func (c *CreateModelSyncV5Request) SetSkipInitialBackfill(skipInitialBackfill *bool) {
 	c.SkipInitialBackfill = skipInitialBackfill
-	c.require(createSyncRequestFieldSkipInitialBackfill)
+	c.require(createModelSyncV5RequestFieldSkipInitialBackfill)
 }
 
 // SetSyncAllRecords sets the SyncAllRecords field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSyncRequest) SetSyncAllRecords(syncAllRecords *bool) {
+func (c *CreateModelSyncV5Request) SetSyncAllRecords(syncAllRecords *bool) {
 	c.SyncAllRecords = syncAllRecords
-	c.require(createSyncRequestFieldSyncAllRecords)
+	c.require(createModelSyncV5RequestFieldSyncAllRecords)
 }
 
 // SetTarget sets the Target field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateSyncRequest) SetTarget(target *Target) {
+func (c *CreateModelSyncV5Request) SetTarget(target *ModelSyncV5Target) {
 	c.Target = target
-	c.require(createSyncRequestFieldTarget)
+	c.require(createModelSyncV5RequestFieldTarget)
 }
 
-func (c *CreateSyncRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateSyncRequest
+// SetTargetFilters sets the TargetFilters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateModelSyncV5Request) SetTargetFilters(targetFilters *TargetFilters) {
+	c.TargetFilters = targetFilters
+	c.require(createModelSyncV5RequestFieldTargetFilters)
+}
+
+func (c *CreateModelSyncV5Request) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateModelSyncV5Request
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*c = CreateSyncRequest(body)
+	*c = CreateModelSyncV5Request(body)
 	return nil
 }
 
-func (c *CreateSyncRequest) MarshalJSON() ([]byte, error) {
-	type embed CreateSyncRequest
+func (c *CreateModelSyncV5Request) MarshalJSON() ([]byte, error) {
+	type embed CreateModelSyncV5Request
 	var marshaler = struct {
 		embed
 	}{
@@ -394,45 +412,48 @@ func (s *StartSyncRequest) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	updateSyncRequestFieldActive               = big.NewInt(1 << 0)
-	updateSyncRequestFieldEncryptionPassphrase = big.NewInt(1 << 1)
-	updateSyncRequestFieldFields               = big.NewInt(1 << 2)
-	updateSyncRequestFieldFilterLogic          = big.NewInt(1 << 3)
-	updateSyncRequestFieldFilters              = big.NewInt(1 << 4)
-	updateSyncRequestFieldIdentity             = big.NewInt(1 << 5)
-	updateSyncRequestFieldMode                 = big.NewInt(1 << 6)
-	updateSyncRequestFieldName                 = big.NewInt(1 << 7)
-	updateSyncRequestFieldOnlyEnrichUpdates    = big.NewInt(1 << 8)
-	updateSyncRequestFieldOrganizationID       = big.NewInt(1 << 9)
-	updateSyncRequestFieldOverrideFields       = big.NewInt(1 << 10)
-	updateSyncRequestFieldOverrides            = big.NewInt(1 << 11)
-	updateSyncRequestFieldPolicies             = big.NewInt(1 << 12)
-	updateSyncRequestFieldSchedule             = big.NewInt(1 << 13)
-	updateSyncRequestFieldSkipInitialBackfill  = big.NewInt(1 << 14)
-	updateSyncRequestFieldSyncAllRecords       = big.NewInt(1 << 15)
-	updateSyncRequestFieldTarget               = big.NewInt(1 << 16)
+	updateModelSyncV5RequestFieldActive               = big.NewInt(1 << 0)
+	updateModelSyncV5RequestFieldEncryptionPassphrase = big.NewInt(1 << 1)
+	updateModelSyncV5RequestFieldFields               = big.NewInt(1 << 2)
+	updateModelSyncV5RequestFieldFilterLogic          = big.NewInt(1 << 3)
+	updateModelSyncV5RequestFieldFilters              = big.NewInt(1 << 4)
+	updateModelSyncV5RequestFieldIdentity             = big.NewInt(1 << 5)
+	updateModelSyncV5RequestFieldMode                 = big.NewInt(1 << 6)
+	updateModelSyncV5RequestFieldModelFilters         = big.NewInt(1 << 7)
+	updateModelSyncV5RequestFieldName                 = big.NewInt(1 << 8)
+	updateModelSyncV5RequestFieldOnlyEnrichUpdates    = big.NewInt(1 << 9)
+	updateModelSyncV5RequestFieldOrganizationID       = big.NewInt(1 << 10)
+	updateModelSyncV5RequestFieldOverrideFields       = big.NewInt(1 << 11)
+	updateModelSyncV5RequestFieldOverrides            = big.NewInt(1 << 12)
+	updateModelSyncV5RequestFieldPolicies             = big.NewInt(1 << 13)
+	updateModelSyncV5RequestFieldSchedule             = big.NewInt(1 << 14)
+	updateModelSyncV5RequestFieldSkipInitialBackfill  = big.NewInt(1 << 15)
+	updateModelSyncV5RequestFieldSyncAllRecords       = big.NewInt(1 << 16)
+	updateModelSyncV5RequestFieldTarget               = big.NewInt(1 << 17)
+	updateModelSyncV5RequestFieldTargetFilters        = big.NewInt(1 << 18)
 )
 
-type UpdateSyncRequest struct {
+type UpdateModelSyncV5Request struct {
 	// Whether the sync is enabled and scheduled.
 	Active *bool `json:"active,omitempty" url:"-"`
 	// Passphrase for encrypting the sync data.
 	EncryptionPassphrase *string `json:"encryption_passphrase,omitempty" url:"-"`
 	// Fields to sync from source to destination.
 	Fields []*SyncField `json:"fields" url:"-"`
-	// Logical expression to combine filters.
+	// Deprecated. Use 'model_filters.logic'. Combines the model filters in 'filters' only.
 	FilterLogic *string `json:"filter_logic,omitempty" url:"-"`
-	// Filters to apply to the source data.
-	Filters  []*Filter               `json:"filters,omitempty" url:"-"`
-	Identity *Identity               `json:"identity,omitempty" url:"-"`
-	Mode     ModelsyncSyncTargetMode `json:"mode" url:"-"`
-	Name     string                  `json:"name" url:"-"`
+	// Deprecated. Use 'model_filters.conditions' and 'target_filters.conditions', which say which kind each condition is rather than inferring it. Ignored when either of those is present, except that a request carrying both shapes is rejected if they describe different filters.
+	Filters      []*Filter               `json:"filters,omitempty" url:"-"`
+	Identity     *Identity               `json:"identity,omitempty" url:"-"`
+	Mode         ModelsyncSyncTargetMode `json:"mode" url:"-"`
+	ModelFilters *ModelFilters           `json:"model_filters,omitempty" url:"-"`
+	Name         string                  `json:"name" url:"-"`
 	// Whether to use enrichment models as a source of possible changes to sync. If true, only changes to the base models will cause a record to sync.
 	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"-"`
 	// Organization ID for the sync; read-only with a partner key.
 	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
-	// Values to set in the target unconditionally.
-	OverrideFields []*SyncField `json:"override_fields,omitempty" url:"-"`
+	// Target fields which are set to a fixed value for every record, rather than mapped from a model field.
+	OverrideFields []*OverrideFieldInput `json:"override_fields,omitempty" url:"-"`
 	// Conditional value replacement for fields.
 	Overrides []*Override `json:"overrides,omitempty" url:"-"`
 	Policies  []string    `json:"policies,omitempty" url:"-"`
@@ -440,14 +461,15 @@ type UpdateSyncRequest struct {
 	// Whether to skip the initial backfill of records; if true only records seen after the sync is enabled will be synced.
 	SkipInitialBackfill *bool `json:"skip_initial_backfill,omitempty" url:"-"`
 	// Whether to sync all records from the source, regardless of whether they've changed since the previous execution.
-	SyncAllRecords *bool   `json:"sync_all_records,omitempty" url:"-"`
-	Target         *Target `json:"target" url:"-"`
+	SyncAllRecords *bool              `json:"sync_all_records,omitempty" url:"-"`
+	Target         *ModelSyncV5Target `json:"target" url:"-"`
+	TargetFilters  *TargetFilters     `json:"target_filters,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (u *UpdateSyncRequest) require(field *big.Int) {
+func (u *UpdateModelSyncV5Request) require(field *big.Int) {
 	if u.explicitFields == nil {
 		u.explicitFields = big.NewInt(0)
 	}
@@ -456,135 +478,149 @@ func (u *UpdateSyncRequest) require(field *big.Int) {
 
 // SetActive sets the Active field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSyncRequest) SetActive(active *bool) {
+func (u *UpdateModelSyncV5Request) SetActive(active *bool) {
 	u.Active = active
-	u.require(updateSyncRequestFieldActive)
+	u.require(updateModelSyncV5RequestFieldActive)
 }
 
 // SetEncryptionPassphrase sets the EncryptionPassphrase field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSyncRequest) SetEncryptionPassphrase(encryptionPassphrase *string) {
+func (u *UpdateModelSyncV5Request) SetEncryptionPassphrase(encryptionPassphrase *string) {
 	u.EncryptionPassphrase = encryptionPassphrase
-	u.require(updateSyncRequestFieldEncryptionPassphrase)
+	u.require(updateModelSyncV5RequestFieldEncryptionPassphrase)
 }
 
 // SetFields sets the Fields field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSyncRequest) SetFields(fields []*SyncField) {
+func (u *UpdateModelSyncV5Request) SetFields(fields []*SyncField) {
 	u.Fields = fields
-	u.require(updateSyncRequestFieldFields)
+	u.require(updateModelSyncV5RequestFieldFields)
 }
 
 // SetFilterLogic sets the FilterLogic field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSyncRequest) SetFilterLogic(filterLogic *string) {
+func (u *UpdateModelSyncV5Request) SetFilterLogic(filterLogic *string) {
 	u.FilterLogic = filterLogic
-	u.require(updateSyncRequestFieldFilterLogic)
+	u.require(updateModelSyncV5RequestFieldFilterLogic)
 }
 
 // SetFilters sets the Filters field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSyncRequest) SetFilters(filters []*Filter) {
+func (u *UpdateModelSyncV5Request) SetFilters(filters []*Filter) {
 	u.Filters = filters
-	u.require(updateSyncRequestFieldFilters)
+	u.require(updateModelSyncV5RequestFieldFilters)
 }
 
 // SetIdentity sets the Identity field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSyncRequest) SetIdentity(identity *Identity) {
+func (u *UpdateModelSyncV5Request) SetIdentity(identity *Identity) {
 	u.Identity = identity
-	u.require(updateSyncRequestFieldIdentity)
+	u.require(updateModelSyncV5RequestFieldIdentity)
 }
 
 // SetMode sets the Mode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSyncRequest) SetMode(mode ModelsyncSyncTargetMode) {
+func (u *UpdateModelSyncV5Request) SetMode(mode ModelsyncSyncTargetMode) {
 	u.Mode = mode
-	u.require(updateSyncRequestFieldMode)
+	u.require(updateModelSyncV5RequestFieldMode)
+}
+
+// SetModelFilters sets the ModelFilters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateModelSyncV5Request) SetModelFilters(modelFilters *ModelFilters) {
+	u.ModelFilters = modelFilters
+	u.require(updateModelSyncV5RequestFieldModelFilters)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSyncRequest) SetName(name string) {
+func (u *UpdateModelSyncV5Request) SetName(name string) {
 	u.Name = name
-	u.require(updateSyncRequestFieldName)
+	u.require(updateModelSyncV5RequestFieldName)
 }
 
 // SetOnlyEnrichUpdates sets the OnlyEnrichUpdates field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSyncRequest) SetOnlyEnrichUpdates(onlyEnrichUpdates *bool) {
+func (u *UpdateModelSyncV5Request) SetOnlyEnrichUpdates(onlyEnrichUpdates *bool) {
 	u.OnlyEnrichUpdates = onlyEnrichUpdates
-	u.require(updateSyncRequestFieldOnlyEnrichUpdates)
+	u.require(updateModelSyncV5RequestFieldOnlyEnrichUpdates)
 }
 
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSyncRequest) SetOrganizationID(organizationID *string) {
+func (u *UpdateModelSyncV5Request) SetOrganizationID(organizationID *string) {
 	u.OrganizationID = organizationID
-	u.require(updateSyncRequestFieldOrganizationID)
+	u.require(updateModelSyncV5RequestFieldOrganizationID)
 }
 
 // SetOverrideFields sets the OverrideFields field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSyncRequest) SetOverrideFields(overrideFields []*SyncField) {
+func (u *UpdateModelSyncV5Request) SetOverrideFields(overrideFields []*OverrideFieldInput) {
 	u.OverrideFields = overrideFields
-	u.require(updateSyncRequestFieldOverrideFields)
+	u.require(updateModelSyncV5RequestFieldOverrideFields)
 }
 
 // SetOverrides sets the Overrides field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSyncRequest) SetOverrides(overrides []*Override) {
+func (u *UpdateModelSyncV5Request) SetOverrides(overrides []*Override) {
 	u.Overrides = overrides
-	u.require(updateSyncRequestFieldOverrides)
+	u.require(updateModelSyncV5RequestFieldOverrides)
 }
 
 // SetPolicies sets the Policies field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSyncRequest) SetPolicies(policies []string) {
+func (u *UpdateModelSyncV5Request) SetPolicies(policies []string) {
 	u.Policies = policies
-	u.require(updateSyncRequestFieldPolicies)
+	u.require(updateModelSyncV5RequestFieldPolicies)
 }
 
 // SetSchedule sets the Schedule field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSyncRequest) SetSchedule(schedule *Schedule) {
+func (u *UpdateModelSyncV5Request) SetSchedule(schedule *Schedule) {
 	u.Schedule = schedule
-	u.require(updateSyncRequestFieldSchedule)
+	u.require(updateModelSyncV5RequestFieldSchedule)
 }
 
 // SetSkipInitialBackfill sets the SkipInitialBackfill field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSyncRequest) SetSkipInitialBackfill(skipInitialBackfill *bool) {
+func (u *UpdateModelSyncV5Request) SetSkipInitialBackfill(skipInitialBackfill *bool) {
 	u.SkipInitialBackfill = skipInitialBackfill
-	u.require(updateSyncRequestFieldSkipInitialBackfill)
+	u.require(updateModelSyncV5RequestFieldSkipInitialBackfill)
 }
 
 // SetSyncAllRecords sets the SyncAllRecords field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSyncRequest) SetSyncAllRecords(syncAllRecords *bool) {
+func (u *UpdateModelSyncV5Request) SetSyncAllRecords(syncAllRecords *bool) {
 	u.SyncAllRecords = syncAllRecords
-	u.require(updateSyncRequestFieldSyncAllRecords)
+	u.require(updateModelSyncV5RequestFieldSyncAllRecords)
 }
 
 // SetTarget sets the Target field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSyncRequest) SetTarget(target *Target) {
+func (u *UpdateModelSyncV5Request) SetTarget(target *ModelSyncV5Target) {
 	u.Target = target
-	u.require(updateSyncRequestFieldTarget)
+	u.require(updateModelSyncV5RequestFieldTarget)
 }
 
-func (u *UpdateSyncRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler UpdateSyncRequest
+// SetTargetFilters sets the TargetFilters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateModelSyncV5Request) SetTargetFilters(targetFilters *TargetFilters) {
+	u.TargetFilters = targetFilters
+	u.require(updateModelSyncV5RequestFieldTargetFilters)
+}
+
+func (u *UpdateModelSyncV5Request) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateModelSyncV5Request
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*u = UpdateSyncRequest(body)
+	*u = UpdateModelSyncV5Request(body)
 	return nil
 }
 
-func (u *UpdateSyncRequest) MarshalJSON() ([]byte, error) {
-	type embed UpdateSyncRequest
+func (u *UpdateModelSyncV5Request) MarshalJSON() ([]byte, error) {
+	type embed UpdateModelSyncV5Request
 	var marshaler = struct {
 		embed
 	}{
@@ -762,24 +798,26 @@ func (c *CancelSyncResponseEnvelope) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-// Either `field` or `field_id` must be provided. If `field` is provided, `field_id` is ignored.
+// A filter on this sync. Either `field` or `field_id` must be provided; if `field_id` is provided, `field` is ignored. `field` names a model field by model and source name. `field_id` is a model field's UUID when `field_type` is `Model`, and the destination's own field identifier when it is `Target`.
 var (
-	filterFieldField     = big.NewInt(1 << 0)
-	filterFieldFieldID   = big.NewInt(1 << 1)
-	filterFieldFieldType = big.NewInt(1 << 2)
-	filterFieldFunction  = big.NewInt(1 << 3)
-	filterFieldLabel     = big.NewInt(1 << 4)
-	filterFieldValue     = big.NewInt(1 << 5)
+	filterFieldField      = big.NewInt(1 << 0)
+	filterFieldFieldID    = big.NewInt(1 << 1)
+	filterFieldFieldType  = big.NewInt(1 << 2)
+	filterFieldFunction   = big.NewInt(1 << 3)
+	filterFieldLabel      = big.NewInt(1 << 4)
+	filterFieldValue      = big.NewInt(1 << 5)
+	filterFieldValueField = big.NewInt(1 << 6)
 )
 
 type Filter struct {
 	Field *Source `json:"field,omitempty" url:"field,omitempty"`
-	// Model or Target field name to filter on.
-	FieldID   *string                   `json:"field_id,omitempty" url:"field_id,omitempty"`
-	FieldType *FilterFieldReferenceType `json:"field_type,omitempty" url:"field_type,omitempty"`
-	Function  FilterFunction            `json:"function" url:"function"`
-	Label     *string                   `json:"label,omitempty" url:"label,omitempty"`
-	Value     any                       `json:"value,omitempty" url:"value,omitempty"`
+	// Identifier of the field to filter on: a model field's UUID when 'field_type' is 'Model', or the destination's own field identifier when it is 'Target'.
+	FieldID    *string                   `json:"field_id,omitempty" url:"field_id,omitempty"`
+	FieldType  *FilterFieldReferenceType `json:"field_type,omitempty" url:"field_type,omitempty"`
+	Function   FilterFunction            `json:"function" url:"function"`
+	Label      *string                   `json:"label,omitempty" url:"label,omitempty"`
+	Value      any                       `json:"value,omitempty" url:"value,omitempty"`
+	ValueField *Source                   `json:"value_field,omitempty" url:"value_field,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -828,6 +866,13 @@ func (f *Filter) GetValue() any {
 		return nil
 	}
 	return f.Value
+}
+
+func (f *Filter) GetValueField() *Source {
+	if f == nil {
+		return nil
+	}
+	return f.ValueField
 }
 
 func (f *Filter) GetExtraProperties() map[string]interface{} {
@@ -884,6 +929,13 @@ func (f *Filter) SetLabel(label *string) {
 func (f *Filter) SetValue(value any) {
 	f.Value = value
 	f.require(filterFieldValue)
+}
+
+// SetValueField sets the ValueField field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *Filter) SetValueField(valueField *Source) {
+	f.ValueField = valueField
+	f.require(filterFieldValueField)
 }
 
 func (f *Filter) UnmarshalJSON(data []byte) error {
@@ -1633,6 +1685,995 @@ func (m *ModelFieldResponse) String() string {
 	return fmt.Sprintf("%#v", m)
 }
 
+var (
+	modelFilterConditionFieldFunction = big.NewInt(1 << 0)
+	modelFilterConditionFieldLabel    = big.NewInt(1 << 1)
+	modelFilterConditionFieldSource   = big.NewInt(1 << 2)
+	modelFilterConditionFieldValue    = big.NewInt(1 << 3)
+)
+
+type ModelFilterCondition struct {
+	// Comparison this condition applies to the field's value.
+	Function FilterFunction `json:"function" url:"function"`
+	// Handle naming this condition in 'logic'. Labels are scoped to this object, so a model condition and a target condition may share one. Optional: label every condition in the object or none of them, and an unlabelled object is labelled by position -- A, B, C -- which is how labels are always reported back.
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	// Model field this condition tests, named the same way as a field mapping's source.
+	Source *Source `json:"source" url:"source"`
+	// Value the field is compared against. Omitted for functions which take no value, such as 'IsNotNull'.
+	Value any `json:"value,omitempty" url:"value,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelFilterCondition) GetFunction() FilterFunction {
+	if m == nil {
+		return ""
+	}
+	return m.Function
+}
+
+func (m *ModelFilterCondition) GetLabel() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Label
+}
+
+func (m *ModelFilterCondition) GetSource() *Source {
+	if m == nil {
+		return nil
+	}
+	return m.Source
+}
+
+func (m *ModelFilterCondition) GetValue() any {
+	if m == nil {
+		return nil
+	}
+	return m.Value
+}
+
+func (m *ModelFilterCondition) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *ModelFilterCondition) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetFunction sets the Function field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelFilterCondition) SetFunction(function FilterFunction) {
+	m.Function = function
+	m.require(modelFilterConditionFieldFunction)
+}
+
+// SetLabel sets the Label field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelFilterCondition) SetLabel(label *string) {
+	m.Label = label
+	m.require(modelFilterConditionFieldLabel)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelFilterCondition) SetSource(source *Source) {
+	m.Source = source
+	m.require(modelFilterConditionFieldSource)
+}
+
+// SetValue sets the Value field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelFilterCondition) SetValue(value any) {
+	m.Value = value
+	m.require(modelFilterConditionFieldValue)
+}
+
+func (m *ModelFilterCondition) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelFilterCondition
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelFilterCondition(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelFilterCondition) MarshalJSON() ([]byte, error) {
+	type embed ModelFilterCondition
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *ModelFilterCondition) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+// Filters applied to the records read from the source.
+var (
+	modelFiltersFieldConditions = big.NewInt(1 << 0)
+	modelFiltersFieldLogic      = big.NewInt(1 << 1)
+)
+
+type ModelFilters struct {
+	// Conditions a source record must satisfy to be read. An empty list reads every record.
+	Conditions []*ModelFilterCondition `json:"conditions,omitempty" url:"conditions,omitempty"`
+	// Expression combining the conditions in this object by their labels; 'and', 'or', and parentheses are supported. An empty expression means every condition must be satisfied.
+	Logic *string `json:"logic,omitempty" url:"logic,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelFilters) GetConditions() []*ModelFilterCondition {
+	if m == nil {
+		return nil
+	}
+	return m.Conditions
+}
+
+func (m *ModelFilters) GetLogic() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Logic
+}
+
+func (m *ModelFilters) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *ModelFilters) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetConditions sets the Conditions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelFilters) SetConditions(conditions []*ModelFilterCondition) {
+	m.Conditions = conditions
+	m.require(modelFiltersFieldConditions)
+}
+
+// SetLogic sets the Logic field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelFilters) SetLogic(logic *string) {
+	m.Logic = logic
+	m.require(modelFiltersFieldLogic)
+}
+
+func (m *ModelFilters) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelFilters
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelFilters(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelFilters) MarshalJSON() ([]byte, error) {
+	type embed ModelFilters
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *ModelFilters) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+var (
+	modelSyncV5ResponseFieldActive               = big.NewInt(1 << 0)
+	modelSyncV5ResponseFieldCreatedAt            = big.NewInt(1 << 1)
+	modelSyncV5ResponseFieldCreatedBy            = big.NewInt(1 << 2)
+	modelSyncV5ResponseFieldEncryptionPassphrase = big.NewInt(1 << 3)
+	modelSyncV5ResponseFieldFields               = big.NewInt(1 << 4)
+	modelSyncV5ResponseFieldFilterLogic          = big.NewInt(1 << 5)
+	modelSyncV5ResponseFieldFilters              = big.NewInt(1 << 6)
+	modelSyncV5ResponseFieldID                   = big.NewInt(1 << 7)
+	modelSyncV5ResponseFieldIdentity             = big.NewInt(1 << 8)
+	modelSyncV5ResponseFieldMode                 = big.NewInt(1 << 9)
+	modelSyncV5ResponseFieldModelFilters         = big.NewInt(1 << 10)
+	modelSyncV5ResponseFieldModelIDs             = big.NewInt(1 << 11)
+	modelSyncV5ResponseFieldName                 = big.NewInt(1 << 12)
+	modelSyncV5ResponseFieldOnlyEnrichUpdates    = big.NewInt(1 << 13)
+	modelSyncV5ResponseFieldOrganizationID       = big.NewInt(1 << 14)
+	modelSyncV5ResponseFieldOverrideFields       = big.NewInt(1 << 15)
+	modelSyncV5ResponseFieldOverrides            = big.NewInt(1 << 16)
+	modelSyncV5ResponseFieldPolicies             = big.NewInt(1 << 17)
+	modelSyncV5ResponseFieldSchedule             = big.NewInt(1 << 18)
+	modelSyncV5ResponseFieldSkipInitialBackfill  = big.NewInt(1 << 19)
+	modelSyncV5ResponseFieldSyncAllRecords       = big.NewInt(1 << 20)
+	modelSyncV5ResponseFieldTarget               = big.NewInt(1 << 21)
+	modelSyncV5ResponseFieldTargetFilters        = big.NewInt(1 << 22)
+	modelSyncV5ResponseFieldUpdatedAt            = big.NewInt(1 << 23)
+	modelSyncV5ResponseFieldUpdatedBy            = big.NewInt(1 << 24)
+)
+
+type ModelSyncV5Response struct {
+	Active               *bool        `json:"active,omitempty" url:"active,omitempty"`
+	CreatedAt            *time.Time   `json:"created_at,omitempty" url:"created_at,omitempty"`
+	CreatedBy            *OutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
+	EncryptionPassphrase *string      `json:"encryption_passphrase,omitempty" url:"encryption_passphrase,omitempty"`
+	Fields               []*SyncField `json:"fields,omitempty" url:"fields,omitempty"`
+	// Deprecated. Use 'model_filters.logic'.
+	FilterLogic *string `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
+	// Deprecated. Use 'model_filters.conditions' and 'target_filters.conditions'. Reports the same filters, with the two kinds interleaved and told apart by 'field_type'.
+	Filters      []*Filter                `json:"filters,omitempty" url:"filters,omitempty"`
+	ID           *string                  `json:"id,omitempty" url:"id,omitempty"`
+	Identity     *Identity                `json:"identity,omitempty" url:"identity,omitempty"`
+	Mode         *ModelsyncSyncTargetMode `json:"mode,omitempty" url:"mode,omitempty"`
+	ModelFilters *ModelFilters            `json:"model_filters,omitempty" url:"model_filters,omitempty"`
+	// Model IDs used in the sync.
+	ModelIDs            []string           `json:"model_ids,omitempty" url:"model_ids,omitempty"`
+	Name                *string            `json:"name,omitempty" url:"name,omitempty"`
+	OnlyEnrichUpdates   *bool              `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
+	OrganizationID      *string            `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OverrideFields      []*OverrideField   `json:"override_fields,omitempty" url:"override_fields,omitempty"`
+	Overrides           []*Override        `json:"overrides,omitempty" url:"overrides,omitempty"`
+	Policies            []string           `json:"policies,omitempty" url:"policies,omitempty"`
+	Schedule            *Schedule          `json:"schedule,omitempty" url:"schedule,omitempty"`
+	SkipInitialBackfill *bool              `json:"skip_initial_backfill,omitempty" url:"skip_initial_backfill,omitempty"`
+	SyncAllRecords      *bool              `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
+	Target              *ModelSyncV5Target `json:"target,omitempty" url:"target,omitempty"`
+	TargetFilters       *TargetFilters     `json:"target_filters,omitempty" url:"target_filters,omitempty"`
+	UpdatedAt           *time.Time         `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	UpdatedBy           *OutputActor       `json:"updated_by,omitempty" url:"updated_by,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelSyncV5Response) GetActive() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.Active
+}
+
+func (m *ModelSyncV5Response) GetCreatedAt() *time.Time {
+	if m == nil {
+		return nil
+	}
+	return m.CreatedAt
+}
+
+func (m *ModelSyncV5Response) GetCreatedBy() *OutputActor {
+	if m == nil {
+		return nil
+	}
+	return m.CreatedBy
+}
+
+func (m *ModelSyncV5Response) GetEncryptionPassphrase() *string {
+	if m == nil {
+		return nil
+	}
+	return m.EncryptionPassphrase
+}
+
+func (m *ModelSyncV5Response) GetFields() []*SyncField {
+	if m == nil {
+		return nil
+	}
+	return m.Fields
+}
+
+func (m *ModelSyncV5Response) GetFilterLogic() *string {
+	if m == nil {
+		return nil
+	}
+	return m.FilterLogic
+}
+
+func (m *ModelSyncV5Response) GetFilters() []*Filter {
+	if m == nil {
+		return nil
+	}
+	return m.Filters
+}
+
+func (m *ModelSyncV5Response) GetID() *string {
+	if m == nil {
+		return nil
+	}
+	return m.ID
+}
+
+func (m *ModelSyncV5Response) GetIdentity() *Identity {
+	if m == nil {
+		return nil
+	}
+	return m.Identity
+}
+
+func (m *ModelSyncV5Response) GetMode() *ModelsyncSyncTargetMode {
+	if m == nil {
+		return nil
+	}
+	return m.Mode
+}
+
+func (m *ModelSyncV5Response) GetModelFilters() *ModelFilters {
+	if m == nil {
+		return nil
+	}
+	return m.ModelFilters
+}
+
+func (m *ModelSyncV5Response) GetModelIDs() []string {
+	if m == nil {
+		return nil
+	}
+	return m.ModelIDs
+}
+
+func (m *ModelSyncV5Response) GetName() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Name
+}
+
+func (m *ModelSyncV5Response) GetOnlyEnrichUpdates() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.OnlyEnrichUpdates
+}
+
+func (m *ModelSyncV5Response) GetOrganizationID() *string {
+	if m == nil {
+		return nil
+	}
+	return m.OrganizationID
+}
+
+func (m *ModelSyncV5Response) GetOverrideFields() []*OverrideField {
+	if m == nil {
+		return nil
+	}
+	return m.OverrideFields
+}
+
+func (m *ModelSyncV5Response) GetOverrides() []*Override {
+	if m == nil {
+		return nil
+	}
+	return m.Overrides
+}
+
+func (m *ModelSyncV5Response) GetPolicies() []string {
+	if m == nil {
+		return nil
+	}
+	return m.Policies
+}
+
+func (m *ModelSyncV5Response) GetSchedule() *Schedule {
+	if m == nil {
+		return nil
+	}
+	return m.Schedule
+}
+
+func (m *ModelSyncV5Response) GetSkipInitialBackfill() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.SkipInitialBackfill
+}
+
+func (m *ModelSyncV5Response) GetSyncAllRecords() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.SyncAllRecords
+}
+
+func (m *ModelSyncV5Response) GetTarget() *ModelSyncV5Target {
+	if m == nil {
+		return nil
+	}
+	return m.Target
+}
+
+func (m *ModelSyncV5Response) GetTargetFilters() *TargetFilters {
+	if m == nil {
+		return nil
+	}
+	return m.TargetFilters
+}
+
+func (m *ModelSyncV5Response) GetUpdatedAt() *time.Time {
+	if m == nil {
+		return nil
+	}
+	return m.UpdatedAt
+}
+
+func (m *ModelSyncV5Response) GetUpdatedBy() *OutputActor {
+	if m == nil {
+		return nil
+	}
+	return m.UpdatedBy
+}
+
+func (m *ModelSyncV5Response) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *ModelSyncV5Response) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetActive sets the Active field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetActive(active *bool) {
+	m.Active = active
+	m.require(modelSyncV5ResponseFieldActive)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetCreatedAt(createdAt *time.Time) {
+	m.CreatedAt = createdAt
+	m.require(modelSyncV5ResponseFieldCreatedAt)
+}
+
+// SetCreatedBy sets the CreatedBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetCreatedBy(createdBy *OutputActor) {
+	m.CreatedBy = createdBy
+	m.require(modelSyncV5ResponseFieldCreatedBy)
+}
+
+// SetEncryptionPassphrase sets the EncryptionPassphrase field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetEncryptionPassphrase(encryptionPassphrase *string) {
+	m.EncryptionPassphrase = encryptionPassphrase
+	m.require(modelSyncV5ResponseFieldEncryptionPassphrase)
+}
+
+// SetFields sets the Fields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetFields(fields []*SyncField) {
+	m.Fields = fields
+	m.require(modelSyncV5ResponseFieldFields)
+}
+
+// SetFilterLogic sets the FilterLogic field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetFilterLogic(filterLogic *string) {
+	m.FilterLogic = filterLogic
+	m.require(modelSyncV5ResponseFieldFilterLogic)
+}
+
+// SetFilters sets the Filters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetFilters(filters []*Filter) {
+	m.Filters = filters
+	m.require(modelSyncV5ResponseFieldFilters)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetID(id *string) {
+	m.ID = id
+	m.require(modelSyncV5ResponseFieldID)
+}
+
+// SetIdentity sets the Identity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetIdentity(identity *Identity) {
+	m.Identity = identity
+	m.require(modelSyncV5ResponseFieldIdentity)
+}
+
+// SetMode sets the Mode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetMode(mode *ModelsyncSyncTargetMode) {
+	m.Mode = mode
+	m.require(modelSyncV5ResponseFieldMode)
+}
+
+// SetModelFilters sets the ModelFilters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetModelFilters(modelFilters *ModelFilters) {
+	m.ModelFilters = modelFilters
+	m.require(modelSyncV5ResponseFieldModelFilters)
+}
+
+// SetModelIDs sets the ModelIDs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetModelIDs(modelIDs []string) {
+	m.ModelIDs = modelIDs
+	m.require(modelSyncV5ResponseFieldModelIDs)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetName(name *string) {
+	m.Name = name
+	m.require(modelSyncV5ResponseFieldName)
+}
+
+// SetOnlyEnrichUpdates sets the OnlyEnrichUpdates field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetOnlyEnrichUpdates(onlyEnrichUpdates *bool) {
+	m.OnlyEnrichUpdates = onlyEnrichUpdates
+	m.require(modelSyncV5ResponseFieldOnlyEnrichUpdates)
+}
+
+// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetOrganizationID(organizationID *string) {
+	m.OrganizationID = organizationID
+	m.require(modelSyncV5ResponseFieldOrganizationID)
+}
+
+// SetOverrideFields sets the OverrideFields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetOverrideFields(overrideFields []*OverrideField) {
+	m.OverrideFields = overrideFields
+	m.require(modelSyncV5ResponseFieldOverrideFields)
+}
+
+// SetOverrides sets the Overrides field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetOverrides(overrides []*Override) {
+	m.Overrides = overrides
+	m.require(modelSyncV5ResponseFieldOverrides)
+}
+
+// SetPolicies sets the Policies field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetPolicies(policies []string) {
+	m.Policies = policies
+	m.require(modelSyncV5ResponseFieldPolicies)
+}
+
+// SetSchedule sets the Schedule field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetSchedule(schedule *Schedule) {
+	m.Schedule = schedule
+	m.require(modelSyncV5ResponseFieldSchedule)
+}
+
+// SetSkipInitialBackfill sets the SkipInitialBackfill field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetSkipInitialBackfill(skipInitialBackfill *bool) {
+	m.SkipInitialBackfill = skipInitialBackfill
+	m.require(modelSyncV5ResponseFieldSkipInitialBackfill)
+}
+
+// SetSyncAllRecords sets the SyncAllRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetSyncAllRecords(syncAllRecords *bool) {
+	m.SyncAllRecords = syncAllRecords
+	m.require(modelSyncV5ResponseFieldSyncAllRecords)
+}
+
+// SetTarget sets the Target field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetTarget(target *ModelSyncV5Target) {
+	m.Target = target
+	m.require(modelSyncV5ResponseFieldTarget)
+}
+
+// SetTargetFilters sets the TargetFilters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetTargetFilters(targetFilters *TargetFilters) {
+	m.TargetFilters = targetFilters
+	m.require(modelSyncV5ResponseFieldTargetFilters)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetUpdatedAt(updatedAt *time.Time) {
+	m.UpdatedAt = updatedAt
+	m.require(modelSyncV5ResponseFieldUpdatedAt)
+}
+
+// SetUpdatedBy sets the UpdatedBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetUpdatedBy(updatedBy *OutputActor) {
+	m.UpdatedBy = updatedBy
+	m.require(modelSyncV5ResponseFieldUpdatedBy)
+}
+
+func (m *ModelSyncV5Response) UnmarshalJSON(data []byte) error {
+	type embed ModelSyncV5Response
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*m),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*m = ModelSyncV5Response(unmarshaler.embed)
+	m.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	m.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelSyncV5Response) MarshalJSON() ([]byte, error) {
+	type embed ModelSyncV5Response
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:     embed(*m),
+		CreatedAt: internal.NewOptionalDateTime(m.CreatedAt),
+		UpdatedAt: internal.NewOptionalDateTime(m.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *ModelSyncV5Response) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+var (
+	modelSyncV5ResponseEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type ModelSyncV5ResponseEnvelope struct {
+	Data *ModelSyncV5Response `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelSyncV5ResponseEnvelope) GetData() *ModelSyncV5Response {
+	if m == nil {
+		return nil
+	}
+	return m.Data
+}
+
+func (m *ModelSyncV5ResponseEnvelope) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *ModelSyncV5ResponseEnvelope) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5ResponseEnvelope) SetData(data *ModelSyncV5Response) {
+	m.Data = data
+	m.require(modelSyncV5ResponseEnvelopeFieldData)
+}
+
+func (m *ModelSyncV5ResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelSyncV5ResponseEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelSyncV5ResponseEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelSyncV5ResponseEnvelope) MarshalJSON() ([]byte, error) {
+	type embed ModelSyncV5ResponseEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *ModelSyncV5ResponseEnvelope) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+var (
+	modelSyncV5TargetFieldConfiguration = big.NewInt(1 << 0)
+	modelSyncV5TargetFieldConnectionID  = big.NewInt(1 << 1)
+	modelSyncV5TargetFieldCreate        = big.NewInt(1 << 2)
+	modelSyncV5TargetFieldFilterLogic   = big.NewInt(1 << 3)
+	modelSyncV5TargetFieldNewName       = big.NewInt(1 << 4)
+	modelSyncV5TargetFieldObject        = big.NewInt(1 << 5)
+	modelSyncV5TargetFieldSearchValues  = big.NewInt(1 << 6)
+)
+
+type ModelSyncV5Target struct {
+	Configuration map[string]any `json:"configuration,omitempty" url:"configuration,omitempty"`
+	ConnectionID  string         `json:"connection_id" url:"connection_id"`
+	// Create a new target object with these properties.
+	Create map[string]string `json:"create,omitempty" url:"create,omitempty"`
+	// Deprecated. Use 'target_filters.logic', which combines the conditions it is grouped with.
+	FilterLogic *string `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
+	// Name for a new target object.
+	NewName      *string        `json:"new_name,omitempty" url:"new_name,omitempty"`
+	Object       *string        `json:"object,omitempty" url:"object,omitempty"`
+	SearchValues map[string]any `json:"search_values,omitempty" url:"search_values,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelSyncV5Target) GetConfiguration() map[string]any {
+	if m == nil {
+		return nil
+	}
+	return m.Configuration
+}
+
+func (m *ModelSyncV5Target) GetConnectionID() string {
+	if m == nil {
+		return ""
+	}
+	return m.ConnectionID
+}
+
+func (m *ModelSyncV5Target) GetCreate() map[string]string {
+	if m == nil {
+		return nil
+	}
+	return m.Create
+}
+
+func (m *ModelSyncV5Target) GetFilterLogic() *string {
+	if m == nil {
+		return nil
+	}
+	return m.FilterLogic
+}
+
+func (m *ModelSyncV5Target) GetNewName() *string {
+	if m == nil {
+		return nil
+	}
+	return m.NewName
+}
+
+func (m *ModelSyncV5Target) GetObject() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Object
+}
+
+func (m *ModelSyncV5Target) GetSearchValues() map[string]any {
+	if m == nil {
+		return nil
+	}
+	return m.SearchValues
+}
+
+func (m *ModelSyncV5Target) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *ModelSyncV5Target) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetConfiguration sets the Configuration field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Target) SetConfiguration(configuration map[string]any) {
+	m.Configuration = configuration
+	m.require(modelSyncV5TargetFieldConfiguration)
+}
+
+// SetConnectionID sets the ConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Target) SetConnectionID(connectionID string) {
+	m.ConnectionID = connectionID
+	m.require(modelSyncV5TargetFieldConnectionID)
+}
+
+// SetCreate sets the Create field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Target) SetCreate(create map[string]string) {
+	m.Create = create
+	m.require(modelSyncV5TargetFieldCreate)
+}
+
+// SetFilterLogic sets the FilterLogic field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Target) SetFilterLogic(filterLogic *string) {
+	m.FilterLogic = filterLogic
+	m.require(modelSyncV5TargetFieldFilterLogic)
+}
+
+// SetNewName sets the NewName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Target) SetNewName(newName *string) {
+	m.NewName = newName
+	m.require(modelSyncV5TargetFieldNewName)
+}
+
+// SetObject sets the Object field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Target) SetObject(object *string) {
+	m.Object = object
+	m.require(modelSyncV5TargetFieldObject)
+}
+
+// SetSearchValues sets the SearchValues field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Target) SetSearchValues(searchValues map[string]any) {
+	m.SearchValues = searchValues
+	m.require(modelSyncV5TargetFieldSearchValues)
+}
+
+func (m *ModelSyncV5Target) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelSyncV5Target
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelSyncV5Target(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelSyncV5Target) MarshalJSON() ([]byte, error) {
+	type embed ModelSyncV5Target
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *ModelSyncV5Target) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
 // Either `field` or `field_id` must be provided. If `field_id` is provided, `field` is ignored.
 var (
 	overrideFieldField    = big.NewInt(1 << 0)
@@ -1769,6 +2810,314 @@ func (o *Override) MarshalJSON() ([]byte, error) {
 }
 
 func (o *Override) String() string {
+	if o == nil {
+		return "<nil>"
+	}
+	if len(o.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(o); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", o)
+}
+
+// A target field which is set to a fixed value for every record; unlike a field mapping, an override field has no source field.
+var (
+	overrideFieldFieldNew           = big.NewInt(1 << 0)
+	overrideFieldFieldOverrideValue = big.NewInt(1 << 1)
+	overrideFieldFieldSyncMode      = big.NewInt(1 << 2)
+	overrideFieldFieldTarget        = big.NewInt(1 << 3)
+)
+
+type OverrideField struct {
+	// New is set to true if the target field should be created by Polytomic. This is not supported by all backends.
+	New *bool `json:"new,omitempty" url:"new,omitempty"`
+	// Value written to the target field for every record.
+	OverrideValue string `json:"override_value" url:"override_value"`
+	// Sync mode for the field; defaults to 'updateOrCreate'. If set to 'create', the field will not be synced if it already has a value. This is not supported by all backends.
+	SyncMode *string `json:"sync_mode,omitempty" url:"sync_mode,omitempty"`
+	// Target field ID the value will be written to.
+	Target string `json:"target" url:"target"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (o *OverrideField) GetNew() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.New
+}
+
+func (o *OverrideField) GetOverrideValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.OverrideValue
+}
+
+func (o *OverrideField) GetSyncMode() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SyncMode
+}
+
+func (o *OverrideField) GetTarget() string {
+	if o == nil {
+		return ""
+	}
+	return o.Target
+}
+
+func (o *OverrideField) GetExtraProperties() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.extraProperties
+}
+
+func (o *OverrideField) require(field *big.Int) {
+	if o.explicitFields == nil {
+		o.explicitFields = big.NewInt(0)
+	}
+	o.explicitFields.Or(o.explicitFields, field)
+}
+
+// SetNew sets the New field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OverrideField) SetNew(new_ *bool) {
+	o.New = new_
+	o.require(overrideFieldFieldNew)
+}
+
+// SetOverrideValue sets the OverrideValue field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OverrideField) SetOverrideValue(overrideValue string) {
+	o.OverrideValue = overrideValue
+	o.require(overrideFieldFieldOverrideValue)
+}
+
+// SetSyncMode sets the SyncMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OverrideField) SetSyncMode(syncMode *string) {
+	o.SyncMode = syncMode
+	o.require(overrideFieldFieldSyncMode)
+}
+
+// SetTarget sets the Target field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OverrideField) SetTarget(target string) {
+	o.Target = target
+	o.require(overrideFieldFieldTarget)
+}
+
+func (o *OverrideField) UnmarshalJSON(data []byte) error {
+	type unmarshaler OverrideField
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*o = OverrideField(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *o)
+	if err != nil {
+		return err
+	}
+	o.extraProperties = extraProperties
+	o.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (o *OverrideField) MarshalJSON() ([]byte, error) {
+	type embed OverrideField
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*o),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (o *OverrideField) String() string {
+	if o == nil {
+		return "<nil>"
+	}
+	if len(o.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(o); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", o)
+}
+
+// A target field which is set to a fixed value for every record; unlike a field mapping, an override field has no source field. The field mapping properties are accepted for backwards compatibility.
+var (
+	overrideFieldInputFieldEncryptionEnabled = big.NewInt(1 << 0)
+	overrideFieldInputFieldNew               = big.NewInt(1 << 1)
+	overrideFieldInputFieldOverrideValue     = big.NewInt(1 << 2)
+	overrideFieldInputFieldSource            = big.NewInt(1 << 3)
+	overrideFieldInputFieldSyncMode          = big.NewInt(1 << 4)
+	overrideFieldInputFieldTarget            = big.NewInt(1 << 5)
+)
+
+type OverrideFieldInput struct {
+	// Deprecated. Encryption is ignored for override fields.
+	EncryptionEnabled *bool `json:"encryption_enabled,omitempty" url:"encryption_enabled,omitempty"`
+	// New is set to true if the target field should be created by Polytomic. This is not supported by all backends.
+	New *bool `json:"new,omitempty" url:"new,omitempty"`
+	// Value written to the target field for every record; required unless a source is provided.
+	OverrideValue *string `json:"override_value,omitempty" url:"override_value,omitempty"`
+	// Deprecated. Override fields have no source; entries which name one are stored as a field mapping instead. Use 'fields' to map a source field.
+	Source *Source `json:"source,omitempty" url:"source,omitempty"`
+	// Sync mode for the field; defaults to 'updateOrCreate'. If set to 'create', the field will not be synced if it already has a value. This is not supported by all backends.
+	SyncMode *string `json:"sync_mode,omitempty" url:"sync_mode,omitempty"`
+	// Target field ID the value will be written to.
+	Target string `json:"target" url:"target"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (o *OverrideFieldInput) GetEncryptionEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EncryptionEnabled
+}
+
+func (o *OverrideFieldInput) GetNew() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.New
+}
+
+func (o *OverrideFieldInput) GetOverrideValue() *string {
+	if o == nil {
+		return nil
+	}
+	return o.OverrideValue
+}
+
+func (o *OverrideFieldInput) GetSource() *Source {
+	if o == nil {
+		return nil
+	}
+	return o.Source
+}
+
+func (o *OverrideFieldInput) GetSyncMode() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SyncMode
+}
+
+func (o *OverrideFieldInput) GetTarget() string {
+	if o == nil {
+		return ""
+	}
+	return o.Target
+}
+
+func (o *OverrideFieldInput) GetExtraProperties() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.extraProperties
+}
+
+func (o *OverrideFieldInput) require(field *big.Int) {
+	if o.explicitFields == nil {
+		o.explicitFields = big.NewInt(0)
+	}
+	o.explicitFields.Or(o.explicitFields, field)
+}
+
+// SetEncryptionEnabled sets the EncryptionEnabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OverrideFieldInput) SetEncryptionEnabled(encryptionEnabled *bool) {
+	o.EncryptionEnabled = encryptionEnabled
+	o.require(overrideFieldInputFieldEncryptionEnabled)
+}
+
+// SetNew sets the New field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OverrideFieldInput) SetNew(new_ *bool) {
+	o.New = new_
+	o.require(overrideFieldInputFieldNew)
+}
+
+// SetOverrideValue sets the OverrideValue field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OverrideFieldInput) SetOverrideValue(overrideValue *string) {
+	o.OverrideValue = overrideValue
+	o.require(overrideFieldInputFieldOverrideValue)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OverrideFieldInput) SetSource(source *Source) {
+	o.Source = source
+	o.require(overrideFieldInputFieldSource)
+}
+
+// SetSyncMode sets the SyncMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OverrideFieldInput) SetSyncMode(syncMode *string) {
+	o.SyncMode = syncMode
+	o.require(overrideFieldInputFieldSyncMode)
+}
+
+// SetTarget sets the Target field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OverrideFieldInput) SetTarget(target string) {
+	o.Target = target
+	o.require(overrideFieldInputFieldTarget)
+}
+
+func (o *OverrideFieldInput) UnmarshalJSON(data []byte) error {
+	type unmarshaler OverrideFieldInput
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*o = OverrideFieldInput(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *o)
+	if err != nil {
+		return err
+	}
+	o.extraProperties = extraProperties
+	o.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (o *OverrideFieldInput) MarshalJSON() ([]byte, error) {
+	type embed OverrideFieldInput
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*o),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (o *OverrideFieldInput) String() string {
 	if o == nil {
 		return "<nil>"
 	}
@@ -2766,7 +4115,7 @@ type SyncField struct {
 	EncryptionEnabled *bool `json:"encryption_enabled,omitempty" url:"encryption_enabled,omitempty"`
 	// New is set to true if the target field should be created by Polytomic. This is not supported by all backends.
 	New *bool `json:"new,omitempty" url:"new,omitempty"`
-	// Value to set in the target field; if provided, 'source' is ignored.
+	// Value to set in the target field; a mapping with an override value and no source is stored as an override field.
 	OverrideValue *string `json:"override_value,omitempty" url:"override_value,omitempty"`
 	Source        *Source `json:"source,omitempty" url:"source,omitempty"`
 	// Sync mode for the field; defaults to 'updateOrCreate'. If set to 'create', the field will not be synced if it already has a value. This is not supported by all backends.
@@ -2907,539 +4256,6 @@ func (s *SyncField) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SyncField) String() string {
-	if s == nil {
-		return "<nil>"
-	}
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
-}
-
-var (
-	syncResponseFieldActive               = big.NewInt(1 << 0)
-	syncResponseFieldCreatedAt            = big.NewInt(1 << 1)
-	syncResponseFieldCreatedBy            = big.NewInt(1 << 2)
-	syncResponseFieldEncryptionPassphrase = big.NewInt(1 << 3)
-	syncResponseFieldFields               = big.NewInt(1 << 4)
-	syncResponseFieldFilterLogic          = big.NewInt(1 << 5)
-	syncResponseFieldFilters              = big.NewInt(1 << 6)
-	syncResponseFieldID                   = big.NewInt(1 << 7)
-	syncResponseFieldIdentity             = big.NewInt(1 << 8)
-	syncResponseFieldMode                 = big.NewInt(1 << 9)
-	syncResponseFieldModelIDs             = big.NewInt(1 << 10)
-	syncResponseFieldName                 = big.NewInt(1 << 11)
-	syncResponseFieldOnlyEnrichUpdates    = big.NewInt(1 << 12)
-	syncResponseFieldOrganizationID       = big.NewInt(1 << 13)
-	syncResponseFieldOverrideFields       = big.NewInt(1 << 14)
-	syncResponseFieldOverrides            = big.NewInt(1 << 15)
-	syncResponseFieldPolicies             = big.NewInt(1 << 16)
-	syncResponseFieldSchedule             = big.NewInt(1 << 17)
-	syncResponseFieldSkipInitialBackfill  = big.NewInt(1 << 18)
-	syncResponseFieldSyncAllRecords       = big.NewInt(1 << 19)
-	syncResponseFieldTarget               = big.NewInt(1 << 20)
-	syncResponseFieldUpdatedAt            = big.NewInt(1 << 21)
-	syncResponseFieldUpdatedBy            = big.NewInt(1 << 22)
-)
-
-type SyncResponse struct {
-	Active               *bool                    `json:"active,omitempty" url:"active,omitempty"`
-	CreatedAt            *time.Time               `json:"created_at,omitempty" url:"created_at,omitempty"`
-	CreatedBy            *OutputActor             `json:"created_by,omitempty" url:"created_by,omitempty"`
-	EncryptionPassphrase *string                  `json:"encryption_passphrase,omitempty" url:"encryption_passphrase,omitempty"`
-	Fields               []*SyncField             `json:"fields,omitempty" url:"fields,omitempty"`
-	FilterLogic          *string                  `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
-	Filters              []*Filter                `json:"filters,omitempty" url:"filters,omitempty"`
-	ID                   *string                  `json:"id,omitempty" url:"id,omitempty"`
-	Identity             *Identity                `json:"identity,omitempty" url:"identity,omitempty"`
-	Mode                 *ModelsyncSyncTargetMode `json:"mode,omitempty" url:"mode,omitempty"`
-	// Model IDs used in the sync.
-	ModelIDs            []string     `json:"model_ids,omitempty" url:"model_ids,omitempty"`
-	Name                *string      `json:"name,omitempty" url:"name,omitempty"`
-	OnlyEnrichUpdates   *bool        `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
-	OrganizationID      *string      `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	OverrideFields      []*SyncField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
-	Overrides           []*Override  `json:"overrides,omitempty" url:"overrides,omitempty"`
-	Policies            []string     `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule            *Schedule    `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SkipInitialBackfill *bool        `json:"skip_initial_backfill,omitempty" url:"skip_initial_backfill,omitempty"`
-	SyncAllRecords      *bool        `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
-	Target              *Target      `json:"target,omitempty" url:"target,omitempty"`
-	UpdatedAt           *time.Time   `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	UpdatedBy           *OutputActor `json:"updated_by,omitempty" url:"updated_by,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (s *SyncResponse) GetActive() *bool {
-	if s == nil {
-		return nil
-	}
-	return s.Active
-}
-
-func (s *SyncResponse) GetCreatedAt() *time.Time {
-	if s == nil {
-		return nil
-	}
-	return s.CreatedAt
-}
-
-func (s *SyncResponse) GetCreatedBy() *OutputActor {
-	if s == nil {
-		return nil
-	}
-	return s.CreatedBy
-}
-
-func (s *SyncResponse) GetEncryptionPassphrase() *string {
-	if s == nil {
-		return nil
-	}
-	return s.EncryptionPassphrase
-}
-
-func (s *SyncResponse) GetFields() []*SyncField {
-	if s == nil {
-		return nil
-	}
-	return s.Fields
-}
-
-func (s *SyncResponse) GetFilterLogic() *string {
-	if s == nil {
-		return nil
-	}
-	return s.FilterLogic
-}
-
-func (s *SyncResponse) GetFilters() []*Filter {
-	if s == nil {
-		return nil
-	}
-	return s.Filters
-}
-
-func (s *SyncResponse) GetID() *string {
-	if s == nil {
-		return nil
-	}
-	return s.ID
-}
-
-func (s *SyncResponse) GetIdentity() *Identity {
-	if s == nil {
-		return nil
-	}
-	return s.Identity
-}
-
-func (s *SyncResponse) GetMode() *ModelsyncSyncTargetMode {
-	if s == nil {
-		return nil
-	}
-	return s.Mode
-}
-
-func (s *SyncResponse) GetModelIDs() []string {
-	if s == nil {
-		return nil
-	}
-	return s.ModelIDs
-}
-
-func (s *SyncResponse) GetName() *string {
-	if s == nil {
-		return nil
-	}
-	return s.Name
-}
-
-func (s *SyncResponse) GetOnlyEnrichUpdates() *bool {
-	if s == nil {
-		return nil
-	}
-	return s.OnlyEnrichUpdates
-}
-
-func (s *SyncResponse) GetOrganizationID() *string {
-	if s == nil {
-		return nil
-	}
-	return s.OrganizationID
-}
-
-func (s *SyncResponse) GetOverrideFields() []*SyncField {
-	if s == nil {
-		return nil
-	}
-	return s.OverrideFields
-}
-
-func (s *SyncResponse) GetOverrides() []*Override {
-	if s == nil {
-		return nil
-	}
-	return s.Overrides
-}
-
-func (s *SyncResponse) GetPolicies() []string {
-	if s == nil {
-		return nil
-	}
-	return s.Policies
-}
-
-func (s *SyncResponse) GetSchedule() *Schedule {
-	if s == nil {
-		return nil
-	}
-	return s.Schedule
-}
-
-func (s *SyncResponse) GetSkipInitialBackfill() *bool {
-	if s == nil {
-		return nil
-	}
-	return s.SkipInitialBackfill
-}
-
-func (s *SyncResponse) GetSyncAllRecords() *bool {
-	if s == nil {
-		return nil
-	}
-	return s.SyncAllRecords
-}
-
-func (s *SyncResponse) GetTarget() *Target {
-	if s == nil {
-		return nil
-	}
-	return s.Target
-}
-
-func (s *SyncResponse) GetUpdatedAt() *time.Time {
-	if s == nil {
-		return nil
-	}
-	return s.UpdatedAt
-}
-
-func (s *SyncResponse) GetUpdatedBy() *OutputActor {
-	if s == nil {
-		return nil
-	}
-	return s.UpdatedBy
-}
-
-func (s *SyncResponse) GetExtraProperties() map[string]interface{} {
-	if s == nil {
-		return nil
-	}
-	return s.extraProperties
-}
-
-func (s *SyncResponse) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
-	}
-	s.explicitFields.Or(s.explicitFields, field)
-}
-
-// SetActive sets the Active field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetActive(active *bool) {
-	s.Active = active
-	s.require(syncResponseFieldActive)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetCreatedAt(createdAt *time.Time) {
-	s.CreatedAt = createdAt
-	s.require(syncResponseFieldCreatedAt)
-}
-
-// SetCreatedBy sets the CreatedBy field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetCreatedBy(createdBy *OutputActor) {
-	s.CreatedBy = createdBy
-	s.require(syncResponseFieldCreatedBy)
-}
-
-// SetEncryptionPassphrase sets the EncryptionPassphrase field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetEncryptionPassphrase(encryptionPassphrase *string) {
-	s.EncryptionPassphrase = encryptionPassphrase
-	s.require(syncResponseFieldEncryptionPassphrase)
-}
-
-// SetFields sets the Fields field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetFields(fields []*SyncField) {
-	s.Fields = fields
-	s.require(syncResponseFieldFields)
-}
-
-// SetFilterLogic sets the FilterLogic field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetFilterLogic(filterLogic *string) {
-	s.FilterLogic = filterLogic
-	s.require(syncResponseFieldFilterLogic)
-}
-
-// SetFilters sets the Filters field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetFilters(filters []*Filter) {
-	s.Filters = filters
-	s.require(syncResponseFieldFilters)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetID(id *string) {
-	s.ID = id
-	s.require(syncResponseFieldID)
-}
-
-// SetIdentity sets the Identity field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetIdentity(identity *Identity) {
-	s.Identity = identity
-	s.require(syncResponseFieldIdentity)
-}
-
-// SetMode sets the Mode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetMode(mode *ModelsyncSyncTargetMode) {
-	s.Mode = mode
-	s.require(syncResponseFieldMode)
-}
-
-// SetModelIDs sets the ModelIDs field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetModelIDs(modelIDs []string) {
-	s.ModelIDs = modelIDs
-	s.require(syncResponseFieldModelIDs)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetName(name *string) {
-	s.Name = name
-	s.require(syncResponseFieldName)
-}
-
-// SetOnlyEnrichUpdates sets the OnlyEnrichUpdates field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetOnlyEnrichUpdates(onlyEnrichUpdates *bool) {
-	s.OnlyEnrichUpdates = onlyEnrichUpdates
-	s.require(syncResponseFieldOnlyEnrichUpdates)
-}
-
-// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetOrganizationID(organizationID *string) {
-	s.OrganizationID = organizationID
-	s.require(syncResponseFieldOrganizationID)
-}
-
-// SetOverrideFields sets the OverrideFields field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetOverrideFields(overrideFields []*SyncField) {
-	s.OverrideFields = overrideFields
-	s.require(syncResponseFieldOverrideFields)
-}
-
-// SetOverrides sets the Overrides field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetOverrides(overrides []*Override) {
-	s.Overrides = overrides
-	s.require(syncResponseFieldOverrides)
-}
-
-// SetPolicies sets the Policies field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetPolicies(policies []string) {
-	s.Policies = policies
-	s.require(syncResponseFieldPolicies)
-}
-
-// SetSchedule sets the Schedule field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetSchedule(schedule *Schedule) {
-	s.Schedule = schedule
-	s.require(syncResponseFieldSchedule)
-}
-
-// SetSkipInitialBackfill sets the SkipInitialBackfill field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetSkipInitialBackfill(skipInitialBackfill *bool) {
-	s.SkipInitialBackfill = skipInitialBackfill
-	s.require(syncResponseFieldSkipInitialBackfill)
-}
-
-// SetSyncAllRecords sets the SyncAllRecords field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetSyncAllRecords(syncAllRecords *bool) {
-	s.SyncAllRecords = syncAllRecords
-	s.require(syncResponseFieldSyncAllRecords)
-}
-
-// SetTarget sets the Target field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetTarget(target *Target) {
-	s.Target = target
-	s.require(syncResponseFieldTarget)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetUpdatedAt(updatedAt *time.Time) {
-	s.UpdatedAt = updatedAt
-	s.require(syncResponseFieldUpdatedAt)
-}
-
-// SetUpdatedBy sets the UpdatedBy field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponse) SetUpdatedBy(updatedBy *OutputActor) {
-	s.UpdatedBy = updatedBy
-	s.require(syncResponseFieldUpdatedBy)
-}
-
-func (s *SyncResponse) UnmarshalJSON(data []byte) error {
-	type embed SyncResponse
-	var unmarshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed: embed(*s),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*s = SyncResponse(unmarshaler.embed)
-	s.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	s.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
-	if err != nil {
-		return err
-	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *SyncResponse) MarshalJSON() ([]byte, error) {
-	type embed SyncResponse
-	var marshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed:     embed(*s),
-		CreatedAt: internal.NewOptionalDateTime(s.CreatedAt),
-		UpdatedAt: internal.NewOptionalDateTime(s.UpdatedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (s *SyncResponse) String() string {
-	if s == nil {
-		return "<nil>"
-	}
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
-}
-
-var (
-	syncResponseEnvelopeFieldData = big.NewInt(1 << 0)
-)
-
-type SyncResponseEnvelope struct {
-	Data *SyncResponse `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (s *SyncResponseEnvelope) GetData() *SyncResponse {
-	if s == nil {
-		return nil
-	}
-	return s.Data
-}
-
-func (s *SyncResponseEnvelope) GetExtraProperties() map[string]interface{} {
-	if s == nil {
-		return nil
-	}
-	return s.extraProperties
-}
-
-func (s *SyncResponseEnvelope) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
-	}
-	s.explicitFields.Or(s.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SyncResponseEnvelope) SetData(data *SyncResponse) {
-	s.Data = data
-	s.require(syncResponseEnvelopeFieldData)
-}
-
-func (s *SyncResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type unmarshaler SyncResponseEnvelope
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*s = SyncResponseEnvelope(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
-	if err != nil {
-		return err
-	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *SyncResponseEnvelope) MarshalJSON() ([]byte, error) {
-	type embed SyncResponseEnvelope
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*s),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (s *SyncResponseEnvelope) String() string {
 	if s == nil {
 		return "<nil>"
 	}
@@ -3663,25 +4479,24 @@ func (s *SyncStatusResponse) String() string {
 }
 
 var (
-	targetFieldConfiguration = big.NewInt(1 << 0)
-	targetFieldConnectionID  = big.NewInt(1 << 1)
-	targetFieldCreate        = big.NewInt(1 << 2)
-	targetFieldFilterLogic   = big.NewInt(1 << 3)
-	targetFieldNewName       = big.NewInt(1 << 4)
-	targetFieldObject        = big.NewInt(1 << 5)
-	targetFieldSearchValues  = big.NewInt(1 << 6)
+	targetFilterConditionFieldField       = big.NewInt(1 << 0)
+	targetFilterConditionFieldFunction    = big.NewInt(1 << 1)
+	targetFilterConditionFieldLabel       = big.NewInt(1 << 2)
+	targetFilterConditionFieldValue       = big.NewInt(1 << 3)
+	targetFilterConditionFieldValueSource = big.NewInt(1 << 4)
 )
 
-type Target struct {
-	Configuration map[string]any `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionID  string         `json:"connection_id" url:"connection_id"`
-	// Create a new target object with these properties.
-	Create      map[string]string `json:"create,omitempty" url:"create,omitempty"`
-	FilterLogic *string           `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
-	// Name for a new target object.
-	NewName      *string        `json:"new_name,omitempty" url:"new_name,omitempty"`
-	Object       *string        `json:"object,omitempty" url:"object,omitempty"`
-	SearchValues map[string]any `json:"search_values,omitempty" url:"search_values,omitempty"`
+type TargetFilterCondition struct {
+	// Destination field this condition tests, identified the same way as a field mapping's target.
+	Field string `json:"field" url:"field"`
+	// Comparison this condition applies to the field's value.
+	Function FilterFunction `json:"function" url:"function"`
+	// Handle naming this condition in 'logic'. Labels are scoped to this object, so a model condition and a target condition may share one. Optional: label every condition in the object or none of them, and an unlabelled object is labelled by position -- A, B, C -- which is how labels are always reported back.
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	// Value the field is compared against. Omitted for functions which take no value, such as 'IsNotNull'.
+	Value any `json:"value,omitempty" url:"value,omitempty"`
+	// Model field whose value the destination field is compared against, resolved separately for every record, named the way a model condition names its source. Mutually exclusive with 'value', and accepted only by destinations whose mode reports 'supports_filter_value_fields'.
+	ValueSource *Source `json:"value_source,omitempty" url:"value_source,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3690,125 +4505,97 @@ type Target struct {
 	rawJSON         json.RawMessage
 }
 
-func (t *Target) GetConfiguration() map[string]any {
-	if t == nil {
-		return nil
-	}
-	return t.Configuration
-}
-
-func (t *Target) GetConnectionID() string {
+func (t *TargetFilterCondition) GetField() string {
 	if t == nil {
 		return ""
 	}
-	return t.ConnectionID
+	return t.Field
 }
 
-func (t *Target) GetCreate() map[string]string {
+func (t *TargetFilterCondition) GetFunction() FilterFunction {
+	if t == nil {
+		return ""
+	}
+	return t.Function
+}
+
+func (t *TargetFilterCondition) GetLabel() *string {
 	if t == nil {
 		return nil
 	}
-	return t.Create
+	return t.Label
 }
 
-func (t *Target) GetFilterLogic() *string {
+func (t *TargetFilterCondition) GetValue() any {
 	if t == nil {
 		return nil
 	}
-	return t.FilterLogic
+	return t.Value
 }
 
-func (t *Target) GetNewName() *string {
+func (t *TargetFilterCondition) GetValueSource() *Source {
 	if t == nil {
 		return nil
 	}
-	return t.NewName
+	return t.ValueSource
 }
 
-func (t *Target) GetObject() *string {
-	if t == nil {
-		return nil
-	}
-	return t.Object
-}
-
-func (t *Target) GetSearchValues() map[string]any {
-	if t == nil {
-		return nil
-	}
-	return t.SearchValues
-}
-
-func (t *Target) GetExtraProperties() map[string]interface{} {
+func (t *TargetFilterCondition) GetExtraProperties() map[string]interface{} {
 	if t == nil {
 		return nil
 	}
 	return t.extraProperties
 }
 
-func (t *Target) require(field *big.Int) {
+func (t *TargetFilterCondition) require(field *big.Int) {
 	if t.explicitFields == nil {
 		t.explicitFields = big.NewInt(0)
 	}
 	t.explicitFields.Or(t.explicitFields, field)
 }
 
-// SetConfiguration sets the Configuration field and marks it as non-optional;
+// SetField sets the Field field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *Target) SetConfiguration(configuration map[string]any) {
-	t.Configuration = configuration
-	t.require(targetFieldConfiguration)
+func (t *TargetFilterCondition) SetField(field string) {
+	t.Field = field
+	t.require(targetFilterConditionFieldField)
 }
 
-// SetConnectionID sets the ConnectionID field and marks it as non-optional;
+// SetFunction sets the Function field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *Target) SetConnectionID(connectionID string) {
-	t.ConnectionID = connectionID
-	t.require(targetFieldConnectionID)
+func (t *TargetFilterCondition) SetFunction(function FilterFunction) {
+	t.Function = function
+	t.require(targetFilterConditionFieldFunction)
 }
 
-// SetCreate sets the Create field and marks it as non-optional;
+// SetLabel sets the Label field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *Target) SetCreate(create map[string]string) {
-	t.Create = create
-	t.require(targetFieldCreate)
+func (t *TargetFilterCondition) SetLabel(label *string) {
+	t.Label = label
+	t.require(targetFilterConditionFieldLabel)
 }
 
-// SetFilterLogic sets the FilterLogic field and marks it as non-optional;
+// SetValue sets the Value field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *Target) SetFilterLogic(filterLogic *string) {
-	t.FilterLogic = filterLogic
-	t.require(targetFieldFilterLogic)
+func (t *TargetFilterCondition) SetValue(value any) {
+	t.Value = value
+	t.require(targetFilterConditionFieldValue)
 }
 
-// SetNewName sets the NewName field and marks it as non-optional;
+// SetValueSource sets the ValueSource field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *Target) SetNewName(newName *string) {
-	t.NewName = newName
-	t.require(targetFieldNewName)
+func (t *TargetFilterCondition) SetValueSource(valueSource *Source) {
+	t.ValueSource = valueSource
+	t.require(targetFilterConditionFieldValueSource)
 }
 
-// SetObject sets the Object field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (t *Target) SetObject(object *string) {
-	t.Object = object
-	t.require(targetFieldObject)
-}
-
-// SetSearchValues sets the SearchValues field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (t *Target) SetSearchValues(searchValues map[string]any) {
-	t.SearchValues = searchValues
-	t.require(targetFieldSearchValues)
-}
-
-func (t *Target) UnmarshalJSON(data []byte) error {
-	type unmarshaler Target
+func (t *TargetFilterCondition) UnmarshalJSON(data []byte) error {
+	type unmarshaler TargetFilterCondition
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*t = Target(value)
+	*t = TargetFilterCondition(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *t)
 	if err != nil {
 		return err
@@ -3818,8 +4605,8 @@ func (t *Target) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (t *Target) MarshalJSON() ([]byte, error) {
-	type embed Target
+func (t *TargetFilterCondition) MarshalJSON() ([]byte, error) {
+	type embed TargetFilterCondition
 	var marshaler = struct {
 		embed
 	}{
@@ -3829,7 +4616,110 @@ func (t *Target) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (t *Target) String() string {
+func (t *TargetFilterCondition) String() string {
+	if t == nil {
+		return "<nil>"
+	}
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Filters applied to the destination records the sync has matched. Only some destinations and sync modes support them; 'supports_target_filters' on the mode returned by GET /api/connections/{id}/modelsync/target/fields says which.
+var (
+	targetFiltersFieldConditions = big.NewInt(1 << 0)
+	targetFiltersFieldLogic      = big.NewInt(1 << 1)
+)
+
+type TargetFilters struct {
+	// Conditions a destination record must satisfy to be written. An empty list writes every matched record.
+	Conditions []*TargetFilterCondition `json:"conditions,omitempty" url:"conditions,omitempty"`
+	// Expression combining the conditions in this object by their labels; 'and', 'or', and parentheses are supported. An empty expression means every condition must be satisfied.
+	Logic *string `json:"logic,omitempty" url:"logic,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TargetFilters) GetConditions() []*TargetFilterCondition {
+	if t == nil {
+		return nil
+	}
+	return t.Conditions
+}
+
+func (t *TargetFilters) GetLogic() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Logic
+}
+
+func (t *TargetFilters) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.extraProperties
+}
+
+func (t *TargetFilters) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetConditions sets the Conditions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetFilters) SetConditions(conditions []*TargetFilterCondition) {
+	t.Conditions = conditions
+	t.require(targetFiltersFieldConditions)
+}
+
+// SetLogic sets the Logic field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetFilters) SetLogic(logic *string) {
+	t.Logic = logic
+	t.require(targetFiltersFieldLogic)
+}
+
+func (t *TargetFilters) UnmarshalJSON(data []byte) error {
+	type unmarshaler TargetFilters
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TargetFilters(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TargetFilters) MarshalJSON() ([]byte, error) {
+	type embed TargetFilters
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TargetFilters) String() string {
 	if t == nil {
 		return "<nil>"
 	}

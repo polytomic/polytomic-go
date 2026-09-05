@@ -718,20 +718,22 @@ var (
 	eventingBulkSyncCompletedEventFieldDestinationConnectionID = big.NewInt(1 << 0)
 	eventingBulkSyncCompletedEventFieldExecutionID             = big.NewInt(1 << 1)
 	eventingBulkSyncCompletedEventFieldOrganizationID          = big.NewInt(1 << 2)
-	eventingBulkSyncCompletedEventFieldSourceConnectionID      = big.NewInt(1 << 3)
-	eventingBulkSyncCompletedEventFieldSyncID                  = big.NewInt(1 << 4)
-	eventingBulkSyncCompletedEventFieldSyncName                = big.NewInt(1 << 5)
-	eventingBulkSyncCompletedEventFieldTriggerSource           = big.NewInt(1 << 6)
+	eventingBulkSyncCompletedEventFieldSchedule                = big.NewInt(1 << 3)
+	eventingBulkSyncCompletedEventFieldSourceConnectionID      = big.NewInt(1 << 4)
+	eventingBulkSyncCompletedEventFieldSyncID                  = big.NewInt(1 << 5)
+	eventingBulkSyncCompletedEventFieldSyncName                = big.NewInt(1 << 6)
+	eventingBulkSyncCompletedEventFieldTriggerSource           = big.NewInt(1 << 7)
 )
 
 type EventingBulkSyncCompletedEvent struct {
-	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
-	ExecutionID             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationID          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	SourceConnectionID      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	SyncID                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
-	TriggerSource           *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
+	DestinationConnectionID *string                   `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	ExecutionID             *string                   `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	OrganizationID          *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Schedule                *EventingBulkSyncSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
+	SourceConnectionID      *string                   `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	SyncID                  *string                   `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncName                *string                   `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	TriggerSource           *string                   `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -759,6 +761,13 @@ func (e *EventingBulkSyncCompletedEvent) GetOrganizationID() *string {
 		return nil
 	}
 	return e.OrganizationID
+}
+
+func (e *EventingBulkSyncCompletedEvent) GetSchedule() *EventingBulkSyncSchedule {
+	if e == nil {
+		return nil
+	}
+	return e.Schedule
 }
 
 func (e *EventingBulkSyncCompletedEvent) GetSourceConnectionID() *string {
@@ -822,6 +831,13 @@ func (e *EventingBulkSyncCompletedEvent) SetExecutionID(executionID *string) {
 func (e *EventingBulkSyncCompletedEvent) SetOrganizationID(organizationID *string) {
 	e.OrganizationID = organizationID
 	e.require(eventingBulkSyncCompletedEventFieldOrganizationID)
+}
+
+// SetSchedule sets the Schedule field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingBulkSyncCompletedEvent) SetSchedule(schedule *EventingBulkSyncSchedule) {
+	e.Schedule = schedule
+	e.require(eventingBulkSyncCompletedEventFieldSchedule)
 }
 
 // SetSourceConnectionID sets the SourceConnectionID field and marks it as non-optional;
@@ -898,20 +914,22 @@ var (
 	eventingBulkSyncCompletedWithErrorEventFieldDestinationConnectionID = big.NewInt(1 << 0)
 	eventingBulkSyncCompletedWithErrorEventFieldExecutionID             = big.NewInt(1 << 1)
 	eventingBulkSyncCompletedWithErrorEventFieldOrganizationID          = big.NewInt(1 << 2)
-	eventingBulkSyncCompletedWithErrorEventFieldSourceConnectionID      = big.NewInt(1 << 3)
-	eventingBulkSyncCompletedWithErrorEventFieldSyncID                  = big.NewInt(1 << 4)
-	eventingBulkSyncCompletedWithErrorEventFieldSyncName                = big.NewInt(1 << 5)
-	eventingBulkSyncCompletedWithErrorEventFieldTriggerSource           = big.NewInt(1 << 6)
+	eventingBulkSyncCompletedWithErrorEventFieldSchedule                = big.NewInt(1 << 3)
+	eventingBulkSyncCompletedWithErrorEventFieldSourceConnectionID      = big.NewInt(1 << 4)
+	eventingBulkSyncCompletedWithErrorEventFieldSyncID                  = big.NewInt(1 << 5)
+	eventingBulkSyncCompletedWithErrorEventFieldSyncName                = big.NewInt(1 << 6)
+	eventingBulkSyncCompletedWithErrorEventFieldTriggerSource           = big.NewInt(1 << 7)
 )
 
 type EventingBulkSyncCompletedWithErrorEvent struct {
-	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
-	ExecutionID             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationID          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	SourceConnectionID      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	SyncID                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
-	TriggerSource           *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
+	DestinationConnectionID *string                   `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	ExecutionID             *string                   `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	OrganizationID          *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Schedule                *EventingBulkSyncSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
+	SourceConnectionID      *string                   `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	SyncID                  *string                   `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncName                *string                   `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	TriggerSource           *string                   `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -939,6 +957,13 @@ func (e *EventingBulkSyncCompletedWithErrorEvent) GetOrganizationID() *string {
 		return nil
 	}
 	return e.OrganizationID
+}
+
+func (e *EventingBulkSyncCompletedWithErrorEvent) GetSchedule() *EventingBulkSyncSchedule {
+	if e == nil {
+		return nil
+	}
+	return e.Schedule
 }
 
 func (e *EventingBulkSyncCompletedWithErrorEvent) GetSourceConnectionID() *string {
@@ -1002,6 +1027,13 @@ func (e *EventingBulkSyncCompletedWithErrorEvent) SetExecutionID(executionID *st
 func (e *EventingBulkSyncCompletedWithErrorEvent) SetOrganizationID(organizationID *string) {
 	e.OrganizationID = organizationID
 	e.require(eventingBulkSyncCompletedWithErrorEventFieldOrganizationID)
+}
+
+// SetSchedule sets the Schedule field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingBulkSyncCompletedWithErrorEvent) SetSchedule(schedule *EventingBulkSyncSchedule) {
+	e.Schedule = schedule
+	e.require(eventingBulkSyncCompletedWithErrorEventFieldSchedule)
 }
 
 // SetSourceConnectionID sets the SourceConnectionID field and marks it as non-optional;
@@ -1079,21 +1111,23 @@ var (
 	eventingBulkSyncFailedEventFieldError                   = big.NewInt(1 << 1)
 	eventingBulkSyncFailedEventFieldExecutionID             = big.NewInt(1 << 2)
 	eventingBulkSyncFailedEventFieldOrganizationID          = big.NewInt(1 << 3)
-	eventingBulkSyncFailedEventFieldSourceConnectionID      = big.NewInt(1 << 4)
-	eventingBulkSyncFailedEventFieldSyncID                  = big.NewInt(1 << 5)
-	eventingBulkSyncFailedEventFieldSyncName                = big.NewInt(1 << 6)
-	eventingBulkSyncFailedEventFieldTriggerSource           = big.NewInt(1 << 7)
+	eventingBulkSyncFailedEventFieldSchedule                = big.NewInt(1 << 4)
+	eventingBulkSyncFailedEventFieldSourceConnectionID      = big.NewInt(1 << 5)
+	eventingBulkSyncFailedEventFieldSyncID                  = big.NewInt(1 << 6)
+	eventingBulkSyncFailedEventFieldSyncName                = big.NewInt(1 << 7)
+	eventingBulkSyncFailedEventFieldTriggerSource           = big.NewInt(1 << 8)
 )
 
 type EventingBulkSyncFailedEvent struct {
-	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
-	Error                   *string `json:"error,omitempty" url:"error,omitempty"`
-	ExecutionID             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationID          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	SourceConnectionID      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	SyncID                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
-	TriggerSource           *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
+	DestinationConnectionID *string                   `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	Error                   *string                   `json:"error,omitempty" url:"error,omitempty"`
+	ExecutionID             *string                   `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	OrganizationID          *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Schedule                *EventingBulkSyncSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
+	SourceConnectionID      *string                   `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	SyncID                  *string                   `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncName                *string                   `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	TriggerSource           *string                   `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1128,6 +1162,13 @@ func (e *EventingBulkSyncFailedEvent) GetOrganizationID() *string {
 		return nil
 	}
 	return e.OrganizationID
+}
+
+func (e *EventingBulkSyncFailedEvent) GetSchedule() *EventingBulkSyncSchedule {
+	if e == nil {
+		return nil
+	}
+	return e.Schedule
 }
 
 func (e *EventingBulkSyncFailedEvent) GetSourceConnectionID() *string {
@@ -1198,6 +1239,13 @@ func (e *EventingBulkSyncFailedEvent) SetExecutionID(executionID *string) {
 func (e *EventingBulkSyncFailedEvent) SetOrganizationID(organizationID *string) {
 	e.OrganizationID = organizationID
 	e.require(eventingBulkSyncFailedEventFieldOrganizationID)
+}
+
+// SetSchedule sets the Schedule field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingBulkSyncFailedEvent) SetSchedule(schedule *EventingBulkSyncSchedule) {
+	e.Schedule = schedule
+	e.require(eventingBulkSyncFailedEventFieldSchedule)
 }
 
 // SetSourceConnectionID sets the SourceConnectionID field and marks it as non-optional;
@@ -1435,6 +1483,106 @@ func (e *EventingBulkSyncRunningEvent) String() string {
 }
 
 var (
+	eventingBulkSyncScheduleFieldFrequency = big.NewInt(1 << 0)
+	eventingBulkSyncScheduleFieldID        = big.NewInt(1 << 1)
+)
+
+type EventingBulkSyncSchedule struct {
+	Frequency *string `json:"frequency,omitempty" url:"frequency,omitempty"`
+	ID        *string `json:"id,omitempty" url:"id,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (e *EventingBulkSyncSchedule) GetFrequency() *string {
+	if e == nil {
+		return nil
+	}
+	return e.Frequency
+}
+
+func (e *EventingBulkSyncSchedule) GetID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.ID
+}
+
+func (e *EventingBulkSyncSchedule) GetExtraProperties() map[string]interface{} {
+	if e == nil {
+		return nil
+	}
+	return e.extraProperties
+}
+
+func (e *EventingBulkSyncSchedule) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetFrequency sets the Frequency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingBulkSyncSchedule) SetFrequency(frequency *string) {
+	e.Frequency = frequency
+	e.require(eventingBulkSyncScheduleFieldFrequency)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingBulkSyncSchedule) SetID(id *string) {
+	e.ID = id
+	e.require(eventingBulkSyncScheduleFieldID)
+}
+
+func (e *EventingBulkSyncSchedule) UnmarshalJSON(data []byte) error {
+	type unmarshaler EventingBulkSyncSchedule
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = EventingBulkSyncSchedule(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
+	if err != nil {
+		return err
+	}
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *EventingBulkSyncSchedule) MarshalJSON() ([]byte, error) {
+	type embed EventingBulkSyncSchedule
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*e),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (e *EventingBulkSyncSchedule) String() string {
+	if e == nil {
+		return "<nil>"
+	}
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+var (
 	eventingSyncCanceledEventFieldExecutionID        = big.NewInt(1 << 0)
 	eventingSyncCanceledEventFieldOrganizationID     = big.NewInt(1 << 1)
 	eventingSyncCanceledEventFieldStatus             = big.NewInt(1 << 2)
@@ -1605,41 +1753,46 @@ var (
 	eventingSyncCompletedEventFieldExecutionID        = big.NewInt(1 << 3)
 	eventingSyncCompletedEventFieldInsertedCount      = big.NewInt(1 << 4)
 	eventingSyncCompletedEventFieldInsertedRecords    = big.NewInt(1 << 5)
-	eventingSyncCompletedEventFieldOrganizationID     = big.NewInt(1 << 6)
-	eventingSyncCompletedEventFieldRecordCount        = big.NewInt(1 << 7)
-	eventingSyncCompletedEventFieldStatus             = big.NewInt(1 << 8)
-	eventingSyncCompletedEventFieldSyncID             = big.NewInt(1 << 9)
-	eventingSyncCompletedEventFieldSyncName           = big.NewInt(1 << 10)
-	eventingSyncCompletedEventFieldTargetConnectionID = big.NewInt(1 << 11)
-	eventingSyncCompletedEventFieldTotalRecords       = big.NewInt(1 << 12)
-	eventingSyncCompletedEventFieldTrigger            = big.NewInt(1 << 13)
-	eventingSyncCompletedEventFieldUpdatedCount       = big.NewInt(1 << 14)
-	eventingSyncCompletedEventFieldUpdatedRecords     = big.NewInt(1 << 15)
-	eventingSyncCompletedEventFieldUpsertedCount      = big.NewInt(1 << 16)
-	eventingSyncCompletedEventFieldWarningCount       = big.NewInt(1 << 17)
-	eventingSyncCompletedEventFieldWarnings           = big.NewInt(1 << 18)
+	eventingSyncCompletedEventFieldLogsURL            = big.NewInt(1 << 6)
+	eventingSyncCompletedEventFieldOrganizationID     = big.NewInt(1 << 7)
+	eventingSyncCompletedEventFieldRecordCount        = big.NewInt(1 << 8)
+	eventingSyncCompletedEventFieldSchedule           = big.NewInt(1 << 9)
+	eventingSyncCompletedEventFieldStatus             = big.NewInt(1 << 10)
+	eventingSyncCompletedEventFieldSyncID             = big.NewInt(1 << 11)
+	eventingSyncCompletedEventFieldSyncName           = big.NewInt(1 << 12)
+	eventingSyncCompletedEventFieldTargetConnectionID = big.NewInt(1 << 13)
+	eventingSyncCompletedEventFieldTotalRecords       = big.NewInt(1 << 14)
+	eventingSyncCompletedEventFieldTrigger            = big.NewInt(1 << 15)
+	eventingSyncCompletedEventFieldUpdatedCount       = big.NewInt(1 << 16)
+	eventingSyncCompletedEventFieldUpdatedRecords     = big.NewInt(1 << 17)
+	eventingSyncCompletedEventFieldUpsertedCount      = big.NewInt(1 << 18)
+	eventingSyncCompletedEventFieldWarningCount       = big.NewInt(1 << 19)
+	eventingSyncCompletedEventFieldWarnings           = big.NewInt(1 << 20)
 )
 
 type EventingSyncCompletedEvent struct {
-	DeletedRecords     []string             `json:"deleted_records,omitempty" url:"deleted_records,omitempty"`
-	ErrorCount         *int64               `json:"error_count,omitempty" url:"error_count,omitempty"`
-	ErroredRecords     []string             `json:"errored_records,omitempty" url:"errored_records,omitempty"`
-	ExecutionID        *string              `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	InsertedCount      *int64               `json:"inserted_count,omitempty" url:"inserted_count,omitempty"`
-	InsertedRecords    []string             `json:"inserted_records,omitempty" url:"inserted_records,omitempty"`
-	OrganizationID     *string              `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	RecordCount        *int64               `json:"record_count,omitempty" url:"record_count,omitempty"`
-	Status             *UtilExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-	SyncID             *string              `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	SyncName           *string              `json:"sync_name,omitempty" url:"sync_name,omitempty"`
-	TargetConnectionID *string              `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
-	TotalRecords       []string             `json:"total_records,omitempty" url:"total_records,omitempty"`
-	Trigger            *string              `json:"trigger,omitempty" url:"trigger,omitempty"`
-	UpdatedCount       *int64               `json:"updated_count,omitempty" url:"updated_count,omitempty"`
-	UpdatedRecords     []string             `json:"updated_records,omitempty" url:"updated_records,omitempty"`
-	UpsertedCount      *int64               `json:"upserted_count,omitempty" url:"upserted_count,omitempty"`
-	WarningCount       *int64               `json:"warning_count,omitempty" url:"warning_count,omitempty"`
-	Warnings           []string             `json:"warnings,omitempty" url:"warnings,omitempty"`
+	DeletedRecords  []string `json:"deleted_records,omitempty" url:"deleted_records,omitempty"`
+	ErrorCount      *int64   `json:"error_count,omitempty" url:"error_count,omitempty"`
+	ErroredRecords  []string `json:"errored_records,omitempty" url:"errored_records,omitempty"`
+	ExecutionID     *string  `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	InsertedCount   *int64   `json:"inserted_count,omitempty" url:"inserted_count,omitempty"`
+	InsertedRecords []string `json:"inserted_records,omitempty" url:"inserted_records,omitempty"`
+	// Endpoint returning the index of record logs produced by this execution.
+	LogsURL            *string               `json:"logs_url,omitempty" url:"logs_url,omitempty"`
+	OrganizationID     *string               `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	RecordCount        *int64                `json:"record_count,omitempty" url:"record_count,omitempty"`
+	Schedule           *EventingSyncSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
+	Status             *UtilExecutionStatus  `json:"status,omitempty" url:"status,omitempty"`
+	SyncID             *string               `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	SyncName           *string               `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	TargetConnectionID *string               `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
+	TotalRecords       []string              `json:"total_records,omitempty" url:"total_records,omitempty"`
+	Trigger            *string               `json:"trigger,omitempty" url:"trigger,omitempty"`
+	UpdatedCount       *int64                `json:"updated_count,omitempty" url:"updated_count,omitempty"`
+	UpdatedRecords     []string              `json:"updated_records,omitempty" url:"updated_records,omitempty"`
+	UpsertedCount      *int64                `json:"upserted_count,omitempty" url:"upserted_count,omitempty"`
+	WarningCount       *int64                `json:"warning_count,omitempty" url:"warning_count,omitempty"`
+	Warnings           []string              `json:"warnings,omitempty" url:"warnings,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1690,6 +1843,13 @@ func (e *EventingSyncCompletedEvent) GetInsertedRecords() []string {
 	return e.InsertedRecords
 }
 
+func (e *EventingSyncCompletedEvent) GetLogsURL() *string {
+	if e == nil {
+		return nil
+	}
+	return e.LogsURL
+}
+
 func (e *EventingSyncCompletedEvent) GetOrganizationID() *string {
 	if e == nil {
 		return nil
@@ -1702,6 +1862,13 @@ func (e *EventingSyncCompletedEvent) GetRecordCount() *int64 {
 		return nil
 	}
 	return e.RecordCount
+}
+
+func (e *EventingSyncCompletedEvent) GetSchedule() *EventingSyncSchedule {
+	if e == nil {
+		return nil
+	}
+	return e.Schedule
 }
 
 func (e *EventingSyncCompletedEvent) GetStatus() *UtilExecutionStatus {
@@ -1837,6 +2004,13 @@ func (e *EventingSyncCompletedEvent) SetInsertedRecords(insertedRecords []string
 	e.require(eventingSyncCompletedEventFieldInsertedRecords)
 }
 
+// SetLogsURL sets the LogsURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingSyncCompletedEvent) SetLogsURL(logsURL *string) {
+	e.LogsURL = logsURL
+	e.require(eventingSyncCompletedEventFieldLogsURL)
+}
+
 // SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (e *EventingSyncCompletedEvent) SetOrganizationID(organizationID *string) {
@@ -1849,6 +2023,13 @@ func (e *EventingSyncCompletedEvent) SetOrganizationID(organizationID *string) {
 func (e *EventingSyncCompletedEvent) SetRecordCount(recordCount *int64) {
 	e.RecordCount = recordCount
 	e.require(eventingSyncCompletedEventFieldRecordCount)
+}
+
+// SetSchedule sets the Schedule field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingSyncCompletedEvent) SetSchedule(schedule *EventingSyncSchedule) {
+	e.Schedule = schedule
+	e.require(eventingSyncCompletedEventFieldSchedule)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
@@ -2464,6 +2645,90 @@ func (e *EventingSyncRunningEvent) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventingSyncRunningEvent) String() string {
+	if e == nil {
+		return "<nil>"
+	}
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+var (
+	eventingSyncScheduleFieldFrequency = big.NewInt(1 << 0)
+)
+
+type EventingSyncSchedule struct {
+	Frequency *string `json:"frequency,omitempty" url:"frequency,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (e *EventingSyncSchedule) GetFrequency() *string {
+	if e == nil {
+		return nil
+	}
+	return e.Frequency
+}
+
+func (e *EventingSyncSchedule) GetExtraProperties() map[string]interface{} {
+	if e == nil {
+		return nil
+	}
+	return e.extraProperties
+}
+
+func (e *EventingSyncSchedule) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetFrequency sets the Frequency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingSyncSchedule) SetFrequency(frequency *string) {
+	e.Frequency = frequency
+	e.require(eventingSyncScheduleFieldFrequency)
+}
+
+func (e *EventingSyncSchedule) UnmarshalJSON(data []byte) error {
+	type unmarshaler EventingSyncSchedule
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = EventingSyncSchedule(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
+	if err != nil {
+		return err
+	}
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *EventingSyncSchedule) MarshalJSON() ([]byte, error) {
+	type embed EventingSyncSchedule
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*e),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (e *EventingSyncSchedule) String() string {
 	if e == nil {
 		return "<nil>"
 	}

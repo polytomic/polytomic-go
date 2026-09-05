@@ -4,10 +4,11 @@ package client
 
 import (
 	client "github.com/polytomic/polytomic-go/v25/bulksync/client"
-	connections "github.com/polytomic/polytomic-go/v25/connections"
+	connectionsclient "github.com/polytomic/polytomic-go/v25/connections/client"
 	core "github.com/polytomic/polytomic-go/v25/core"
 	entities "github.com/polytomic/polytomic-go/v25/entities"
 	events "github.com/polytomic/polytomic-go/v25/events"
+	harbors "github.com/polytomic/polytomic-go/v25/harbors"
 	identity "github.com/polytomic/polytomic-go/v25/identity"
 	internal "github.com/polytomic/polytomic-go/v25/internal"
 	jobs "github.com/polytomic/polytomic-go/v25/jobs"
@@ -18,27 +19,32 @@ import (
 	organization "github.com/polytomic/polytomic-go/v25/organization"
 	permissionsclient "github.com/polytomic/polytomic-go/v25/permissions/client"
 	queryrunner "github.com/polytomic/polytomic-go/v25/queryrunner"
+	recordviewlinks "github.com/polytomic/polytomic-go/v25/recordviewlinks"
 	schemas "github.com/polytomic/polytomic-go/v25/schemas"
+	temporarycredentials "github.com/polytomic/polytomic-go/v25/temporarycredentials"
 	users "github.com/polytomic/polytomic-go/v25/users"
 	webhooks "github.com/polytomic/polytomic-go/v25/webhooks"
 )
 
 type Client struct {
-	BulkSync      *client.Client
-	Connections   *connections.Client
-	QueryRunner   *queryrunner.Client
-	Schemas       *schemas.Client
-	Models        *models.Client
-	ModelSync     *modelsyncclient.Client
-	Entities      *entities.Client
-	Events        *events.Client
-	Jobs          *jobs.Client
-	Identity      *identity.Client
-	Notifications *notifications.Client
-	Organization  *organization.Client
-	Users         *users.Client
-	Webhooks      *webhooks.Client
-	Permissions   *permissionsclient.Client
+	BulkSync             *client.Client
+	Connections          *connectionsclient.Client
+	QueryRunner          *queryrunner.Client
+	Schemas              *schemas.Client
+	Models               *models.Client
+	ModelSync            *modelsyncclient.Client
+	Entities             *entities.Client
+	Events               *events.Client
+	Harbors              *harbors.Client
+	Jobs                 *jobs.Client
+	Identity             *identity.Client
+	Notifications        *notifications.Client
+	Organization         *organization.Client
+	Users                *users.Client
+	RecordViewLinks      *recordviewlinks.Client
+	TemporaryCredentials *temporarycredentials.Client
+	Webhooks             *webhooks.Client
+	Permissions          *permissionsclient.Client
 
 	options *core.RequestOptions
 	baseURL string
@@ -48,23 +54,26 @@ type Client struct {
 func NewClient(opts ...option.RequestOption) *Client {
 	options := core.NewRequestOptions(opts...)
 	return &Client{
-		BulkSync:      client.NewClient(options),
-		Connections:   connections.NewClient(options),
-		QueryRunner:   queryrunner.NewClient(options),
-		Schemas:       schemas.NewClient(options),
-		Models:        models.NewClient(options),
-		ModelSync:     modelsyncclient.NewClient(options),
-		Entities:      entities.NewClient(options),
-		Events:        events.NewClient(options),
-		Jobs:          jobs.NewClient(options),
-		Identity:      identity.NewClient(options),
-		Notifications: notifications.NewClient(options),
-		Organization:  organization.NewClient(options),
-		Users:         users.NewClient(options),
-		Webhooks:      webhooks.NewClient(options),
-		Permissions:   permissionsclient.NewClient(options),
-		options:       options,
-		baseURL:       options.BaseURL,
+		BulkSync:             client.NewClient(options),
+		Connections:          connectionsclient.NewClient(options),
+		QueryRunner:          queryrunner.NewClient(options),
+		Schemas:              schemas.NewClient(options),
+		Models:               models.NewClient(options),
+		ModelSync:            modelsyncclient.NewClient(options),
+		Entities:             entities.NewClient(options),
+		Events:               events.NewClient(options),
+		Harbors:              harbors.NewClient(options),
+		Jobs:                 jobs.NewClient(options),
+		Identity:             identity.NewClient(options),
+		Notifications:        notifications.NewClient(options),
+		Organization:         organization.NewClient(options),
+		Users:                users.NewClient(options),
+		RecordViewLinks:      recordviewlinks.NewClient(options),
+		TemporaryCredentials: temporarycredentials.NewClient(options),
+		Webhooks:             webhooks.NewClient(options),
+		Permissions:          permissionsclient.NewClient(options),
+		options:              options,
+		baseURL:              options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
 				Client:      options.HTTPClient,

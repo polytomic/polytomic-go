@@ -194,6 +194,30 @@ func TestModelSyncExecutionsGetConsoleLogsWithWireMock(
 	VerifyRequestCount(t, "TestModelSyncExecutionsGetConsoleLogsWithWireMock", "GET", "/api/syncs/248df4b7-aa70-47b8-a036-33ac447e668d/executions/0ecd09c1-b901-4d27-9053-f0367c427254/consolelog", map[string]interface{}{"limit": "50", "after": "1744311099250-0"}, 1)
 }
 
+func TestModelSyncExecutionsGetLogsIndexWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	_, invocationErr := client.ModelSync.Executions.GetLogsIndex(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestModelSyncExecutionsGetLogsIndexWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestModelSyncExecutionsGetLogsIndexWithWireMock", "GET", "/api/syncs/248df4b7-aa70-47b8-a036-33ac447e668d/executions/248df4b7-aa70-47b8-a036-33ac447e668d/logs", nil, 1)
+}
+
 func TestModelSyncExecutionsGetLogURLsWithWireMock(
 	t *testing.T,
 ) {

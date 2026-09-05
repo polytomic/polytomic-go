@@ -43,18 +43,13 @@ var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
 			APIError: apiError,
 		}
 	},
+	503: func(apiError *core.APIError) error {
+		return &ServiceUnavailableError{
+			APIError: apiError,
+		}
+	},
 	429: func(apiError *core.APIError) error {
 		return &TooManyRequestsError{
-			APIError: apiError,
-		}
-	},
-	502: func(apiError *core.APIError) error {
-		return &BadGatewayError{
-			APIError: apiError,
-		}
-	},
-	504: func(apiError *core.APIError) error {
-		return &GatewayTimeoutError{
 			APIError: apiError,
 		}
 	},

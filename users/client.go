@@ -39,7 +39,7 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) ListCurrentOrgUsers(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*polytomic.ListUsersEnvelope, error) {
+) (*polytomic.CurrentOrgListUsersEnvelope, error) {
 	response, err := c.WithRawResponse.ListCurrentOrgUsers(
 		ctx,
 		opts...,
@@ -76,7 +76,7 @@ func (c *Client) GetCurrentOrgUser(
 	// Unique identifier of the user.
 	id string,
 	opts ...option.RequestOption,
-) (*polytomic.UserEnvelope, error) {
+) (*polytomic.CurrentOrgUserEnvelope, error) {
 	response, err := c.WithRawResponse.GetCurrentOrgUser(
 		ctx,
 		id,

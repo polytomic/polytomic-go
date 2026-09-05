@@ -94,18 +94,20 @@ func (g *GetIdentityResponseEnvelope) String() string {
 }
 
 var (
-	getIdentityResponseSchemaFieldEmail            = big.NewInt(1 << 0)
-	getIdentityResponseSchemaFieldID               = big.NewInt(1 << 1)
-	getIdentityResponseSchemaFieldIsOrganization   = big.NewInt(1 << 2)
-	getIdentityResponseSchemaFieldIsPartner        = big.NewInt(1 << 3)
-	getIdentityResponseSchemaFieldIsSystem         = big.NewInt(1 << 4)
-	getIdentityResponseSchemaFieldIsUser           = big.NewInt(1 << 5)
-	getIdentityResponseSchemaFieldOrganizationID   = big.NewInt(1 << 6)
-	getIdentityResponseSchemaFieldOrganizationName = big.NewInt(1 << 7)
-	getIdentityResponseSchemaFieldRole             = big.NewInt(1 << 8)
+	getIdentityResponseSchemaFieldCredential       = big.NewInt(1 << 0)
+	getIdentityResponseSchemaFieldEmail            = big.NewInt(1 << 1)
+	getIdentityResponseSchemaFieldID               = big.NewInt(1 << 2)
+	getIdentityResponseSchemaFieldIsOrganization   = big.NewInt(1 << 3)
+	getIdentityResponseSchemaFieldIsPartner        = big.NewInt(1 << 4)
+	getIdentityResponseSchemaFieldIsSystem         = big.NewInt(1 << 5)
+	getIdentityResponseSchemaFieldIsUser           = big.NewInt(1 << 6)
+	getIdentityResponseSchemaFieldOrganizationID   = big.NewInt(1 << 7)
+	getIdentityResponseSchemaFieldOrganizationName = big.NewInt(1 << 8)
+	getIdentityResponseSchemaFieldRole             = big.NewInt(1 << 9)
 )
 
 type GetIdentityResponseSchema struct {
+	Credential *IdentityCredentialSchema `json:"credential,omitempty" url:"credential,omitempty"`
 	// The email of the caller.
 	Email *string `json:"email,omitempty" url:"email,omitempty"`
 	// The ID of the caller; this will be omitted for non-user callers.
@@ -130,6 +132,13 @@ type GetIdentityResponseSchema struct {
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (g *GetIdentityResponseSchema) GetCredential() *IdentityCredentialSchema {
+	if g == nil {
+		return nil
+	}
+	return g.Credential
 }
 
 func (g *GetIdentityResponseSchema) GetEmail() *string {
@@ -207,6 +216,13 @@ func (g *GetIdentityResponseSchema) require(field *big.Int) {
 		g.explicitFields = big.NewInt(0)
 	}
 	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetCredential sets the Credential field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetIdentityResponseSchema) SetCredential(credential *IdentityCredentialSchema) {
+	g.Credential = credential
+	g.require(getIdentityResponseSchemaFieldCredential)
 }
 
 // SetEmail sets the Email field and marks it as non-optional;
@@ -312,4 +328,645 @@ func (g *GetIdentityResponseSchema) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	identityCredentialAPIKeyProfileSchemaFieldCapabilities = big.NewInt(1 << 0)
+	identityCredentialAPIKeyProfileSchemaFieldDescription  = big.NewInt(1 << 1)
+	identityCredentialAPIKeyProfileSchemaFieldID           = big.NewInt(1 << 2)
+	identityCredentialAPIKeyProfileSchemaFieldKind         = big.NewInt(1 << 3)
+	identityCredentialAPIKeyProfileSchemaFieldName         = big.NewInt(1 << 4)
+)
+
+type IdentityCredentialAPIKeyProfileSchema struct {
+	Capabilities *IdentityCredentialCapabilitiesSchema `json:"capabilities,omitempty" url:"capabilities,omitempty"`
+	// Organization-provided summary of the data and questions this scoped profile supports.
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Stable API key profile ID.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// API key profile kind.
+	Kind *string `json:"kind,omitempty" url:"kind,omitempty"`
+	// Stable API key profile name.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *IdentityCredentialAPIKeyProfileSchema) GetCapabilities() *IdentityCredentialCapabilitiesSchema {
+	if i == nil {
+		return nil
+	}
+	return i.Capabilities
+}
+
+func (i *IdentityCredentialAPIKeyProfileSchema) GetDescription() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Description
+}
+
+func (i *IdentityCredentialAPIKeyProfileSchema) GetID() *string {
+	if i == nil {
+		return nil
+	}
+	return i.ID
+}
+
+func (i *IdentityCredentialAPIKeyProfileSchema) GetKind() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Kind
+}
+
+func (i *IdentityCredentialAPIKeyProfileSchema) GetName() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Name
+}
+
+func (i *IdentityCredentialAPIKeyProfileSchema) GetExtraProperties() map[string]interface{} {
+	if i == nil {
+		return nil
+	}
+	return i.extraProperties
+}
+
+func (i *IdentityCredentialAPIKeyProfileSchema) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetCapabilities sets the Capabilities field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialAPIKeyProfileSchema) SetCapabilities(capabilities *IdentityCredentialCapabilitiesSchema) {
+	i.Capabilities = capabilities
+	i.require(identityCredentialAPIKeyProfileSchemaFieldCapabilities)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialAPIKeyProfileSchema) SetDescription(description *string) {
+	i.Description = description
+	i.require(identityCredentialAPIKeyProfileSchemaFieldDescription)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialAPIKeyProfileSchema) SetID(id *string) {
+	i.ID = id
+	i.require(identityCredentialAPIKeyProfileSchemaFieldID)
+}
+
+// SetKind sets the Kind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialAPIKeyProfileSchema) SetKind(kind *string) {
+	i.Kind = kind
+	i.require(identityCredentialAPIKeyProfileSchemaFieldKind)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialAPIKeyProfileSchema) SetName(name *string) {
+	i.Name = name
+	i.require(identityCredentialAPIKeyProfileSchemaFieldName)
+}
+
+func (i *IdentityCredentialAPIKeyProfileSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler IdentityCredentialAPIKeyProfileSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = IdentityCredentialAPIKeyProfileSchema(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *IdentityCredentialAPIKeyProfileSchema) MarshalJSON() ([]byte, error) {
+	type embed IdentityCredentialAPIKeyProfileSchema
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*i),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *IdentityCredentialAPIKeyProfileSchema) String() string {
+	if i == nil {
+		return "<nil>"
+	}
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+var (
+	identityCredentialCapabilitiesSchemaFieldQuery   = big.NewInt(1 << 0)
+	identityCredentialCapabilitiesSchemaFieldSchemas = big.NewInt(1 << 1)
+)
+
+type IdentityCredentialCapabilitiesSchema struct {
+	Query   *IdentityCredentialConnectionCapabilitySchema `json:"query,omitempty" url:"query,omitempty"`
+	Schemas *IdentityCredentialConnectionCapabilitySchema `json:"schemas,omitempty" url:"schemas,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *IdentityCredentialCapabilitiesSchema) GetQuery() *IdentityCredentialConnectionCapabilitySchema {
+	if i == nil {
+		return nil
+	}
+	return i.Query
+}
+
+func (i *IdentityCredentialCapabilitiesSchema) GetSchemas() *IdentityCredentialConnectionCapabilitySchema {
+	if i == nil {
+		return nil
+	}
+	return i.Schemas
+}
+
+func (i *IdentityCredentialCapabilitiesSchema) GetExtraProperties() map[string]interface{} {
+	if i == nil {
+		return nil
+	}
+	return i.extraProperties
+}
+
+func (i *IdentityCredentialCapabilitiesSchema) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetQuery sets the Query field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialCapabilitiesSchema) SetQuery(query *IdentityCredentialConnectionCapabilitySchema) {
+	i.Query = query
+	i.require(identityCredentialCapabilitiesSchemaFieldQuery)
+}
+
+// SetSchemas sets the Schemas field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialCapabilitiesSchema) SetSchemas(schemas *IdentityCredentialConnectionCapabilitySchema) {
+	i.Schemas = schemas
+	i.require(identityCredentialCapabilitiesSchemaFieldSchemas)
+}
+
+func (i *IdentityCredentialCapabilitiesSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler IdentityCredentialCapabilitiesSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = IdentityCredentialCapabilitiesSchema(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *IdentityCredentialCapabilitiesSchema) MarshalJSON() ([]byte, error) {
+	type embed IdentityCredentialCapabilitiesSchema
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*i),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *IdentityCredentialCapabilitiesSchema) String() string {
+	if i == nil {
+		return "<nil>"
+	}
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+var (
+	identityCredentialConnectionCapabilitySchemaFieldConnectionIDs = big.NewInt(1 << 0)
+)
+
+type IdentityCredentialConnectionCapabilitySchema struct {
+	// Connection IDs enabled for this capability.
+	ConnectionIDs []string `json:"connection_ids,omitempty" url:"connection_ids,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *IdentityCredentialConnectionCapabilitySchema) GetConnectionIDs() []string {
+	if i == nil {
+		return nil
+	}
+	return i.ConnectionIDs
+}
+
+func (i *IdentityCredentialConnectionCapabilitySchema) GetExtraProperties() map[string]interface{} {
+	if i == nil {
+		return nil
+	}
+	return i.extraProperties
+}
+
+func (i *IdentityCredentialConnectionCapabilitySchema) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetConnectionIDs sets the ConnectionIDs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialConnectionCapabilitySchema) SetConnectionIDs(connectionIDs []string) {
+	i.ConnectionIDs = connectionIDs
+	i.require(identityCredentialConnectionCapabilitySchemaFieldConnectionIDs)
+}
+
+func (i *IdentityCredentialConnectionCapabilitySchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler IdentityCredentialConnectionCapabilitySchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = IdentityCredentialConnectionCapabilitySchema(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *IdentityCredentialConnectionCapabilitySchema) MarshalJSON() ([]byte, error) {
+	type embed IdentityCredentialConnectionCapabilitySchema
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*i),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *IdentityCredentialConnectionCapabilitySchema) String() string {
+	if i == nil {
+		return "<nil>"
+	}
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+var (
+	identityCredentialHarborSchemaFieldDescription  = big.NewInt(1 << 0)
+	identityCredentialHarborSchemaFieldID           = big.NewInt(1 << 1)
+	identityCredentialHarborSchemaFieldMcpServerURL = big.NewInt(1 << 2)
+	identityCredentialHarborSchemaFieldName         = big.NewInt(1 << 3)
+)
+
+type IdentityCredentialHarborSchema struct {
+	// Organization-provided summary of the Harbor.
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Immutable Harbor ID.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Readable MCP resource URL for authorizing this Harbor independently. The credential's Harbor ID remains authoritative.
+	McpServerURL *string `json:"mcp_server_url,omitempty" url:"mcp_server_url,omitempty"`
+	// Current Harbor display name.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *IdentityCredentialHarborSchema) GetDescription() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Description
+}
+
+func (i *IdentityCredentialHarborSchema) GetID() *string {
+	if i == nil {
+		return nil
+	}
+	return i.ID
+}
+
+func (i *IdentityCredentialHarborSchema) GetMcpServerURL() *string {
+	if i == nil {
+		return nil
+	}
+	return i.McpServerURL
+}
+
+func (i *IdentityCredentialHarborSchema) GetName() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Name
+}
+
+func (i *IdentityCredentialHarborSchema) GetExtraProperties() map[string]interface{} {
+	if i == nil {
+		return nil
+	}
+	return i.extraProperties
+}
+
+func (i *IdentityCredentialHarborSchema) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialHarborSchema) SetDescription(description *string) {
+	i.Description = description
+	i.require(identityCredentialHarborSchemaFieldDescription)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialHarborSchema) SetID(id *string) {
+	i.ID = id
+	i.require(identityCredentialHarborSchemaFieldID)
+}
+
+// SetMcpServerURL sets the McpServerURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialHarborSchema) SetMcpServerURL(mcpServerURL *string) {
+	i.McpServerURL = mcpServerURL
+	i.require(identityCredentialHarborSchemaFieldMcpServerURL)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialHarborSchema) SetName(name *string) {
+	i.Name = name
+	i.require(identityCredentialHarborSchemaFieldName)
+}
+
+func (i *IdentityCredentialHarborSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler IdentityCredentialHarborSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = IdentityCredentialHarborSchema(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *IdentityCredentialHarborSchema) MarshalJSON() ([]byte, error) {
+	type embed IdentityCredentialHarborSchema
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*i),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *IdentityCredentialHarborSchema) String() string {
+	if i == nil {
+		return "<nil>"
+	}
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+var (
+	identityCredentialSchemaFieldAPIKeyProfile = big.NewInt(1 << 0)
+	identityCredentialSchemaFieldHarbor        = big.NewInt(1 << 1)
+	identityCredentialSchemaFieldMethod        = big.NewInt(1 << 2)
+	identityCredentialSchemaFieldMode          = big.NewInt(1 << 3)
+	identityCredentialSchemaFieldOauthClientID = big.NewInt(1 << 4)
+	identityCredentialSchemaFieldOauthResource = big.NewInt(1 << 5)
+)
+
+type IdentityCredentialSchema struct {
+	APIKeyProfile *IdentityCredentialAPIKeyProfileSchema `json:"api_key_profile,omitempty" url:"api_key_profile,omitempty"`
+	Harbor        *IdentityCredentialHarborSchema        `json:"harbor,omitempty" url:"harbor,omitempty"`
+	// Authentication method used for the request.
+	Method *string `json:"method,omitempty" url:"method,omitempty"`
+	// API key mode applied to the credential when available.
+	Mode *string `json:"mode,omitempty" url:"mode,omitempty"`
+	// OAuth client ID for OAuth-issued API keys.
+	OauthClientID *string `json:"oauth_client_id,omitempty" url:"oauth_client_id,omitempty"`
+	// Protected resource URL this OAuth-issued credential is bound to.
+	OauthResource *string `json:"oauth_resource,omitempty" url:"oauth_resource,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *IdentityCredentialSchema) GetAPIKeyProfile() *IdentityCredentialAPIKeyProfileSchema {
+	if i == nil {
+		return nil
+	}
+	return i.APIKeyProfile
+}
+
+func (i *IdentityCredentialSchema) GetHarbor() *IdentityCredentialHarborSchema {
+	if i == nil {
+		return nil
+	}
+	return i.Harbor
+}
+
+func (i *IdentityCredentialSchema) GetMethod() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Method
+}
+
+func (i *IdentityCredentialSchema) GetMode() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Mode
+}
+
+func (i *IdentityCredentialSchema) GetOauthClientID() *string {
+	if i == nil {
+		return nil
+	}
+	return i.OauthClientID
+}
+
+func (i *IdentityCredentialSchema) GetOauthResource() *string {
+	if i == nil {
+		return nil
+	}
+	return i.OauthResource
+}
+
+func (i *IdentityCredentialSchema) GetExtraProperties() map[string]interface{} {
+	if i == nil {
+		return nil
+	}
+	return i.extraProperties
+}
+
+func (i *IdentityCredentialSchema) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetAPIKeyProfile sets the APIKeyProfile field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialSchema) SetAPIKeyProfile(apiKeyProfile *IdentityCredentialAPIKeyProfileSchema) {
+	i.APIKeyProfile = apiKeyProfile
+	i.require(identityCredentialSchemaFieldAPIKeyProfile)
+}
+
+// SetHarbor sets the Harbor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialSchema) SetHarbor(harbor *IdentityCredentialHarborSchema) {
+	i.Harbor = harbor
+	i.require(identityCredentialSchemaFieldHarbor)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialSchema) SetMethod(method *string) {
+	i.Method = method
+	i.require(identityCredentialSchemaFieldMethod)
+}
+
+// SetMode sets the Mode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialSchema) SetMode(mode *string) {
+	i.Mode = mode
+	i.require(identityCredentialSchemaFieldMode)
+}
+
+// SetOauthClientID sets the OauthClientID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialSchema) SetOauthClientID(oauthClientID *string) {
+	i.OauthClientID = oauthClientID
+	i.require(identityCredentialSchemaFieldOauthClientID)
+}
+
+// SetOauthResource sets the OauthResource field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialSchema) SetOauthResource(oauthResource *string) {
+	i.OauthResource = oauthResource
+	i.require(identityCredentialSchemaFieldOauthResource)
+}
+
+func (i *IdentityCredentialSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler IdentityCredentialSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = IdentityCredentialSchema(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *IdentityCredentialSchema) MarshalJSON() ([]byte, error) {
+	type embed IdentityCredentialSchema
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*i),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *IdentityCredentialSchema) String() string {
+	if i == nil {
+		return "<nil>"
+	}
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
 }

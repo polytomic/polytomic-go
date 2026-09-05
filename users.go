@@ -463,6 +463,361 @@ func (a *APIKeyResponseEnvelope) String() string {
 }
 
 var (
+	currentOrgListUsersEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type CurrentOrgListUsersEnvelope struct {
+	Data []*CurrentOrgUserResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CurrentOrgListUsersEnvelope) GetData() []*CurrentOrgUserResponse {
+	if c == nil {
+		return nil
+	}
+	return c.Data
+}
+
+func (c *CurrentOrgListUsersEnvelope) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *CurrentOrgListUsersEnvelope) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CurrentOrgListUsersEnvelope) SetData(data []*CurrentOrgUserResponse) {
+	c.Data = data
+	c.require(currentOrgListUsersEnvelopeFieldData)
+}
+
+func (c *CurrentOrgListUsersEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler CurrentOrgListUsersEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CurrentOrgListUsersEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CurrentOrgListUsersEnvelope) MarshalJSON() ([]byte, error) {
+	type embed CurrentOrgListUsersEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CurrentOrgListUsersEnvelope) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	currentOrgUserEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type CurrentOrgUserEnvelope struct {
+	Data *CurrentOrgUserResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CurrentOrgUserEnvelope) GetData() *CurrentOrgUserResponse {
+	if c == nil {
+		return nil
+	}
+	return c.Data
+}
+
+func (c *CurrentOrgUserEnvelope) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *CurrentOrgUserEnvelope) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CurrentOrgUserEnvelope) SetData(data *CurrentOrgUserResponse) {
+	c.Data = data
+	c.require(currentOrgUserEnvelopeFieldData)
+}
+
+func (c *CurrentOrgUserEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler CurrentOrgUserEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CurrentOrgUserEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CurrentOrgUserEnvelope) MarshalJSON() ([]byte, error) {
+	type embed CurrentOrgUserEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CurrentOrgUserEnvelope) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	currentOrgUserResponseFieldEmail          = big.NewInt(1 << 0)
+	currentOrgUserResponseFieldHarborIDs      = big.NewInt(1 << 1)
+	currentOrgUserResponseFieldHarborOnly     = big.NewInt(1 << 2)
+	currentOrgUserResponseFieldID             = big.NewInt(1 << 3)
+	currentOrgUserResponseFieldOrganizationID = big.NewInt(1 << 4)
+	currentOrgUserResponseFieldRole           = big.NewInt(1 << 5)
+	currentOrgUserResponseFieldRoleIDs        = big.NewInt(1 << 6)
+)
+
+type CurrentOrgUserResponse struct {
+	// Email address used to sign in and receive notifications.
+	Email *string `json:"email,omitempty" url:"email,omitempty"`
+	// Identifiers of the Harbors assigned to this user.
+	HarborIDs []string `json:"harbor_ids,omitempty" url:"harbor_ids,omitempty"`
+	// Whether the account is restricted to assigned Harbors.
+	HarborOnly *bool `json:"harbor_only,omitempty" url:"harbor_only,omitempty"`
+	// Unique identifier of the user.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Unique identifier of the organization the user belongs to.
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Deprecated legacy role name. Use role_ids instead.
+	Role *string `json:"role,omitempty" url:"role,omitempty"`
+	// Identifiers of the permissions roles assigned to the user.
+	RoleIDs []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CurrentOrgUserResponse) GetEmail() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Email
+}
+
+func (c *CurrentOrgUserResponse) GetHarborIDs() []string {
+	if c == nil {
+		return nil
+	}
+	return c.HarborIDs
+}
+
+func (c *CurrentOrgUserResponse) GetHarborOnly() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.HarborOnly
+}
+
+func (c *CurrentOrgUserResponse) GetID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ID
+}
+
+func (c *CurrentOrgUserResponse) GetOrganizationID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.OrganizationID
+}
+
+func (c *CurrentOrgUserResponse) GetRole() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Role
+}
+
+func (c *CurrentOrgUserResponse) GetRoleIDs() []string {
+	if c == nil {
+		return nil
+	}
+	return c.RoleIDs
+}
+
+func (c *CurrentOrgUserResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *CurrentOrgUserResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CurrentOrgUserResponse) SetEmail(email *string) {
+	c.Email = email
+	c.require(currentOrgUserResponseFieldEmail)
+}
+
+// SetHarborIDs sets the HarborIDs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CurrentOrgUserResponse) SetHarborIDs(harborIDs []string) {
+	c.HarborIDs = harborIDs
+	c.require(currentOrgUserResponseFieldHarborIDs)
+}
+
+// SetHarborOnly sets the HarborOnly field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CurrentOrgUserResponse) SetHarborOnly(harborOnly *bool) {
+	c.HarborOnly = harborOnly
+	c.require(currentOrgUserResponseFieldHarborOnly)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CurrentOrgUserResponse) SetID(id *string) {
+	c.ID = id
+	c.require(currentOrgUserResponseFieldID)
+}
+
+// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CurrentOrgUserResponse) SetOrganizationID(organizationID *string) {
+	c.OrganizationID = organizationID
+	c.require(currentOrgUserResponseFieldOrganizationID)
+}
+
+// SetRole sets the Role field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CurrentOrgUserResponse) SetRole(role *string) {
+	c.Role = role
+	c.require(currentOrgUserResponseFieldRole)
+}
+
+// SetRoleIDs sets the RoleIDs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CurrentOrgUserResponse) SetRoleIDs(roleIDs []string) {
+	c.RoleIDs = roleIDs
+	c.require(currentOrgUserResponseFieldRoleIDs)
+}
+
+func (c *CurrentOrgUserResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler CurrentOrgUserResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CurrentOrgUserResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CurrentOrgUserResponse) MarshalJSON() ([]byte, error) {
+	type embed CurrentOrgUserResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CurrentOrgUserResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
 	listUsersEnvelopeFieldData = big.NewInt(1 << 0)
 )
 

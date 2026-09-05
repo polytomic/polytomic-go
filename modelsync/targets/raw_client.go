@@ -88,6 +88,7 @@ func (r *RawClient) GetTargetFields(
 func (r *RawClient) List(
 	ctx context.Context,
 	id string,
+	request *modelsync.TargetsListRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.TargetObjectsResponseEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
@@ -100,6 +101,13 @@ func (r *RawClient) List(
 		baseURL+"/api/connections/%v/modelsync/targetobjects",
 		id,
 	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),

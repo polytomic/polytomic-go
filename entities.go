@@ -129,9 +129,9 @@ type EntityResponse struct {
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 	// Organization that owns the resolved resource. Omitted from responses on the user-scoped endpoint.
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	// Parent resources needed to address nested resources, keyed by relationship name (e.g. "sync", "bulk_sync").
+	// Parent resources needed to address nested resources, keyed by relationship name (e.g. "sync", "bulk_sync", "harbor").
 	Relationships map[string]*EntityRelationship `json:"relationships,omitempty" url:"relationships,omitempty"`
-	// Resolved entity type. One of: organization, user, connection, model, sync, sync_execution, bulk_sync, bulk_sync_execution.
+	// Resolved entity type. One of: organization, user, connection, model, sync, sync_execution, bulk_sync, bulk_sync_execution, harbor, harbor_context.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

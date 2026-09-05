@@ -69,6 +69,52 @@ func (e *ExecutionsGetConsoleLogsRequest) SetAfter(after *string) {
 }
 
 var (
+	executionsGetIngestConsoleLogsRequestFieldSyncID = big.NewInt(1 << 0)
+	executionsGetIngestConsoleLogsRequestFieldLimit  = big.NewInt(1 << 1)
+	executionsGetIngestConsoleLogsRequestFieldAfter  = big.NewInt(1 << 2)
+)
+
+type ExecutionsGetIngestConsoleLogsRequest struct {
+	// Optional bulk sync ID for sync-scoped ingestion logs.
+	SyncID *string `json:"-" url:"sync_id,omitempty"`
+	// Maximum number of entries to return. Values above the logger retention limit are capped to 50.
+	Limit *int `json:"-" url:"limit,omitempty"`
+	// Return only entries newer than this cursor.
+	After *string `json:"-" url:"after,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (e *ExecutionsGetIngestConsoleLogsRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetSyncID sets the SyncID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecutionsGetIngestConsoleLogsRequest) SetSyncID(syncID *string) {
+	e.SyncID = syncID
+	e.require(executionsGetIngestConsoleLogsRequestFieldSyncID)
+}
+
+// SetLimit sets the Limit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecutionsGetIngestConsoleLogsRequest) SetLimit(limit *int) {
+	e.Limit = limit
+	e.require(executionsGetIngestConsoleLogsRequestFieldLimit)
+}
+
+// SetAfter sets the After field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecutionsGetIngestConsoleLogsRequest) SetAfter(after *string) {
+	e.After = after
+	e.require(executionsGetIngestConsoleLogsRequestFieldAfter)
+}
+
+var (
 	executionsGetSchemaConsoleLogsRequestFieldLimit = big.NewInt(1 << 0)
 	executionsGetSchemaConsoleLogsRequestFieldAfter = big.NewInt(1 << 1)
 )

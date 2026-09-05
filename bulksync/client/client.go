@@ -6,6 +6,7 @@ import (
 	context "context"
 
 	polytomic "github.com/polytomic/polytomic-go/v25"
+	errorhandling "github.com/polytomic/polytomic-go/v25/bulksync/errorhandling"
 	executions "github.com/polytomic/polytomic-go/v25/bulksync/executions"
 	schedules "github.com/polytomic/polytomic-go/v25/bulksync/schedules"
 	schemas "github.com/polytomic/polytomic-go/v25/bulksync/schemas"
@@ -17,6 +18,7 @@ import (
 type Client struct {
 	WithRawResponse *RawClient
 	Executions      *executions.Client
+	ErrorHandling   *errorhandling.Client
 	Schemas         *schemas.Client
 	Schedules       *schedules.Client
 
@@ -28,6 +30,7 @@ type Client struct {
 func NewClient(options *core.RequestOptions) *Client {
 	return &Client{
 		Executions:      executions.NewClient(options),
+		ErrorHandling:   errorhandling.NewClient(options),
 		Schemas:         schemas.NewClient(options),
 		Schedules:       schedules.NewClient(options),
 		WithRawResponse: NewRawClient(options),

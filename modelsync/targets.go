@@ -7,15 +7,18 @@ import (
 )
 
 var (
-	targetsGetTargetFieldsRequestFieldTarget  = big.NewInt(1 << 0)
-	targetsGetTargetFieldsRequestFieldRefresh = big.NewInt(1 << 1)
+	targetsGetTargetFieldsRequestFieldTarget     = big.NewInt(1 << 0)
+	targetsGetTargetFieldsRequestFieldRefresh    = big.NewInt(1 << 1)
+	targetsGetTargetFieldsRequestFieldProperties = big.NewInt(1 << 2)
 )
 
 type TargetsGetTargetFieldsRequest struct {
-	// Identifier of the target object (e.g. schema.table for a database destination, object name for a SaaS destination).
-	Target string `json:"-" url:"target"`
-	// When true, force a cache refresh of the target's schema before returning its fields.
+	// Identifier of the target object (e.g. schema.table for a database destination, object name for a SaaS destination). Required unless properties is supplied.
+	Target *string `json:"-" url:"target,omitempty"`
+	// When true, force a cache refresh of the target's schema before returning its fields. Ignored when properties is supplied.
 	Refresh *bool `json:"-" url:"refresh,omitempty"`
+	// Target-creation property values, supplied as properties[key]=value, matching the target_creation.properties returned by GET /api/connections/{id}/modelsync/targetobjects. When supplied, the response describes the not-yet-created target that would result from these inputs, in the same shape as for an existing target. Exactly one of target or properties must be supplied.
+	Properties map[string][]string `json:"-" url:"properties,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -30,7 +33,7 @@ func (t *TargetsGetTargetFieldsRequest) require(field *big.Int) {
 
 // SetTarget sets the Target field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TargetsGetTargetFieldsRequest) SetTarget(target string) {
+func (t *TargetsGetTargetFieldsRequest) SetTarget(target *string) {
 	t.Target = target
 	t.require(targetsGetTargetFieldsRequestFieldTarget)
 }
@@ -40,4 +43,37 @@ func (t *TargetsGetTargetFieldsRequest) SetTarget(target string) {
 func (t *TargetsGetTargetFieldsRequest) SetRefresh(refresh *bool) {
 	t.Refresh = refresh
 	t.require(targetsGetTargetFieldsRequestFieldRefresh)
+}
+
+// SetProperties sets the Properties field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetsGetTargetFieldsRequest) SetProperties(properties map[string][]string) {
+	t.Properties = properties
+	t.require(targetsGetTargetFieldsRequestFieldProperties)
+}
+
+var (
+	targetsListRequestFieldIncludeTargetCreationValues = big.NewInt(1 << 0)
+)
+
+type TargetsListRequest struct {
+	// When true, inline the valid values for each enum target-creation property in the response. Skips the separate call to retrieve property values.
+	IncludeTargetCreationValues *bool `json:"-" url:"include_target_creation_values,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (t *TargetsListRequest) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetIncludeTargetCreationValues sets the IncludeTargetCreationValues field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetsListRequest) SetIncludeTargetCreationValues(includeTargetCreationValues *bool) {
+	t.IncludeTargetCreationValues = includeTargetCreationValues
+	t.require(targetsListRequestFieldIncludeTargetCreationValues)
 }

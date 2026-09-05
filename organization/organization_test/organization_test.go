@@ -99,6 +99,54 @@ func TestOrganizationGetCurrentWithWireMock(
 	VerifyRequestCount(t, "TestOrganizationGetCurrentWithWireMock", "GET", "/api/organization", nil, 1)
 }
 
+func TestOrganizationGetRecordLoggingWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	_, invocationErr := client.Organization.GetRecordLogging(
+		context.TODO(),
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestOrganizationGetRecordLoggingWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestOrganizationGetRecordLoggingWithWireMock", "GET", "/api/organization/record-logging", nil, 1)
+}
+
+func TestOrganizationUpdateRecordLoggingWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &polytomic.UpdateRecordLoggingSettingsRequest{
+		Enabled: true,
+	}
+	_, invocationErr := client.Organization.UpdateRecordLogging(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestOrganizationUpdateRecordLoggingWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestOrganizationUpdateRecordLoggingWithWireMock", "PUT", "/api/organization/record-logging", nil, 1)
+}
+
 func TestOrganizationListWithWireMock(
 	t *testing.T,
 ) {

@@ -71,6 +71,89 @@ func (r *RawClient) GetCurrent(
 	}, nil
 }
 
+func (r *RawClient) GetRecordLogging(
+	ctx context.Context,
+	opts ...option.RequestOption,
+) (*core.Response[*polytomic.RecordLoggingSettingsEnvelope], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := baseURL + "/api/organization/record-logging"
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *polytomic.RecordLoggingSettingsEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.RecordLoggingSettingsEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) UpdateRecordLogging(
+	ctx context.Context,
+	request *polytomic.UpdateRecordLoggingSettingsRequest,
+	opts ...option.IdempotentRequestOption,
+) (*core.Response[*polytomic.RecordLoggingSettingsEnvelope], error) {
+	options := core.NewIdempotentRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := baseURL + "/api/organization/record-logging"
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("Content-Type", "application/json")
+	var response *polytomic.RecordLoggingSettingsEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPut,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.RecordLoggingSettingsEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
 func (r *RawClient) List(
 	ctx context.Context,
 	opts ...option.RequestOption,

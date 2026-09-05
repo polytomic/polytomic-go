@@ -34,7 +34,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) ListCurrentOrgUsers(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.ListUsersEnvelope], error) {
+) (*core.Response[*polytomic.CurrentOrgListUsersEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -46,7 +46,7 @@ func (r *RawClient) ListCurrentOrgUsers(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.ListUsersEnvelope
+	var response *polytomic.CurrentOrgListUsersEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -64,7 +64,7 @@ func (r *RawClient) ListCurrentOrgUsers(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.ListUsersEnvelope]{
+	return &core.Response[*polytomic.CurrentOrgListUsersEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -119,7 +119,7 @@ func (r *RawClient) GetCurrentOrgUser(
 	// Unique identifier of the user.
 	id string,
 	opts ...option.RequestOption,
-) (*core.Response[*polytomic.UserEnvelope], error) {
+) (*core.Response[*polytomic.CurrentOrgUserEnvelope], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -134,7 +134,7 @@ func (r *RawClient) GetCurrentOrgUser(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *polytomic.UserEnvelope
+	var response *polytomic.CurrentOrgUserEnvelope
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -152,7 +152,7 @@ func (r *RawClient) GetCurrentOrgUser(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*polytomic.UserEnvelope]{
+	return &core.Response[*polytomic.CurrentOrgUserEnvelope]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

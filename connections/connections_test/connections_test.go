@@ -231,6 +231,28 @@ func TestConnectionsConnectWithWireMock(
 	VerifyRequestCount(t, "TestConnectionsConnectWithWireMock", "POST", "/api/connections/connect/", nil, 1)
 }
 
+func TestConnectionsGetConnectSessionWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	_, invocationErr := client.Connections.GetConnectSession(
+		context.TODO(),
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestConnectionsGetConnectSessionWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestConnectionsGetConnectSessionWithWireMock", "GET", "/api/connections/connect/session", nil, 1)
+}
+
 func TestConnectionsTestConnectionWithWireMock(
 	t *testing.T,
 ) {
@@ -372,7 +394,7 @@ func TestConnectionsGetParameterValuesWithWireMock(
 	VerifyRequestCount(t, "TestConnectionsGetParameterValuesWithWireMock", "GET", "/api/connections/248df4b7-aa70-47b8-a036-33ac447e668d/parameter_values", nil, 1)
 }
 
-func TestConnectionsExecuteProxyWithWireMock(
+func TestConnectionsGetUsageWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -383,119 +405,14 @@ func TestConnectionsExecuteProxyWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.ExecuteConnectionProxyRequest{
-		Request: &polytomic.ConnectionProxyCall{
-			Method: "GET",
-			Path:   "/v1/objects",
-		},
-	}
-	_, invocationErr := client.Connections.ExecuteProxy(
+	_, invocationErr := client.Connections.GetUsage(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
-		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestConnectionsExecuteProxyWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestConnectionsGetUsageWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestConnectionsExecuteProxyWithWireMock", "POST", "/api/connections/248df4b7-aa70-47b8-a036-33ac447e668d/proxy", nil, 1)
-}
-
-func TestConnectionsGetProxyInfoWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-		option.WithToken("test-token"),
-	)
-	_, invocationErr := client.Connections.GetProxyInfo(
-		context.TODO(),
-		"248df4b7-aa70-47b8-a036-33ac447e668d",
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestConnectionsGetProxyInfoWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestConnectionsGetProxyInfoWithWireMock", "GET", "/api/connections/248df4b7-aa70-47b8-a036-33ac447e668d/proxy/info", nil, 1)
-}
-
-func TestConnectionsListSharedConnectionsWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-		option.WithToken("test-token"),
-	)
-	_, invocationErr := client.Connections.ListSharedConnections(
-		context.TODO(),
-		"248df4b7-aa70-47b8-a036-33ac447e668d",
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestConnectionsListSharedConnectionsWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestConnectionsListSharedConnectionsWithWireMock", "GET", "/api/connections/248df4b7-aa70-47b8-a036-33ac447e668d/shared", nil, 1)
-}
-
-func TestConnectionsListSharedConnectionsForPartnerWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-		option.WithToken("test-token"),
-	)
-	_, invocationErr := client.Connections.ListSharedConnectionsForPartner(
-		context.TODO(),
-		"248df4b7-aa70-47b8-a036-33ac447e668d",
-		"248df4b7-aa70-47b8-a036-33ac447e668d",
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestConnectionsListSharedConnectionsForPartnerWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestConnectionsListSharedConnectionsForPartnerWithWireMock", "GET", "/api/organizations/248df4b7-aa70-47b8-a036-33ac447e668d/connections/248df4b7-aa70-47b8-a036-33ac447e668d/shared", nil, 1)
-}
-
-func TestConnectionsCreateSharedConnectionWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-		option.WithToken("test-token"),
-	)
-	request := &polytomic.PartnerCreateSharedConnectionRequestSchema{
-		ChildOrganizationID: "248df4b7-aa70-47b8-a036-33ac447e668d",
-	}
-	_, invocationErr := client.Connections.CreateSharedConnection(
-		context.TODO(),
-		"248df4b7-aa70-47b8-a036-33ac447e668d",
-		"248df4b7-aa70-47b8-a036-33ac447e668d",
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestConnectionsCreateSharedConnectionWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestConnectionsCreateSharedConnectionWithWireMock", "POST", "/api/organizations/248df4b7-aa70-47b8-a036-33ac447e668d/connections/248df4b7-aa70-47b8-a036-33ac447e668d/shared", nil, 1)
+	VerifyRequestCount(t, "TestConnectionsGetUsageWithWireMock", "GET", "/api/connections/248df4b7-aa70-47b8-a036-33ac447e668d/usage", nil, 1)
 }

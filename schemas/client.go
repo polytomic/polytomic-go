@@ -99,6 +99,32 @@ func (c *Client) DeleteField(
 	return nil
 }
 
+// Edits a single field on a schema, creating an override for a detected field if needed.
+func (c *Client) PatchField(
+	ctx context.Context,
+	// Connection holding the schema.
+	connectionID string,
+	// Schema identifier.
+	schemaID string,
+	// Field identifier within the schema.
+	fieldID string,
+	request *polytomic.PatchSchemaFieldRequest,
+	opts ...option.IdempotentRequestOption,
+) (*polytomic.SchemaFieldResponseEnvelope, error) {
+	response, err := c.WithRawResponse.PatchField(
+		ctx,
+		connectionID,
+		schemaID,
+		fieldID,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Overrides the primary key detected on a schema.
 //
 // This is a full replacement: the keys you supply become the complete override

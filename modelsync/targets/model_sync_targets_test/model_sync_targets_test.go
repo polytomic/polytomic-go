@@ -90,7 +90,9 @@ func TestModelSyncTargetsGetTargetFieldsWithWireMock(
 		option.WithToken("test-token"),
 	)
 	request := &modelsync.TargetsGetTargetFieldsRequest{
-		Target: "database.table",
+		Target: polytomic.String(
+			"database.table",
+		),
 		Refresh: polytomic.Bool(
 			false,
 		),
@@ -119,16 +121,22 @@ func TestModelSyncTargetsListWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
+	request := &modelsync.TargetsListRequest{
+		IncludeTargetCreationValues: polytomic.Bool(
+			true,
+		),
+	}
 	_, invocationErr := client.ModelSync.Targets.List(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		request,
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestModelSyncTargetsListWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestModelSyncTargetsListWithWireMock", "GET", "/api/connections/248df4b7-aa70-47b8-a036-33ac447e668d/modelsync/targetobjects", nil, 1)
+	VerifyRequestCount(t, "TestModelSyncTargetsListWithWireMock", "GET", "/api/connections/248df4b7-aa70-47b8-a036-33ac447e668d/modelsync/targetobjects", map[string]interface{}{"include_target_creation_values": "true"}, 1)
 }
 
 func TestModelSyncTargetsGetCreatePropertyWithWireMock(

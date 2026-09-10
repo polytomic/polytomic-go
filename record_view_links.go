@@ -11,16 +11,20 @@ import (
 )
 
 var (
-	createRecordViewLinkRequestFieldConnectionID   = big.NewInt(1 << 0)
-	createRecordViewLinkRequestFieldExpiresAt      = big.NewInt(1 << 1)
-	createRecordViewLinkRequestFieldFields         = big.NewInt(1 << 2)
-	createRecordViewLinkRequestFieldLookupKeyField = big.NewInt(1 << 3)
-	createRecordViewLinkRequestFieldLookupKeyValue = big.NewInt(1 << 4)
-	createRecordViewLinkRequestFieldSchemaID       = big.NewInt(1 << 5)
-	createRecordViewLinkRequestFieldSource         = big.NewInt(1 << 6)
+	createRecordViewLinkRequestFieldPolytomicHarborSession     = big.NewInt(1 << 0)
+	createRecordViewLinkRequestFieldPolytomicActivityRequestID = big.NewInt(1 << 1)
+	createRecordViewLinkRequestFieldConnectionID               = big.NewInt(1 << 2)
+	createRecordViewLinkRequestFieldExpiresAt                  = big.NewInt(1 << 3)
+	createRecordViewLinkRequestFieldFields                     = big.NewInt(1 << 4)
+	createRecordViewLinkRequestFieldLookupKeyField             = big.NewInt(1 << 5)
+	createRecordViewLinkRequestFieldLookupKeyValue             = big.NewInt(1 << 6)
+	createRecordViewLinkRequestFieldSchemaID                   = big.NewInt(1 << 7)
+	createRecordViewLinkRequestFieldSource                     = big.NewInt(1 << 8)
 )
 
 type CreateRecordViewLinkRequest struct {
+	PolytomicHarborSession     *string `json:"-" url:"-"`
+	PolytomicActivityRequestID *string `json:"-" url:"-"`
 	// Connection containing the record.
 	ConnectionID string `json:"connection_id" url:"-"`
 	// Optional expiry timestamp. Defaults to 72 hours and cannot exceed 7 days.
@@ -45,6 +49,20 @@ func (c *CreateRecordViewLinkRequest) require(field *big.Int) {
 		c.explicitFields = big.NewInt(0)
 	}
 	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetPolytomicHarborSession sets the PolytomicHarborSession field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateRecordViewLinkRequest) SetPolytomicHarborSession(polytomicHarborSession *string) {
+	c.PolytomicHarborSession = polytomicHarborSession
+	c.require(createRecordViewLinkRequestFieldPolytomicHarborSession)
+}
+
+// SetPolytomicActivityRequestID sets the PolytomicActivityRequestID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateRecordViewLinkRequest) SetPolytomicActivityRequestID(polytomicActivityRequestID *string) {
+	c.PolytomicActivityRequestID = polytomicActivityRequestID
+	c.require(createRecordViewLinkRequestFieldPolytomicActivityRequestID)
 }
 
 // SetConnectionID sets the ConnectionID field and marks it as non-optional;

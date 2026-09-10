@@ -356,6 +356,10 @@ func (c *Client) Get(
 
 // Updates a connection's configuration.
 //
+// Connections owned by a managed Harbor return `409 Conflict`. To rename the
+// Connection, [update its Harbor](../../../api-reference/harbors/update). Customer-managed
+// Harbor backing Connections remain independently editable.
+//
 // Updating a connection is a **full replacement** of its configuration. Any
 // `configuration` field you omit is cleared. To make a partial change, fetch
 // the current connection with
@@ -405,6 +409,12 @@ func (c *Client) Update(
 }
 
 // Deletes a connection.
+//
+// A Connection that backs any active Harbor returns `409 Conflict`, including
+// when you pass `force=true`. No dependent resources are deleted in this case.
+// [Delete the Harbor](../../../api-reference/harbors/delete) first. Deleting a managed
+// Harbor also deletes its managed Connection; deleting a customer-managed Harbor
+// preserves its backing Connection.
 //
 // > 🚧 Deleting a connection that is referenced by fieldsets, syncs, bulk
 // > syncs, or schedules returns `422 connection in use` unless you pass

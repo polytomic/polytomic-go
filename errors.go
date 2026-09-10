@@ -127,6 +127,30 @@ func (g *GatewayTimeoutError) Unwrap() error {
 	return g.APIError
 }
 
+// Gone
+type GoneError struct {
+	*core.APIError
+	Body *APIError
+}
+
+func (g *GoneError) UnmarshalJSON(data []byte) error {
+	var body *APIError
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	g.StatusCode = 410
+	g.Body = body
+	return nil
+}
+
+func (g *GoneError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(g.Body)
+}
+
+func (g *GoneError) Unwrap() error {
+	return g.APIError
+}
+
 // Internal Server Error
 type InternalServerError struct {
 	*core.APIError

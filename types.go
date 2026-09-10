@@ -1762,10 +1762,13 @@ func (b BulkSelectiveMode) Ptr() *BulkSelectiveMode {
 }
 
 var (
-	bulkSyncErrorHandlingFieldSubscribers = big.NewInt(1 << 0)
+	bulkSyncErrorHandlingFieldIngestionFailureThreshold = big.NewInt(1 << 0)
+	bulkSyncErrorHandlingFieldSubscribers               = big.NewInt(1 << 1)
 )
 
 type BulkSyncErrorHandling struct {
+	// How far behind ingestion may fall before a terminal execution is failed, in the unit this sync's source reports: seconds for a source carrying event timestamps, outstanding items for a queue-backed source such as S3. Null means this sync has no threshold of its own: a source reporting seconds then follows the deployment-wide default, while a queue-backed source is left unchecked.
+	IngestionFailureThreshold *int `json:"ingestion_failure_threshold,omitempty" url:"ingestion_failure_threshold,omitempty"`
 	// Email addresses notified when this sync fails.
 	Subscribers []string `json:"subscribers,omitempty" url:"subscribers,omitempty"`
 
@@ -1774,6 +1777,13 @@ type BulkSyncErrorHandling struct {
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (b *BulkSyncErrorHandling) GetIngestionFailureThreshold() *int {
+	if b == nil {
+		return nil
+	}
+	return b.IngestionFailureThreshold
 }
 
 func (b *BulkSyncErrorHandling) GetSubscribers() []string {
@@ -1795,6 +1805,13 @@ func (b *BulkSyncErrorHandling) require(field *big.Int) {
 		b.explicitFields = big.NewInt(0)
 	}
 	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetIngestionFailureThreshold sets the IngestionFailureThreshold field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncErrorHandling) SetIngestionFailureThreshold(ingestionFailureThreshold *int) {
+	b.IngestionFailureThreshold = ingestionFailureThreshold
+	b.require(bulkSyncErrorHandlingFieldIngestionFailureThreshold)
 }
 
 // SetSubscribers sets the Subscribers field and marks it as non-optional;
@@ -10713,16 +10730,18 @@ func (s *SchemaAssociation) String() string {
 }
 
 var (
-	schemaFieldFieldAssociation  = big.NewInt(1 << 0)
-	schemaFieldFieldID           = big.NewInt(1 << 1)
-	schemaFieldFieldIsPrimaryKey = big.NewInt(1 << 2)
-	schemaFieldFieldName         = big.NewInt(1 << 3)
-	schemaFieldFieldPath         = big.NewInt(1 << 4)
-	schemaFieldFieldRemoteType   = big.NewInt(1 << 5)
-	schemaFieldFieldType         = big.NewInt(1 << 6)
-	schemaFieldFieldTypeSpec     = big.NewInt(1 << 7)
-	schemaFieldFieldUserManaged  = big.NewInt(1 << 8)
-	schemaFieldFieldValues       = big.NewInt(1 << 9)
+	schemaFieldFieldAssociation        = big.NewInt(1 << 0)
+	schemaFieldFieldID                 = big.NewInt(1 << 1)
+	schemaFieldFieldIsPrimaryKey       = big.NewInt(1 << 2)
+	schemaFieldFieldName               = big.NewInt(1 << 3)
+	schemaFieldFieldPath               = big.NewInt(1 << 4)
+	schemaFieldFieldPrimaryKeyOverride = big.NewInt(1 << 5)
+	schemaFieldFieldRemoteType         = big.NewInt(1 << 6)
+	schemaFieldFieldSourcePrimaryKey   = big.NewInt(1 << 7)
+	schemaFieldFieldType               = big.NewInt(1 << 8)
+	schemaFieldFieldTypeSpec           = big.NewInt(1 << 9)
+	schemaFieldFieldUserManaged        = big.NewInt(1 << 10)
+	schemaFieldFieldValues             = big.NewInt(1 << 11)
 )
 
 type SchemaField struct {
@@ -10733,10 +10752,14 @@ type SchemaField struct {
 	Name         *string `json:"name,omitempty" url:"name,omitempty"`
 	// JSONPath used to extract the field from each source record; only meaningful for document-style backends.
 	Path *string `json:"path,omitempty" url:"path,omitempty"`
+	// The user-set primary key status for this field, which takes precedence over source_primary_key; omitted when no override is set.
+	PrimaryKeyOverride *bool `json:"primary_key_override,omitempty" url:"primary_key_override,omitempty"`
 	// The type of the field from the remote system.
-	RemoteType *string        `json:"remote_type,omitempty" url:"remote_type,omitempty"`
-	Type       *UtilFieldType `json:"type,omitempty" url:"type,omitempty"`
-	TypeSpec   *TypesType     `json:"type_spec,omitempty" url:"type_spec,omitempty"`
+	RemoteType *string `json:"remote_type,omitempty" url:"remote_type,omitempty"`
+	// Whether the source system reports this field as part of the schema's primary key.
+	SourcePrimaryKey *bool          `json:"source_primary_key,omitempty" url:"source_primary_key,omitempty"`
+	Type             *UtilFieldType `json:"type,omitempty" url:"type,omitempty"`
+	TypeSpec         *TypesType     `json:"type_spec,omitempty" url:"type_spec,omitempty"`
 	// True when the field's effective definition came from a user override.
 	UserManaged *bool        `json:"user_managed,omitempty" url:"user_managed,omitempty"`
 	Values      []*PickValue `json:"values,omitempty" url:"values,omitempty"`
@@ -10783,11 +10806,25 @@ func (s *SchemaField) GetPath() *string {
 	return s.Path
 }
 
+func (s *SchemaField) GetPrimaryKeyOverride() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.PrimaryKeyOverride
+}
+
 func (s *SchemaField) GetRemoteType() *string {
 	if s == nil {
 		return nil
 	}
 	return s.RemoteType
+}
+
+func (s *SchemaField) GetSourcePrimaryKey() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.SourcePrimaryKey
 }
 
 func (s *SchemaField) GetType() *UtilFieldType {
@@ -10867,11 +10904,25 @@ func (s *SchemaField) SetPath(path *string) {
 	s.require(schemaFieldFieldPath)
 }
 
+// SetPrimaryKeyOverride sets the PrimaryKeyOverride field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SchemaField) SetPrimaryKeyOverride(primaryKeyOverride *bool) {
+	s.PrimaryKeyOverride = primaryKeyOverride
+	s.require(schemaFieldFieldPrimaryKeyOverride)
+}
+
 // SetRemoteType sets the RemoteType field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (s *SchemaField) SetRemoteType(remoteType *string) {
 	s.RemoteType = remoteType
 	s.require(schemaFieldFieldRemoteType)
+}
+
+// SetSourcePrimaryKey sets the SourcePrimaryKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SchemaField) SetSourcePrimaryKey(sourcePrimaryKey *bool) {
+	s.SourcePrimaryKey = sourcePrimaryKey
+	s.require(schemaFieldFieldSourcePrimaryKey)
 }
 
 // SetType sets the Type field and marks it as non-optional;
@@ -11049,6 +11100,158 @@ func (s *SourceMeta) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SourceMeta) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+var (
+	supportedFilterFunctionFieldID            = big.NewInt(1 << 0)
+	supportedFilterFunctionFieldLabel         = big.NewInt(1 << 1)
+	supportedFilterFunctionFieldMultiValue    = big.NewInt(1 << 2)
+	supportedFilterFunctionFieldRequiresValue = big.NewInt(1 << 3)
+	supportedFilterFunctionFieldValues        = big.NewInt(1 << 4)
+)
+
+type SupportedFilterFunction struct {
+	ID *FilterFunction `json:"id,omitempty" url:"id,omitempty"`
+	// Human-readable label for the comparison.
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	// True if this comparison takes a list of values rather than a single one.
+	MultiValue *bool `json:"multi_value,omitempty" url:"multi_value,omitempty"`
+	// True if a condition using this comparison must carry a value; comparisons such as 'IsNotNull' take none.
+	RequiresValue *bool `json:"requires_value,omitempty" url:"requires_value,omitempty"`
+	// Closed set of values this comparison accepts. A condition whose value is absent from this list is rejected when the sync is saved: the relative datetime comparisons ('InTheLast', 'RelativeOnOrAfter', 'RelativeOnOrBefore') take one of these duration keywords rather than a timestamp. Empty when the comparison accepts any value that coerces to the field's type.
+	Values []*PickValue `json:"values,omitempty" url:"values,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SupportedFilterFunction) GetID() *FilterFunction {
+	if s == nil {
+		return nil
+	}
+	return s.ID
+}
+
+func (s *SupportedFilterFunction) GetLabel() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Label
+}
+
+func (s *SupportedFilterFunction) GetMultiValue() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.MultiValue
+}
+
+func (s *SupportedFilterFunction) GetRequiresValue() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.RequiresValue
+}
+
+func (s *SupportedFilterFunction) GetValues() []*PickValue {
+	if s == nil {
+		return nil
+	}
+	return s.Values
+}
+
+func (s *SupportedFilterFunction) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *SupportedFilterFunction) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SupportedFilterFunction) SetID(id *FilterFunction) {
+	s.ID = id
+	s.require(supportedFilterFunctionFieldID)
+}
+
+// SetLabel sets the Label field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SupportedFilterFunction) SetLabel(label *string) {
+	s.Label = label
+	s.require(supportedFilterFunctionFieldLabel)
+}
+
+// SetMultiValue sets the MultiValue field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SupportedFilterFunction) SetMultiValue(multiValue *bool) {
+	s.MultiValue = multiValue
+	s.require(supportedFilterFunctionFieldMultiValue)
+}
+
+// SetRequiresValue sets the RequiresValue field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SupportedFilterFunction) SetRequiresValue(requiresValue *bool) {
+	s.RequiresValue = requiresValue
+	s.require(supportedFilterFunctionFieldRequiresValue)
+}
+
+// SetValues sets the Values field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SupportedFilterFunction) SetValues(values []*PickValue) {
+	s.Values = values
+	s.require(supportedFilterFunctionFieldValues)
+}
+
+func (s *SupportedFilterFunction) UnmarshalJSON(data []byte) error {
+	type unmarshaler SupportedFilterFunction
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SupportedFilterFunction(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SupportedFilterFunction) MarshalJSON() ([]byte, error) {
+	type embed SupportedFilterFunction
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SupportedFilterFunction) String() string {
 	if s == nil {
 		return "<nil>"
 	}
@@ -11950,16 +12153,17 @@ var (
 	targetFieldFieldCreateable           = big.NewInt(1 << 1)
 	targetFieldFieldDescription          = big.NewInt(1 << 2)
 	targetFieldFieldEncryptable          = big.NewInt(1 << 3)
-	targetFieldFieldFilterable           = big.NewInt(1 << 4)
-	targetFieldFieldID                   = big.NewInt(1 << 5)
-	targetFieldFieldIdentityFunctions    = big.NewInt(1 << 6)
-	targetFieldFieldMultipleAssociations = big.NewInt(1 << 7)
-	targetFieldFieldName                 = big.NewInt(1 << 8)
-	targetFieldFieldRequired             = big.NewInt(1 << 9)
-	targetFieldFieldSourceType           = big.NewInt(1 << 10)
-	targetFieldFieldSupportsIdentity     = big.NewInt(1 << 11)
-	targetFieldFieldType                 = big.NewInt(1 << 12)
-	targetFieldFieldUpdateable           = big.NewInt(1 << 13)
+	targetFieldFieldFilterFunctions      = big.NewInt(1 << 4)
+	targetFieldFieldFilterable           = big.NewInt(1 << 5)
+	targetFieldFieldID                   = big.NewInt(1 << 6)
+	targetFieldFieldIdentityFunctions    = big.NewInt(1 << 7)
+	targetFieldFieldMultipleAssociations = big.NewInt(1 << 8)
+	targetFieldFieldName                 = big.NewInt(1 << 9)
+	targetFieldFieldRequired             = big.NewInt(1 << 10)
+	targetFieldFieldSourceType           = big.NewInt(1 << 11)
+	targetFieldFieldSupportsIdentity     = big.NewInt(1 << 12)
+	targetFieldFieldType                 = big.NewInt(1 << 13)
+	targetFieldFieldUpdateable           = big.NewInt(1 << 14)
 )
 
 type TargetField struct {
@@ -11971,6 +12175,8 @@ type TargetField struct {
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
 	// True if this field supports field-level encryption.
 	Encryptable *bool `json:"encryptable,omitempty" url:"encryptable,omitempty"`
+	// Comparisons this field accepts in a target filter. A condition whose function is absent from this list is rejected when the sync is saved. Empty when the destination publishes no per-field list, in which case any comparison is accepted.
+	FilterFunctions []*SupportedFilterFunction `json:"filter_functions,omitempty" url:"filter_functions,omitempty"`
 	// True if this field can be used in a target filter.
 	Filterable *bool `json:"filterable,omitempty" url:"filterable,omitempty"`
 	// Backend-specific identifier of the field; use this value when configuring field mappings.
@@ -12025,6 +12231,13 @@ func (t *TargetField) GetEncryptable() *bool {
 		return nil
 	}
 	return t.Encryptable
+}
+
+func (t *TargetField) GetFilterFunctions() []*SupportedFilterFunction {
+	if t == nil {
+		return nil
+	}
+	return t.FilterFunctions
 }
 
 func (t *TargetField) GetFilterable() *bool {
@@ -12137,6 +12350,13 @@ func (t *TargetField) SetDescription(description *string) {
 func (t *TargetField) SetEncryptable(encryptable *bool) {
 	t.Encryptable = encryptable
 	t.require(targetFieldFieldEncryptable)
+}
+
+// SetFilterFunctions sets the FilterFunctions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TargetField) SetFilterFunctions(filterFunctions []*SupportedFilterFunction) {
+	t.FilterFunctions = filterFunctions
+	t.require(targetFieldFieldFilterFunctions)
 }
 
 // SetFilterable sets the Filterable field and marks it as non-optional;

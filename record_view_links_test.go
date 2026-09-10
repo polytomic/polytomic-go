@@ -11,6 +11,22 @@ import (
 )
 
 func TestSettersCreateRecordViewLinkRequest(t *testing.T) {
+	t.Run("SetPolytomicHarborSession", func(t *testing.T) {
+		obj := &CreateRecordViewLinkRequest{}
+		var fernTestValuePolytomicHarborSession *string
+		obj.SetPolytomicHarborSession(fernTestValuePolytomicHarborSession)
+		assert.Equal(t, fernTestValuePolytomicHarborSession, obj.PolytomicHarborSession)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetPolytomicActivityRequestID", func(t *testing.T) {
+		obj := &CreateRecordViewLinkRequest{}
+		var fernTestValuePolytomicActivityRequestID *string
+		obj.SetPolytomicActivityRequestID(fernTestValuePolytomicActivityRequestID)
+		assert.Equal(t, fernTestValuePolytomicActivityRequestID, obj.PolytomicActivityRequestID)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetConnectionID", func(t *testing.T) {
 		obj := &CreateRecordViewLinkRequest{}
 		var fernTestValueConnectionID string
@@ -70,6 +86,68 @@ func TestSettersCreateRecordViewLinkRequest(t *testing.T) {
 }
 
 func TestSettersMarkExplicitCreateRecordViewLinkRequest(t *testing.T) {
+	t.Run("SetPolytomicHarborSession_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CreateRecordViewLinkRequest{}
+		var fernTestValuePolytomicHarborSession *string
+
+		// Act
+		obj.SetPolytomicHarborSession(fernTestValuePolytomicHarborSession)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetPolytomicActivityRequestID_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CreateRecordViewLinkRequest{}
+		var fernTestValuePolytomicActivityRequestID *string
+
+		// Act
+		obj.SetPolytomicActivityRequestID(fernTestValuePolytomicActivityRequestID)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 	t.Run("SetConnectionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange

@@ -812,12 +812,13 @@ var (
 type Filter struct {
 	Field *Source `json:"field,omitempty" url:"field,omitempty"`
 	// Identifier of the field to filter on: a model field's UUID when 'field_type' is 'Model', or the destination's own field identifier when it is 'Target'.
-	FieldID    *string                   `json:"field_id,omitempty" url:"field_id,omitempty"`
-	FieldType  *FilterFieldReferenceType `json:"field_type,omitempty" url:"field_type,omitempty"`
-	Function   FilterFunction            `json:"function" url:"function"`
-	Label      *string                   `json:"label,omitempty" url:"label,omitempty"`
-	Value      any                       `json:"value,omitempty" url:"value,omitempty"`
-	ValueField *Source                   `json:"value_field,omitempty" url:"value_field,omitempty"`
+	FieldID   *string                   `json:"field_id,omitempty" url:"field_id,omitempty"`
+	FieldType *FilterFieldReferenceType `json:"field_type,omitempty" url:"field_type,omitempty"`
+	Function  FilterFunction            `json:"function" url:"function"`
+	Label     *string                   `json:"label,omitempty" url:"label,omitempty"`
+	Value     any                       `json:"value,omitempty" url:"value,omitempty"`
+	// Model field whose value this filter compares against, resolved separately for each record. Only valid on a target filter, mutually exclusive with 'value', and accepted only by destinations reporting 'supports_filter_value_fields'.
+	ValueField *Source `json:"value_field,omitempty" url:"value_field,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1695,7 +1696,7 @@ var (
 type ModelFilterCondition struct {
 	// Comparison this condition applies to the field's value.
 	Function FilterFunction `json:"function" url:"function"`
-	// Handle naming this condition in 'logic'. Labels are scoped to this object, so a model condition and a target condition may share one. Optional: label every condition in the object or none of them, and an unlabelled object is labelled by position -- A, B, C -- which is how labels are always reported back.
+	// Handle naming this condition in 'logic'. A label starts with a letter or underscore and continues with letters, digits and underscores. Labels are scoped to this object, so a model condition and a target condition may share one. Optional: label every condition in the object or none of them, and an unlabelled object is labelled by position -- A, B, C -- which is how labels are always reported back.
 	Label *string `json:"label,omitempty" url:"label,omitempty"`
 	// Model field this condition tests, named the same way as a field mapping's source.
 	Source *Source `json:"source" url:"source"`
@@ -1830,7 +1831,7 @@ var (
 type ModelFilters struct {
 	// Conditions a source record must satisfy to be read. An empty list reads every record.
 	Conditions []*ModelFilterCondition `json:"conditions,omitempty" url:"conditions,omitempty"`
-	// Expression combining the conditions in this object by their labels; 'and', 'or', and parentheses are supported. An empty expression means every condition must be satisfied.
+	// Expression combining the conditions in this object by their labels; 'and', 'or', and parentheses are supported. The operators are not case-sensitive but the labels are, and the expression has to name every condition in this object -- a condition may be repeated, as in '(A and B) or (A and C)' -- and an expression which leaves one out is rejected. An empty expression means every condition must be satisfied.
 	Logic *string `json:"logic,omitempty" url:"logic,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4491,11 +4492,11 @@ type TargetFilterCondition struct {
 	Field string `json:"field" url:"field"`
 	// Comparison this condition applies to the field's value.
 	Function FilterFunction `json:"function" url:"function"`
-	// Handle naming this condition in 'logic'. Labels are scoped to this object, so a model condition and a target condition may share one. Optional: label every condition in the object or none of them, and an unlabelled object is labelled by position -- A, B, C -- which is how labels are always reported back.
+	// Handle naming this condition in 'logic'. A label starts with a letter or underscore and continues with letters, digits and underscores. Labels are scoped to this object, so a model condition and a target condition may share one. Optional: label every condition in the object or none of them, and an unlabelled object is labelled by position -- A, B, C -- which is how labels are always reported back.
 	Label *string `json:"label,omitempty" url:"label,omitempty"`
 	// Value the field is compared against. Omitted for functions which take no value, such as 'IsNotNull'.
 	Value any `json:"value,omitempty" url:"value,omitempty"`
-	// Model field whose value the destination field is compared against, resolved separately for every record, named the way a model condition names its source. Mutually exclusive with 'value', and accepted only by destinations whose mode reports 'supports_filter_value_fields'.
+	// Model field whose value the destination field is compared against, resolved separately for every record, named the way a model condition names its source. Mutually exclusive with 'value', and accepted only by destinations reporting 'supports_filter_value_fields'.
 	ValueSource *Source `json:"value_source,omitempty" url:"value_source,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4640,7 +4641,7 @@ var (
 type TargetFilters struct {
 	// Conditions a destination record must satisfy to be written. An empty list writes every matched record.
 	Conditions []*TargetFilterCondition `json:"conditions,omitempty" url:"conditions,omitempty"`
-	// Expression combining the conditions in this object by their labels; 'and', 'or', and parentheses are supported. An empty expression means every condition must be satisfied.
+	// Expression combining the conditions in this object by their labels; 'and', 'or', and parentheses are supported. The operators are not case-sensitive but the labels are, and the expression has to name every condition in this object -- a condition may be repeated, as in '(A and B) or (A and C)' -- and an expression which leaves one out is rejected. An empty expression means every condition must be satisfied.
 	Logic *string `json:"logic,omitempty" url:"logic,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

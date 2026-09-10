@@ -60,6 +60,12 @@ func (r *RawClient) RunQuery(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
+	if request.PolytomicHarborSession != nil {
+		headers.Add("X-Polytomic-Harbor-Session", *request.PolytomicHarborSession)
+	}
+	if request.PolytomicActivityRequestID != nil {
+		headers.Add("X-Polytomic-Activity-Request-ID", *request.PolytomicActivityRequestID)
+	}
 	headers.Add("Content-Type", "application/json")
 	var response *polytomic.RunQueryEnvelope
 	raw, err := r.caller.Call(
@@ -116,6 +122,13 @@ func (r *RawClient) GetQuery(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
+	if request.PolytomicHarborSession != nil {
+		headers.Add("X-Polytomic-Harbor-Session", *request.PolytomicHarborSession)
+	}
+	if request.PolytomicActivityRequestID != nil {
+		headers.Add("X-Polytomic-Activity-Request-ID", *request.PolytomicActivityRequestID)
+	}
+
 	var response *polytomic.QueryResultsEnvelope
 	raw, err := r.caller.Call(
 		ctx,

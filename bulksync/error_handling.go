@@ -9,10 +9,13 @@ import (
 )
 
 var (
-	updateBulkSyncErrorHandlingRequestFieldSubscribers = big.NewInt(1 << 0)
+	updateBulkSyncErrorHandlingRequestFieldIngestionFailureThreshold = big.NewInt(1 << 0)
+	updateBulkSyncErrorHandlingRequestFieldSubscribers               = big.NewInt(1 << 1)
 )
 
 type UpdateBulkSyncErrorHandlingRequest struct {
+	// How far behind ingestion may fall before a terminal execution is failed, in the unit this sync's source reports: seconds for a source carrying event timestamps, outstanding items for a queue-backed source such as S3. Send 0 to clear this sync's own threshold, after which a source reporting seconds follows the deployment-wide default and a queue-backed source is left unchecked. Omit to leave unchanged.
+	IngestionFailureThreshold *int `json:"ingestion_failure_threshold,omitempty" url:"-"`
 	// Email addresses notified when this sync fails. Replaces the current list; pass an empty list to unsubscribe everyone. Omit to leave the list unchanged.
 	Subscribers []string `json:"subscribers,omitempty" url:"-"`
 
@@ -25,6 +28,13 @@ func (u *UpdateBulkSyncErrorHandlingRequest) require(field *big.Int) {
 		u.explicitFields = big.NewInt(0)
 	}
 	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetIngestionFailureThreshold sets the IngestionFailureThreshold field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateBulkSyncErrorHandlingRequest) SetIngestionFailureThreshold(ingestionFailureThreshold *int) {
+	u.IngestionFailureThreshold = ingestionFailureThreshold
+	u.require(updateBulkSyncErrorHandlingRequestFieldIngestionFailureThreshold)
 }
 
 // SetSubscribers sets the Subscribers field and marks it as non-optional;

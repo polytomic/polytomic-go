@@ -42,7 +42,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //
 // This endpoint returns immediately with a query task ID. It does not wait for
 // the query to finish. Poll [`GET /api/queries/{id}`](../../../../api-reference/query-runner/get-query) until `status`
-// reaches `done` or `failed`.
+// reaches `done`, `failed`, or `unknown`. These statuses are terminal.
 //
 // Only the user who created the query can fetch its results later. Query results
 // are stored temporarily and may expire; use the `expires` field from the result
@@ -90,6 +90,10 @@ func (c *Client) RunQuery(
 // construct the `page` token yourself.
 //
 // If the query is still running, the response may include only status metadata.
+// The terminal statuses are `done`, `failed`, and `unknown`. An `unknown` status
+// means execution started, but its durable terminal result was lost or expired.
+// Stop polling when you receive any terminal status.
+//
 // If the task is complete but the caller is not the same user that created it,
 // the endpoint returns `404`.
 //

@@ -354,7 +354,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"capabilities\": {\n      \"supports_namespaces\": true,\n      \"supports_tracking_fields\": true\n    },\n    \"configuration\": {\n      \"key\": \"value\"\n    },\n    \"schemas\": [\n      {\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"is_primary_key\": true,\n            \"name\": \"Email\",\n            \"remote_type\": \"varchar(255)\"\n          }\n        ],\n        \"id\": \"contact\",\n        \"name\": \"Contact\"\n      }\n    ]\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"capabilities\": {\n      \"supports_namespaces\": true,\n      \"supports_tracking_fields\": true\n    },\n    \"configuration\": {\n      \"key\": \"value\"\n    },\n    \"schemas\": [\n      {\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"is_primary_key\": true,\n            \"name\": \"Email\",\n            \"primary_key_override\": true,\n            \"remote_type\": \"varchar(255)\",\n            \"source_primary_key\": false\n          }\n        ],\n        \"id\": \"contact\",\n        \"name\": \"Contact\"\n      }\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1031,7 +1031,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"association\": {\n      \"id\": \"id\",\n      \"name\": \"name\",\n      \"reference_to\": [\n        \"reference_to\"\n      ],\n      \"referenced_field\": \"referenced_field\"\n    },\n    \"id\": \"email\",\n    \"is_primary_key\": true,\n    \"name\": \"Email\",\n    \"path\": \"path\",\n    \"remote_type\": \"varchar(255)\",\n    \"type\": \"unknown\",\n    \"type_spec\": {\n      \"key\": \"value\"\n    },\n    \"user_managed\": true,\n    \"values\": [\n      {}\n    ]\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"association\": {\n      \"id\": \"id\",\n      \"name\": \"name\",\n      \"reference_to\": [\n        \"reference_to\"\n      ],\n      \"referenced_field\": \"referenced_field\"\n    },\n    \"id\": \"email\",\n    \"is_primary_key\": true,\n    \"name\": \"Email\",\n    \"path\": \"path\",\n    \"primary_key_override\": true,\n    \"remote_type\": \"varchar(255)\",\n    \"source_primary_key\": false,\n    \"type\": \"unknown\",\n    \"type_spec\": {\n      \"key\": \"value\"\n    },\n    \"user_managed\": true,\n    \"values\": [\n      {}\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1220,7 +1220,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"fields\": [\n      {\n        \"id\": \"email\",\n        \"is_primary_key\": true,\n        \"name\": \"Email\",\n        \"remote_type\": \"varchar(255)\"\n      }\n    ],\n    \"id\": \"contact\",\n    \"name\": \"Contact\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"fields\": [\n      {\n        \"id\": \"email\",\n        \"is_primary_key\": true,\n        \"name\": \"Email\",\n        \"primary_key_override\": true,\n        \"remote_type\": \"varchar(255)\",\n        \"source_primary_key\": false\n      }\n    ],\n    \"id\": \"contact\",\n    \"name\": \"Contact\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -2311,7 +2311,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"fields\": [\n      {\n        \"id\": \"email\",\n        \"is_primary_key\": true,\n        \"name\": \"Email\",\n        \"remote_type\": \"varchar(255)\"\n      }\n    ],\n    \"id\": \"contact\",\n    \"name\": \"Contact\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"fields\": [\n      {\n        \"id\": \"email\",\n        \"is_primary_key\": true,\n        \"name\": \"Email\",\n        \"primary_key_override\": true,\n        \"remote_type\": \"varchar(255)\",\n        \"source_primary_key\": false\n      }\n    ],\n    \"id\": \"contact\",\n    \"name\": \"Contact\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -2417,7 +2417,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"backing_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"backing_mode\": \"managed\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"description\": \"description\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"mcp_server_url\": \"https://mcp.polytomic.com/mcp/harbors/revenue_operations\",\n      \"name\": \"Revenue Operations\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "body": "{\n  \"data\": [\n    {\n      \"backing_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"backing_mode\": \"managed\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"description\": \"description\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"mcp_server_url\": \"https://mcp.polytomic.com/mcp/harbor/revenue_operations\",\n      \"name\": \"Revenue Operations\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -2449,7 +2449,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"api_key\": {\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"mode\": \"profile\",\n      \"value\": \"value\"\n    },\n    \"harbor\": {\n      \"backing_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"backing_mode\": \"managed\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"description\": \"description\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"mcp_server_url\": \"https://mcp.polytomic.com/mcp/harbors/revenue_operations\",\n      \"name\": \"Revenue Operations\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"api_key\": {\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"mode\": \"profile\",\n      \"value\": \"value\"\n    },\n    \"harbor\": {\n      \"backing_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"backing_mode\": \"managed\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"description\": \"description\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"mcp_server_url\": \"https://mcp.polytomic.com/mcp/harbor/revenue_operations\",\n      \"name\": \"Revenue Operations\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -2485,7 +2485,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"backing_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"backing_mode\": \"managed\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"mcp_server_url\": \"https://mcp.polytomic.com/mcp/harbors/revenue_operations\",\n    \"name\": \"Revenue Operations\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"backing_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"backing_mode\": \"managed\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"mcp_server_url\": \"https://mcp.polytomic.com/mcp/harbor/revenue_operations\",\n    \"name\": \"Revenue Operations\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -2521,7 +2521,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"backing_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"backing_mode\": \"managed\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"mcp_server_url\": \"https://mcp.polytomic.com/mcp/harbors/revenue_operations\",\n    \"name\": \"Revenue Operations\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"backing_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"backing_mode\": \"managed\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"mcp_server_url\": \"https://mcp.polytomic.com/mcp/harbor/revenue_operations\",\n    \"name\": \"Revenue Operations\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -3841,6 +3841,194 @@
       }
     },
     {
+      "id": "b63ceb9d-8a73-4a5d-8563-100f374135d0",
+      "name": "List Harbor Activity - default",
+      "request": {
+        "urlPathTemplate": "/api/organization/harbor-activity",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "queryParameters": {
+          "start_time": {
+            "equalTo": "2024-01-15T09:30:00.000Z"
+          },
+          "end_time": {
+            "equalTo": "2024-01-15T09:30:00.000Z"
+          },
+          "limit": {
+            "equalTo": "1"
+          },
+          "page_token": {
+            "equalTo": "page_token"
+          },
+          "order": {
+            "equalTo": "asc"
+          },
+          "harbor_id": {
+            "hasExactly": [
+              {
+                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+              }
+            ]
+          },
+          "event_type": {
+            "hasExactly": [
+              {
+                "equalTo": "event_type"
+              }
+            ]
+          },
+          "outcome": {
+            "hasExactly": [
+              {
+                "equalTo": "outcome"
+              }
+            ]
+          },
+          "operation_id": {
+            "hasExactly": [
+              {
+                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+              }
+            ]
+          },
+          "session_id": {
+            "hasExactly": [
+              {
+                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+              }
+            ]
+          },
+          "actor_id": {
+            "hasExactly": [
+              {
+                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+              }
+            ]
+          },
+          "credential_id": {
+            "hasExactly": [
+              {
+                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+              }
+            ]
+          },
+          "connection_id": {
+            "hasExactly": [
+              {
+                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+              }
+            ]
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"actor\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"attempt_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"client_name\": \"client_name\",\n      \"client_version\": \"client_version\",\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"context_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"credential\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"event_type\": \"event_type\",\n      \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"occurred_at\": \"2024-01-15T09:30:00Z\",\n      \"operation_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"outcome\": \"outcome\",\n      \"profile\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"provenance\": \"provenance\",\n      \"recorded_at\": \"2024-01-15T09:30:00Z\",\n      \"session_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"targets\": [\n        {}\n      ]\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "b63ceb9d-8a73-4a5d-8563-100f374135d0",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "6f045645-c58f-490b-acfa-e6c9dfb2b5f4",
+      "name": "Get Harbor Activity Session - default",
+      "request": {
+        "urlPathTemplate": "/api/organization/harbor-activity/sessions/{session_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "session_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "limit": {
+            "equalTo": "1"
+          },
+          "page_token": {
+            "equalTo": "page_token"
+          },
+          "order": {
+            "equalTo": "asc"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"client_name\": \"client_name\",\n    \"client_version\": \"client_version\",\n    \"credential\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"ended_at\": \"2024-01-15T09:30:00Z\",\n    \"events\": [\n      {\n        \"actor\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"attempt_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"context_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"credential\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"operation_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"profile\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"session_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      }\n    ],\n    \"expires_at\": \"2024-01-15T09:30:00Z\",\n    \"external_run_id\": \"external_run_id\",\n    \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"history_truncated\": true,\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"profile\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"started_at\": \"2024-01-15T09:30:00Z\",\n    \"started_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"status\": \"active\",\n    \"terminal_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  },\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "6f045645-c58f-490b-acfa-e6c9dfb2b5f4",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "b684ee80-5b81-46d9-b4ab-7f706eded168",
+      "name": "Get Harbor Activity - default",
+      "request": {
+        "urlPathTemplate": "/api/organization/harbor-activity/{event_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "event_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"actor\": {\n      \"display_name\": \"display_name\",\n      \"email\": \"email\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"type\": \"type\"\n    },\n    \"attempt_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"client_name\": \"client_name\",\n    \"client_version\": \"client_version\",\n    \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"context_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"credential\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"event_type\": \"event_type\",\n    \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"metadata\": {\n      \"attempt_number\": 1,\n      \"category\": \"category\",\n      \"client_name\": \"client_name\",\n      \"client_version\": \"client_version\",\n      \"connection_name\": \"connection_name\",\n      \"connection_name_truncated\": true,\n      \"connection_type\": \"connection_type\",\n      \"context_version\": 1,\n      \"error_category\": \"error_category\",\n      \"execution_duration_ms\": 1,\n      \"external_run_id\": \"external_run_id\",\n      \"field_count\": 1,\n      \"has_next_page\": true,\n      \"label\": \"label\",\n      \"label_truncated\": true,\n      \"operation\": \"operation\",\n      \"phase\": \"phase\",\n      \"queue_duration_ms\": 1,\n      \"reason\": \"reason\",\n      \"record_id\": \"record_id\",\n      \"row_count\": 1,\n      \"schema_id\": \"schema_id\",\n      \"statement_category\": \"statement_category\",\n      \"supported\": true,\n      \"total_duration_ms\": 1\n    },\n    \"occurred_at\": \"2024-01-15T09:30:00Z\",\n    \"operation_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"outcome\": \"outcome\",\n    \"profile\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"provenance\": \"provenance\",\n    \"recorded_at\": \"2024-01-15T09:30:00Z\",\n    \"session_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"targets\": [\n      {}\n    ]\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "b684ee80-5b81-46d9-b4ab-7f706eded168",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
       "id": "aa61616f-d62b-48a5-937a-aff4e8483ad1",
       "name": "List Current Org Users - default",
       "request": {
@@ -5010,7 +5198,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"subscribers\": [\n      \"alerts@example.com\"\n    ]\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"ingestion_failure_threshold\": 1000000,\n    \"subscribers\": [\n      \"alerts@example.com\"\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -5046,7 +5234,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"subscribers\": [\n      \"alerts@example.com\"\n    ]\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"ingestion_failure_threshold\": 1000000,\n    \"subscribers\": [\n      \"alerts@example.com\"\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -5726,7 +5914,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"fields\": [\n      {\n        \"association\": false,\n        \"createable\": true,\n        \"description\": \"Field description\",\n        \"encryptable\": false,\n        \"filterable\": true,\n        \"id\": \"field1\",\n        \"identity_functions\": [\n          {\n            \"id\": \"Equality\",\n            \"label\": \"Equality\"\n          }\n        ],\n        \"multiple_associations\": false,\n        \"name\": \"Field\",\n        \"required\": true,\n        \"source_type\": \"string\",\n        \"supports_identity\": false,\n        \"type\": \"string\",\n        \"updateable\": true\n      }\n    ],\n    \"id\": \"database.table\",\n    \"modes\": [\n      {\n        \"description\": \"Create records when they don't exist; don't update existing ones\",\n        \"label\": \"Create\",\n        \"mode\": \"create\",\n        \"requires_identity\": true,\n        \"supports_field_sync_mode\": false,\n        \"supports_target_filters\": false\n      }\n    ],\n    \"name\": \"Table\",\n    \"properties\": {\n      \"does_not_report_operation_counts\": true,\n      \"mappings_not_required\": true,\n      \"new_target_label\": \"new_target_label\",\n      \"optional_target_mappings\": true,\n      \"primary_metadata_object\": \"primary_metadata_object\",\n      \"requires_configuration\": true,\n      \"supports_field_creation\": true,\n      \"supports_field_encryption\": true,\n      \"supports_field_type_selection\": true,\n      \"supports_filter_value_fields\": true,\n      \"supports_identity_field_creation\": true,\n      \"supports_target_filters\": true,\n      \"target_creator\": true,\n      \"use_field_names_as_labels\": true\n    },\n    \"refreshed_at\": \"2024-01-01T00:00:00Z\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"fields\": [\n      {\n        \"association\": false,\n        \"createable\": true,\n        \"description\": \"Field description\",\n        \"encryptable\": false,\n        \"filter_functions\": [\n          {\n            \"label\": \"equals\",\n            \"multi_value\": false,\n            \"requires_value\": true\n          }\n        ],\n        \"filterable\": true,\n        \"id\": \"field1\",\n        \"identity_functions\": [\n          {\n            \"id\": \"Equality\",\n            \"label\": \"Equality\"\n          }\n        ],\n        \"multiple_associations\": false,\n        \"name\": \"Field\",\n        \"required\": true,\n        \"source_type\": \"string\",\n        \"supports_identity\": false,\n        \"type\": \"string\",\n        \"updateable\": true\n      }\n    ],\n    \"id\": \"database.table\",\n    \"modes\": [\n      {\n        \"description\": \"Create records when they don't exist; don't update existing ones\",\n        \"label\": \"Create\",\n        \"mode\": \"create\",\n        \"requires_identity\": true,\n        \"supports_field_sync_mode\": false,\n        \"supports_target_filters\": false\n      }\n    ],\n    \"name\": \"Table\",\n    \"properties\": {\n      \"does_not_report_operation_counts\": true,\n      \"mappings_not_required\": true,\n      \"new_target_label\": \"new_target_label\",\n      \"optional_target_mappings\": true,\n      \"primary_metadata_object\": \"primary_metadata_object\",\n      \"requires_configuration\": true,\n      \"supports_field_creation\": true,\n      \"supports_field_encryption\": true,\n      \"supports_field_type_selection\": true,\n      \"supports_filter_value_fields\": true,\n      \"supports_identity_field_creation\": true,\n      \"supports_target_filters\": true,\n      \"target_creator\": true,\n      \"use_field_names_as_labels\": true\n    },\n    \"refreshed_at\": \"2024-01-01T00:00:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -6537,6 +6725,6 @@
     }
   ],
   "meta": {
-    "total": 175
+    "total": 178
   }
 }

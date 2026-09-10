@@ -10,10 +10,14 @@ import (
 )
 
 var (
-	queryRunnerGetQueryRequestFieldPage = big.NewInt(1 << 0)
+	queryRunnerGetQueryRequestFieldPolytomicHarborSession     = big.NewInt(1 << 0)
+	queryRunnerGetQueryRequestFieldPolytomicActivityRequestID = big.NewInt(1 << 1)
+	queryRunnerGetQueryRequestFieldPage                       = big.NewInt(1 << 2)
 )
 
 type QueryRunnerGetQueryRequest struct {
+	PolytomicHarborSession     *string `json:"-" url:"-"`
+	PolytomicActivityRequestID *string `json:"-" url:"-"`
 	// Opaque pagination token returned in the links.next or links.previous URL of the previous response.
 	Page *string `json:"-" url:"page,omitempty"`
 
@@ -28,6 +32,20 @@ func (q *QueryRunnerGetQueryRequest) require(field *big.Int) {
 	q.explicitFields.Or(q.explicitFields, field)
 }
 
+// SetPolytomicHarborSession sets the PolytomicHarborSession field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryRunnerGetQueryRequest) SetPolytomicHarborSession(polytomicHarborSession *string) {
+	q.PolytomicHarborSession = polytomicHarborSession
+	q.require(queryRunnerGetQueryRequestFieldPolytomicHarborSession)
+}
+
+// SetPolytomicActivityRequestID sets the PolytomicActivityRequestID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryRunnerGetQueryRequest) SetPolytomicActivityRequestID(polytomicActivityRequestID *string) {
+	q.PolytomicActivityRequestID = polytomicActivityRequestID
+	q.require(queryRunnerGetQueryRequestFieldPolytomicActivityRequestID)
+}
+
 // SetPage sets the Page field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (q *QueryRunnerGetQueryRequest) SetPage(page *string) {
@@ -36,10 +54,14 @@ func (q *QueryRunnerGetQueryRequest) SetPage(page *string) {
 }
 
 var (
-	runQueryRequestFieldQuery = big.NewInt(1 << 0)
+	runQueryRequestFieldPolytomicHarborSession     = big.NewInt(1 << 0)
+	runQueryRequestFieldPolytomicActivityRequestID = big.NewInt(1 << 1)
+	runQueryRequestFieldQuery                      = big.NewInt(1 << 2)
 )
 
 type RunQueryRequest struct {
+	PolytomicHarborSession     *string `json:"-" url:"-"`
+	PolytomicActivityRequestID *string `json:"-" url:"-"`
 	// The query to execute against the connection.
 	Query *string `json:"-" url:"query,omitempty"`
 
@@ -52,6 +74,20 @@ func (r *RunQueryRequest) require(field *big.Int) {
 		r.explicitFields = big.NewInt(0)
 	}
 	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetPolytomicHarborSession sets the PolytomicHarborSession field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RunQueryRequest) SetPolytomicHarborSession(polytomicHarborSession *string) {
+	r.PolytomicHarborSession = polytomicHarborSession
+	r.require(runQueryRequestFieldPolytomicHarborSession)
+}
+
+// SetPolytomicActivityRequestID sets the PolytomicActivityRequestID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RunQueryRequest) SetPolytomicActivityRequestID(polytomicActivityRequestID *string) {
+	r.PolytomicActivityRequestID = polytomicActivityRequestID
+	r.require(runQueryRequestFieldPolytomicActivityRequestID)
 }
 
 // SetQuery sets the Query field and marks it as non-optional;
@@ -180,6 +216,37 @@ func (q *QueryResultsEnvelope) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", q)
+}
+
+type QueryStatus string
+
+const (
+	QueryStatusCreated QueryStatus = "created"
+	QueryStatusRunning QueryStatus = "running"
+	QueryStatusUnknown QueryStatus = "unknown"
+	QueryStatusDone    QueryStatus = "done"
+	QueryStatusFailed  QueryStatus = "failed"
+)
+
+func NewQueryStatusFromString(s string) (QueryStatus, error) {
+	switch s {
+	case "created":
+		return QueryStatusCreated, nil
+	case "running":
+		return QueryStatusRunning, nil
+	case "unknown":
+		return QueryStatusUnknown, nil
+	case "done":
+		return QueryStatusDone, nil
+	case "failed":
+		return QueryStatusFailed, nil
+	}
+	var t QueryStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (q QueryStatus) Ptr() *QueryStatus {
+	return &q
 }
 
 var (
@@ -387,11 +454,11 @@ type RunQueryResult struct {
 	Expires *string `json:"expires,omitempty" url:"expires,omitempty"`
 	// The names of the fields returned by the query. This will not be returned until the query completes.
 	Fields []string `json:"fields,omitempty" url:"fields,omitempty"`
-	// The ID of the query task. Poll GET /api/queries/{id} until the task reaches done or failed to retrieve results.
+	// The ID of the query task. Poll GET /api/queries/{id} until the task reaches the terminal status done, failed, or unknown.
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 	// The query results, returned as an array of objects.
 	Results []map[string]any `json:"results,omitempty" url:"results,omitempty"`
-	Status  *WorkTaskStatus  `json:"status,omitempty" url:"status,omitempty"`
+	Status  *QueryStatus     `json:"status,omitempty" url:"status,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -442,7 +509,7 @@ func (r *RunQueryResult) GetResults() []map[string]any {
 	return r.Results
 }
 
-func (r *RunQueryResult) GetStatus() *WorkTaskStatus {
+func (r *RunQueryResult) GetStatus() *QueryStatus {
 	if r == nil {
 		return nil
 	}
@@ -507,7 +574,7 @@ func (r *RunQueryResult) SetResults(results []map[string]any) {
 
 // SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RunQueryResult) SetStatus(status *WorkTaskStatus) {
+func (r *RunQueryResult) SetStatus(status *QueryStatus) {
 	r.Status = status
 	r.require(runQueryResultFieldStatus)
 }

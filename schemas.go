@@ -754,17 +754,332 @@ func (s *SchemaRecordsResponseEnvelope) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
-type TypesDefinition = map[string]any
+// Detailed field type: a type name such as "bigint", or an array naming a complex type followed by its details, such as ["decimal", {"precision": 10, "scale": 2}] or ["array", "string"].
+type TypesDefinition struct {
+	BinaryStringLiteral      string
+	BooleanStringLiteral     string
+	DateStringLiteral        string
+	DatetimeStringLiteral    string
+	Datetime_tzStringLiteral string
+	TimeStringLiteral        string
+	NumberStringLiteral      string
+	FieldStringStringLiteral string
+	SmallintStringLiteral    string
+	IntStringLiteral         string
+	BigintStringLiteral      string
+	SingleStringLiteral      string
+	DoubleStringLiteral      string
+	UnknownList              []any
+
+	typ string
+}
+
+func NewTypesDefinitionWithBinaryStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "BinaryStringLiteral", BinaryStringLiteral: "binary"}
+}
+
+func NewTypesDefinitionWithBooleanStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "BooleanStringLiteral", BooleanStringLiteral: "boolean"}
+}
+
+func NewTypesDefinitionWithDateStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "DateStringLiteral", DateStringLiteral: "date"}
+}
+
+func NewTypesDefinitionWithDatetimeStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "DatetimeStringLiteral", DatetimeStringLiteral: "datetime"}
+}
+
+func NewTypesDefinitionWithDatetime_tzStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "Datetime_tzStringLiteral", Datetime_tzStringLiteral: "datetime_tz"}
+}
+
+func NewTypesDefinitionWithTimeStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "TimeStringLiteral", TimeStringLiteral: "time"}
+}
+
+func NewTypesDefinitionWithNumberStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "NumberStringLiteral", NumberStringLiteral: "number"}
+}
+
+func NewTypesDefinitionWithFieldStringStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "FieldStringStringLiteral", FieldStringStringLiteral: "string"}
+}
+
+func NewTypesDefinitionWithSmallintStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "SmallintStringLiteral", SmallintStringLiteral: "smallint"}
+}
+
+func NewTypesDefinitionWithIntStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "IntStringLiteral", IntStringLiteral: "int"}
+}
+
+func NewTypesDefinitionWithBigintStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "BigintStringLiteral", BigintStringLiteral: "bigint"}
+}
+
+func NewTypesDefinitionWithSingleStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "SingleStringLiteral", SingleStringLiteral: "single"}
+}
+
+func NewTypesDefinitionWithDoubleStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "DoubleStringLiteral", DoubleStringLiteral: "double"}
+}
+
+func (t *TypesDefinition) GetUnknownList() []any {
+	if t == nil {
+		return nil
+	}
+	return t.UnknownList
+}
+
+func (t *TypesDefinition) UnmarshalJSON(data []byte) error {
+	var valueBinaryStringLiteral string
+	if err := json.Unmarshal(data, &valueBinaryStringLiteral); err == nil {
+		t.typ = "BinaryStringLiteral"
+		t.BinaryStringLiteral = valueBinaryStringLiteral
+		if t.BinaryStringLiteral != "binary" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "binary", valueBinaryStringLiteral)
+		}
+		return nil
+	}
+	var valueBooleanStringLiteral string
+	if err := json.Unmarshal(data, &valueBooleanStringLiteral); err == nil {
+		t.typ = "BooleanStringLiteral"
+		t.BooleanStringLiteral = valueBooleanStringLiteral
+		if t.BooleanStringLiteral != "boolean" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "boolean", valueBooleanStringLiteral)
+		}
+		return nil
+	}
+	var valueDateStringLiteral string
+	if err := json.Unmarshal(data, &valueDateStringLiteral); err == nil {
+		t.typ = "DateStringLiteral"
+		t.DateStringLiteral = valueDateStringLiteral
+		if t.DateStringLiteral != "date" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "date", valueDateStringLiteral)
+		}
+		return nil
+	}
+	var valueDatetimeStringLiteral string
+	if err := json.Unmarshal(data, &valueDatetimeStringLiteral); err == nil {
+		t.typ = "DatetimeStringLiteral"
+		t.DatetimeStringLiteral = valueDatetimeStringLiteral
+		if t.DatetimeStringLiteral != "datetime" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "datetime", valueDatetimeStringLiteral)
+		}
+		return nil
+	}
+	var valueDatetime_tzStringLiteral string
+	if err := json.Unmarshal(data, &valueDatetime_tzStringLiteral); err == nil {
+		t.typ = "Datetime_tzStringLiteral"
+		t.Datetime_tzStringLiteral = valueDatetime_tzStringLiteral
+		if t.Datetime_tzStringLiteral != "datetime_tz" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "datetime_tz", valueDatetime_tzStringLiteral)
+		}
+		return nil
+	}
+	var valueTimeStringLiteral string
+	if err := json.Unmarshal(data, &valueTimeStringLiteral); err == nil {
+		t.typ = "TimeStringLiteral"
+		t.TimeStringLiteral = valueTimeStringLiteral
+		if t.TimeStringLiteral != "time" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "time", valueTimeStringLiteral)
+		}
+		return nil
+	}
+	var valueNumberStringLiteral string
+	if err := json.Unmarshal(data, &valueNumberStringLiteral); err == nil {
+		t.typ = "NumberStringLiteral"
+		t.NumberStringLiteral = valueNumberStringLiteral
+		if t.NumberStringLiteral != "number" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "number", valueNumberStringLiteral)
+		}
+		return nil
+	}
+	var valueFieldStringStringLiteral string
+	if err := json.Unmarshal(data, &valueFieldStringStringLiteral); err == nil {
+		t.typ = "FieldStringStringLiteral"
+		t.FieldStringStringLiteral = valueFieldStringStringLiteral
+		if t.FieldStringStringLiteral != "string" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "string", valueFieldStringStringLiteral)
+		}
+		return nil
+	}
+	var valueSmallintStringLiteral string
+	if err := json.Unmarshal(data, &valueSmallintStringLiteral); err == nil {
+		t.typ = "SmallintStringLiteral"
+		t.SmallintStringLiteral = valueSmallintStringLiteral
+		if t.SmallintStringLiteral != "smallint" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "smallint", valueSmallintStringLiteral)
+		}
+		return nil
+	}
+	var valueIntStringLiteral string
+	if err := json.Unmarshal(data, &valueIntStringLiteral); err == nil {
+		t.typ = "IntStringLiteral"
+		t.IntStringLiteral = valueIntStringLiteral
+		if t.IntStringLiteral != "int" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "int", valueIntStringLiteral)
+		}
+		return nil
+	}
+	var valueBigintStringLiteral string
+	if err := json.Unmarshal(data, &valueBigintStringLiteral); err == nil {
+		t.typ = "BigintStringLiteral"
+		t.BigintStringLiteral = valueBigintStringLiteral
+		if t.BigintStringLiteral != "bigint" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "bigint", valueBigintStringLiteral)
+		}
+		return nil
+	}
+	var valueSingleStringLiteral string
+	if err := json.Unmarshal(data, &valueSingleStringLiteral); err == nil {
+		t.typ = "SingleStringLiteral"
+		t.SingleStringLiteral = valueSingleStringLiteral
+		if t.SingleStringLiteral != "single" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "single", valueSingleStringLiteral)
+		}
+		return nil
+	}
+	var valueDoubleStringLiteral string
+	if err := json.Unmarshal(data, &valueDoubleStringLiteral); err == nil {
+		t.typ = "DoubleStringLiteral"
+		t.DoubleStringLiteral = valueDoubleStringLiteral
+		if t.DoubleStringLiteral != "double" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "double", valueDoubleStringLiteral)
+		}
+		return nil
+	}
+	var valueUnknownList []any
+	if err := json.Unmarshal(data, &valueUnknownList); err == nil {
+		t.typ = "UnknownList"
+		t.UnknownList = valueUnknownList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, t)
+}
+
+func (t TypesDefinition) MarshalJSON() ([]byte, error) {
+	if t.typ == "BinaryStringLiteral" || t.BinaryStringLiteral != "" {
+		return json.Marshal("binary")
+	}
+	if t.typ == "BooleanStringLiteral" || t.BooleanStringLiteral != "" {
+		return json.Marshal("boolean")
+	}
+	if t.typ == "DateStringLiteral" || t.DateStringLiteral != "" {
+		return json.Marshal("date")
+	}
+	if t.typ == "DatetimeStringLiteral" || t.DatetimeStringLiteral != "" {
+		return json.Marshal("datetime")
+	}
+	if t.typ == "Datetime_tzStringLiteral" || t.Datetime_tzStringLiteral != "" {
+		return json.Marshal("datetime_tz")
+	}
+	if t.typ == "TimeStringLiteral" || t.TimeStringLiteral != "" {
+		return json.Marshal("time")
+	}
+	if t.typ == "NumberStringLiteral" || t.NumberStringLiteral != "" {
+		return json.Marshal("number")
+	}
+	if t.typ == "FieldStringStringLiteral" || t.FieldStringStringLiteral != "" {
+		return json.Marshal("string")
+	}
+	if t.typ == "SmallintStringLiteral" || t.SmallintStringLiteral != "" {
+		return json.Marshal("smallint")
+	}
+	if t.typ == "IntStringLiteral" || t.IntStringLiteral != "" {
+		return json.Marshal("int")
+	}
+	if t.typ == "BigintStringLiteral" || t.BigintStringLiteral != "" {
+		return json.Marshal("bigint")
+	}
+	if t.typ == "SingleStringLiteral" || t.SingleStringLiteral != "" {
+		return json.Marshal("single")
+	}
+	if t.typ == "DoubleStringLiteral" || t.DoubleStringLiteral != "" {
+		return json.Marshal("double")
+	}
+	if t.typ == "UnknownList" || t.UnknownList != nil {
+		return json.Marshal(t.UnknownList)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", t)
+}
+
+type TypesDefinitionVisitor interface {
+	VisitBinaryStringLiteral(string) error
+	VisitBooleanStringLiteral(string) error
+	VisitDateStringLiteral(string) error
+	VisitDatetimeStringLiteral(string) error
+	VisitDatetime_tzStringLiteral(string) error
+	VisitTimeStringLiteral(string) error
+	VisitNumberStringLiteral(string) error
+	VisitFieldStringStringLiteral(string) error
+	VisitSmallintStringLiteral(string) error
+	VisitIntStringLiteral(string) error
+	VisitBigintStringLiteral(string) error
+	VisitSingleStringLiteral(string) error
+	VisitDoubleStringLiteral(string) error
+	VisitUnknownList([]any) error
+}
+
+func (t *TypesDefinition) Accept(visitor TypesDefinitionVisitor) error {
+	if t.typ == "BinaryStringLiteral" || t.BinaryStringLiteral != "" {
+		return visitor.VisitBinaryStringLiteral(t.BinaryStringLiteral)
+	}
+	if t.typ == "BooleanStringLiteral" || t.BooleanStringLiteral != "" {
+		return visitor.VisitBooleanStringLiteral(t.BooleanStringLiteral)
+	}
+	if t.typ == "DateStringLiteral" || t.DateStringLiteral != "" {
+		return visitor.VisitDateStringLiteral(t.DateStringLiteral)
+	}
+	if t.typ == "DatetimeStringLiteral" || t.DatetimeStringLiteral != "" {
+		return visitor.VisitDatetimeStringLiteral(t.DatetimeStringLiteral)
+	}
+	if t.typ == "Datetime_tzStringLiteral" || t.Datetime_tzStringLiteral != "" {
+		return visitor.VisitDatetime_tzStringLiteral(t.Datetime_tzStringLiteral)
+	}
+	if t.typ == "TimeStringLiteral" || t.TimeStringLiteral != "" {
+		return visitor.VisitTimeStringLiteral(t.TimeStringLiteral)
+	}
+	if t.typ == "NumberStringLiteral" || t.NumberStringLiteral != "" {
+		return visitor.VisitNumberStringLiteral(t.NumberStringLiteral)
+	}
+	if t.typ == "FieldStringStringLiteral" || t.FieldStringStringLiteral != "" {
+		return visitor.VisitFieldStringStringLiteral(t.FieldStringStringLiteral)
+	}
+	if t.typ == "SmallintStringLiteral" || t.SmallintStringLiteral != "" {
+		return visitor.VisitSmallintStringLiteral(t.SmallintStringLiteral)
+	}
+	if t.typ == "IntStringLiteral" || t.IntStringLiteral != "" {
+		return visitor.VisitIntStringLiteral(t.IntStringLiteral)
+	}
+	if t.typ == "BigintStringLiteral" || t.BigintStringLiteral != "" {
+		return visitor.VisitBigintStringLiteral(t.BigintStringLiteral)
+	}
+	if t.typ == "SingleStringLiteral" || t.SingleStringLiteral != "" {
+		return visitor.VisitSingleStringLiteral(t.SingleStringLiteral)
+	}
+	if t.typ == "DoubleStringLiteral" || t.DoubleStringLiteral != "" {
+		return visitor.VisitDoubleStringLiteral(t.DoubleStringLiteral)
+	}
+	if t.typ == "UnknownList" || t.UnknownList != nil {
+		return visitor.VisitUnknownList(t.UnknownList)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", t)
+}
 
 var (
-	userFieldRequestFieldExample = big.NewInt(1 << 0)
-	userFieldRequestFieldFieldID = big.NewInt(1 << 1)
-	userFieldRequestFieldLabel   = big.NewInt(1 << 2)
-	userFieldRequestFieldPath    = big.NewInt(1 << 3)
-	userFieldRequestFieldType    = big.NewInt(1 << 4)
+	userFieldRequestFieldDefinition = big.NewInt(1 << 0)
+	userFieldRequestFieldExample    = big.NewInt(1 << 1)
+	userFieldRequestFieldFieldID    = big.NewInt(1 << 2)
+	userFieldRequestFieldLabel      = big.NewInt(1 << 3)
+	userFieldRequestFieldPath       = big.NewInt(1 << 4)
+	userFieldRequestFieldType       = big.NewInt(1 << 5)
 )
 
 type UserFieldRequest struct {
+	Definition *TypesDefinition `json:"definition,omitempty" url:"definition,omitempty"`
 	// Example value shown in the UI and used as a hint for downstream consumers.
 	Example any `json:"example,omitempty" url:"example,omitempty"`
 	// Stable identifier for the user-defined field. Reuse an existing field_id to update a field in place.
@@ -773,7 +1088,7 @@ type UserFieldRequest struct {
 	Label string `json:"label" url:"label"`
 	// JSON path expression that extracts the field's value from the source record. Required for nested or computed fields; omit for top-level fields.
 	Path *string `json:"path,omitempty" url:"path,omitempty"`
-	// Polytomic type of the field (e.g. string, integer, boolean).
+	// One of: string, number, boolean, datetime, array, object, binary.
 	Type string `json:"type" url:"type"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -781,6 +1096,13 @@ type UserFieldRequest struct {
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (u *UserFieldRequest) GetDefinition() *TypesDefinition {
+	if u == nil {
+		return nil
+	}
+	return u.Definition
 }
 
 func (u *UserFieldRequest) GetExample() any {
@@ -830,6 +1152,13 @@ func (u *UserFieldRequest) require(field *big.Int) {
 		u.explicitFields = big.NewInt(0)
 	}
 	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetDefinition sets the Definition field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserFieldRequest) SetDefinition(definition *TypesDefinition) {
+	u.Definition = definition
+	u.require(userFieldRequestFieldDefinition)
 }
 
 // SetExample sets the Example field and marks it as non-optional;

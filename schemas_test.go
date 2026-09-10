@@ -983,7 +983,51 @@ func TestSettersMarkExplicitSchemaRecordsResponseEnvelope(t *testing.T) {
 
 }
 
+func TestGettersTypesDefinition(t *testing.T) {
+	t.Run("GetUnknownList", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TypesDefinition{}
+		var expected []any
+		obj.UnknownList = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetUnknownList(), "getter should return the property value")
+	})
+
+	t.Run("GetUnknownList_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TypesDefinition{}
+		obj.UnknownList = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetUnknownList(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetUnknownList_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *TypesDefinition
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetUnknownList() // Should return zero value
+	})
+
+}
+
 func TestSettersUserFieldRequest(t *testing.T) {
+	t.Run("SetDefinition", func(t *testing.T) {
+		obj := &UserFieldRequest{}
+		var fernTestValueDefinition *TypesDefinition
+		obj.SetDefinition(fernTestValueDefinition)
+		assert.Equal(t, fernTestValueDefinition, obj.Definition)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetExample", func(t *testing.T) {
 		obj := &UserFieldRequest{}
 		var fernTestValueExample any
@@ -1027,6 +1071,39 @@ func TestSettersUserFieldRequest(t *testing.T) {
 }
 
 func TestGettersUserFieldRequest(t *testing.T) {
+	t.Run("GetDefinition", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &UserFieldRequest{}
+		var expected *TypesDefinition
+		obj.Definition = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetDefinition(), "getter should return the property value")
+	})
+
+	t.Run("GetDefinition_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &UserFieldRequest{}
+		obj.Definition = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetDefinition(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetDefinition_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *UserFieldRequest
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetDefinition() // Should return zero value
+	})
+
 	t.Run("GetExample", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
@@ -1155,6 +1232,37 @@ func TestGettersUserFieldRequest(t *testing.T) {
 }
 
 func TestSettersMarkExplicitUserFieldRequest(t *testing.T) {
+	t.Run("SetDefinition_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &UserFieldRequest{}
+		var fernTestValueDefinition *TypesDefinition
+
+		// Act
+		obj.SetDefinition(fernTestValueDefinition)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 	t.Run("SetExample_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange

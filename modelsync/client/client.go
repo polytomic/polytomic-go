@@ -482,7 +482,7 @@ func (c *Client) Cancel(
 //
 // Example:
 //
-//	request := &polytomic.StartSyncRequest{}
+//	request := &polytomic.StartModelSyncRequest{}
 //	client.ModelSync.Start(
 //	    context.TODO(),
 //	    "248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -491,7 +491,7 @@ func (c *Client) Cancel(
 func (c *Client) Start(
 	ctx context.Context,
 	id string,
-	request *polytomic.StartSyncRequest,
+	request *polytomic.StartModelSyncRequest,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.StartSyncResponseEnvelope, error) {
 	response, err := c.WithRawResponse.Start(

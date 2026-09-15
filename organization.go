@@ -205,12 +205,15 @@ func (u *UpdateOrganizationRequestSchema) MarshalJSON() ([]byte, error) {
 
 var (
 	updateRecordLoggingSettingsRequestFieldDeliveryConnectionID = big.NewInt(1 << 0)
-	updateRecordLoggingSettingsRequestFieldEnabled              = big.NewInt(1 << 1)
+	updateRecordLoggingSettingsRequestFieldDeliveryPrefix       = big.NewInt(1 << 1)
+	updateRecordLoggingSettingsRequestFieldEnabled              = big.NewInt(1 << 2)
 )
 
 type UpdateRecordLoggingSettingsRequest struct {
 	// Blobstorage connection that receives record logs after each model sync execution. Omit or send null to deliver nowhere; this field is replaced, not merged.
 	DeliveryConnectionID *string `json:"deliveryConnectionId,omitempty" url:"-"`
+	// Path record logs are delivered under, ahead of the organization ID. Omit or send null for none; this field is replaced, not merged.
+	DeliveryPrefix *string `json:"deliveryPrefix,omitempty" url:"-"`
 	// Whether record logging is enabled for the organization.
 	Enabled bool `json:"enabled" url:"-"`
 
@@ -230,6 +233,13 @@ func (u *UpdateRecordLoggingSettingsRequest) require(field *big.Int) {
 func (u *UpdateRecordLoggingSettingsRequest) SetDeliveryConnectionID(deliveryConnectionID *string) {
 	u.DeliveryConnectionID = deliveryConnectionID
 	u.require(updateRecordLoggingSettingsRequestFieldDeliveryConnectionID)
+}
+
+// SetDeliveryPrefix sets the DeliveryPrefix field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateRecordLoggingSettingsRequest) SetDeliveryPrefix(deliveryPrefix *string) {
+	u.DeliveryPrefix = deliveryPrefix
+	u.require(updateRecordLoggingSettingsRequestFieldDeliveryPrefix)
 }
 
 // SetEnabled sets the Enabled field and marks it as non-optional;
@@ -668,7 +678,8 @@ func (r *RecordLoggingSettingsEnvelope) String() string {
 var (
 	recordLoggingSettingsResponseFieldDeliveryConnectionID   = big.NewInt(1 << 0)
 	recordLoggingSettingsResponseFieldDeliveryConnectionName = big.NewInt(1 << 1)
-	recordLoggingSettingsResponseFieldEnabled                = big.NewInt(1 << 2)
+	recordLoggingSettingsResponseFieldDeliveryPrefix         = big.NewInt(1 << 2)
+	recordLoggingSettingsResponseFieldEnabled                = big.NewInt(1 << 3)
 )
 
 type RecordLoggingSettingsResponse struct {
@@ -676,6 +687,8 @@ type RecordLoggingSettingsResponse struct {
 	DeliveryConnectionID *string `json:"deliveryConnectionId,omitempty" url:"deliveryConnectionId,omitempty"`
 	// Name of the destination connection, for display. Omitted when no destination is configured or the connection has been deleted.
 	DeliveryConnectionName *string `json:"deliveryConnectionName,omitempty" url:"deliveryConnectionName,omitempty"`
+	// Path record logs are delivered under, ahead of the organization ID, if one is set.
+	DeliveryPrefix *string `json:"deliveryPrefix,omitempty" url:"deliveryPrefix,omitempty"`
 	// True when record logging is enabled for the organization.
 	Enabled *bool `json:"enabled,omitempty" url:"enabled,omitempty"`
 
@@ -698,6 +711,13 @@ func (r *RecordLoggingSettingsResponse) GetDeliveryConnectionName() *string {
 		return nil
 	}
 	return r.DeliveryConnectionName
+}
+
+func (r *RecordLoggingSettingsResponse) GetDeliveryPrefix() *string {
+	if r == nil {
+		return nil
+	}
+	return r.DeliveryPrefix
 }
 
 func (r *RecordLoggingSettingsResponse) GetEnabled() *bool {
@@ -733,6 +753,13 @@ func (r *RecordLoggingSettingsResponse) SetDeliveryConnectionID(deliveryConnecti
 func (r *RecordLoggingSettingsResponse) SetDeliveryConnectionName(deliveryConnectionName *string) {
 	r.DeliveryConnectionName = deliveryConnectionName
 	r.require(recordLoggingSettingsResponseFieldDeliveryConnectionName)
+}
+
+// SetDeliveryPrefix sets the DeliveryPrefix field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RecordLoggingSettingsResponse) SetDeliveryPrefix(deliveryPrefix *string) {
+	r.DeliveryPrefix = deliveryPrefix
+	r.require(recordLoggingSettingsResponseFieldDeliveryPrefix)
 }
 
 // SetEnabled sets the Enabled field and marks it as non-optional;

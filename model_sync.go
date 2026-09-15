@@ -359,21 +359,25 @@ func (m *ModelSyncListRequest) SetLimit(limit *int) {
 }
 
 var (
-	startSyncRequestFieldIdentities = big.NewInt(1 << 0)
-	startSyncRequestFieldResync     = big.NewInt(1 << 1)
-	startSyncRequestFieldTest       = big.NewInt(1 << 2)
+	startModelSyncRequestFieldIdentities       = big.NewInt(1 << 0)
+	startModelSyncRequestFieldResync           = big.NewInt(1 << 1)
+	startModelSyncRequestFieldSourceIdentities = big.NewInt(1 << 2)
+	startModelSyncRequestFieldTest             = big.NewInt(1 << 3)
 )
 
-type StartSyncRequest struct {
+type StartModelSyncRequest struct {
+	// Values of the sync's identity source field naming the records to sync. A sync with more than one identity mapping requires 'source_identities' instead.
 	Identities []string `json:"identities,omitempty" url:"-"`
 	Resync     *bool    `json:"resync,omitempty" url:"-"`
-	Test       *bool    `json:"test,omitempty" url:"-"`
+	// Records to sync, each identified by every source and value its entry lists. The sources of an entry are identity mapping sources of one model, and an entry for a sync whose identities strategy is 'and' lists all of them. Cannot be combined with 'identities'; at most 1000 entries.
+	SourceIdentities [][]*ModelSyncSourceIdentity `json:"source_identities,omitempty" url:"-"`
+	Test             *bool                        `json:"test,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (s *StartSyncRequest) require(field *big.Int) {
+func (s *StartModelSyncRequest) require(field *big.Int) {
 	if s.explicitFields == nil {
 		s.explicitFields = big.NewInt(0)
 	}
@@ -382,37 +386,44 @@ func (s *StartSyncRequest) require(field *big.Int) {
 
 // SetIdentities sets the Identities field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StartSyncRequest) SetIdentities(identities []string) {
+func (s *StartModelSyncRequest) SetIdentities(identities []string) {
 	s.Identities = identities
-	s.require(startSyncRequestFieldIdentities)
+	s.require(startModelSyncRequestFieldIdentities)
 }
 
 // SetResync sets the Resync field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StartSyncRequest) SetResync(resync *bool) {
+func (s *StartModelSyncRequest) SetResync(resync *bool) {
 	s.Resync = resync
-	s.require(startSyncRequestFieldResync)
+	s.require(startModelSyncRequestFieldResync)
+}
+
+// SetSourceIdentities sets the SourceIdentities field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StartModelSyncRequest) SetSourceIdentities(sourceIdentities [][]*ModelSyncSourceIdentity) {
+	s.SourceIdentities = sourceIdentities
+	s.require(startModelSyncRequestFieldSourceIdentities)
 }
 
 // SetTest sets the Test field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StartSyncRequest) SetTest(test *bool) {
+func (s *StartModelSyncRequest) SetTest(test *bool) {
 	s.Test = test
-	s.require(startSyncRequestFieldTest)
+	s.require(startModelSyncRequestFieldTest)
 }
 
-func (s *StartSyncRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler StartSyncRequest
+func (s *StartModelSyncRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler StartModelSyncRequest
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*s = StartSyncRequest(body)
+	*s = StartModelSyncRequest(body)
 	return nil
 }
 
-func (s *StartSyncRequest) MarshalJSON() ([]byte, error) {
-	type embed StartSyncRequest
+func (s *StartModelSyncRequest) MarshalJSON() ([]byte, error) {
+	type embed StartModelSyncRequest
 	var marshaler = struct {
 		embed
 	}{
@@ -2188,6 +2199,107 @@ func (m *ModelSyncProblem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *ModelSyncProblem) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+var (
+	modelSyncSourceIdentityFieldSource = big.NewInt(1 << 0)
+	modelSyncSourceIdentityFieldValue  = big.NewInt(1 << 1)
+)
+
+type ModelSyncSourceIdentity struct {
+	Source *Source `json:"source" url:"source"`
+	// Value the field must hold.
+	Value string `json:"value" url:"value"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelSyncSourceIdentity) GetSource() *Source {
+	if m == nil {
+		return nil
+	}
+	return m.Source
+}
+
+func (m *ModelSyncSourceIdentity) GetValue() string {
+	if m == nil {
+		return ""
+	}
+	return m.Value
+}
+
+func (m *ModelSyncSourceIdentity) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *ModelSyncSourceIdentity) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncSourceIdentity) SetSource(source *Source) {
+	m.Source = source
+	m.require(modelSyncSourceIdentityFieldSource)
+}
+
+// SetValue sets the Value field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncSourceIdentity) SetValue(value string) {
+	m.Value = value
+	m.require(modelSyncSourceIdentityFieldValue)
+}
+
+func (m *ModelSyncSourceIdentity) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelSyncSourceIdentity
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelSyncSourceIdentity(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelSyncSourceIdentity) MarshalJSON() ([]byte, error) {
+	type embed ModelSyncSourceIdentity
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *ModelSyncSourceIdentity) String() string {
 	if m == nil {
 		return "<nil>"
 	}

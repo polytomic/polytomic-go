@@ -506,7 +506,7 @@ func (r *RawClient) Cancel(
 func (r *RawClient) Start(
 	ctx context.Context,
 	id string,
-	request *polytomic.StartSyncRequest,
+	request *polytomic.StartModelSyncRequest,
 	opts ...option.IdempotentRequestOption,
 ) (*core.Response[*polytomic.StartSyncResponseEnvelope], error) {
 	options := core.NewIdempotentRequestOptions(opts...)

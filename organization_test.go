@@ -498,6 +498,14 @@ func TestSettersUpdateRecordLoggingSettingsRequest(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetDeliveryPrefix", func(t *testing.T) {
+		obj := &UpdateRecordLoggingSettingsRequest{}
+		var fernTestValueDeliveryPrefix *string
+		obj.SetDeliveryPrefix(fernTestValueDeliveryPrefix)
+		assert.Equal(t, fernTestValueDeliveryPrefix, obj.DeliveryPrefix)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetEnabled", func(t *testing.T) {
 		obj := &UpdateRecordLoggingSettingsRequest{}
 		var fernTestValueEnabled bool
@@ -517,6 +525,37 @@ func TestSettersMarkExplicitUpdateRecordLoggingSettingsRequest(t *testing.T) {
 
 		// Act
 		obj.SetDeliveryConnectionID(fernTestValueDeliveryConnectionID)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetDeliveryPrefix_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &UpdateRecordLoggingSettingsRequest{}
+		var fernTestValueDeliveryPrefix *string
+
+		// Act
+		obj.SetDeliveryPrefix(fernTestValueDeliveryPrefix)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -1202,6 +1241,14 @@ func TestSettersRecordLoggingSettingsResponse(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetDeliveryPrefix", func(t *testing.T) {
+		obj := &RecordLoggingSettingsResponse{}
+		var fernTestValueDeliveryPrefix *string
+		obj.SetDeliveryPrefix(fernTestValueDeliveryPrefix)
+		assert.Equal(t, fernTestValueDeliveryPrefix, obj.DeliveryPrefix)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetEnabled", func(t *testing.T) {
 		obj := &RecordLoggingSettingsResponse{}
 		var fernTestValueEnabled *bool
@@ -1279,6 +1326,39 @@ func TestGettersRecordLoggingSettingsResponse(t *testing.T) {
 		_ = obj.GetDeliveryConnectionName() // Should return zero value
 	})
 
+	t.Run("GetDeliveryPrefix", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &RecordLoggingSettingsResponse{}
+		var expected *string
+		obj.DeliveryPrefix = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetDeliveryPrefix(), "getter should return the property value")
+	})
+
+	t.Run("GetDeliveryPrefix_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &RecordLoggingSettingsResponse{}
+		obj.DeliveryPrefix = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetDeliveryPrefix(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetDeliveryPrefix_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *RecordLoggingSettingsResponse
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetDeliveryPrefix() // Should return zero value
+	})
+
 	t.Run("GetEnabled", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
@@ -1354,6 +1434,37 @@ func TestSettersMarkExplicitRecordLoggingSettingsResponse(t *testing.T) {
 
 		// Act
 		obj.SetDeliveryConnectionName(fernTestValueDeliveryConnectionName)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetDeliveryPrefix_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &RecordLoggingSettingsResponse{}
+		var fernTestValueDeliveryPrefix *string
+
+		// Act
+		obj.SetDeliveryPrefix(fernTestValueDeliveryPrefix)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

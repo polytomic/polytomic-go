@@ -367,7 +367,7 @@ func TestModelSyncStartWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.StartSyncRequest{}
+	request := &polytomic.StartModelSyncRequest{}
 	_, invocationErr := client.ModelSync.Start(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",

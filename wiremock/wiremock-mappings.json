@@ -4017,7 +4017,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"deliveryConnectionId\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"deliveryConnectionName\": \"deliveryConnectionName\",\n    \"enabled\": true\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"deliveryConnectionId\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"deliveryConnectionName\": \"deliveryConnectionName\",\n    \"deliveryPrefix\": \"deliveryPrefix\",\n    \"enabled\": true\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -4049,7 +4049,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"deliveryConnectionId\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"deliveryConnectionName\": \"deliveryConnectionName\",\n    \"enabled\": true\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"deliveryConnectionId\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"deliveryConnectionName\": \"deliveryConnectionName\",\n    \"deliveryPrefix\": \"deliveryPrefix\",\n    \"enabled\": true\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }

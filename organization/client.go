@@ -89,7 +89,7 @@ func (c *Client) GetRecordLogging(
 	return response.Body, nil
 }
 
-// Replaces the organization's record logging settings. `deliveryConnectionId` is replaced, not merged: omitting it, or sending null, removes any destination previously configured.
+// Replaces the organization's record logging settings. `deliveryConnectionId` and `deliveryPrefix` are replaced, not merged: omitting either, or sending null, removes what was previously configured.
 //
 // Example:
 //

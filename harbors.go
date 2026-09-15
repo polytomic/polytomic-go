@@ -312,6 +312,113 @@ func (c *CreateHarborContextDraftRequest) MarshalJSON() ([]byte, error) {
 }
 
 var (
+	createHarborSavedQueryDraftRequestFieldChangeNote       = big.NewInt(1 << 0)
+	createHarborSavedQueryDraftRequestFieldDescription      = big.NewInt(1 << 1)
+	createHarborSavedQueryDraftRequestFieldName             = big.NewInt(1 << 2)
+	createHarborSavedQueryDraftRequestFieldOwner            = big.NewInt(1 << 3)
+	createHarborSavedQueryDraftRequestFieldParameters       = big.NewInt(1 << 4)
+	createHarborSavedQueryDraftRequestFieldSQLTemplate      = big.NewInt(1 << 5)
+	createHarborSavedQueryDraftRequestFieldValidationValues = big.NewInt(1 << 6)
+)
+
+type CreateHarborSavedQueryDraftRequest struct {
+	// Optional note copied to the immutable published version.
+	ChangeNote *string `json:"change_note,omitempty" url:"-"`
+	// Business definition and usage notes. Maximum 2,000 characters.
+	Description *string `json:"description,omitempty" url:"-"`
+	// Human-readable saved-query name. Maximum 200 characters.
+	Name string `json:"name" url:"-"`
+	// Human-readable owner label. Maximum 200 characters.
+	Owner *string `json:"owner,omitempty" url:"-"`
+	// Typed scalar parameter declarations.
+	Parameters []*HarborSavedQueryParameter `json:"parameters,omitempty" url:"-"`
+	// DuckDB SQL template using {{name}} references for bound parameters.
+	SQLTemplate string `json:"sql_template" url:"-"`
+	// Author-supplied JSON scalar values used only to validate this draft.
+	ValidationValues map[string]any `json:"validation_values,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (c *CreateHarborSavedQueryDraftRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetChangeNote sets the ChangeNote field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateHarborSavedQueryDraftRequest) SetChangeNote(changeNote *string) {
+	c.ChangeNote = changeNote
+	c.require(createHarborSavedQueryDraftRequestFieldChangeNote)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateHarborSavedQueryDraftRequest) SetDescription(description *string) {
+	c.Description = description
+	c.require(createHarborSavedQueryDraftRequestFieldDescription)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateHarborSavedQueryDraftRequest) SetName(name string) {
+	c.Name = name
+	c.require(createHarborSavedQueryDraftRequestFieldName)
+}
+
+// SetOwner sets the Owner field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateHarborSavedQueryDraftRequest) SetOwner(owner *string) {
+	c.Owner = owner
+	c.require(createHarborSavedQueryDraftRequestFieldOwner)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateHarborSavedQueryDraftRequest) SetParameters(parameters []*HarborSavedQueryParameter) {
+	c.Parameters = parameters
+	c.require(createHarborSavedQueryDraftRequestFieldParameters)
+}
+
+// SetSQLTemplate sets the SQLTemplate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateHarborSavedQueryDraftRequest) SetSQLTemplate(sqlTemplate string) {
+	c.SQLTemplate = sqlTemplate
+	c.require(createHarborSavedQueryDraftRequestFieldSQLTemplate)
+}
+
+// SetValidationValues sets the ValidationValues field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateHarborSavedQueryDraftRequest) SetValidationValues(validationValues map[string]any) {
+	c.ValidationValues = validationValues
+	c.require(createHarborSavedQueryDraftRequestFieldValidationValues)
+}
+
+func (c *CreateHarborSavedQueryDraftRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateHarborSavedQueryDraftRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreateHarborSavedQueryDraftRequest(body)
+	return nil
+}
+
+func (c *CreateHarborSavedQueryDraftRequest) MarshalJSON() ([]byte, error) {
+	type embed CreateHarborSavedQueryDraftRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+var (
 	harborsDeleteContextRequestFieldPolytomicHarborSession     = big.NewInt(1 << 0)
 	harborsDeleteContextRequestFieldPolytomicActivityRequestID = big.NewInt(1 << 1)
 )
@@ -377,6 +484,71 @@ func (h *HarborsDeleteContextDraftRequest) SetPolytomicHarborSession(polytomicHa
 func (h *HarborsDeleteContextDraftRequest) SetPolytomicActivityRequestID(polytomicActivityRequestID *string) {
 	h.PolytomicActivityRequestID = polytomicActivityRequestID
 	h.require(harborsDeleteContextDraftRequestFieldPolytomicActivityRequestID)
+}
+
+var (
+	executeHarborSavedQueryRequestFieldPolytomicHarborSession     = big.NewInt(1 << 0)
+	executeHarborSavedQueryRequestFieldPolytomicActivityRequestID = big.NewInt(1 << 1)
+	executeHarborSavedQueryRequestFieldParameters                 = big.NewInt(1 << 2)
+)
+
+type ExecuteHarborSavedQueryRequest struct {
+	PolytomicHarborSession     *string `json:"-" url:"-"`
+	PolytomicActivityRequestID *string `json:"-" url:"-"`
+	// Named JSON scalar overrides for declared parameters. Omission uses published default_value, or SQL NULL for optional parameters without a default. Required parameters reject explicit null even with a default; without a default they also reject omission. Unknown names and invalid types are rejected.
+	Parameters map[string]any `json:"parameters,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (e *ExecuteHarborSavedQueryRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetPolytomicHarborSession sets the PolytomicHarborSession field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecuteHarborSavedQueryRequest) SetPolytomicHarborSession(polytomicHarborSession *string) {
+	e.PolytomicHarborSession = polytomicHarborSession
+	e.require(executeHarborSavedQueryRequestFieldPolytomicHarborSession)
+}
+
+// SetPolytomicActivityRequestID sets the PolytomicActivityRequestID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecuteHarborSavedQueryRequest) SetPolytomicActivityRequestID(polytomicActivityRequestID *string) {
+	e.PolytomicActivityRequestID = polytomicActivityRequestID
+	e.require(executeHarborSavedQueryRequestFieldPolytomicActivityRequestID)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecuteHarborSavedQueryRequest) SetParameters(parameters map[string]any) {
+	e.Parameters = parameters
+	e.require(executeHarborSavedQueryRequestFieldParameters)
+}
+
+func (e *ExecuteHarborSavedQueryRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler ExecuteHarborSavedQueryRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*e = ExecuteHarborSavedQueryRequest(body)
+	return nil
+}
+
+func (e *ExecuteHarborSavedQueryRequest) MarshalJSON() ([]byte, error) {
+	type embed ExecuteHarborSavedQueryRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*e),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -513,6 +685,40 @@ func (h *HarborsGetContextVersionRequest) SetPolytomicHarborSession(polytomicHar
 func (h *HarborsGetContextVersionRequest) SetPolytomicActivityRequestID(polytomicActivityRequestID *string) {
 	h.PolytomicActivityRequestID = polytomicActivityRequestID
 	h.require(harborsGetContextVersionRequestFieldPolytomicActivityRequestID)
+}
+
+var (
+	harborsGetSavedQueryRequestFieldPolytomicHarborSession     = big.NewInt(1 << 0)
+	harborsGetSavedQueryRequestFieldPolytomicActivityRequestID = big.NewInt(1 << 1)
+)
+
+type HarborsGetSavedQueryRequest struct {
+	PolytomicHarborSession     *string `json:"-" url:"-"`
+	PolytomicActivityRequestID *string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (h *HarborsGetSavedQueryRequest) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetPolytomicHarborSession sets the PolytomicHarborSession field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborsGetSavedQueryRequest) SetPolytomicHarborSession(polytomicHarborSession *string) {
+	h.PolytomicHarborSession = polytomicHarborSession
+	h.require(harborsGetSavedQueryRequestFieldPolytomicHarborSession)
+}
+
+// SetPolytomicActivityRequestID sets the PolytomicActivityRequestID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborsGetSavedQueryRequest) SetPolytomicActivityRequestID(polytomicActivityRequestID *string) {
+	h.PolytomicActivityRequestID = polytomicActivityRequestID
+	h.require(harborsGetSavedQueryRequestFieldPolytomicActivityRequestID)
 }
 
 var (
@@ -883,6 +1089,96 @@ func (h *HarborsListKeysRequest) SetPageToken(pageToken *string) {
 }
 
 var (
+	harborsListSavedQueriesRequestFieldPolytomicHarborSession     = big.NewInt(1 << 0)
+	harborsListSavedQueriesRequestFieldPolytomicActivityRequestID = big.NewInt(1 << 1)
+	harborsListSavedQueriesRequestFieldLimit                      = big.NewInt(1 << 2)
+	harborsListSavedQueriesRequestFieldPageToken                  = big.NewInt(1 << 3)
+)
+
+type HarborsListSavedQueriesRequest struct {
+	PolytomicHarborSession     *string `json:"-" url:"-"`
+	PolytomicActivityRequestID *string `json:"-" url:"-"`
+	// Maximum number of saved queries to return.
+	Limit *int `json:"-" url:"limit,omitempty"`
+	// Opaque pagination cursor returned by the previous request.
+	PageToken *string `json:"-" url:"page_token,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (h *HarborsListSavedQueriesRequest) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetPolytomicHarborSession sets the PolytomicHarborSession field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborsListSavedQueriesRequest) SetPolytomicHarborSession(polytomicHarborSession *string) {
+	h.PolytomicHarborSession = polytomicHarborSession
+	h.require(harborsListSavedQueriesRequestFieldPolytomicHarborSession)
+}
+
+// SetPolytomicActivityRequestID sets the PolytomicActivityRequestID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborsListSavedQueriesRequest) SetPolytomicActivityRequestID(polytomicActivityRequestID *string) {
+	h.PolytomicActivityRequestID = polytomicActivityRequestID
+	h.require(harborsListSavedQueriesRequestFieldPolytomicActivityRequestID)
+}
+
+// SetLimit sets the Limit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborsListSavedQueriesRequest) SetLimit(limit *int) {
+	h.Limit = limit
+	h.require(harborsListSavedQueriesRequestFieldLimit)
+}
+
+// SetPageToken sets the PageToken field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborsListSavedQueriesRequest) SetPageToken(pageToken *string) {
+	h.PageToken = pageToken
+	h.require(harborsListSavedQueriesRequestFieldPageToken)
+}
+
+var (
+	harborsListSavedQueryDraftsRequestFieldLimit     = big.NewInt(1 << 0)
+	harborsListSavedQueryDraftsRequestFieldPageToken = big.NewInt(1 << 1)
+)
+
+type HarborsListSavedQueryDraftsRequest struct {
+	// Maximum number of saved-query drafts to return.
+	Limit *int `json:"-" url:"limit,omitempty"`
+	// Opaque pagination cursor returned by the previous request.
+	PageToken *string `json:"-" url:"page_token,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (h *HarborsListSavedQueryDraftsRequest) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetLimit sets the Limit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborsListSavedQueryDraftsRequest) SetLimit(limit *int) {
+	h.Limit = limit
+	h.require(harborsListSavedQueryDraftsRequestFieldLimit)
+}
+
+// SetPageToken sets the PageToken field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborsListSavedQueryDraftsRequest) SetPageToken(pageToken *string) {
+	h.PageToken = pageToken
+	h.require(harborsListSavedQueryDraftsRequestFieldPageToken)
+}
+
+var (
 	harborsListUsersRequestFieldLimit     = big.NewInt(1 << 0)
 	harborsListUsersRequestFieldPageToken = big.NewInt(1 << 1)
 )
@@ -1197,6 +1493,113 @@ func (s *SaveHarborContextDraftRequest) UnmarshalJSON(data []byte) error {
 
 func (s *SaveHarborContextDraftRequest) MarshalJSON() ([]byte, error) {
 	type embed SaveHarborContextDraftRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+var (
+	saveHarborSavedQueryDraftRequestFieldChangeNote       = big.NewInt(1 << 0)
+	saveHarborSavedQueryDraftRequestFieldDescription      = big.NewInt(1 << 1)
+	saveHarborSavedQueryDraftRequestFieldName             = big.NewInt(1 << 2)
+	saveHarborSavedQueryDraftRequestFieldOwner            = big.NewInt(1 << 3)
+	saveHarborSavedQueryDraftRequestFieldParameters       = big.NewInt(1 << 4)
+	saveHarborSavedQueryDraftRequestFieldSQLTemplate      = big.NewInt(1 << 5)
+	saveHarborSavedQueryDraftRequestFieldValidationValues = big.NewInt(1 << 6)
+)
+
+type SaveHarborSavedQueryDraftRequest struct {
+	// Optional note copied to the immutable published version.
+	ChangeNote *string `json:"change_note,omitempty" url:"-"`
+	// Business definition and usage notes. Maximum 2,000 characters.
+	Description *string `json:"description,omitempty" url:"-"`
+	// Human-readable saved-query name. Maximum 200 characters.
+	Name string `json:"name" url:"-"`
+	// Human-readable owner label. Maximum 200 characters.
+	Owner *string `json:"owner,omitempty" url:"-"`
+	// Typed scalar parameter declarations.
+	Parameters []*HarborSavedQueryParameter `json:"parameters,omitempty" url:"-"`
+	// DuckDB SQL template using {{name}} references for bound parameters.
+	SQLTemplate string `json:"sql_template" url:"-"`
+	// Author-supplied JSON scalar values used only to validate this draft.
+	ValidationValues map[string]any `json:"validation_values,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (s *SaveHarborSavedQueryDraftRequest) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetChangeNote sets the ChangeNote field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SaveHarborSavedQueryDraftRequest) SetChangeNote(changeNote *string) {
+	s.ChangeNote = changeNote
+	s.require(saveHarborSavedQueryDraftRequestFieldChangeNote)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SaveHarborSavedQueryDraftRequest) SetDescription(description *string) {
+	s.Description = description
+	s.require(saveHarborSavedQueryDraftRequestFieldDescription)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SaveHarborSavedQueryDraftRequest) SetName(name string) {
+	s.Name = name
+	s.require(saveHarborSavedQueryDraftRequestFieldName)
+}
+
+// SetOwner sets the Owner field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SaveHarborSavedQueryDraftRequest) SetOwner(owner *string) {
+	s.Owner = owner
+	s.require(saveHarborSavedQueryDraftRequestFieldOwner)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SaveHarborSavedQueryDraftRequest) SetParameters(parameters []*HarborSavedQueryParameter) {
+	s.Parameters = parameters
+	s.require(saveHarborSavedQueryDraftRequestFieldParameters)
+}
+
+// SetSQLTemplate sets the SQLTemplate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SaveHarborSavedQueryDraftRequest) SetSQLTemplate(sqlTemplate string) {
+	s.SQLTemplate = sqlTemplate
+	s.require(saveHarborSavedQueryDraftRequestFieldSQLTemplate)
+}
+
+// SetValidationValues sets the ValidationValues field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SaveHarborSavedQueryDraftRequest) SetValidationValues(validationValues map[string]any) {
+	s.ValidationValues = validationValues
+	s.require(saveHarborSavedQueryDraftRequestFieldValidationValues)
+}
+
+func (s *SaveHarborSavedQueryDraftRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler SaveHarborSavedQueryDraftRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*s = SaveHarborSavedQueryDraftRequest(body)
+	return nil
+}
+
+func (s *SaveHarborSavedQueryDraftRequest) MarshalJSON() ([]byte, error) {
+	type embed SaveHarborSavedQueryDraftRequest
 	var marshaler = struct {
 		embed
 	}{
@@ -2231,6 +2634,665 @@ func (d *DeletedHarborResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", d)
+}
+
+var (
+	deletedHarborSavedQueryDraftEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type DeletedHarborSavedQueryDraftEnvelope struct {
+	Data *DeletedHarborSavedQueryDraftEnvelopeData `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (d *DeletedHarborSavedQueryDraftEnvelope) GetData() *DeletedHarborSavedQueryDraftEnvelopeData {
+	if d == nil {
+		return nil
+	}
+	return d.Data
+}
+
+func (d *DeletedHarborSavedQueryDraftEnvelope) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
+	return d.extraProperties
+}
+
+func (d *DeletedHarborSavedQueryDraftEnvelope) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeletedHarborSavedQueryDraftEnvelope) SetData(data *DeletedHarborSavedQueryDraftEnvelopeData) {
+	d.Data = data
+	d.require(deletedHarborSavedQueryDraftEnvelopeFieldData)
+}
+
+func (d *DeletedHarborSavedQueryDraftEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler DeletedHarborSavedQueryDraftEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DeletedHarborSavedQueryDraftEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+	d.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DeletedHarborSavedQueryDraftEnvelope) MarshalJSON() ([]byte, error) {
+	type embed DeletedHarborSavedQueryDraftEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (d *DeletedHarborSavedQueryDraftEnvelope) String() string {
+	if d == nil {
+		return "<nil>"
+	}
+	if len(d.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+var (
+	deletedHarborSavedQueryDraftEnvelopeDataFieldID = big.NewInt(1 << 0)
+)
+
+type DeletedHarborSavedQueryDraftEnvelopeData struct {
+	// Identifier of the discarded draft.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (d *DeletedHarborSavedQueryDraftEnvelopeData) GetID() *string {
+	if d == nil {
+		return nil
+	}
+	return d.ID
+}
+
+func (d *DeletedHarborSavedQueryDraftEnvelopeData) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
+	return d.extraProperties
+}
+
+func (d *DeletedHarborSavedQueryDraftEnvelopeData) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeletedHarborSavedQueryDraftEnvelopeData) SetID(id *string) {
+	d.ID = id
+	d.require(deletedHarborSavedQueryDraftEnvelopeDataFieldID)
+}
+
+func (d *DeletedHarborSavedQueryDraftEnvelopeData) UnmarshalJSON(data []byte) error {
+	type unmarshaler DeletedHarborSavedQueryDraftEnvelopeData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DeletedHarborSavedQueryDraftEnvelopeData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+	d.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DeletedHarborSavedQueryDraftEnvelopeData) MarshalJSON() ([]byte, error) {
+	type embed DeletedHarborSavedQueryDraftEnvelopeData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (d *DeletedHarborSavedQueryDraftEnvelopeData) String() string {
+	if d == nil {
+		return "<nil>"
+	}
+	if len(d.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+var (
+	deletedHarborSavedQueryEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type DeletedHarborSavedQueryEnvelope struct {
+	Data *DeletedHarborSavedQueryEnvelopeData `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (d *DeletedHarborSavedQueryEnvelope) GetData() *DeletedHarborSavedQueryEnvelopeData {
+	if d == nil {
+		return nil
+	}
+	return d.Data
+}
+
+func (d *DeletedHarborSavedQueryEnvelope) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
+	return d.extraProperties
+}
+
+func (d *DeletedHarborSavedQueryEnvelope) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeletedHarborSavedQueryEnvelope) SetData(data *DeletedHarborSavedQueryEnvelopeData) {
+	d.Data = data
+	d.require(deletedHarborSavedQueryEnvelopeFieldData)
+}
+
+func (d *DeletedHarborSavedQueryEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler DeletedHarborSavedQueryEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DeletedHarborSavedQueryEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+	d.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DeletedHarborSavedQueryEnvelope) MarshalJSON() ([]byte, error) {
+	type embed DeletedHarborSavedQueryEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (d *DeletedHarborSavedQueryEnvelope) String() string {
+	if d == nil {
+		return "<nil>"
+	}
+	if len(d.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+var (
+	deletedHarborSavedQueryEnvelopeDataFieldID = big.NewInt(1 << 0)
+)
+
+type DeletedHarborSavedQueryEnvelopeData struct {
+	// Stable identifier of the archived saved query.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (d *DeletedHarborSavedQueryEnvelopeData) GetID() *string {
+	if d == nil {
+		return nil
+	}
+	return d.ID
+}
+
+func (d *DeletedHarborSavedQueryEnvelopeData) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
+	return d.extraProperties
+}
+
+func (d *DeletedHarborSavedQueryEnvelopeData) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeletedHarborSavedQueryEnvelopeData) SetID(id *string) {
+	d.ID = id
+	d.require(deletedHarborSavedQueryEnvelopeDataFieldID)
+}
+
+func (d *DeletedHarborSavedQueryEnvelopeData) UnmarshalJSON(data []byte) error {
+	type unmarshaler DeletedHarborSavedQueryEnvelopeData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DeletedHarborSavedQueryEnvelopeData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+	d.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DeletedHarborSavedQueryEnvelopeData) MarshalJSON() ([]byte, error) {
+	type embed DeletedHarborSavedQueryEnvelopeData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (d *DeletedHarborSavedQueryEnvelopeData) String() string {
+	if d == nil {
+		return "<nil>"
+	}
+	if len(d.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+var (
+	executeHarborSavedQueryEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type ExecuteHarborSavedQueryEnvelope struct {
+	Data *ExecuteHarborSavedQueryEnvelopeData `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (e *ExecuteHarborSavedQueryEnvelope) GetData() *ExecuteHarborSavedQueryEnvelopeData {
+	if e == nil {
+		return nil
+	}
+	return e.Data
+}
+
+func (e *ExecuteHarborSavedQueryEnvelope) GetExtraProperties() map[string]interface{} {
+	if e == nil {
+		return nil
+	}
+	return e.extraProperties
+}
+
+func (e *ExecuteHarborSavedQueryEnvelope) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecuteHarborSavedQueryEnvelope) SetData(data *ExecuteHarborSavedQueryEnvelopeData) {
+	e.Data = data
+	e.require(executeHarborSavedQueryEnvelopeFieldData)
+}
+
+func (e *ExecuteHarborSavedQueryEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ExecuteHarborSavedQueryEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = ExecuteHarborSavedQueryEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
+	if err != nil {
+		return err
+	}
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *ExecuteHarborSavedQueryEnvelope) MarshalJSON() ([]byte, error) {
+	type embed ExecuteHarborSavedQueryEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*e),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (e *ExecuteHarborSavedQueryEnvelope) String() string {
+	if e == nil {
+		return "<nil>"
+	}
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+var (
+	executeHarborSavedQueryEnvelopeDataFieldCount        = big.NewInt(1 << 0)
+	executeHarborSavedQueryEnvelopeDataFieldError        = big.NewInt(1 << 1)
+	executeHarborSavedQueryEnvelopeDataFieldExpires      = big.NewInt(1 << 2)
+	executeHarborSavedQueryEnvelopeDataFieldFields       = big.NewInt(1 << 3)
+	executeHarborSavedQueryEnvelopeDataFieldID           = big.NewInt(1 << 4)
+	executeHarborSavedQueryEnvelopeDataFieldResults      = big.NewInt(1 << 5)
+	executeHarborSavedQueryEnvelopeDataFieldRevisionID   = big.NewInt(1 << 6)
+	executeHarborSavedQueryEnvelopeDataFieldSavedQueryID = big.NewInt(1 << 7)
+	executeHarborSavedQueryEnvelopeDataFieldStatus       = big.NewInt(1 << 8)
+	executeHarborSavedQueryEnvelopeDataFieldVersion      = big.NewInt(1 << 9)
+)
+
+type ExecuteHarborSavedQueryEnvelopeData struct {
+	// The number of rows returned by the query. This will not be returned until the query completes.
+	Count *int64 `json:"count,omitempty" url:"count,omitempty"`
+	// Error message if the query failed.
+	Error *string `json:"error,omitempty" url:"error,omitempty"`
+	// The time at which the query will expire and be deleted. This will not be returned until the query completes.
+	Expires *string `json:"expires,omitempty" url:"expires,omitempty"`
+	// The names of the fields returned by the query. This will not be returned until the query completes.
+	Fields []string `json:"fields,omitempty" url:"fields,omitempty"`
+	// The ID of the query task. Poll GET /api/queries/{id} until the task reaches the terminal status done, failed, or unknown.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// The query results, returned as an array of objects.
+	Results []map[string]any `json:"results,omitempty" url:"results,omitempty"`
+	// Immutable published revision selected while processing this request, before execution acceptance.
+	RevisionID *string `json:"revision_id,omitempty" url:"revision_id,omitempty"`
+	// Stable identifier of the executed saved query.
+	SavedQueryID *string      `json:"saved_query_id,omitempty" url:"saved_query_id,omitempty"`
+	Status       *QueryStatus `json:"status,omitempty" url:"status,omitempty"`
+	// Published version of the selected immutable revision.
+	Version *int `json:"version,omitempty" url:"version,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (e *ExecuteHarborSavedQueryEnvelopeData) GetCount() *int64 {
+	if e == nil {
+		return nil
+	}
+	return e.Count
+}
+
+func (e *ExecuteHarborSavedQueryEnvelopeData) GetError() *string {
+	if e == nil {
+		return nil
+	}
+	return e.Error
+}
+
+func (e *ExecuteHarborSavedQueryEnvelopeData) GetExpires() *string {
+	if e == nil {
+		return nil
+	}
+	return e.Expires
+}
+
+func (e *ExecuteHarborSavedQueryEnvelopeData) GetFields() []string {
+	if e == nil {
+		return nil
+	}
+	return e.Fields
+}
+
+func (e *ExecuteHarborSavedQueryEnvelopeData) GetID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.ID
+}
+
+func (e *ExecuteHarborSavedQueryEnvelopeData) GetResults() []map[string]any {
+	if e == nil {
+		return nil
+	}
+	return e.Results
+}
+
+func (e *ExecuteHarborSavedQueryEnvelopeData) GetRevisionID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.RevisionID
+}
+
+func (e *ExecuteHarborSavedQueryEnvelopeData) GetSavedQueryID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.SavedQueryID
+}
+
+func (e *ExecuteHarborSavedQueryEnvelopeData) GetStatus() *QueryStatus {
+	if e == nil {
+		return nil
+	}
+	return e.Status
+}
+
+func (e *ExecuteHarborSavedQueryEnvelopeData) GetVersion() *int {
+	if e == nil {
+		return nil
+	}
+	return e.Version
+}
+
+func (e *ExecuteHarborSavedQueryEnvelopeData) GetExtraProperties() map[string]interface{} {
+	if e == nil {
+		return nil
+	}
+	return e.extraProperties
+}
+
+func (e *ExecuteHarborSavedQueryEnvelopeData) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetCount sets the Count field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecuteHarborSavedQueryEnvelopeData) SetCount(count *int64) {
+	e.Count = count
+	e.require(executeHarborSavedQueryEnvelopeDataFieldCount)
+}
+
+// SetError sets the Error field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecuteHarborSavedQueryEnvelopeData) SetError(error_ *string) {
+	e.Error = error_
+	e.require(executeHarborSavedQueryEnvelopeDataFieldError)
+}
+
+// SetExpires sets the Expires field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecuteHarborSavedQueryEnvelopeData) SetExpires(expires *string) {
+	e.Expires = expires
+	e.require(executeHarborSavedQueryEnvelopeDataFieldExpires)
+}
+
+// SetFields sets the Fields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecuteHarborSavedQueryEnvelopeData) SetFields(fields []string) {
+	e.Fields = fields
+	e.require(executeHarborSavedQueryEnvelopeDataFieldFields)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecuteHarborSavedQueryEnvelopeData) SetID(id *string) {
+	e.ID = id
+	e.require(executeHarborSavedQueryEnvelopeDataFieldID)
+}
+
+// SetResults sets the Results field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecuteHarborSavedQueryEnvelopeData) SetResults(results []map[string]any) {
+	e.Results = results
+	e.require(executeHarborSavedQueryEnvelopeDataFieldResults)
+}
+
+// SetRevisionID sets the RevisionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecuteHarborSavedQueryEnvelopeData) SetRevisionID(revisionID *string) {
+	e.RevisionID = revisionID
+	e.require(executeHarborSavedQueryEnvelopeDataFieldRevisionID)
+}
+
+// SetSavedQueryID sets the SavedQueryID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecuteHarborSavedQueryEnvelopeData) SetSavedQueryID(savedQueryID *string) {
+	e.SavedQueryID = savedQueryID
+	e.require(executeHarborSavedQueryEnvelopeDataFieldSavedQueryID)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecuteHarborSavedQueryEnvelopeData) SetStatus(status *QueryStatus) {
+	e.Status = status
+	e.require(executeHarborSavedQueryEnvelopeDataFieldStatus)
+}
+
+// SetVersion sets the Version field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecuteHarborSavedQueryEnvelopeData) SetVersion(version *int) {
+	e.Version = version
+	e.require(executeHarborSavedQueryEnvelopeDataFieldVersion)
+}
+
+func (e *ExecuteHarborSavedQueryEnvelopeData) UnmarshalJSON(data []byte) error {
+	type unmarshaler ExecuteHarborSavedQueryEnvelopeData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = ExecuteHarborSavedQueryEnvelopeData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
+	if err != nil {
+		return err
+	}
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *ExecuteHarborSavedQueryEnvelopeData) MarshalJSON() ([]byte, error) {
+	type embed ExecuteHarborSavedQueryEnvelopeData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*e),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (e *ExecuteHarborSavedQueryEnvelopeData) String() string {
+	if e == nil {
+		return "<nil>"
+	}
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
 }
 
 var (
@@ -5565,7 +6627,8 @@ var (
 	harborResponseFieldMcpServerURL        = big.NewInt(1 << 5)
 	harborResponseFieldName                = big.NewInt(1 << 6)
 	harborResponseFieldOrganizationID      = big.NewInt(1 << 7)
-	harborResponseFieldUpdatedAt           = big.NewInt(1 << 8)
+	harborResponseFieldStatus              = big.NewInt(1 << 8)
+	harborResponseFieldUpdatedAt           = big.NewInt(1 << 9)
 )
 
 type HarborResponse struct {
@@ -5585,6 +6648,8 @@ type HarborResponse struct {
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
 	// Organization that owns the Harbor.
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Storage lifecycle status. Wait for ready before using the Harbor; failed provisioning is retried automatically.
+	Status *string `json:"status,omitempty" url:"status,omitempty"`
 	// When the Harbor was last updated.
 	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 
@@ -5649,6 +6714,13 @@ func (h *HarborResponse) GetOrganizationID() *string {
 		return nil
 	}
 	return h.OrganizationID
+}
+
+func (h *HarborResponse) GetStatus() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Status
 }
 
 func (h *HarborResponse) GetUpdatedAt() *time.Time {
@@ -5728,6 +6800,13 @@ func (h *HarborResponse) SetOrganizationID(organizationID *string) {
 	h.require(harborResponseFieldOrganizationID)
 }
 
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborResponse) SetStatus(status *string) {
+	h.Status = status
+	h.require(harborResponseFieldStatus)
+}
+
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (h *HarborResponse) SetUpdatedAt(updatedAt *time.Time) {
@@ -5775,6 +6854,1634 @@ func (h *HarborResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (h *HarborResponse) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborSavedQueryDraftEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type HarborSavedQueryDraftEnvelope struct {
+	Data *HarborSavedQueryDraftResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborSavedQueryDraftEnvelope) GetData() *HarborSavedQueryDraftResponse {
+	if h == nil {
+		return nil
+	}
+	return h.Data
+}
+
+func (h *HarborSavedQueryDraftEnvelope) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborSavedQueryDraftEnvelope) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftEnvelope) SetData(data *HarborSavedQueryDraftResponse) {
+	h.Data = data
+	h.require(harborSavedQueryDraftEnvelopeFieldData)
+}
+
+func (h *HarborSavedQueryDraftEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborSavedQueryDraftEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborSavedQueryDraftEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborSavedQueryDraftEnvelope) MarshalJSON() ([]byte, error) {
+	type embed HarborSavedQueryDraftEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborSavedQueryDraftEnvelope) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborSavedQueryDraftListEnvelopeFieldData       = big.NewInt(1 << 0)
+	harborSavedQueryDraftListEnvelopeFieldPagination = big.NewInt(1 << 1)
+)
+
+type HarborSavedQueryDraftListEnvelope struct {
+	Data       []*HarborSavedQueryDraftResponse `json:"data,omitempty" url:"data,omitempty"`
+	Pagination *PaginationDetails               `json:"pagination,omitempty" url:"pagination,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborSavedQueryDraftListEnvelope) GetData() []*HarborSavedQueryDraftResponse {
+	if h == nil {
+		return nil
+	}
+	return h.Data
+}
+
+func (h *HarborSavedQueryDraftListEnvelope) GetPagination() *PaginationDetails {
+	if h == nil {
+		return nil
+	}
+	return h.Pagination
+}
+
+func (h *HarborSavedQueryDraftListEnvelope) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborSavedQueryDraftListEnvelope) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftListEnvelope) SetData(data []*HarborSavedQueryDraftResponse) {
+	h.Data = data
+	h.require(harborSavedQueryDraftListEnvelopeFieldData)
+}
+
+// SetPagination sets the Pagination field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftListEnvelope) SetPagination(pagination *PaginationDetails) {
+	h.Pagination = pagination
+	h.require(harborSavedQueryDraftListEnvelopeFieldPagination)
+}
+
+func (h *HarborSavedQueryDraftListEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborSavedQueryDraftListEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborSavedQueryDraftListEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborSavedQueryDraftListEnvelope) MarshalJSON() ([]byte, error) {
+	type embed HarborSavedQueryDraftListEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborSavedQueryDraftListEnvelope) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborSavedQueryDraftResponseFieldChangeNote       = big.NewInt(1 << 0)
+	harborSavedQueryDraftResponseFieldCreatedAt        = big.NewInt(1 << 1)
+	harborSavedQueryDraftResponseFieldCreatedBy        = big.NewInt(1 << 2)
+	harborSavedQueryDraftResponseFieldCreatedByType    = big.NewInt(1 << 3)
+	harborSavedQueryDraftResponseFieldDescription      = big.NewInt(1 << 4)
+	harborSavedQueryDraftResponseFieldID               = big.NewInt(1 << 5)
+	harborSavedQueryDraftResponseFieldName             = big.NewInt(1 << 6)
+	harborSavedQueryDraftResponseFieldOwner            = big.NewInt(1 << 7)
+	harborSavedQueryDraftResponseFieldParameters       = big.NewInt(1 << 8)
+	harborSavedQueryDraftResponseFieldSavedQueryID     = big.NewInt(1 << 9)
+	harborSavedQueryDraftResponseFieldSQLTemplate      = big.NewInt(1 << 10)
+	harborSavedQueryDraftResponseFieldUpdatedAt        = big.NewInt(1 << 11)
+	harborSavedQueryDraftResponseFieldUpdatedBy        = big.NewInt(1 << 12)
+	harborSavedQueryDraftResponseFieldUpdatedByType    = big.NewInt(1 << 13)
+	harborSavedQueryDraftResponseFieldValidationValues = big.NewInt(1 << 14)
+)
+
+type HarborSavedQueryDraftResponse struct {
+	// Optional draft change note.
+	ChangeNote *string `json:"change_note,omitempty" url:"change_note,omitempty"`
+	// When the draft was created.
+	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Actor that created the draft. Null for the system actor.
+	CreatedBy *string `json:"created_by,omitempty" url:"created_by,omitempty"`
+	// Type of actor that created the draft.
+	CreatedByType *string `json:"created_by_type,omitempty" url:"created_by_type,omitempty"`
+	// Draft business definition.
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Unique identifier of this mutable draft candidate.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Draft name.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Draft owner label.
+	Owner *string `json:"owner,omitempty" url:"owner,omitempty"`
+	// Draft typed parameter declarations.
+	Parameters []*HarborSavedQueryParameter `json:"parameters,omitempty" url:"parameters,omitempty"`
+	// Stable saved-query identifier.
+	SavedQueryID *string `json:"saved_query_id,omitempty" url:"saved_query_id,omitempty"`
+	// Draft SQL template.
+	SQLTemplate *string `json:"sql_template,omitempty" url:"sql_template,omitempty"`
+	// When the draft was last replaced.
+	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	// Actor that last replaced the draft. Null for the system actor.
+	UpdatedBy *string `json:"updated_by,omitempty" url:"updated_by,omitempty"`
+	// Type of actor that last replaced the draft.
+	UpdatedByType *string `json:"updated_by_type,omitempty" url:"updated_by_type,omitempty"`
+	// Author-supplied validation inputs.
+	ValidationValues map[string]any `json:"validation_values,omitempty" url:"validation_values,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborSavedQueryDraftResponse) GetChangeNote() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ChangeNote
+}
+
+func (h *HarborSavedQueryDraftResponse) GetCreatedAt() *time.Time {
+	if h == nil {
+		return nil
+	}
+	return h.CreatedAt
+}
+
+func (h *HarborSavedQueryDraftResponse) GetCreatedBy() *string {
+	if h == nil {
+		return nil
+	}
+	return h.CreatedBy
+}
+
+func (h *HarborSavedQueryDraftResponse) GetCreatedByType() *string {
+	if h == nil {
+		return nil
+	}
+	return h.CreatedByType
+}
+
+func (h *HarborSavedQueryDraftResponse) GetDescription() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Description
+}
+
+func (h *HarborSavedQueryDraftResponse) GetID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ID
+}
+
+func (h *HarborSavedQueryDraftResponse) GetName() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Name
+}
+
+func (h *HarborSavedQueryDraftResponse) GetOwner() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Owner
+}
+
+func (h *HarborSavedQueryDraftResponse) GetParameters() []*HarborSavedQueryParameter {
+	if h == nil {
+		return nil
+	}
+	return h.Parameters
+}
+
+func (h *HarborSavedQueryDraftResponse) GetSavedQueryID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.SavedQueryID
+}
+
+func (h *HarborSavedQueryDraftResponse) GetSQLTemplate() *string {
+	if h == nil {
+		return nil
+	}
+	return h.SQLTemplate
+}
+
+func (h *HarborSavedQueryDraftResponse) GetUpdatedAt() *time.Time {
+	if h == nil {
+		return nil
+	}
+	return h.UpdatedAt
+}
+
+func (h *HarborSavedQueryDraftResponse) GetUpdatedBy() *string {
+	if h == nil {
+		return nil
+	}
+	return h.UpdatedBy
+}
+
+func (h *HarborSavedQueryDraftResponse) GetUpdatedByType() *string {
+	if h == nil {
+		return nil
+	}
+	return h.UpdatedByType
+}
+
+func (h *HarborSavedQueryDraftResponse) GetValidationValues() map[string]any {
+	if h == nil {
+		return nil
+	}
+	return h.ValidationValues
+}
+
+func (h *HarborSavedQueryDraftResponse) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborSavedQueryDraftResponse) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetChangeNote sets the ChangeNote field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftResponse) SetChangeNote(changeNote *string) {
+	h.ChangeNote = changeNote
+	h.require(harborSavedQueryDraftResponseFieldChangeNote)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftResponse) SetCreatedAt(createdAt *time.Time) {
+	h.CreatedAt = createdAt
+	h.require(harborSavedQueryDraftResponseFieldCreatedAt)
+}
+
+// SetCreatedBy sets the CreatedBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftResponse) SetCreatedBy(createdBy *string) {
+	h.CreatedBy = createdBy
+	h.require(harborSavedQueryDraftResponseFieldCreatedBy)
+}
+
+// SetCreatedByType sets the CreatedByType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftResponse) SetCreatedByType(createdByType *string) {
+	h.CreatedByType = createdByType
+	h.require(harborSavedQueryDraftResponseFieldCreatedByType)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftResponse) SetDescription(description *string) {
+	h.Description = description
+	h.require(harborSavedQueryDraftResponseFieldDescription)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftResponse) SetID(id *string) {
+	h.ID = id
+	h.require(harborSavedQueryDraftResponseFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftResponse) SetName(name *string) {
+	h.Name = name
+	h.require(harborSavedQueryDraftResponseFieldName)
+}
+
+// SetOwner sets the Owner field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftResponse) SetOwner(owner *string) {
+	h.Owner = owner
+	h.require(harborSavedQueryDraftResponseFieldOwner)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftResponse) SetParameters(parameters []*HarborSavedQueryParameter) {
+	h.Parameters = parameters
+	h.require(harborSavedQueryDraftResponseFieldParameters)
+}
+
+// SetSavedQueryID sets the SavedQueryID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftResponse) SetSavedQueryID(savedQueryID *string) {
+	h.SavedQueryID = savedQueryID
+	h.require(harborSavedQueryDraftResponseFieldSavedQueryID)
+}
+
+// SetSQLTemplate sets the SQLTemplate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftResponse) SetSQLTemplate(sqlTemplate *string) {
+	h.SQLTemplate = sqlTemplate
+	h.require(harborSavedQueryDraftResponseFieldSQLTemplate)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftResponse) SetUpdatedAt(updatedAt *time.Time) {
+	h.UpdatedAt = updatedAt
+	h.require(harborSavedQueryDraftResponseFieldUpdatedAt)
+}
+
+// SetUpdatedBy sets the UpdatedBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftResponse) SetUpdatedBy(updatedBy *string) {
+	h.UpdatedBy = updatedBy
+	h.require(harborSavedQueryDraftResponseFieldUpdatedBy)
+}
+
+// SetUpdatedByType sets the UpdatedByType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftResponse) SetUpdatedByType(updatedByType *string) {
+	h.UpdatedByType = updatedByType
+	h.require(harborSavedQueryDraftResponseFieldUpdatedByType)
+}
+
+// SetValidationValues sets the ValidationValues field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryDraftResponse) SetValidationValues(validationValues map[string]any) {
+	h.ValidationValues = validationValues
+	h.require(harborSavedQueryDraftResponseFieldValidationValues)
+}
+
+func (h *HarborSavedQueryDraftResponse) UnmarshalJSON(data []byte) error {
+	type embed HarborSavedQueryDraftResponse
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*h),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*h = HarborSavedQueryDraftResponse(unmarshaler.embed)
+	h.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	h.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborSavedQueryDraftResponse) MarshalJSON() ([]byte, error) {
+	type embed HarborSavedQueryDraftResponse
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:     embed(*h),
+		CreatedAt: internal.NewOptionalDateTime(h.CreatedAt),
+		UpdatedAt: internal.NewOptionalDateTime(h.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborSavedQueryDraftResponse) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborSavedQueryEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type HarborSavedQueryEnvelope struct {
+	Data *HarborSavedQueryResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborSavedQueryEnvelope) GetData() *HarborSavedQueryResponse {
+	if h == nil {
+		return nil
+	}
+	return h.Data
+}
+
+func (h *HarborSavedQueryEnvelope) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborSavedQueryEnvelope) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryEnvelope) SetData(data *HarborSavedQueryResponse) {
+	h.Data = data
+	h.require(harborSavedQueryEnvelopeFieldData)
+}
+
+func (h *HarborSavedQueryEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborSavedQueryEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborSavedQueryEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborSavedQueryEnvelope) MarshalJSON() ([]byte, error) {
+	type embed HarborSavedQueryEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborSavedQueryEnvelope) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborSavedQueryListEnvelopeFieldData       = big.NewInt(1 << 0)
+	harborSavedQueryListEnvelopeFieldPagination = big.NewInt(1 << 1)
+)
+
+type HarborSavedQueryListEnvelope struct {
+	Data       []*HarborSavedQueryMetadataResponse `json:"data,omitempty" url:"data,omitempty"`
+	Pagination *PaginationDetails                  `json:"pagination,omitempty" url:"pagination,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborSavedQueryListEnvelope) GetData() []*HarborSavedQueryMetadataResponse {
+	if h == nil {
+		return nil
+	}
+	return h.Data
+}
+
+func (h *HarborSavedQueryListEnvelope) GetPagination() *PaginationDetails {
+	if h == nil {
+		return nil
+	}
+	return h.Pagination
+}
+
+func (h *HarborSavedQueryListEnvelope) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborSavedQueryListEnvelope) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryListEnvelope) SetData(data []*HarborSavedQueryMetadataResponse) {
+	h.Data = data
+	h.require(harborSavedQueryListEnvelopeFieldData)
+}
+
+// SetPagination sets the Pagination field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryListEnvelope) SetPagination(pagination *PaginationDetails) {
+	h.Pagination = pagination
+	h.require(harborSavedQueryListEnvelopeFieldPagination)
+}
+
+func (h *HarborSavedQueryListEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborSavedQueryListEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborSavedQueryListEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborSavedQueryListEnvelope) MarshalJSON() ([]byte, error) {
+	type embed HarborSavedQueryListEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborSavedQueryListEnvelope) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborSavedQueryMetadataResponseFieldDescription     = big.NewInt(1 << 0)
+	harborSavedQueryMetadataResponseFieldExpectedColumns = big.NewInt(1 << 1)
+	harborSavedQueryMetadataResponseFieldID              = big.NewInt(1 << 2)
+	harborSavedQueryMetadataResponseFieldName            = big.NewInt(1 << 3)
+	harborSavedQueryMetadataResponseFieldOwner           = big.NewInt(1 << 4)
+	harborSavedQueryMetadataResponseFieldPublishedAt     = big.NewInt(1 << 5)
+	harborSavedQueryMetadataResponseFieldRevisionID      = big.NewInt(1 << 6)
+	harborSavedQueryMetadataResponseFieldUpdatedAt       = big.NewInt(1 << 7)
+	harborSavedQueryMetadataResponseFieldVersion         = big.NewInt(1 << 8)
+)
+
+type HarborSavedQueryMetadataResponse struct {
+	// Business definition and usage notes.
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Expected ordered result-column names.
+	ExpectedColumns []string `json:"expected_columns,omitempty" url:"expected_columns,omitempty"`
+	// Stable saved-query identifier.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Human-readable saved-query name.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Human-readable owner label.
+	Owner *string `json:"owner,omitempty" url:"owner,omitempty"`
+	// When this version was published.
+	PublishedAt *time.Time `json:"published_at,omitempty" url:"published_at,omitempty"`
+	// Immutable identifier of this exact published definition.
+	RevisionID *string `json:"revision_id,omitempty" url:"revision_id,omitempty"`
+	// When this version's draft was last updated before publication.
+	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	// Current published version number.
+	Version *int `json:"version,omitempty" url:"version,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborSavedQueryMetadataResponse) GetDescription() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Description
+}
+
+func (h *HarborSavedQueryMetadataResponse) GetExpectedColumns() []string {
+	if h == nil {
+		return nil
+	}
+	return h.ExpectedColumns
+}
+
+func (h *HarborSavedQueryMetadataResponse) GetID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ID
+}
+
+func (h *HarborSavedQueryMetadataResponse) GetName() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Name
+}
+
+func (h *HarborSavedQueryMetadataResponse) GetOwner() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Owner
+}
+
+func (h *HarborSavedQueryMetadataResponse) GetPublishedAt() *time.Time {
+	if h == nil {
+		return nil
+	}
+	return h.PublishedAt
+}
+
+func (h *HarborSavedQueryMetadataResponse) GetRevisionID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.RevisionID
+}
+
+func (h *HarborSavedQueryMetadataResponse) GetUpdatedAt() *time.Time {
+	if h == nil {
+		return nil
+	}
+	return h.UpdatedAt
+}
+
+func (h *HarborSavedQueryMetadataResponse) GetVersion() *int {
+	if h == nil {
+		return nil
+	}
+	return h.Version
+}
+
+func (h *HarborSavedQueryMetadataResponse) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborSavedQueryMetadataResponse) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryMetadataResponse) SetDescription(description *string) {
+	h.Description = description
+	h.require(harborSavedQueryMetadataResponseFieldDescription)
+}
+
+// SetExpectedColumns sets the ExpectedColumns field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryMetadataResponse) SetExpectedColumns(expectedColumns []string) {
+	h.ExpectedColumns = expectedColumns
+	h.require(harborSavedQueryMetadataResponseFieldExpectedColumns)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryMetadataResponse) SetID(id *string) {
+	h.ID = id
+	h.require(harborSavedQueryMetadataResponseFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryMetadataResponse) SetName(name *string) {
+	h.Name = name
+	h.require(harborSavedQueryMetadataResponseFieldName)
+}
+
+// SetOwner sets the Owner field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryMetadataResponse) SetOwner(owner *string) {
+	h.Owner = owner
+	h.require(harborSavedQueryMetadataResponseFieldOwner)
+}
+
+// SetPublishedAt sets the PublishedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryMetadataResponse) SetPublishedAt(publishedAt *time.Time) {
+	h.PublishedAt = publishedAt
+	h.require(harborSavedQueryMetadataResponseFieldPublishedAt)
+}
+
+// SetRevisionID sets the RevisionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryMetadataResponse) SetRevisionID(revisionID *string) {
+	h.RevisionID = revisionID
+	h.require(harborSavedQueryMetadataResponseFieldRevisionID)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryMetadataResponse) SetUpdatedAt(updatedAt *time.Time) {
+	h.UpdatedAt = updatedAt
+	h.require(harborSavedQueryMetadataResponseFieldUpdatedAt)
+}
+
+// SetVersion sets the Version field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryMetadataResponse) SetVersion(version *int) {
+	h.Version = version
+	h.require(harborSavedQueryMetadataResponseFieldVersion)
+}
+
+func (h *HarborSavedQueryMetadataResponse) UnmarshalJSON(data []byte) error {
+	type embed HarborSavedQueryMetadataResponse
+	var unmarshaler = struct {
+		embed
+		PublishedAt *internal.DateTime `json:"published_at,omitempty"`
+		UpdatedAt   *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*h),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*h = HarborSavedQueryMetadataResponse(unmarshaler.embed)
+	h.PublishedAt = unmarshaler.PublishedAt.TimePtr()
+	h.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborSavedQueryMetadataResponse) MarshalJSON() ([]byte, error) {
+	type embed HarborSavedQueryMetadataResponse
+	var marshaler = struct {
+		embed
+		PublishedAt *internal.DateTime `json:"published_at,omitempty"`
+		UpdatedAt   *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:       embed(*h),
+		PublishedAt: internal.NewOptionalDateTime(h.PublishedAt),
+		UpdatedAt:   internal.NewOptionalDateTime(h.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborSavedQueryMetadataResponse) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborSavedQueryParameterFieldDefaultValue = big.NewInt(1 << 0)
+	harborSavedQueryParameterFieldName         = big.NewInt(1 << 1)
+	harborSavedQueryParameterFieldRequired     = big.NewInt(1 << 2)
+	harborSavedQueryParameterFieldType         = big.NewInt(1 << 3)
+)
+
+type HarborSavedQueryParameter struct {
+	// JSON scalar used when the parameter is omitted, matching the declared type. Use default_value, not default. Optional parameters without a default bind SQL NULL.
+	DefaultValue any `json:"default_value,omitempty" url:"default_value,omitempty"`
+	// Template parameter name referenced as {{start_date}}.
+	Name string `json:"name" url:"name"`
+	// When true, rejects explicit null during validation and execution and allows omission only when default_value is present.
+	Required *bool `json:"required,omitempty" url:"required,omitempty"`
+	// Scalar parameter type.
+	Type HarborSavedQueryParameterType `json:"type" url:"type"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborSavedQueryParameter) GetDefaultValue() any {
+	if h == nil {
+		return nil
+	}
+	return h.DefaultValue
+}
+
+func (h *HarborSavedQueryParameter) GetName() string {
+	if h == nil {
+		return ""
+	}
+	return h.Name
+}
+
+func (h *HarborSavedQueryParameter) GetRequired() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.Required
+}
+
+func (h *HarborSavedQueryParameter) GetType() HarborSavedQueryParameterType {
+	if h == nil {
+		return ""
+	}
+	return h.Type
+}
+
+func (h *HarborSavedQueryParameter) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborSavedQueryParameter) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetDefaultValue sets the DefaultValue field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryParameter) SetDefaultValue(defaultValue any) {
+	h.DefaultValue = defaultValue
+	h.require(harborSavedQueryParameterFieldDefaultValue)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryParameter) SetName(name string) {
+	h.Name = name
+	h.require(harborSavedQueryParameterFieldName)
+}
+
+// SetRequired sets the Required field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryParameter) SetRequired(required *bool) {
+	h.Required = required
+	h.require(harborSavedQueryParameterFieldRequired)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryParameter) SetType(type_ HarborSavedQueryParameterType) {
+	h.Type = type_
+	h.require(harborSavedQueryParameterFieldType)
+}
+
+func (h *HarborSavedQueryParameter) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborSavedQueryParameter
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborSavedQueryParameter(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborSavedQueryParameter) MarshalJSON() ([]byte, error) {
+	type embed HarborSavedQueryParameter
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborSavedQueryParameter) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+// Scalar parameter type.
+type HarborSavedQueryParameterType string
+
+const (
+	HarborSavedQueryParameterTypeString    HarborSavedQueryParameterType = "string"
+	HarborSavedQueryParameterTypeNumber    HarborSavedQueryParameterType = "number"
+	HarborSavedQueryParameterTypeBoolean   HarborSavedQueryParameterType = "boolean"
+	HarborSavedQueryParameterTypeDate      HarborSavedQueryParameterType = "date"
+	HarborSavedQueryParameterTypeTimestamp HarborSavedQueryParameterType = "timestamp"
+	HarborSavedQueryParameterTypeUUID      HarborSavedQueryParameterType = "uuid"
+)
+
+func NewHarborSavedQueryParameterTypeFromString(s string) (HarborSavedQueryParameterType, error) {
+	switch s {
+	case "string":
+		return HarborSavedQueryParameterTypeString, nil
+	case "number":
+		return HarborSavedQueryParameterTypeNumber, nil
+	case "boolean":
+		return HarborSavedQueryParameterTypeBoolean, nil
+	case "date":
+		return HarborSavedQueryParameterTypeDate, nil
+	case "timestamp":
+		return HarborSavedQueryParameterTypeTimestamp, nil
+	case "uuid":
+		return HarborSavedQueryParameterTypeUUID, nil
+	}
+	var t HarborSavedQueryParameterType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (h HarborSavedQueryParameterType) Ptr() *HarborSavedQueryParameterType {
+	return &h
+}
+
+var (
+	harborSavedQueryPreviewResponseFieldColumns   = big.NewInt(1 << 0)
+	harborSavedQueryPreviewResponseFieldRows      = big.NewInt(1 << 1)
+	harborSavedQueryPreviewResponseFieldTruncated = big.NewInt(1 << 2)
+)
+
+type HarborSavedQueryPreviewResponse struct {
+	// Ordered preview column names.
+	Columns []string `json:"columns,omitempty" url:"columns,omitempty"`
+	// Ephemeral bounded preview rows. These rows are never persisted.
+	Rows []map[string]any `json:"rows,omitempty" url:"rows,omitempty"`
+	// Whether validation stopped at the row or serialized-size bound.
+	Truncated *bool `json:"truncated,omitempty" url:"truncated,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborSavedQueryPreviewResponse) GetColumns() []string {
+	if h == nil {
+		return nil
+	}
+	return h.Columns
+}
+
+func (h *HarborSavedQueryPreviewResponse) GetRows() []map[string]any {
+	if h == nil {
+		return nil
+	}
+	return h.Rows
+}
+
+func (h *HarborSavedQueryPreviewResponse) GetTruncated() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.Truncated
+}
+
+func (h *HarborSavedQueryPreviewResponse) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborSavedQueryPreviewResponse) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetColumns sets the Columns field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryPreviewResponse) SetColumns(columns []string) {
+	h.Columns = columns
+	h.require(harborSavedQueryPreviewResponseFieldColumns)
+}
+
+// SetRows sets the Rows field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryPreviewResponse) SetRows(rows []map[string]any) {
+	h.Rows = rows
+	h.require(harborSavedQueryPreviewResponseFieldRows)
+}
+
+// SetTruncated sets the Truncated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryPreviewResponse) SetTruncated(truncated *bool) {
+	h.Truncated = truncated
+	h.require(harborSavedQueryPreviewResponseFieldTruncated)
+}
+
+func (h *HarborSavedQueryPreviewResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborSavedQueryPreviewResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborSavedQueryPreviewResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborSavedQueryPreviewResponse) MarshalJSON() ([]byte, error) {
+	type embed HarborSavedQueryPreviewResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborSavedQueryPreviewResponse) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborSavedQueryResponseFieldChangeNote      = big.NewInt(1 << 0)
+	harborSavedQueryResponseFieldDescription     = big.NewInt(1 << 1)
+	harborSavedQueryResponseFieldExpectedColumns = big.NewInt(1 << 2)
+	harborSavedQueryResponseFieldID              = big.NewInt(1 << 3)
+	harborSavedQueryResponseFieldName            = big.NewInt(1 << 4)
+	harborSavedQueryResponseFieldOwner           = big.NewInt(1 << 5)
+	harborSavedQueryResponseFieldParameters      = big.NewInt(1 << 6)
+	harborSavedQueryResponseFieldPublishedAt     = big.NewInt(1 << 7)
+	harborSavedQueryResponseFieldPublishedBy     = big.NewInt(1 << 8)
+	harborSavedQueryResponseFieldPublishedByType = big.NewInt(1 << 9)
+	harborSavedQueryResponseFieldRevisionID      = big.NewInt(1 << 10)
+	harborSavedQueryResponseFieldSQLTemplate     = big.NewInt(1 << 11)
+	harborSavedQueryResponseFieldUpdatedAt       = big.NewInt(1 << 12)
+	harborSavedQueryResponseFieldVersion         = big.NewInt(1 << 13)
+)
+
+type HarborSavedQueryResponse struct {
+	// Note supplied when this version was published.
+	ChangeNote *string `json:"change_note,omitempty" url:"change_note,omitempty"`
+	// Business definition and usage notes.
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Expected ordered result-column names.
+	ExpectedColumns []string `json:"expected_columns,omitempty" url:"expected_columns,omitempty"`
+	// Stable saved-query identifier.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Human-readable saved-query name.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Human-readable owner label.
+	Owner *string `json:"owner,omitempty" url:"owner,omitempty"`
+	// Published typed scalar parameter declarations.
+	Parameters []*HarborSavedQueryParameter `json:"parameters,omitempty" url:"parameters,omitempty"`
+	// When this version was published.
+	PublishedAt *time.Time `json:"published_at,omitempty" url:"published_at,omitempty"`
+	// Actor that published this version. Null for the system actor.
+	PublishedBy *string `json:"published_by,omitempty" url:"published_by,omitempty"`
+	// Type of actor that published this version.
+	PublishedByType *string `json:"published_by_type,omitempty" url:"published_by_type,omitempty"`
+	// Immutable identifier of this exact published definition.
+	RevisionID *string `json:"revision_id,omitempty" url:"revision_id,omitempty"`
+	// Published SQL template.
+	SQLTemplate *string `json:"sql_template,omitempty" url:"sql_template,omitempty"`
+	// When this version's draft was last updated before publication.
+	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	// Current published version number.
+	Version *int `json:"version,omitempty" url:"version,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborSavedQueryResponse) GetChangeNote() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ChangeNote
+}
+
+func (h *HarborSavedQueryResponse) GetDescription() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Description
+}
+
+func (h *HarborSavedQueryResponse) GetExpectedColumns() []string {
+	if h == nil {
+		return nil
+	}
+	return h.ExpectedColumns
+}
+
+func (h *HarborSavedQueryResponse) GetID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ID
+}
+
+func (h *HarborSavedQueryResponse) GetName() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Name
+}
+
+func (h *HarborSavedQueryResponse) GetOwner() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Owner
+}
+
+func (h *HarborSavedQueryResponse) GetParameters() []*HarborSavedQueryParameter {
+	if h == nil {
+		return nil
+	}
+	return h.Parameters
+}
+
+func (h *HarborSavedQueryResponse) GetPublishedAt() *time.Time {
+	if h == nil {
+		return nil
+	}
+	return h.PublishedAt
+}
+
+func (h *HarborSavedQueryResponse) GetPublishedBy() *string {
+	if h == nil {
+		return nil
+	}
+	return h.PublishedBy
+}
+
+func (h *HarborSavedQueryResponse) GetPublishedByType() *string {
+	if h == nil {
+		return nil
+	}
+	return h.PublishedByType
+}
+
+func (h *HarborSavedQueryResponse) GetRevisionID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.RevisionID
+}
+
+func (h *HarborSavedQueryResponse) GetSQLTemplate() *string {
+	if h == nil {
+		return nil
+	}
+	return h.SQLTemplate
+}
+
+func (h *HarborSavedQueryResponse) GetUpdatedAt() *time.Time {
+	if h == nil {
+		return nil
+	}
+	return h.UpdatedAt
+}
+
+func (h *HarborSavedQueryResponse) GetVersion() *int {
+	if h == nil {
+		return nil
+	}
+	return h.Version
+}
+
+func (h *HarborSavedQueryResponse) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborSavedQueryResponse) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetChangeNote sets the ChangeNote field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryResponse) SetChangeNote(changeNote *string) {
+	h.ChangeNote = changeNote
+	h.require(harborSavedQueryResponseFieldChangeNote)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryResponse) SetDescription(description *string) {
+	h.Description = description
+	h.require(harborSavedQueryResponseFieldDescription)
+}
+
+// SetExpectedColumns sets the ExpectedColumns field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryResponse) SetExpectedColumns(expectedColumns []string) {
+	h.ExpectedColumns = expectedColumns
+	h.require(harborSavedQueryResponseFieldExpectedColumns)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryResponse) SetID(id *string) {
+	h.ID = id
+	h.require(harborSavedQueryResponseFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryResponse) SetName(name *string) {
+	h.Name = name
+	h.require(harborSavedQueryResponseFieldName)
+}
+
+// SetOwner sets the Owner field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryResponse) SetOwner(owner *string) {
+	h.Owner = owner
+	h.require(harborSavedQueryResponseFieldOwner)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryResponse) SetParameters(parameters []*HarborSavedQueryParameter) {
+	h.Parameters = parameters
+	h.require(harborSavedQueryResponseFieldParameters)
+}
+
+// SetPublishedAt sets the PublishedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryResponse) SetPublishedAt(publishedAt *time.Time) {
+	h.PublishedAt = publishedAt
+	h.require(harborSavedQueryResponseFieldPublishedAt)
+}
+
+// SetPublishedBy sets the PublishedBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryResponse) SetPublishedBy(publishedBy *string) {
+	h.PublishedBy = publishedBy
+	h.require(harborSavedQueryResponseFieldPublishedBy)
+}
+
+// SetPublishedByType sets the PublishedByType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryResponse) SetPublishedByType(publishedByType *string) {
+	h.PublishedByType = publishedByType
+	h.require(harborSavedQueryResponseFieldPublishedByType)
+}
+
+// SetRevisionID sets the RevisionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryResponse) SetRevisionID(revisionID *string) {
+	h.RevisionID = revisionID
+	h.require(harborSavedQueryResponseFieldRevisionID)
+}
+
+// SetSQLTemplate sets the SQLTemplate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryResponse) SetSQLTemplate(sqlTemplate *string) {
+	h.SQLTemplate = sqlTemplate
+	h.require(harborSavedQueryResponseFieldSQLTemplate)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryResponse) SetUpdatedAt(updatedAt *time.Time) {
+	h.UpdatedAt = updatedAt
+	h.require(harborSavedQueryResponseFieldUpdatedAt)
+}
+
+// SetVersion sets the Version field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryResponse) SetVersion(version *int) {
+	h.Version = version
+	h.require(harborSavedQueryResponseFieldVersion)
+}
+
+func (h *HarborSavedQueryResponse) UnmarshalJSON(data []byte) error {
+	type embed HarborSavedQueryResponse
+	var unmarshaler = struct {
+		embed
+		PublishedAt *internal.DateTime `json:"published_at,omitempty"`
+		UpdatedAt   *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*h),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*h = HarborSavedQueryResponse(unmarshaler.embed)
+	h.PublishedAt = unmarshaler.PublishedAt.TimePtr()
+	h.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborSavedQueryResponse) MarshalJSON() ([]byte, error) {
+	type embed HarborSavedQueryResponse
+	var marshaler = struct {
+		embed
+		PublishedAt *internal.DateTime `json:"published_at,omitempty"`
+		UpdatedAt   *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:       embed(*h),
+		PublishedAt: internal.NewOptionalDateTime(h.PublishedAt),
+		UpdatedAt:   internal.NewOptionalDateTime(h.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborSavedQueryResponse) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborSavedQueryValidationEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type HarborSavedQueryValidationEnvelope struct {
+	Data *HarborSavedQueryPreviewResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborSavedQueryValidationEnvelope) GetData() *HarborSavedQueryPreviewResponse {
+	if h == nil {
+		return nil
+	}
+	return h.Data
+}
+
+func (h *HarborSavedQueryValidationEnvelope) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborSavedQueryValidationEnvelope) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSavedQueryValidationEnvelope) SetData(data *HarborSavedQueryPreviewResponse) {
+	h.Data = data
+	h.require(harborSavedQueryValidationEnvelopeFieldData)
+}
+
+func (h *HarborSavedQueryValidationEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborSavedQueryValidationEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborSavedQueryValidationEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborSavedQueryValidationEnvelope) MarshalJSON() ([]byte, error) {
+	type embed HarborSavedQueryValidationEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborSavedQueryValidationEnvelope) String() string {
 	if h == nil {
 		return "<nil>"
 	}

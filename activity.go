@@ -637,9 +637,10 @@ var (
 	harboractivityapiHarborActivityEventFieldOutcome           = big.NewInt(1 << 15)
 	harboractivityapiHarborActivityEventFieldProfile           = big.NewInt(1 << 16)
 	harboractivityapiHarborActivityEventFieldProvenance        = big.NewInt(1 << 17)
-	harboractivityapiHarborActivityEventFieldRecordedAt        = big.NewInt(1 << 18)
-	harboractivityapiHarborActivityEventFieldSessionID         = big.NewInt(1 << 19)
-	harboractivityapiHarborActivityEventFieldTargets           = big.NewInt(1 << 20)
+	harboractivityapiHarborActivityEventFieldQuerySource       = big.NewInt(1 << 18)
+	harboractivityapiHarborActivityEventFieldRecordedAt        = big.NewInt(1 << 19)
+	harboractivityapiHarborActivityEventFieldSessionID         = big.NewInt(1 << 20)
+	harboractivityapiHarborActivityEventFieldTargets           = big.NewInt(1 << 21)
 )
 
 type HarboractivityapiHarborActivityEvent struct {
@@ -661,6 +662,7 @@ type HarboractivityapiHarborActivityEvent struct {
 	Outcome           *string                                          `json:"outcome,omitempty" url:"outcome,omitempty"`
 	Profile           *HarboractivityapiHarborActivityIdentitySnapshot `json:"profile,omitempty" url:"profile,omitempty"`
 	Provenance        *string                                          `json:"provenance,omitempty" url:"provenance,omitempty"`
+	QuerySource       *HarboractivityapiHarborActivityQuerySource      `json:"query_source,omitempty" url:"query_source,omitempty"`
 	RecordedAt        *time.Time                                       `json:"recorded_at,omitempty" url:"recorded_at,omitempty"`
 	SessionID         *string                                          `json:"session_id,omitempty" url:"session_id,omitempty"`
 	Targets           []*HarboractivityapiHarborActivityTarget         `json:"targets,omitempty" url:"targets,omitempty"`
@@ -796,6 +798,13 @@ func (h *HarboractivityapiHarborActivityEvent) GetProvenance() *string {
 		return nil
 	}
 	return h.Provenance
+}
+
+func (h *HarboractivityapiHarborActivityEvent) GetQuerySource() *HarboractivityapiHarborActivityQuerySource {
+	if h == nil {
+		return nil
+	}
+	return h.QuerySource
 }
 
 func (h *HarboractivityapiHarborActivityEvent) GetRecordedAt() *time.Time {
@@ -957,6 +966,13 @@ func (h *HarboractivityapiHarborActivityEvent) SetProfile(profile *Harboractivit
 func (h *HarboractivityapiHarborActivityEvent) SetProvenance(provenance *string) {
 	h.Provenance = provenance
 	h.require(harboractivityapiHarborActivityEventFieldProvenance)
+}
+
+// SetQuerySource sets the QuerySource field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivityEvent) SetQuerySource(querySource *HarboractivityapiHarborActivityQuerySource) {
+	h.QuerySource = querySource
+	h.require(harboractivityapiHarborActivityEventFieldQuerySource)
 }
 
 // SetRecordedAt sets the RecordedAt field and marks it as non-optional;
@@ -1140,10 +1156,13 @@ var (
 	harboractivityapiHarborActivityMetadataFieldReason                  = big.NewInt(1 << 18)
 	harboractivityapiHarborActivityMetadataFieldRecordID                = big.NewInt(1 << 19)
 	harboractivityapiHarborActivityMetadataFieldRowCount                = big.NewInt(1 << 20)
-	harboractivityapiHarborActivityMetadataFieldSchemaID                = big.NewInt(1 << 21)
-	harboractivityapiHarborActivityMetadataFieldStatementCategory       = big.NewInt(1 << 22)
-	harboractivityapiHarborActivityMetadataFieldSupported               = big.NewInt(1 << 23)
-	harboractivityapiHarborActivityMetadataFieldTotalDurationMs         = big.NewInt(1 << 24)
+	harboractivityapiHarborActivityMetadataFieldSavedQueryID            = big.NewInt(1 << 21)
+	harboractivityapiHarborActivityMetadataFieldSavedQueryRevisionID    = big.NewInt(1 << 22)
+	harboractivityapiHarborActivityMetadataFieldSavedQueryVersion       = big.NewInt(1 << 23)
+	harboractivityapiHarborActivityMetadataFieldSchemaID                = big.NewInt(1 << 24)
+	harboractivityapiHarborActivityMetadataFieldStatementCategory       = big.NewInt(1 << 25)
+	harboractivityapiHarborActivityMetadataFieldSupported               = big.NewInt(1 << 26)
+	harboractivityapiHarborActivityMetadataFieldTotalDurationMs         = big.NewInt(1 << 27)
 )
 
 type HarboractivityapiHarborActivityMetadata struct {
@@ -1165,17 +1184,20 @@ type HarboractivityapiHarborActivityMetadata struct {
 	// Bounded resource label snapshot.
 	Label *string `json:"label,omitempty" url:"label,omitempty"`
 	// Whether the resource label snapshot was truncated.
-	LabelTruncated    *bool   `json:"label_truncated,omitempty" url:"label_truncated,omitempty"`
-	Operation         *string `json:"operation,omitempty" url:"operation,omitempty"`
-	Phase             *string `json:"phase,omitempty" url:"phase,omitempty"`
-	QueueDurationMs   *int    `json:"queue_duration_ms,omitempty" url:"queue_duration_ms,omitempty"`
-	Reason            *string `json:"reason,omitempty" url:"reason,omitempty"`
-	RecordID          *string `json:"record_id,omitempty" url:"record_id,omitempty"`
-	RowCount          *int    `json:"row_count,omitempty" url:"row_count,omitempty"`
-	SchemaID          *string `json:"schema_id,omitempty" url:"schema_id,omitempty"`
-	StatementCategory *string `json:"statement_category,omitempty" url:"statement_category,omitempty"`
-	Supported         *bool   `json:"supported,omitempty" url:"supported,omitempty"`
-	TotalDurationMs   *int    `json:"total_duration_ms,omitempty" url:"total_duration_ms,omitempty"`
+	LabelTruncated       *bool   `json:"label_truncated,omitempty" url:"label_truncated,omitempty"`
+	Operation            *string `json:"operation,omitempty" url:"operation,omitempty"`
+	Phase                *string `json:"phase,omitempty" url:"phase,omitempty"`
+	QueueDurationMs      *int    `json:"queue_duration_ms,omitempty" url:"queue_duration_ms,omitempty"`
+	Reason               *string `json:"reason,omitempty" url:"reason,omitempty"`
+	RecordID             *string `json:"record_id,omitempty" url:"record_id,omitempty"`
+	RowCount             *int    `json:"row_count,omitempty" url:"row_count,omitempty"`
+	SavedQueryID         *string `json:"saved_query_id,omitempty" url:"saved_query_id,omitempty"`
+	SavedQueryRevisionID *string `json:"saved_query_revision_id,omitempty" url:"saved_query_revision_id,omitempty"`
+	SavedQueryVersion    *int    `json:"saved_query_version,omitempty" url:"saved_query_version,omitempty"`
+	SchemaID             *string `json:"schema_id,omitempty" url:"schema_id,omitempty"`
+	StatementCategory    *string `json:"statement_category,omitempty" url:"statement_category,omitempty"`
+	Supported            *bool   `json:"supported,omitempty" url:"supported,omitempty"`
+	TotalDurationMs      *int    `json:"total_duration_ms,omitempty" url:"total_duration_ms,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1329,6 +1351,27 @@ func (h *HarboractivityapiHarborActivityMetadata) GetRowCount() *int {
 		return nil
 	}
 	return h.RowCount
+}
+
+func (h *HarboractivityapiHarborActivityMetadata) GetSavedQueryID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.SavedQueryID
+}
+
+func (h *HarboractivityapiHarborActivityMetadata) GetSavedQueryRevisionID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.SavedQueryRevisionID
+}
+
+func (h *HarboractivityapiHarborActivityMetadata) GetSavedQueryVersion() *int {
+	if h == nil {
+		return nil
+	}
+	return h.SavedQueryVersion
 }
 
 func (h *HarboractivityapiHarborActivityMetadata) GetSchemaID() *string {
@@ -1520,6 +1563,27 @@ func (h *HarboractivityapiHarborActivityMetadata) SetRowCount(rowCount *int) {
 	h.require(harboractivityapiHarborActivityMetadataFieldRowCount)
 }
 
+// SetSavedQueryID sets the SavedQueryID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivityMetadata) SetSavedQueryID(savedQueryID *string) {
+	h.SavedQueryID = savedQueryID
+	h.require(harboractivityapiHarborActivityMetadataFieldSavedQueryID)
+}
+
+// SetSavedQueryRevisionID sets the SavedQueryRevisionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivityMetadata) SetSavedQueryRevisionID(savedQueryRevisionID *string) {
+	h.SavedQueryRevisionID = savedQueryRevisionID
+	h.require(harboractivityapiHarborActivityMetadataFieldSavedQueryRevisionID)
+}
+
+// SetSavedQueryVersion sets the SavedQueryVersion field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivityMetadata) SetSavedQueryVersion(savedQueryVersion *int) {
+	h.SavedQueryVersion = savedQueryVersion
+	h.require(harboractivityapiHarborActivityMetadataFieldSavedQueryVersion)
+}
+
 // SetSchemaID sets the SchemaID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (h *HarboractivityapiHarborActivityMetadata) SetSchemaID(schemaID *string) {
@@ -1576,6 +1640,294 @@ func (h *HarboractivityapiHarborActivityMetadata) MarshalJSON() ([]byte, error) 
 }
 
 func (h *HarboractivityapiHarborActivityMetadata) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harboractivityapiHarborActivityQuerySourceFieldKind              = big.NewInt(1 << 0)
+	harboractivityapiHarborActivityQuerySourceFieldSavedQuery        = big.NewInt(1 << 1)
+	harboractivityapiHarborActivityQuerySourceFieldSubmissionEventID = big.NewInt(1 << 2)
+	harboractivityapiHarborActivityQuerySourceFieldSubmittedAt       = big.NewInt(1 << 3)
+)
+
+type HarboractivityapiHarborActivityQuerySource struct {
+	Kind              *string                                          `json:"kind,omitempty" url:"kind,omitempty"`
+	SavedQuery        *HarboractivityapiHarborActivitySavedQuerySource `json:"saved_query,omitempty" url:"saved_query,omitempty"`
+	SubmissionEventID *string                                          `json:"submission_event_id,omitempty" url:"submission_event_id,omitempty"`
+	SubmittedAt       *time.Time                                       `json:"submitted_at,omitempty" url:"submitted_at,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarboractivityapiHarborActivityQuerySource) GetKind() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Kind
+}
+
+func (h *HarboractivityapiHarborActivityQuerySource) GetSavedQuery() *HarboractivityapiHarborActivitySavedQuerySource {
+	if h == nil {
+		return nil
+	}
+	return h.SavedQuery
+}
+
+func (h *HarboractivityapiHarborActivityQuerySource) GetSubmissionEventID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.SubmissionEventID
+}
+
+func (h *HarboractivityapiHarborActivityQuerySource) GetSubmittedAt() *time.Time {
+	if h == nil {
+		return nil
+	}
+	return h.SubmittedAt
+}
+
+func (h *HarboractivityapiHarborActivityQuerySource) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarboractivityapiHarborActivityQuerySource) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetKind sets the Kind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivityQuerySource) SetKind(kind *string) {
+	h.Kind = kind
+	h.require(harboractivityapiHarborActivityQuerySourceFieldKind)
+}
+
+// SetSavedQuery sets the SavedQuery field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivityQuerySource) SetSavedQuery(savedQuery *HarboractivityapiHarborActivitySavedQuerySource) {
+	h.SavedQuery = savedQuery
+	h.require(harboractivityapiHarborActivityQuerySourceFieldSavedQuery)
+}
+
+// SetSubmissionEventID sets the SubmissionEventID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivityQuerySource) SetSubmissionEventID(submissionEventID *string) {
+	h.SubmissionEventID = submissionEventID
+	h.require(harboractivityapiHarborActivityQuerySourceFieldSubmissionEventID)
+}
+
+// SetSubmittedAt sets the SubmittedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivityQuerySource) SetSubmittedAt(submittedAt *time.Time) {
+	h.SubmittedAt = submittedAt
+	h.require(harboractivityapiHarborActivityQuerySourceFieldSubmittedAt)
+}
+
+func (h *HarboractivityapiHarborActivityQuerySource) UnmarshalJSON(data []byte) error {
+	type embed HarboractivityapiHarborActivityQuerySource
+	var unmarshaler = struct {
+		embed
+		SubmittedAt *internal.DateTime `json:"submitted_at,omitempty"`
+	}{
+		embed: embed(*h),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*h = HarboractivityapiHarborActivityQuerySource(unmarshaler.embed)
+	h.SubmittedAt = unmarshaler.SubmittedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarboractivityapiHarborActivityQuerySource) MarshalJSON() ([]byte, error) {
+	type embed HarboractivityapiHarborActivityQuerySource
+	var marshaler = struct {
+		embed
+		SubmittedAt *internal.DateTime `json:"submitted_at,omitempty"`
+	}{
+		embed:       embed(*h),
+		SubmittedAt: internal.NewOptionalDateTime(h.SubmittedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarboractivityapiHarborActivityQuerySource) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harboractivityapiHarborActivitySavedQuerySourceFieldID            = big.NewInt(1 << 0)
+	harboractivityapiHarborActivitySavedQuerySourceFieldName          = big.NewInt(1 << 1)
+	harboractivityapiHarborActivitySavedQuerySourceFieldNameTruncated = big.NewInt(1 << 2)
+	harboractivityapiHarborActivitySavedQuerySourceFieldRevisionID    = big.NewInt(1 << 3)
+	harboractivityapiHarborActivitySavedQuerySourceFieldVersion       = big.NewInt(1 << 4)
+)
+
+type HarboractivityapiHarborActivitySavedQuerySource struct {
+	ID            *string `json:"id,omitempty" url:"id,omitempty"`
+	Name          *string `json:"name,omitempty" url:"name,omitempty"`
+	NameTruncated *bool   `json:"name_truncated,omitempty" url:"name_truncated,omitempty"`
+	RevisionID    *string `json:"revision_id,omitempty" url:"revision_id,omitempty"`
+	Version       *int    `json:"version,omitempty" url:"version,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarboractivityapiHarborActivitySavedQuerySource) GetID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ID
+}
+
+func (h *HarboractivityapiHarborActivitySavedQuerySource) GetName() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Name
+}
+
+func (h *HarboractivityapiHarborActivitySavedQuerySource) GetNameTruncated() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.NameTruncated
+}
+
+func (h *HarboractivityapiHarborActivitySavedQuerySource) GetRevisionID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.RevisionID
+}
+
+func (h *HarboractivityapiHarborActivitySavedQuerySource) GetVersion() *int {
+	if h == nil {
+		return nil
+	}
+	return h.Version
+}
+
+func (h *HarboractivityapiHarborActivitySavedQuerySource) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarboractivityapiHarborActivitySavedQuerySource) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivitySavedQuerySource) SetID(id *string) {
+	h.ID = id
+	h.require(harboractivityapiHarborActivitySavedQuerySourceFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivitySavedQuerySource) SetName(name *string) {
+	h.Name = name
+	h.require(harboractivityapiHarborActivitySavedQuerySourceFieldName)
+}
+
+// SetNameTruncated sets the NameTruncated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivitySavedQuerySource) SetNameTruncated(nameTruncated *bool) {
+	h.NameTruncated = nameTruncated
+	h.require(harboractivityapiHarborActivitySavedQuerySourceFieldNameTruncated)
+}
+
+// SetRevisionID sets the RevisionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivitySavedQuerySource) SetRevisionID(revisionID *string) {
+	h.RevisionID = revisionID
+	h.require(harboractivityapiHarborActivitySavedQuerySourceFieldRevisionID)
+}
+
+// SetVersion sets the Version field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivitySavedQuerySource) SetVersion(version *int) {
+	h.Version = version
+	h.require(harboractivityapiHarborActivitySavedQuerySourceFieldVersion)
+}
+
+func (h *HarboractivityapiHarborActivitySavedQuerySource) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarboractivityapiHarborActivitySavedQuerySource
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarboractivityapiHarborActivitySavedQuerySource(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarboractivityapiHarborActivitySavedQuerySource) MarshalJSON() ([]byte, error) {
+	type embed HarboractivityapiHarborActivitySavedQuerySource
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarboractivityapiHarborActivitySavedQuerySource) String() string {
 	if h == nil {
 		return "<nil>"
 	}
@@ -1944,14 +2296,18 @@ var (
 	harboractivityapiHarborActivityTargetFieldID             = big.NewInt(1 << 0)
 	harboractivityapiHarborActivityTargetFieldLabel          = big.NewInt(1 << 1)
 	harboractivityapiHarborActivityTargetFieldLabelTruncated = big.NewInt(1 << 2)
-	harboractivityapiHarborActivityTargetFieldType           = big.NewInt(1 << 3)
+	harboractivityapiHarborActivityTargetFieldRevisionID     = big.NewInt(1 << 3)
+	harboractivityapiHarborActivityTargetFieldType           = big.NewInt(1 << 4)
+	harboractivityapiHarborActivityTargetFieldVersion        = big.NewInt(1 << 5)
 )
 
 type HarboractivityapiHarborActivityTarget struct {
 	ID             *string `json:"id,omitempty" url:"id,omitempty"`
 	Label          *string `json:"label,omitempty" url:"label,omitempty"`
 	LabelTruncated *bool   `json:"label_truncated,omitempty" url:"label_truncated,omitempty"`
+	RevisionID     *string `json:"revision_id,omitempty" url:"revision_id,omitempty"`
 	Type           *string `json:"type,omitempty" url:"type,omitempty"`
+	Version        *int    `json:"version,omitempty" url:"version,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1981,11 +2337,25 @@ func (h *HarboractivityapiHarborActivityTarget) GetLabelTruncated() *bool {
 	return h.LabelTruncated
 }
 
+func (h *HarboractivityapiHarborActivityTarget) GetRevisionID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.RevisionID
+}
+
 func (h *HarboractivityapiHarborActivityTarget) GetType() *string {
 	if h == nil {
 		return nil
 	}
 	return h.Type
+}
+
+func (h *HarboractivityapiHarborActivityTarget) GetVersion() *int {
+	if h == nil {
+		return nil
+	}
+	return h.Version
 }
 
 func (h *HarboractivityapiHarborActivityTarget) GetExtraProperties() map[string]interface{} {
@@ -2023,11 +2393,25 @@ func (h *HarboractivityapiHarborActivityTarget) SetLabelTruncated(labelTruncated
 	h.require(harboractivityapiHarborActivityTargetFieldLabelTruncated)
 }
 
+// SetRevisionID sets the RevisionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivityTarget) SetRevisionID(revisionID *string) {
+	h.RevisionID = revisionID
+	h.require(harboractivityapiHarborActivityTargetFieldRevisionID)
+}
+
 // SetType sets the Type field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (h *HarboractivityapiHarborActivityTarget) SetType(type_ *string) {
 	h.Type = type_
 	h.require(harboractivityapiHarborActivityTargetFieldType)
+}
+
+// SetVersion sets the Version field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivityTarget) SetVersion(version *int) {
+	h.Version = version
+	h.require(harboractivityapiHarborActivityTargetFieldVersion)
 }
 
 func (h *HarboractivityapiHarborActivityTarget) UnmarshalJSON(data []byte) error {

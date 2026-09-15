@@ -218,37 +218,6 @@ func (q *QueryResultsEnvelope) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
-type QueryStatus string
-
-const (
-	QueryStatusCreated QueryStatus = "created"
-	QueryStatusRunning QueryStatus = "running"
-	QueryStatusUnknown QueryStatus = "unknown"
-	QueryStatusDone    QueryStatus = "done"
-	QueryStatusFailed  QueryStatus = "failed"
-)
-
-func NewQueryStatusFromString(s string) (QueryStatus, error) {
-	switch s {
-	case "created":
-		return QueryStatusCreated, nil
-	case "running":
-		return QueryStatusRunning, nil
-	case "unknown":
-		return QueryStatusUnknown, nil
-	case "done":
-		return QueryStatusDone, nil
-	case "failed":
-		return QueryStatusFailed, nil
-	}
-	var t QueryStatus
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (q QueryStatus) Ptr() *QueryStatus {
-	return &q
-}
-
 var (
 	runQueryEnvelopeFieldData = big.NewInt(1 << 0)
 )

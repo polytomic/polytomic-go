@@ -793,6 +793,275 @@ func TestHarborsDeleteKeyWithWireMock(
 	VerifyRequestCount(t, "TestHarborsDeleteKeyWithWireMock", "DELETE", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/keys/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }
 
+func TestHarborsListSavedQueriesWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &polytomic.HarborsListSavedQueriesRequest{
+		Limit: polytomic.Int(
+			1,
+		),
+		PageToken: polytomic.String(
+			"page_token",
+		),
+	}
+	_, invocationErr := client.Harbors.ListSavedQueries(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsListSavedQueriesWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsListSavedQueriesWithWireMock", "GET", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/saved-queries", map[string]interface{}{"limit": "1", "page_token": "page_token"}, 1)
+}
+
+func TestHarborsCreateSavedQueryDraftWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &polytomic.CreateHarborSavedQueryDraftRequest{
+		Name:        "Monthly revenue",
+		SQLTemplate: "SELECT account_id, sum(amount) AS revenue FROM orders WHERE created_at >= {{start_date}} GROUP BY account_id",
+	}
+	_, invocationErr := client.Harbors.CreateSavedQueryDraft(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsCreateSavedQueryDraftWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsCreateSavedQueryDraftWithWireMock", "POST", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/saved-queries", nil, 1)
+}
+
+func TestHarborsListSavedQueryDraftsWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &polytomic.HarborsListSavedQueryDraftsRequest{
+		Limit: polytomic.Int(
+			1,
+		),
+		PageToken: polytomic.String(
+			"page_token",
+		),
+	}
+	_, invocationErr := client.Harbors.ListSavedQueryDrafts(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsListSavedQueryDraftsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsListSavedQueryDraftsWithWireMock", "GET", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/saved-queries/drafts", map[string]interface{}{"limit": "1", "page_token": "page_token"}, 1)
+}
+
+func TestHarborsGetSavedQueryWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &polytomic.HarborsGetSavedQueryRequest{}
+	_, invocationErr := client.Harbors.GetSavedQuery(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsGetSavedQueryWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsGetSavedQueryWithWireMock", "GET", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/saved-queries/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
+}
+
+func TestHarborsDeleteSavedQueryWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	_, invocationErr := client.Harbors.DeleteSavedQuery(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsDeleteSavedQueryWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsDeleteSavedQueryWithWireMock", "DELETE", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/saved-queries/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
+}
+
+func TestHarborsSaveSavedQueryDraftWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &polytomic.SaveHarborSavedQueryDraftRequest{
+		Name:        "Monthly revenue",
+		SQLTemplate: "SELECT account_id, sum(amount) AS revenue FROM orders WHERE created_at >= {{start_date}} GROUP BY account_id",
+	}
+	_, invocationErr := client.Harbors.SaveSavedQueryDraft(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsSaveSavedQueryDraftWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsSaveSavedQueryDraftWithWireMock", "PUT", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/saved-queries/248df4b7-aa70-47b8-a036-33ac447e668d/draft", nil, 1)
+}
+
+func TestHarborsDeleteSavedQueryDraftWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	_, invocationErr := client.Harbors.DeleteSavedQueryDraft(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsDeleteSavedQueryDraftWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsDeleteSavedQueryDraftWithWireMock", "DELETE", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/saved-queries/248df4b7-aa70-47b8-a036-33ac447e668d/draft", nil, 1)
+}
+
+func TestHarborsPublishSavedQueryDraftWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	_, invocationErr := client.Harbors.PublishSavedQueryDraft(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsPublishSavedQueryDraftWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsPublishSavedQueryDraftWithWireMock", "POST", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/saved-queries/248df4b7-aa70-47b8-a036-33ac447e668d/draft/publish", nil, 1)
+}
+
+func TestHarborsValidateSavedQueryDraftWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	_, invocationErr := client.Harbors.ValidateSavedQueryDraft(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsValidateSavedQueryDraftWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsValidateSavedQueryDraftWithWireMock", "POST", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/saved-queries/248df4b7-aa70-47b8-a036-33ac447e668d/draft/validate", nil, 1)
+}
+
+func TestHarborsExecuteSavedQueryWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &polytomic.ExecuteHarborSavedQueryRequest{}
+	_, invocationErr := client.Harbors.ExecuteSavedQuery(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsExecuteSavedQueryWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsExecuteSavedQueryWithWireMock", "POST", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/saved-queries/248df4b7-aa70-47b8-a036-33ac447e668d/execute", nil, 1)
+}
+
 func TestHarborsResolveSourceMappingsWithWireMock(
 	t *testing.T,
 ) {

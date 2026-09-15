@@ -16,20 +16,21 @@ var (
 	createModelSyncV5RequestFieldFields               = big.NewInt(1 << 2)
 	createModelSyncV5RequestFieldFilterLogic          = big.NewInt(1 << 3)
 	createModelSyncV5RequestFieldFilters              = big.NewInt(1 << 4)
-	createModelSyncV5RequestFieldIdentity             = big.NewInt(1 << 5)
-	createModelSyncV5RequestFieldMode                 = big.NewInt(1 << 6)
-	createModelSyncV5RequestFieldModelFilters         = big.NewInt(1 << 7)
-	createModelSyncV5RequestFieldName                 = big.NewInt(1 << 8)
-	createModelSyncV5RequestFieldOnlyEnrichUpdates    = big.NewInt(1 << 9)
-	createModelSyncV5RequestFieldOrganizationID       = big.NewInt(1 << 10)
-	createModelSyncV5RequestFieldOverrideFields       = big.NewInt(1 << 11)
-	createModelSyncV5RequestFieldOverrides            = big.NewInt(1 << 12)
-	createModelSyncV5RequestFieldPolicies             = big.NewInt(1 << 13)
-	createModelSyncV5RequestFieldSchedule             = big.NewInt(1 << 14)
-	createModelSyncV5RequestFieldSkipInitialBackfill  = big.NewInt(1 << 15)
-	createModelSyncV5RequestFieldSyncAllRecords       = big.NewInt(1 << 16)
-	createModelSyncV5RequestFieldTarget               = big.NewInt(1 << 17)
-	createModelSyncV5RequestFieldTargetFilters        = big.NewInt(1 << 18)
+	createModelSyncV5RequestFieldIdentities           = big.NewInt(1 << 5)
+	createModelSyncV5RequestFieldIdentity             = big.NewInt(1 << 6)
+	createModelSyncV5RequestFieldMode                 = big.NewInt(1 << 7)
+	createModelSyncV5RequestFieldModelFilters         = big.NewInt(1 << 8)
+	createModelSyncV5RequestFieldName                 = big.NewInt(1 << 9)
+	createModelSyncV5RequestFieldOnlyEnrichUpdates    = big.NewInt(1 << 10)
+	createModelSyncV5RequestFieldOrganizationID       = big.NewInt(1 << 11)
+	createModelSyncV5RequestFieldOverrideFields       = big.NewInt(1 << 12)
+	createModelSyncV5RequestFieldOverrides            = big.NewInt(1 << 13)
+	createModelSyncV5RequestFieldPolicies             = big.NewInt(1 << 14)
+	createModelSyncV5RequestFieldSchedule             = big.NewInt(1 << 15)
+	createModelSyncV5RequestFieldSkipInitialBackfill  = big.NewInt(1 << 16)
+	createModelSyncV5RequestFieldSyncAllRecords       = big.NewInt(1 << 17)
+	createModelSyncV5RequestFieldTarget               = big.NewInt(1 << 18)
+	createModelSyncV5RequestFieldTargetFilters        = big.NewInt(1 << 19)
 )
 
 type CreateModelSyncV5Request struct {
@@ -42,7 +43,10 @@ type CreateModelSyncV5Request struct {
 	// Deprecated. Use 'model_filters.logic'. Combines the model filters in 'filters' only.
 	FilterLogic *string `json:"filter_logic,omitempty" url:"-"`
 	// Deprecated. Use 'model_filters.conditions' and 'target_filters.conditions', which say which kind each condition is rather than inferring it. Ignored when either of those is present, except that a request carrying both shapes is rejected if they describe different filters.
-	Filters      []*Filter               `json:"filters,omitempty" url:"-"`
+	Filters []*Filter `json:"filters,omitempty" url:"-"`
+	// Identity mappings for the sync and the strategy combining them, replacing any the sync has. When this is omitted, 'identity' is used instead; updating a sync with more than one mapping requires this property.
+	Identities *ModelSyncIdentities `json:"identities,omitempty" url:"-"`
+	// Deprecated. Use 'identities'. Reports and accepts the first identity mapping only.
 	Identity     *Identity               `json:"identity,omitempty" url:"-"`
 	Mode         ModelsyncSyncTargetMode `json:"mode" url:"-"`
 	ModelFilters *ModelFilters           `json:"model_filters,omitempty" url:"-"`
@@ -108,6 +112,13 @@ func (c *CreateModelSyncV5Request) SetFilterLogic(filterLogic *string) {
 func (c *CreateModelSyncV5Request) SetFilters(filters []*Filter) {
 	c.Filters = filters
 	c.require(createModelSyncV5RequestFieldFilters)
+}
+
+// SetIdentities sets the Identities field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateModelSyncV5Request) SetIdentities(identities *ModelSyncIdentities) {
+	c.Identities = identities
+	c.require(createModelSyncV5RequestFieldIdentities)
 }
 
 // SetIdentity sets the Identity field and marks it as non-optional;
@@ -417,20 +428,21 @@ var (
 	updateModelSyncV5RequestFieldFields               = big.NewInt(1 << 2)
 	updateModelSyncV5RequestFieldFilterLogic          = big.NewInt(1 << 3)
 	updateModelSyncV5RequestFieldFilters              = big.NewInt(1 << 4)
-	updateModelSyncV5RequestFieldIdentity             = big.NewInt(1 << 5)
-	updateModelSyncV5RequestFieldMode                 = big.NewInt(1 << 6)
-	updateModelSyncV5RequestFieldModelFilters         = big.NewInt(1 << 7)
-	updateModelSyncV5RequestFieldName                 = big.NewInt(1 << 8)
-	updateModelSyncV5RequestFieldOnlyEnrichUpdates    = big.NewInt(1 << 9)
-	updateModelSyncV5RequestFieldOrganizationID       = big.NewInt(1 << 10)
-	updateModelSyncV5RequestFieldOverrideFields       = big.NewInt(1 << 11)
-	updateModelSyncV5RequestFieldOverrides            = big.NewInt(1 << 12)
-	updateModelSyncV5RequestFieldPolicies             = big.NewInt(1 << 13)
-	updateModelSyncV5RequestFieldSchedule             = big.NewInt(1 << 14)
-	updateModelSyncV5RequestFieldSkipInitialBackfill  = big.NewInt(1 << 15)
-	updateModelSyncV5RequestFieldSyncAllRecords       = big.NewInt(1 << 16)
-	updateModelSyncV5RequestFieldTarget               = big.NewInt(1 << 17)
-	updateModelSyncV5RequestFieldTargetFilters        = big.NewInt(1 << 18)
+	updateModelSyncV5RequestFieldIdentities           = big.NewInt(1 << 5)
+	updateModelSyncV5RequestFieldIdentity             = big.NewInt(1 << 6)
+	updateModelSyncV5RequestFieldMode                 = big.NewInt(1 << 7)
+	updateModelSyncV5RequestFieldModelFilters         = big.NewInt(1 << 8)
+	updateModelSyncV5RequestFieldName                 = big.NewInt(1 << 9)
+	updateModelSyncV5RequestFieldOnlyEnrichUpdates    = big.NewInt(1 << 10)
+	updateModelSyncV5RequestFieldOrganizationID       = big.NewInt(1 << 11)
+	updateModelSyncV5RequestFieldOverrideFields       = big.NewInt(1 << 12)
+	updateModelSyncV5RequestFieldOverrides            = big.NewInt(1 << 13)
+	updateModelSyncV5RequestFieldPolicies             = big.NewInt(1 << 14)
+	updateModelSyncV5RequestFieldSchedule             = big.NewInt(1 << 15)
+	updateModelSyncV5RequestFieldSkipInitialBackfill  = big.NewInt(1 << 16)
+	updateModelSyncV5RequestFieldSyncAllRecords       = big.NewInt(1 << 17)
+	updateModelSyncV5RequestFieldTarget               = big.NewInt(1 << 18)
+	updateModelSyncV5RequestFieldTargetFilters        = big.NewInt(1 << 19)
 )
 
 type UpdateModelSyncV5Request struct {
@@ -443,7 +455,10 @@ type UpdateModelSyncV5Request struct {
 	// Deprecated. Use 'model_filters.logic'. Combines the model filters in 'filters' only.
 	FilterLogic *string `json:"filter_logic,omitempty" url:"-"`
 	// Deprecated. Use 'model_filters.conditions' and 'target_filters.conditions', which say which kind each condition is rather than inferring it. Ignored when either of those is present, except that a request carrying both shapes is rejected if they describe different filters.
-	Filters      []*Filter               `json:"filters,omitempty" url:"-"`
+	Filters []*Filter `json:"filters,omitempty" url:"-"`
+	// Identity mappings for the sync and the strategy combining them, replacing any the sync has. When this is omitted, 'identity' is used instead; updating a sync with more than one mapping requires this property.
+	Identities *ModelSyncIdentities `json:"identities,omitempty" url:"-"`
+	// Deprecated. Use 'identities'. Reports and accepts the first identity mapping only.
 	Identity     *Identity               `json:"identity,omitempty" url:"-"`
 	Mode         ModelsyncSyncTargetMode `json:"mode" url:"-"`
 	ModelFilters *ModelFilters           `json:"model_filters,omitempty" url:"-"`
@@ -509,6 +524,13 @@ func (u *UpdateModelSyncV5Request) SetFilterLogic(filterLogic *string) {
 func (u *UpdateModelSyncV5Request) SetFilters(filters []*Filter) {
 	u.Filters = filters
 	u.require(updateModelSyncV5RequestFieldFilters)
+}
+
+// SetIdentities sets the Identities field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateModelSyncV5Request) SetIdentities(identities *ModelSyncIdentities) {
+	u.Identities = identities
+	u.require(updateModelSyncV5RequestFieldIdentities)
 }
 
 // SetIdentity sets the Identity field and marks it as non-optional;
@@ -1925,6 +1947,261 @@ func (m *ModelFilters) String() string {
 	return fmt.Sprintf("%#v", m)
 }
 
+// Identity mappings determining how records are matched between source and destination.
+var (
+	modelSyncIdentitiesFieldMappings = big.NewInt(1 << 0)
+	modelSyncIdentitiesFieldStrategy = big.NewInt(1 << 1)
+)
+
+type ModelSyncIdentities struct {
+	// Identity mappings in priority order. An empty list removes every identity mapping.
+	Mappings []*Identity `json:"mappings" url:"mappings"`
+	// How the mappings are combined: 'priority' matches each record on the first mapping that finds a destination record, and 'and' requires every mapping to match. Required when there is more than one mapping; a single mapping is always 'priority'.
+	Strategy *ModelSyncIdentitiesStrategy `json:"strategy,omitempty" url:"strategy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelSyncIdentities) GetMappings() []*Identity {
+	if m == nil {
+		return nil
+	}
+	return m.Mappings
+}
+
+func (m *ModelSyncIdentities) GetStrategy() *ModelSyncIdentitiesStrategy {
+	if m == nil {
+		return nil
+	}
+	return m.Strategy
+}
+
+func (m *ModelSyncIdentities) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *ModelSyncIdentities) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetMappings sets the Mappings field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncIdentities) SetMappings(mappings []*Identity) {
+	m.Mappings = mappings
+	m.require(modelSyncIdentitiesFieldMappings)
+}
+
+// SetStrategy sets the Strategy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncIdentities) SetStrategy(strategy *ModelSyncIdentitiesStrategy) {
+	m.Strategy = strategy
+	m.require(modelSyncIdentitiesFieldStrategy)
+}
+
+func (m *ModelSyncIdentities) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelSyncIdentities
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelSyncIdentities(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelSyncIdentities) MarshalJSON() ([]byte, error) {
+	type embed ModelSyncIdentities
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *ModelSyncIdentities) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+// How the mappings are combined: 'priority' matches each record on the first mapping that finds a destination record, and 'and' requires every mapping to match. Required when there is more than one mapping; a single mapping is always 'priority'.
+type ModelSyncIdentitiesStrategy string
+
+const (
+	ModelSyncIdentitiesStrategyPriority ModelSyncIdentitiesStrategy = "priority"
+	ModelSyncIdentitiesStrategyAnd      ModelSyncIdentitiesStrategy = "and"
+)
+
+func NewModelSyncIdentitiesStrategyFromString(s string) (ModelSyncIdentitiesStrategy, error) {
+	switch s {
+	case "priority":
+		return ModelSyncIdentitiesStrategyPriority, nil
+	case "and":
+		return ModelSyncIdentitiesStrategyAnd, nil
+	}
+	var t ModelSyncIdentitiesStrategy
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m ModelSyncIdentitiesStrategy) Ptr() *ModelSyncIdentitiesStrategy {
+	return &m
+}
+
+var (
+	modelSyncProblemFieldCode     = big.NewInt(1 << 0)
+	modelSyncProblemFieldMessage  = big.NewInt(1 << 1)
+	modelSyncProblemFieldPath     = big.NewInt(1 << 2)
+	modelSyncProblemFieldSeverity = big.NewInt(1 << 3)
+)
+
+type ModelSyncProblem struct {
+	// Stable identifier for the kind of problem. Branch on this rather than on 'message'.
+	Code *string `json:"code,omitempty" url:"code,omitempty"`
+	// Description of the problem, suitable for showing to a person.
+	Message *string `json:"message,omitempty" url:"message,omitempty"`
+	// JSON path of the part of this configuration the problem is about, relative to the sync object.
+	Path *string `json:"path,omitempty" url:"path,omitempty"`
+	// How serious the problem is. Every problem reported today is an error, which stops the sync from running; read this rather than assuming.
+	Severity *string `json:"severity,omitempty" url:"severity,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelSyncProblem) GetCode() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Code
+}
+
+func (m *ModelSyncProblem) GetMessage() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Message
+}
+
+func (m *ModelSyncProblem) GetPath() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Path
+}
+
+func (m *ModelSyncProblem) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *ModelSyncProblem) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetCode sets the Code field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncProblem) SetCode(code *string) {
+	m.Code = code
+	m.require(modelSyncProblemFieldCode)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncProblem) SetMessage(message *string) {
+	m.Message = message
+	m.require(modelSyncProblemFieldMessage)
+}
+
+// SetPath sets the Path field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncProblem) SetPath(path *string) {
+	m.Path = path
+	m.require(modelSyncProblemFieldPath)
+}
+
+// SetSeverity sets the Severity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncProblem) SetSeverity(severity *string) {
+	m.Severity = severity
+	m.require(modelSyncProblemFieldSeverity)
+}
+
+func (m *ModelSyncProblem) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelSyncProblem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelSyncProblem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelSyncProblem) MarshalJSON() ([]byte, error) {
+	type embed ModelSyncProblem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *ModelSyncProblem) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
 var (
 	modelSyncV5ResponseFieldActive               = big.NewInt(1 << 0)
 	modelSyncV5ResponseFieldCreatedAt            = big.NewInt(1 << 1)
@@ -1934,23 +2211,25 @@ var (
 	modelSyncV5ResponseFieldFilterLogic          = big.NewInt(1 << 5)
 	modelSyncV5ResponseFieldFilters              = big.NewInt(1 << 6)
 	modelSyncV5ResponseFieldID                   = big.NewInt(1 << 7)
-	modelSyncV5ResponseFieldIdentity             = big.NewInt(1 << 8)
-	modelSyncV5ResponseFieldMode                 = big.NewInt(1 << 9)
-	modelSyncV5ResponseFieldModelFilters         = big.NewInt(1 << 10)
-	modelSyncV5ResponseFieldModelIDs             = big.NewInt(1 << 11)
-	modelSyncV5ResponseFieldName                 = big.NewInt(1 << 12)
-	modelSyncV5ResponseFieldOnlyEnrichUpdates    = big.NewInt(1 << 13)
-	modelSyncV5ResponseFieldOrganizationID       = big.NewInt(1 << 14)
-	modelSyncV5ResponseFieldOverrideFields       = big.NewInt(1 << 15)
-	modelSyncV5ResponseFieldOverrides            = big.NewInt(1 << 16)
-	modelSyncV5ResponseFieldPolicies             = big.NewInt(1 << 17)
-	modelSyncV5ResponseFieldSchedule             = big.NewInt(1 << 18)
-	modelSyncV5ResponseFieldSkipInitialBackfill  = big.NewInt(1 << 19)
-	modelSyncV5ResponseFieldSyncAllRecords       = big.NewInt(1 << 20)
-	modelSyncV5ResponseFieldTarget               = big.NewInt(1 << 21)
-	modelSyncV5ResponseFieldTargetFilters        = big.NewInt(1 << 22)
-	modelSyncV5ResponseFieldUpdatedAt            = big.NewInt(1 << 23)
-	modelSyncV5ResponseFieldUpdatedBy            = big.NewInt(1 << 24)
+	modelSyncV5ResponseFieldIdentities           = big.NewInt(1 << 8)
+	modelSyncV5ResponseFieldIdentity             = big.NewInt(1 << 9)
+	modelSyncV5ResponseFieldMode                 = big.NewInt(1 << 10)
+	modelSyncV5ResponseFieldModelFilters         = big.NewInt(1 << 11)
+	modelSyncV5ResponseFieldModelIDs             = big.NewInt(1 << 12)
+	modelSyncV5ResponseFieldName                 = big.NewInt(1 << 13)
+	modelSyncV5ResponseFieldOnlyEnrichUpdates    = big.NewInt(1 << 14)
+	modelSyncV5ResponseFieldOrganizationID       = big.NewInt(1 << 15)
+	modelSyncV5ResponseFieldOverrideFields       = big.NewInt(1 << 16)
+	modelSyncV5ResponseFieldOverrides            = big.NewInt(1 << 17)
+	modelSyncV5ResponseFieldPolicies             = big.NewInt(1 << 18)
+	modelSyncV5ResponseFieldProblems             = big.NewInt(1 << 19)
+	modelSyncV5ResponseFieldSchedule             = big.NewInt(1 << 20)
+	modelSyncV5ResponseFieldSkipInitialBackfill  = big.NewInt(1 << 21)
+	modelSyncV5ResponseFieldSyncAllRecords       = big.NewInt(1 << 22)
+	modelSyncV5ResponseFieldTarget               = big.NewInt(1 << 23)
+	modelSyncV5ResponseFieldTargetFilters        = big.NewInt(1 << 24)
+	modelSyncV5ResponseFieldUpdatedAt            = big.NewInt(1 << 25)
+	modelSyncV5ResponseFieldUpdatedBy            = big.NewInt(1 << 26)
 )
 
 type ModelSyncV5Response struct {
@@ -1962,26 +2241,31 @@ type ModelSyncV5Response struct {
 	// Deprecated. Use 'model_filters.logic'.
 	FilterLogic *string `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
 	// Deprecated. Use 'model_filters.conditions' and 'target_filters.conditions'. Reports the same filters, with the two kinds interleaved and told apart by 'field_type'.
-	Filters      []*Filter                `json:"filters,omitempty" url:"filters,omitempty"`
-	ID           *string                  `json:"id,omitempty" url:"id,omitempty"`
+	Filters []*Filter `json:"filters,omitempty" url:"filters,omitempty"`
+	ID      *string   `json:"id,omitempty" url:"id,omitempty"`
+	// Identity mappings for the sync and the strategy combining them.
+	Identities *ModelSyncIdentities `json:"identities,omitempty" url:"identities,omitempty"`
+	// Deprecated. Use 'identities'. Reports the first identity mapping only.
 	Identity     *Identity                `json:"identity,omitempty" url:"identity,omitempty"`
 	Mode         *ModelsyncSyncTargetMode `json:"mode,omitempty" url:"mode,omitempty"`
 	ModelFilters *ModelFilters            `json:"model_filters,omitempty" url:"model_filters,omitempty"`
 	// Model IDs used in the sync.
-	ModelIDs            []string           `json:"model_ids,omitempty" url:"model_ids,omitempty"`
-	Name                *string            `json:"name,omitempty" url:"name,omitempty"`
-	OnlyEnrichUpdates   *bool              `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
-	OrganizationID      *string            `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	OverrideFields      []*OverrideField   `json:"override_fields,omitempty" url:"override_fields,omitempty"`
-	Overrides           []*Override        `json:"overrides,omitempty" url:"overrides,omitempty"`
-	Policies            []string           `json:"policies,omitempty" url:"policies,omitempty"`
-	Schedule            *Schedule          `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SkipInitialBackfill *bool              `json:"skip_initial_backfill,omitempty" url:"skip_initial_backfill,omitempty"`
-	SyncAllRecords      *bool              `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
-	Target              *ModelSyncV5Target `json:"target,omitempty" url:"target,omitempty"`
-	TargetFilters       *TargetFilters     `json:"target_filters,omitempty" url:"target_filters,omitempty"`
-	UpdatedAt           *time.Time         `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	UpdatedBy           *OutputActor       `json:"updated_by,omitempty" url:"updated_by,omitempty"`
+	ModelIDs          []string         `json:"model_ids,omitempty" url:"model_ids,omitempty"`
+	Name              *string          `json:"name,omitempty" url:"name,omitempty"`
+	OnlyEnrichUpdates *bool            `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
+	OrganizationID    *string          `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	OverrideFields    []*OverrideField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
+	Overrides         []*Override      `json:"overrides,omitempty" url:"overrides,omitempty"`
+	Policies          []string         `json:"policies,omitempty" url:"policies,omitempty"`
+	// Parts of this configuration which could not be resolved when it was read. The configuration is reported unchanged, references included, so it can be corrected and written back; this property is ignored on input.
+	Problems            []*ModelSyncProblem `json:"problems,omitempty" url:"problems,omitempty"`
+	Schedule            *Schedule           `json:"schedule,omitempty" url:"schedule,omitempty"`
+	SkipInitialBackfill *bool               `json:"skip_initial_backfill,omitempty" url:"skip_initial_backfill,omitempty"`
+	SyncAllRecords      *bool               `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
+	Target              *ModelSyncV5Target  `json:"target,omitempty" url:"target,omitempty"`
+	TargetFilters       *TargetFilters      `json:"target_filters,omitempty" url:"target_filters,omitempty"`
+	UpdatedAt           *time.Time          `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	UpdatedBy           *OutputActor        `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2044,6 +2328,13 @@ func (m *ModelSyncV5Response) GetID() *string {
 		return nil
 	}
 	return m.ID
+}
+
+func (m *ModelSyncV5Response) GetIdentities() *ModelSyncIdentities {
+	if m == nil {
+		return nil
+	}
+	return m.Identities
 }
 
 func (m *ModelSyncV5Response) GetIdentity() *Identity {
@@ -2114,6 +2405,13 @@ func (m *ModelSyncV5Response) GetPolicies() []string {
 		return nil
 	}
 	return m.Policies
+}
+
+func (m *ModelSyncV5Response) GetProblems() []*ModelSyncProblem {
+	if m == nil {
+		return nil
+	}
+	return m.Problems
 }
 
 func (m *ModelSyncV5Response) GetSchedule() *Schedule {
@@ -2235,6 +2533,13 @@ func (m *ModelSyncV5Response) SetID(id *string) {
 	m.require(modelSyncV5ResponseFieldID)
 }
 
+// SetIdentities sets the Identities field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetIdentities(identities *ModelSyncIdentities) {
+	m.Identities = identities
+	m.require(modelSyncV5ResponseFieldIdentities)
+}
+
 // SetIdentity sets the Identity field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (m *ModelSyncV5Response) SetIdentity(identity *Identity) {
@@ -2303,6 +2608,13 @@ func (m *ModelSyncV5Response) SetOverrides(overrides []*Override) {
 func (m *ModelSyncV5Response) SetPolicies(policies []string) {
 	m.Policies = policies
 	m.require(modelSyncV5ResponseFieldPolicies)
+}
+
+// SetProblems sets the Problems field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncV5Response) SetProblems(problems []*ModelSyncProblem) {
+	m.Problems = problems
+	m.require(modelSyncV5ResponseFieldProblems)
 }
 
 // SetSchedule sets the Schedule field and marks it as non-optional;

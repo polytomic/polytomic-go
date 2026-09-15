@@ -1446,6 +1446,533 @@ func (r *RawClient) DeleteKey(
 	}, nil
 }
 
+func (r *RawClient) ListSavedQueries(
+	ctx context.Context,
+	// Unique identifier of the Harbor.
+	harborID string,
+	request *polytomic.HarborsListSavedQueriesRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*polytomic.HarborSavedQueryListEnvelope], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/harbors/%v/saved-queries",
+		harborID,
+	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	if request.PolytomicHarborSession != nil {
+		headers.Add("X-Polytomic-Harbor-Session", *request.PolytomicHarborSession)
+	}
+	if request.PolytomicActivityRequestID != nil {
+		headers.Add("X-Polytomic-Activity-Request-ID", *request.PolytomicActivityRequestID)
+	}
+
+	var response *polytomic.HarborSavedQueryListEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.HarborSavedQueryListEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) CreateSavedQueryDraft(
+	ctx context.Context,
+	// Unique identifier of the Harbor.
+	harborID string,
+	request *polytomic.CreateHarborSavedQueryDraftRequest,
+	opts ...option.IdempotentRequestOption,
+) (*core.Response[*polytomic.HarborSavedQueryDraftEnvelope], error) {
+	options := core.NewIdempotentRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/harbors/%v/saved-queries",
+		harborID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("Content-Type", "application/json")
+	var response *polytomic.HarborSavedQueryDraftEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.HarborSavedQueryDraftEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) ListSavedQueryDrafts(
+	ctx context.Context,
+	// Unique identifier of the Harbor.
+	harborID string,
+	request *polytomic.HarborsListSavedQueryDraftsRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*polytomic.HarborSavedQueryDraftListEnvelope], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/harbors/%v/saved-queries/drafts",
+		harborID,
+	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *polytomic.HarborSavedQueryDraftListEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.HarborSavedQueryDraftListEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) GetSavedQuery(
+	ctx context.Context,
+	// Unique identifier of the Harbor.
+	harborID string,
+	// Unique stable identifier of the saved query.
+	savedQueryID string,
+	request *polytomic.HarborsGetSavedQueryRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*polytomic.HarborSavedQueryEnvelope], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/harbors/%v/saved-queries/%v",
+		harborID,
+		savedQueryID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	if request.PolytomicHarborSession != nil {
+		headers.Add("X-Polytomic-Harbor-Session", *request.PolytomicHarborSession)
+	}
+	if request.PolytomicActivityRequestID != nil {
+		headers.Add("X-Polytomic-Activity-Request-ID", *request.PolytomicActivityRequestID)
+	}
+
+	var response *polytomic.HarborSavedQueryEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.HarborSavedQueryEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) DeleteSavedQuery(
+	ctx context.Context,
+	// Unique identifier of the Harbor.
+	harborID string,
+	// Unique stable identifier of the saved query.
+	savedQueryID string,
+	opts ...option.IdempotentRequestOption,
+) (*core.Response[*polytomic.DeletedHarborSavedQueryEnvelope], error) {
+	options := core.NewIdempotentRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/harbors/%v/saved-queries/%v",
+		harborID,
+		savedQueryID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *polytomic.DeletedHarborSavedQueryEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodDelete,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.DeletedHarborSavedQueryEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) SaveSavedQueryDraft(
+	ctx context.Context,
+	// Unique identifier of the Harbor.
+	harborID string,
+	// Unique stable identifier of the saved query.
+	savedQueryID string,
+	request *polytomic.SaveHarborSavedQueryDraftRequest,
+	opts ...option.IdempotentRequestOption,
+) (*core.Response[*polytomic.HarborSavedQueryDraftEnvelope], error) {
+	options := core.NewIdempotentRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/harbors/%v/saved-queries/%v/draft",
+		harborID,
+		savedQueryID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("Content-Type", "application/json")
+	var response *polytomic.HarborSavedQueryDraftEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPut,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.HarborSavedQueryDraftEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) DeleteSavedQueryDraft(
+	ctx context.Context,
+	// Unique identifier of the Harbor.
+	harborID string,
+	// Unique stable identifier of the saved query.
+	savedQueryID string,
+	opts ...option.IdempotentRequestOption,
+) (*core.Response[*polytomic.DeletedHarborSavedQueryDraftEnvelope], error) {
+	options := core.NewIdempotentRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/harbors/%v/saved-queries/%v/draft",
+		harborID,
+		savedQueryID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *polytomic.DeletedHarborSavedQueryDraftEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodDelete,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.DeletedHarborSavedQueryDraftEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) PublishSavedQueryDraft(
+	ctx context.Context,
+	// Unique identifier of the Harbor.
+	harborID string,
+	// Unique stable identifier of the saved query.
+	savedQueryID string,
+	opts ...option.IdempotentRequestOption,
+) (*core.Response[*polytomic.HarborSavedQueryEnvelope], error) {
+	options := core.NewIdempotentRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/harbors/%v/saved-queries/%v/draft/publish",
+		harborID,
+		savedQueryID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *polytomic.HarborSavedQueryEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.HarborSavedQueryEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) ValidateSavedQueryDraft(
+	ctx context.Context,
+	// Unique identifier of the Harbor.
+	harborID string,
+	// Unique stable identifier of the saved query.
+	savedQueryID string,
+	opts ...option.IdempotentRequestOption,
+) (*core.Response[*polytomic.HarborSavedQueryValidationEnvelope], error) {
+	options := core.NewIdempotentRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/harbors/%v/saved-queries/%v/draft/validate",
+		harborID,
+		savedQueryID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *polytomic.HarborSavedQueryValidationEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.HarborSavedQueryValidationEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) ExecuteSavedQuery(
+	ctx context.Context,
+	// Unique identifier of the Harbor.
+	harborID string,
+	// Unique stable identifier of the saved query.
+	savedQueryID string,
+	request *polytomic.ExecuteHarborSavedQueryRequest,
+	opts ...option.IdempotentRequestOption,
+) (*core.Response[*polytomic.ExecuteHarborSavedQueryEnvelope], error) {
+	options := core.NewIdempotentRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/harbors/%v/saved-queries/%v/execute",
+		harborID,
+		savedQueryID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	if request.PolytomicHarborSession != nil {
+		headers.Add("X-Polytomic-Harbor-Session", *request.PolytomicHarborSession)
+	}
+	if request.PolytomicActivityRequestID != nil {
+		headers.Add("X-Polytomic-Activity-Request-ID", *request.PolytomicActivityRequestID)
+	}
+	headers.Add("Content-Type", "application/json")
+	var response *polytomic.ExecuteHarborSavedQueryEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.ExecuteHarborSavedQueryEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
 func (r *RawClient) ResolveSourceMappings(
 	ctx context.Context,
 	// Unique identifier of the Harbor.

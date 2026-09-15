@@ -1351,56 +1351,6 @@ func TestStringRunQueryResult(t *testing.T) {
 	})
 }
 
-func TestEnumQueryStatus(t *testing.T) {
-	t.Run("NewFromString_created", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewQueryStatusFromString("created")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, QueryStatus("created"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_running", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewQueryStatusFromString("running")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, QueryStatus("running"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_unknown", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewQueryStatusFromString("unknown")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, QueryStatus("unknown"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_done", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewQueryStatusFromString("done")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, QueryStatus("done"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_failed", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewQueryStatusFromString("failed")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, QueryStatus("failed"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_Invalid", func(t *testing.T) {
-		_, err := NewQueryStatusFromString("invalid_value_that_does_not_exist")
-		assert.Error(t, err)
-	})
-
-	t.Run("Ptr", func(t *testing.T) {
-		val, err := NewQueryStatusFromString("created")
-		assert.NoError(t, err)
-		ptr := val.Ptr()
-		assert.NotNil(t, ptr)
-		assert.Equal(t, val, *ptr)
-	})
-}
-
 func TestExtraPropertiesQueryResultsEnvelope(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()

@@ -461,7 +461,7 @@ type UpdateBulkSyncRequest struct {
 	Policies []string `json:"policies,omitempty" url:"-"`
 	// Override the default resync concurrency limit for this sync.
 	ResyncConcurrencyLimit *int `json:"resync_concurrency_limit,omitempty" url:"-"`
-	// List of schemas to sync; if omitted, all schemas will be selected for syncing.
+	// Schemas to sync. Schemas not in the list are disabled; if omitted or empty, the sync's schemas are left unchanged.
 	Schemas []*UpdateBulkSyncRequestSchemasItem `json:"schemas,omitempty" url:"-"`
 	// Source-specific bulk sync configuration (e.g. replication slot name, sync lookback). The accepted keys depend on the source connection type.
 	SourceConfiguration map[string]any `json:"source_configuration,omitempty" url:"-"`

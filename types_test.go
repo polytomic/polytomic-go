@@ -23767,6 +23767,14 @@ func TestSettersSyncDestinationProperties(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetSupportsMultipleIdentities", func(t *testing.T) {
+		obj := &SyncDestinationProperties{}
+		var fernTestValueSupportsMultipleIdentities *bool
+		obj.SetSupportsMultipleIdentities(fernTestValueSupportsMultipleIdentities)
+		assert.Equal(t, fernTestValueSupportsMultipleIdentities, obj.SupportsMultipleIdentities)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetSupportsTargetFilters", func(t *testing.T) {
 		obj := &SyncDestinationProperties{}
 		var fernTestValueSupportsTargetFilters *bool
@@ -24155,6 +24163,39 @@ func TestGettersSyncDestinationProperties(t *testing.T) {
 			}
 		}()
 		_ = obj.GetSupportsIdentityFieldCreation() // Should return zero value
+	})
+
+	t.Run("GetSupportsMultipleIdentities", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &SyncDestinationProperties{}
+		var expected *bool
+		obj.SupportsMultipleIdentities = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetSupportsMultipleIdentities(), "getter should return the property value")
+	})
+
+	t.Run("GetSupportsMultipleIdentities_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &SyncDestinationProperties{}
+		obj.SupportsMultipleIdentities = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetSupportsMultipleIdentities(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetSupportsMultipleIdentities_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *SyncDestinationProperties
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetSupportsMultipleIdentities() // Should return zero value
 	})
 
 	t.Run("GetSupportsTargetFilters", func(t *testing.T) {
@@ -24577,6 +24618,37 @@ func TestSettersMarkExplicitSyncDestinationProperties(t *testing.T) {
 
 		// Act
 		obj.SetSupportsIdentityFieldCreation(fernTestValueSupportsIdentityFieldCreation)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetSupportsMultipleIdentities_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &SyncDestinationProperties{}
+		var fernTestValueSupportsMultipleIdentities *bool
+
+		// Act
+		obj.SetSupportsMultipleIdentities(fernTestValueSupportsMultipleIdentities)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -33755,6 +33827,56 @@ func TestEnumModelsyncSyncTargetMode(t *testing.T) {
 
 	t.Run("Ptr", func(t *testing.T) {
 		val, err := NewModelsyncSyncTargetModeFromString("create")
+		assert.NoError(t, err)
+		ptr := val.Ptr()
+		assert.NotNil(t, ptr)
+		assert.Equal(t, val, *ptr)
+	})
+}
+
+func TestEnumQueryStatus(t *testing.T) {
+	t.Run("NewFromString_created", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewQueryStatusFromString("created")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, QueryStatus("created"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_running", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewQueryStatusFromString("running")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, QueryStatus("running"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_unknown", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewQueryStatusFromString("unknown")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, QueryStatus("unknown"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_done", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewQueryStatusFromString("done")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, QueryStatus("done"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_failed", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewQueryStatusFromString("failed")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, QueryStatus("failed"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Invalid", func(t *testing.T) {
+		_, err := NewQueryStatusFromString("invalid_value_that_does_not_exist")
+		assert.Error(t, err)
+	})
+
+	t.Run("Ptr", func(t *testing.T) {
+		val, err := NewQueryStatusFromString("created")
 		assert.NoError(t, err)
 		ptr := val.Ptr()
 		assert.NotNil(t, ptr)

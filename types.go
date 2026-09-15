@@ -9967,6 +9967,37 @@ func (p *PolicyResponseEnvelope) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+type QueryStatus string
+
+const (
+	QueryStatusCreated QueryStatus = "created"
+	QueryStatusRunning QueryStatus = "running"
+	QueryStatusUnknown QueryStatus = "unknown"
+	QueryStatusDone    QueryStatus = "done"
+	QueryStatusFailed  QueryStatus = "failed"
+)
+
+func NewQueryStatusFromString(s string) (QueryStatus, error) {
+	switch s {
+	case "created":
+		return QueryStatusCreated, nil
+	case "running":
+		return QueryStatusRunning, nil
+	case "unknown":
+		return QueryStatusUnknown, nil
+	case "done":
+		return QueryStatusDone, nil
+	case "failed":
+		return QueryStatusFailed, nil
+	}
+	var t QueryStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (q QueryStatus) Ptr() *QueryStatus {
+	return &q
+}
+
 var (
 	roleListResponseEnvelopeFieldData = big.NewInt(1 << 0)
 )
@@ -11413,9 +11444,10 @@ var (
 	syncDestinationPropertiesFieldSupportsFieldTypeSelection    = big.NewInt(1 << 8)
 	syncDestinationPropertiesFieldSupportsFilterValueFields     = big.NewInt(1 << 9)
 	syncDestinationPropertiesFieldSupportsIdentityFieldCreation = big.NewInt(1 << 10)
-	syncDestinationPropertiesFieldSupportsTargetFilters         = big.NewInt(1 << 11)
-	syncDestinationPropertiesFieldTargetCreator                 = big.NewInt(1 << 12)
-	syncDestinationPropertiesFieldUseFieldNamesAsLabels         = big.NewInt(1 << 13)
+	syncDestinationPropertiesFieldSupportsMultipleIdentities    = big.NewInt(1 << 11)
+	syncDestinationPropertiesFieldSupportsTargetFilters         = big.NewInt(1 << 12)
+	syncDestinationPropertiesFieldTargetCreator                 = big.NewInt(1 << 13)
+	syncDestinationPropertiesFieldUseFieldNamesAsLabels         = big.NewInt(1 << 14)
 )
 
 type SyncDestinationProperties struct {
@@ -11441,6 +11473,8 @@ type SyncDestinationProperties struct {
 	SupportsFilterValueFields *bool `json:"supports_filter_value_fields,omitempty" url:"supports_filter_value_fields,omitempty"`
 	// True if a sync may create a new field on this target to use as the sync identity.
 	SupportsIdentityFieldCreation *bool `json:"supports_identity_field_creation,omitempty" url:"supports_identity_field_creation,omitempty"`
+	// True if the destination can match records on more than one identity mapping.
+	SupportsMultipleIdentities *bool `json:"supports_multiple_identities,omitempty" url:"supports_multiple_identities,omitempty"`
 	// True if target filters are supported on this destination; the chosen sync mode may further constrain availability.
 	SupportsTargetFilters *bool `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
 	// True if writing to this target will create a new object in the destination system rather than write to an existing one.
@@ -11530,6 +11564,13 @@ func (s *SyncDestinationProperties) GetSupportsIdentityFieldCreation() *bool {
 		return nil
 	}
 	return s.SupportsIdentityFieldCreation
+}
+
+func (s *SyncDestinationProperties) GetSupportsMultipleIdentities() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.SupportsMultipleIdentities
 }
 
 func (s *SyncDestinationProperties) GetSupportsTargetFilters() *bool {
@@ -11642,6 +11683,13 @@ func (s *SyncDestinationProperties) SetSupportsFilterValueFields(supportsFilterV
 func (s *SyncDestinationProperties) SetSupportsIdentityFieldCreation(supportsIdentityFieldCreation *bool) {
 	s.SupportsIdentityFieldCreation = supportsIdentityFieldCreation
 	s.require(syncDestinationPropertiesFieldSupportsIdentityFieldCreation)
+}
+
+// SetSupportsMultipleIdentities sets the SupportsMultipleIdentities field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SyncDestinationProperties) SetSupportsMultipleIdentities(supportsMultipleIdentities *bool) {
+	s.SupportsMultipleIdentities = supportsMultipleIdentities
+	s.require(syncDestinationPropertiesFieldSupportsMultipleIdentities)
 }
 
 // SetSupportsTargetFilters sets the SupportsTargetFilters field and marks it as non-optional;

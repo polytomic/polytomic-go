@@ -11,6 +11,106 @@ import (
 )
 
 var (
+	actionLookupFieldFieldID = big.NewInt(1 << 0)
+	actionLookupFieldValue   = big.NewInt(1 << 1)
+)
+
+type ActionLookup struct {
+	FieldID *string `json:"field_id,omitempty" url:"field_id,omitempty"`
+	Value   any     `json:"value,omitempty" url:"value,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *ActionLookup) GetFieldID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.FieldID
+}
+
+func (a *ActionLookup) GetValue() any {
+	if a == nil {
+		return nil
+	}
+	return a.Value
+}
+
+func (a *ActionLookup) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
+	return a.extraProperties
+}
+
+func (a *ActionLookup) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetFieldID sets the FieldID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ActionLookup) SetFieldID(fieldID *string) {
+	a.FieldID = fieldID
+	a.require(actionLookupFieldFieldID)
+}
+
+// SetValue sets the Value field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ActionLookup) SetValue(value any) {
+	a.Value = value
+	a.require(actionLookupFieldValue)
+}
+
+func (a *ActionLookup) UnmarshalJSON(data []byte) error {
+	type unmarshaler ActionLookup
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = ActionLookup(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *ActionLookup) MarshalJSON() ([]byte, error) {
+	type embed ActionLookup
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *ActionLookup) String() string {
+	if a == nil {
+		return "<nil>"
+	}
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
 	activateSyncEnvelopeFieldData = big.NewInt(1 << 0)
 )
 
@@ -3780,6 +3880,122 @@ func (c *CancelSyncExecutionResponseEnvelope) String() string {
 }
 
 var (
+	completionValueFieldLabel = big.NewInt(1 << 0)
+	completionValueFieldPath  = big.NewInt(1 << 1)
+	completionValueFieldValue = big.NewInt(1 << 2)
+)
+
+type CompletionValue struct {
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	Path  *string `json:"path,omitempty" url:"path,omitempty"`
+	Value any     `json:"value,omitempty" url:"value,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CompletionValue) GetLabel() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Label
+}
+
+func (c *CompletionValue) GetPath() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Path
+}
+
+func (c *CompletionValue) GetValue() any {
+	if c == nil {
+		return nil
+	}
+	return c.Value
+}
+
+func (c *CompletionValue) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *CompletionValue) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetLabel sets the Label field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CompletionValue) SetLabel(label *string) {
+	c.Label = label
+	c.require(completionValueFieldLabel)
+}
+
+// SetPath sets the Path field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CompletionValue) SetPath(path *string) {
+	c.Path = path
+	c.require(completionValueFieldPath)
+}
+
+// SetValue sets the Value field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CompletionValue) SetValue(value any) {
+	c.Value = value
+	c.require(completionValueFieldValue)
+}
+
+func (c *CompletionValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler CompletionValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CompletionValue(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CompletionValue) MarshalJSON() ([]byte, error) {
+	type embed CompletionValue
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CompletionValue) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
 	configurationValueFieldItems = big.NewInt(1 << 0)
 	configurationValueFieldType  = big.NewInt(1 << 1)
 )
@@ -5573,12 +5789,13 @@ var (
 	connectionResponseSchemaFieldOrganizationID      = big.NewInt(1 << 6)
 	connectionResponseSchemaFieldParentConnectionID  = big.NewInt(1 << 7)
 	connectionResponseSchemaFieldPolicies            = big.NewInt(1 << 8)
-	connectionResponseSchemaFieldSaved               = big.NewInt(1 << 9)
-	connectionResponseSchemaFieldStatus              = big.NewInt(1 << 10)
-	connectionResponseSchemaFieldStatusError         = big.NewInt(1 << 11)
-	connectionResponseSchemaFieldType                = big.NewInt(1 << 12)
-	connectionResponseSchemaFieldUpdatedAt           = big.NewInt(1 << 13)
-	connectionResponseSchemaFieldUpdatedBy           = big.NewInt(1 << 14)
+	connectionResponseSchemaFieldRateLimit           = big.NewInt(1 << 9)
+	connectionResponseSchemaFieldSaved               = big.NewInt(1 << 10)
+	connectionResponseSchemaFieldStatus              = big.NewInt(1 << 11)
+	connectionResponseSchemaFieldStatusError         = big.NewInt(1 << 12)
+	connectionResponseSchemaFieldType                = big.NewInt(1 << 13)
+	connectionResponseSchemaFieldUpdatedAt           = big.NewInt(1 << 14)
+	connectionResponseSchemaFieldUpdatedBy           = big.NewInt(1 << 15)
 )
 
 type ConnectionResponseSchema struct {
@@ -5591,14 +5808,16 @@ type ConnectionResponseSchema struct {
 	Name                *string        `json:"name,omitempty" url:"name,omitempty"`
 	OrganizationID      *string        `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// For shared connections, the ID of the parent connection.
-	ParentConnectionID *string               `json:"parent_connection_id,omitempty" url:"parent_connection_id,omitempty"`
-	Policies           []string              `json:"policies,omitempty" url:"policies,omitempty"`
-	Saved              *bool                 `json:"saved,omitempty" url:"saved,omitempty"`
-	Status             *string               `json:"status,omitempty" url:"status,omitempty"`
-	StatusError        *string               `json:"status_error,omitempty" url:"status_error,omitempty"`
-	Type               *ConnectionTypeSchema `json:"type,omitempty" url:"type,omitempty"`
-	UpdatedAt          *time.Time            `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	UpdatedBy          *OutputActor          `json:"updated_by,omitempty" url:"updated_by,omitempty"`
+	ParentConnectionID *string  `json:"parent_connection_id,omitempty" url:"parent_connection_id,omitempty"`
+	Policies           []string `json:"policies,omitempty" url:"policies,omitempty"`
+	// Observed connection-wide rate limiting, independent of connection health. Null when any required lookup is unavailable. Shared connections combine their own marker with their root connection's marker.
+	RateLimit   *ConnectionResponseSchemaRateLimit `json:"rate_limit,omitempty" url:"rate_limit,omitempty"`
+	Saved       *bool                              `json:"saved,omitempty" url:"saved,omitempty"`
+	Status      *string                            `json:"status,omitempty" url:"status,omitempty"`
+	StatusError *string                            `json:"status_error,omitempty" url:"status_error,omitempty"`
+	Type        *ConnectionTypeSchema              `json:"type,omitempty" url:"type,omitempty"`
+	UpdatedAt   *time.Time                         `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	UpdatedBy   *OutputActor                       `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -5668,6 +5887,13 @@ func (c *ConnectionResponseSchema) GetPolicies() []string {
 		return nil
 	}
 	return c.Policies
+}
+
+func (c *ConnectionResponseSchema) GetRateLimit() *ConnectionResponseSchemaRateLimit {
+	if c == nil {
+		return nil
+	}
+	return c.RateLimit
 }
 
 func (c *ConnectionResponseSchema) GetSaved() *bool {
@@ -5789,6 +6015,13 @@ func (c *ConnectionResponseSchema) SetPolicies(policies []string) {
 	c.require(connectionResponseSchemaFieldPolicies)
 }
 
+// SetRateLimit sets the RateLimit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionResponseSchema) SetRateLimit(rateLimit *ConnectionResponseSchemaRateLimit) {
+	c.RateLimit = rateLimit
+	c.require(connectionResponseSchemaFieldRateLimit)
+}
+
 // SetSaved sets the Saved field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *ConnectionResponseSchema) SetSaved(saved *bool) {
@@ -5871,6 +6104,138 @@ func (c *ConnectionResponseSchema) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConnectionResponseSchema) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+// Observed connection-wide rate limiting, independent of connection health. Null when any required lookup is unavailable. Shared connections combine their own marker with their root connection's marker.
+var (
+	connectionResponseSchemaRateLimitFieldCurrentlyLimited = big.NewInt(1 << 0)
+	connectionResponseSchemaRateLimitFieldExpiresAt        = big.NewInt(1 << 1)
+	connectionResponseSchemaRateLimitFieldLimitedSince     = big.NewInt(1 << 2)
+)
+
+type ConnectionResponseSchemaRateLimit struct {
+	// Whether Polytomic has an unexpired connection-wide rate-limit marker. False means no active observed limit, not guaranteed upstream capacity.
+	CurrentlyLimited *bool `json:"currently_limited,omitempty" url:"currently_limited,omitempty"`
+	// Marker expiry unless extended. Not a promised provider reset or exact retry time. Null when no active marker exists.
+	ExpiresAt *time.Time `json:"expires_at,omitempty" url:"expires_at,omitempty"`
+	// Start of the continuous rate-limited period. Null when no active marker exists.
+	LimitedSince *time.Time `json:"limited_since,omitempty" url:"limited_since,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ConnectionResponseSchemaRateLimit) GetCurrentlyLimited() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.CurrentlyLimited
+}
+
+func (c *ConnectionResponseSchemaRateLimit) GetExpiresAt() *time.Time {
+	if c == nil {
+		return nil
+	}
+	return c.ExpiresAt
+}
+
+func (c *ConnectionResponseSchemaRateLimit) GetLimitedSince() *time.Time {
+	if c == nil {
+		return nil
+	}
+	return c.LimitedSince
+}
+
+func (c *ConnectionResponseSchemaRateLimit) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *ConnectionResponseSchemaRateLimit) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetCurrentlyLimited sets the CurrentlyLimited field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionResponseSchemaRateLimit) SetCurrentlyLimited(currentlyLimited *bool) {
+	c.CurrentlyLimited = currentlyLimited
+	c.require(connectionResponseSchemaRateLimitFieldCurrentlyLimited)
+}
+
+// SetExpiresAt sets the ExpiresAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionResponseSchemaRateLimit) SetExpiresAt(expiresAt *time.Time) {
+	c.ExpiresAt = expiresAt
+	c.require(connectionResponseSchemaRateLimitFieldExpiresAt)
+}
+
+// SetLimitedSince sets the LimitedSince field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionResponseSchemaRateLimit) SetLimitedSince(limitedSince *time.Time) {
+	c.LimitedSince = limitedSince
+	c.require(connectionResponseSchemaRateLimitFieldLimitedSince)
+}
+
+func (c *ConnectionResponseSchemaRateLimit) UnmarshalJSON(data []byte) error {
+	type embed ConnectionResponseSchemaRateLimit
+	var unmarshaler = struct {
+		embed
+		ExpiresAt    *internal.DateTime `json:"expires_at,omitempty"`
+		LimitedSince *internal.DateTime `json:"limited_since,omitempty"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ConnectionResponseSchemaRateLimit(unmarshaler.embed)
+	c.ExpiresAt = unmarshaler.ExpiresAt.TimePtr()
+	c.LimitedSince = unmarshaler.LimitedSince.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionResponseSchemaRateLimit) MarshalJSON() ([]byte, error) {
+	type embed ConnectionResponseSchemaRateLimit
+	var marshaler = struct {
+		embed
+		ExpiresAt    *internal.DateTime `json:"expires_at,omitempty"`
+		LimitedSince *internal.DateTime `json:"limited_since,omitempty"`
+	}{
+		embed:        embed(*c),
+		ExpiresAt:    internal.NewOptionalDateTime(c.ExpiresAt),
+		LimitedSince: internal.NewOptionalDateTime(c.LimitedSince),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ConnectionResponseSchemaRateLimit) String() string {
 	if c == nil {
 		return "<nil>"
 	}
@@ -7798,6 +8163,1577 @@ func (g *GetSyncSourceMetaEnvelope) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	harborActionCapabilityFieldDescription  = big.NewInt(1 << 0)
+	harborActionCapabilityFieldEffect       = big.NewInt(1 << 1)
+	harborActionCapabilityFieldIdempotency  = big.NewInt(1 << 2)
+	harborActionCapabilityFieldInputFields  = big.NewInt(1 << 3)
+	harborActionCapabilityFieldLookupFields = big.NewInt(1 << 4)
+	harborActionCapabilityFieldName         = big.NewInt(1 << 5)
+	harborActionCapabilityFieldOperationID  = big.NewInt(1 << 6)
+	harborActionCapabilityFieldOutputFields = big.NewInt(1 << 7)
+	harborActionCapabilityFieldSchemaID     = big.NewInt(1 << 8)
+)
+
+type HarborActionCapability struct {
+	Description  *string                     `json:"description,omitempty" url:"description,omitempty"`
+	Effect       *string                     `json:"effect,omitempty" url:"effect,omitempty"`
+	Idempotency  *SchemaOperationIdempotency `json:"idempotency,omitempty" url:"idempotency,omitempty"`
+	InputFields  []*HarborActionField        `json:"input_fields,omitempty" url:"input_fields,omitempty"`
+	LookupFields []*HarborActionField        `json:"lookup_fields,omitempty" url:"lookup_fields,omitempty"`
+	Name         *string                     `json:"name,omitempty" url:"name,omitempty"`
+	OperationID  *string                     `json:"operation_id,omitempty" url:"operation_id,omitempty"`
+	OutputFields []*HarborActionField        `json:"output_fields,omitempty" url:"output_fields,omitempty"`
+	SchemaID     *string                     `json:"schema_id,omitempty" url:"schema_id,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionCapability) GetDescription() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Description
+}
+
+func (h *HarborActionCapability) GetEffect() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Effect
+}
+
+func (h *HarborActionCapability) GetIdempotency() *SchemaOperationIdempotency {
+	if h == nil {
+		return nil
+	}
+	return h.Idempotency
+}
+
+func (h *HarborActionCapability) GetInputFields() []*HarborActionField {
+	if h == nil {
+		return nil
+	}
+	return h.InputFields
+}
+
+func (h *HarborActionCapability) GetLookupFields() []*HarborActionField {
+	if h == nil {
+		return nil
+	}
+	return h.LookupFields
+}
+
+func (h *HarborActionCapability) GetName() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Name
+}
+
+func (h *HarborActionCapability) GetOperationID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.OperationID
+}
+
+func (h *HarborActionCapability) GetOutputFields() []*HarborActionField {
+	if h == nil {
+		return nil
+	}
+	return h.OutputFields
+}
+
+func (h *HarborActionCapability) GetSchemaID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.SchemaID
+}
+
+func (h *HarborActionCapability) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionCapability) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionCapability) SetDescription(description *string) {
+	h.Description = description
+	h.require(harborActionCapabilityFieldDescription)
+}
+
+// SetEffect sets the Effect field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionCapability) SetEffect(effect *string) {
+	h.Effect = effect
+	h.require(harborActionCapabilityFieldEffect)
+}
+
+// SetIdempotency sets the Idempotency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionCapability) SetIdempotency(idempotency *SchemaOperationIdempotency) {
+	h.Idempotency = idempotency
+	h.require(harborActionCapabilityFieldIdempotency)
+}
+
+// SetInputFields sets the InputFields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionCapability) SetInputFields(inputFields []*HarborActionField) {
+	h.InputFields = inputFields
+	h.require(harborActionCapabilityFieldInputFields)
+}
+
+// SetLookupFields sets the LookupFields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionCapability) SetLookupFields(lookupFields []*HarborActionField) {
+	h.LookupFields = lookupFields
+	h.require(harborActionCapabilityFieldLookupFields)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionCapability) SetName(name *string) {
+	h.Name = name
+	h.require(harborActionCapabilityFieldName)
+}
+
+// SetOperationID sets the OperationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionCapability) SetOperationID(operationID *string) {
+	h.OperationID = operationID
+	h.require(harborActionCapabilityFieldOperationID)
+}
+
+// SetOutputFields sets the OutputFields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionCapability) SetOutputFields(outputFields []*HarborActionField) {
+	h.OutputFields = outputFields
+	h.require(harborActionCapabilityFieldOutputFields)
+}
+
+// SetSchemaID sets the SchemaID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionCapability) SetSchemaID(schemaID *string) {
+	h.SchemaID = schemaID
+	h.require(harborActionCapabilityFieldSchemaID)
+}
+
+func (h *HarborActionCapability) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionCapability
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionCapability(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionCapability) MarshalJSON() ([]byte, error) {
+	type embed HarborActionCapability
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionCapability) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionDescribeEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type HarborActionDescribeEnvelope struct {
+	Data *HarborActionCapability `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionDescribeEnvelope) GetData() *HarborActionCapability {
+	if h == nil {
+		return nil
+	}
+	return h.Data
+}
+
+func (h *HarborActionDescribeEnvelope) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionDescribeEnvelope) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionDescribeEnvelope) SetData(data *HarborActionCapability) {
+	h.Data = data
+	h.require(harborActionDescribeEnvelopeFieldData)
+}
+
+func (h *HarborActionDescribeEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionDescribeEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionDescribeEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionDescribeEnvelope) MarshalJSON() ([]byte, error) {
+	type embed HarborActionDescribeEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionDescribeEnvelope) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionExecutionEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type HarborActionExecutionEnvelope struct {
+	Data *HarborActionExecutionResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionExecutionEnvelope) GetData() *HarborActionExecutionResponse {
+	if h == nil {
+		return nil
+	}
+	return h.Data
+}
+
+func (h *HarborActionExecutionEnvelope) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionExecutionEnvelope) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionExecutionEnvelope) SetData(data *HarborActionExecutionResponse) {
+	h.Data = data
+	h.require(harborActionExecutionEnvelopeFieldData)
+}
+
+func (h *HarborActionExecutionEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionExecutionEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionExecutionEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionExecutionEnvelope) MarshalJSON() ([]byte, error) {
+	type embed HarborActionExecutionEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionExecutionEnvelope) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionExecutionResponseFieldConnectionID     = big.NewInt(1 << 0)
+	harborActionExecutionResponseFieldCredentialID     = big.NewInt(1 << 1)
+	harborActionExecutionResponseFieldDeadlineAt       = big.NewInt(1 << 2)
+	harborActionExecutionResponseFieldExecutionID      = big.NewInt(1 << 3)
+	harborActionExecutionResponseFieldFailureCategory  = big.NewInt(1 << 4)
+	harborActionExecutionResponseFieldFieldIDs         = big.NewInt(1 << 5)
+	harborActionExecutionResponseFieldFinishedAt       = big.NewInt(1 << 6)
+	harborActionExecutionResponseFieldLookupFieldID    = big.NewInt(1 << 7)
+	harborActionExecutionResponseFieldOperationID      = big.NewInt(1 << 8)
+	harborActionExecutionResponseFieldRecoveryRequired = big.NewInt(1 << 9)
+	harborActionExecutionResponseFieldSchemaID         = big.NewInt(1 << 10)
+	harborActionExecutionResponseFieldStartedAt        = big.NewInt(1 << 11)
+	harborActionExecutionResponseFieldStatus           = big.NewInt(1 << 12)
+	harborActionExecutionResponseFieldStatusPath       = big.NewInt(1 << 13)
+)
+
+type HarborActionExecutionResponse struct {
+	ConnectionID *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	// Original credential attribution, including when another credential submits a duplicate.
+	CredentialID    *string    `json:"credential_id,omitempty" url:"credential_id,omitempty"`
+	DeadlineAt      *time.Time `json:"deadline_at,omitempty" url:"deadline_at,omitempty"`
+	ExecutionID     *string    `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	FailureCategory *string    `json:"failure_category,omitempty" url:"failure_category,omitempty"`
+	// Submitted field names only, never their values.
+	FieldIDs      []string   `json:"field_ids,omitempty" url:"field_ids,omitempty"`
+	FinishedAt    *time.Time `json:"finished_at,omitempty" url:"finished_at,omitempty"`
+	LookupFieldID *string    `json:"lookup_field_id,omitempty" url:"lookup_field_id,omitempty"`
+	OperationID   *string    `json:"operation_id,omitempty" url:"operation_id,omitempty"`
+	// True when receipt persistence was interrupted or uncertain. Inspect status; this response does not confirm durable acceptance or completion.
+	RecoveryRequired *bool                                `json:"recovery_required,omitempty" url:"recovery_required,omitempty"`
+	SchemaID         *string                              `json:"schema_id,omitempty" url:"schema_id,omitempty"`
+	StartedAt        *time.Time                           `json:"started_at,omitempty" url:"started_at,omitempty"`
+	Status           *HarborActionExecutionResponseStatus `json:"status,omitempty" url:"status,omitempty"`
+	StatusPath       *string                              `json:"status_path,omitempty" url:"status_path,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionExecutionResponse) GetConnectionID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ConnectionID
+}
+
+func (h *HarborActionExecutionResponse) GetCredentialID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.CredentialID
+}
+
+func (h *HarborActionExecutionResponse) GetDeadlineAt() *time.Time {
+	if h == nil {
+		return nil
+	}
+	return h.DeadlineAt
+}
+
+func (h *HarborActionExecutionResponse) GetExecutionID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ExecutionID
+}
+
+func (h *HarborActionExecutionResponse) GetFailureCategory() *string {
+	if h == nil {
+		return nil
+	}
+	return h.FailureCategory
+}
+
+func (h *HarborActionExecutionResponse) GetFieldIDs() []string {
+	if h == nil {
+		return nil
+	}
+	return h.FieldIDs
+}
+
+func (h *HarborActionExecutionResponse) GetFinishedAt() *time.Time {
+	if h == nil {
+		return nil
+	}
+	return h.FinishedAt
+}
+
+func (h *HarborActionExecutionResponse) GetLookupFieldID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.LookupFieldID
+}
+
+func (h *HarborActionExecutionResponse) GetOperationID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.OperationID
+}
+
+func (h *HarborActionExecutionResponse) GetRecoveryRequired() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.RecoveryRequired
+}
+
+func (h *HarborActionExecutionResponse) GetSchemaID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.SchemaID
+}
+
+func (h *HarborActionExecutionResponse) GetStartedAt() *time.Time {
+	if h == nil {
+		return nil
+	}
+	return h.StartedAt
+}
+
+func (h *HarborActionExecutionResponse) GetStatus() *HarborActionExecutionResponseStatus {
+	if h == nil {
+		return nil
+	}
+	return h.Status
+}
+
+func (h *HarborActionExecutionResponse) GetStatusPath() *string {
+	if h == nil {
+		return nil
+	}
+	return h.StatusPath
+}
+
+func (h *HarborActionExecutionResponse) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionExecutionResponse) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetConnectionID sets the ConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionExecutionResponse) SetConnectionID(connectionID *string) {
+	h.ConnectionID = connectionID
+	h.require(harborActionExecutionResponseFieldConnectionID)
+}
+
+// SetCredentialID sets the CredentialID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionExecutionResponse) SetCredentialID(credentialID *string) {
+	h.CredentialID = credentialID
+	h.require(harborActionExecutionResponseFieldCredentialID)
+}
+
+// SetDeadlineAt sets the DeadlineAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionExecutionResponse) SetDeadlineAt(deadlineAt *time.Time) {
+	h.DeadlineAt = deadlineAt
+	h.require(harborActionExecutionResponseFieldDeadlineAt)
+}
+
+// SetExecutionID sets the ExecutionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionExecutionResponse) SetExecutionID(executionID *string) {
+	h.ExecutionID = executionID
+	h.require(harborActionExecutionResponseFieldExecutionID)
+}
+
+// SetFailureCategory sets the FailureCategory field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionExecutionResponse) SetFailureCategory(failureCategory *string) {
+	h.FailureCategory = failureCategory
+	h.require(harborActionExecutionResponseFieldFailureCategory)
+}
+
+// SetFieldIDs sets the FieldIDs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionExecutionResponse) SetFieldIDs(fieldIDs []string) {
+	h.FieldIDs = fieldIDs
+	h.require(harborActionExecutionResponseFieldFieldIDs)
+}
+
+// SetFinishedAt sets the FinishedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionExecutionResponse) SetFinishedAt(finishedAt *time.Time) {
+	h.FinishedAt = finishedAt
+	h.require(harborActionExecutionResponseFieldFinishedAt)
+}
+
+// SetLookupFieldID sets the LookupFieldID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionExecutionResponse) SetLookupFieldID(lookupFieldID *string) {
+	h.LookupFieldID = lookupFieldID
+	h.require(harborActionExecutionResponseFieldLookupFieldID)
+}
+
+// SetOperationID sets the OperationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionExecutionResponse) SetOperationID(operationID *string) {
+	h.OperationID = operationID
+	h.require(harborActionExecutionResponseFieldOperationID)
+}
+
+// SetRecoveryRequired sets the RecoveryRequired field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionExecutionResponse) SetRecoveryRequired(recoveryRequired *bool) {
+	h.RecoveryRequired = recoveryRequired
+	h.require(harborActionExecutionResponseFieldRecoveryRequired)
+}
+
+// SetSchemaID sets the SchemaID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionExecutionResponse) SetSchemaID(schemaID *string) {
+	h.SchemaID = schemaID
+	h.require(harborActionExecutionResponseFieldSchemaID)
+}
+
+// SetStartedAt sets the StartedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionExecutionResponse) SetStartedAt(startedAt *time.Time) {
+	h.StartedAt = startedAt
+	h.require(harborActionExecutionResponseFieldStartedAt)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionExecutionResponse) SetStatus(status *HarborActionExecutionResponseStatus) {
+	h.Status = status
+	h.require(harborActionExecutionResponseFieldStatus)
+}
+
+// SetStatusPath sets the StatusPath field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionExecutionResponse) SetStatusPath(statusPath *string) {
+	h.StatusPath = statusPath
+	h.require(harborActionExecutionResponseFieldStatusPath)
+}
+
+func (h *HarborActionExecutionResponse) UnmarshalJSON(data []byte) error {
+	type embed HarborActionExecutionResponse
+	var unmarshaler = struct {
+		embed
+		DeadlineAt *internal.DateTime `json:"deadline_at,omitempty"`
+		FinishedAt *internal.DateTime `json:"finished_at,omitempty"`
+		StartedAt  *internal.DateTime `json:"started_at,omitempty"`
+	}{
+		embed: embed(*h),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*h = HarborActionExecutionResponse(unmarshaler.embed)
+	h.DeadlineAt = unmarshaler.DeadlineAt.TimePtr()
+	h.FinishedAt = unmarshaler.FinishedAt.TimePtr()
+	h.StartedAt = unmarshaler.StartedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionExecutionResponse) MarshalJSON() ([]byte, error) {
+	type embed HarborActionExecutionResponse
+	var marshaler = struct {
+		embed
+		DeadlineAt *internal.DateTime `json:"deadline_at,omitempty"`
+		FinishedAt *internal.DateTime `json:"finished_at,omitempty"`
+		StartedAt  *internal.DateTime `json:"started_at,omitempty"`
+	}{
+		embed:      embed(*h),
+		DeadlineAt: internal.NewOptionalDateTime(h.DeadlineAt),
+		FinishedAt: internal.NewOptionalDateTime(h.FinishedAt),
+		StartedAt:  internal.NewOptionalDateTime(h.StartedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionExecutionResponse) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+type HarborActionExecutionResponseStatus string
+
+const (
+	HarborActionExecutionResponseStatusExecuting HarborActionExecutionResponseStatus = "executing"
+	HarborActionExecutionResponseStatusSucceeded HarborActionExecutionResponseStatus = "succeeded"
+	HarborActionExecutionResponseStatusFailed    HarborActionExecutionResponseStatus = "failed"
+	HarborActionExecutionResponseStatusUnknown   HarborActionExecutionResponseStatus = "unknown"
+)
+
+func NewHarborActionExecutionResponseStatusFromString(s string) (HarborActionExecutionResponseStatus, error) {
+	switch s {
+	case "executing":
+		return HarborActionExecutionResponseStatusExecuting, nil
+	case "succeeded":
+		return HarborActionExecutionResponseStatusSucceeded, nil
+	case "failed":
+		return HarborActionExecutionResponseStatusFailed, nil
+	case "unknown":
+		return HarborActionExecutionResponseStatusUnknown, nil
+	}
+	var t HarborActionExecutionResponseStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (h HarborActionExecutionResponseStatus) Ptr() *HarborActionExecutionResponseStatus {
+	return &h
+}
+
+var (
+	harborActionFieldFieldDefinition  = big.NewInt(1 << 0)
+	harborActionFieldFieldDescription = big.NewInt(1 << 1)
+	harborActionFieldFieldID          = big.NewInt(1 << 2)
+	harborActionFieldFieldMaxBytes    = big.NewInt(1 << 3)
+	harborActionFieldFieldName        = big.NewInt(1 << 4)
+	harborActionFieldFieldNonBlank    = big.NewInt(1 << 5)
+	harborActionFieldFieldNullable    = big.NewInt(1 << 6)
+	harborActionFieldFieldPattern     = big.NewInt(1 << 7)
+	harborActionFieldFieldRequired    = big.NewInt(1 << 8)
+	harborActionFieldFieldType        = big.NewInt(1 << 9)
+	harborActionFieldFieldValues      = big.NewInt(1 << 10)
+)
+
+type HarborActionField struct {
+	Definition  *TypesDefinition   `json:"definition,omitempty" url:"definition,omitempty"`
+	Description *string            `json:"description,omitempty" url:"description,omitempty"`
+	ID          *string            `json:"id,omitempty" url:"id,omitempty"`
+	MaxBytes    *int               `json:"max_bytes,omitempty" url:"max_bytes,omitempty"`
+	Name        *string            `json:"name,omitempty" url:"name,omitempty"`
+	NonBlank    *bool              `json:"non_blank,omitempty" url:"non_blank,omitempty"`
+	Nullable    *bool              `json:"nullable,omitempty" url:"nullable,omitempty"`
+	Pattern     *string            `json:"pattern,omitempty" url:"pattern,omitempty"`
+	Required    *bool              `json:"required,omitempty" url:"required,omitempty"`
+	Type        *UtilFieldType     `json:"type,omitempty" url:"type,omitempty"`
+	Values      []*CompletionValue `json:"values,omitempty" url:"values,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionField) GetDefinition() *TypesDefinition {
+	if h == nil {
+		return nil
+	}
+	return h.Definition
+}
+
+func (h *HarborActionField) GetDescription() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Description
+}
+
+func (h *HarborActionField) GetID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ID
+}
+
+func (h *HarborActionField) GetMaxBytes() *int {
+	if h == nil {
+		return nil
+	}
+	return h.MaxBytes
+}
+
+func (h *HarborActionField) GetName() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Name
+}
+
+func (h *HarborActionField) GetNonBlank() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.NonBlank
+}
+
+func (h *HarborActionField) GetNullable() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.Nullable
+}
+
+func (h *HarborActionField) GetPattern() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Pattern
+}
+
+func (h *HarborActionField) GetRequired() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.Required
+}
+
+func (h *HarborActionField) GetType() *UtilFieldType {
+	if h == nil {
+		return nil
+	}
+	return h.Type
+}
+
+func (h *HarborActionField) GetValues() []*CompletionValue {
+	if h == nil {
+		return nil
+	}
+	return h.Values
+}
+
+func (h *HarborActionField) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionField) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetDefinition sets the Definition field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionField) SetDefinition(definition *TypesDefinition) {
+	h.Definition = definition
+	h.require(harborActionFieldFieldDefinition)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionField) SetDescription(description *string) {
+	h.Description = description
+	h.require(harborActionFieldFieldDescription)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionField) SetID(id *string) {
+	h.ID = id
+	h.require(harborActionFieldFieldID)
+}
+
+// SetMaxBytes sets the MaxBytes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionField) SetMaxBytes(maxBytes *int) {
+	h.MaxBytes = maxBytes
+	h.require(harborActionFieldFieldMaxBytes)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionField) SetName(name *string) {
+	h.Name = name
+	h.require(harborActionFieldFieldName)
+}
+
+// SetNonBlank sets the NonBlank field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionField) SetNonBlank(nonBlank *bool) {
+	h.NonBlank = nonBlank
+	h.require(harborActionFieldFieldNonBlank)
+}
+
+// SetNullable sets the Nullable field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionField) SetNullable(nullable *bool) {
+	h.Nullable = nullable
+	h.require(harborActionFieldFieldNullable)
+}
+
+// SetPattern sets the Pattern field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionField) SetPattern(pattern *string) {
+	h.Pattern = pattern
+	h.require(harborActionFieldFieldPattern)
+}
+
+// SetRequired sets the Required field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionField) SetRequired(required *bool) {
+	h.Required = required
+	h.require(harborActionFieldFieldRequired)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionField) SetType(type_ *UtilFieldType) {
+	h.Type = type_
+	h.require(harborActionFieldFieldType)
+}
+
+// SetValues sets the Values field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionField) SetValues(values []*CompletionValue) {
+	h.Values = values
+	h.require(harborActionFieldFieldValues)
+}
+
+func (h *HarborActionField) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionField
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionField(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionField) MarshalJSON() ([]byte, error) {
+	type embed HarborActionField
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionField) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionListEnvelopeFieldData       = big.NewInt(1 << 0)
+	harborActionListEnvelopeFieldPagination = big.NewInt(1 << 1)
+)
+
+type HarborActionListEnvelope struct {
+	Data       []*HarborActionSummary              `json:"data,omitempty" url:"data,omitempty"`
+	Pagination *HarborActionListEnvelopePagination `json:"pagination,omitempty" url:"pagination,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionListEnvelope) GetData() []*HarborActionSummary {
+	if h == nil {
+		return nil
+	}
+	return h.Data
+}
+
+func (h *HarborActionListEnvelope) GetPagination() *HarborActionListEnvelopePagination {
+	if h == nil {
+		return nil
+	}
+	return h.Pagination
+}
+
+func (h *HarborActionListEnvelope) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionListEnvelope) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionListEnvelope) SetData(data []*HarborActionSummary) {
+	h.Data = data
+	h.require(harborActionListEnvelopeFieldData)
+}
+
+// SetPagination sets the Pagination field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionListEnvelope) SetPagination(pagination *HarborActionListEnvelopePagination) {
+	h.Pagination = pagination
+	h.require(harborActionListEnvelopeFieldPagination)
+}
+
+func (h *HarborActionListEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionListEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionListEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionListEnvelope) MarshalJSON() ([]byte, error) {
+	type embed HarborActionListEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionListEnvelope) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionListEnvelopePaginationFieldNextPageToken = big.NewInt(1 << 0)
+)
+
+type HarborActionListEnvelopePagination struct {
+	NextPageToken *string `json:"next_page_token,omitempty" url:"next_page_token,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionListEnvelopePagination) GetNextPageToken() *string {
+	if h == nil {
+		return nil
+	}
+	return h.NextPageToken
+}
+
+func (h *HarborActionListEnvelopePagination) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionListEnvelopePagination) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetNextPageToken sets the NextPageToken field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionListEnvelopePagination) SetNextPageToken(nextPageToken *string) {
+	h.NextPageToken = nextPageToken
+	h.require(harborActionListEnvelopePaginationFieldNextPageToken)
+}
+
+func (h *HarborActionListEnvelopePagination) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionListEnvelopePagination
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionListEnvelopePagination(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionListEnvelopePagination) MarshalJSON() ([]byte, error) {
+	type embed HarborActionListEnvelopePagination
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionListEnvelopePagination) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionLookupEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type HarborActionLookupEnvelope struct {
+	Data *SchemaRecord `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionLookupEnvelope) GetData() *SchemaRecord {
+	if h == nil {
+		return nil
+	}
+	return h.Data
+}
+
+func (h *HarborActionLookupEnvelope) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionLookupEnvelope) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionLookupEnvelope) SetData(data *SchemaRecord) {
+	h.Data = data
+	h.require(harborActionLookupEnvelopeFieldData)
+}
+
+func (h *HarborActionLookupEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionLookupEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionLookupEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionLookupEnvelope) MarshalJSON() ([]byte, error) {
+	type embed HarborActionLookupEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionLookupEnvelope) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionPreparationFieldExecutionID = big.NewInt(1 << 0)
+	harborActionPreparationFieldExpiresAt   = big.NewInt(1 << 1)
+)
+
+type HarborActionPreparation struct {
+	ExecutionID *string    `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	ExpiresAt   *time.Time `json:"expires_at,omitempty" url:"expires_at,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionPreparation) GetExecutionID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ExecutionID
+}
+
+func (h *HarborActionPreparation) GetExpiresAt() *time.Time {
+	if h == nil {
+		return nil
+	}
+	return h.ExpiresAt
+}
+
+func (h *HarborActionPreparation) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionPreparation) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetExecutionID sets the ExecutionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionPreparation) SetExecutionID(executionID *string) {
+	h.ExecutionID = executionID
+	h.require(harborActionPreparationFieldExecutionID)
+}
+
+// SetExpiresAt sets the ExpiresAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionPreparation) SetExpiresAt(expiresAt *time.Time) {
+	h.ExpiresAt = expiresAt
+	h.require(harborActionPreparationFieldExpiresAt)
+}
+
+func (h *HarborActionPreparation) UnmarshalJSON(data []byte) error {
+	type embed HarborActionPreparation
+	var unmarshaler = struct {
+		embed
+		ExpiresAt *internal.DateTime `json:"expires_at,omitempty"`
+	}{
+		embed: embed(*h),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*h = HarborActionPreparation(unmarshaler.embed)
+	h.ExpiresAt = unmarshaler.ExpiresAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionPreparation) MarshalJSON() ([]byte, error) {
+	type embed HarborActionPreparation
+	var marshaler = struct {
+		embed
+		ExpiresAt *internal.DateTime `json:"expires_at,omitempty"`
+	}{
+		embed:     embed(*h),
+		ExpiresAt: internal.NewOptionalDateTime(h.ExpiresAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionPreparation) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionPreparationEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type HarborActionPreparationEnvelope struct {
+	Data *HarborActionPreparation `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionPreparationEnvelope) GetData() *HarborActionPreparation {
+	if h == nil {
+		return nil
+	}
+	return h.Data
+}
+
+func (h *HarborActionPreparationEnvelope) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionPreparationEnvelope) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionPreparationEnvelope) SetData(data *HarborActionPreparation) {
+	h.Data = data
+	h.require(harborActionPreparationEnvelopeFieldData)
+}
+
+func (h *HarborActionPreparationEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionPreparationEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionPreparationEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionPreparationEnvelope) MarshalJSON() ([]byte, error) {
+	type embed HarborActionPreparationEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionPreparationEnvelope) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionSummaryFieldConnectionID   = big.NewInt(1 << 0)
+	harborActionSummaryFieldConnectionName = big.NewInt(1 << 1)
+	harborActionSummaryFieldOperationID    = big.NewInt(1 << 2)
+	harborActionSummaryFieldSchemaID       = big.NewInt(1 << 3)
+	harborActionSummaryFieldUnavailable    = big.NewInt(1 << 4)
+)
+
+type HarborActionSummary struct {
+	ConnectionID   *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	ConnectionName *string `json:"connection_name,omitempty" url:"connection_name,omitempty"`
+	OperationID    *string `json:"operation_id,omitempty" url:"operation_id,omitempty"`
+	SchemaID       *string `json:"schema_id,omitempty" url:"schema_id,omitempty"`
+	Unavailable    *bool   `json:"unavailable,omitempty" url:"unavailable,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionSummary) GetConnectionID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ConnectionID
+}
+
+func (h *HarborActionSummary) GetConnectionName() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ConnectionName
+}
+
+func (h *HarborActionSummary) GetOperationID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.OperationID
+}
+
+func (h *HarborActionSummary) GetSchemaID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.SchemaID
+}
+
+func (h *HarborActionSummary) GetUnavailable() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.Unavailable
+}
+
+func (h *HarborActionSummary) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionSummary) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetConnectionID sets the ConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionSummary) SetConnectionID(connectionID *string) {
+	h.ConnectionID = connectionID
+	h.require(harborActionSummaryFieldConnectionID)
+}
+
+// SetConnectionName sets the ConnectionName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionSummary) SetConnectionName(connectionName *string) {
+	h.ConnectionName = connectionName
+	h.require(harborActionSummaryFieldConnectionName)
+}
+
+// SetOperationID sets the OperationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionSummary) SetOperationID(operationID *string) {
+	h.OperationID = operationID
+	h.require(harborActionSummaryFieldOperationID)
+}
+
+// SetSchemaID sets the SchemaID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionSummary) SetSchemaID(schemaID *string) {
+	h.SchemaID = schemaID
+	h.require(harborActionSummaryFieldSchemaID)
+}
+
+// SetUnavailable sets the Unavailable field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionSummary) SetUnavailable(unavailable *bool) {
+	h.Unavailable = unavailable
+	h.require(harborActionSummaryFieldUnavailable)
+}
+
+func (h *HarborActionSummary) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionSummary
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionSummary(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionSummary) MarshalJSON() ([]byte, error) {
+	type embed HarborActionSummary
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionSummary) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
 }
 
 var (
@@ -11027,6 +12963,108 @@ func (s *SchemaField) String() string {
 }
 
 var (
+	schemaOperationIdempotencyFieldRetentionNs = big.NewInt(1 << 0)
+	schemaOperationIdempotencyFieldScope       = big.NewInt(1 << 1)
+)
+
+type SchemaOperationIdempotency struct {
+	RetentionNs *TimeDuration `json:"retention_ns,omitempty" url:"retention_ns,omitempty"`
+	Scope       *string       `json:"scope,omitempty" url:"scope,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SchemaOperationIdempotency) GetRetentionNs() *TimeDuration {
+	if s == nil {
+		return nil
+	}
+	return s.RetentionNs
+}
+
+func (s *SchemaOperationIdempotency) GetScope() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Scope
+}
+
+func (s *SchemaOperationIdempotency) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *SchemaOperationIdempotency) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetRetentionNs sets the RetentionNs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SchemaOperationIdempotency) SetRetentionNs(retentionNs *TimeDuration) {
+	s.RetentionNs = retentionNs
+	s.require(schemaOperationIdempotencyFieldRetentionNs)
+}
+
+// SetScope sets the Scope field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SchemaOperationIdempotency) SetScope(scope *string) {
+	s.Scope = scope
+	s.require(schemaOperationIdempotencyFieldScope)
+}
+
+func (s *SchemaOperationIdempotency) UnmarshalJSON(data []byte) error {
+	type unmarshaler SchemaOperationIdempotency
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SchemaOperationIdempotency(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SchemaOperationIdempotency) MarshalJSON() ([]byte, error) {
+	type embed SchemaOperationIdempotency
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SchemaOperationIdempotency) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SchemaRecord = map[string]any
+
+var (
 	sourceMetaFieldHasItems      = big.NewInt(1 << 0)
 	sourceMetaFieldItems         = big.NewInt(1 << 1)
 	sourceMetaFieldRequiresOneOf = big.NewInt(1 << 2)
@@ -13217,6 +15255,323 @@ func (t *TargetResponseEnvelope) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", t)
+}
+
+type TimeDuration = int64
+
+// Detailed field type: a type name such as "bigint", or an array naming a complex type followed by its details, such as ["decimal", {"precision": 10, "scale": 2}] or ["array", "string"].
+type TypesDefinition struct {
+	BinaryStringLiteral      string
+	BooleanStringLiteral     string
+	DateStringLiteral        string
+	DatetimeStringLiteral    string
+	Datetime_tzStringLiteral string
+	TimeStringLiteral        string
+	NumberStringLiteral      string
+	FieldStringStringLiteral string
+	SmallintStringLiteral    string
+	IntStringLiteral         string
+	BigintStringLiteral      string
+	SingleStringLiteral      string
+	DoubleStringLiteral      string
+	UnknownList              []any
+
+	typ string
+}
+
+func NewTypesDefinitionWithBinaryStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "BinaryStringLiteral", BinaryStringLiteral: "binary"}
+}
+
+func NewTypesDefinitionWithBooleanStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "BooleanStringLiteral", BooleanStringLiteral: "boolean"}
+}
+
+func NewTypesDefinitionWithDateStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "DateStringLiteral", DateStringLiteral: "date"}
+}
+
+func NewTypesDefinitionWithDatetimeStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "DatetimeStringLiteral", DatetimeStringLiteral: "datetime"}
+}
+
+func NewTypesDefinitionWithDatetime_tzStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "Datetime_tzStringLiteral", Datetime_tzStringLiteral: "datetime_tz"}
+}
+
+func NewTypesDefinitionWithTimeStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "TimeStringLiteral", TimeStringLiteral: "time"}
+}
+
+func NewTypesDefinitionWithNumberStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "NumberStringLiteral", NumberStringLiteral: "number"}
+}
+
+func NewTypesDefinitionWithFieldStringStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "FieldStringStringLiteral", FieldStringStringLiteral: "string"}
+}
+
+func NewTypesDefinitionWithSmallintStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "SmallintStringLiteral", SmallintStringLiteral: "smallint"}
+}
+
+func NewTypesDefinitionWithIntStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "IntStringLiteral", IntStringLiteral: "int"}
+}
+
+func NewTypesDefinitionWithBigintStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "BigintStringLiteral", BigintStringLiteral: "bigint"}
+}
+
+func NewTypesDefinitionWithSingleStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "SingleStringLiteral", SingleStringLiteral: "single"}
+}
+
+func NewTypesDefinitionWithDoubleStringLiteral() *TypesDefinition {
+	return &TypesDefinition{typ: "DoubleStringLiteral", DoubleStringLiteral: "double"}
+}
+
+func (t *TypesDefinition) GetUnknownList() []any {
+	if t == nil {
+		return nil
+	}
+	return t.UnknownList
+}
+
+func (t *TypesDefinition) UnmarshalJSON(data []byte) error {
+	var valueBinaryStringLiteral string
+	if err := json.Unmarshal(data, &valueBinaryStringLiteral); err == nil {
+		t.typ = "BinaryStringLiteral"
+		t.BinaryStringLiteral = valueBinaryStringLiteral
+		if t.BinaryStringLiteral != "binary" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "binary", valueBinaryStringLiteral)
+		}
+		return nil
+	}
+	var valueBooleanStringLiteral string
+	if err := json.Unmarshal(data, &valueBooleanStringLiteral); err == nil {
+		t.typ = "BooleanStringLiteral"
+		t.BooleanStringLiteral = valueBooleanStringLiteral
+		if t.BooleanStringLiteral != "boolean" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "boolean", valueBooleanStringLiteral)
+		}
+		return nil
+	}
+	var valueDateStringLiteral string
+	if err := json.Unmarshal(data, &valueDateStringLiteral); err == nil {
+		t.typ = "DateStringLiteral"
+		t.DateStringLiteral = valueDateStringLiteral
+		if t.DateStringLiteral != "date" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "date", valueDateStringLiteral)
+		}
+		return nil
+	}
+	var valueDatetimeStringLiteral string
+	if err := json.Unmarshal(data, &valueDatetimeStringLiteral); err == nil {
+		t.typ = "DatetimeStringLiteral"
+		t.DatetimeStringLiteral = valueDatetimeStringLiteral
+		if t.DatetimeStringLiteral != "datetime" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "datetime", valueDatetimeStringLiteral)
+		}
+		return nil
+	}
+	var valueDatetime_tzStringLiteral string
+	if err := json.Unmarshal(data, &valueDatetime_tzStringLiteral); err == nil {
+		t.typ = "Datetime_tzStringLiteral"
+		t.Datetime_tzStringLiteral = valueDatetime_tzStringLiteral
+		if t.Datetime_tzStringLiteral != "datetime_tz" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "datetime_tz", valueDatetime_tzStringLiteral)
+		}
+		return nil
+	}
+	var valueTimeStringLiteral string
+	if err := json.Unmarshal(data, &valueTimeStringLiteral); err == nil {
+		t.typ = "TimeStringLiteral"
+		t.TimeStringLiteral = valueTimeStringLiteral
+		if t.TimeStringLiteral != "time" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "time", valueTimeStringLiteral)
+		}
+		return nil
+	}
+	var valueNumberStringLiteral string
+	if err := json.Unmarshal(data, &valueNumberStringLiteral); err == nil {
+		t.typ = "NumberStringLiteral"
+		t.NumberStringLiteral = valueNumberStringLiteral
+		if t.NumberStringLiteral != "number" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "number", valueNumberStringLiteral)
+		}
+		return nil
+	}
+	var valueFieldStringStringLiteral string
+	if err := json.Unmarshal(data, &valueFieldStringStringLiteral); err == nil {
+		t.typ = "FieldStringStringLiteral"
+		t.FieldStringStringLiteral = valueFieldStringStringLiteral
+		if t.FieldStringStringLiteral != "string" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "string", valueFieldStringStringLiteral)
+		}
+		return nil
+	}
+	var valueSmallintStringLiteral string
+	if err := json.Unmarshal(data, &valueSmallintStringLiteral); err == nil {
+		t.typ = "SmallintStringLiteral"
+		t.SmallintStringLiteral = valueSmallintStringLiteral
+		if t.SmallintStringLiteral != "smallint" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "smallint", valueSmallintStringLiteral)
+		}
+		return nil
+	}
+	var valueIntStringLiteral string
+	if err := json.Unmarshal(data, &valueIntStringLiteral); err == nil {
+		t.typ = "IntStringLiteral"
+		t.IntStringLiteral = valueIntStringLiteral
+		if t.IntStringLiteral != "int" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "int", valueIntStringLiteral)
+		}
+		return nil
+	}
+	var valueBigintStringLiteral string
+	if err := json.Unmarshal(data, &valueBigintStringLiteral); err == nil {
+		t.typ = "BigintStringLiteral"
+		t.BigintStringLiteral = valueBigintStringLiteral
+		if t.BigintStringLiteral != "bigint" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "bigint", valueBigintStringLiteral)
+		}
+		return nil
+	}
+	var valueSingleStringLiteral string
+	if err := json.Unmarshal(data, &valueSingleStringLiteral); err == nil {
+		t.typ = "SingleStringLiteral"
+		t.SingleStringLiteral = valueSingleStringLiteral
+		if t.SingleStringLiteral != "single" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "single", valueSingleStringLiteral)
+		}
+		return nil
+	}
+	var valueDoubleStringLiteral string
+	if err := json.Unmarshal(data, &valueDoubleStringLiteral); err == nil {
+		t.typ = "DoubleStringLiteral"
+		t.DoubleStringLiteral = valueDoubleStringLiteral
+		if t.DoubleStringLiteral != "double" {
+			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "double", valueDoubleStringLiteral)
+		}
+		return nil
+	}
+	var valueUnknownList []any
+	if err := json.Unmarshal(data, &valueUnknownList); err == nil {
+		t.typ = "UnknownList"
+		t.UnknownList = valueUnknownList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, t)
+}
+
+func (t TypesDefinition) MarshalJSON() ([]byte, error) {
+	if t.typ == "BinaryStringLiteral" || t.BinaryStringLiteral != "" {
+		return json.Marshal("binary")
+	}
+	if t.typ == "BooleanStringLiteral" || t.BooleanStringLiteral != "" {
+		return json.Marshal("boolean")
+	}
+	if t.typ == "DateStringLiteral" || t.DateStringLiteral != "" {
+		return json.Marshal("date")
+	}
+	if t.typ == "DatetimeStringLiteral" || t.DatetimeStringLiteral != "" {
+		return json.Marshal("datetime")
+	}
+	if t.typ == "Datetime_tzStringLiteral" || t.Datetime_tzStringLiteral != "" {
+		return json.Marshal("datetime_tz")
+	}
+	if t.typ == "TimeStringLiteral" || t.TimeStringLiteral != "" {
+		return json.Marshal("time")
+	}
+	if t.typ == "NumberStringLiteral" || t.NumberStringLiteral != "" {
+		return json.Marshal("number")
+	}
+	if t.typ == "FieldStringStringLiteral" || t.FieldStringStringLiteral != "" {
+		return json.Marshal("string")
+	}
+	if t.typ == "SmallintStringLiteral" || t.SmallintStringLiteral != "" {
+		return json.Marshal("smallint")
+	}
+	if t.typ == "IntStringLiteral" || t.IntStringLiteral != "" {
+		return json.Marshal("int")
+	}
+	if t.typ == "BigintStringLiteral" || t.BigintStringLiteral != "" {
+		return json.Marshal("bigint")
+	}
+	if t.typ == "SingleStringLiteral" || t.SingleStringLiteral != "" {
+		return json.Marshal("single")
+	}
+	if t.typ == "DoubleStringLiteral" || t.DoubleStringLiteral != "" {
+		return json.Marshal("double")
+	}
+	if t.typ == "UnknownList" || t.UnknownList != nil {
+		return json.Marshal(t.UnknownList)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", t)
+}
+
+type TypesDefinitionVisitor interface {
+	VisitBinaryStringLiteral(string) error
+	VisitBooleanStringLiteral(string) error
+	VisitDateStringLiteral(string) error
+	VisitDatetimeStringLiteral(string) error
+	VisitDatetime_tzStringLiteral(string) error
+	VisitTimeStringLiteral(string) error
+	VisitNumberStringLiteral(string) error
+	VisitFieldStringStringLiteral(string) error
+	VisitSmallintStringLiteral(string) error
+	VisitIntStringLiteral(string) error
+	VisitBigintStringLiteral(string) error
+	VisitSingleStringLiteral(string) error
+	VisitDoubleStringLiteral(string) error
+	VisitUnknownList([]any) error
+}
+
+func (t *TypesDefinition) Accept(visitor TypesDefinitionVisitor) error {
+	if t.typ == "BinaryStringLiteral" || t.BinaryStringLiteral != "" {
+		return visitor.VisitBinaryStringLiteral(t.BinaryStringLiteral)
+	}
+	if t.typ == "BooleanStringLiteral" || t.BooleanStringLiteral != "" {
+		return visitor.VisitBooleanStringLiteral(t.BooleanStringLiteral)
+	}
+	if t.typ == "DateStringLiteral" || t.DateStringLiteral != "" {
+		return visitor.VisitDateStringLiteral(t.DateStringLiteral)
+	}
+	if t.typ == "DatetimeStringLiteral" || t.DatetimeStringLiteral != "" {
+		return visitor.VisitDatetimeStringLiteral(t.DatetimeStringLiteral)
+	}
+	if t.typ == "Datetime_tzStringLiteral" || t.Datetime_tzStringLiteral != "" {
+		return visitor.VisitDatetime_tzStringLiteral(t.Datetime_tzStringLiteral)
+	}
+	if t.typ == "TimeStringLiteral" || t.TimeStringLiteral != "" {
+		return visitor.VisitTimeStringLiteral(t.TimeStringLiteral)
+	}
+	if t.typ == "NumberStringLiteral" || t.NumberStringLiteral != "" {
+		return visitor.VisitNumberStringLiteral(t.NumberStringLiteral)
+	}
+	if t.typ == "FieldStringStringLiteral" || t.FieldStringStringLiteral != "" {
+		return visitor.VisitFieldStringStringLiteral(t.FieldStringStringLiteral)
+	}
+	if t.typ == "SmallintStringLiteral" || t.SmallintStringLiteral != "" {
+		return visitor.VisitSmallintStringLiteral(t.SmallintStringLiteral)
+	}
+	if t.typ == "IntStringLiteral" || t.IntStringLiteral != "" {
+		return visitor.VisitIntStringLiteral(t.IntStringLiteral)
+	}
+	if t.typ == "BigintStringLiteral" || t.BigintStringLiteral != "" {
+		return visitor.VisitBigintStringLiteral(t.BigintStringLiteral)
+	}
+	if t.typ == "SingleStringLiteral" || t.SingleStringLiteral != "" {
+		return visitor.VisitSingleStringLiteral(t.SingleStringLiteral)
+	}
+	if t.typ == "DoubleStringLiteral" || t.DoubleStringLiteral != "" {
+		return visitor.VisitDoubleStringLiteral(t.DoubleStringLiteral)
+	}
+	if t.typ == "UnknownList" || t.UnknownList != nil {
+		return visitor.VisitUnknownList(t.UnknownList)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", t)
 }
 
 type TypesType = any

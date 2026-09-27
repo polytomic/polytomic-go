@@ -677,7 +677,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"api_calls_last_24_hours\": 2021,\n    \"configuration\": {\n      \"database\": \"example\",\n      \"hostname\": \"postgres.example.com\",\n      \"password\": \"********\",\n      \"port\": 5432,\n      \"username\": \"user\"\n    },\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    },\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"My Postgres Connection\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"parent_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"policies\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"saved\": true,\n    \"status\": \"healthy\",\n    \"status_error\": \"error message\",\n    \"type\": {\n      \"id\": \"postgresql\",\n      \"logo_dark_url\": \"https://connect-assets.polytomic.com/logos/dark/postgresql.svg\",\n      \"logo_url\": \"https://connect-assets.polytomic.com/logos/postgresql.svg\",\n      \"name\": \"PostgreSQL\",\n      \"operations\": [\n        \"operations\"\n      ]\n    },\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    }\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"api_calls_last_24_hours\": 2021,\n    \"configuration\": {\n      \"database\": \"example\",\n      \"hostname\": \"postgres.example.com\",\n      \"password\": \"********\",\n      \"port\": 5432,\n      \"username\": \"user\"\n    },\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    },\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"My Postgres Connection\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"parent_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"policies\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"rate_limit\": {\n      \"currently_limited\": true,\n      \"expires_at\": \"2024-01-15T09:30:00Z\",\n      \"limited_since\": \"2024-01-15T09:30:00Z\"\n    },\n    \"saved\": true,\n    \"status\": \"healthy\",\n    \"status_error\": \"error message\",\n    \"type\": {\n      \"id\": \"postgresql\",\n      \"logo_dark_url\": \"https://connect-assets.polytomic.com/logos/dark/postgresql.svg\",\n      \"logo_url\": \"https://connect-assets.polytomic.com/logos/postgresql.svg\",\n      \"name\": \"PostgreSQL\",\n      \"operations\": [\n        \"operations\"\n      ]\n    },\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": {\n      \"id\": \"12345678-1234-1234-1234-123456789012\",\n      \"name\": \"John Doe\",\n      \"type\": \"user\"\n    }\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -3972,6 +3972,64 @@
       }
     },
     {
+      "id": "ab794136-7e83-43f5-948c-8291a822d964",
+      "name": "Search Operations - default",
+      "request": {
+        "urlPathTemplate": "/api/operations/search",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"results\": [\n      {}\n    ],\n    \"sourceSha256\": \"sourceSha256\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ab794136-7e83-43f5-948c-8291a822d964",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "6ed53deb-b853-466e-91cb-8580c9aedab4",
+      "name": "Get Operation Search Availability - default",
+      "request": {
+        "urlPathTemplate": "/api/operations/search/availability",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"enabled\": true,\n    \"rate_limited\": {\n      \"reason\": \"organization.minute.limit\",\n      \"reset_at\": \"2024-01-15T09:30:00Z\"\n    }\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "6ed53deb-b853-466e-91cb-8580c9aedab4",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
       "id": "a1693814-ebc6-4694-911c-8cde8cb0619f",
       "name": "Get Current Organization - default",
       "request": {
@@ -4324,7 +4382,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"actor\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"attempt_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"client_name\": \"client_name\",\n      \"client_version\": \"client_version\",\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"context_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"credential\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"event_type\": \"event_type\",\n      \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"metadata\": {\n        \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"saved_query_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"occurred_at\": \"2024-01-15T09:30:00Z\",\n      \"operation_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"outcome\": \"outcome\",\n      \"profile\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"provenance\": \"provenance\",\n      \"query_source\": {\n        \"saved_query\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n          \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"submission_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"recorded_at\": \"2024-01-15T09:30:00Z\",\n      \"session_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"targets\": [\n        {\n          \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        }\n      ]\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "body": "{\n  \"data\": [\n    {\n      \"actor\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"attempt_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"client_name\": \"client_name\",\n      \"client_version\": \"client_version\",\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"context_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"credential\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"event_type\": \"event_type\",\n      \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"metadata\": {\n        \"action_request_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"saved_query_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"occurred_at\": \"2024-01-15T09:30:00Z\",\n      \"operation_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"outcome\": \"outcome\",\n      \"profile\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"provenance\": \"provenance\",\n      \"query_source\": {\n        \"saved_query\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n          \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"submission_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"recorded_at\": \"2024-01-15T09:30:00Z\",\n      \"session_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"targets\": [\n        {\n          \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        }\n      ]\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -4372,7 +4430,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"client_name\": \"client_name\",\n    \"client_version\": \"client_version\",\n    \"credential\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"ended_at\": \"2024-01-15T09:30:00Z\",\n    \"events\": [\n      {\n        \"actor\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"attempt_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"context_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"credential\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"metadata\": {\n          \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n          \"saved_query_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"operation_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"profile\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"query_source\": {\n          \"saved_query\": {\n            \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n            \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n          },\n          \"submission_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"session_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"targets\": [\n          {\n            \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n          }\n        ]\n      }\n    ],\n    \"expires_at\": \"2024-01-15T09:30:00Z\",\n    \"external_run_id\": \"external_run_id\",\n    \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"history_truncated\": true,\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"profile\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"started_at\": \"2024-01-15T09:30:00Z\",\n    \"started_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"status\": \"active\",\n    \"terminal_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  },\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"client_name\": \"client_name\",\n    \"client_version\": \"client_version\",\n    \"credential\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"ended_at\": \"2024-01-15T09:30:00Z\",\n    \"events\": [\n      {\n        \"actor\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"attempt_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"context_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"credential\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"metadata\": {\n          \"action_request_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n          \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n          \"saved_query_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"operation_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"profile\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"query_source\": {\n          \"saved_query\": {\n            \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n            \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n          },\n          \"submission_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"session_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"targets\": [\n          {\n            \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n          }\n        ]\n      }\n    ],\n    \"expires_at\": \"2024-01-15T09:30:00Z\",\n    \"external_run_id\": \"external_run_id\",\n    \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"history_truncated\": true,\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"profile\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"started_at\": \"2024-01-15T09:30:00Z\",\n    \"started_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"status\": \"active\",\n    \"terminal_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  },\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -4408,7 +4466,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"actor\": {\n      \"display_name\": \"display_name\",\n      \"email\": \"email\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"type\": \"type\"\n    },\n    \"attempt_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"client_name\": \"client_name\",\n    \"client_version\": \"client_version\",\n    \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"context_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"credential\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"event_type\": \"event_type\",\n    \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"metadata\": {\n      \"attempt_number\": 1,\n      \"category\": \"category\",\n      \"client_name\": \"client_name\",\n      \"client_version\": \"client_version\",\n      \"connection_name\": \"connection_name\",\n      \"connection_name_truncated\": true,\n      \"connection_type\": \"connection_type\",\n      \"context_version\": 1,\n      \"error_category\": \"error_category\",\n      \"execution_duration_ms\": 1,\n      \"external_run_id\": \"external_run_id\",\n      \"field_count\": 1,\n      \"has_next_page\": true,\n      \"label\": \"label\",\n      \"label_truncated\": true,\n      \"operation\": \"operation\",\n      \"phase\": \"phase\",\n      \"queue_duration_ms\": 1,\n      \"reason\": \"reason\",\n      \"record_id\": \"record_id\",\n      \"row_count\": 1,\n      \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"saved_query_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"saved_query_version\": 1,\n      \"schema_id\": \"schema_id\",\n      \"statement_category\": \"statement_category\",\n      \"supported\": true,\n      \"total_duration_ms\": 1\n    },\n    \"occurred_at\": \"2024-01-15T09:30:00Z\",\n    \"operation_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"outcome\": \"outcome\",\n    \"profile\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"provenance\": \"provenance\",\n    \"query_source\": {\n      \"kind\": \"kind\",\n      \"saved_query\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"submission_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"submitted_at\": \"2024-01-15T09:30:00Z\"\n    },\n    \"recorded_at\": \"2024-01-15T09:30:00Z\",\n    \"session_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"targets\": [\n      {\n        \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      }\n    ]\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"actor\": {\n      \"display_name\": \"display_name\",\n      \"email\": \"email\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"type\": \"type\"\n    },\n    \"attempt_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"client_name\": \"client_name\",\n    \"client_version\": \"client_version\",\n    \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"context_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"credential\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"event_type\": \"event_type\",\n    \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"metadata\": {\n      \"action_enabled\": true,\n      \"action_field_ids\": [\n        \"action_field_ids\"\n      ],\n      \"action_id\": \"action_id\",\n      \"action_lookup_field_id\": \"action_lookup_field_id\",\n      \"action_lookup_field_ids\": [\n        \"action_lookup_field_ids\"\n      ],\n      \"action_request_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"attempt_number\": 1,\n      \"category\": \"category\",\n      \"client_name\": \"client_name\",\n      \"client_version\": \"client_version\",\n      \"connection_name\": \"connection_name\",\n      \"connection_name_truncated\": true,\n      \"connection_type\": \"connection_type\",\n      \"context_version\": 1,\n      \"error_category\": \"error_category\",\n      \"execution_duration_ms\": 1,\n      \"external_run_id\": \"external_run_id\",\n      \"failure_code\": \"failure_code\",\n      \"field_count\": 1,\n      \"has_next_page\": true,\n      \"label\": \"label\",\n      \"label_truncated\": true,\n      \"operation\": \"operation\",\n      \"phase\": \"phase\",\n      \"queue_duration_ms\": 1,\n      \"reason\": \"reason\",\n      \"record_id\": \"record_id\",\n      \"row_count\": 1,\n      \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"saved_query_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"saved_query_version\": 1,\n      \"schema_id\": \"schema_id\",\n      \"statement_category\": \"statement_category\",\n      \"supported\": true,\n      \"total_duration_ms\": 1\n    },\n    \"occurred_at\": \"2024-01-15T09:30:00Z\",\n    \"operation_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"outcome\": \"outcome\",\n    \"profile\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"provenance\": \"provenance\",\n    \"query_source\": {\n      \"kind\": \"kind\",\n      \"saved_query\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"submission_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"submitted_at\": \"2024-01-15T09:30:00Z\"\n    },\n    \"recorded_at\": \"2024-01-15T09:30:00Z\",\n    \"session_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"targets\": [\n      {\n        \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      }\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -4945,7 +5003,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"created_at\": \"2024-01-01T00:00:00Z\",\n      \"disabled\": true,\n      \"endpoint\": \"https://example.com/webhook\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"secret\": \"secret\"\n    }\n  ]\n}",
+        "body": "{\n  \"data\": [\n    {\n      \"created_at\": \"2024-01-01T00:00:00Z\",\n      \"disabled\": true,\n      \"disabled_at\": \"2024-01-15T09:30:00Z\",\n      \"disabled_reason\": \"disabled_reason\",\n      \"endpoint\": \"https://example.com/webhook\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"secret\": \"secret\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -4977,7 +5035,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"disabled\": true,\n    \"endpoint\": \"https://example.com/webhook\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"secret\": \"secret\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"disabled\": true,\n    \"disabled_at\": \"2024-01-15T09:30:00Z\",\n    \"disabled_reason\": \"disabled_reason\",\n    \"endpoint\": \"https://example.com/webhook\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"secret\": \"secret\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -5013,7 +5071,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"disabled\": true,\n    \"endpoint\": \"https://example.com/webhook\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"secret\": \"secret\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"disabled\": true,\n    \"disabled_at\": \"2024-01-15T09:30:00Z\",\n    \"disabled_reason\": \"disabled_reason\",\n    \"endpoint\": \"https://example.com/webhook\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"secret\": \"secret\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -5049,7 +5107,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"disabled\": true,\n    \"endpoint\": \"https://example.com/webhook\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"secret\": \"secret\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"disabled\": true,\n    \"disabled_at\": \"2024-01-15T09:30:00Z\",\n    \"disabled_reason\": \"disabled_reason\",\n    \"endpoint\": \"https://example.com/webhook\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"secret\": \"secret\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -5121,7 +5179,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"disabled\": true,\n    \"endpoint\": \"https://example.com/webhook\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"secret\": \"secret\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"disabled\": true,\n    \"disabled_at\": \"2024-01-15T09:30:00Z\",\n    \"disabled_reason\": \"disabled_reason\",\n    \"endpoint\": \"https://example.com/webhook\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"secret\": \"secret\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -5157,7 +5215,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"disabled\": true,\n    \"endpoint\": \"https://example.com/webhook\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"secret\": \"secret\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-01T00:00:00Z\",\n    \"disabled\": true,\n    \"disabled_at\": \"2024-01-15T09:30:00Z\",\n    \"disabled_reason\": \"disabled_reason\",\n    \"endpoint\": \"https://example.com/webhook\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"secret\": \"secret\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -6285,6 +6343,247 @@
       }
     },
     {
+      "id": "115726b6-2fae-4efc-87c5-a9fce1d4b9fb",
+      "name": "Get Harbor Action Execution - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/action-executions/{execution_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "execution_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"credential_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"deadline_at\": \"2024-01-15T09:30:00Z\",\n    \"execution_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"failure_category\": \"failure_category\",\n    \"field_ids\": [\n      \"field_ids\"\n    ],\n    \"finished_at\": \"2024-01-15T09:30:00Z\",\n    \"lookup_field_id\": \"lookup_field_id\",\n    \"operation_id\": \"operation_id\",\n    \"recovery_required\": true,\n    \"schema_id\": \"schema_id\",\n    \"started_at\": \"2024-01-15T09:30:00Z\",\n    \"status\": \"executing\",\n    \"status_path\": \"status_path\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "115726b6-2fae-4efc-87c5-a9fce1d4b9fb",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "e2c2f8d5-826e-410d-9d5f-f328efdb42be",
+      "name": "List Harbor Actions - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/actions",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "search": {
+            "equalTo": "search"
+          },
+          "page_token": {
+            "equalTo": "page_token"
+          },
+          "limit": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"connection_name\": \"connection_name\",\n      \"operation_id\": \"operation_id\",\n      \"schema_id\": \"schema_id\",\n      \"unavailable\": true\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"next_page_token\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "e2c2f8d5-826e-410d-9d5f-f328efdb42be",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "285c0e9d-e726-4a28-bf4d-0ad65420b508",
+      "name": "Describe Harbor Action - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/actions/describe",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "schema_id": {
+            "equalTo": "schema_id"
+          },
+          "operation_id": {
+            "equalTo": "operation_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"description\": \"description\",\n    \"effect\": \"effect\",\n    \"idempotency\": {\n      \"retention_ns\": 1000000,\n      \"scope\": \"scope\"\n    },\n    \"input_fields\": [\n      {}\n    ],\n    \"lookup_fields\": [\n      {}\n    ],\n    \"name\": \"name\",\n    \"operation_id\": \"operation_id\",\n    \"output_fields\": [\n      {}\n    ],\n    \"schema_id\": \"schema_id\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "285c0e9d-e726-4a28-bf4d-0ad65420b508",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "a384bddf-4e57-457e-a7d5-7d1885ff5953",
+      "name": "Execute Harbor Action - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/actions/execute",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"credential_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"deadline_at\": \"2024-01-15T09:30:00Z\",\n    \"execution_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"failure_category\": \"failure_category\",\n    \"field_ids\": [\n      \"field_ids\"\n    ],\n    \"finished_at\": \"2024-01-15T09:30:00Z\",\n    \"lookup_field_id\": \"lookup_field_id\",\n    \"operation_id\": \"operation_id\",\n    \"recovery_required\": true,\n    \"schema_id\": \"schema_id\",\n    \"started_at\": \"2024-01-15T09:30:00Z\",\n    \"status\": \"executing\",\n    \"status_path\": \"status_path\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "a384bddf-4e57-457e-a7d5-7d1885ff5953",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "9c7fc8d0-307c-43e4-9572-64aa54fdd1fe",
+      "name": "Lookup Harbor Action - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/actions/lookup",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"key\": \"value\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "9c7fc8d0-307c-43e4-9572-64aa54fdd1fe",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "92bce28c-dc12-44df-835b-2716ec91cc51",
+      "name": "Prepare Harbor Action - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/actions/prepare",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"execution_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"expires_at\": \"2024-01-15T09:30:00Z\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "92bce28c-dc12-44df-835b-2716ec91cc51",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
       "id": "08b1c799-7bd0-4aa2-a824-5533d510c41f",
       "name": "Get Sync Target - default",
       "request": {
@@ -7122,6 +7421,6 @@
     }
   ],
   "meta": {
-    "total": 188
+    "total": 196
   }
 }

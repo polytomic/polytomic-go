@@ -512,6 +512,14 @@ func TestSettersMarkExplicitTemporaryCredentialResponseEnvelope(t *testing.T) {
 }
 
 func TestSettersTemporaryCredentialSubject(t *testing.T) {
+	t.Run("SetHarborID", func(t *testing.T) {
+		obj := &TemporaryCredentialSubject{}
+		var fernTestValueHarborID *string
+		obj.SetHarborID(fernTestValueHarborID)
+		assert.Equal(t, fernTestValueHarborID, obj.HarborID)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetMode", func(t *testing.T) {
 		obj := &TemporaryCredentialSubject{}
 		var fernTestValueMode *TemporaryCredentialSubjectMode
@@ -525,14 +533,6 @@ func TestSettersTemporaryCredentialSubject(t *testing.T) {
 		var fernTestValueOrganizationID *string
 		obj.SetOrganizationID(fernTestValueOrganizationID)
 		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
-	t.Run("SetProfileID", func(t *testing.T) {
-		obj := &TemporaryCredentialSubject{}
-		var fernTestValueProfileID *string
-		obj.SetProfileID(fernTestValueProfileID)
-		assert.Equal(t, fernTestValueProfileID, obj.ProfileID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -555,6 +555,39 @@ func TestSettersTemporaryCredentialSubject(t *testing.T) {
 }
 
 func TestGettersTemporaryCredentialSubject(t *testing.T) {
+	t.Run("GetHarborID", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TemporaryCredentialSubject{}
+		var expected *string
+		obj.HarborID = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetHarborID(), "getter should return the property value")
+	})
+
+	t.Run("GetHarborID_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TemporaryCredentialSubject{}
+		obj.HarborID = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetHarborID(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetHarborID_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *TemporaryCredentialSubject
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetHarborID() // Should return zero value
+	})
+
 	t.Run("GetMode", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
@@ -621,39 +654,6 @@ func TestGettersTemporaryCredentialSubject(t *testing.T) {
 		_ = obj.GetOrganizationID() // Should return zero value
 	})
 
-	t.Run("GetProfileID", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &TemporaryCredentialSubject{}
-		var expected *string
-		obj.ProfileID = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetProfileID(), "getter should return the property value")
-	})
-
-	t.Run("GetProfileID_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &TemporaryCredentialSubject{}
-		obj.ProfileID = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetProfileID(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetProfileID_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *TemporaryCredentialSubject
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetProfileID() // Should return zero value
-	})
-
 	t.Run("GetType", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
@@ -713,6 +713,37 @@ func TestGettersTemporaryCredentialSubject(t *testing.T) {
 }
 
 func TestSettersMarkExplicitTemporaryCredentialSubject(t *testing.T) {
+	t.Run("SetHarborID_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TemporaryCredentialSubject{}
+		var fernTestValueHarborID *string
+
+		// Act
+		obj.SetHarborID(fernTestValueHarborID)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 	t.Run("SetMode_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
@@ -752,37 +783,6 @@ func TestSettersMarkExplicitTemporaryCredentialSubject(t *testing.T) {
 
 		// Act
 		obj.SetOrganizationID(fernTestValueOrganizationID)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetProfileID_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &TemporaryCredentialSubject{}
-		var fernTestValueProfileID *string
-
-		// Act
-		obj.SetProfileID(fernTestValueProfileID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -1054,11 +1054,11 @@ func TestEnumTemporaryCredentialSubjectType(t *testing.T) {
 		assert.Equal(t, TemporaryCredentialSubjectType("user"), val, "enum value should match expected wire value")
 	})
 
-	t.Run("NewFromString_profile", func(t *testing.T) {
+	t.Run("NewFromString_harbor", func(t *testing.T) {
 		t.Parallel()
-		val, err := NewTemporaryCredentialSubjectTypeFromString("profile")
+		val, err := NewTemporaryCredentialSubjectTypeFromString("harbor")
 		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, TemporaryCredentialSubjectType("profile"), val, "enum value should match expected wire value")
+		assert.Equal(t, TemporaryCredentialSubjectType("harbor"), val, "enum value should match expected wire value")
 	})
 
 	t.Run("NewFromString_Invalid", func(t *testing.T) {

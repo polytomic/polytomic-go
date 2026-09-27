@@ -273,6 +273,22 @@ func TestSettersWebhook(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetDisabledAt", func(t *testing.T) {
+		obj := &Webhook{}
+		var fernTestValueDisabledAt *time.Time
+		obj.SetDisabledAt(fernTestValueDisabledAt)
+		assert.Equal(t, fernTestValueDisabledAt, obj.DisabledAt)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetDisabledReason", func(t *testing.T) {
+		obj := &Webhook{}
+		var fernTestValueDisabledReason *string
+		obj.SetDisabledReason(fernTestValueDisabledReason)
+		assert.Equal(t, fernTestValueDisabledReason, obj.DisabledReason)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetEndpoint", func(t *testing.T) {
 		obj := &Webhook{}
 		var fernTestValueEndpoint *string
@@ -372,6 +388,72 @@ func TestGettersWebhook(t *testing.T) {
 			}
 		}()
 		_ = obj.GetDisabled() // Should return zero value
+	})
+
+	t.Run("GetDisabledAt", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &Webhook{}
+		var expected *time.Time
+		obj.DisabledAt = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetDisabledAt(), "getter should return the property value")
+	})
+
+	t.Run("GetDisabledAt_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &Webhook{}
+		obj.DisabledAt = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetDisabledAt(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetDisabledAt_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *Webhook
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetDisabledAt() // Should return zero value
+	})
+
+	t.Run("GetDisabledReason", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &Webhook{}
+		var expected *string
+		obj.DisabledReason = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetDisabledReason(), "getter should return the property value")
+	})
+
+	t.Run("GetDisabledReason_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &Webhook{}
+		obj.DisabledReason = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetDisabledReason(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetDisabledReason_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *Webhook
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetDisabledReason() // Should return zero value
 	})
 
 	t.Run("GetEndpoint", func(t *testing.T) {
@@ -548,6 +630,68 @@ func TestSettersMarkExplicitWebhook(t *testing.T) {
 
 		// Act
 		obj.SetDisabled(fernTestValueDisabled)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetDisabledAt_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &Webhook{}
+		var fernTestValueDisabledAt *time.Time
+
+		// Act
+		obj.SetDisabledAt(fernTestValueDisabledAt)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetDisabledReason_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &Webhook{}
+		var fernTestValueDisabledReason *string
+
+		// Act
+		obj.SetDisabledReason(fernTestValueDisabledReason)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

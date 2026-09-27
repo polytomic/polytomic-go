@@ -48,13 +48,18 @@ var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
 			APIError: apiError,
 		}
 	},
-	410: func(apiError *core.APIError) error {
-		return &GoneError{
+	429: func(apiError *core.APIError) error {
+		return &TooManyRequestsError{
 			APIError: apiError,
 		}
 	},
-	429: func(apiError *core.APIError) error {
-		return &TooManyRequestsError{
+	502: func(apiError *core.APIError) error {
+		return &BadGatewayError{
+			APIError: apiError,
+		}
+	},
+	410: func(apiError *core.APIError) error {
+		return &GoneError{
 			APIError: apiError,
 		}
 	},

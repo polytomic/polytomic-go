@@ -1135,49 +1135,63 @@ func (h *HarboractivityapiHarborActivityIdentitySnapshot) String() string {
 }
 
 var (
-	harboractivityapiHarborActivityMetadataFieldAttemptNumber           = big.NewInt(1 << 0)
-	harboractivityapiHarborActivityMetadataFieldCategory                = big.NewInt(1 << 1)
-	harboractivityapiHarborActivityMetadataFieldClientName              = big.NewInt(1 << 2)
-	harboractivityapiHarborActivityMetadataFieldClientVersion           = big.NewInt(1 << 3)
-	harboractivityapiHarborActivityMetadataFieldConnectionName          = big.NewInt(1 << 4)
-	harboractivityapiHarborActivityMetadataFieldConnectionNameTruncated = big.NewInt(1 << 5)
-	harboractivityapiHarborActivityMetadataFieldConnectionType          = big.NewInt(1 << 6)
-	harboractivityapiHarborActivityMetadataFieldContextVersion          = big.NewInt(1 << 7)
-	harboractivityapiHarborActivityMetadataFieldErrorCategory           = big.NewInt(1 << 8)
-	harboractivityapiHarborActivityMetadataFieldExecutionDurationMs     = big.NewInt(1 << 9)
-	harboractivityapiHarborActivityMetadataFieldExternalRunID           = big.NewInt(1 << 10)
-	harboractivityapiHarborActivityMetadataFieldFieldCount              = big.NewInt(1 << 11)
-	harboractivityapiHarborActivityMetadataFieldHasNextPage             = big.NewInt(1 << 12)
-	harboractivityapiHarborActivityMetadataFieldLabel                   = big.NewInt(1 << 13)
-	harboractivityapiHarborActivityMetadataFieldLabelTruncated          = big.NewInt(1 << 14)
-	harboractivityapiHarborActivityMetadataFieldOperation               = big.NewInt(1 << 15)
-	harboractivityapiHarborActivityMetadataFieldPhase                   = big.NewInt(1 << 16)
-	harboractivityapiHarborActivityMetadataFieldQueueDurationMs         = big.NewInt(1 << 17)
-	harboractivityapiHarborActivityMetadataFieldReason                  = big.NewInt(1 << 18)
-	harboractivityapiHarborActivityMetadataFieldRecordID                = big.NewInt(1 << 19)
-	harboractivityapiHarborActivityMetadataFieldRowCount                = big.NewInt(1 << 20)
-	harboractivityapiHarborActivityMetadataFieldSavedQueryID            = big.NewInt(1 << 21)
-	harboractivityapiHarborActivityMetadataFieldSavedQueryRevisionID    = big.NewInt(1 << 22)
-	harboractivityapiHarborActivityMetadataFieldSavedQueryVersion       = big.NewInt(1 << 23)
-	harboractivityapiHarborActivityMetadataFieldSchemaID                = big.NewInt(1 << 24)
-	harboractivityapiHarborActivityMetadataFieldStatementCategory       = big.NewInt(1 << 25)
-	harboractivityapiHarborActivityMetadataFieldSupported               = big.NewInt(1 << 26)
-	harboractivityapiHarborActivityMetadataFieldTotalDurationMs         = big.NewInt(1 << 27)
+	harboractivityapiHarborActivityMetadataFieldActionEnabled           = big.NewInt(1 << 0)
+	harboractivityapiHarborActivityMetadataFieldActionFieldIDs          = big.NewInt(1 << 1)
+	harboractivityapiHarborActivityMetadataFieldActionID                = big.NewInt(1 << 2)
+	harboractivityapiHarborActivityMetadataFieldActionLookupFieldID     = big.NewInt(1 << 3)
+	harboractivityapiHarborActivityMetadataFieldActionLookupFieldIDs    = big.NewInt(1 << 4)
+	harboractivityapiHarborActivityMetadataFieldActionRequestID         = big.NewInt(1 << 5)
+	harboractivityapiHarborActivityMetadataFieldAttemptNumber           = big.NewInt(1 << 6)
+	harboractivityapiHarborActivityMetadataFieldCategory                = big.NewInt(1 << 7)
+	harboractivityapiHarborActivityMetadataFieldClientName              = big.NewInt(1 << 8)
+	harboractivityapiHarborActivityMetadataFieldClientVersion           = big.NewInt(1 << 9)
+	harboractivityapiHarborActivityMetadataFieldConnectionName          = big.NewInt(1 << 10)
+	harboractivityapiHarborActivityMetadataFieldConnectionNameTruncated = big.NewInt(1 << 11)
+	harboractivityapiHarborActivityMetadataFieldConnectionType          = big.NewInt(1 << 12)
+	harboractivityapiHarborActivityMetadataFieldContextVersion          = big.NewInt(1 << 13)
+	harboractivityapiHarborActivityMetadataFieldErrorCategory           = big.NewInt(1 << 14)
+	harboractivityapiHarborActivityMetadataFieldExecutionDurationMs     = big.NewInt(1 << 15)
+	harboractivityapiHarborActivityMetadataFieldExternalRunID           = big.NewInt(1 << 16)
+	harboractivityapiHarborActivityMetadataFieldFailureCode             = big.NewInt(1 << 17)
+	harboractivityapiHarborActivityMetadataFieldFieldCount              = big.NewInt(1 << 18)
+	harboractivityapiHarborActivityMetadataFieldHasNextPage             = big.NewInt(1 << 19)
+	harboractivityapiHarborActivityMetadataFieldLabel                   = big.NewInt(1 << 20)
+	harboractivityapiHarborActivityMetadataFieldLabelTruncated          = big.NewInt(1 << 21)
+	harboractivityapiHarborActivityMetadataFieldOperation               = big.NewInt(1 << 22)
+	harboractivityapiHarborActivityMetadataFieldPhase                   = big.NewInt(1 << 23)
+	harboractivityapiHarborActivityMetadataFieldQueueDurationMs         = big.NewInt(1 << 24)
+	harboractivityapiHarborActivityMetadataFieldReason                  = big.NewInt(1 << 25)
+	harboractivityapiHarborActivityMetadataFieldRecordID                = big.NewInt(1 << 26)
+	harboractivityapiHarborActivityMetadataFieldRowCount                = big.NewInt(1 << 27)
+	harboractivityapiHarborActivityMetadataFieldSavedQueryID            = big.NewInt(1 << 28)
+	harboractivityapiHarborActivityMetadataFieldSavedQueryRevisionID    = big.NewInt(1 << 29)
+	harboractivityapiHarborActivityMetadataFieldSavedQueryVersion       = big.NewInt(1 << 30)
+	harboractivityapiHarborActivityMetadataFieldSchemaID                = big.NewInt(1 << 31)
+	harboractivityapiHarborActivityMetadataFieldStatementCategory       = big.NewInt(1 << 32)
+	harboractivityapiHarborActivityMetadataFieldSupported               = big.NewInt(1 << 33)
+	harboractivityapiHarborActivityMetadataFieldTotalDurationMs         = big.NewInt(1 << 34)
 )
 
 type HarboractivityapiHarborActivityMetadata struct {
-	AttemptNumber           *int    `json:"attempt_number,omitempty" url:"attempt_number,omitempty"`
-	Category                *string `json:"category,omitempty" url:"category,omitempty"`
-	ClientName              *string `json:"client_name,omitempty" url:"client_name,omitempty"`
-	ClientVersion           *string `json:"client_version,omitempty" url:"client_version,omitempty"`
-	ConnectionName          *string `json:"connection_name,omitempty" url:"connection_name,omitempty"`
-	ConnectionNameTruncated *bool   `json:"connection_name_truncated,omitempty" url:"connection_name_truncated,omitempty"`
-	ConnectionType          *string `json:"connection_type,omitempty" url:"connection_type,omitempty"`
+	ActionEnabled           *bool    `json:"action_enabled,omitempty" url:"action_enabled,omitempty"`
+	ActionFieldIDs          []string `json:"action_field_ids,omitempty" url:"action_field_ids,omitempty"`
+	ActionID                *string  `json:"action_id,omitempty" url:"action_id,omitempty"`
+	ActionLookupFieldID     *string  `json:"action_lookup_field_id,omitempty" url:"action_lookup_field_id,omitempty"`
+	ActionLookupFieldIDs    []string `json:"action_lookup_field_ids,omitempty" url:"action_lookup_field_ids,omitempty"`
+	ActionRequestID         *string  `json:"action_request_id,omitempty" url:"action_request_id,omitempty"`
+	AttemptNumber           *int     `json:"attempt_number,omitempty" url:"attempt_number,omitempty"`
+	Category                *string  `json:"category,omitempty" url:"category,omitempty"`
+	ClientName              *string  `json:"client_name,omitempty" url:"client_name,omitempty"`
+	ClientVersion           *string  `json:"client_version,omitempty" url:"client_version,omitempty"`
+	ConnectionName          *string  `json:"connection_name,omitempty" url:"connection_name,omitempty"`
+	ConnectionNameTruncated *bool    `json:"connection_name_truncated,omitempty" url:"connection_name_truncated,omitempty"`
+	ConnectionType          *string  `json:"connection_type,omitempty" url:"connection_type,omitempty"`
 	// Published context version number at fetch time, when recorded.
 	ContextVersion      *int    `json:"context_version,omitempty" url:"context_version,omitempty"`
 	ErrorCategory       *string `json:"error_category,omitempty" url:"error_category,omitempty"`
 	ExecutionDurationMs *int    `json:"execution_duration_ms,omitempty" url:"execution_duration_ms,omitempty"`
 	ExternalRunID       *string `json:"external_run_id,omitempty" url:"external_run_id,omitempty"`
+	FailureCode         *string `json:"failure_code,omitempty" url:"failure_code,omitempty"`
 	// Number of fields returned by a query. Raw field names are not returned.
 	FieldCount  *int  `json:"field_count,omitempty" url:"field_count,omitempty"`
 	HasNextPage *bool `json:"has_next_page,omitempty" url:"has_next_page,omitempty"`
@@ -1204,6 +1218,48 @@ type HarboractivityapiHarborActivityMetadata struct {
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (h *HarboractivityapiHarborActivityMetadata) GetActionEnabled() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.ActionEnabled
+}
+
+func (h *HarboractivityapiHarborActivityMetadata) GetActionFieldIDs() []string {
+	if h == nil {
+		return nil
+	}
+	return h.ActionFieldIDs
+}
+
+func (h *HarboractivityapiHarborActivityMetadata) GetActionID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ActionID
+}
+
+func (h *HarboractivityapiHarborActivityMetadata) GetActionLookupFieldID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ActionLookupFieldID
+}
+
+func (h *HarboractivityapiHarborActivityMetadata) GetActionLookupFieldIDs() []string {
+	if h == nil {
+		return nil
+	}
+	return h.ActionLookupFieldIDs
+}
+
+func (h *HarboractivityapiHarborActivityMetadata) GetActionRequestID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ActionRequestID
 }
 
 func (h *HarboractivityapiHarborActivityMetadata) GetAttemptNumber() *int {
@@ -1281,6 +1337,13 @@ func (h *HarboractivityapiHarborActivityMetadata) GetExternalRunID() *string {
 		return nil
 	}
 	return h.ExternalRunID
+}
+
+func (h *HarboractivityapiHarborActivityMetadata) GetFailureCode() *string {
+	if h == nil {
+		return nil
+	}
+	return h.FailureCode
 }
 
 func (h *HarboractivityapiHarborActivityMetadata) GetFieldCount() *int {
@@ -1416,6 +1479,48 @@ func (h *HarboractivityapiHarborActivityMetadata) require(field *big.Int) {
 	h.explicitFields.Or(h.explicitFields, field)
 }
 
+// SetActionEnabled sets the ActionEnabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivityMetadata) SetActionEnabled(actionEnabled *bool) {
+	h.ActionEnabled = actionEnabled
+	h.require(harboractivityapiHarborActivityMetadataFieldActionEnabled)
+}
+
+// SetActionFieldIDs sets the ActionFieldIDs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivityMetadata) SetActionFieldIDs(actionFieldIDs []string) {
+	h.ActionFieldIDs = actionFieldIDs
+	h.require(harboractivityapiHarborActivityMetadataFieldActionFieldIDs)
+}
+
+// SetActionID sets the ActionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivityMetadata) SetActionID(actionID *string) {
+	h.ActionID = actionID
+	h.require(harboractivityapiHarborActivityMetadataFieldActionID)
+}
+
+// SetActionLookupFieldID sets the ActionLookupFieldID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivityMetadata) SetActionLookupFieldID(actionLookupFieldID *string) {
+	h.ActionLookupFieldID = actionLookupFieldID
+	h.require(harboractivityapiHarborActivityMetadataFieldActionLookupFieldID)
+}
+
+// SetActionLookupFieldIDs sets the ActionLookupFieldIDs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivityMetadata) SetActionLookupFieldIDs(actionLookupFieldIDs []string) {
+	h.ActionLookupFieldIDs = actionLookupFieldIDs
+	h.require(harboractivityapiHarborActivityMetadataFieldActionLookupFieldIDs)
+}
+
+// SetActionRequestID sets the ActionRequestID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivityMetadata) SetActionRequestID(actionRequestID *string) {
+	h.ActionRequestID = actionRequestID
+	h.require(harboractivityapiHarborActivityMetadataFieldActionRequestID)
+}
+
 // SetAttemptNumber sets the AttemptNumber field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (h *HarboractivityapiHarborActivityMetadata) SetAttemptNumber(attemptNumber *int) {
@@ -1491,6 +1596,13 @@ func (h *HarboractivityapiHarborActivityMetadata) SetExecutionDurationMs(executi
 func (h *HarboractivityapiHarborActivityMetadata) SetExternalRunID(externalRunID *string) {
 	h.ExternalRunID = externalRunID
 	h.require(harboractivityapiHarborActivityMetadataFieldExternalRunID)
+}
+
+// SetFailureCode sets the FailureCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarboractivityapiHarborActivityMetadata) SetFailureCode(failureCode *string) {
+	h.FailureCode = failureCode
+	h.require(harboractivityapiHarborActivityMetadataFieldFailureCode)
 }
 
 // SetFieldCount sets the FieldCount field and marks it as non-optional;

@@ -668,13 +668,16 @@ func (i *IdentityCredentialConnectionCapabilitySchema) String() string {
 }
 
 var (
-	identityCredentialHarborSchemaFieldDescription  = big.NewInt(1 << 0)
-	identityCredentialHarborSchemaFieldID           = big.NewInt(1 << 1)
-	identityCredentialHarborSchemaFieldMcpServerURL = big.NewInt(1 << 2)
-	identityCredentialHarborSchemaFieldName         = big.NewInt(1 << 3)
+	identityCredentialHarborSchemaFieldActionsEnabled = big.NewInt(1 << 0)
+	identityCredentialHarborSchemaFieldDescription    = big.NewInt(1 << 1)
+	identityCredentialHarborSchemaFieldID             = big.NewInt(1 << 2)
+	identityCredentialHarborSchemaFieldMcpServerURL   = big.NewInt(1 << 3)
+	identityCredentialHarborSchemaFieldName           = big.NewInt(1 << 4)
 )
 
 type IdentityCredentialHarborSchema struct {
+	// Whether the organization has the Harbor actions feature enabled. Controls action tool visibility in new MCP sessions; does not grant permission or indicate that an action is configured.
+	ActionsEnabled *bool `json:"actions_enabled,omitempty" url:"actions_enabled,omitempty"`
 	// Organization-provided summary of the Harbor.
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
 	// Immutable Harbor ID.
@@ -689,6 +692,13 @@ type IdentityCredentialHarborSchema struct {
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (i *IdentityCredentialHarborSchema) GetActionsEnabled() *bool {
+	if i == nil {
+		return nil
+	}
+	return i.ActionsEnabled
 }
 
 func (i *IdentityCredentialHarborSchema) GetDescription() *string {
@@ -731,6 +741,13 @@ func (i *IdentityCredentialHarborSchema) require(field *big.Int) {
 		i.explicitFields = big.NewInt(0)
 	}
 	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetActionsEnabled sets the ActionsEnabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialHarborSchema) SetActionsEnabled(actionsEnabled *bool) {
+	i.ActionsEnabled = actionsEnabled
+	i.require(identityCredentialHarborSchemaFieldActionsEnabled)
 }
 
 // SetDescription sets the Description field and marks it as non-optional;

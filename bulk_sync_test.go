@@ -8436,6 +8436,14 @@ func TestSettersFieldConfiguration(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetUserOutputName", func(t *testing.T) {
+		obj := &FieldConfiguration{}
+		var fernTestValueUserOutputName *string
+		obj.SetUserOutputName(fernTestValueUserOutputName)
+		assert.Equal(t, fernTestValueUserOutputName, obj.UserOutputName)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 }
 
 func TestGettersFieldConfiguration(t *testing.T) {
@@ -8538,6 +8546,39 @@ func TestGettersFieldConfiguration(t *testing.T) {
 		_ = obj.GetObfuscate() // Should return zero value
 	})
 
+	t.Run("GetUserOutputName", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &FieldConfiguration{}
+		var expected *string
+		obj.UserOutputName = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetUserOutputName(), "getter should return the property value")
+	})
+
+	t.Run("GetUserOutputName_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &FieldConfiguration{}
+		obj.UserOutputName = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetUserOutputName(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetUserOutputName_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *FieldConfiguration
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetUserOutputName() // Should return zero value
+	})
+
 }
 
 func TestSettersMarkExplicitFieldConfiguration(t *testing.T) {
@@ -8634,6 +8675,37 @@ func TestSettersMarkExplicitFieldConfiguration(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
+	t.Run("SetUserOutputName_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &FieldConfiguration{}
+		var fernTestValueUserOutputName *string
+
+		// Act
+		obj.SetUserOutputName(fernTestValueUserOutputName)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 }
 
 func TestSettersSchemaConfiguration(t *testing.T) {
@@ -8698,6 +8770,14 @@ func TestSettersSchemaConfiguration(t *testing.T) {
 		var fernTestValueTrackingField *string
 		obj.SetTrackingField(fernTestValueTrackingField)
 		assert.Equal(t, fernTestValueTrackingField, obj.TrackingField)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetUserOutputName", func(t *testing.T) {
+		obj := &SchemaConfiguration{}
+		var fernTestValueUserOutputName *string
+		obj.SetUserOutputName(fernTestValueUserOutputName)
+		assert.Equal(t, fernTestValueUserOutputName, obj.UserOutputName)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -8968,6 +9048,39 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 		_ = obj.GetTrackingField() // Should return zero value
 	})
 
+	t.Run("GetUserOutputName", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &SchemaConfiguration{}
+		var expected *string
+		obj.UserOutputName = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetUserOutputName(), "getter should return the property value")
+	})
+
+	t.Run("GetUserOutputName_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &SchemaConfiguration{}
+		obj.UserOutputName = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetUserOutputName(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetUserOutputName_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *SchemaConfiguration
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetUserOutputName() // Should return zero value
+	})
+
 }
 
 func TestSettersMarkExplicitSchemaConfiguration(t *testing.T) {
@@ -9196,6 +9309,37 @@ func TestSettersMarkExplicitSchemaConfiguration(t *testing.T) {
 
 		// Act
 		obj.SetTrackingField(fernTestValueTrackingField)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetUserOutputName_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &SchemaConfiguration{}
+		var fernTestValueUserOutputName *string
+
+		// Act
+		obj.SetUserOutputName(fernTestValueUserOutputName)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

@@ -305,21 +305,21 @@ func (t *TemporaryCredentialResponseEnvelope) String() string {
 }
 
 var (
-	temporaryCredentialSubjectFieldMode           = big.NewInt(1 << 0)
-	temporaryCredentialSubjectFieldOrganizationID = big.NewInt(1 << 1)
-	temporaryCredentialSubjectFieldProfileID      = big.NewInt(1 << 2)
+	temporaryCredentialSubjectFieldHarborID       = big.NewInt(1 << 0)
+	temporaryCredentialSubjectFieldMode           = big.NewInt(1 << 1)
+	temporaryCredentialSubjectFieldOrganizationID = big.NewInt(1 << 2)
 	temporaryCredentialSubjectFieldType           = big.NewInt(1 << 3)
 	temporaryCredentialSubjectFieldUserID         = big.NewInt(1 << 4)
 )
 
 type TemporaryCredentialSubject struct {
-	// Authority mode for a user credential. Defaults to user. Profile subjects do not accept this field.
+	// Target Harbor for a Harbor credential.
+	HarborID *string `json:"harbor_id,omitempty" url:"harbor_id,omitempty"`
+	// Authority mode for a user credential. Defaults to user. Harbor subjects do not accept this field.
 	Mode *TemporaryCredentialSubjectMode `json:"mode,omitempty" url:"mode,omitempty"`
 	// Target organization for broker-issued credentials. Omit when the caller's organization determines the target.
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	// Target Agent Data profile for a profile credential.
-	ProfileID *string `json:"profile_id,omitempty" url:"profile_id,omitempty"`
-	// Authority subject type. Use user for current user authority or profile for an Agent Data profile.
+	// Authority subject type. Use user for current user authority or harbor for a Harbor.
 	Type TemporaryCredentialSubjectType `json:"type" url:"type"`
 	// Target user for broker-issued user credentials. Omit for user self-issuance.
 	UserID *string `json:"user_id,omitempty" url:"user_id,omitempty"`
@@ -329,6 +329,13 @@ type TemporaryCredentialSubject struct {
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (t *TemporaryCredentialSubject) GetHarborID() *string {
+	if t == nil {
+		return nil
+	}
+	return t.HarborID
 }
 
 func (t *TemporaryCredentialSubject) GetMode() *TemporaryCredentialSubjectMode {
@@ -343,13 +350,6 @@ func (t *TemporaryCredentialSubject) GetOrganizationID() *string {
 		return nil
 	}
 	return t.OrganizationID
-}
-
-func (t *TemporaryCredentialSubject) GetProfileID() *string {
-	if t == nil {
-		return nil
-	}
-	return t.ProfileID
 }
 
 func (t *TemporaryCredentialSubject) GetType() TemporaryCredentialSubjectType {
@@ -380,6 +380,13 @@ func (t *TemporaryCredentialSubject) require(field *big.Int) {
 	t.explicitFields.Or(t.explicitFields, field)
 }
 
+// SetHarborID sets the HarborID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TemporaryCredentialSubject) SetHarborID(harborID *string) {
+	t.HarborID = harborID
+	t.require(temporaryCredentialSubjectFieldHarborID)
+}
+
 // SetMode sets the Mode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (t *TemporaryCredentialSubject) SetMode(mode *TemporaryCredentialSubjectMode) {
@@ -392,13 +399,6 @@ func (t *TemporaryCredentialSubject) SetMode(mode *TemporaryCredentialSubjectMod
 func (t *TemporaryCredentialSubject) SetOrganizationID(organizationID *string) {
 	t.OrganizationID = organizationID
 	t.require(temporaryCredentialSubjectFieldOrganizationID)
-}
-
-// SetProfileID sets the ProfileID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TemporaryCredentialSubject) SetProfileID(profileID *string) {
-	t.ProfileID = profileID
-	t.require(temporaryCredentialSubjectFieldProfileID)
 }
 
 // SetType sets the Type field and marks it as non-optional;
@@ -457,7 +457,7 @@ func (t *TemporaryCredentialSubject) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
-// Authority mode for a user credential. Defaults to user. Profile subjects do not accept this field.
+// Authority mode for a user credential. Defaults to user. Harbor subjects do not accept this field.
 type TemporaryCredentialSubjectMode string
 
 const (
@@ -480,20 +480,20 @@ func (t TemporaryCredentialSubjectMode) Ptr() *TemporaryCredentialSubjectMode {
 	return &t
 }
 
-// Authority subject type. Use user for current user authority or profile for an Agent Data profile.
+// Authority subject type. Use user for current user authority or harbor for a Harbor.
 type TemporaryCredentialSubjectType string
 
 const (
-	TemporaryCredentialSubjectTypeUser    TemporaryCredentialSubjectType = "user"
-	TemporaryCredentialSubjectTypeProfile TemporaryCredentialSubjectType = "profile"
+	TemporaryCredentialSubjectTypeUser   TemporaryCredentialSubjectType = "user"
+	TemporaryCredentialSubjectTypeHarbor TemporaryCredentialSubjectType = "harbor"
 )
 
 func NewTemporaryCredentialSubjectTypeFromString(s string) (TemporaryCredentialSubjectType, error) {
 	switch s {
 	case "user":
 		return TemporaryCredentialSubjectTypeUser, nil
-	case "profile":
-		return TemporaryCredentialSubjectTypeProfile, nil
+	case "harbor":
+		return TemporaryCredentialSubjectTypeHarbor, nil
 	}
 	var t TemporaryCredentialSubjectType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

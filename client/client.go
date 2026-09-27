@@ -9,13 +9,14 @@ import (
 	core "github.com/polytomic/polytomic-go/v25/core"
 	entities "github.com/polytomic/polytomic-go/v25/entities"
 	events "github.com/polytomic/polytomic-go/v25/events"
-	harbors "github.com/polytomic/polytomic-go/v25/harbors"
+	harborsclient "github.com/polytomic/polytomic-go/v25/harbors/client"
 	identity "github.com/polytomic/polytomic-go/v25/identity"
 	internal "github.com/polytomic/polytomic-go/v25/internal"
 	jobs "github.com/polytomic/polytomic-go/v25/jobs"
 	models "github.com/polytomic/polytomic-go/v25/models"
 	modelsyncclient "github.com/polytomic/polytomic-go/v25/modelsync/client"
 	notifications "github.com/polytomic/polytomic-go/v25/notifications"
+	operations "github.com/polytomic/polytomic-go/v25/operations"
 	option "github.com/polytomic/polytomic-go/v25/option"
 	organization "github.com/polytomic/polytomic-go/v25/organization"
 	permissionsclient "github.com/polytomic/polytomic-go/v25/permissions/client"
@@ -36,10 +37,11 @@ type Client struct {
 	ModelSync            *modelsyncclient.Client
 	Entities             *entities.Client
 	Events               *events.Client
-	Harbors              *harbors.Client
+	Harbors              *harborsclient.Client
 	Jobs                 *jobs.Client
 	Identity             *identity.Client
 	Notifications        *notifications.Client
+	Operations           *operations.Client
 	Organization         *organization.Client
 	Activity             *activity.Client
 	Users                *users.Client
@@ -68,10 +70,11 @@ func NewClient(opts ...option.RequestOption) *Client {
 		ModelSync:            modelsyncclient.NewClient(options),
 		Entities:             entities.NewClient(options),
 		Events:               events.NewClient(options),
-		Harbors:              harbors.NewClient(options),
+		Harbors:              harborsclient.NewClient(options),
 		Jobs:                 jobs.NewClient(options),
 		Identity:             identity.NewClient(options),
 		Notifications:        notifications.NewClient(options),
+		Operations:           operations.NewClient(options),
 		Organization:         organization.NewClient(options),
 		Activity:             activity.NewClient(options),
 		Users:                users.NewClient(options),

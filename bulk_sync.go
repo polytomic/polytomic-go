@@ -3302,9 +3302,10 @@ func (b BulkSyncTargetMode) Ptr() *BulkSyncTargetMode {
 }
 
 var (
-	fieldConfigurationFieldEnabled   = big.NewInt(1 << 0)
-	fieldConfigurationFieldID        = big.NewInt(1 << 1)
-	fieldConfigurationFieldObfuscate = big.NewInt(1 << 2)
+	fieldConfigurationFieldEnabled        = big.NewInt(1 << 0)
+	fieldConfigurationFieldID             = big.NewInt(1 << 1)
+	fieldConfigurationFieldObfuscate      = big.NewInt(1 << 2)
+	fieldConfigurationFieldUserOutputName = big.NewInt(1 << 3)
 )
 
 type FieldConfiguration struct {
@@ -3313,6 +3314,8 @@ type FieldConfiguration struct {
 	ID      *string `json:"id,omitempty" url:"id,omitempty"`
 	// Whether the field should be obfuscated.
 	Obfuscate *bool `json:"obfuscate,omitempty" url:"obfuscate,omitempty"`
+	// User-specified override for the destination field name. Omit to keep the current value; send an empty string to clear it.
+	UserOutputName *string `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3340,6 +3343,13 @@ func (f *FieldConfiguration) GetObfuscate() *bool {
 		return nil
 	}
 	return f.Obfuscate
+}
+
+func (f *FieldConfiguration) GetUserOutputName() *string {
+	if f == nil {
+		return nil
+	}
+	return f.UserOutputName
 }
 
 func (f *FieldConfiguration) GetExtraProperties() map[string]interface{} {
@@ -3375,6 +3385,13 @@ func (f *FieldConfiguration) SetID(id *string) {
 func (f *FieldConfiguration) SetObfuscate(obfuscate *bool) {
 	f.Obfuscate = obfuscate
 	f.require(fieldConfigurationFieldObfuscate)
+}
+
+// SetUserOutputName sets the UserOutputName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *FieldConfiguration) SetUserOutputName(userOutputName *string) {
+	f.UserOutputName = userOutputName
+	f.require(fieldConfigurationFieldUserOutputName)
 }
 
 func (f *FieldConfiguration) UnmarshalJSON(data []byte) error {
@@ -3454,6 +3471,7 @@ var (
 	schemaConfigurationFieldID                  = big.NewInt(1 << 5)
 	schemaConfigurationFieldPartitionKey        = big.NewInt(1 << 6)
 	schemaConfigurationFieldTrackingField       = big.NewInt(1 << 7)
+	schemaConfigurationFieldUserOutputName      = big.NewInt(1 << 8)
 )
 
 type SchemaConfiguration struct {
@@ -3467,6 +3485,8 @@ type SchemaConfiguration struct {
 	ID            *string                          `json:"id,omitempty" url:"id,omitempty"`
 	PartitionKey  *string                          `json:"partition_key,omitempty" url:"partition_key,omitempty"`
 	TrackingField *string                          `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
+	// User-specified override for the destination object name. Omit to keep the current value; send an empty string to clear it.
+	UserOutputName *string `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3529,6 +3549,13 @@ func (s *SchemaConfiguration) GetTrackingField() *string {
 		return nil
 	}
 	return s.TrackingField
+}
+
+func (s *SchemaConfiguration) GetUserOutputName() *string {
+	if s == nil {
+		return nil
+	}
+	return s.UserOutputName
 }
 
 func (s *SchemaConfiguration) GetExtraProperties() map[string]interface{} {
@@ -3599,6 +3626,13 @@ func (s *SchemaConfiguration) SetPartitionKey(partitionKey *string) {
 func (s *SchemaConfiguration) SetTrackingField(trackingField *string) {
 	s.TrackingField = trackingField
 	s.require(schemaConfigurationFieldTrackingField)
+}
+
+// SetUserOutputName sets the UserOutputName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SchemaConfiguration) SetUserOutputName(userOutputName *string) {
+	s.UserOutputName = userOutputName
+	s.require(schemaConfigurationFieldUserOutputName)
 }
 
 func (s *SchemaConfiguration) UnmarshalJSON(data []byte) error {

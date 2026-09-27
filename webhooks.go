@@ -141,15 +141,19 @@ func (u *UpdateWebhooksSchema) MarshalJSON() ([]byte, error) {
 var (
 	webhookFieldCreatedAt      = big.NewInt(1 << 0)
 	webhookFieldDisabled       = big.NewInt(1 << 1)
-	webhookFieldEndpoint       = big.NewInt(1 << 2)
-	webhookFieldID             = big.NewInt(1 << 3)
-	webhookFieldOrganizationID = big.NewInt(1 << 4)
-	webhookFieldSecret         = big.NewInt(1 << 5)
+	webhookFieldDisabledAt     = big.NewInt(1 << 2)
+	webhookFieldDisabledReason = big.NewInt(1 << 3)
+	webhookFieldEndpoint       = big.NewInt(1 << 4)
+	webhookFieldID             = big.NewInt(1 << 5)
+	webhookFieldOrganizationID = big.NewInt(1 << 6)
+	webhookFieldSecret         = big.NewInt(1 << 7)
 )
 
 type Webhook struct {
 	CreatedAt      *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
 	Disabled       *bool      `json:"disabled,omitempty" url:"disabled,omitempty"`
+	DisabledAt     *time.Time `json:"disabled_at,omitempty" url:"disabled_at,omitempty"`
+	DisabledReason *string    `json:"disabled_reason,omitempty" url:"disabled_reason,omitempty"`
 	Endpoint       *string    `json:"endpoint,omitempty" url:"endpoint,omitempty"`
 	ID             *string    `json:"id,omitempty" url:"id,omitempty"`
 	OrganizationID *string    `json:"organization_id,omitempty" url:"organization_id,omitempty"`
@@ -174,6 +178,20 @@ func (w *Webhook) GetDisabled() *bool {
 		return nil
 	}
 	return w.Disabled
+}
+
+func (w *Webhook) GetDisabledAt() *time.Time {
+	if w == nil {
+		return nil
+	}
+	return w.DisabledAt
+}
+
+func (w *Webhook) GetDisabledReason() *string {
+	if w == nil {
+		return nil
+	}
+	return w.DisabledReason
 }
 
 func (w *Webhook) GetEndpoint() *string {
@@ -232,6 +250,20 @@ func (w *Webhook) SetDisabled(disabled *bool) {
 	w.require(webhookFieldDisabled)
 }
 
+// SetDisabledAt sets the DisabledAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *Webhook) SetDisabledAt(disabledAt *time.Time) {
+	w.DisabledAt = disabledAt
+	w.require(webhookFieldDisabledAt)
+}
+
+// SetDisabledReason sets the DisabledReason field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *Webhook) SetDisabledReason(disabledReason *string) {
+	w.DisabledReason = disabledReason
+	w.require(webhookFieldDisabledReason)
+}
+
 // SetEndpoint sets the Endpoint field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (w *Webhook) SetEndpoint(endpoint *string) {
@@ -264,7 +296,8 @@ func (w *Webhook) UnmarshalJSON(data []byte) error {
 	type embed Webhook
 	var unmarshaler = struct {
 		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		CreatedAt  *internal.DateTime `json:"created_at,omitempty"`
+		DisabledAt *internal.DateTime `json:"disabled_at,omitempty"`
 	}{
 		embed: embed(*w),
 	}
@@ -273,6 +306,7 @@ func (w *Webhook) UnmarshalJSON(data []byte) error {
 	}
 	*w = Webhook(unmarshaler.embed)
 	w.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	w.DisabledAt = unmarshaler.DisabledAt.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *w)
 	if err != nil {
 		return err
@@ -286,10 +320,12 @@ func (w *Webhook) MarshalJSON() ([]byte, error) {
 	type embed Webhook
 	var marshaler = struct {
 		embed
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		CreatedAt  *internal.DateTime `json:"created_at,omitempty"`
+		DisabledAt *internal.DateTime `json:"disabled_at,omitempty"`
 	}{
-		embed:     embed(*w),
-		CreatedAt: internal.NewOptionalDateTime(w.CreatedAt),
+		embed:      embed(*w),
+		CreatedAt:  internal.NewOptionalDateTime(w.CreatedAt),
+		DisabledAt: internal.NewOptionalDateTime(w.DisabledAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
 	return json.Marshal(explicitMarshaler)

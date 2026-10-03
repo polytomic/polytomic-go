@@ -75,6 +75,71 @@ func (c *CreateWebhooksSchema) MarshalJSON() ([]byte, error) {
 }
 
 var (
+	webhooksListDeliveriesRequestFieldSuccess   = big.NewInt(1 << 0)
+	webhooksListDeliveriesRequestFieldEventID   = big.NewInt(1 << 1)
+	webhooksListDeliveriesRequestFieldStart     = big.NewInt(1 << 2)
+	webhooksListDeliveriesRequestFieldEnd       = big.NewInt(1 << 3)
+	webhooksListDeliveriesRequestFieldPageToken = big.NewInt(1 << 4)
+)
+
+type WebhooksListDeliveriesRequest struct {
+	// Filter by delivery result.
+	Success *bool   `json:"-" url:"success,omitempty"`
+	EventID *string `json:"-" url:"event_id,omitempty"`
+	// Include attempts at or after this time.
+	Start *time.Time `json:"-" url:"start,omitempty"`
+	// Include attempts before this time.
+	End *time.Time `json:"-" url:"end,omitempty"`
+	// Token from the previous page.
+	PageToken *string `json:"-" url:"page_token,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (w *WebhooksListDeliveriesRequest) require(field *big.Int) {
+	if w.explicitFields == nil {
+		w.explicitFields = big.NewInt(0)
+	}
+	w.explicitFields.Or(w.explicitFields, field)
+}
+
+// SetSuccess sets the Success field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhooksListDeliveriesRequest) SetSuccess(success *bool) {
+	w.Success = success
+	w.require(webhooksListDeliveriesRequestFieldSuccess)
+}
+
+// SetEventID sets the EventID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhooksListDeliveriesRequest) SetEventID(eventID *string) {
+	w.EventID = eventID
+	w.require(webhooksListDeliveriesRequestFieldEventID)
+}
+
+// SetStart sets the Start field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhooksListDeliveriesRequest) SetStart(start *time.Time) {
+	w.Start = start
+	w.require(webhooksListDeliveriesRequestFieldStart)
+}
+
+// SetEnd sets the End field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhooksListDeliveriesRequest) SetEnd(end *time.Time) {
+	w.End = end
+	w.require(webhooksListDeliveriesRequestFieldEnd)
+}
+
+// SetPageToken sets the PageToken field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhooksListDeliveriesRequest) SetPageToken(pageToken *string) {
+	w.PageToken = pageToken
+	w.require(webhooksListDeliveriesRequestFieldPageToken)
+}
+
+var (
 	updateWebhooksSchemaFieldEndpoint       = big.NewInt(1 << 0)
 	updateWebhooksSchemaFieldOrganizationID = big.NewInt(1 << 1)
 	updateWebhooksSchemaFieldSecret         = big.NewInt(1 << 2)
@@ -332,6 +397,343 @@ func (w *Webhook) MarshalJSON() ([]byte, error) {
 }
 
 func (w *Webhook) String() string {
+	if w == nil {
+		return "<nil>"
+	}
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(w); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", w)
+}
+
+var (
+	webhookDeliveriesEnvelopeFieldData       = big.NewInt(1 << 0)
+	webhookDeliveriesEnvelopeFieldPagination = big.NewInt(1 << 1)
+)
+
+type WebhookDeliveriesEnvelope struct {
+	Data       []*WebhookDelivery `json:"data,omitempty" url:"data,omitempty"`
+	Pagination *PaginationDetails `json:"pagination,omitempty" url:"pagination,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (w *WebhookDeliveriesEnvelope) GetData() []*WebhookDelivery {
+	if w == nil {
+		return nil
+	}
+	return w.Data
+}
+
+func (w *WebhookDeliveriesEnvelope) GetPagination() *PaginationDetails {
+	if w == nil {
+		return nil
+	}
+	return w.Pagination
+}
+
+func (w *WebhookDeliveriesEnvelope) GetExtraProperties() map[string]interface{} {
+	if w == nil {
+		return nil
+	}
+	return w.extraProperties
+}
+
+func (w *WebhookDeliveriesEnvelope) require(field *big.Int) {
+	if w.explicitFields == nil {
+		w.explicitFields = big.NewInt(0)
+	}
+	w.explicitFields.Or(w.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDeliveriesEnvelope) SetData(data []*WebhookDelivery) {
+	w.Data = data
+	w.require(webhookDeliveriesEnvelopeFieldData)
+}
+
+// SetPagination sets the Pagination field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDeliveriesEnvelope) SetPagination(pagination *PaginationDetails) {
+	w.Pagination = pagination
+	w.require(webhookDeliveriesEnvelopeFieldPagination)
+}
+
+func (w *WebhookDeliveriesEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler WebhookDeliveriesEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*w = WebhookDeliveriesEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (w *WebhookDeliveriesEnvelope) MarshalJSON() ([]byte, error) {
+	type embed WebhookDeliveriesEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*w),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (w *WebhookDeliveriesEnvelope) String() string {
+	if w == nil {
+		return "<nil>"
+	}
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(w); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", w)
+}
+
+var (
+	webhookDeliveryFieldAttemptedAt  = big.NewInt(1 << 0)
+	webhookDeliveryFieldDurationMs   = big.NewInt(1 << 1)
+	webhookDeliveryFieldError        = big.NewInt(1 << 2)
+	webhookDeliveryFieldErrorKind    = big.NewInt(1 << 3)
+	webhookDeliveryFieldEventID      = big.NewInt(1 << 4)
+	webhookDeliveryFieldEventType    = big.NewInt(1 << 5)
+	webhookDeliveryFieldID           = big.NewInt(1 << 6)
+	webhookDeliveryFieldResponseBody = big.NewInt(1 << 7)
+	webhookDeliveryFieldStatusCode   = big.NewInt(1 << 8)
+	webhookDeliveryFieldSuccess      = big.NewInt(1 << 9)
+)
+
+type WebhookDelivery struct {
+	AttemptedAt *time.Time `json:"attempted_at,omitempty" url:"attempted_at,omitempty"`
+	DurationMs  *int       `json:"duration_ms,omitempty" url:"duration_ms,omitempty"`
+	Error       *string    `json:"error,omitempty" url:"error,omitempty"`
+	ErrorKind   *string    `json:"error_kind,omitempty" url:"error_kind,omitempty"`
+	EventID     *string    `json:"event_id,omitempty" url:"event_id,omitempty"`
+	EventType   *string    `json:"event_type,omitempty" url:"event_type,omitempty"`
+	ID          *string    `json:"id,omitempty" url:"id,omitempty"`
+	// Response content returned by the webhook endpoint.
+	ResponseBody *string `json:"response_body,omitempty" url:"response_body,omitempty"`
+	StatusCode   *int    `json:"status_code,omitempty" url:"status_code,omitempty"`
+	Success      *bool   `json:"success,omitempty" url:"success,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (w *WebhookDelivery) GetAttemptedAt() *time.Time {
+	if w == nil {
+		return nil
+	}
+	return w.AttemptedAt
+}
+
+func (w *WebhookDelivery) GetDurationMs() *int {
+	if w == nil {
+		return nil
+	}
+	return w.DurationMs
+}
+
+func (w *WebhookDelivery) GetError() *string {
+	if w == nil {
+		return nil
+	}
+	return w.Error
+}
+
+func (w *WebhookDelivery) GetErrorKind() *string {
+	if w == nil {
+		return nil
+	}
+	return w.ErrorKind
+}
+
+func (w *WebhookDelivery) GetEventID() *string {
+	if w == nil {
+		return nil
+	}
+	return w.EventID
+}
+
+func (w *WebhookDelivery) GetEventType() *string {
+	if w == nil {
+		return nil
+	}
+	return w.EventType
+}
+
+func (w *WebhookDelivery) GetID() *string {
+	if w == nil {
+		return nil
+	}
+	return w.ID
+}
+
+func (w *WebhookDelivery) GetResponseBody() *string {
+	if w == nil {
+		return nil
+	}
+	return w.ResponseBody
+}
+
+func (w *WebhookDelivery) GetStatusCode() *int {
+	if w == nil {
+		return nil
+	}
+	return w.StatusCode
+}
+
+func (w *WebhookDelivery) GetSuccess() *bool {
+	if w == nil {
+		return nil
+	}
+	return w.Success
+}
+
+func (w *WebhookDelivery) GetExtraProperties() map[string]interface{} {
+	if w == nil {
+		return nil
+	}
+	return w.extraProperties
+}
+
+func (w *WebhookDelivery) require(field *big.Int) {
+	if w.explicitFields == nil {
+		w.explicitFields = big.NewInt(0)
+	}
+	w.explicitFields.Or(w.explicitFields, field)
+}
+
+// SetAttemptedAt sets the AttemptedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDelivery) SetAttemptedAt(attemptedAt *time.Time) {
+	w.AttemptedAt = attemptedAt
+	w.require(webhookDeliveryFieldAttemptedAt)
+}
+
+// SetDurationMs sets the DurationMs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDelivery) SetDurationMs(durationMs *int) {
+	w.DurationMs = durationMs
+	w.require(webhookDeliveryFieldDurationMs)
+}
+
+// SetError sets the Error field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDelivery) SetError(error_ *string) {
+	w.Error = error_
+	w.require(webhookDeliveryFieldError)
+}
+
+// SetErrorKind sets the ErrorKind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDelivery) SetErrorKind(errorKind *string) {
+	w.ErrorKind = errorKind
+	w.require(webhookDeliveryFieldErrorKind)
+}
+
+// SetEventID sets the EventID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDelivery) SetEventID(eventID *string) {
+	w.EventID = eventID
+	w.require(webhookDeliveryFieldEventID)
+}
+
+// SetEventType sets the EventType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDelivery) SetEventType(eventType *string) {
+	w.EventType = eventType
+	w.require(webhookDeliveryFieldEventType)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDelivery) SetID(id *string) {
+	w.ID = id
+	w.require(webhookDeliveryFieldID)
+}
+
+// SetResponseBody sets the ResponseBody field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDelivery) SetResponseBody(responseBody *string) {
+	w.ResponseBody = responseBody
+	w.require(webhookDeliveryFieldResponseBody)
+}
+
+// SetStatusCode sets the StatusCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDelivery) SetStatusCode(statusCode *int) {
+	w.StatusCode = statusCode
+	w.require(webhookDeliveryFieldStatusCode)
+}
+
+// SetSuccess sets the Success field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDelivery) SetSuccess(success *bool) {
+	w.Success = success
+	w.require(webhookDeliveryFieldSuccess)
+}
+
+func (w *WebhookDelivery) UnmarshalJSON(data []byte) error {
+	type embed WebhookDelivery
+	var unmarshaler = struct {
+		embed
+		AttemptedAt *internal.DateTime `json:"attempted_at,omitempty"`
+	}{
+		embed: embed(*w),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*w = WebhookDelivery(unmarshaler.embed)
+	w.AttemptedAt = unmarshaler.AttemptedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (w *WebhookDelivery) MarshalJSON() ([]byte, error) {
+	type embed WebhookDelivery
+	var marshaler = struct {
+		embed
+		AttemptedAt *internal.DateTime `json:"attempted_at,omitempty"`
+	}{
+		embed:       embed(*w),
+		AttemptedAt: internal.NewOptionalDateTime(w.AttemptedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (w *WebhookDelivery) String() string {
 	if w == nil {
 		return "<nil>"
 	}

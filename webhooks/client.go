@@ -205,6 +205,60 @@ func (c *Client) Delete(
 	return nil
 }
 
+// Lists delivery attempts for a webhook, newest first.
+//
+// Use `success`, `event_id`, `start`, and `end` to narrow the results.
+// Results are ordered by attempt time, newest first. Pass the returned
+// `next_page_token` as `page_token` to fetch the next page. An empty token means
+// there are no more results. Response bodies contain content returned by your
+// webhook endpoint. Attempts are listed only while their event is retained.
+//
+// Example:
+//
+//	request := &polytomic.WebhooksListDeliveriesRequest{
+//	    Success: polytomic.Bool(
+//	        true,
+//	    ),
+//	    EventID: polytomic.String(
+//	        "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    ),
+//	    Start: polytomic.Time(
+//	        polytomic.MustParseDateTime(
+//	            "2024-01-15T09:30:00Z",
+//	        ),
+//	    ),
+//	    End: polytomic.Time(
+//	        polytomic.MustParseDateTime(
+//	            "2024-01-15T09:30:00Z",
+//	        ),
+//	    ),
+//	    PageToken: polytomic.String(
+//	        "page_token",
+//	    ),
+//	}
+//	client.Webhooks.ListDeliveries(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
+func (c *Client) ListDeliveries(
+	ctx context.Context,
+	id string,
+	request *polytomic.WebhooksListDeliveriesRequest,
+	opts ...option.RequestOption,
+) (*polytomic.WebhookDeliveriesEnvelope, error) {
+	response, err := c.WithRawResponse.ListDeliveries(
+		ctx,
+		id,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Disables a webhook without deleting it.
 //
 // > 📘 One webhook per organization

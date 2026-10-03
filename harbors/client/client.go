@@ -990,6 +990,49 @@ func (c *Client) DeleteKey(
 	return response.Body, nil
 }
 
+// Submits a query against the Harbor backing connection for asynchronous execution.
+//
+// Use a scoped credential bound to this Harbor. The query runs only against the
+// Harbor's backing connection; you cannot select another connection on this route.
+// Send a unique `X-Polytomic-Activity-Request-ID` UUID with each submission. The
+// `X-Polytomic-Harbor-Session` header is optional; if you send one, it must be
+// valid for this Harbor.
+//
+// The response contains a query ID and an initial `created` status. Poll
+// [`GET /api/queries/{id}`](../../../../api-reference/query-runner/get-query) with that ID
+// until the status is `done`, `failed`, or `unknown`. Follow the result endpoint's
+// pagination links for additional rows. Results are temporary; check `expires`
+// on the completed query.
+//
+// Example:
+//
+//	request := &polytomic.RunHarborQueryRequest{
+//	    Query: "SELECT 1 AS n",
+//	}
+//	client.Harbors.RunQuery(
+//	    context.TODO(),
+//	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
+//	)
+func (c *Client) RunQuery(
+	ctx context.Context,
+	// Unique identifier of the Harbor whose backing connection runs the query.
+	harborID string,
+	request *polytomic.RunHarborQueryRequest,
+	opts ...option.IdempotentRequestOption,
+) (*polytomic.RunQueryEnvelope, error) {
+	response, err := c.WithRawResponse.RunQuery(
+		ctx,
+		harborID,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Lists current published saved queries for a Harbor.
 //
 // Saved queries are supported only for Polytomic-managed Harbors whose backing

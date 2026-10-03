@@ -793,6 +793,33 @@ func TestHarborsDeleteKeyWithWireMock(
 	VerifyRequestCount(t, "TestHarborsDeleteKeyWithWireMock", "DELETE", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/keys/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }
 
+func TestHarborsRunQueryWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &polytomic.RunHarborQueryRequest{
+		Query: "SELECT 1 AS n",
+	}
+	_, invocationErr := client.Harbors.RunQuery(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsRunQueryWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsRunQueryWithWireMock", "POST", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/query", nil, 1)
+}
+
 func TestHarborsListSavedQueriesWithWireMock(
 	t *testing.T,
 ) {

@@ -89,9 +89,10 @@ var (
 	updateBulkSchemaFieldEnabled             = big.NewInt(1 << 2)
 	updateBulkSchemaFieldFields              = big.NewInt(1 << 3)
 	updateBulkSchemaFieldFilters             = big.NewInt(1 << 4)
-	updateBulkSchemaFieldPartitionKey        = big.NewInt(1 << 5)
-	updateBulkSchemaFieldTrackingField       = big.NewInt(1 << 6)
-	updateBulkSchemaFieldUserOutputName      = big.NewInt(1 << 7)
+	updateBulkSchemaFieldHistoryEnabled      = big.NewInt(1 << 5)
+	updateBulkSchemaFieldPartitionKey        = big.NewInt(1 << 6)
+	updateBulkSchemaFieldTrackingField       = big.NewInt(1 << 7)
+	updateBulkSchemaFieldUserOutputName      = big.NewInt(1 << 8)
 )
 
 type UpdateBulkSchema struct {
@@ -105,6 +106,8 @@ type UpdateBulkSchema struct {
 	Fields []*v25.UpdateBulkField `json:"fields,omitempty" url:"-"`
 	// Row-level filters applied when reading from the source.
 	Filters []*v25.BulkFilter `json:"filters,omitempty" url:"-"`
+	// Whether a companion history table is maintained beside this schema's output. Requires a replicate-mode sync to a destination reporting supports_history_mode. Omit to keep the current value.
+	HistoryEnabled *bool `json:"history_enabled,omitempty" url:"-"`
 	// Source field used to partition rows when writing to the destination.
 	PartitionKey *string `json:"partition_key,omitempty" url:"-"`
 	// Source field used to detect changes between incremental sync runs.
@@ -155,6 +158,13 @@ func (u *UpdateBulkSchema) SetFields(fields []*v25.UpdateBulkField) {
 func (u *UpdateBulkSchema) SetFilters(filters []*v25.BulkFilter) {
 	u.Filters = filters
 	u.require(updateBulkSchemaFieldFilters)
+}
+
+// SetHistoryEnabled sets the HistoryEnabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateBulkSchema) SetHistoryEnabled(historyEnabled *bool) {
+	u.HistoryEnabled = historyEnabled
+	u.require(updateBulkSchemaFieldHistoryEnabled)
 }
 
 // SetPartitionKey sets the PartitionKey field and marks it as non-optional;

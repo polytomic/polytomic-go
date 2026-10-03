@@ -1713,6 +1713,7 @@ var (
 	bulkSyncDestFieldConfiguration        = big.NewInt(1 << 0)
 	bulkSyncDestFieldModes                = big.NewInt(1 << 1)
 	bulkSyncDestFieldSupportedResyncModes = big.NewInt(1 << 2)
+	bulkSyncDestFieldSupportsHistoryMode  = big.NewInt(1 << 3)
 )
 
 type BulkSyncDest struct {
@@ -1720,6 +1721,8 @@ type BulkSyncDest struct {
 	Modes         []*SupportedBulkMode `json:"modes,omitempty" url:"modes,omitempty"`
 	// Resync modes supported by this destination (refetch, resync, rebuild).
 	SupportedResyncModes []BulkResyncMode `json:"supported_resync_modes,omitempty" url:"supported_resync_modes,omitempty"`
+	// True if this destination can maintain a companion history table per schema (history_enabled) in replicate mode.
+	SupportsHistoryMode *bool `json:"supports_history_mode,omitempty" url:"supports_history_mode,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1747,6 +1750,13 @@ func (b *BulkSyncDest) GetSupportedResyncModes() []BulkResyncMode {
 		return nil
 	}
 	return b.SupportedResyncModes
+}
+
+func (b *BulkSyncDest) GetSupportsHistoryMode() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.SupportsHistoryMode
 }
 
 func (b *BulkSyncDest) GetExtraProperties() map[string]interface{} {
@@ -1782,6 +1792,13 @@ func (b *BulkSyncDest) SetModes(modes []*SupportedBulkMode) {
 func (b *BulkSyncDest) SetSupportedResyncModes(supportedResyncModes []BulkResyncMode) {
 	b.SupportedResyncModes = supportedResyncModes
 	b.require(bulkSyncDestFieldSupportedResyncModes)
+}
+
+// SetSupportsHistoryMode sets the SupportsHistoryMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncDest) SetSupportsHistoryMode(supportsHistoryMode *bool) {
+	b.SupportsHistoryMode = supportsHistoryMode
+	b.require(bulkSyncDestFieldSupportsHistoryMode)
 }
 
 func (b *BulkSyncDest) UnmarshalJSON(data []byte) error {
@@ -3284,6 +3301,7 @@ type BulkSyncTargetMode string
 const (
 	BulkSyncTargetModeSnapshot  BulkSyncTargetMode = "snapshot"
 	BulkSyncTargetModeReplicate BulkSyncTargetMode = "replicate"
+	BulkSyncTargetModeAppend    BulkSyncTargetMode = "append"
 )
 
 func NewBulkSyncTargetModeFromString(s string) (BulkSyncTargetMode, error) {
@@ -3292,6 +3310,8 @@ func NewBulkSyncTargetModeFromString(s string) (BulkSyncTargetMode, error) {
 		return BulkSyncTargetModeSnapshot, nil
 	case "replicate":
 		return BulkSyncTargetModeReplicate, nil
+	case "append":
+		return BulkSyncTargetModeAppend, nil
 	}
 	var t BulkSyncTargetMode
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -3468,10 +3488,11 @@ var (
 	schemaConfigurationFieldEnabled             = big.NewInt(1 << 2)
 	schemaConfigurationFieldFields              = big.NewInt(1 << 3)
 	schemaConfigurationFieldFilters             = big.NewInt(1 << 4)
-	schemaConfigurationFieldID                  = big.NewInt(1 << 5)
-	schemaConfigurationFieldPartitionKey        = big.NewInt(1 << 6)
-	schemaConfigurationFieldTrackingField       = big.NewInt(1 << 7)
-	schemaConfigurationFieldUserOutputName      = big.NewInt(1 << 8)
+	schemaConfigurationFieldHistoryEnabled      = big.NewInt(1 << 5)
+	schemaConfigurationFieldID                  = big.NewInt(1 << 6)
+	schemaConfigurationFieldPartitionKey        = big.NewInt(1 << 7)
+	schemaConfigurationFieldTrackingField       = big.NewInt(1 << 8)
+	schemaConfigurationFieldUserOutputName      = big.NewInt(1 << 9)
 )
 
 type SchemaConfiguration struct {
@@ -3479,12 +3500,14 @@ type SchemaConfiguration struct {
 	// Whether data cutoff is disabled for this schema.
 	DisableDataCutoff *bool `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
 	// Whether the schema is enabled for syncing.
-	Enabled       *bool                            `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Fields        []*SchemaConfigurationFieldsItem `json:"fields,omitempty" url:"fields,omitempty"`
-	Filters       []*BulkFilter                    `json:"filters,omitempty" url:"filters,omitempty"`
-	ID            *string                          `json:"id,omitempty" url:"id,omitempty"`
-	PartitionKey  *string                          `json:"partition_key,omitempty" url:"partition_key,omitempty"`
-	TrackingField *string                          `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
+	Enabled *bool                            `json:"enabled,omitempty" url:"enabled,omitempty"`
+	Fields  []*SchemaConfigurationFieldsItem `json:"fields,omitempty" url:"fields,omitempty"`
+	Filters []*BulkFilter                    `json:"filters,omitempty" url:"filters,omitempty"`
+	// Whether a companion history table is maintained beside this schema's output, recording every version observed on successive runs. Requires a replicate-mode sync to a destination reporting supports_history_mode. Omit to keep the current value.
+	HistoryEnabled *bool   `json:"history_enabled,omitempty" url:"history_enabled,omitempty"`
+	ID             *string `json:"id,omitempty" url:"id,omitempty"`
+	PartitionKey   *string `json:"partition_key,omitempty" url:"partition_key,omitempty"`
+	TrackingField  *string `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
 	// User-specified override for the destination object name. Omit to keep the current value; send an empty string to clear it.
 	UserOutputName *string `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
 
@@ -3528,6 +3551,13 @@ func (s *SchemaConfiguration) GetFilters() []*BulkFilter {
 		return nil
 	}
 	return s.Filters
+}
+
+func (s *SchemaConfiguration) GetHistoryEnabled() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.HistoryEnabled
 }
 
 func (s *SchemaConfiguration) GetID() *string {
@@ -3605,6 +3635,13 @@ func (s *SchemaConfiguration) SetFields(fields []*SchemaConfigurationFieldsItem)
 func (s *SchemaConfiguration) SetFilters(filters []*BulkFilter) {
 	s.Filters = filters
 	s.require(schemaConfigurationFieldFilters)
+}
+
+// SetHistoryEnabled sets the HistoryEnabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SchemaConfiguration) SetHistoryEnabled(historyEnabled *bool) {
+	s.HistoryEnabled = historyEnabled
+	s.require(schemaConfigurationFieldHistoryEnabled)
 }
 
 // SetID sets the ID field and marks it as non-optional;

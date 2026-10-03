@@ -200,6 +200,51 @@ func TestWebhooksDeleteWithWireMock(
 	VerifyRequestCount(t, "TestWebhooksDeleteWithWireMock", "DELETE", "/api/webhooks/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }
 
+func TestWebhooksListDeliveriesWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &polytomic.WebhooksListDeliveriesRequest{
+		Success: polytomic.Bool(
+			true,
+		),
+		EventID: polytomic.String(
+			"248df4b7-aa70-47b8-a036-33ac447e668d",
+		),
+		Start: polytomic.Time(
+			polytomic.MustParseDateTime(
+				"2024-01-15T09:30:00Z",
+			),
+		),
+		End: polytomic.Time(
+			polytomic.MustParseDateTime(
+				"2024-01-15T09:30:00Z",
+			),
+		),
+		PageToken: polytomic.String(
+			"page_token",
+		),
+	}
+	_, invocationErr := client.Webhooks.ListDeliveries(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestWebhooksListDeliveriesWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestWebhooksListDeliveriesWithWireMock", "GET", "/api/webhooks/248df4b7-aa70-47b8-a036-33ac447e668d/deliveries", map[string]interface{}{"success": "true", "event_id": "248df4b7-aa70-47b8-a036-33ac447e668d", "start": "2024-01-15T09:30:00.000Z", "end": "2024-01-15T09:30:00.000Z", "page_token": "page_token"}, 1)
+}
+
 func TestWebhooksDisableWithWireMock(
 	t *testing.T,
 ) {

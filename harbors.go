@@ -1408,6 +1408,71 @@ func (r *ResolveHarborSourceMappingsRequest) MarshalJSON() ([]byte, error) {
 }
 
 var (
+	runHarborQueryRequestFieldPolytomicHarborSession     = big.NewInt(1 << 0)
+	runHarborQueryRequestFieldPolytomicActivityRequestID = big.NewInt(1 << 1)
+	runHarborQueryRequestFieldQuery                      = big.NewInt(1 << 2)
+)
+
+type RunHarborQueryRequest struct {
+	PolytomicHarborSession     *string `json:"-" url:"-"`
+	PolytomicActivityRequestID *string `json:"-" url:"-"`
+	// SQL query to execute against the Harbor backing connection.
+	Query string `json:"query" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (r *RunHarborQueryRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetPolytomicHarborSession sets the PolytomicHarborSession field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RunHarborQueryRequest) SetPolytomicHarborSession(polytomicHarborSession *string) {
+	r.PolytomicHarborSession = polytomicHarborSession
+	r.require(runHarborQueryRequestFieldPolytomicHarborSession)
+}
+
+// SetPolytomicActivityRequestID sets the PolytomicActivityRequestID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RunHarborQueryRequest) SetPolytomicActivityRequestID(polytomicActivityRequestID *string) {
+	r.PolytomicActivityRequestID = polytomicActivityRequestID
+	r.require(runHarborQueryRequestFieldPolytomicActivityRequestID)
+}
+
+// SetQuery sets the Query field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RunHarborQueryRequest) SetQuery(query string) {
+	r.Query = query
+	r.require(runHarborQueryRequestFieldQuery)
+}
+
+func (r *RunHarborQueryRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler RunHarborQueryRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*r = RunHarborQueryRequest(body)
+	return nil
+}
+
+func (r *RunHarborQueryRequest) MarshalJSON() ([]byte, error) {
+	type embed RunHarborQueryRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+var (
 	saveHarborContextDraftRequestFieldPolytomicHarborSession     = big.NewInt(1 << 0)
 	saveHarborContextDraftRequestFieldPolytomicActivityRequestID = big.NewInt(1 << 1)
 	saveHarborContextDraftRequestFieldChangeNote                 = big.NewInt(1 << 2)

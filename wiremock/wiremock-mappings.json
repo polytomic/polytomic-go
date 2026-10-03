@@ -390,7 +390,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"configuration\": {\n      \"advanced\": {\n        \"items\": {\n          \"truncate_existing\": {\n            \"default\": \"\",\n            \"required\": false\n          }\n        }\n      },\n      \"mirror_schemas\": {\n        \"default\": \"\",\n        \"required\": false\n      },\n      \"schema\": {\n        \"default\": \"\",\n        \"required\": false\n      }\n    },\n    \"modes\": [\n      {\n        \"description\": \"Replace all records\",\n        \"label\": \"Replace\",\n        \"requires_identity\": false,\n        \"supports_field_sync_mode\": false,\n        \"supports_target_filters\": false\n      }\n    ],\n    \"supported_resync_modes\": [\n      \"refetch\"\n    ]\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"configuration\": {\n      \"advanced\": {\n        \"items\": {\n          \"truncate_existing\": {\n            \"default\": \"\",\n            \"required\": false\n          }\n        }\n      },\n      \"mirror_schemas\": {\n        \"default\": \"\",\n        \"required\": false\n      },\n      \"schema\": {\n        \"default\": \"\",\n        \"required\": false\n      }\n    },\n    \"modes\": [\n      {\n        \"description\": \"Replace all records\",\n        \"label\": \"Replace\",\n        \"requires_identity\": false,\n        \"supports_field_sync_mode\": false,\n        \"supports_target_filters\": false\n      }\n    ],\n    \"supported_resync_modes\": [\n      \"refetch\"\n    ],\n    \"supports_history_mode\": false\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -3216,6 +3216,42 @@
       }
     },
     {
+      "id": "4780f97e-a82a-4af9-9da2-618d32f82bc3",
+      "name": "Run Harbor Query - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/query",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"count\": 10,\n    \"error\": \"error\",\n    \"expires\": \"2021-01-01T00:00:00Z\",\n    \"fields\": [\n      \"name\",\n      \"age\"\n    ],\n    \"id\": \"43d893ef-322b-47da-badb-3cf10d13a556\",\n    \"results\": [\n      {\n        \"key\": \"value\"\n      }\n    ],\n    \"status\": \"created\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "4780f97e-a82a-4af9-9da2-618d32f82bc3",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
       "id": "066ce3a1-f2b6-4a70-95c2-d72eba95e0b4",
       "name": "List Harbor Saved Queries - default",
       "request": {
@@ -5161,6 +5197,59 @@
       }
     },
     {
+      "id": "ca4cd598-5abd-4f1b-8f81-6c77b95bd6b4",
+      "name": "List Webhook Deliveries - default",
+      "request": {
+        "urlPathTemplate": "/api/webhooks/{id}/deliveries",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "success": {
+            "equalTo": "true"
+          },
+          "event_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "start": {
+            "equalTo": "2024-01-15T09:30:00.000Z"
+          },
+          "end": {
+            "equalTo": "2024-01-15T09:30:00.000Z"
+          },
+          "page_token": {
+            "equalTo": "page_token"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"attempted_at\": \"2024-01-15T09:30:00Z\",\n      \"duration_ms\": 1,\n      \"error\": \"error\",\n      \"error_kind\": \"error_kind\",\n      \"event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"event_type\": \"event_type\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"response_body\": \"response_body\",\n      \"status_code\": 1,\n      \"success\": true\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ca4cd598-5abd-4f1b-8f81-6c77b95bd6b4",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
       "id": "97d4c5e9-9cf6-4ecb-b9a3-3b60765b849a",
       "name": "Disable Webhook - default",
       "request": {
@@ -5725,7 +5814,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n      \"disable_data_cutoff\": false,\n      \"enabled\": true,\n      \"id\": \"Contact\",\n      \"output_name\": \"contact\",\n      \"partition_key\": \"email\",\n      \"tracking_field\": \"updated_at\",\n      \"user_output_name\": \"my_contact\"\n    }\n  ]\n}",
+        "body": "{\n  \"data\": [\n    {\n      \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n      \"destination_history_output_name\": \"contact__history\",\n      \"disable_data_cutoff\": false,\n      \"enabled\": true,\n      \"history_enabled\": false,\n      \"id\": \"Contact\",\n      \"output_name\": \"contact\",\n      \"partition_key\": \"email\",\n      \"tracking_field\": \"updated_at\",\n      \"user_output_name\": \"my_contact\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -5761,7 +5850,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n      \"disable_data_cutoff\": false,\n      \"enabled\": true,\n      \"id\": \"Contact\",\n      \"output_name\": \"contact\",\n      \"partition_key\": \"email\",\n      \"tracking_field\": \"updated_at\",\n      \"user_output_name\": \"my_contact\"\n    }\n  ]\n}",
+        "body": "{\n  \"data\": [\n    {\n      \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n      \"destination_history_output_name\": \"contact__history\",\n      \"disable_data_cutoff\": false,\n      \"enabled\": true,\n      \"history_enabled\": false,\n      \"id\": \"Contact\",\n      \"output_name\": \"contact\",\n      \"partition_key\": \"email\",\n      \"tracking_field\": \"updated_at\",\n      \"user_output_name\": \"my_contact\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -5800,7 +5889,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n    \"disable_data_cutoff\": false,\n    \"enabled\": true,\n    \"id\": \"Contact\",\n    \"output_name\": \"contact\",\n    \"partition_key\": \"email\",\n    \"tracking_field\": \"updated_at\",\n    \"user_output_name\": \"my_contact\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n    \"destination_history_output_name\": \"contact__history\",\n    \"disable_data_cutoff\": false,\n    \"enabled\": true,\n    \"history_enabled\": false,\n    \"id\": \"Contact\",\n    \"output_name\": \"contact\",\n    \"partition_key\": \"email\",\n    \"tracking_field\": \"updated_at\",\n    \"user_output_name\": \"my_contact\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -5839,7 +5928,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n    \"disable_data_cutoff\": false,\n    \"enabled\": true,\n    \"id\": \"Contact\",\n    \"output_name\": \"contact\",\n    \"partition_key\": \"email\",\n    \"tracking_field\": \"updated_at\",\n    \"user_output_name\": \"my_contact\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n    \"destination_history_output_name\": \"contact__history\",\n    \"disable_data_cutoff\": false,\n    \"enabled\": true,\n    \"history_enabled\": false,\n    \"id\": \"Contact\",\n    \"output_name\": \"contact\",\n    \"partition_key\": \"email\",\n    \"tracking_field\": \"updated_at\",\n    \"user_output_name\": \"my_contact\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -6139,7 +6228,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"backendType\": \"backendType\",\n    \"connectionId\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"inheritedBase\": {\n      \"baseUrl\": \"baseUrl\",\n      \"lockedHeaders\": [\n        {}\n      ],\n      \"lockedQuery\": {\n        \"key\": \"value\"\n      }\n    },\n    \"mergeRules\": {\n      \"headers\": \"headers\",\n      \"query\": \"query\"\n    },\n    \"requestContract\": {\n      \"allowedMethods\": [\n        \"allowedMethods\"\n      ],\n      \"blockedRequestHeaders\": [\n        \"blockedRequestHeaders\"\n      ],\n      \"blockedResponseHeaders\": [\n        \"blockedResponseHeaders\"\n      ],\n      \"bodyTypes\": [\n        \"bodyTypes\"\n      ],\n      \"maxRequestBodyBytes\": 1,\n      \"maxResponseBodyBytes\": 1,\n      \"pathRule\": \"pathRule\",\n      \"queryModes\": [\n        \"queryModes\"\n      ],\n      \"queryValueTypes\": [\n        \"queryValueTypes\"\n      ],\n      \"rateLimitPerMinute\": 1,\n      \"rawQueryRule\": \"rawQueryRule\",\n      \"timeoutMs\": 1\n    },\n    \"stats\": {\n      \"callsLast24h\": 1,\n      \"lastProxyCallAt\": \"2024-01-15T09:30:00Z\",\n      \"proxy2xxLast24h\": 1,\n      \"proxy4xxLast24h\": 1,\n      \"proxy5xxLast24h\": 1,\n      \"proxyCallsLast24h\": 1\n    }\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"apis\": [\n      {\n        \"name\": \"reports\"\n      }\n    ],\n    \"backendType\": \"backendType\",\n    \"connectionId\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"inheritedBase\": {\n      \"baseUrl\": \"baseUrl\",\n      \"lockedHeaders\": [\n        {}\n      ],\n      \"lockedQuery\": {\n        \"key\": \"value\"\n      }\n    },\n    \"mergeRules\": {\n      \"headers\": \"headers\",\n      \"query\": \"query\"\n    },\n    \"requestContract\": {\n      \"allowedMethods\": [\n        \"allowedMethods\"\n      ],\n      \"blockedRequestHeaders\": [\n        \"blockedRequestHeaders\"\n      ],\n      \"blockedResponseHeaders\": [\n        \"blockedResponseHeaders\"\n      ],\n      \"bodyTypes\": [\n        \"bodyTypes\"\n      ],\n      \"maxRequestBodyBytes\": 1,\n      \"maxResponseBodyBytes\": 1,\n      \"pathRule\": \"pathRule\",\n      \"queryModes\": [\n        \"queryModes\"\n      ],\n      \"queryValueTypes\": [\n        \"queryValueTypes\"\n      ],\n      \"rateLimitPerMinute\": 1,\n      \"rawQueryRule\": \"rawQueryRule\",\n      \"timeoutMs\": 1\n    },\n    \"stats\": {\n      \"callsLast24h\": 1,\n      \"lastProxyCallAt\": \"2024-01-15T09:30:00Z\",\n      \"proxy2xxLast24h\": 1,\n      \"proxy4xxLast24h\": 1,\n      \"proxy5xxLast24h\": 1,\n      \"proxyCallsLast24h\": 1\n    }\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -7421,6 +7510,6 @@
     }
   ],
   "meta": {
-    "total": 196
+    "total": 198
   }
 }

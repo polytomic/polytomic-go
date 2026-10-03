@@ -4891,6 +4891,14 @@ func TestSettersBulkSyncDest(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetSupportsHistoryMode", func(t *testing.T) {
+		obj := &BulkSyncDest{}
+		var fernTestValueSupportsHistoryMode *bool
+		obj.SetSupportsHistoryMode(fernTestValueSupportsHistoryMode)
+		assert.Equal(t, fernTestValueSupportsHistoryMode, obj.SupportsHistoryMode)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 }
 
 func TestGettersBulkSyncDest(t *testing.T) {
@@ -4993,6 +5001,39 @@ func TestGettersBulkSyncDest(t *testing.T) {
 		_ = obj.GetSupportedResyncModes() // Should return zero value
 	})
 
+	t.Run("GetSupportsHistoryMode", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncDest{}
+		var expected *bool
+		obj.SupportsHistoryMode = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetSupportsHistoryMode(), "getter should return the property value")
+	})
+
+	t.Run("GetSupportsHistoryMode_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncDest{}
+		obj.SupportsHistoryMode = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetSupportsHistoryMode(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetSupportsHistoryMode_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *BulkSyncDest
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetSupportsHistoryMode() // Should return zero value
+	})
+
 }
 
 func TestSettersMarkExplicitBulkSyncDest(t *testing.T) {
@@ -5066,6 +5107,37 @@ func TestSettersMarkExplicitBulkSyncDest(t *testing.T) {
 
 		// Act
 		obj.SetSupportedResyncModes(fernTestValueSupportedResyncModes)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetSupportsHistoryMode_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkSyncDest{}
+		var fernTestValueSupportsHistoryMode *bool
+
+		// Act
+		obj.SetSupportsHistoryMode(fernTestValueSupportsHistoryMode)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -8749,6 +8821,14 @@ func TestSettersSchemaConfiguration(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetHistoryEnabled", func(t *testing.T) {
+		obj := &SchemaConfiguration{}
+		var fernTestValueHistoryEnabled *bool
+		obj.SetHistoryEnabled(fernTestValueHistoryEnabled)
+		assert.Equal(t, fernTestValueHistoryEnabled, obj.HistoryEnabled)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetID", func(t *testing.T) {
 		obj := &SchemaConfiguration{}
 		var fernTestValueID *string
@@ -8947,6 +9027,39 @@ func TestGettersSchemaConfiguration(t *testing.T) {
 			}
 		}()
 		_ = obj.GetFilters() // Should return zero value
+	})
+
+	t.Run("GetHistoryEnabled", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &SchemaConfiguration{}
+		var expected *bool
+		obj.HistoryEnabled = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetHistoryEnabled(), "getter should return the property value")
+	})
+
+	t.Run("GetHistoryEnabled_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &SchemaConfiguration{}
+		obj.HistoryEnabled = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetHistoryEnabled(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetHistoryEnabled_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *SchemaConfiguration
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetHistoryEnabled() // Should return zero value
 	})
 
 	t.Run("GetID", func(t *testing.T) {
@@ -9216,6 +9329,37 @@ func TestSettersMarkExplicitSchemaConfiguration(t *testing.T) {
 
 		// Act
 		obj.SetFilters(fernTestValueFilters)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetHistoryEnabled_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &SchemaConfiguration{}
+		var fernTestValueHistoryEnabled *bool
+
+		// Act
+		obj.SetHistoryEnabled(fernTestValueHistoryEnabled)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -10993,6 +11137,13 @@ func TestEnumBulkSyncTargetMode(t *testing.T) {
 		val, err := NewBulkSyncTargetModeFromString("replicate")
 		assert.NoError(t, err, "valid enum value should not return error")
 		assert.Equal(t, BulkSyncTargetMode("replicate"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_append", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewBulkSyncTargetModeFromString("append")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, BulkSyncTargetMode("append"), val, "enum value should match expected wire value")
 	})
 
 	t.Run("NewFromString_Invalid", func(t *testing.T) {

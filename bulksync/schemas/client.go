@@ -207,7 +207,7 @@ func (c *Client) Update(
 	return response.Body, nil
 }
 
-// Requests cancellation of any running executions for a specific schema on a bulk sync.
+// Requests cancellation of any running executions for a specific schema on a bulk sync. A schema whose only running work is a backfill returns a conflict.
 //
 // Cancellation is asynchronous. A successful response means the cancellation
 // signal for this schema has been queued; the schema's in-flight work continues

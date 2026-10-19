@@ -7,6 +7,7 @@ import (
 	fmt "fmt"
 	internal "github.com/polytomic/polytomic-go/v25/internal"
 	big "math/big"
+	time "time"
 )
 
 var (
@@ -822,16 +823,19 @@ func (i *IdentityCredentialHarborSchema) String() string {
 
 var (
 	identityCredentialSchemaFieldAPIKeyProfile = big.NewInt(1 << 0)
-	identityCredentialSchemaFieldHarbor        = big.NewInt(1 << 1)
-	identityCredentialSchemaFieldMethod        = big.NewInt(1 << 2)
-	identityCredentialSchemaFieldMode          = big.NewInt(1 << 3)
-	identityCredentialSchemaFieldOauthClientID = big.NewInt(1 << 4)
-	identityCredentialSchemaFieldOauthResource = big.NewInt(1 << 5)
+	identityCredentialSchemaFieldExpiresAt     = big.NewInt(1 << 1)
+	identityCredentialSchemaFieldHarbor        = big.NewInt(1 << 2)
+	identityCredentialSchemaFieldMethod        = big.NewInt(1 << 3)
+	identityCredentialSchemaFieldMode          = big.NewInt(1 << 4)
+	identityCredentialSchemaFieldOauthClientID = big.NewInt(1 << 5)
+	identityCredentialSchemaFieldOauthResource = big.NewInt(1 << 6)
 )
 
 type IdentityCredentialSchema struct {
 	APIKeyProfile *IdentityCredentialAPIKeyProfileSchema `json:"api_key_profile,omitempty" url:"api_key_profile,omitempty"`
-	Harbor        *IdentityCredentialHarborSchema        `json:"harbor,omitempty" url:"harbor,omitempty"`
+	// Provider expiry of a temporary API key.
+	ExpiresAt *time.Time                      `json:"expires_at,omitempty" url:"expires_at,omitempty"`
+	Harbor    *IdentityCredentialHarborSchema `json:"harbor,omitempty" url:"harbor,omitempty"`
 	// Authentication method used for the request.
 	Method *string `json:"method,omitempty" url:"method,omitempty"`
 	// API key mode applied to the credential when available.
@@ -853,6 +857,13 @@ func (i *IdentityCredentialSchema) GetAPIKeyProfile() *IdentityCredentialAPIKeyP
 		return nil
 	}
 	return i.APIKeyProfile
+}
+
+func (i *IdentityCredentialSchema) GetExpiresAt() *time.Time {
+	if i == nil {
+		return nil
+	}
+	return i.ExpiresAt
 }
 
 func (i *IdentityCredentialSchema) GetHarbor() *IdentityCredentialHarborSchema {
@@ -911,6 +922,13 @@ func (i *IdentityCredentialSchema) SetAPIKeyProfile(apiKeyProfile *IdentityCrede
 	i.require(identityCredentialSchemaFieldAPIKeyProfile)
 }
 
+// SetExpiresAt sets the ExpiresAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IdentityCredentialSchema) SetExpiresAt(expiresAt *time.Time) {
+	i.ExpiresAt = expiresAt
+	i.require(identityCredentialSchemaFieldExpiresAt)
+}
+
 // SetHarbor sets the Harbor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (i *IdentityCredentialSchema) SetHarbor(harbor *IdentityCredentialHarborSchema) {
@@ -947,12 +965,18 @@ func (i *IdentityCredentialSchema) SetOauthResource(oauthResource *string) {
 }
 
 func (i *IdentityCredentialSchema) UnmarshalJSON(data []byte) error {
-	type unmarshaler IdentityCredentialSchema
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed IdentityCredentialSchema
+	var unmarshaler = struct {
+		embed
+		ExpiresAt *internal.DateTime `json:"expires_at,omitempty"`
+	}{
+		embed: embed(*i),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*i = IdentityCredentialSchema(value)
+	*i = IdentityCredentialSchema(unmarshaler.embed)
+	i.ExpiresAt = unmarshaler.ExpiresAt.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *i)
 	if err != nil {
 		return err
@@ -966,8 +990,10 @@ func (i *IdentityCredentialSchema) MarshalJSON() ([]byte, error) {
 	type embed IdentityCredentialSchema
 	var marshaler = struct {
 		embed
+		ExpiresAt *internal.DateTime `json:"expires_at,omitempty"`
 	}{
-		embed: embed(*i),
+		embed:     embed(*i),
+		ExpiresAt: internal.NewOptionalDateTime(i.ExpiresAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
 	return json.Marshal(explicitMarshaler)

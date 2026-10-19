@@ -10,6 +10,7 @@ import (
 	os "os"
 	testing "testing"
 
+	polytomic "github.com/polytomic/polytomic-go/v25"
 	client "github.com/polytomic/polytomic-go/v25/client"
 	option "github.com/polytomic/polytomic-go/v25/option"
 	require "github.com/stretchr/testify/require"
@@ -74,6 +75,35 @@ func VerifyRequestCount(
 	}
 	json.NewDecoder(resp.Body).Decode(&result)
 	require.Equal(t, expected, len(result.Requests))
+}
+
+func TestEntitiesSearchWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &polytomic.EntitiesSearchRequest{
+		Search: "email",
+		Limit: polytomic.Int(
+			50,
+		),
+	}
+	_, invocationErr := client.Entities.Search(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestEntitiesSearchWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestEntitiesSearchWithWireMock", "GET", "/api/entities/search", map[string]interface{}{"search": "email", "limit": "50"}, 1)
 }
 
 func TestEntitiesGetWithWireMock(

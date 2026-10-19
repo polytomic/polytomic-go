@@ -2053,6 +2053,46 @@
       }
     },
     {
+      "id": "0868a458-ebb1-4005-9d5c-681e5a85cc5f",
+      "name": "Search - default",
+      "request": {
+        "urlPathTemplate": "/api/entities/search",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "queryParameters": {
+          "search": {
+            "equalTo": "email"
+          },
+          "limit": {
+            "equalTo": "50"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"links\": {},\n      \"matches\": [\n        {\n          \"attributes\": null,\n          \"mapping\": {\n            \"kind\": \"field\",\n            \"source_field_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n            \"source_model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n            \"target_field_id\": \"target_field_id\"\n          }\n        }\n      ],\n      \"model_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"model_connection_name\": \"model_connection_name\",\n      \"model_connection_type\": \"model_connection_type\",\n      \"model_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"model_name\": \"model_name\",\n      \"type\": \"model\"\n    }\n  ],\n  \"metadata\": {\n    \"model_fields_complete\": true,\n    \"truncated\": true\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "0868a458-ebb1-4005-9d5c-681e5a85cc5f",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
       "id": "134fcb72-d86a-486c-a6c8-d7491dbb0d39",
       "name": "Get Entity - default",
       "request": {
@@ -2071,7 +2111,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"canonical_path\": \"/api/syncs/0ecd09c1-b901-4d27-9053-f0367c427254/executions/8f63fd67-5d47-4cb2-a5fc-e8b933799065\",\n    \"context\": {\n      \"key\": \"value\"\n    },\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"relationships\": {\n      \"key\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"path\": \"/api/syncs/0ecd09c1-b901-4d27-9053-f0367c427254\"\n      }\n    },\n    \"type\": \"sync_execution\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"canonical_path\": \"/api/syncs/0ecd09c1-b901-4d27-9053-f0367c427254/executions/8f63fd67-5d47-4cb2-a5fc-e8b933799065\",\n    \"context\": {\n      \"key\": \"value\"\n    },\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"relationships\": {\n      \"key\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"path\": \"/api/syncs/0ecd09c1-b901-4d27-9053-f0367c427254\"\n      }\n    },\n    \"type\": \"model_sync_execution\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -2107,7 +2147,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"canonical_path\": \"/api/syncs/0ecd09c1-b901-4d27-9053-f0367c427254/executions/8f63fd67-5d47-4cb2-a5fc-e8b933799065\",\n    \"context\": {\n      \"key\": \"value\"\n    },\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"relationships\": {\n      \"key\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"path\": \"/api/syncs/0ecd09c1-b901-4d27-9053-f0367c427254\"\n      }\n    },\n    \"type\": \"sync_execution\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"canonical_path\": \"/api/syncs/0ecd09c1-b901-4d27-9053-f0367c427254/executions/8f63fd67-5d47-4cb2-a5fc-e8b933799065\",\n    \"context\": {\n      \"key\": \"value\"\n    },\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"relationships\": {\n      \"key\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"path\": \"/api/syncs/0ecd09c1-b901-4d27-9053-f0367c427254\"\n      }\n    },\n    \"type\": \"model_sync_execution\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -2563,6 +2603,289 @@
         }
       },
       "uuid": "e1ef954b-c42a-44af-a80c-4a2aade6eba1",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "decd8fec-df9b-4b64-bf2f-737fb05ce5b6",
+      "name": "Get Harbor Action Configuration - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"grants\": [\n        {\n          \"field_ids\": null,\n          \"operation_id\": \"operation_id\",\n          \"schema_id\": \"schema_id\"\n        }\n      ],\n      \"revision\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "decd8fec-df9b-4b64-bf2f-737fb05ce5b6",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "d5c06481-af96-4d5d-9bdf-2422a849f690",
+      "name": "Disable Harbor Action Configuration - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration",
+        "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"grants\": [\n        {\n          \"field_ids\": null,\n          \"operation_id\": \"operation_id\",\n          \"schema_id\": \"schema_id\"\n        }\n      ],\n      \"revision\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "d5c06481-af96-4d5d-9bdf-2422a849f690",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "71dd3df6-9e5f-428b-9331-a3203c03c12e",
+      "name": "List Harbor Action Source Connections - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration/connections",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"connection_type\": \"connection_type\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"name\": \"name\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "71dd3df6-9e5f-428b-9331-a3203c03c12e",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "baffdbeb-bcb1-40c2-aacb-22ff5a4e64c3",
+      "name": "Set Harbor Action Configuration - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration/connections/{connection_id}",
+        "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"grants\": [\n        {\n          \"field_ids\": null,\n          \"operation_id\": \"operation_id\",\n          \"schema_id\": \"schema_id\"\n        }\n      ],\n      \"revision\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "baffdbeb-bcb1-40c2-aacb-22ff5a4e64c3",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "581b1692-f96a-4f34-8e68-ecf13b13f17c",
+      "name": "Remove Harbor Action Configuration - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration/connections/{connection_id}",
+        "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "expected_revision": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"grants\": [\n        {\n          \"field_ids\": null,\n          \"operation_id\": \"operation_id\",\n          \"schema_id\": \"schema_id\"\n        }\n      ],\n      \"revision\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "581b1692-f96a-4f34-8e68-ecf13b13f17c",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "dbc4282c-f33e-4386-92c4-4aeef969957c",
+      "name": "List Harbor Action Configuration Schemas - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration/connections/{connection_id}/schemas",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "search": {
+            "equalTo": "search"
+          },
+          "limit": {
+            "equalTo": "1"
+          },
+          "page_token": {
+            "equalTo": "page_token"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"id\": \"id\",\n      \"name\": \"name\",\n      \"operations\": [\n        \"operations\"\n      ]\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "dbc4282c-f33e-4386-92c4-4aeef969957c",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "6a758b07-574f-4f30-9a12-d4431efceed5",
+      "name": "List Harbor Action Configuration Operations - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration/connections/{connection_id}/schemas/{schema_id}/operations",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "schema_id": {
+            "equalTo": "schema_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"description\": \"description\",\n      \"effect\": \"mutating\",\n      \"input_fields\": [\n        {}\n      ],\n      \"lookup_fields\": [\n        {}\n      ],\n      \"name\": \"name\",\n      \"operation_id\": \"operation_id\",\n      \"output_fields\": [\n        {}\n      ],\n      \"schema_id\": \"schema_id\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "6a758b07-574f-4f30-9a12-d4431efceed5",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -3926,7 +4249,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"credential\": {\n      \"api_key_profile\": {\n        \"capabilities\": {\n          \"query\": {\n            \"connection_ids\": [\n              \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n            ]\n          },\n          \"schemas\": {\n            \"connection_ids\": [\n              \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n            ]\n          }\n        },\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"kind\": \"scoped_data\",\n        \"name\": \"Sales ops agent\"\n      },\n      \"harbor\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"name\": \"Sales ops Harbor\"\n      },\n      \"method\": \"api_key\",\n      \"mode\": \"read_only\",\n      \"oauth_client_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"oauth_resource\": \"oauth_resource\"\n    },\n    \"email\": \"mail@example.com\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"is_organization\": false,\n    \"is_partner\": false,\n    \"is_system\": false,\n    \"is_user\": true,\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_name\": \"My Organization\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"credential\": {\n      \"api_key_profile\": {\n        \"capabilities\": {\n          \"query\": {\n            \"connection_ids\": [\n              \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n            ]\n          },\n          \"schemas\": {\n            \"connection_ids\": [\n              \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n            ]\n          }\n        },\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"kind\": \"scoped_data\",\n        \"name\": \"Sales ops agent\"\n      },\n      \"expires_at\": \"2024-01-15T09:30:00Z\",\n      \"harbor\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"name\": \"Sales ops Harbor\"\n      },\n      \"method\": \"api_key\",\n      \"mode\": \"read_only\",\n      \"oauth_client_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"oauth_resource\": \"oauth_resource\"\n    },\n    \"email\": \"mail@example.com\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"is_organization\": false,\n    \"is_partner\": false,\n    \"is_system\": false,\n    \"is_user\": true,\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_name\": \"My Organization\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -6699,7 +7022,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"fields\": [\n      {\n        \"association\": false,\n        \"createable\": true,\n        \"description\": \"Field description\",\n        \"encryptable\": false,\n        \"filter_functions\": [\n          {\n            \"label\": \"equals\",\n            \"multi_value\": false,\n            \"requires_value\": true\n          }\n        ],\n        \"filterable\": true,\n        \"id\": \"field1\",\n        \"identity_functions\": [\n          {\n            \"id\": \"Equality\",\n            \"label\": \"Equality\"\n          }\n        ],\n        \"multiple_associations\": false,\n        \"name\": \"Field\",\n        \"required\": true,\n        \"source_type\": \"string\",\n        \"supports_identity\": false,\n        \"type\": \"string\",\n        \"updateable\": true\n      }\n    ],\n    \"id\": \"database.table\",\n    \"modes\": [\n      {\n        \"description\": \"Create records when they don't exist; don't update existing ones\",\n        \"label\": \"Create\",\n        \"mode\": \"create\",\n        \"requires_identity\": true,\n        \"supports_field_sync_mode\": false,\n        \"supports_target_filters\": false\n      }\n    ],\n    \"name\": \"Table\",\n    \"properties\": {\n      \"does_not_report_operation_counts\": true,\n      \"mappings_not_required\": true,\n      \"new_target_label\": \"new_target_label\",\n      \"optional_target_mappings\": true,\n      \"primary_metadata_object\": \"primary_metadata_object\",\n      \"requires_configuration\": true,\n      \"supports_field_creation\": true,\n      \"supports_field_encryption\": true,\n      \"supports_field_type_selection\": true,\n      \"supports_filter_value_fields\": true,\n      \"supports_identity_field_creation\": true,\n      \"supports_multiple_identities\": true,\n      \"supports_target_filters\": true,\n      \"target_creator\": true,\n      \"use_field_names_as_labels\": true\n    },\n    \"refreshed_at\": \"2024-01-01T00:00:00Z\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"fields\": [\n      {\n        \"association\": false,\n        \"createable\": true,\n        \"description\": \"Field description\",\n        \"encryptable\": false,\n        \"filter_functions\": [\n          {\n            \"label\": \"equals\",\n            \"multi_value\": false,\n            \"requires_value\": true\n          }\n        ],\n        \"filterable\": true,\n        \"id\": \"field1\",\n        \"identity_functions\": [\n          {\n            \"id\": \"Equality\",\n            \"label\": \"Equality\"\n          }\n        ],\n        \"multiple_associations\": false,\n        \"name\": \"Field\",\n        \"required\": true,\n        \"source_type\": \"string\",\n        \"supports_identity\": false,\n        \"type\": \"string\",\n        \"updateable\": true\n      }\n    ],\n    \"id\": \"database.table\",\n    \"modes\": [\n      {\n        \"description\": \"Create records when they don't exist; don't update existing ones\",\n        \"label\": \"Create\",\n        \"mode\": \"create\",\n        \"requires_identity\": true,\n        \"supports_field_sync_mode\": false,\n        \"supports_target_filters\": false\n      }\n    ],\n    \"name\": \"Table\",\n    \"properties\": {\n      \"does_not_report_operation_counts\": true,\n      \"identity_logics\": [\n        \"identity_logics\"\n      ],\n      \"mappings_not_required\": true,\n      \"new_target_label\": \"new_target_label\",\n      \"optional_target_mappings\": true,\n      \"primary_metadata_object\": \"primary_metadata_object\",\n      \"requires_configuration\": true,\n      \"supports_field_creation\": true,\n      \"supports_field_encryption\": true,\n      \"supports_field_type_selection\": true,\n      \"supports_filter_value_fields\": true,\n      \"supports_identity_field_creation\": true,\n      \"supports_multiple_identities\": true,\n      \"supports_target_filters\": true,\n      \"target_creator\": true,\n      \"use_field_names_as_labels\": true\n    },\n    \"refreshed_at\": \"2024-01-01T00:00:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -7510,6 +7833,6 @@
     }
   ],
   "meta": {
-    "total": 198
+    "total": 206
   }
 }

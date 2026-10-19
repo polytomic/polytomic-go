@@ -29517,6 +29517,14 @@ func TestSettersSyncDestinationProperties(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetIdentityLogics", func(t *testing.T) {
+		obj := &SyncDestinationProperties{}
+		var fernTestValueIdentityLogics []string
+		obj.SetIdentityLogics(fernTestValueIdentityLogics)
+		assert.Equal(t, fernTestValueIdentityLogics, obj.IdentityLogics)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetMappingsNotRequired", func(t *testing.T) {
 		obj := &SyncDestinationProperties{}
 		var fernTestValueMappingsNotRequired *bool
@@ -29663,6 +29671,39 @@ func TestGettersSyncDestinationProperties(t *testing.T) {
 			}
 		}()
 		_ = obj.GetDoesNotReportOperationCounts() // Should return zero value
+	})
+
+	t.Run("GetIdentityLogics", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &SyncDestinationProperties{}
+		var expected []string
+		obj.IdentityLogics = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetIdentityLogics(), "getter should return the property value")
+	})
+
+	t.Run("GetIdentityLogics_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &SyncDestinationProperties{}
+		obj.IdentityLogics = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetIdentityLogics(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetIdentityLogics_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *SyncDestinationProperties
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetIdentityLogics() // Should return zero value
 	})
 
 	t.Run("GetMappingsNotRequired", func(t *testing.T) {
@@ -30138,6 +30179,37 @@ func TestSettersMarkExplicitSyncDestinationProperties(t *testing.T) {
 
 		// Act
 		obj.SetDoesNotReportOperationCounts(fernTestValueDoesNotReportOperationCounts)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetIdentityLogics_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &SyncDestinationProperties{}
+		var fernTestValueIdentityLogics []string
+
+		// Act
+		obj.SetIdentityLogics(fernTestValueIdentityLogics)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -40070,6 +40142,13 @@ func TestEnumBulkExecutionStatus(t *testing.T) {
 		val, err := NewBulkExecutionStatusFromString("interrupted")
 		assert.NoError(t, err, "valid enum value should not return error")
 		assert.Equal(t, BulkExecutionStatus("interrupted"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_completed_with_cancellations", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewBulkExecutionStatusFromString("completed_with_cancellations")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, BulkExecutionStatus("completed_with_cancellations"), val, "enum value should match expected wire value")
 	})
 
 	t.Run("NewFromString_Invalid", func(t *testing.T) {

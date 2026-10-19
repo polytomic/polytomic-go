@@ -10,6 +10,420 @@ import (
 )
 
 var (
+	entitiesSearchRequestFieldSearch = big.NewInt(1 << 0)
+	entitiesSearchRequestFieldLimit  = big.NewInt(1 << 1)
+)
+
+type EntitiesSearchRequest struct {
+	// Search term matched, by word prefix, against models, model fields, model syncs, bulk syncs, and connections in the caller's organization.
+	Search string `json:"-" url:"search"`
+	// Maximum number of results to return across all result types. Defaults to 50 and cannot exceed 100.
+	Limit *int `json:"-" url:"limit,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (e *EntitiesSearchRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetSearch sets the Search field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EntitiesSearchRequest) SetSearch(search string) {
+	e.Search = search
+	e.require(entitiesSearchRequestFieldSearch)
+}
+
+// SetLimit sets the Limit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EntitiesSearchRequest) SetLimit(limit *int) {
+	e.Limit = limit
+	e.require(entitiesSearchRequestFieldLimit)
+}
+
+var (
+	bulkSyncSearchHitFieldBulkSyncID           = big.NewInt(1 << 0)
+	bulkSyncSearchHitFieldBulkSyncName         = big.NewInt(1 << 1)
+	bulkSyncSearchHitFieldLinks                = big.NewInt(1 << 2)
+	bulkSyncSearchHitFieldMatches              = big.NewInt(1 << 3)
+	bulkSyncSearchHitFieldSourceConnectionID   = big.NewInt(1 << 4)
+	bulkSyncSearchHitFieldSourceConnectionName = big.NewInt(1 << 5)
+	bulkSyncSearchHitFieldSourceConnectionType = big.NewInt(1 << 6)
+	bulkSyncSearchHitFieldTargetConnectionID   = big.NewInt(1 << 7)
+	bulkSyncSearchHitFieldTargetConnectionName = big.NewInt(1 << 8)
+	bulkSyncSearchHitFieldTargetConnectionType = big.NewInt(1 << 9)
+)
+
+type BulkSyncSearchHit struct {
+	BulkSyncID   string             `json:"bulk_sync_id" url:"bulk_sync_id"`
+	BulkSyncName string             `json:"bulk_sync_name" url:"bulk_sync_name"`
+	Links        *SearchResultLinks `json:"links" url:"links"`
+	// Contributing attributes grouped by saved mapping or schema context, with one group for resource metadata.
+	Matches              []*SearchMatch `json:"matches,omitempty" url:"matches,omitempty"`
+	SourceConnectionID   string         `json:"source_connection_id" url:"source_connection_id"`
+	SourceConnectionName string         `json:"source_connection_name" url:"source_connection_name"`
+	SourceConnectionType string         `json:"source_connection_type" url:"source_connection_type"`
+	TargetConnectionID   string         `json:"target_connection_id" url:"target_connection_id"`
+	TargetConnectionName string         `json:"target_connection_name" url:"target_connection_name"`
+	TargetConnectionType string         `json:"target_connection_type" url:"target_connection_type"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BulkSyncSearchHit) GetBulkSyncID() string {
+	if b == nil {
+		return ""
+	}
+	return b.BulkSyncID
+}
+
+func (b *BulkSyncSearchHit) GetBulkSyncName() string {
+	if b == nil {
+		return ""
+	}
+	return b.BulkSyncName
+}
+
+func (b *BulkSyncSearchHit) GetLinks() *SearchResultLinks {
+	if b == nil {
+		return nil
+	}
+	return b.Links
+}
+
+func (b *BulkSyncSearchHit) GetMatches() []*SearchMatch {
+	if b == nil {
+		return nil
+	}
+	return b.Matches
+}
+
+func (b *BulkSyncSearchHit) GetSourceConnectionID() string {
+	if b == nil {
+		return ""
+	}
+	return b.SourceConnectionID
+}
+
+func (b *BulkSyncSearchHit) GetSourceConnectionName() string {
+	if b == nil {
+		return ""
+	}
+	return b.SourceConnectionName
+}
+
+func (b *BulkSyncSearchHit) GetSourceConnectionType() string {
+	if b == nil {
+		return ""
+	}
+	return b.SourceConnectionType
+}
+
+func (b *BulkSyncSearchHit) GetTargetConnectionID() string {
+	if b == nil {
+		return ""
+	}
+	return b.TargetConnectionID
+}
+
+func (b *BulkSyncSearchHit) GetTargetConnectionName() string {
+	if b == nil {
+		return ""
+	}
+	return b.TargetConnectionName
+}
+
+func (b *BulkSyncSearchHit) GetTargetConnectionType() string {
+	if b == nil {
+		return ""
+	}
+	return b.TargetConnectionType
+}
+
+func (b *BulkSyncSearchHit) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.extraProperties
+}
+
+func (b *BulkSyncSearchHit) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetBulkSyncID sets the BulkSyncID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSearchHit) SetBulkSyncID(bulkSyncID string) {
+	b.BulkSyncID = bulkSyncID
+	b.require(bulkSyncSearchHitFieldBulkSyncID)
+}
+
+// SetBulkSyncName sets the BulkSyncName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSearchHit) SetBulkSyncName(bulkSyncName string) {
+	b.BulkSyncName = bulkSyncName
+	b.require(bulkSyncSearchHitFieldBulkSyncName)
+}
+
+// SetLinks sets the Links field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSearchHit) SetLinks(links *SearchResultLinks) {
+	b.Links = links
+	b.require(bulkSyncSearchHitFieldLinks)
+}
+
+// SetMatches sets the Matches field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSearchHit) SetMatches(matches []*SearchMatch) {
+	b.Matches = matches
+	b.require(bulkSyncSearchHitFieldMatches)
+}
+
+// SetSourceConnectionID sets the SourceConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSearchHit) SetSourceConnectionID(sourceConnectionID string) {
+	b.SourceConnectionID = sourceConnectionID
+	b.require(bulkSyncSearchHitFieldSourceConnectionID)
+}
+
+// SetSourceConnectionName sets the SourceConnectionName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSearchHit) SetSourceConnectionName(sourceConnectionName string) {
+	b.SourceConnectionName = sourceConnectionName
+	b.require(bulkSyncSearchHitFieldSourceConnectionName)
+}
+
+// SetSourceConnectionType sets the SourceConnectionType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSearchHit) SetSourceConnectionType(sourceConnectionType string) {
+	b.SourceConnectionType = sourceConnectionType
+	b.require(bulkSyncSearchHitFieldSourceConnectionType)
+}
+
+// SetTargetConnectionID sets the TargetConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSearchHit) SetTargetConnectionID(targetConnectionID string) {
+	b.TargetConnectionID = targetConnectionID
+	b.require(bulkSyncSearchHitFieldTargetConnectionID)
+}
+
+// SetTargetConnectionName sets the TargetConnectionName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSearchHit) SetTargetConnectionName(targetConnectionName string) {
+	b.TargetConnectionName = targetConnectionName
+	b.require(bulkSyncSearchHitFieldTargetConnectionName)
+}
+
+// SetTargetConnectionType sets the TargetConnectionType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSearchHit) SetTargetConnectionType(targetConnectionType string) {
+	b.TargetConnectionType = targetConnectionType
+	b.require(bulkSyncSearchHitFieldTargetConnectionType)
+}
+
+func (b *BulkSyncSearchHit) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkSyncSearchHit
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkSyncSearchHit(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkSyncSearchHit) MarshalJSON() ([]byte, error) {
+	type embed BulkSyncSearchHit
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BulkSyncSearchHit) String() string {
+	if b == nil {
+		return "<nil>"
+	}
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+var (
+	connectionSearchHitFieldConnectionID   = big.NewInt(1 << 0)
+	connectionSearchHitFieldConnectionName = big.NewInt(1 << 1)
+	connectionSearchHitFieldConnectionType = big.NewInt(1 << 2)
+	connectionSearchHitFieldLinks          = big.NewInt(1 << 3)
+	connectionSearchHitFieldMatches        = big.NewInt(1 << 4)
+)
+
+type ConnectionSearchHit struct {
+	ConnectionID   string             `json:"connection_id" url:"connection_id"`
+	ConnectionName string             `json:"connection_name" url:"connection_name"`
+	ConnectionType string             `json:"connection_type" url:"connection_type"`
+	Links          *SearchResultLinks `json:"links" url:"links"`
+	// Contributing attributes grouped by saved mapping context, with one group for resource metadata.
+	Matches []*SearchMatch `json:"matches,omitempty" url:"matches,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ConnectionSearchHit) GetConnectionID() string {
+	if c == nil {
+		return ""
+	}
+	return c.ConnectionID
+}
+
+func (c *ConnectionSearchHit) GetConnectionName() string {
+	if c == nil {
+		return ""
+	}
+	return c.ConnectionName
+}
+
+func (c *ConnectionSearchHit) GetConnectionType() string {
+	if c == nil {
+		return ""
+	}
+	return c.ConnectionType
+}
+
+func (c *ConnectionSearchHit) GetLinks() *SearchResultLinks {
+	if c == nil {
+		return nil
+	}
+	return c.Links
+}
+
+func (c *ConnectionSearchHit) GetMatches() []*SearchMatch {
+	if c == nil {
+		return nil
+	}
+	return c.Matches
+}
+
+func (c *ConnectionSearchHit) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *ConnectionSearchHit) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetConnectionID sets the ConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionSearchHit) SetConnectionID(connectionID string) {
+	c.ConnectionID = connectionID
+	c.require(connectionSearchHitFieldConnectionID)
+}
+
+// SetConnectionName sets the ConnectionName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionSearchHit) SetConnectionName(connectionName string) {
+	c.ConnectionName = connectionName
+	c.require(connectionSearchHitFieldConnectionName)
+}
+
+// SetConnectionType sets the ConnectionType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionSearchHit) SetConnectionType(connectionType string) {
+	c.ConnectionType = connectionType
+	c.require(connectionSearchHitFieldConnectionType)
+}
+
+// SetLinks sets the Links field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionSearchHit) SetLinks(links *SearchResultLinks) {
+	c.Links = links
+	c.require(connectionSearchHitFieldLinks)
+}
+
+// SetMatches sets the Matches field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionSearchHit) SetMatches(matches []*SearchMatch) {
+	c.Matches = matches
+	c.require(connectionSearchHitFieldMatches)
+}
+
+func (c *ConnectionSearchHit) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionSearchHit
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionSearchHit(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionSearchHit) MarshalJSON() ([]byte, error) {
+	type embed ConnectionSearchHit
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ConnectionSearchHit) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
 	entityRelationshipFieldID   = big.NewInt(1 << 0)
 	entityRelationshipFieldPath = big.NewInt(1 << 1)
 )
@@ -131,7 +545,7 @@ type EntityResponse struct {
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// Parent resources needed to address nested resources, keyed by relationship name (e.g. "sync", "bulk_sync", "harbor").
 	Relationships map[string]*EntityRelationship `json:"relationships,omitempty" url:"relationships,omitempty"`
-	// Resolved entity type. One of: organization, user, connection, model, sync, sync_execution, bulk_sync, bulk_sync_execution, harbor, harbor_context.
+	// Resolved entity type. One of: organization, user, connection, model, model_sync, model_sync_execution, bulk_sync, bulk_sync_execution, harbor, harbor_context.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -363,4 +777,1869 @@ func (e *EntityResponseEnvelope) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", e)
+}
+
+var (
+	modelFieldSearchHitFieldFieldID             = big.NewInt(1 << 0)
+	modelFieldSearchHitFieldFieldLabel          = big.NewInt(1 << 1)
+	modelFieldSearchHitFieldFieldName           = big.NewInt(1 << 2)
+	modelFieldSearchHitFieldLinks               = big.NewInt(1 << 3)
+	modelFieldSearchHitFieldMatches             = big.NewInt(1 << 4)
+	modelFieldSearchHitFieldModelConnectionID   = big.NewInt(1 << 5)
+	modelFieldSearchHitFieldModelConnectionName = big.NewInt(1 << 6)
+	modelFieldSearchHitFieldModelConnectionType = big.NewInt(1 << 7)
+	modelFieldSearchHitFieldModelID             = big.NewInt(1 << 8)
+	modelFieldSearchHitFieldModelName           = big.NewInt(1 << 9)
+)
+
+type ModelFieldSearchHit struct {
+	FieldID    string `json:"field_id" url:"field_id"`
+	FieldLabel string `json:"field_label" url:"field_label"`
+	// Source or technical field name.
+	FieldName string             `json:"field_name" url:"field_name"`
+	Links     *SearchResultLinks `json:"links" url:"links"`
+	// Contributing attributes grouped by saved mapping context, with one group for resource metadata.
+	Matches             []*SearchMatch `json:"matches,omitempty" url:"matches,omitempty"`
+	ModelConnectionID   string         `json:"model_connection_id" url:"model_connection_id"`
+	ModelConnectionName string         `json:"model_connection_name" url:"model_connection_name"`
+	ModelConnectionType string         `json:"model_connection_type" url:"model_connection_type"`
+	ModelID             string         `json:"model_id" url:"model_id"`
+	ModelName           string         `json:"model_name" url:"model_name"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelFieldSearchHit) GetFieldID() string {
+	if m == nil {
+		return ""
+	}
+	return m.FieldID
+}
+
+func (m *ModelFieldSearchHit) GetFieldLabel() string {
+	if m == nil {
+		return ""
+	}
+	return m.FieldLabel
+}
+
+func (m *ModelFieldSearchHit) GetFieldName() string {
+	if m == nil {
+		return ""
+	}
+	return m.FieldName
+}
+
+func (m *ModelFieldSearchHit) GetLinks() *SearchResultLinks {
+	if m == nil {
+		return nil
+	}
+	return m.Links
+}
+
+func (m *ModelFieldSearchHit) GetMatches() []*SearchMatch {
+	if m == nil {
+		return nil
+	}
+	return m.Matches
+}
+
+func (m *ModelFieldSearchHit) GetModelConnectionID() string {
+	if m == nil {
+		return ""
+	}
+	return m.ModelConnectionID
+}
+
+func (m *ModelFieldSearchHit) GetModelConnectionName() string {
+	if m == nil {
+		return ""
+	}
+	return m.ModelConnectionName
+}
+
+func (m *ModelFieldSearchHit) GetModelConnectionType() string {
+	if m == nil {
+		return ""
+	}
+	return m.ModelConnectionType
+}
+
+func (m *ModelFieldSearchHit) GetModelID() string {
+	if m == nil {
+		return ""
+	}
+	return m.ModelID
+}
+
+func (m *ModelFieldSearchHit) GetModelName() string {
+	if m == nil {
+		return ""
+	}
+	return m.ModelName
+}
+
+func (m *ModelFieldSearchHit) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *ModelFieldSearchHit) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetFieldID sets the FieldID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelFieldSearchHit) SetFieldID(fieldID string) {
+	m.FieldID = fieldID
+	m.require(modelFieldSearchHitFieldFieldID)
+}
+
+// SetFieldLabel sets the FieldLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelFieldSearchHit) SetFieldLabel(fieldLabel string) {
+	m.FieldLabel = fieldLabel
+	m.require(modelFieldSearchHitFieldFieldLabel)
+}
+
+// SetFieldName sets the FieldName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelFieldSearchHit) SetFieldName(fieldName string) {
+	m.FieldName = fieldName
+	m.require(modelFieldSearchHitFieldFieldName)
+}
+
+// SetLinks sets the Links field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelFieldSearchHit) SetLinks(links *SearchResultLinks) {
+	m.Links = links
+	m.require(modelFieldSearchHitFieldLinks)
+}
+
+// SetMatches sets the Matches field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelFieldSearchHit) SetMatches(matches []*SearchMatch) {
+	m.Matches = matches
+	m.require(modelFieldSearchHitFieldMatches)
+}
+
+// SetModelConnectionID sets the ModelConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelFieldSearchHit) SetModelConnectionID(modelConnectionID string) {
+	m.ModelConnectionID = modelConnectionID
+	m.require(modelFieldSearchHitFieldModelConnectionID)
+}
+
+// SetModelConnectionName sets the ModelConnectionName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelFieldSearchHit) SetModelConnectionName(modelConnectionName string) {
+	m.ModelConnectionName = modelConnectionName
+	m.require(modelFieldSearchHitFieldModelConnectionName)
+}
+
+// SetModelConnectionType sets the ModelConnectionType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelFieldSearchHit) SetModelConnectionType(modelConnectionType string) {
+	m.ModelConnectionType = modelConnectionType
+	m.require(modelFieldSearchHitFieldModelConnectionType)
+}
+
+// SetModelID sets the ModelID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelFieldSearchHit) SetModelID(modelID string) {
+	m.ModelID = modelID
+	m.require(modelFieldSearchHitFieldModelID)
+}
+
+// SetModelName sets the ModelName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelFieldSearchHit) SetModelName(modelName string) {
+	m.ModelName = modelName
+	m.require(modelFieldSearchHitFieldModelName)
+}
+
+func (m *ModelFieldSearchHit) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelFieldSearchHit
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelFieldSearchHit(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelFieldSearchHit) MarshalJSON() ([]byte, error) {
+	type embed ModelFieldSearchHit
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *ModelFieldSearchHit) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+var (
+	modelSearchHitFieldLinks               = big.NewInt(1 << 0)
+	modelSearchHitFieldMatches             = big.NewInt(1 << 1)
+	modelSearchHitFieldModelConnectionID   = big.NewInt(1 << 2)
+	modelSearchHitFieldModelConnectionName = big.NewInt(1 << 3)
+	modelSearchHitFieldModelConnectionType = big.NewInt(1 << 4)
+	modelSearchHitFieldModelID             = big.NewInt(1 << 5)
+	modelSearchHitFieldModelName           = big.NewInt(1 << 6)
+)
+
+type ModelSearchHit struct {
+	Links *SearchResultLinks `json:"links" url:"links"`
+	// Contributing attributes grouped by saved mapping context, with one group for resource metadata.
+	Matches             []*SearchMatch `json:"matches,omitempty" url:"matches,omitempty"`
+	ModelConnectionID   string         `json:"model_connection_id" url:"model_connection_id"`
+	ModelConnectionName string         `json:"model_connection_name" url:"model_connection_name"`
+	ModelConnectionType string         `json:"model_connection_type" url:"model_connection_type"`
+	ModelID             string         `json:"model_id" url:"model_id"`
+	ModelName           string         `json:"model_name" url:"model_name"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelSearchHit) GetLinks() *SearchResultLinks {
+	if m == nil {
+		return nil
+	}
+	return m.Links
+}
+
+func (m *ModelSearchHit) GetMatches() []*SearchMatch {
+	if m == nil {
+		return nil
+	}
+	return m.Matches
+}
+
+func (m *ModelSearchHit) GetModelConnectionID() string {
+	if m == nil {
+		return ""
+	}
+	return m.ModelConnectionID
+}
+
+func (m *ModelSearchHit) GetModelConnectionName() string {
+	if m == nil {
+		return ""
+	}
+	return m.ModelConnectionName
+}
+
+func (m *ModelSearchHit) GetModelConnectionType() string {
+	if m == nil {
+		return ""
+	}
+	return m.ModelConnectionType
+}
+
+func (m *ModelSearchHit) GetModelID() string {
+	if m == nil {
+		return ""
+	}
+	return m.ModelID
+}
+
+func (m *ModelSearchHit) GetModelName() string {
+	if m == nil {
+		return ""
+	}
+	return m.ModelName
+}
+
+func (m *ModelSearchHit) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *ModelSearchHit) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetLinks sets the Links field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSearchHit) SetLinks(links *SearchResultLinks) {
+	m.Links = links
+	m.require(modelSearchHitFieldLinks)
+}
+
+// SetMatches sets the Matches field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSearchHit) SetMatches(matches []*SearchMatch) {
+	m.Matches = matches
+	m.require(modelSearchHitFieldMatches)
+}
+
+// SetModelConnectionID sets the ModelConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSearchHit) SetModelConnectionID(modelConnectionID string) {
+	m.ModelConnectionID = modelConnectionID
+	m.require(modelSearchHitFieldModelConnectionID)
+}
+
+// SetModelConnectionName sets the ModelConnectionName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSearchHit) SetModelConnectionName(modelConnectionName string) {
+	m.ModelConnectionName = modelConnectionName
+	m.require(modelSearchHitFieldModelConnectionName)
+}
+
+// SetModelConnectionType sets the ModelConnectionType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSearchHit) SetModelConnectionType(modelConnectionType string) {
+	m.ModelConnectionType = modelConnectionType
+	m.require(modelSearchHitFieldModelConnectionType)
+}
+
+// SetModelID sets the ModelID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSearchHit) SetModelID(modelID string) {
+	m.ModelID = modelID
+	m.require(modelSearchHitFieldModelID)
+}
+
+// SetModelName sets the ModelName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSearchHit) SetModelName(modelName string) {
+	m.ModelName = modelName
+	m.require(modelSearchHitFieldModelName)
+}
+
+func (m *ModelSearchHit) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelSearchHit
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelSearchHit(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelSearchHit) MarshalJSON() ([]byte, error) {
+	type embed ModelSearchHit
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *ModelSearchHit) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+var (
+	modelSyncSearchHitFieldLinks                = big.NewInt(1 << 0)
+	modelSyncSearchHitFieldMatches              = big.NewInt(1 << 1)
+	modelSyncSearchHitFieldSourceConnections    = big.NewInt(1 << 2)
+	modelSyncSearchHitFieldSyncID               = big.NewInt(1 << 3)
+	modelSyncSearchHitFieldSyncName             = big.NewInt(1 << 4)
+	modelSyncSearchHitFieldTargetConnectionID   = big.NewInt(1 << 5)
+	modelSyncSearchHitFieldTargetConnectionName = big.NewInt(1 << 6)
+	modelSyncSearchHitFieldTargetConnectionType = big.NewInt(1 << 7)
+)
+
+type ModelSyncSearchHit struct {
+	Links *SearchResultLinks `json:"links" url:"links"`
+	// Contributing attributes grouped by saved mapping context, with one group for resource metadata.
+	Matches              []*SearchMatch               `json:"matches,omitempty" url:"matches,omitempty"`
+	SourceConnections    []*ModelSyncSourceConnection `json:"source_connections" url:"source_connections"`
+	SyncID               string                       `json:"sync_id" url:"sync_id"`
+	SyncName             string                       `json:"sync_name" url:"sync_name"`
+	TargetConnectionID   string                       `json:"target_connection_id" url:"target_connection_id"`
+	TargetConnectionName string                       `json:"target_connection_name" url:"target_connection_name"`
+	TargetConnectionType string                       `json:"target_connection_type" url:"target_connection_type"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelSyncSearchHit) GetLinks() *SearchResultLinks {
+	if m == nil {
+		return nil
+	}
+	return m.Links
+}
+
+func (m *ModelSyncSearchHit) GetMatches() []*SearchMatch {
+	if m == nil {
+		return nil
+	}
+	return m.Matches
+}
+
+func (m *ModelSyncSearchHit) GetSourceConnections() []*ModelSyncSourceConnection {
+	if m == nil {
+		return nil
+	}
+	return m.SourceConnections
+}
+
+func (m *ModelSyncSearchHit) GetSyncID() string {
+	if m == nil {
+		return ""
+	}
+	return m.SyncID
+}
+
+func (m *ModelSyncSearchHit) GetSyncName() string {
+	if m == nil {
+		return ""
+	}
+	return m.SyncName
+}
+
+func (m *ModelSyncSearchHit) GetTargetConnectionID() string {
+	if m == nil {
+		return ""
+	}
+	return m.TargetConnectionID
+}
+
+func (m *ModelSyncSearchHit) GetTargetConnectionName() string {
+	if m == nil {
+		return ""
+	}
+	return m.TargetConnectionName
+}
+
+func (m *ModelSyncSearchHit) GetTargetConnectionType() string {
+	if m == nil {
+		return ""
+	}
+	return m.TargetConnectionType
+}
+
+func (m *ModelSyncSearchHit) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *ModelSyncSearchHit) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetLinks sets the Links field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncSearchHit) SetLinks(links *SearchResultLinks) {
+	m.Links = links
+	m.require(modelSyncSearchHitFieldLinks)
+}
+
+// SetMatches sets the Matches field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncSearchHit) SetMatches(matches []*SearchMatch) {
+	m.Matches = matches
+	m.require(modelSyncSearchHitFieldMatches)
+}
+
+// SetSourceConnections sets the SourceConnections field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncSearchHit) SetSourceConnections(sourceConnections []*ModelSyncSourceConnection) {
+	m.SourceConnections = sourceConnections
+	m.require(modelSyncSearchHitFieldSourceConnections)
+}
+
+// SetSyncID sets the SyncID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncSearchHit) SetSyncID(syncID string) {
+	m.SyncID = syncID
+	m.require(modelSyncSearchHitFieldSyncID)
+}
+
+// SetSyncName sets the SyncName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncSearchHit) SetSyncName(syncName string) {
+	m.SyncName = syncName
+	m.require(modelSyncSearchHitFieldSyncName)
+}
+
+// SetTargetConnectionID sets the TargetConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncSearchHit) SetTargetConnectionID(targetConnectionID string) {
+	m.TargetConnectionID = targetConnectionID
+	m.require(modelSyncSearchHitFieldTargetConnectionID)
+}
+
+// SetTargetConnectionName sets the TargetConnectionName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncSearchHit) SetTargetConnectionName(targetConnectionName string) {
+	m.TargetConnectionName = targetConnectionName
+	m.require(modelSyncSearchHitFieldTargetConnectionName)
+}
+
+// SetTargetConnectionType sets the TargetConnectionType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncSearchHit) SetTargetConnectionType(targetConnectionType string) {
+	m.TargetConnectionType = targetConnectionType
+	m.require(modelSyncSearchHitFieldTargetConnectionType)
+}
+
+func (m *ModelSyncSearchHit) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelSyncSearchHit
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelSyncSearchHit(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelSyncSearchHit) MarshalJSON() ([]byte, error) {
+	type embed ModelSyncSearchHit
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *ModelSyncSearchHit) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+var (
+	modelSyncSourceConnectionFieldConnectionID   = big.NewInt(1 << 0)
+	modelSyncSourceConnectionFieldConnectionName = big.NewInt(1 << 1)
+	modelSyncSourceConnectionFieldConnectionType = big.NewInt(1 << 2)
+)
+
+type ModelSyncSourceConnection struct {
+	ConnectionID   string `json:"connection_id" url:"connection_id"`
+	ConnectionName string `json:"connection_name" url:"connection_name"`
+	ConnectionType string `json:"connection_type" url:"connection_type"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelSyncSourceConnection) GetConnectionID() string {
+	if m == nil {
+		return ""
+	}
+	return m.ConnectionID
+}
+
+func (m *ModelSyncSourceConnection) GetConnectionName() string {
+	if m == nil {
+		return ""
+	}
+	return m.ConnectionName
+}
+
+func (m *ModelSyncSourceConnection) GetConnectionType() string {
+	if m == nil {
+		return ""
+	}
+	return m.ConnectionType
+}
+
+func (m *ModelSyncSourceConnection) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *ModelSyncSourceConnection) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetConnectionID sets the ConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncSourceConnection) SetConnectionID(connectionID string) {
+	m.ConnectionID = connectionID
+	m.require(modelSyncSourceConnectionFieldConnectionID)
+}
+
+// SetConnectionName sets the ConnectionName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncSourceConnection) SetConnectionName(connectionName string) {
+	m.ConnectionName = connectionName
+	m.require(modelSyncSourceConnectionFieldConnectionName)
+}
+
+// SetConnectionType sets the ConnectionType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModelSyncSourceConnection) SetConnectionType(connectionType string) {
+	m.ConnectionType = connectionType
+	m.require(modelSyncSourceConnectionFieldConnectionType)
+}
+
+func (m *ModelSyncSourceConnection) UnmarshalJSON(data []byte) error {
+	type unmarshaler ModelSyncSourceConnection
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ModelSyncSourceConnection(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelSyncSourceConnection) MarshalJSON() ([]byte, error) {
+	type embed ModelSyncSourceConnection
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *ModelSyncSourceConnection) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+var (
+	searchEnvelopeFieldData     = big.NewInt(1 << 0)
+	searchEnvelopeFieldMetadata = big.NewInt(1 << 1)
+)
+
+type SearchEnvelope struct {
+	Data     []*SearchResultItem   `json:"data,omitempty" url:"data,omitempty"`
+	Metadata *SearchResultMetadata `json:"metadata,omitempty" url:"metadata,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SearchEnvelope) GetData() []*SearchResultItem {
+	if s == nil {
+		return nil
+	}
+	return s.Data
+}
+
+func (s *SearchEnvelope) GetMetadata() *SearchResultMetadata {
+	if s == nil {
+		return nil
+	}
+	return s.Metadata
+}
+
+func (s *SearchEnvelope) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *SearchEnvelope) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchEnvelope) SetData(data []*SearchResultItem) {
+	s.Data = data
+	s.require(searchEnvelopeFieldData)
+}
+
+// SetMetadata sets the Metadata field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchEnvelope) SetMetadata(metadata *SearchResultMetadata) {
+	s.Metadata = metadata
+	s.require(searchEnvelopeFieldMetadata)
+}
+
+func (s *SearchEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler SearchEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SearchEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SearchEnvelope) MarshalJSON() ([]byte, error) {
+	type embed SearchEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SearchEnvelope) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+var (
+	searchMatchFieldAttributes = big.NewInt(1 << 0)
+	searchMatchFieldMapping    = big.NewInt(1 << 1)
+	searchMatchFieldSchema     = big.NewInt(1 << 2)
+)
+
+type SearchMatch struct {
+	// Indexed attributes contributing to this result, with matching query terms.
+	Attributes []*SearchMatchAttribute `json:"attributes,omitempty" url:"attributes,omitempty"`
+	Mapping    *SearchMatchMapping     `json:"mapping,omitempty" url:"mapping,omitempty"`
+	Schema     *SearchMatchSchema      `json:"schema,omitempty" url:"schema,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SearchMatch) GetAttributes() []*SearchMatchAttribute {
+	if s == nil {
+		return nil
+	}
+	return s.Attributes
+}
+
+func (s *SearchMatch) GetMapping() *SearchMatchMapping {
+	if s == nil {
+		return nil
+	}
+	return s.Mapping
+}
+
+func (s *SearchMatch) GetSchema() *SearchMatchSchema {
+	if s == nil {
+		return nil
+	}
+	return s.Schema
+}
+
+func (s *SearchMatch) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *SearchMatch) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetAttributes sets the Attributes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchMatch) SetAttributes(attributes []*SearchMatchAttribute) {
+	s.Attributes = attributes
+	s.require(searchMatchFieldAttributes)
+}
+
+// SetMapping sets the Mapping field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchMatch) SetMapping(mapping *SearchMatchMapping) {
+	s.Mapping = mapping
+	s.require(searchMatchFieldMapping)
+}
+
+// SetSchema sets the Schema field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchMatch) SetSchema(schema *SearchMatchSchema) {
+	s.Schema = schema
+	s.require(searchMatchFieldSchema)
+}
+
+func (s *SearchMatch) UnmarshalJSON(data []byte) error {
+	type unmarshaler SearchMatch
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SearchMatch(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SearchMatch) MarshalJSON() ([]byte, error) {
+	type embed SearchMatch
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SearchMatch) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+var (
+	searchMatchAttributeFieldAttribute = big.NewInt(1 << 0)
+	searchMatchAttributeFieldTerms     = big.NewInt(1 << 1)
+	searchMatchAttributeFieldValue     = big.NewInt(1 << 2)
+)
+
+type SearchMatchAttribute struct {
+	// Indexed attribute that matched a query term.
+	Attribute string `json:"attribute" url:"attribute"`
+	// Unique normalized query terms matching word prefixes in this value.
+	Terms []string `json:"terms,omitempty" url:"terms,omitempty"`
+	// Original indexed string, before tokenization and case normalization.
+	Value string `json:"value" url:"value"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SearchMatchAttribute) GetAttribute() string {
+	if s == nil {
+		return ""
+	}
+	return s.Attribute
+}
+
+func (s *SearchMatchAttribute) GetTerms() []string {
+	if s == nil {
+		return nil
+	}
+	return s.Terms
+}
+
+func (s *SearchMatchAttribute) GetValue() string {
+	if s == nil {
+		return ""
+	}
+	return s.Value
+}
+
+func (s *SearchMatchAttribute) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *SearchMatchAttribute) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetAttribute sets the Attribute field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchMatchAttribute) SetAttribute(attribute string) {
+	s.Attribute = attribute
+	s.require(searchMatchAttributeFieldAttribute)
+}
+
+// SetTerms sets the Terms field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchMatchAttribute) SetTerms(terms []string) {
+	s.Terms = terms
+	s.require(searchMatchAttributeFieldTerms)
+}
+
+// SetValue sets the Value field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchMatchAttribute) SetValue(value string) {
+	s.Value = value
+	s.require(searchMatchAttributeFieldValue)
+}
+
+func (s *SearchMatchAttribute) UnmarshalJSON(data []byte) error {
+	type unmarshaler SearchMatchAttribute
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SearchMatchAttribute(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SearchMatchAttribute) MarshalJSON() ([]byte, error) {
+	type embed SearchMatchAttribute
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SearchMatchAttribute) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+var (
+	searchMatchMappingFieldKind             = big.NewInt(1 << 0)
+	searchMatchMappingFieldSourceFieldID    = big.NewInt(1 << 1)
+	searchMatchMappingFieldSourceFieldLabel = big.NewInt(1 << 2)
+	searchMatchMappingFieldSourceFieldName  = big.NewInt(1 << 3)
+	searchMatchMappingFieldSourceModelID    = big.NewInt(1 << 4)
+	searchMatchMappingFieldSourceModelName  = big.NewInt(1 << 5)
+	searchMatchMappingFieldTargetFieldID    = big.NewInt(1 << 6)
+	searchMatchMappingFieldTargetFieldName  = big.NewInt(1 << 7)
+)
+
+type SearchMatchMapping struct {
+	Kind             SearchMatchMappingKind `json:"kind" url:"kind"`
+	SourceFieldID    *string                `json:"source_field_id,omitempty" url:"source_field_id,omitempty"`
+	SourceFieldLabel *string                `json:"source_field_label,omitempty" url:"source_field_label,omitempty"`
+	SourceFieldName  *string                `json:"source_field_name,omitempty" url:"source_field_name,omitempty"`
+	SourceModelID    *string                `json:"source_model_id,omitempty" url:"source_model_id,omitempty"`
+	SourceModelName  *string                `json:"source_model_name,omitempty" url:"source_model_name,omitempty"`
+	TargetFieldID    string                 `json:"target_field_id" url:"target_field_id"`
+	// Target field name from stored schema metadata, when available.
+	TargetFieldName *string `json:"target_field_name,omitempty" url:"target_field_name,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SearchMatchMapping) GetKind() SearchMatchMappingKind {
+	if s == nil {
+		return ""
+	}
+	return s.Kind
+}
+
+func (s *SearchMatchMapping) GetSourceFieldID() *string {
+	if s == nil {
+		return nil
+	}
+	return s.SourceFieldID
+}
+
+func (s *SearchMatchMapping) GetSourceFieldLabel() *string {
+	if s == nil {
+		return nil
+	}
+	return s.SourceFieldLabel
+}
+
+func (s *SearchMatchMapping) GetSourceFieldName() *string {
+	if s == nil {
+		return nil
+	}
+	return s.SourceFieldName
+}
+
+func (s *SearchMatchMapping) GetSourceModelID() *string {
+	if s == nil {
+		return nil
+	}
+	return s.SourceModelID
+}
+
+func (s *SearchMatchMapping) GetSourceModelName() *string {
+	if s == nil {
+		return nil
+	}
+	return s.SourceModelName
+}
+
+func (s *SearchMatchMapping) GetTargetFieldID() string {
+	if s == nil {
+		return ""
+	}
+	return s.TargetFieldID
+}
+
+func (s *SearchMatchMapping) GetTargetFieldName() *string {
+	if s == nil {
+		return nil
+	}
+	return s.TargetFieldName
+}
+
+func (s *SearchMatchMapping) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *SearchMatchMapping) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetKind sets the Kind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchMatchMapping) SetKind(kind SearchMatchMappingKind) {
+	s.Kind = kind
+	s.require(searchMatchMappingFieldKind)
+}
+
+// SetSourceFieldID sets the SourceFieldID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchMatchMapping) SetSourceFieldID(sourceFieldID *string) {
+	s.SourceFieldID = sourceFieldID
+	s.require(searchMatchMappingFieldSourceFieldID)
+}
+
+// SetSourceFieldLabel sets the SourceFieldLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchMatchMapping) SetSourceFieldLabel(sourceFieldLabel *string) {
+	s.SourceFieldLabel = sourceFieldLabel
+	s.require(searchMatchMappingFieldSourceFieldLabel)
+}
+
+// SetSourceFieldName sets the SourceFieldName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchMatchMapping) SetSourceFieldName(sourceFieldName *string) {
+	s.SourceFieldName = sourceFieldName
+	s.require(searchMatchMappingFieldSourceFieldName)
+}
+
+// SetSourceModelID sets the SourceModelID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchMatchMapping) SetSourceModelID(sourceModelID *string) {
+	s.SourceModelID = sourceModelID
+	s.require(searchMatchMappingFieldSourceModelID)
+}
+
+// SetSourceModelName sets the SourceModelName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchMatchMapping) SetSourceModelName(sourceModelName *string) {
+	s.SourceModelName = sourceModelName
+	s.require(searchMatchMappingFieldSourceModelName)
+}
+
+// SetTargetFieldID sets the TargetFieldID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchMatchMapping) SetTargetFieldID(targetFieldID string) {
+	s.TargetFieldID = targetFieldID
+	s.require(searchMatchMappingFieldTargetFieldID)
+}
+
+// SetTargetFieldName sets the TargetFieldName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchMatchMapping) SetTargetFieldName(targetFieldName *string) {
+	s.TargetFieldName = targetFieldName
+	s.require(searchMatchMappingFieldTargetFieldName)
+}
+
+func (s *SearchMatchMapping) UnmarshalJSON(data []byte) error {
+	type unmarshaler SearchMatchMapping
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SearchMatchMapping(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SearchMatchMapping) MarshalJSON() ([]byte, error) {
+	type embed SearchMatchMapping
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SearchMatchMapping) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SearchMatchMappingKind string
+
+const (
+	SearchMatchMappingKindField             SearchMatchMappingKind = "field"
+	SearchMatchMappingKindPrimaryIdentity   SearchMatchMappingKind = "primary_identity"
+	SearchMatchMappingKindSecondaryIdentity SearchMatchMappingKind = "secondary_identity"
+)
+
+func NewSearchMatchMappingKindFromString(s string) (SearchMatchMappingKind, error) {
+	switch s {
+	case "field":
+		return SearchMatchMappingKindField, nil
+	case "primary_identity":
+		return SearchMatchMappingKindPrimaryIdentity, nil
+	case "secondary_identity":
+		return SearchMatchMappingKindSecondaryIdentity, nil
+	}
+	var t SearchMatchMappingKind
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s SearchMatchMappingKind) Ptr() *SearchMatchMappingKind {
+	return &s
+}
+
+var (
+	searchMatchSchemaFieldOutputName = big.NewInt(1 << 0)
+	searchMatchSchemaFieldSchemaID   = big.NewInt(1 << 1)
+	searchMatchSchemaFieldSchemaName = big.NewInt(1 << 2)
+)
+
+type SearchMatchSchema struct {
+	// Configured destination output name, when available.
+	OutputName *string `json:"output_name,omitempty" url:"output_name,omitempty"`
+	// Saved source schema ID.
+	SchemaID string `json:"schema_id" url:"schema_id"`
+	// Source schema display name from stored metadata, when available.
+	SchemaName *string `json:"schema_name,omitempty" url:"schema_name,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SearchMatchSchema) GetOutputName() *string {
+	if s == nil {
+		return nil
+	}
+	return s.OutputName
+}
+
+func (s *SearchMatchSchema) GetSchemaID() string {
+	if s == nil {
+		return ""
+	}
+	return s.SchemaID
+}
+
+func (s *SearchMatchSchema) GetSchemaName() *string {
+	if s == nil {
+		return nil
+	}
+	return s.SchemaName
+}
+
+func (s *SearchMatchSchema) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *SearchMatchSchema) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetOutputName sets the OutputName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchMatchSchema) SetOutputName(outputName *string) {
+	s.OutputName = outputName
+	s.require(searchMatchSchemaFieldOutputName)
+}
+
+// SetSchemaID sets the SchemaID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchMatchSchema) SetSchemaID(schemaID string) {
+	s.SchemaID = schemaID
+	s.require(searchMatchSchemaFieldSchemaID)
+}
+
+// SetSchemaName sets the SchemaName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchMatchSchema) SetSchemaName(schemaName *string) {
+	s.SchemaName = schemaName
+	s.require(searchMatchSchemaFieldSchemaName)
+}
+
+func (s *SearchMatchSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler SearchMatchSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SearchMatchSchema(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SearchMatchSchema) MarshalJSON() ([]byte, error) {
+	type embed SearchMatchSchema
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SearchMatchSchema) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SearchResultItem struct {
+	Type       string
+	Model      *ModelSearchHit
+	ModelField *ModelFieldSearchHit
+	ModelSync  *ModelSyncSearchHit
+	BulkSync   *BulkSyncSearchHit
+	Connection *ConnectionSearchHit
+
+	rawJSON json.RawMessage
+}
+
+func (s *SearchResultItem) GetType() string {
+	if s == nil {
+		return ""
+	}
+	return s.Type
+}
+
+func (s *SearchResultItem) GetModel() *ModelSearchHit {
+	if s == nil {
+		return nil
+	}
+	return s.Model
+}
+
+func (s *SearchResultItem) GetModelField() *ModelFieldSearchHit {
+	if s == nil {
+		return nil
+	}
+	return s.ModelField
+}
+
+func (s *SearchResultItem) GetModelSync() *ModelSyncSearchHit {
+	if s == nil {
+		return nil
+	}
+	return s.ModelSync
+}
+
+func (s *SearchResultItem) GetBulkSync() *BulkSyncSearchHit {
+	if s == nil {
+		return nil
+	}
+	return s.BulkSync
+}
+
+func (s *SearchResultItem) GetConnection() *ConnectionSearchHit {
+	if s == nil {
+		return nil
+	}
+	return s.Connection
+}
+
+func (s *SearchResultItem) UnmarshalJSON(data []byte) error {
+	var unmarshaler struct {
+		Type string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	s.Type = unmarshaler.Type
+	if unmarshaler.Type == "" {
+		return fmt.Errorf("%T did not include discriminant type", s)
+	}
+	switch unmarshaler.Type {
+	case "model":
+		value := new(ModelSearchHit)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		s.Model = value
+	case "model_field":
+		value := new(ModelFieldSearchHit)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		s.ModelField = value
+	case "model_sync":
+		value := new(ModelSyncSearchHit)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		s.ModelSync = value
+	case "bulk_sync":
+		value := new(BulkSyncSearchHit)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		s.BulkSync = value
+	case "connection":
+		value := new(ConnectionSearchHit)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		s.Connection = value
+	}
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s SearchResultItem) MarshalJSON() ([]byte, error) {
+	if err := s.validate(); err != nil {
+		return nil, err
+	}
+	if s.Model != nil {
+		return internal.MarshalJSONWithExtraProperty(s.Model, "type", "model")
+	}
+	if s.ModelField != nil {
+		return internal.MarshalJSONWithExtraProperty(s.ModelField, "type", "model_field")
+	}
+	if s.ModelSync != nil {
+		return internal.MarshalJSONWithExtraProperty(s.ModelSync, "type", "model_sync")
+	}
+	if s.BulkSync != nil {
+		return internal.MarshalJSONWithExtraProperty(s.BulkSync, "type", "bulk_sync")
+	}
+	if s.Connection != nil {
+		return internal.MarshalJSONWithExtraProperty(s.Connection, "type", "connection")
+	}
+	if len(s.rawJSON) > 0 {
+		return s.rawJSON, nil
+	}
+	return nil, fmt.Errorf("type %T does not define a non-empty union type", s)
+}
+
+type SearchResultItemVisitor interface {
+	VisitModel(*ModelSearchHit) error
+	VisitModelField(*ModelFieldSearchHit) error
+	VisitModelSync(*ModelSyncSearchHit) error
+	VisitBulkSync(*BulkSyncSearchHit) error
+	VisitConnection(*ConnectionSearchHit) error
+}
+
+func (s *SearchResultItem) Accept(visitor SearchResultItemVisitor) error {
+	if s.Model != nil {
+		return visitor.VisitModel(s.Model)
+	}
+	if s.ModelField != nil {
+		return visitor.VisitModelField(s.ModelField)
+	}
+	if s.ModelSync != nil {
+		return visitor.VisitModelSync(s.ModelSync)
+	}
+	if s.BulkSync != nil {
+		return visitor.VisitBulkSync(s.BulkSync)
+	}
+	if s.Connection != nil {
+		return visitor.VisitConnection(s.Connection)
+	}
+	return fmt.Errorf("type %T does not define a non-empty union type", s)
+}
+
+func (s *SearchResultItem) validate() error {
+	if s == nil {
+		return fmt.Errorf("type %T is nil", s)
+	}
+	var fields []string
+	if s.Model != nil {
+		fields = append(fields, "model")
+	}
+	if s.ModelField != nil {
+		fields = append(fields, "model_field")
+	}
+	if s.ModelSync != nil {
+		fields = append(fields, "model_sync")
+	}
+	if s.BulkSync != nil {
+		fields = append(fields, "bulk_sync")
+	}
+	if s.Connection != nil {
+		fields = append(fields, "connection")
+	}
+	if len(fields) == 0 {
+		if s.Type != "" {
+			if len(s.rawJSON) > 0 {
+				return nil
+			}
+			return fmt.Errorf("type %T defines a discriminant set to %q but the field is not set", s, s.Type)
+		}
+		return fmt.Errorf("type %T is empty", s)
+	}
+	if len(fields) > 1 {
+		return fmt.Errorf("type %T defines values for %s, but only one value is allowed", s, fields)
+	}
+	if s.Type != "" {
+		field := fields[0]
+		if s.Type != field {
+			return fmt.Errorf(
+				"type %T defines a discriminant set to %q, but it does not match the %T field; either remove or update the discriminant to match",
+				s,
+				s.Type,
+				s,
+			)
+		}
+	}
+	return nil
+}
+
+var (
+	searchResultLinksFieldBulkSync         = big.NewInt(1 << 0)
+	searchResultLinksFieldConnection       = big.NewInt(1 << 1)
+	searchResultLinksFieldModel            = big.NewInt(1 << 2)
+	searchResultLinksFieldModelSync        = big.NewInt(1 << 3)
+	searchResultLinksFieldSourceConnection = big.NewInt(1 << 4)
+	searchResultLinksFieldTargetConnection = big.NewInt(1 << 5)
+)
+
+type SearchResultLinks struct {
+	BulkSync         *string `json:"bulk_sync,omitempty" url:"bulk_sync,omitempty"`
+	Connection       *string `json:"connection,omitempty" url:"connection,omitempty"`
+	Model            *string `json:"model,omitempty" url:"model,omitempty"`
+	ModelSync        *string `json:"model_sync,omitempty" url:"model_sync,omitempty"`
+	SourceConnection *string `json:"source_connection,omitempty" url:"source_connection,omitempty"`
+	TargetConnection *string `json:"target_connection,omitempty" url:"target_connection,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SearchResultLinks) GetBulkSync() *string {
+	if s == nil {
+		return nil
+	}
+	return s.BulkSync
+}
+
+func (s *SearchResultLinks) GetConnection() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Connection
+}
+
+func (s *SearchResultLinks) GetModel() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Model
+}
+
+func (s *SearchResultLinks) GetModelSync() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ModelSync
+}
+
+func (s *SearchResultLinks) GetSourceConnection() *string {
+	if s == nil {
+		return nil
+	}
+	return s.SourceConnection
+}
+
+func (s *SearchResultLinks) GetTargetConnection() *string {
+	if s == nil {
+		return nil
+	}
+	return s.TargetConnection
+}
+
+func (s *SearchResultLinks) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *SearchResultLinks) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetBulkSync sets the BulkSync field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchResultLinks) SetBulkSync(bulkSync *string) {
+	s.BulkSync = bulkSync
+	s.require(searchResultLinksFieldBulkSync)
+}
+
+// SetConnection sets the Connection field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchResultLinks) SetConnection(connection *string) {
+	s.Connection = connection
+	s.require(searchResultLinksFieldConnection)
+}
+
+// SetModel sets the Model field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchResultLinks) SetModel(model *string) {
+	s.Model = model
+	s.require(searchResultLinksFieldModel)
+}
+
+// SetModelSync sets the ModelSync field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchResultLinks) SetModelSync(modelSync *string) {
+	s.ModelSync = modelSync
+	s.require(searchResultLinksFieldModelSync)
+}
+
+// SetSourceConnection sets the SourceConnection field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchResultLinks) SetSourceConnection(sourceConnection *string) {
+	s.SourceConnection = sourceConnection
+	s.require(searchResultLinksFieldSourceConnection)
+}
+
+// SetTargetConnection sets the TargetConnection field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchResultLinks) SetTargetConnection(targetConnection *string) {
+	s.TargetConnection = targetConnection
+	s.require(searchResultLinksFieldTargetConnection)
+}
+
+func (s *SearchResultLinks) UnmarshalJSON(data []byte) error {
+	type unmarshaler SearchResultLinks
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SearchResultLinks(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SearchResultLinks) MarshalJSON() ([]byte, error) {
+	type embed SearchResultLinks
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SearchResultLinks) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+var (
+	searchResultMetadataFieldModelFieldsComplete = big.NewInt(1 << 0)
+	searchResultMetadataFieldTruncated           = big.NewInt(1 << 1)
+)
+
+type SearchResultMetadata struct {
+	// False when the organization's published model-field count exceeds the hydration threshold (40,000). In that case model_field results cover a used-fields subset (unique fields and sync or relationship references), plus enrichment fields, rather than every published field. This flag does not limit saved Model Sync mapping search.
+	ModelFieldsComplete *bool `json:"model_fields_complete,omitempty" url:"model_fields_complete,omitempty"`
+	// True when more matches exist than were returned. Narrow the search term or increase limit (up to its maximum) to see more.
+	Truncated *bool `json:"truncated,omitempty" url:"truncated,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SearchResultMetadata) GetModelFieldsComplete() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.ModelFieldsComplete
+}
+
+func (s *SearchResultMetadata) GetTruncated() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.Truncated
+}
+
+func (s *SearchResultMetadata) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *SearchResultMetadata) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetModelFieldsComplete sets the ModelFieldsComplete field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchResultMetadata) SetModelFieldsComplete(modelFieldsComplete *bool) {
+	s.ModelFieldsComplete = modelFieldsComplete
+	s.require(searchResultMetadataFieldModelFieldsComplete)
+}
+
+// SetTruncated sets the Truncated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchResultMetadata) SetTruncated(truncated *bool) {
+	s.Truncated = truncated
+	s.require(searchResultMetadataFieldTruncated)
+}
+
+func (s *SearchResultMetadata) UnmarshalJSON(data []byte) error {
+	type unmarshaler SearchResultMetadata
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SearchResultMetadata(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SearchResultMetadata) MarshalJSON() ([]byte, error) {
+	type embed SearchResultMetadata
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SearchResultMetadata) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
 }

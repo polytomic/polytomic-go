@@ -258,15 +258,16 @@ type UpdateModelRequest struct {
 	Configuration    map[string]any            `json:"configuration" url:"-"`
 	ConnectionID     string                    `json:"connection_id" url:"-"`
 	Enricher         *Enrichment               `json:"enricher,omitempty" url:"-"`
-	Fields           []string                  `json:"fields,omitempty" url:"-"`
-	Identifier       *string                   `json:"identifier,omitempty" url:"-"`
-	Labels           []string                  `json:"labels,omitempty" url:"-"`
-	Name             string                    `json:"name" url:"-"`
-	OrganizationID   *string                   `json:"organization_id,omitempty" url:"-"`
-	Policies         []string                  `json:"policies,omitempty" url:"-"`
-	Refresh          *bool                     `json:"refresh,omitempty" url:"-"`
-	Relations        []*ModelRelation          `json:"relations,omitempty" url:"-"`
-	TrackingColumns  []string                  `json:"tracking_columns,omitempty" url:"-"`
+	// Technical/source field names to publish in the model. Use source names, not model-field UUIDs or display labels. For example, use dealname rather than Deal Name. Omit or pass an empty array to publish all standard source fields.
+	Fields          []string         `json:"fields,omitempty" url:"-"`
+	Identifier      *string          `json:"identifier,omitempty" url:"-"`
+	Labels          []string         `json:"labels,omitempty" url:"-"`
+	Name            string           `json:"name" url:"-"`
+	OrganizationID  *string          `json:"organization_id,omitempty" url:"-"`
+	Policies        []string         `json:"policies,omitempty" url:"-"`
+	Refresh         *bool            `json:"refresh,omitempty" url:"-"`
+	Relations       []*ModelRelation `json:"relations,omitempty" url:"-"`
+	TrackingColumns []string         `json:"tracking_columns,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -418,14 +419,15 @@ type CreateModelRequest struct {
 	Configuration    map[string]any            `json:"configuration" url:"configuration"`
 	ConnectionID     string                    `json:"connection_id" url:"connection_id"`
 	Enricher         *Enrichment               `json:"enricher,omitempty" url:"enricher,omitempty"`
-	Fields           []string                  `json:"fields,omitempty" url:"fields,omitempty"`
-	Identifier       *string                   `json:"identifier,omitempty" url:"identifier,omitempty"`
-	Labels           []string                  `json:"labels,omitempty" url:"labels,omitempty"`
-	Name             string                    `json:"name" url:"name"`
-	OrganizationID   *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies         []string                  `json:"policies,omitempty" url:"policies,omitempty"`
-	Relations        []*ModelRelation          `json:"relations,omitempty" url:"relations,omitempty"`
-	TrackingColumns  []string                  `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
+	// Technical/source field names to publish in the model. Use source names, not model-field UUIDs or display labels. For example, use dealname rather than Deal Name. Omit or pass an empty array to publish all standard source fields.
+	Fields          []string         `json:"fields,omitempty" url:"fields,omitempty"`
+	Identifier      *string          `json:"identifier,omitempty" url:"identifier,omitempty"`
+	Labels          []string         `json:"labels,omitempty" url:"labels,omitempty"`
+	Name            string           `json:"name" url:"name"`
+	OrganizationID  *string          `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	Policies        []string         `json:"policies,omitempty" url:"policies,omitempty"`
+	Relations       []*ModelRelation `json:"relations,omitempty" url:"relations,omitempty"`
+	TrackingColumns []string         `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`

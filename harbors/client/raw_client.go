@@ -559,6 +559,362 @@ func (r *RawClient) Delete(
 	}, nil
 }
 
+func (r *RawClient) GetActionConfiguration(
+	ctx context.Context,
+	// Unique identifier of the Harbor.
+	harborID string,
+	opts ...option.RequestOption,
+) (*core.Response[*polytomic.HarborActionConfigurationEnvelope], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/harbors/%v/action-configuration",
+		harborID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *polytomic.HarborActionConfigurationEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.HarborActionConfigurationEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) DisableActionConfiguration(
+	ctx context.Context,
+	// Unique identifier of the Harbor.
+	harborID string,
+	opts ...option.IdempotentRequestOption,
+) (*core.Response[*polytomic.HarborActionConfigurationEnvelope], error) {
+	options := core.NewIdempotentRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/harbors/%v/action-configuration",
+		harborID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *polytomic.HarborActionConfigurationEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodDelete,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.HarborActionConfigurationEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) ListActionSourceConnections(
+	ctx context.Context,
+	// Unique identifier of the Harbor.
+	harborID string,
+	opts ...option.RequestOption,
+) (*core.Response[*polytomic.HarborActionSourceConnectionsEnvelope], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/harbors/%v/action-configuration/connections",
+		harborID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *polytomic.HarborActionSourceConnectionsEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.HarborActionSourceConnectionsEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) SetActionConfiguration(
+	ctx context.Context,
+	// Unique identifier of the Harbor.
+	harborID string,
+	// Source Connection whose action grants you want to manage.
+	connectionID string,
+	request *polytomic.SetHarborActionConfigurationRequest,
+	opts ...option.IdempotentRequestOption,
+) (*core.Response[*polytomic.HarborActionConfigurationEnvelope], error) {
+	options := core.NewIdempotentRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/harbors/%v/action-configuration/connections/%v",
+		harborID,
+		connectionID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("Content-Type", "application/json")
+	var response *polytomic.HarborActionConfigurationEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPut,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.HarborActionConfigurationEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) RemoveActionConfiguration(
+	ctx context.Context,
+	// Unique identifier of the Harbor.
+	harborID string,
+	// Source Connection whose action grants you want to manage.
+	connectionID string,
+	request *polytomic.HarborsRemoveActionConfigurationRequest,
+	opts ...option.IdempotentRequestOption,
+) (*core.Response[*polytomic.HarborActionConfigurationEnvelope], error) {
+	options := core.NewIdempotentRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/harbors/%v/action-configuration/connections/%v",
+		harborID,
+		connectionID,
+	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *polytomic.HarborActionConfigurationEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodDelete,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.HarborActionConfigurationEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) ListActionConfigurationSchemas(
+	ctx context.Context,
+	// Unique identifier of the Harbor.
+	harborID string,
+	// Source Connection whose action grants you want to manage.
+	connectionID string,
+	request *polytomic.HarborsListActionConfigurationSchemasRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*polytomic.HarborActionConfigurationSchemasEnvelope], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/harbors/%v/action-configuration/connections/%v/schemas",
+		harborID,
+		connectionID,
+	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *polytomic.HarborActionConfigurationSchemasEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.HarborActionConfigurationSchemasEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) ListActionConfigurationOperations(
+	ctx context.Context,
+	// Unique identifier of the Harbor.
+	harborID string,
+	// Source Connection whose action grants you want to manage.
+	connectionID string,
+	// Exact action schema ID returned by schema discovery.
+	schemaID string,
+	opts ...option.RequestOption,
+) (*core.Response[*polytomic.HarborActionConfigurationOperationsEnvelope], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://app.polytomic.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/harbors/%v/action-configuration/connections/%v/schemas/%v/operations",
+		harborID,
+		connectionID,
+		schemaID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *polytomic.HarborActionConfigurationOperationsEnvelope
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(polytomic.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*polytomic.HarborActionConfigurationOperationsEnvelope]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
 func (r *RawClient) ListContexts(
 	ctx context.Context,
 	// Unique identifier of the Harbor.

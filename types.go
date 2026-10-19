@@ -869,17 +869,18 @@ func (b *BulkBulkSyncSchedule) String() string {
 type BulkExecutionStatus string
 
 const (
-	BulkExecutionStatusCreated     BulkExecutionStatus = "created"
-	BulkExecutionStatusScheduled   BulkExecutionStatus = "scheduled"
-	BulkExecutionStatusRunning     BulkExecutionStatus = "running"
-	BulkExecutionStatusExporting   BulkExecutionStatus = "exporting"
-	BulkExecutionStatusCanceling   BulkExecutionStatus = "canceling"
-	BulkExecutionStatusCanceled    BulkExecutionStatus = "canceled"
-	BulkExecutionStatusCompleted   BulkExecutionStatus = "completed"
-	BulkExecutionStatusFailed      BulkExecutionStatus = "failed"
-	BulkExecutionStatusProcessing  BulkExecutionStatus = "processing"
-	BulkExecutionStatusErrors      BulkExecutionStatus = "errors"
-	BulkExecutionStatusInterrupted BulkExecutionStatus = "interrupted"
+	BulkExecutionStatusCreated                    BulkExecutionStatus = "created"
+	BulkExecutionStatusScheduled                  BulkExecutionStatus = "scheduled"
+	BulkExecutionStatusRunning                    BulkExecutionStatus = "running"
+	BulkExecutionStatusExporting                  BulkExecutionStatus = "exporting"
+	BulkExecutionStatusCanceling                  BulkExecutionStatus = "canceling"
+	BulkExecutionStatusCanceled                   BulkExecutionStatus = "canceled"
+	BulkExecutionStatusCompleted                  BulkExecutionStatus = "completed"
+	BulkExecutionStatusFailed                     BulkExecutionStatus = "failed"
+	BulkExecutionStatusProcessing                 BulkExecutionStatus = "processing"
+	BulkExecutionStatusErrors                     BulkExecutionStatus = "errors"
+	BulkExecutionStatusInterrupted                BulkExecutionStatus = "interrupted"
+	BulkExecutionStatusCompletedWithCancellations BulkExecutionStatus = "completed_with_cancellations"
 )
 
 func NewBulkExecutionStatusFromString(s string) (BulkExecutionStatus, error) {
@@ -906,6 +907,8 @@ func NewBulkExecutionStatusFromString(s string) (BulkExecutionStatus, error) {
 		return BulkExecutionStatusErrors, nil
 	case "interrupted":
 		return BulkExecutionStatusInterrupted, nil
+	case "completed_with_cancellations":
+		return BulkExecutionStatusCompletedWithCancellations, nil
 	}
 	var t BulkExecutionStatus
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -14012,25 +14015,28 @@ func (s *SupportedMode) String() string {
 
 var (
 	syncDestinationPropertiesFieldDoesNotReportOperationCounts  = big.NewInt(1 << 0)
-	syncDestinationPropertiesFieldMappingsNotRequired           = big.NewInt(1 << 1)
-	syncDestinationPropertiesFieldNewTargetLabel                = big.NewInt(1 << 2)
-	syncDestinationPropertiesFieldOptionalTargetMappings        = big.NewInt(1 << 3)
-	syncDestinationPropertiesFieldPrimaryMetadataObject         = big.NewInt(1 << 4)
-	syncDestinationPropertiesFieldRequiresConfiguration         = big.NewInt(1 << 5)
-	syncDestinationPropertiesFieldSupportsFieldCreation         = big.NewInt(1 << 6)
-	syncDestinationPropertiesFieldSupportsFieldEncryption       = big.NewInt(1 << 7)
-	syncDestinationPropertiesFieldSupportsFieldTypeSelection    = big.NewInt(1 << 8)
-	syncDestinationPropertiesFieldSupportsFilterValueFields     = big.NewInt(1 << 9)
-	syncDestinationPropertiesFieldSupportsIdentityFieldCreation = big.NewInt(1 << 10)
-	syncDestinationPropertiesFieldSupportsMultipleIdentities    = big.NewInt(1 << 11)
-	syncDestinationPropertiesFieldSupportsTargetFilters         = big.NewInt(1 << 12)
-	syncDestinationPropertiesFieldTargetCreator                 = big.NewInt(1 << 13)
-	syncDestinationPropertiesFieldUseFieldNamesAsLabels         = big.NewInt(1 << 14)
+	syncDestinationPropertiesFieldIdentityLogics                = big.NewInt(1 << 1)
+	syncDestinationPropertiesFieldMappingsNotRequired           = big.NewInt(1 << 2)
+	syncDestinationPropertiesFieldNewTargetLabel                = big.NewInt(1 << 3)
+	syncDestinationPropertiesFieldOptionalTargetMappings        = big.NewInt(1 << 4)
+	syncDestinationPropertiesFieldPrimaryMetadataObject         = big.NewInt(1 << 5)
+	syncDestinationPropertiesFieldRequiresConfiguration         = big.NewInt(1 << 6)
+	syncDestinationPropertiesFieldSupportsFieldCreation         = big.NewInt(1 << 7)
+	syncDestinationPropertiesFieldSupportsFieldEncryption       = big.NewInt(1 << 8)
+	syncDestinationPropertiesFieldSupportsFieldTypeSelection    = big.NewInt(1 << 9)
+	syncDestinationPropertiesFieldSupportsFilterValueFields     = big.NewInt(1 << 10)
+	syncDestinationPropertiesFieldSupportsIdentityFieldCreation = big.NewInt(1 << 11)
+	syncDestinationPropertiesFieldSupportsMultipleIdentities    = big.NewInt(1 << 12)
+	syncDestinationPropertiesFieldSupportsTargetFilters         = big.NewInt(1 << 13)
+	syncDestinationPropertiesFieldTargetCreator                 = big.NewInt(1 << 14)
+	syncDestinationPropertiesFieldUseFieldNamesAsLabels         = big.NewInt(1 << 15)
 )
 
 type SyncDestinationProperties struct {
 	// True if execution reports for this destination will not break record counts out by operation (insert vs. update); typical for upsert-only destinations.
 	DoesNotReportOperationCounts *bool `json:"does_not_report_operation_counts,omitempty" url:"does_not_report_operation_counts,omitempty"`
+	// How this destination can combine more than one identity mapping: 'priority', 'and', or both. Every combination is supported when empty.
+	IdentityLogics []string `json:"identity_logics,omitempty" url:"identity_logics,omitempty"`
 	// True if a sync may be configured with only a target identity and no field mappings.
 	MappingsNotRequired *bool `json:"mappings_not_required,omitempty" url:"mappings_not_required,omitempty"`
 	// Label to display when prompting for the name of a newly-created target (e.g. "Audience name", "Table name").
@@ -14072,6 +14078,13 @@ func (s *SyncDestinationProperties) GetDoesNotReportOperationCounts() *bool {
 		return nil
 	}
 	return s.DoesNotReportOperationCounts
+}
+
+func (s *SyncDestinationProperties) GetIdentityLogics() []string {
+	if s == nil {
+		return nil
+	}
+	return s.IdentityLogics
 }
 
 func (s *SyncDestinationProperties) GetMappingsNotRequired() *bool {
@@ -14191,6 +14204,13 @@ func (s *SyncDestinationProperties) require(field *big.Int) {
 func (s *SyncDestinationProperties) SetDoesNotReportOperationCounts(doesNotReportOperationCounts *bool) {
 	s.DoesNotReportOperationCounts = doesNotReportOperationCounts
 	s.require(syncDestinationPropertiesFieldDoesNotReportOperationCounts)
+}
+
+// SetIdentityLogics sets the IdentityLogics field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SyncDestinationProperties) SetIdentityLogics(identityLogics []string) {
+	s.IdentityLogics = identityLogics
+	s.require(syncDestinationPropertiesFieldIdentityLogics)
 }
 
 // SetMappingsNotRequired sets the MappingsNotRequired field and marks it as non-optional;

@@ -7,6 +7,7 @@ import (
 	assert "github.com/stretchr/testify/assert"
 	require "github.com/stretchr/testify/require"
 	testing "testing"
+	time "time"
 )
 
 func TestSettersGetIdentityResponseEnvelope(t *testing.T) {
@@ -1800,6 +1801,14 @@ func TestSettersIdentityCredentialSchema(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetExpiresAt", func(t *testing.T) {
+		obj := &IdentityCredentialSchema{}
+		var fernTestValueExpiresAt *time.Time
+		obj.SetExpiresAt(fernTestValueExpiresAt)
+		assert.Equal(t, fernTestValueExpiresAt, obj.ExpiresAt)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetHarbor", func(t *testing.T) {
 		obj := &IdentityCredentialSchema{}
 		var fernTestValueHarbor *IdentityCredentialHarborSchema
@@ -1874,6 +1883,39 @@ func TestGettersIdentityCredentialSchema(t *testing.T) {
 			}
 		}()
 		_ = obj.GetAPIKeyProfile() // Should return zero value
+	})
+
+	t.Run("GetExpiresAt", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &IdentityCredentialSchema{}
+		var expected *time.Time
+		obj.ExpiresAt = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetExpiresAt(), "getter should return the property value")
+	})
+
+	t.Run("GetExpiresAt_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &IdentityCredentialSchema{}
+		obj.ExpiresAt = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetExpiresAt(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetExpiresAt_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *IdentityCredentialSchema
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetExpiresAt() // Should return zero value
 	})
 
 	t.Run("GetHarbor", func(t *testing.T) {
@@ -2052,6 +2094,37 @@ func TestSettersMarkExplicitIdentityCredentialSchema(t *testing.T) {
 
 		// Act
 		obj.SetAPIKeyProfile(fernTestValueAPIKeyProfile)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetExpiresAt_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &IdentityCredentialSchema{}
+		var fernTestValueExpiresAt *time.Time
+
+		// Act
+		obj.SetExpiresAt(fernTestValueExpiresAt)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

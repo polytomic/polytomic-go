@@ -8,10 +8,10 @@
       "path": "github.com/polytomic/polytomic-go/v25"
     }
   },
-  "originGitCommit": "1f27b66619d7190c24c580bc6447f110af6960a1",
+  "originGitCommit": "01461bbfd6c2476631bc3bc877b89009ecb217f2",
   "originGitCommitIsDirty": false,
   "invokedBy": "ci",
-  "requestedVersion": "25.9.10",
+  "requestedVersion": "25.9.11",
   "ciProvider": "github",
-  "sdkVersion": "v25.9.10"
+  "sdkVersion": "v25.9.11"
 }

@@ -34,4 +34,9 @@ var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
 			APIError: apiError,
 		}
 	},
+	409: func(apiError *core.APIError) error {
+		return &polytomic.ConflictError{
+			APIError: apiError,
+		}
+	},
 }

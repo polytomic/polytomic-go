@@ -272,7 +272,7 @@ var (
 
 type ModelSyncGetSourceFieldsRequest struct {
 	// Source configuration, matching the params used with GET /api/connections/{id}/modelsync/source, that selects the specific source to return fields for.
-	Params map[string][]string `json:"-" url:"params,omitempty"`
+	Params map[string]*string `json:"-" url:"params,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -287,7 +287,7 @@ func (m *ModelSyncGetSourceFieldsRequest) require(field *big.Int) {
 
 // SetParams sets the Params field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ModelSyncGetSourceFieldsRequest) SetParams(params map[string][]string) {
+func (m *ModelSyncGetSourceFieldsRequest) SetParams(params map[string]*string) {
 	m.Params = params
 	m.require(modelSyncGetSourceFieldsRequestFieldParams)
 }

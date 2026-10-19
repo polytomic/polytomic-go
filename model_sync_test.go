@@ -844,7 +844,7 @@ func TestSettersMarkExplicitModelSyncGetSourceRequest(t *testing.T) {
 func TestSettersModelSyncGetSourceFieldsRequest(t *testing.T) {
 	t.Run("SetParams", func(t *testing.T) {
 		obj := &ModelSyncGetSourceFieldsRequest{}
-		var fernTestValueParams map[string][]string
+		var fernTestValueParams map[string]*string
 		obj.SetParams(fernTestValueParams)
 		assert.Equal(t, fernTestValueParams, obj.Params)
 		assert.NotNil(t, obj.explicitFields)
@@ -857,7 +857,7 @@ func TestSettersMarkExplicitModelSyncGetSourceFieldsRequest(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &ModelSyncGetSourceFieldsRequest{}
-		var fernTestValueParams map[string][]string
+		var fernTestValueParams map[string]*string
 
 		// Act
 		obj.SetParams(fernTestValueParams)

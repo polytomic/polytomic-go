@@ -346,6 +346,190 @@ func TestHarborsDeleteWithWireMock(
 	VerifyRequestCount(t, "TestHarborsDeleteWithWireMock", "DELETE", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
 }
 
+func TestHarborsGetActionConfigurationWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	_, invocationErr := client.Harbors.GetActionConfiguration(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsGetActionConfigurationWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsGetActionConfigurationWithWireMock", "GET", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/action-configuration", nil, 1)
+}
+
+func TestHarborsDisableActionConfigurationWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	_, invocationErr := client.Harbors.DisableActionConfiguration(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsDisableActionConfigurationWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsDisableActionConfigurationWithWireMock", "DELETE", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/action-configuration", nil, 1)
+}
+
+func TestHarborsListActionSourceConnectionsWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	_, invocationErr := client.Harbors.ListActionSourceConnections(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsListActionSourceConnectionsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsListActionSourceConnectionsWithWireMock", "GET", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/action-configuration/connections", nil, 1)
+}
+
+func TestHarborsSetActionConfigurationWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &polytomic.SetHarborActionConfigurationRequest{}
+	_, invocationErr := client.Harbors.SetActionConfiguration(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsSetActionConfigurationWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsSetActionConfigurationWithWireMock", "PUT", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/action-configuration/connections/248df4b7-aa70-47b8-a036-33ac447e668d", nil, 1)
+}
+
+func TestHarborsRemoveActionConfigurationWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &polytomic.HarborsRemoveActionConfigurationRequest{
+		ExpectedRevision: "248df4b7-aa70-47b8-a036-33ac447e668d",
+	}
+	_, invocationErr := client.Harbors.RemoveActionConfiguration(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsRemoveActionConfigurationWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsRemoveActionConfigurationWithWireMock", "DELETE", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/action-configuration/connections/248df4b7-aa70-47b8-a036-33ac447e668d", map[string]interface{}{"expected_revision": "248df4b7-aa70-47b8-a036-33ac447e668d"}, 1)
+}
+
+func TestHarborsListActionConfigurationSchemasWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &polytomic.HarborsListActionConfigurationSchemasRequest{
+		Search: polytomic.String(
+			"search",
+		),
+		Limit: polytomic.Int(
+			1,
+		),
+		PageToken: polytomic.String(
+			"page_token",
+		),
+	}
+	_, invocationErr := client.Harbors.ListActionConfigurationSchemas(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsListActionConfigurationSchemasWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsListActionConfigurationSchemasWithWireMock", "GET", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/action-configuration/connections/248df4b7-aa70-47b8-a036-33ac447e668d/schemas", map[string]interface{}{"search": "search", "limit": "1", "page_token": "page_token"}, 1)
+}
+
+func TestHarborsListActionConfigurationOperationsWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	_, invocationErr := client.Harbors.ListActionConfigurationOperations(
+		context.TODO(),
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		"schema_id",
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestHarborsListActionConfigurationOperationsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestHarborsListActionConfigurationOperationsWithWireMock", "GET", "/api/harbors/248df4b7-aa70-47b8-a036-33ac447e668d/action-configuration/connections/248df4b7-aa70-47b8-a036-33ac447e668d/schemas/schema_id/operations", nil, 1)
+}
+
 func TestHarborsListContextsWithWireMock(
 	t *testing.T,
 ) {

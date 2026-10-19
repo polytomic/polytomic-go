@@ -805,6 +805,52 @@ func (h *HarborsListRequest) SetPageToken(pageToken *string) {
 }
 
 var (
+	harborsListActionConfigurationSchemasRequestFieldSearch    = big.NewInt(1 << 0)
+	harborsListActionConfigurationSchemasRequestFieldLimit     = big.NewInt(1 << 1)
+	harborsListActionConfigurationSchemasRequestFieldPageToken = big.NewInt(1 << 2)
+)
+
+type HarborsListActionConfigurationSchemasRequest struct {
+	// Filter action schemas by ID or name.
+	Search *string `json:"-" url:"search,omitempty"`
+	// Maximum number of schemas to return.
+	Limit *int `json:"-" url:"limit,omitempty"`
+	// Opaque cursor returned by the previous request.
+	PageToken *string `json:"-" url:"page_token,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (h *HarborsListActionConfigurationSchemasRequest) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetSearch sets the Search field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborsListActionConfigurationSchemasRequest) SetSearch(search *string) {
+	h.Search = search
+	h.require(harborsListActionConfigurationSchemasRequestFieldSearch)
+}
+
+// SetLimit sets the Limit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborsListActionConfigurationSchemasRequest) SetLimit(limit *int) {
+	h.Limit = limit
+	h.require(harborsListActionConfigurationSchemasRequestFieldLimit)
+}
+
+// SetPageToken sets the PageToken field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborsListActionConfigurationSchemasRequest) SetPageToken(pageToken *string) {
+	h.PageToken = pageToken
+	h.require(harborsListActionConfigurationSchemasRequestFieldPageToken)
+}
+
+var (
 	harborsListAuthorizedConnectionsRequestFieldPolytomicHarborSession     = big.NewInt(1 << 0)
 	harborsListAuthorizedConnectionsRequestFieldPolytomicActivityRequestID = big.NewInt(1 << 1)
 	harborsListAuthorizedConnectionsRequestFieldLimit                      = big.NewInt(1 << 2)
@@ -1361,6 +1407,32 @@ func (r *RegisterHarborSessionRequest) MarshalJSON() ([]byte, error) {
 }
 
 var (
+	harborsRemoveActionConfigurationRequestFieldExpectedRevision = big.NewInt(1 << 0)
+)
+
+type HarborsRemoveActionConfigurationRequest struct {
+	// Current revision of the Connection's action grants.
+	ExpectedRevision string `json:"-" url:"expected_revision"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (h *HarborsRemoveActionConfigurationRequest) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetExpectedRevision sets the ExpectedRevision field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborsRemoveActionConfigurationRequest) SetExpectedRevision(expectedRevision string) {
+	h.ExpectedRevision = expectedRevision
+	h.require(harborsRemoveActionConfigurationRequestFieldExpectedRevision)
+}
+
+var (
 	resolveHarborSourceMappingsRequestFieldSources = big.NewInt(1 << 0)
 )
 
@@ -1665,6 +1737,63 @@ func (s *SaveHarborSavedQueryDraftRequest) UnmarshalJSON(data []byte) error {
 
 func (s *SaveHarborSavedQueryDraftRequest) MarshalJSON() ([]byte, error) {
 	type embed SaveHarborSavedQueryDraftRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+var (
+	setHarborActionConfigurationRequestFieldExpectedRevision = big.NewInt(1 << 0)
+	setHarborActionConfigurationRequestFieldGrants           = big.NewInt(1 << 1)
+)
+
+type SetHarborActionConfigurationRequest struct {
+	// Current revision when replacing existing grants. Omit when creating grants for this Connection.
+	ExpectedRevision *string `json:"expected_revision,omitempty" url:"-"`
+	// Complete replacement of this Connection's action grants.
+	Grants []*HarborActionGrantSchema `json:"grants,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (s *SetHarborActionConfigurationRequest) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetExpectedRevision sets the ExpectedRevision field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetHarborActionConfigurationRequest) SetExpectedRevision(expectedRevision *string) {
+	s.ExpectedRevision = expectedRevision
+	s.require(setHarborActionConfigurationRequestFieldExpectedRevision)
+}
+
+// SetGrants sets the Grants field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetHarborActionConfigurationRequest) SetGrants(grants []*HarborActionGrantSchema) {
+	s.Grants = grants
+	s.require(setHarborActionConfigurationRequestFieldGrants)
+}
+
+func (s *SetHarborActionConfigurationRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler SetHarborActionConfigurationRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*s = SetHarborActionConfigurationRequest(body)
+	return nil
+}
+
+func (s *SetHarborActionConfigurationRequest) MarshalJSON() ([]byte, error) {
+	type embed SetHarborActionConfigurationRequest
 	var marshaler = struct {
 		embed
 	}{
@@ -3358,6 +3487,1464 @@ func (e *ExecuteHarborSavedQueryEnvelopeData) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", e)
+}
+
+var (
+	harborActionConfigurationEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type HarborActionConfigurationEnvelope struct {
+	// All configured action Connections after this request.
+	Data []*HarborActionConfigurationResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionConfigurationEnvelope) GetData() []*HarborActionConfigurationResponse {
+	if h == nil {
+		return nil
+	}
+	return h.Data
+}
+
+func (h *HarborActionConfigurationEnvelope) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionConfigurationEnvelope) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationEnvelope) SetData(data []*HarborActionConfigurationResponse) {
+	h.Data = data
+	h.require(harborActionConfigurationEnvelopeFieldData)
+}
+
+func (h *HarborActionConfigurationEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionConfigurationEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionConfigurationEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionConfigurationEnvelope) MarshalJSON() ([]byte, error) {
+	type embed HarborActionConfigurationEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionConfigurationEnvelope) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionConfigurationFieldResponseFieldDescription = big.NewInt(1 << 0)
+	harborActionConfigurationFieldResponseFieldID          = big.NewInt(1 << 1)
+	harborActionConfigurationFieldResponseFieldMaxBytes    = big.NewInt(1 << 2)
+	harborActionConfigurationFieldResponseFieldName        = big.NewInt(1 << 3)
+	harborActionConfigurationFieldResponseFieldNonBlank    = big.NewInt(1 << 4)
+	harborActionConfigurationFieldResponseFieldNullable    = big.NewInt(1 << 5)
+	harborActionConfigurationFieldResponseFieldPattern     = big.NewInt(1 << 6)
+	harborActionConfigurationFieldResponseFieldRequired    = big.NewInt(1 << 7)
+	harborActionConfigurationFieldResponseFieldType        = big.NewInt(1 << 8)
+)
+
+type HarborActionConfigurationFieldResponse struct {
+	// Field description.
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Stable configurable field ID.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Maximum input size in bytes, when constrained.
+	MaxBytes *int `json:"max_bytes,omitempty" url:"max_bytes,omitempty"`
+	// Field name.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Whether a nonblank value is required.
+	NonBlank *bool `json:"non_blank,omitempty" url:"non_blank,omitempty"`
+	// Whether this input field accepts null.
+	Nullable *bool `json:"nullable,omitempty" url:"nullable,omitempty"`
+	// Validation pattern, when constrained.
+	Pattern *string `json:"pattern,omitempty" url:"pattern,omitempty"`
+	// Whether the operation requires this input field.
+	Required *bool `json:"required,omitempty" url:"required,omitempty"`
+	// Scalar field type.
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionConfigurationFieldResponse) GetDescription() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Description
+}
+
+func (h *HarborActionConfigurationFieldResponse) GetID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ID
+}
+
+func (h *HarborActionConfigurationFieldResponse) GetMaxBytes() *int {
+	if h == nil {
+		return nil
+	}
+	return h.MaxBytes
+}
+
+func (h *HarborActionConfigurationFieldResponse) GetName() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Name
+}
+
+func (h *HarborActionConfigurationFieldResponse) GetNonBlank() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.NonBlank
+}
+
+func (h *HarborActionConfigurationFieldResponse) GetNullable() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.Nullable
+}
+
+func (h *HarborActionConfigurationFieldResponse) GetPattern() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Pattern
+}
+
+func (h *HarborActionConfigurationFieldResponse) GetRequired() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.Required
+}
+
+func (h *HarborActionConfigurationFieldResponse) GetType() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Type
+}
+
+func (h *HarborActionConfigurationFieldResponse) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionConfigurationFieldResponse) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationFieldResponse) SetDescription(description *string) {
+	h.Description = description
+	h.require(harborActionConfigurationFieldResponseFieldDescription)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationFieldResponse) SetID(id *string) {
+	h.ID = id
+	h.require(harborActionConfigurationFieldResponseFieldID)
+}
+
+// SetMaxBytes sets the MaxBytes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationFieldResponse) SetMaxBytes(maxBytes *int) {
+	h.MaxBytes = maxBytes
+	h.require(harborActionConfigurationFieldResponseFieldMaxBytes)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationFieldResponse) SetName(name *string) {
+	h.Name = name
+	h.require(harborActionConfigurationFieldResponseFieldName)
+}
+
+// SetNonBlank sets the NonBlank field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationFieldResponse) SetNonBlank(nonBlank *bool) {
+	h.NonBlank = nonBlank
+	h.require(harborActionConfigurationFieldResponseFieldNonBlank)
+}
+
+// SetNullable sets the Nullable field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationFieldResponse) SetNullable(nullable *bool) {
+	h.Nullable = nullable
+	h.require(harborActionConfigurationFieldResponseFieldNullable)
+}
+
+// SetPattern sets the Pattern field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationFieldResponse) SetPattern(pattern *string) {
+	h.Pattern = pattern
+	h.require(harborActionConfigurationFieldResponseFieldPattern)
+}
+
+// SetRequired sets the Required field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationFieldResponse) SetRequired(required *bool) {
+	h.Required = required
+	h.require(harborActionConfigurationFieldResponseFieldRequired)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationFieldResponse) SetType(type_ *string) {
+	h.Type = type_
+	h.require(harborActionConfigurationFieldResponseFieldType)
+}
+
+func (h *HarborActionConfigurationFieldResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionConfigurationFieldResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionConfigurationFieldResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionConfigurationFieldResponse) MarshalJSON() ([]byte, error) {
+	type embed HarborActionConfigurationFieldResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionConfigurationFieldResponse) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionConfigurationIdempotencyResponseFieldRetentionNs = big.NewInt(1 << 0)
+	harborActionConfigurationIdempotencyResponseFieldScope       = big.NewInt(1 << 1)
+)
+
+type HarborActionConfigurationIdempotencyResponse struct {
+	// Provider deduplication window in nanoseconds.
+	RetentionNs *int64 `json:"retention_ns,omitempty" url:"retention_ns,omitempty"`
+	// Provider idempotency scope.
+	Scope *string `json:"scope,omitempty" url:"scope,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionConfigurationIdempotencyResponse) GetRetentionNs() *int64 {
+	if h == nil {
+		return nil
+	}
+	return h.RetentionNs
+}
+
+func (h *HarborActionConfigurationIdempotencyResponse) GetScope() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Scope
+}
+
+func (h *HarborActionConfigurationIdempotencyResponse) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionConfigurationIdempotencyResponse) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetRetentionNs sets the RetentionNs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationIdempotencyResponse) SetRetentionNs(retentionNs *int64) {
+	h.RetentionNs = retentionNs
+	h.require(harborActionConfigurationIdempotencyResponseFieldRetentionNs)
+}
+
+// SetScope sets the Scope field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationIdempotencyResponse) SetScope(scope *string) {
+	h.Scope = scope
+	h.require(harborActionConfigurationIdempotencyResponseFieldScope)
+}
+
+func (h *HarborActionConfigurationIdempotencyResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionConfigurationIdempotencyResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionConfigurationIdempotencyResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionConfigurationIdempotencyResponse) MarshalJSON() ([]byte, error) {
+	type embed HarborActionConfigurationIdempotencyResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionConfigurationIdempotencyResponse) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionConfigurationOperationResponseFieldDescription  = big.NewInt(1 << 0)
+	harborActionConfigurationOperationResponseFieldEffect       = big.NewInt(1 << 1)
+	harborActionConfigurationOperationResponseFieldIdempotency  = big.NewInt(1 << 2)
+	harborActionConfigurationOperationResponseFieldInputFields  = big.NewInt(1 << 3)
+	harborActionConfigurationOperationResponseFieldLookupFields = big.NewInt(1 << 4)
+	harborActionConfigurationOperationResponseFieldName         = big.NewInt(1 << 5)
+	harborActionConfigurationOperationResponseFieldOperationID  = big.NewInt(1 << 6)
+	harborActionConfigurationOperationResponseFieldOutputFields = big.NewInt(1 << 7)
+	harborActionConfigurationOperationResponseFieldSchemaID     = big.NewInt(1 << 8)
+)
+
+type HarborActionConfigurationOperationResponse struct {
+	// Operation description.
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Whether the operation changes records or only reads them.
+	Effect      *HarborActionConfigurationOperationResponseEffect `json:"effect,omitempty" url:"effect,omitempty"`
+	Idempotency *HarborActionConfigurationIdempotencyResponse     `json:"idempotency,omitempty" url:"idempotency,omitempty"`
+	// Fields you can grant for a mutating operation.
+	InputFields []*HarborActionConfigurationFieldResponse `json:"input_fields,omitempty" url:"input_fields,omitempty"`
+	// Lookup fields supported by this operation.
+	LookupFields []*HarborActionConfigurationFieldResponse `json:"lookup_fields,omitempty" url:"lookup_fields,omitempty"`
+	// Operation name.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Stable operation ID.
+	OperationID *string `json:"operation_id,omitempty" url:"operation_id,omitempty"`
+	// Fields you can grant for a read-only operation.
+	OutputFields []*HarborActionConfigurationFieldResponse `json:"output_fields,omitempty" url:"output_fields,omitempty"`
+	// Action schema ID.
+	SchemaID *string `json:"schema_id,omitempty" url:"schema_id,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionConfigurationOperationResponse) GetDescription() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Description
+}
+
+func (h *HarborActionConfigurationOperationResponse) GetEffect() *HarborActionConfigurationOperationResponseEffect {
+	if h == nil {
+		return nil
+	}
+	return h.Effect
+}
+
+func (h *HarborActionConfigurationOperationResponse) GetIdempotency() *HarborActionConfigurationIdempotencyResponse {
+	if h == nil {
+		return nil
+	}
+	return h.Idempotency
+}
+
+func (h *HarborActionConfigurationOperationResponse) GetInputFields() []*HarborActionConfigurationFieldResponse {
+	if h == nil {
+		return nil
+	}
+	return h.InputFields
+}
+
+func (h *HarborActionConfigurationOperationResponse) GetLookupFields() []*HarborActionConfigurationFieldResponse {
+	if h == nil {
+		return nil
+	}
+	return h.LookupFields
+}
+
+func (h *HarborActionConfigurationOperationResponse) GetName() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Name
+}
+
+func (h *HarborActionConfigurationOperationResponse) GetOperationID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.OperationID
+}
+
+func (h *HarborActionConfigurationOperationResponse) GetOutputFields() []*HarborActionConfigurationFieldResponse {
+	if h == nil {
+		return nil
+	}
+	return h.OutputFields
+}
+
+func (h *HarborActionConfigurationOperationResponse) GetSchemaID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.SchemaID
+}
+
+func (h *HarborActionConfigurationOperationResponse) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionConfigurationOperationResponse) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationOperationResponse) SetDescription(description *string) {
+	h.Description = description
+	h.require(harborActionConfigurationOperationResponseFieldDescription)
+}
+
+// SetEffect sets the Effect field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationOperationResponse) SetEffect(effect *HarborActionConfigurationOperationResponseEffect) {
+	h.Effect = effect
+	h.require(harborActionConfigurationOperationResponseFieldEffect)
+}
+
+// SetIdempotency sets the Idempotency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationOperationResponse) SetIdempotency(idempotency *HarborActionConfigurationIdempotencyResponse) {
+	h.Idempotency = idempotency
+	h.require(harborActionConfigurationOperationResponseFieldIdempotency)
+}
+
+// SetInputFields sets the InputFields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationOperationResponse) SetInputFields(inputFields []*HarborActionConfigurationFieldResponse) {
+	h.InputFields = inputFields
+	h.require(harborActionConfigurationOperationResponseFieldInputFields)
+}
+
+// SetLookupFields sets the LookupFields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationOperationResponse) SetLookupFields(lookupFields []*HarborActionConfigurationFieldResponse) {
+	h.LookupFields = lookupFields
+	h.require(harborActionConfigurationOperationResponseFieldLookupFields)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationOperationResponse) SetName(name *string) {
+	h.Name = name
+	h.require(harborActionConfigurationOperationResponseFieldName)
+}
+
+// SetOperationID sets the OperationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationOperationResponse) SetOperationID(operationID *string) {
+	h.OperationID = operationID
+	h.require(harborActionConfigurationOperationResponseFieldOperationID)
+}
+
+// SetOutputFields sets the OutputFields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationOperationResponse) SetOutputFields(outputFields []*HarborActionConfigurationFieldResponse) {
+	h.OutputFields = outputFields
+	h.require(harborActionConfigurationOperationResponseFieldOutputFields)
+}
+
+// SetSchemaID sets the SchemaID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationOperationResponse) SetSchemaID(schemaID *string) {
+	h.SchemaID = schemaID
+	h.require(harborActionConfigurationOperationResponseFieldSchemaID)
+}
+
+func (h *HarborActionConfigurationOperationResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionConfigurationOperationResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionConfigurationOperationResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionConfigurationOperationResponse) MarshalJSON() ([]byte, error) {
+	type embed HarborActionConfigurationOperationResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionConfigurationOperationResponse) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+// Whether the operation changes records or only reads them.
+type HarborActionConfigurationOperationResponseEffect string
+
+const (
+	HarborActionConfigurationOperationResponseEffectMutating HarborActionConfigurationOperationResponseEffect = "mutating"
+	HarborActionConfigurationOperationResponseEffectReadOnly HarborActionConfigurationOperationResponseEffect = "read_only"
+)
+
+func NewHarborActionConfigurationOperationResponseEffectFromString(s string) (HarborActionConfigurationOperationResponseEffect, error) {
+	switch s {
+	case "mutating":
+		return HarborActionConfigurationOperationResponseEffectMutating, nil
+	case "read_only":
+		return HarborActionConfigurationOperationResponseEffectReadOnly, nil
+	}
+	var t HarborActionConfigurationOperationResponseEffect
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (h HarborActionConfigurationOperationResponseEffect) Ptr() *HarborActionConfigurationOperationResponseEffect {
+	return &h
+}
+
+var (
+	harborActionConfigurationOperationsEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type HarborActionConfigurationOperationsEnvelope struct {
+	Data []*HarborActionConfigurationOperationResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionConfigurationOperationsEnvelope) GetData() []*HarborActionConfigurationOperationResponse {
+	if h == nil {
+		return nil
+	}
+	return h.Data
+}
+
+func (h *HarborActionConfigurationOperationsEnvelope) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionConfigurationOperationsEnvelope) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationOperationsEnvelope) SetData(data []*HarborActionConfigurationOperationResponse) {
+	h.Data = data
+	h.require(harborActionConfigurationOperationsEnvelopeFieldData)
+}
+
+func (h *HarborActionConfigurationOperationsEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionConfigurationOperationsEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionConfigurationOperationsEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionConfigurationOperationsEnvelope) MarshalJSON() ([]byte, error) {
+	type embed HarborActionConfigurationOperationsEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionConfigurationOperationsEnvelope) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionConfigurationResponseFieldConnectionID = big.NewInt(1 << 0)
+	harborActionConfigurationResponseFieldCreatedAt    = big.NewInt(1 << 1)
+	harborActionConfigurationResponseFieldGrants       = big.NewInt(1 << 2)
+	harborActionConfigurationResponseFieldRevision     = big.NewInt(1 << 3)
+	harborActionConfigurationResponseFieldUpdatedAt    = big.NewInt(1 << 4)
+)
+
+type HarborActionConfigurationResponse struct {
+	// Configured source Connection ID, including sources no longer attached to the Harbor.
+	ConnectionID *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	// When these grants were first created.
+	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Configured action permissions.
+	Grants []*HarborActionGrantSchema `json:"grants,omitempty" url:"grants,omitempty"`
+	// Revision to supply when replacing or removing these grants.
+	Revision *string `json:"revision,omitempty" url:"revision,omitempty"`
+	// When these grants were last replaced.
+	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionConfigurationResponse) GetConnectionID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ConnectionID
+}
+
+func (h *HarborActionConfigurationResponse) GetCreatedAt() *time.Time {
+	if h == nil {
+		return nil
+	}
+	return h.CreatedAt
+}
+
+func (h *HarborActionConfigurationResponse) GetGrants() []*HarborActionGrantSchema {
+	if h == nil {
+		return nil
+	}
+	return h.Grants
+}
+
+func (h *HarborActionConfigurationResponse) GetRevision() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Revision
+}
+
+func (h *HarborActionConfigurationResponse) GetUpdatedAt() *time.Time {
+	if h == nil {
+		return nil
+	}
+	return h.UpdatedAt
+}
+
+func (h *HarborActionConfigurationResponse) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionConfigurationResponse) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetConnectionID sets the ConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationResponse) SetConnectionID(connectionID *string) {
+	h.ConnectionID = connectionID
+	h.require(harborActionConfigurationResponseFieldConnectionID)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationResponse) SetCreatedAt(createdAt *time.Time) {
+	h.CreatedAt = createdAt
+	h.require(harborActionConfigurationResponseFieldCreatedAt)
+}
+
+// SetGrants sets the Grants field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationResponse) SetGrants(grants []*HarborActionGrantSchema) {
+	h.Grants = grants
+	h.require(harborActionConfigurationResponseFieldGrants)
+}
+
+// SetRevision sets the Revision field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationResponse) SetRevision(revision *string) {
+	h.Revision = revision
+	h.require(harborActionConfigurationResponseFieldRevision)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationResponse) SetUpdatedAt(updatedAt *time.Time) {
+	h.UpdatedAt = updatedAt
+	h.require(harborActionConfigurationResponseFieldUpdatedAt)
+}
+
+func (h *HarborActionConfigurationResponse) UnmarshalJSON(data []byte) error {
+	type embed HarborActionConfigurationResponse
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*h),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*h = HarborActionConfigurationResponse(unmarshaler.embed)
+	h.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	h.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionConfigurationResponse) MarshalJSON() ([]byte, error) {
+	type embed HarborActionConfigurationResponse
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:     embed(*h),
+		CreatedAt: internal.NewOptionalDateTime(h.CreatedAt),
+		UpdatedAt: internal.NewOptionalDateTime(h.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionConfigurationResponse) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionConfigurationSchemasEnvelopeFieldData       = big.NewInt(1 << 0)
+	harborActionConfigurationSchemasEnvelopeFieldPagination = big.NewInt(1 << 1)
+)
+
+type HarborActionConfigurationSchemasEnvelope struct {
+	Data       []*HarborActionSchemaResponse `json:"data,omitempty" url:"data,omitempty"`
+	Pagination *PaginationDetails            `json:"pagination,omitempty" url:"pagination,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionConfigurationSchemasEnvelope) GetData() []*HarborActionSchemaResponse {
+	if h == nil {
+		return nil
+	}
+	return h.Data
+}
+
+func (h *HarborActionConfigurationSchemasEnvelope) GetPagination() *PaginationDetails {
+	if h == nil {
+		return nil
+	}
+	return h.Pagination
+}
+
+func (h *HarborActionConfigurationSchemasEnvelope) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionConfigurationSchemasEnvelope) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationSchemasEnvelope) SetData(data []*HarborActionSchemaResponse) {
+	h.Data = data
+	h.require(harborActionConfigurationSchemasEnvelopeFieldData)
+}
+
+// SetPagination sets the Pagination field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionConfigurationSchemasEnvelope) SetPagination(pagination *PaginationDetails) {
+	h.Pagination = pagination
+	h.require(harborActionConfigurationSchemasEnvelopeFieldPagination)
+}
+
+func (h *HarborActionConfigurationSchemasEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionConfigurationSchemasEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionConfigurationSchemasEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionConfigurationSchemasEnvelope) MarshalJSON() ([]byte, error) {
+	type embed HarborActionConfigurationSchemasEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionConfigurationSchemasEnvelope) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionGrantSchemaFieldFieldIDs       = big.NewInt(1 << 0)
+	harborActionGrantSchemaFieldLookupFieldIDs = big.NewInt(1 << 1)
+	harborActionGrantSchemaFieldOperationID    = big.NewInt(1 << 2)
+	harborActionGrantSchemaFieldSchemaID       = big.NewInt(1 << 3)
+)
+
+type HarborActionGrantSchema struct {
+	// Unique input field IDs for a mutating operation, or output field IDs for a read-only operation.
+	FieldIDs []string `json:"field_ids,omitempty" url:"field_ids,omitempty"`
+	// Unique lookup field IDs for a read-only operation. Omit for a mutating operation.
+	LookupFieldIDs []string `json:"lookup_field_ids,omitempty" url:"lookup_field_ids,omitempty"`
+	// Exact operation ID from operation discovery.
+	OperationID string `json:"operation_id" url:"operation_id"`
+	// Exact action schema ID.
+	SchemaID string `json:"schema_id" url:"schema_id"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionGrantSchema) GetFieldIDs() []string {
+	if h == nil {
+		return nil
+	}
+	return h.FieldIDs
+}
+
+func (h *HarborActionGrantSchema) GetLookupFieldIDs() []string {
+	if h == nil {
+		return nil
+	}
+	return h.LookupFieldIDs
+}
+
+func (h *HarborActionGrantSchema) GetOperationID() string {
+	if h == nil {
+		return ""
+	}
+	return h.OperationID
+}
+
+func (h *HarborActionGrantSchema) GetSchemaID() string {
+	if h == nil {
+		return ""
+	}
+	return h.SchemaID
+}
+
+func (h *HarborActionGrantSchema) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionGrantSchema) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetFieldIDs sets the FieldIDs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionGrantSchema) SetFieldIDs(fieldIDs []string) {
+	h.FieldIDs = fieldIDs
+	h.require(harborActionGrantSchemaFieldFieldIDs)
+}
+
+// SetLookupFieldIDs sets the LookupFieldIDs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionGrantSchema) SetLookupFieldIDs(lookupFieldIDs []string) {
+	h.LookupFieldIDs = lookupFieldIDs
+	h.require(harborActionGrantSchemaFieldLookupFieldIDs)
+}
+
+// SetOperationID sets the OperationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionGrantSchema) SetOperationID(operationID string) {
+	h.OperationID = operationID
+	h.require(harborActionGrantSchemaFieldOperationID)
+}
+
+// SetSchemaID sets the SchemaID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionGrantSchema) SetSchemaID(schemaID string) {
+	h.SchemaID = schemaID
+	h.require(harborActionGrantSchemaFieldSchemaID)
+}
+
+func (h *HarborActionGrantSchema) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionGrantSchema
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionGrantSchema(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionGrantSchema) MarshalJSON() ([]byte, error) {
+	type embed HarborActionGrantSchema
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionGrantSchema) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionSchemaResponseFieldID         = big.NewInt(1 << 0)
+	harborActionSchemaResponseFieldName       = big.NewInt(1 << 1)
+	harborActionSchemaResponseFieldOperations = big.NewInt(1 << 2)
+)
+
+type HarborActionSchemaResponse struct {
+	// Stable action schema ID.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Action schema name.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Operation IDs advertised by the schema catalog. Operation discovery supplies the current configurable fields.
+	Operations []string `json:"operations,omitempty" url:"operations,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionSchemaResponse) GetID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ID
+}
+
+func (h *HarborActionSchemaResponse) GetName() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Name
+}
+
+func (h *HarborActionSchemaResponse) GetOperations() []string {
+	if h == nil {
+		return nil
+	}
+	return h.Operations
+}
+
+func (h *HarborActionSchemaResponse) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionSchemaResponse) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionSchemaResponse) SetID(id *string) {
+	h.ID = id
+	h.require(harborActionSchemaResponseFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionSchemaResponse) SetName(name *string) {
+	h.Name = name
+	h.require(harborActionSchemaResponseFieldName)
+}
+
+// SetOperations sets the Operations field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionSchemaResponse) SetOperations(operations []string) {
+	h.Operations = operations
+	h.require(harborActionSchemaResponseFieldOperations)
+}
+
+func (h *HarborActionSchemaResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionSchemaResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionSchemaResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionSchemaResponse) MarshalJSON() ([]byte, error) {
+	type embed HarborActionSchemaResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionSchemaResponse) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionSourceConnectionResponseFieldConnectionType = big.NewInt(1 << 0)
+	harborActionSourceConnectionResponseFieldID             = big.NewInt(1 << 1)
+	harborActionSourceConnectionResponseFieldName           = big.NewInt(1 << 2)
+)
+
+type HarborActionSourceConnectionResponse struct {
+	// Connection backend type.
+	ConnectionType *string `json:"connection_type,omitempty" url:"connection_type,omitempty"`
+	// Eligible source Connection ID.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Connection name.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionSourceConnectionResponse) GetConnectionType() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ConnectionType
+}
+
+func (h *HarborActionSourceConnectionResponse) GetID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ID
+}
+
+func (h *HarborActionSourceConnectionResponse) GetName() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Name
+}
+
+func (h *HarborActionSourceConnectionResponse) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionSourceConnectionResponse) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetConnectionType sets the ConnectionType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionSourceConnectionResponse) SetConnectionType(connectionType *string) {
+	h.ConnectionType = connectionType
+	h.require(harborActionSourceConnectionResponseFieldConnectionType)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionSourceConnectionResponse) SetID(id *string) {
+	h.ID = id
+	h.require(harborActionSourceConnectionResponseFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionSourceConnectionResponse) SetName(name *string) {
+	h.Name = name
+	h.require(harborActionSourceConnectionResponseFieldName)
+}
+
+func (h *HarborActionSourceConnectionResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionSourceConnectionResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionSourceConnectionResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionSourceConnectionResponse) MarshalJSON() ([]byte, error) {
+	type embed HarborActionSourceConnectionResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionSourceConnectionResponse) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+var (
+	harborActionSourceConnectionsEnvelopeFieldData = big.NewInt(1 << 0)
+)
+
+type HarborActionSourceConnectionsEnvelope struct {
+	Data []*HarborActionSourceConnectionResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HarborActionSourceConnectionsEnvelope) GetData() []*HarborActionSourceConnectionResponse {
+	if h == nil {
+		return nil
+	}
+	return h.Data
+}
+
+func (h *HarborActionSourceConnectionsEnvelope) GetExtraProperties() map[string]interface{} {
+	if h == nil {
+		return nil
+	}
+	return h.extraProperties
+}
+
+func (h *HarborActionSourceConnectionsEnvelope) require(field *big.Int) {
+	if h.explicitFields == nil {
+		h.explicitFields = big.NewInt(0)
+	}
+	h.explicitFields.Or(h.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborActionSourceConnectionsEnvelope) SetData(data []*HarborActionSourceConnectionResponse) {
+	h.Data = data
+	h.require(harborActionSourceConnectionsEnvelopeFieldData)
+}
+
+func (h *HarborActionSourceConnectionsEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler HarborActionSourceConnectionsEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HarborActionSourceConnectionsEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HarborActionSourceConnectionsEnvelope) MarshalJSON() ([]byte, error) {
+	type embed HarborActionSourceConnectionsEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (h *HarborActionSourceConnectionsEnvelope) String() string {
+	if h == nil {
+		return "<nil>"
+	}
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
 }
 
 var (

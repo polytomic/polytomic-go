@@ -189,6 +189,7 @@ func (c *Client) Create(
 //	)
 func (c *Client) Get(
 	ctx context.Context,
+	// Bulk sync ID
 	id string,
 	request *polytomic.BulkSyncGetRequest,
 	opts ...option.RequestOption,
@@ -209,7 +210,8 @@ func (c *Client) Get(
 //
 // Updating a bulk sync is a **full replacement** of the sync's top-level
 // configuration. Every field in the request body is written to the sync; any
-// field you omit is cleared or reset to its default value.
+// field you omit is cleared or reset to its default value. An empty or omitted
+// `policies` list leaves the sync's current policies unchanged.
 //
 // To make a partial change — for example, toggling `active` or swapping a
 // schedule — fetch the current sync with
@@ -263,7 +265,7 @@ func (c *Client) Get(
 //	)
 func (c *Client) Update(
 	ctx context.Context,
-	// Unique identifier of the bulk sync to update.
+	// Unique identifier of the bulk sync to update
 	id string,
 	request *polytomic.UpdateBulkSyncRequest,
 	opts ...option.IdempotentRequestOption,
@@ -302,6 +304,7 @@ func (c *Client) Update(
 //	)
 func (c *Client) Delete(
 	ctx context.Context,
+	// Bulk sync ID
 	id string,
 	request *polytomic.BulkSyncDeleteRequest,
 	opts ...option.IdempotentRequestOption,
@@ -331,7 +334,7 @@ func (c *Client) Delete(
 //
 // Example:
 //
-//	request := &polytomic.ActivateSyncInput{
+//	request := &polytomic.ActivateBulkSyncInput{
 //	    Active: true,
 //	}
 //	client.BulkSync.Activate(
@@ -341,8 +344,9 @@ func (c *Client) Delete(
 //	)
 func (c *Client) Activate(
 	ctx context.Context,
+	// Bulk sync ID
 	id string,
-	request *polytomic.ActivateSyncInput,
+	request *polytomic.ActivateBulkSyncInput,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.ActivateSyncEnvelope, error) {
 	response, err := c.WithRawResponse.Activate(
@@ -415,7 +419,7 @@ func (c *Client) Cancel(
 //	)
 func (c *Client) Start(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
 	request *polytomic.StartBulkSyncRequest,
 	opts ...option.IdempotentRequestOption,
@@ -452,7 +456,7 @@ func (c *Client) Start(
 //	)
 func (c *Client) GetStatus(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.BulkSyncStatusEnvelope, error) {
@@ -496,7 +500,7 @@ func (c *Client) GetStatus(
 //	)
 func (c *Client) GetSource(
 	ctx context.Context,
-	// Unique identifier of the connection.
+	// Unique identifier of the connection
 	id string,
 	request *polytomic.BulkSyncGetSourceRequest,
 	opts ...option.RequestOption,
@@ -533,6 +537,7 @@ func (c *Client) GetSource(
 //	)
 func (c *Client) GetDestination(
 	ctx context.Context,
+	// Connection ID
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.BulkSyncDestEnvelope, error) {

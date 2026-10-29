@@ -94,7 +94,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	)
 func (c *Client) ExecuteProxy(
 	ctx context.Context,
-	// Unique identifier of the connection to proxy the request through.
+	// Unique identifier of the connection to proxy the request through
 	id string,
 	request *connections.ExecuteConnectionProxyRequest,
 	opts ...option.IdempotentRequestOption,
@@ -141,7 +141,7 @@ func (c *Client) ExecuteProxy(
 //	)
 func (c *Client) GetProxyInfo(
 	ctx context.Context,
-	// Unique identifier of the connection whose proxy contract should be returned.
+	// Unique identifier of the connection whose proxy contract should be returned
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.GetConnectionProxyInfoEnvelope, error) {
@@ -171,7 +171,7 @@ func (c *Client) GetProxyInfo(
 //	)
 func (c *Client) GetProxySettings(
 	ctx context.Context,
-	// Unique identifier of the connection whose proxy settings should be returned.
+	// Unique identifier of the connection whose proxy settings should be returned
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.ConnectionProxySettingsEnvelope, error) {
@@ -210,7 +210,7 @@ func (c *Client) GetProxySettings(
 //	)
 func (c *Client) UpdateProxySettings(
 	ctx context.Context,
-	// Unique identifier of the connection whose proxy settings should be updated.
+	// Unique identifier of the connection whose proxy settings should be updated
 	id string,
 	request *connections.UpdateConnectionProxySettingsRequest,
 	opts ...option.IdempotentRequestOption,

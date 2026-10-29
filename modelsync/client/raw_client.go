@@ -34,7 +34,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetSource(
 	ctx context.Context,
-	// Unique identifier of the connection.
+	// Unique identifier of the connection
 	id string,
 	request *polytomic.ModelSyncGetSourceRequest,
 	opts ...option.RequestOption,
@@ -88,7 +88,7 @@ func (r *RawClient) GetSource(
 
 func (r *RawClient) GetSourceFields(
 	ctx context.Context,
-	// Unique identifier of the connection.
+	// Unique identifier of the connection
 	id string,
 	request *polytomic.ModelSyncGetSourceFieldsRequest,
 	opts ...option.RequestOption,
@@ -276,6 +276,7 @@ func (r *RawClient) GetScheduleOptions(
 
 func (r *RawClient) Get(
 	ctx context.Context,
+	// Model sync ID
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.ModelSyncV5ResponseEnvelope], error) {
@@ -321,6 +322,7 @@ func (r *RawClient) Get(
 
 func (r *RawClient) Update(
 	ctx context.Context,
+	// Model sync ID
 	id string,
 	request *polytomic.UpdateModelSyncV5Request,
 	opts ...option.IdempotentRequestOption,
@@ -369,6 +371,7 @@ func (r *RawClient) Update(
 
 func (r *RawClient) Delete(
 	ctx context.Context,
+	// Model sync ID
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) (*core.Response[any], error) {
@@ -412,6 +415,7 @@ func (r *RawClient) Delete(
 
 func (r *RawClient) Activate(
 	ctx context.Context,
+	// Model sync ID
 	id string,
 	request *polytomic.ActivateSyncInput,
 	opts ...option.IdempotentRequestOption,
@@ -430,6 +434,7 @@ func (r *RawClient) Activate(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
+	headers.Add("Content-Type", "application/json")
 	var response *polytomic.ActivateSyncEnvelope
 	raw, err := r.caller.Call(
 		ctx,
@@ -505,6 +510,7 @@ func (r *RawClient) Cancel(
 
 func (r *RawClient) Start(
 	ctx context.Context,
+	// Model sync ID
 	id string,
 	request *polytomic.StartModelSyncRequest,
 	opts ...option.IdempotentRequestOption,
@@ -553,6 +559,7 @@ func (r *RawClient) Start(
 
 func (r *RawClient) GetStatus(
 	ctx context.Context,
+	// Model sync ID
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.SyncStatusEnvelope], error) {

@@ -71,8 +71,9 @@ func NewClient(options *core.RequestOptions) *Client {
 //	)
 func (c *Client) GetExecution(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
+	// Action execution ID
 	executionID string,
 	request *harbors.ActionsGetExecutionRequest,
 	opts ...option.RequestOption,
@@ -144,7 +145,7 @@ func (c *Client) GetExecution(
 //	)
 func (c *Client) List(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	request *harbors.ActionsListRequest,
 	opts ...option.RequestOption,
@@ -210,7 +211,7 @@ func (c *Client) List(
 //	)
 func (c *Client) Describe(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	request *harbors.ActionsDescribeRequest,
 	opts ...option.RequestOption,
@@ -293,7 +294,7 @@ func (c *Client) Describe(
 //	)
 func (c *Client) Execute(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	request *harbors.ExecuteHarborActionRequest,
 	opts ...option.IdempotentRequestOption,
@@ -360,7 +361,7 @@ func (c *Client) Execute(
 //	)
 func (c *Client) Lookup(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	request *harbors.LookupHarborActionRequest,
 	opts ...option.IdempotentRequestOption,
@@ -444,7 +445,7 @@ func (c *Client) Lookup(
 //	)
 func (c *Client) Prepare(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	request *harbors.PrepareHarborActionRequest,
 	opts ...option.IdempotentRequestOption,

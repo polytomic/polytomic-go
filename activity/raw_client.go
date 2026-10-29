@@ -83,7 +83,7 @@ func (r *RawClient) List(
 
 func (r *RawClient) GetSession(
 	ctx context.Context,
-	// Harbor Activity session ID.
+	// Harbor Activity session ID
 	sessionID string,
 	request *polytomic.ActivityGetSessionRequest,
 	opts ...option.RequestOption,
@@ -137,7 +137,7 @@ func (r *RawClient) GetSession(
 
 func (r *RawClient) Get(
 	ctx context.Context,
-	// Activity event ID.
+	// Activity event ID
 	eventID string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.HarborActivityEventEnvelope], error) {

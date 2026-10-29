@@ -73,7 +73,7 @@ var (
 )
 
 type ActivityListRequest struct {
-	// Inclusive start of the event recorded-time range.
+	// Inclusive start of the event recorded-time range
 	StartTime time.Time `json:"-" url:"start_time"`
 	// Exclusive end of the event recorded-time range. The range can span at most 90 days.
 	EndTime time.Time `json:"-" url:"end_time"`
@@ -86,9 +86,9 @@ type ActivityListRequest struct {
 	// Return events for these Harbors. Repeat the parameter to filter by multiple IDs.
 	HarborID []*string `json:"-" url:"harbor_id,omitempty"`
 	// Return events with these event types. Repeat the parameter to filter by multiple types.
-	EventType []*string `json:"-" url:"event_type,omitempty"`
+	EventType []*HarboractivityEventType `json:"-" url:"event_type,omitempty"`
 	// Return events with these outcomes. Repeat the parameter to filter by multiple outcomes.
-	Outcome []*string `json:"-" url:"outcome,omitempty"`
+	Outcome []*HarboractivityOutcome `json:"-" url:"outcome,omitempty"`
 	// Return events for these operation IDs.
 	OperationID []*string `json:"-" url:"operation_id,omitempty"`
 	// Return events for these session IDs.
@@ -155,14 +155,14 @@ func (a *ActivityListRequest) SetHarborID(harborID []*string) {
 
 // SetEventType sets the EventType field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ActivityListRequest) SetEventType(eventType []*string) {
+func (a *ActivityListRequest) SetEventType(eventType []*HarboractivityEventType) {
 	a.EventType = eventType
 	a.require(activityListRequestFieldEventType)
 }
 
 // SetOutcome sets the Outcome field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ActivityListRequest) SetOutcome(outcome []*string) {
+func (a *ActivityListRequest) SetOutcome(outcome []*HarboractivityOutcome) {
 	a.Outcome = outcome
 	a.require(activityListRequestFieldOutcome)
 }
@@ -207,6 +207,7 @@ var (
 )
 
 type HarborActivityEventEnvelope struct {
+	// The Activity event
 	Data *HarboractivityapiHarborActivityEvent `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -292,8 +293,10 @@ var (
 )
 
 type HarborActivityListEnvelope struct {
-	Data       []*HarboractivityapiHarborActivityEvent `json:"data,omitempty" url:"data,omitempty"`
-	Pagination *PaginationDetails                      `json:"pagination,omitempty" url:"pagination,omitempty"`
+	// Activity events on this page
+	Data []*HarboractivityapiHarborActivityEvent `json:"data,omitempty" url:"data,omitempty"`
+	// Pagination details for the next page
+	Pagination *PaginationDetails `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -392,8 +395,10 @@ var (
 )
 
 type HarborActivitySessionEnvelope struct {
-	Data       *HarboractivityapiHarborActivitySession `json:"data,omitempty" url:"data,omitempty"`
-	Pagination *PaginationDetails                      `json:"pagination,omitempty" url:"pagination,omitempty"`
+	// The session and its events on this page
+	Data *HarboractivityapiHarborActivitySession `json:"data,omitempty" url:"data,omitempty"`
+	// Pagination details for the next page
+	Pagination *PaginationDetails `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -486,6 +491,203 @@ func (h *HarborActivitySessionEnvelope) String() string {
 	return fmt.Sprintf("%#v", h)
 }
 
+type HarboractivityEventType string
+
+const (
+	HarboractivityEventTypeActionLookedUp             HarboractivityEventType = "action.looked_up"
+	HarboractivityEventTypeActionConfigurationChanged HarboractivityEventType = "action.configuration_changed"
+	HarboractivityEventTypeActionListed               HarboractivityEventType = "action.listed"
+	HarboractivityEventTypeActionPrepared             HarboractivityEventType = "action.prepared"
+	HarboractivityEventTypeActionPreparationExpired   HarboractivityEventType = "action.preparation_expired"
+	HarboractivityEventTypeActionAttemptStarted       HarboractivityEventType = "action.attempt_started"
+	HarboractivityEventTypeActionSucceeded            HarboractivityEventType = "action.succeeded"
+	HarboractivityEventTypeActionFailed               HarboractivityEventType = "action.failed"
+	HarboractivityEventTypeActionUnknown              HarboractivityEventType = "action.unknown"
+	HarboractivityEventTypeSessionStarted             HarboractivityEventType = "session.started"
+	HarboractivityEventTypeSessionClosed              HarboractivityEventType = "session.closed"
+	HarboractivityEventTypeSessionExpired             HarboractivityEventType = "session.expired"
+	HarboractivityEventTypeContextListed              HarboractivityEventType = "context.listed"
+	HarboractivityEventTypeContextFetched             HarboractivityEventType = "context.fetched"
+	HarboractivityEventTypeSavedQueryListed           HarboractivityEventType = "saved_query.listed"
+	HarboractivityEventTypeSavedQueryFetched          HarboractivityEventType = "saved_query.fetched"
+	HarboractivityEventTypeConnectionListed           HarboractivityEventType = "connection.listed"
+	HarboractivityEventTypeSchemaListed               HarboractivityEventType = "schema.listed"
+	HarboractivityEventTypeSchemaFetched              HarboractivityEventType = "schema.fetched"
+	HarboractivityEventTypeEvidenceCapabilityFetched  HarboractivityEventType = "evidence_capability.fetched"
+	HarboractivityEventTypeQuerySubmitted             HarboractivityEventType = "query.submitted"
+	HarboractivityEventTypeQueryStarted               HarboractivityEventType = "query.started"
+	HarboractivityEventTypeQuerySucceeded             HarboractivityEventType = "query.succeeded"
+	HarboractivityEventTypeQueryFailed                HarboractivityEventType = "query.failed"
+	HarboractivityEventTypeEvidenceLinkCreated        HarboractivityEventType = "evidence_link.created"
+	HarboractivityEventTypeAccessDenied               HarboractivityEventType = "access.denied"
+)
+
+func NewHarboractivityEventTypeFromString(s string) (HarboractivityEventType, error) {
+	switch s {
+	case "action.looked_up":
+		return HarboractivityEventTypeActionLookedUp, nil
+	case "action.configuration_changed":
+		return HarboractivityEventTypeActionConfigurationChanged, nil
+	case "action.listed":
+		return HarboractivityEventTypeActionListed, nil
+	case "action.prepared":
+		return HarboractivityEventTypeActionPrepared, nil
+	case "action.preparation_expired":
+		return HarboractivityEventTypeActionPreparationExpired, nil
+	case "action.attempt_started":
+		return HarboractivityEventTypeActionAttemptStarted, nil
+	case "action.succeeded":
+		return HarboractivityEventTypeActionSucceeded, nil
+	case "action.failed":
+		return HarboractivityEventTypeActionFailed, nil
+	case "action.unknown":
+		return HarboractivityEventTypeActionUnknown, nil
+	case "session.started":
+		return HarboractivityEventTypeSessionStarted, nil
+	case "session.closed":
+		return HarboractivityEventTypeSessionClosed, nil
+	case "session.expired":
+		return HarboractivityEventTypeSessionExpired, nil
+	case "context.listed":
+		return HarboractivityEventTypeContextListed, nil
+	case "context.fetched":
+		return HarboractivityEventTypeContextFetched, nil
+	case "saved_query.listed":
+		return HarboractivityEventTypeSavedQueryListed, nil
+	case "saved_query.fetched":
+		return HarboractivityEventTypeSavedQueryFetched, nil
+	case "connection.listed":
+		return HarboractivityEventTypeConnectionListed, nil
+	case "schema.listed":
+		return HarboractivityEventTypeSchemaListed, nil
+	case "schema.fetched":
+		return HarboractivityEventTypeSchemaFetched, nil
+	case "evidence_capability.fetched":
+		return HarboractivityEventTypeEvidenceCapabilityFetched, nil
+	case "query.submitted":
+		return HarboractivityEventTypeQuerySubmitted, nil
+	case "query.started":
+		return HarboractivityEventTypeQueryStarted, nil
+	case "query.succeeded":
+		return HarboractivityEventTypeQuerySucceeded, nil
+	case "query.failed":
+		return HarboractivityEventTypeQueryFailed, nil
+	case "evidence_link.created":
+		return HarboractivityEventTypeEvidenceLinkCreated, nil
+	case "access.denied":
+		return HarboractivityEventTypeAccessDenied, nil
+	}
+	var t HarboractivityEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (h HarboractivityEventType) Ptr() *HarboractivityEventType {
+	return &h
+}
+
+type HarboractivityOutcome string
+
+const (
+	HarboractivityOutcomeSucceeded HarboractivityOutcome = "succeeded"
+	HarboractivityOutcomeFailed    HarboractivityOutcome = "failed"
+	HarboractivityOutcomeDenied    HarboractivityOutcome = "denied"
+	HarboractivityOutcomeUnknown   HarboractivityOutcome = "unknown"
+)
+
+func NewHarboractivityOutcomeFromString(s string) (HarboractivityOutcome, error) {
+	switch s {
+	case "succeeded":
+		return HarboractivityOutcomeSucceeded, nil
+	case "failed":
+		return HarboractivityOutcomeFailed, nil
+	case "denied":
+		return HarboractivityOutcomeDenied, nil
+	case "unknown":
+		return HarboractivityOutcomeUnknown, nil
+	}
+	var t HarboractivityOutcome
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (h HarboractivityOutcome) Ptr() *HarboractivityOutcome {
+	return &h
+}
+
+type HarboractivityProvenance string
+
+const (
+	HarboractivityProvenanceServerObserved  HarboractivityProvenance = "server_observed"
+	HarboractivityProvenanceServiceAttested HarboractivityProvenance = "service_attested"
+	HarboractivityProvenanceClientAsserted  HarboractivityProvenance = "client_asserted"
+)
+
+func NewHarboractivityProvenanceFromString(s string) (HarboractivityProvenance, error) {
+	switch s {
+	case "server_observed":
+		return HarboractivityProvenanceServerObserved, nil
+	case "service_attested":
+		return HarboractivityProvenanceServiceAttested, nil
+	case "client_asserted":
+		return HarboractivityProvenanceClientAsserted, nil
+	}
+	var t HarboractivityProvenance
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (h HarboractivityProvenance) Ptr() *HarboractivityProvenance {
+	return &h
+}
+
+type HarboractivityQueryPhase string
+
+const (
+	HarboractivityQueryPhaseDispatch  HarboractivityQueryPhase = "dispatch"
+	HarboractivityQueryPhasePreflight HarboractivityQueryPhase = "preflight"
+	HarboractivityQueryPhaseExecution HarboractivityQueryPhase = "execution"
+)
+
+func NewHarboractivityQueryPhaseFromString(s string) (HarboractivityQueryPhase, error) {
+	switch s {
+	case "dispatch":
+		return HarboractivityQueryPhaseDispatch, nil
+	case "preflight":
+		return HarboractivityQueryPhasePreflight, nil
+	case "execution":
+		return HarboractivityQueryPhaseExecution, nil
+	}
+	var t HarboractivityQueryPhase
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (h HarboractivityQueryPhase) Ptr() *HarboractivityQueryPhase {
+	return &h
+}
+
+type HarboractivityStatementCategory string
+
+const (
+	HarboractivityStatementCategorySelect  HarboractivityStatementCategory = "select"
+	HarboractivityStatementCategoryOther   HarboractivityStatementCategory = "other"
+	HarboractivityStatementCategoryUnknown HarboractivityStatementCategory = "unknown"
+)
+
+func NewHarboractivityStatementCategoryFromString(s string) (HarboractivityStatementCategory, error) {
+	switch s {
+	case "select":
+		return HarboractivityStatementCategorySelect, nil
+	case "other":
+		return HarboractivityStatementCategoryOther, nil
+	case "unknown":
+		return HarboractivityStatementCategoryUnknown, nil
+	}
+	var t HarboractivityStatementCategory
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (h HarboractivityStatementCategory) Ptr() *HarboractivityStatementCategory {
+	return &h
+}
+
 var (
 	harboractivityapiHarborActivityActorSnapshotFieldDisplayName = big.NewInt(1 << 0)
 	harboractivityapiHarborActivityActorSnapshotFieldEmail       = big.NewInt(1 << 1)
@@ -494,10 +696,14 @@ var (
 )
 
 type HarboractivityapiHarborActivityActorSnapshot struct {
+	// Actor display name when the event was recorded
 	DisplayName *string `json:"display_name,omitempty" url:"display_name,omitempty"`
-	Email       *string `json:"email,omitempty" url:"email,omitempty"`
-	ID          *string `json:"id,omitempty" url:"id,omitempty"`
-	Type        *string `json:"type,omitempty" url:"type,omitempty"`
+	// Actor email when the event was recorded
+	Email *string `json:"email,omitempty" url:"email,omitempty"`
+	// ID of the actor, credential, or profile
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Actor type
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -644,28 +850,49 @@ var (
 )
 
 type HarboractivityapiHarborActivityEvent struct {
-	Actor             *HarboractivityapiHarborActivityActorSnapshot    `json:"actor,omitempty" url:"actor,omitempty"`
-	AttemptID         *string                                          `json:"attempt_id,omitempty" url:"attempt_id,omitempty"`
-	ClientName        *string                                          `json:"client_name,omitempty" url:"client_name,omitempty"`
-	ClientVersion     *string                                          `json:"client_version,omitempty" url:"client_version,omitempty"`
-	ConnectionID      *string                                          `json:"connection_id,omitempty" url:"connection_id,omitempty"`
-	ContextID         *string                                          `json:"context_id,omitempty" url:"context_id,omitempty"`
-	ContextRevisionID *string                                          `json:"context_revision_id,omitempty" url:"context_revision_id,omitempty"`
-	Credential        *HarboractivityapiHarborActivityIdentitySnapshot `json:"credential,omitempty" url:"credential,omitempty"`
-	EventType         *string                                          `json:"event_type,omitempty" url:"event_type,omitempty"`
-	HarborID          *string                                          `json:"harbor_id,omitempty" url:"harbor_id,omitempty"`
-	ID                *string                                          `json:"id,omitempty" url:"id,omitempty"`
-	LifecycleEvents   []*HarboractivityapiHarborActivityEvent          `json:"lifecycle_events,omitempty" url:"lifecycle_events,omitempty"`
-	Metadata          *HarboractivityapiHarborActivityMetadata         `json:"metadata,omitempty" url:"metadata,omitempty"`
-	OccurredAt        *time.Time                                       `json:"occurred_at,omitempty" url:"occurred_at,omitempty"`
-	OperationID       *string                                          `json:"operation_id,omitempty" url:"operation_id,omitempty"`
-	Outcome           *string                                          `json:"outcome,omitempty" url:"outcome,omitempty"`
-	Profile           *HarboractivityapiHarborActivityIdentitySnapshot `json:"profile,omitempty" url:"profile,omitempty"`
-	Provenance        *string                                          `json:"provenance,omitempty" url:"provenance,omitempty"`
-	QuerySource       *HarboractivityapiHarborActivityQuerySource      `json:"query_source,omitempty" url:"query_source,omitempty"`
-	RecordedAt        *time.Time                                       `json:"recorded_at,omitempty" url:"recorded_at,omitempty"`
-	SessionID         *string                                          `json:"session_id,omitempty" url:"session_id,omitempty"`
-	Targets           []*HarboractivityapiHarborActivityTarget         `json:"targets,omitempty" url:"targets,omitempty"`
+	// Actor that performed the operation
+	Actor *HarboractivityapiHarborActivityActorSnapshot `json:"actor,omitempty" url:"actor,omitempty"`
+	// Query attempt ID
+	AttemptID *string `json:"attempt_id,omitempty" url:"attempt_id,omitempty"`
+	// MCP-observed client name of the event's session
+	ClientName *string `json:"client_name,omitempty" url:"client_name,omitempty"`
+	// MCP-observed client version of the event's session
+	ClientVersion *string `json:"client_version,omitempty" url:"client_version,omitempty"`
+	// Connection ID involved in the event
+	ConnectionID *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	// Context document ID involved in the event
+	ContextID *string `json:"context_id,omitempty" url:"context_id,omitempty"`
+	// Context revision ID involved in the event
+	ContextRevisionID *string `json:"context_revision_id,omitempty" url:"context_revision_id,omitempty"`
+	// Harbor credential associated with the event
+	Credential *HarboractivityapiHarborActivityIdentitySnapshot `json:"credential,omitempty" url:"credential,omitempty"`
+	// Type of operation the event records
+	EventType *HarboractivityEventType `json:"event_type,omitempty" url:"event_type,omitempty"`
+	// Harbor ID of the event
+	HarborID *string `json:"harbor_id,omitempty" url:"harbor_id,omitempty"`
+	// Activity event ID
+	ID              *string                                 `json:"id,omitempty" url:"id,omitempty"`
+	LifecycleEvents []*HarboractivityapiHarborActivityEvent `json:"lifecycle_events,omitempty" url:"lifecycle_events,omitempty"`
+	// Event-specific details
+	Metadata *HarboractivityapiHarborActivityMetadata `json:"metadata,omitempty" url:"metadata,omitempty"`
+	// When the operation occurred
+	OccurredAt *time.Time `json:"occurred_at,omitempty" url:"occurred_at,omitempty"`
+	// Operation ID shared by the events of one query or action
+	OperationID *string `json:"operation_id,omitempty" url:"operation_id,omitempty"`
+	// Outcome of the operation: succeeded, failed, denied, or unknown
+	Outcome *HarboractivityOutcome `json:"outcome,omitempty" url:"outcome,omitempty"`
+	// Harbor profile associated with the event
+	Profile *HarboractivityapiHarborActivityIdentitySnapshot `json:"profile,omitempty" url:"profile,omitempty"`
+	// How the event was attested: server_observed, service_attested, or client_asserted
+	Provenance *HarboractivityProvenance `json:"provenance,omitempty" url:"provenance,omitempty"`
+	// Source of the query, for query events
+	QuerySource *HarboractivityapiHarborActivityQuerySource `json:"query_source,omitempty" url:"query_source,omitempty"`
+	// When Polytomic recorded the event
+	RecordedAt *time.Time `json:"recorded_at,omitempty" url:"recorded_at,omitempty"`
+	// Harbor session ID of the event
+	SessionID *string `json:"session_id,omitempty" url:"session_id,omitempty"`
+	// Resources involved in the event
+	Targets []*HarboractivityapiHarborActivityTarget `json:"targets,omitempty" url:"targets,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -730,7 +957,7 @@ func (h *HarboractivityapiHarborActivityEvent) GetCredential() *Harboractivityap
 	return h.Credential
 }
 
-func (h *HarboractivityapiHarborActivityEvent) GetEventType() *string {
+func (h *HarboractivityapiHarborActivityEvent) GetEventType() *HarboractivityEventType {
 	if h == nil {
 		return nil
 	}
@@ -779,7 +1006,7 @@ func (h *HarboractivityapiHarborActivityEvent) GetOperationID() *string {
 	return h.OperationID
 }
 
-func (h *HarboractivityapiHarborActivityEvent) GetOutcome() *string {
+func (h *HarboractivityapiHarborActivityEvent) GetOutcome() *HarboractivityOutcome {
 	if h == nil {
 		return nil
 	}
@@ -793,7 +1020,7 @@ func (h *HarboractivityapiHarborActivityEvent) GetProfile() *HarboractivityapiHa
 	return h.Profile
 }
 
-func (h *HarboractivityapiHarborActivityEvent) GetProvenance() *string {
+func (h *HarboractivityapiHarborActivityEvent) GetProvenance() *HarboractivityProvenance {
 	if h == nil {
 		return nil
 	}
@@ -900,7 +1127,7 @@ func (h *HarboractivityapiHarborActivityEvent) SetCredential(credential *Harbora
 
 // SetEventType sets the EventType field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HarboractivityapiHarborActivityEvent) SetEventType(eventType *string) {
+func (h *HarboractivityapiHarborActivityEvent) SetEventType(eventType *HarboractivityEventType) {
 	h.EventType = eventType
 	h.require(harboractivityapiHarborActivityEventFieldEventType)
 }
@@ -949,7 +1176,7 @@ func (h *HarboractivityapiHarborActivityEvent) SetOperationID(operationID *strin
 
 // SetOutcome sets the Outcome field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HarboractivityapiHarborActivityEvent) SetOutcome(outcome *string) {
+func (h *HarboractivityapiHarborActivityEvent) SetOutcome(outcome *HarboractivityOutcome) {
 	h.Outcome = outcome
 	h.require(harboractivityapiHarborActivityEventFieldOutcome)
 }
@@ -963,7 +1190,7 @@ func (h *HarboractivityapiHarborActivityEvent) SetProfile(profile *Harboractivit
 
 // SetProvenance sets the Provenance field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HarboractivityapiHarborActivityEvent) SetProvenance(provenance *string) {
+func (h *HarboractivityapiHarborActivityEvent) SetProvenance(provenance *HarboractivityProvenance) {
 	h.Provenance = provenance
 	h.require(harboractivityapiHarborActivityEventFieldProvenance)
 }
@@ -1055,6 +1282,7 @@ var (
 )
 
 type HarboractivityapiHarborActivityIdentitySnapshot struct {
+	// ID of the actor, credential, or profile
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1173,45 +1401,76 @@ var (
 )
 
 type HarboractivityapiHarborActivityMetadata struct {
-	ActionEnabled           *bool    `json:"action_enabled,omitempty" url:"action_enabled,omitempty"`
-	ActionFieldIDs          []string `json:"action_field_ids,omitempty" url:"action_field_ids,omitempty"`
-	ActionID                *string  `json:"action_id,omitempty" url:"action_id,omitempty"`
-	ActionLookupFieldID     *string  `json:"action_lookup_field_id,omitempty" url:"action_lookup_field_id,omitempty"`
-	ActionLookupFieldIDs    []string `json:"action_lookup_field_ids,omitempty" url:"action_lookup_field_ids,omitempty"`
-	ActionRequestID         *string  `json:"action_request_id,omitempty" url:"action_request_id,omitempty"`
-	AttemptNumber           *int     `json:"attempt_number,omitempty" url:"attempt_number,omitempty"`
-	Category                *string  `json:"category,omitempty" url:"category,omitempty"`
-	ClientName              *string  `json:"client_name,omitempty" url:"client_name,omitempty"`
-	ClientVersion           *string  `json:"client_version,omitempty" url:"client_version,omitempty"`
-	ConnectionName          *string  `json:"connection_name,omitempty" url:"connection_name,omitempty"`
-	ConnectionNameTruncated *bool    `json:"connection_name_truncated,omitempty" url:"connection_name_truncated,omitempty"`
-	ConnectionType          *string  `json:"connection_type,omitempty" url:"connection_type,omitempty"`
-	// Published context version number at fetch time, when recorded.
-	ContextVersion      *int    `json:"context_version,omitempty" url:"context_version,omitempty"`
-	ErrorCategory       *string `json:"error_category,omitempty" url:"error_category,omitempty"`
-	ExecutionDurationMs *int    `json:"execution_duration_ms,omitempty" url:"execution_duration_ms,omitempty"`
-	ExternalRunID       *string `json:"external_run_id,omitempty" url:"external_run_id,omitempty"`
-	FailureCode         *string `json:"failure_code,omitempty" url:"failure_code,omitempty"`
+	// On action.configuration_changed events, whether the action is enabled after the change; true on preparation and execution events
+	ActionEnabled *bool `json:"action_enabled,omitempty" url:"action_enabled,omitempty"`
+	// Field IDs granted, submitted, or returned by the action
+	ActionFieldIDs []string `json:"action_field_ids,omitempty" url:"action_field_ids,omitempty"`
+	// Action identity, as the schema ID and operation ID joined by a slash
+	ActionID *string `json:"action_id,omitempty" url:"action_id,omitempty"`
+	// Lookup field ID used by the action
+	ActionLookupFieldID *string `json:"action_lookup_field_id,omitempty" url:"action_lookup_field_id,omitempty"`
+	// Lookup field IDs granted by the action configuration
+	ActionLookupFieldIDs []string `json:"action_lookup_field_ids,omitempty" url:"action_lookup_field_ids,omitempty"`
+	// Action execution ID
+	ActionRequestID *string `json:"action_request_id,omitempty" url:"action_request_id,omitempty"`
+	// Query attempt number
+	AttemptNumber *int `json:"attempt_number,omitempty" url:"attempt_number,omitempty"`
+	// Category of the access denial
+	Category *string `json:"category,omitempty" url:"category,omitempty"`
+	// MCP-observed client name of the session
+	ClientName *string `json:"client_name,omitempty" url:"client_name,omitempty"`
+	// MCP-observed client version of the session
+	ClientVersion *string `json:"client_version,omitempty" url:"client_version,omitempty"`
+	// Connection name when the query was submitted
+	ConnectionName *string `json:"connection_name,omitempty" url:"connection_name,omitempty"`
+	// Whether the connection name snapshot was truncated
+	ConnectionNameTruncated *bool `json:"connection_name_truncated,omitempty" url:"connection_name_truncated,omitempty"`
+	// Connection type of the queried connection
+	ConnectionType *string `json:"connection_type,omitempty" url:"connection_type,omitempty"`
+	// Published context version number at fetch time, when recorded
+	ContextVersion *int `json:"context_version,omitempty" url:"context_version,omitempty"`
+	// Category of a failed query or action
+	ErrorCategory *string `json:"error_category,omitempty" url:"error_category,omitempty"`
+	// Milliseconds the query spent executing
+	ExecutionDurationMs *int `json:"execution_duration_ms,omitempty" url:"execution_duration_ms,omitempty"`
+	// Client-supplied run correlation value of the session
+	ExternalRunID *string `json:"external_run_id,omitempty" url:"external_run_id,omitempty"`
+	// Failure code of a failed query
+	FailureCode *string `json:"failure_code,omitempty" url:"failure_code,omitempty"`
 	// Number of fields returned by a query. Raw field names are not returned.
-	FieldCount  *int  `json:"field_count,omitempty" url:"field_count,omitempty"`
+	FieldCount *int `json:"field_count,omitempty" url:"field_count,omitempty"`
+	// Whether the listed page had more results
 	HasNextPage *bool `json:"has_next_page,omitempty" url:"has_next_page,omitempty"`
-	// Bounded resource label snapshot.
+	// Bounded resource label snapshot
 	Label *string `json:"label,omitempty" url:"label,omitempty"`
-	// Whether the resource label snapshot was truncated.
-	LabelTruncated       *bool   `json:"label_truncated,omitempty" url:"label_truncated,omitempty"`
-	Operation            *string `json:"operation,omitempty" url:"operation,omitempty"`
-	Phase                *string `json:"phase,omitempty" url:"phase,omitempty"`
-	QueueDurationMs      *int    `json:"queue_duration_ms,omitempty" url:"queue_duration_ms,omitempty"`
-	Reason               *string `json:"reason,omitempty" url:"reason,omitempty"`
-	RecordID             *string `json:"record_id,omitempty" url:"record_id,omitempty"`
-	RowCount             *int    `json:"row_count,omitempty" url:"row_count,omitempty"`
-	SavedQueryID         *string `json:"saved_query_id,omitempty" url:"saved_query_id,omitempty"`
+	// Whether the resource label snapshot was truncated
+	LabelTruncated *bool `json:"label_truncated,omitempty" url:"label_truncated,omitempty"`
+	// Operation that was denied
+	Operation *string `json:"operation,omitempty" url:"operation,omitempty"`
+	// Query phase in which the query finished: dispatch, preflight, or execution
+	Phase *HarboractivityQueryPhase `json:"phase,omitempty" url:"phase,omitempty"`
+	// Milliseconds between query submission and the start of execution
+	QueueDurationMs *int `json:"queue_duration_ms,omitempty" url:"queue_duration_ms,omitempty"`
+	// Reason the session ended or access was denied
+	Reason *string `json:"reason,omitempty" url:"reason,omitempty"`
+	// Record ID of the created record view link
+	RecordID *string `json:"record_id,omitempty" url:"record_id,omitempty"`
+	// Number of rows returned by the query
+	RowCount *int `json:"row_count,omitempty" url:"row_count,omitempty"`
+	// Saved query ID
+	SavedQueryID *string `json:"saved_query_id,omitempty" url:"saved_query_id,omitempty"`
+	// Saved query revision ID
 	SavedQueryRevisionID *string `json:"saved_query_revision_id,omitempty" url:"saved_query_revision_id,omitempty"`
-	SavedQueryVersion    *int    `json:"saved_query_version,omitempty" url:"saved_query_version,omitempty"`
-	SchemaID             *string `json:"schema_id,omitempty" url:"schema_id,omitempty"`
-	StatementCategory    *string `json:"statement_category,omitempty" url:"statement_category,omitempty"`
-	Supported            *bool   `json:"supported,omitempty" url:"supported,omitempty"`
-	TotalDurationMs      *int    `json:"total_duration_ms,omitempty" url:"total_duration_ms,omitempty"`
+	// Saved query version
+	SavedQueryVersion *int `json:"saved_query_version,omitempty" url:"saved_query_version,omitempty"`
+	// Schema ID involved in the event
+	SchemaID *string `json:"schema_id,omitempty" url:"schema_id,omitempty"`
+	// Statement category of the submitted query: select, other, or unknown
+	StatementCategory *HarboractivityStatementCategory `json:"statement_category,omitempty" url:"statement_category,omitempty"`
+	// Whether record view links can be created for the schema
+	Supported *bool `json:"supported,omitempty" url:"supported,omitempty"`
+	// Milliseconds between query submission and its final outcome
+	TotalDurationMs *int `json:"total_duration_ms,omitempty" url:"total_duration_ms,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1381,7 +1640,7 @@ func (h *HarboractivityapiHarborActivityMetadata) GetOperation() *string {
 	return h.Operation
 }
 
-func (h *HarboractivityapiHarborActivityMetadata) GetPhase() *string {
+func (h *HarboractivityapiHarborActivityMetadata) GetPhase() *HarboractivityQueryPhase {
 	if h == nil {
 		return nil
 	}
@@ -1444,7 +1703,7 @@ func (h *HarboractivityapiHarborActivityMetadata) GetSchemaID() *string {
 	return h.SchemaID
 }
 
-func (h *HarboractivityapiHarborActivityMetadata) GetStatementCategory() *string {
+func (h *HarboractivityapiHarborActivityMetadata) GetStatementCategory() *HarboractivityStatementCategory {
 	if h == nil {
 		return nil
 	}
@@ -1642,7 +1901,7 @@ func (h *HarboractivityapiHarborActivityMetadata) SetOperation(operation *string
 
 // SetPhase sets the Phase field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HarboractivityapiHarborActivityMetadata) SetPhase(phase *string) {
+func (h *HarboractivityapiHarborActivityMetadata) SetPhase(phase *HarboractivityQueryPhase) {
 	h.Phase = phase
 	h.require(harboractivityapiHarborActivityMetadataFieldPhase)
 }
@@ -1705,7 +1964,7 @@ func (h *HarboractivityapiHarborActivityMetadata) SetSchemaID(schemaID *string) 
 
 // SetStatementCategory sets the StatementCategory field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HarboractivityapiHarborActivityMetadata) SetStatementCategory(statementCategory *string) {
+func (h *HarboractivityapiHarborActivityMetadata) SetStatementCategory(statementCategory *HarboractivityStatementCategory) {
 	h.StatementCategory = statementCategory
 	h.require(harboractivityapiHarborActivityMetadataFieldStatementCategory)
 }
@@ -1774,10 +2033,14 @@ var (
 )
 
 type HarboractivityapiHarborActivityQuerySource struct {
-	Kind              *string                                          `json:"kind,omitempty" url:"kind,omitempty"`
-	SavedQuery        *HarboractivityapiHarborActivitySavedQuerySource `json:"saved_query,omitempty" url:"saved_query,omitempty"`
-	SubmissionEventID *string                                          `json:"submission_event_id,omitempty" url:"submission_event_id,omitempty"`
-	SubmittedAt       *time.Time                                       `json:"submitted_at,omitempty" url:"submitted_at,omitempty"`
+	// Query source: saved_query, ad_hoc, or unknown when the submission is no longer retained
+	Kind *string `json:"kind,omitempty" url:"kind,omitempty"`
+	// Saved query that was submitted, when kind is saved_query
+	SavedQuery *HarboractivityapiHarborActivitySavedQuerySource `json:"saved_query,omitempty" url:"saved_query,omitempty"`
+	// ID of the query.submitted event
+	SubmissionEventID *string `json:"submission_event_id,omitempty" url:"submission_event_id,omitempty"`
+	// When the query was submitted
+	SubmittedAt *time.Time `json:"submitted_at,omitempty" url:"submitted_at,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1915,11 +2178,16 @@ var (
 )
 
 type HarboractivityapiHarborActivitySavedQuerySource struct {
-	ID            *string `json:"id,omitempty" url:"id,omitempty"`
-	Name          *string `json:"name,omitempty" url:"name,omitempty"`
-	NameTruncated *bool   `json:"name_truncated,omitempty" url:"name_truncated,omitempty"`
-	RevisionID    *string `json:"revision_id,omitempty" url:"revision_id,omitempty"`
-	Version       *int    `json:"version,omitempty" url:"version,omitempty"`
+	// Saved query ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Saved query name when the query was submitted
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Whether the name snapshot was truncated
+	NameTruncated *bool `json:"name_truncated,omitempty" url:"name_truncated,omitempty"`
+	// Saved query revision ID that was submitted
+	RevisionID *string `json:"revision_id,omitempty" url:"revision_id,omitempty"`
+	// Saved query version that was submitted
+	Version *int `json:"version,omitempty" url:"version,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2073,22 +2341,36 @@ var (
 )
 
 type HarboractivityapiHarborActivitySession struct {
-	ClientName    *string                                          `json:"client_name,omitempty" url:"client_name,omitempty"`
-	ClientVersion *string                                          `json:"client_version,omitempty" url:"client_version,omitempty"`
-	Credential    *HarboractivityapiHarborActivityIdentitySnapshot `json:"credential,omitempty" url:"credential,omitempty"`
-	EndedAt       *time.Time                                       `json:"ended_at,omitempty" url:"ended_at,omitempty"`
-	Events        []*HarboractivityapiHarborActivityEvent          `json:"events,omitempty" url:"events,omitempty"`
-	ExpiresAt     *time.Time                                       `json:"expires_at,omitempty" url:"expires_at,omitempty"`
-	ExternalRunID *string                                          `json:"external_run_id,omitempty" url:"external_run_id,omitempty"`
-	HarborID      *string                                          `json:"harbor_id,omitempty" url:"harbor_id,omitempty"`
-	// Whether retention removed events from the beginning of the session.
-	HistoryTruncated *bool                                            `json:"history_truncated,omitempty" url:"history_truncated,omitempty"`
-	ID               *string                                          `json:"id,omitempty" url:"id,omitempty"`
-	Profile          *HarboractivityapiHarborActivityIdentitySnapshot `json:"profile,omitempty" url:"profile,omitempty"`
-	StartedAt        *time.Time                                       `json:"started_at,omitempty" url:"started_at,omitempty"`
-	StartedEventID   *string                                          `json:"started_event_id,omitempty" url:"started_event_id,omitempty"`
-	Status           *HarboractivityapiHarborActivitySessionStatus    `json:"status,omitempty" url:"status,omitempty"`
-	TerminalEventID  *string                                          `json:"terminal_event_id,omitempty" url:"terminal_event_id,omitempty"`
+	// MCP-observed client name
+	ClientName *string `json:"client_name,omitempty" url:"client_name,omitempty"`
+	// MCP-observed client version
+	ClientVersion *string `json:"client_version,omitempty" url:"client_version,omitempty"`
+	// Harbor credential that registered the session
+	Credential *HarboractivityapiHarborActivityIdentitySnapshot `json:"credential,omitempty" url:"credential,omitempty"`
+	// When the session closed or expired
+	EndedAt *time.Time `json:"ended_at,omitempty" url:"ended_at,omitempty"`
+	// Session events on this page
+	Events []*HarboractivityapiHarborActivityEvent `json:"events,omitempty" url:"events,omitempty"`
+	// When the session expires
+	ExpiresAt *time.Time `json:"expires_at,omitempty" url:"expires_at,omitempty"`
+	// Client-supplied run correlation value
+	ExternalRunID *string `json:"external_run_id,omitempty" url:"external_run_id,omitempty"`
+	// Harbor ID of the session
+	HarborID *string `json:"harbor_id,omitempty" url:"harbor_id,omitempty"`
+	// Whether retention removed events from the beginning of the session
+	HistoryTruncated *bool `json:"history_truncated,omitempty" url:"history_truncated,omitempty"`
+	// Harbor session ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Harbor profile of the session's credential
+	Profile *HarboractivityapiHarborActivityIdentitySnapshot `json:"profile,omitempty" url:"profile,omitempty"`
+	// When the session started
+	StartedAt *time.Time `json:"started_at,omitempty" url:"started_at,omitempty"`
+	// ID of the session.started event
+	StartedEventID *string `json:"started_event_id,omitempty" url:"started_event_id,omitempty"`
+	// Session status
+	Status *HarboractivityapiHarborActivitySessionStatus `json:"status,omitempty" url:"status,omitempty"`
+	// ID of the event that closed or expired the session
+	TerminalEventID *string `json:"terminal_event_id,omitempty" url:"terminal_event_id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2379,6 +2661,7 @@ func (h *HarboractivityapiHarborActivitySession) String() string {
 	return fmt.Sprintf("%#v", h)
 }
 
+// Session status
 type HarboractivityapiHarborActivitySessionStatus string
 
 const (
@@ -2414,12 +2697,18 @@ var (
 )
 
 type HarboractivityapiHarborActivityTarget struct {
-	ID             *string `json:"id,omitempty" url:"id,omitempty"`
-	Label          *string `json:"label,omitempty" url:"label,omitempty"`
-	LabelTruncated *bool   `json:"label_truncated,omitempty" url:"label_truncated,omitempty"`
-	RevisionID     *string `json:"revision_id,omitempty" url:"revision_id,omitempty"`
-	Type           *string `json:"type,omitempty" url:"type,omitempty"`
-	Version        *int    `json:"version,omitempty" url:"version,omitempty"`
+	// Target resource ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Label snapshot of the target resource
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	// Whether the label snapshot was truncated
+	LabelTruncated *bool `json:"label_truncated,omitempty" url:"label_truncated,omitempty"`
+	// Saved query revision ID, for saved query targets
+	RevisionID *string `json:"revision_id,omitempty" url:"revision_id,omitempty"`
+	// Type of the target resource: connection, schema, context, context_revision, or saved_query
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
+	// Saved query version, for saved query targets
+	Version *int `json:"version,omitempty" url:"version,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`

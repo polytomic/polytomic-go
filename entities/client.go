@@ -172,7 +172,7 @@ func (c *Client) Search(
 //	)
 func (c *Client) Get(
 	ctx context.Context,
-	// UUID of the entity to resolve.
+	// UUID of the entity to resolve
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.EntityResponseEnvelope, error) {
@@ -240,7 +240,7 @@ func (c *Client) Get(
 //	)
 func (c *Client) GetForPartner(
 	ctx context.Context,
-	// UUID of the entity to resolve.
+	// UUID of the entity to resolve
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.EntityResponseEnvelope, error) {

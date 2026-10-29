@@ -127,7 +127,7 @@ func (c *Client) ListStatus(
 //	)
 func (c *Client) List(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
 	request *bulksync.ExecutionsListRequest,
 	opts ...option.RequestOption,
@@ -160,9 +160,9 @@ func (c *Client) List(
 //	)
 func (c *Client) Get(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
-	// Unique identifier of the execution.
+	// Unique identifier of the execution
 	execID string,
 	opts ...option.RequestOption,
 ) (*polytomic.BulkSyncExecutionEnvelope, error) {
@@ -195,9 +195,9 @@ func (c *Client) Get(
 //	)
 func (c *Client) Cancel(
 	ctx context.Context,
-	// The bulk sync ID.
+	// The bulk sync ID
 	id string,
-	// The execution ID to cancel.
+	// The execution ID to cancel
 	execID string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.CancelBulkSyncResponseEnvelope, error) {
@@ -233,7 +233,9 @@ func (c *Client) Cancel(
 //	)
 func (c *Client) GetConsoleLogs(
 	ctx context.Context,
+	// Bulk sync ID
 	syncID string,
+	// Bulk sync execution ID
 	executionID string,
 	request *bulksync.ExecutionsGetConsoleLogsRequest,
 	opts ...option.RequestOption,
@@ -271,9 +273,9 @@ func (c *Client) GetConsoleLogs(
 //	)
 func (c *Client) GetLogs(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	syncID string,
-	// Unique identifier of the execution whose log files should be listed.
+	// Unique identifier of the execution whose log files should be listed
 	executionID string,
 	opts ...option.RequestOption,
 ) (*polytomic.BulkSyncExecutionLogsEnvelope, error) {
@@ -318,9 +320,9 @@ func (c *Client) GetLogs(
 //	)
 func (c *Client) ExportLogs(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	syncID string,
-	// Unique identifier of the execution whose logs should be exported.
+	// Unique identifier of the execution whose logs should be exported
 	executionID string,
 	request *bulksync.ExecutionsExportLogsRequest,
 	opts ...option.IdempotentRequestOption,
@@ -359,9 +361,11 @@ func (c *Client) ExportLogs(
 //	)
 func (c *Client) GetSchemaConsoleLogs(
 	ctx context.Context,
+	// Bulk sync ID
 	syncID string,
+	// Bulk sync execution ID
 	executionID string,
-	// Schema identifier for schema-scoped console logs.
+	// Schema identifier for schema-scoped console logs
 	schemaID string,
 	request *bulksync.ExecutionsGetSchemaConsoleLogsRequest,
 	opts ...option.RequestOption,
@@ -402,6 +406,7 @@ func (c *Client) GetSchemaConsoleLogs(
 //	)
 func (c *Client) GetIngestConsoleLogs(
 	ctx context.Context,
+	// Connection ID
 	connectionID string,
 	request *bulksync.ExecutionsGetIngestConsoleLogsRequest,
 	opts ...option.RequestOption,

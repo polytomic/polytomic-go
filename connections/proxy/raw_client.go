@@ -35,7 +35,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ExecuteProxy(
 	ctx context.Context,
-	// Unique identifier of the connection to proxy the request through.
+	// Unique identifier of the connection to proxy the request through
 	id string,
 	request *connections.ExecuteConnectionProxyRequest,
 	opts ...option.IdempotentRequestOption,
@@ -84,7 +84,7 @@ func (r *RawClient) ExecuteProxy(
 
 func (r *RawClient) GetProxyInfo(
 	ctx context.Context,
-	// Unique identifier of the connection whose proxy contract should be returned.
+	// Unique identifier of the connection whose proxy contract should be returned
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.GetConnectionProxyInfoEnvelope], error) {
@@ -130,7 +130,7 @@ func (r *RawClient) GetProxyInfo(
 
 func (r *RawClient) GetProxySettings(
 	ctx context.Context,
-	// Unique identifier of the connection whose proxy settings should be returned.
+	// Unique identifier of the connection whose proxy settings should be returned
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.ConnectionProxySettingsEnvelope], error) {
@@ -176,7 +176,7 @@ func (r *RawClient) GetProxySettings(
 
 func (r *RawClient) UpdateProxySettings(
 	ctx context.Context,
-	// Unique identifier of the connection whose proxy settings should be updated.
+	// Unique identifier of the connection whose proxy settings should be updated
 	id string,
 	request *connections.UpdateConnectionProxySettingsRequest,
 	opts ...option.IdempotentRequestOption,

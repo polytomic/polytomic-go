@@ -16,8 +16,10 @@ var (
 )
 
 type ActionLookup struct {
+	// Field ID to look the record up by
 	FieldID *string `json:"field_id,omitempty" url:"field_id,omitempty"`
-	Value   any     `json:"value,omitempty" url:"value,omitempty"`
+	// Value the field must equal
+	Value any `json:"value,omitempty" url:"value,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -115,6 +117,7 @@ var (
 )
 
 type ActivateSyncEnvelope struct {
+	// The sync's updated active state
 	Data *ActivateSyncOutput `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -195,97 +198,15 @@ func (a *ActivateSyncEnvelope) String() string {
 }
 
 var (
-	activateSyncInputFieldActive = big.NewInt(1 << 0)
-)
-
-type ActivateSyncInput struct {
-	Active bool `json:"active" url:"active"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *ActivateSyncInput) GetActive() bool {
-	if a == nil {
-		return false
-	}
-	return a.Active
-}
-
-func (a *ActivateSyncInput) GetExtraProperties() map[string]interface{} {
-	if a == nil {
-		return nil
-	}
-	return a.extraProperties
-}
-
-func (a *ActivateSyncInput) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetActive sets the Active field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ActivateSyncInput) SetActive(active bool) {
-	a.Active = active
-	a.require(activateSyncInputFieldActive)
-}
-
-func (a *ActivateSyncInput) UnmarshalJSON(data []byte) error {
-	type unmarshaler ActivateSyncInput
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = ActivateSyncInput(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *ActivateSyncInput) MarshalJSON() ([]byte, error) {
-	type embed ActivateSyncInput
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*a),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *ActivateSyncInput) String() string {
-	if a == nil {
-		return "<nil>"
-	}
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
-var (
 	activateSyncOutputFieldActive = big.NewInt(1 << 0)
 	activateSyncOutputFieldID     = big.NewInt(1 << 1)
 )
 
 type ActivateSyncOutput struct {
-	Active *bool   `json:"active,omitempty" url:"active,omitempty"`
-	ID     *string `json:"id,omitempty" url:"id,omitempty"`
+	// Whether the sync is active
+	Active *bool `json:"active,omitempty" url:"active,omitempty"`
+	// Model sync or bulk sync ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -386,10 +307,14 @@ var (
 )
 
 type APIError struct {
-	Key      *string        `json:"key,omitempty" url:"key,omitempty"`
-	Message  *string        `json:"message,omitempty" url:"message,omitempty"`
+	// Machine-readable error key, when the error has one
+	Key *string `json:"key,omitempty" url:"key,omitempty"`
+	// Error message
+	Message *string `json:"message,omitempty" url:"message,omitempty"`
+	// Structured details about the error, when available
 	Metadata map[string]any `json:"metadata,omitempty" url:"metadata,omitempty"`
-	Status   *int           `json:"status,omitempty" url:"status,omitempty"`
+	// HTTP status code
+	Status *int `json:"status,omitempty" url:"status,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -531,23 +456,40 @@ var (
 )
 
 type BulkBulkSyncSchedule struct {
-	CreatedAt     *time.Time            `json:"createdAt,omitempty" url:"createdAt,omitempty"`
-	CreatedBy     *string               `json:"createdBy,omitempty" url:"createdBy,omitempty"`
-	DayOfMonth    *string               `json:"dayOfMonth,omitempty" url:"dayOfMonth,omitempty"`
-	DayOfWeek     *string               `json:"dayOfWeek,omitempty" url:"dayOfWeek,omitempty"`
-	DeletedAt     *time.Time            `json:"deletedAt,omitempty" url:"deletedAt,omitempty"`
-	DeletedBy     *string               `json:"deletedBy,omitempty" url:"deletedBy,omitempty"`
-	Frequency     ScheduleFrequency     `json:"frequency" url:"frequency"`
-	Hour          *string               `json:"hour,omitempty" url:"hour,omitempty"`
-	IsDefault     *bool                 `json:"isDefault,omitempty" url:"isDefault,omitempty"`
-	Minute        *string               `json:"minute,omitempty" url:"minute,omitempty"`
-	Month         *string               `json:"month,omitempty" url:"month,omitempty"`
-	Schemas       []string              `json:"schemas,omitempty" url:"schemas,omitempty"`
-	SelectiveMode *BulkSelectiveMode    `json:"selectiveMode,omitempty" url:"selectiveMode,omitempty"`
-	SyncID        *string               `json:"syncId,omitempty" url:"syncId,omitempty"`
-	SyncMode      *BulkScheduleSyncMode `json:"syncMode,omitempty" url:"syncMode,omitempty"`
-	UpdatedAt     *time.Time            `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
-	UpdatedBy     *string               `json:"updatedBy,omitempty" url:"updatedBy,omitempty"`
+	// Timestamp the schedule was created
+	CreatedAt *time.Time `json:"createdAt,omitempty" url:"createdAt,omitempty"`
+	// ID of the actor that created the schedule
+	CreatedBy *string `json:"createdBy,omitempty" url:"createdBy,omitempty"`
+	// Day of the month for custom and builder schedules
+	DayOfMonth *string `json:"dayOfMonth,omitempty" url:"dayOfMonth,omitempty"`
+	// Day of the week for weekly, custom, and builder schedules
+	DayOfWeek *string `json:"dayOfWeek,omitempty" url:"dayOfWeek,omitempty"`
+	// Timestamp the schedule was deleted
+	DeletedAt *time.Time `json:"deletedAt,omitempty" url:"deletedAt,omitempty"`
+	// ID of the actor that deleted the schedule
+	DeletedBy *string `json:"deletedBy,omitempty" url:"deletedBy,omitempty"`
+	// How often the sync runs on this schedule
+	Frequency ScheduleFrequency `json:"frequency" url:"frequency"`
+	// Hour of the day, in UTC, for daily, weekly, custom, and builder schedules
+	Hour *string `json:"hour,omitempty" url:"hour,omitempty"`
+	// Whether this is the bulk sync's default schedule
+	IsDefault *bool `json:"isDefault,omitempty" url:"isDefault,omitempty"`
+	// Minute of the hour for hourly, daily, weekly, custom, and builder schedules
+	Minute *string `json:"minute,omitempty" url:"minute,omitempty"`
+	// Month of the year for custom and builder schedules
+	Month *string `json:"month,omitempty" url:"month,omitempty"`
+	// Schema IDs this schedule applies to; empty means all schemas
+	Schemas []string `json:"schemas,omitempty" url:"schemas,omitempty"`
+	// Whether this schedule runs a full fetch, only incremental fields, or only non-incremental fields
+	SelectiveMode *BulkSelectiveMode `json:"selectiveMode,omitempty" url:"selectiveMode,omitempty"`
+	// Bulk sync ID
+	SyncID *string `json:"syncId,omitempty" url:"syncId,omitempty"`
+	// Controls how the destination is handled when this schedule executes
+	SyncMode *BulkScheduleSyncMode `json:"syncMode,omitempty" url:"syncMode,omitempty"`
+	// Timestamp the schedule was last updated
+	UpdatedAt *time.Time `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
+	// ID of the actor that most recently updated the schedule
+	UpdatedBy *string `json:"updatedBy,omitempty" url:"updatedBy,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -953,10 +895,15 @@ var (
 )
 
 type BulkField struct {
-	Enabled        *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
-	ID             *string `json:"id,omitempty" url:"id,omitempty"`
-	Obfuscated     *bool   `json:"obfuscated,omitempty" url:"obfuscated,omitempty"`
-	OutputName     *string `json:"output_name,omitempty" url:"output_name,omitempty"`
+	// Whether this field is synced. Primary-key fields are always enabled while their schema is enabled, and a false value for them is ignored.
+	Enabled *bool `json:"enabled,omitempty" url:"enabled,omitempty"`
+	// Source field ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Whether the field's values are written to the destination as SHA-256 hashes
+	Obfuscated *bool `json:"obfuscated,omitempty" url:"obfuscated,omitempty"`
+	// Name of the field at the destination. This value is computed and ignored on input; set user_output_name to rename the field.
+	OutputName *string `json:"output_name,omitempty" url:"output_name,omitempty"`
+	// User-specified override for the field's destination name
 	UserOutputName *string `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1099,10 +1046,12 @@ var (
 )
 
 type BulkFilter struct {
-	// Schema field ID to filter on.
-	FieldID  *string        `json:"field_id,omitempty" url:"field_id,omitempty"`
+	// Schema field ID to filter on
+	FieldID *string `json:"field_id,omitempty" url:"field_id,omitempty"`
+	// Comparison function applied to the field
 	Function FilterFunction `json:"function" url:"function"`
-	Value    any            `json:"value,omitempty" url:"value,omitempty"`
+	// Value the function compares the field against
+	Value any `json:"value,omitempty" url:"value,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1278,21 +1227,29 @@ var (
 )
 
 type BulkSchema struct {
+	// Records older than this timestamp are excluded from sync runs.
 	DataCutoffTimestamp *time.Time `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
-	// Name of the companion history table. Present only when history is enabled on a destination that supports it.
+	// Name of the companion history table. Present only when history is enabled on a destination that supports it. This value is computed and ignored on input.
 	DestinationHistoryOutputName *string `json:"destination_history_output_name,omitempty" url:"destination_history_output_name,omitempty"`
-	DisableDataCutoff            *bool   `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
-	Enabled                      *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
+	// When true, the sync ignores any configured data_cutoff_timestamp for this schema.
+	DisableDataCutoff *bool `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
+	// Whether this schema is included in sync runs
+	Enabled *bool `json:"enabled,omitempty" url:"enabled,omitempty"`
 	// fields is not populated on the list endpoint and will be removed in a future version; retrieve individual schemas for fields.
 	Fields []*BulkField `json:"fields,omitempty" url:"fields,omitempty"`
 	// filters is not populated on the list endpoint and will be removed in a future version; retrieve individual schemas for filters.
 	Filters []*BulkFilter `json:"filters,omitempty" url:"filters,omitempty"`
 	// Whether a companion history table is maintained beside this schema's output, recording every version observed on successive runs. Requires a replicate-mode sync to a destination reporting supports_history_mode. Always present in responses; when patching, omit it to keep the current value.
-	HistoryEnabled *bool   `json:"history_enabled,omitempty" url:"history_enabled,omitempty"`
-	ID             *string `json:"id,omitempty" url:"id,omitempty"`
-	OutputName     *string `json:"output_name,omitempty" url:"output_name,omitempty"`
-	PartitionKey   *string `json:"partition_key,omitempty" url:"partition_key,omitempty"`
-	TrackingField  *string `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
+	HistoryEnabled *bool `json:"history_enabled,omitempty" url:"history_enabled,omitempty"`
+	// Source-side schema identifier
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Name of the object written to the destination. This value is computed and ignored on input; set user_output_name to rename the object.
+	OutputName *string `json:"output_name,omitempty" url:"output_name,omitempty"`
+	// Source field used to partition rows when writing to the destination
+	PartitionKey *string `json:"partition_key,omitempty" url:"partition_key,omitempty"`
+	// Source field used to detect changes between incremental sync runs
+	TrackingField *string `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
+	// User-specified override for the destination object name
 	UserOutputName *string `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1539,6 +1496,7 @@ var (
 )
 
 type BulkSchemaEnvelope struct {
+	// The bulk sync schema
 	Data *BulkSchema `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1681,13 +1639,13 @@ type BulkSchemaListItem struct {
 	DestinationHistoryOutputName *string `json:"destination_history_output_name,omitempty" url:"destination_history_output_name,omitempty"`
 	// When true, the sync ignores any configured data_cutoff_timestamp and syncs the full history of this schema.
 	DisableDataCutoff *bool `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
-	// Whether this schema is included in sync runs.
+	// Whether this schema is included in sync runs
 	Enabled *bool `json:"enabled,omitempty" url:"enabled,omitempty"`
-	// Whether a companion history table is maintained beside this schema's output, recording every version observed on successive runs.
+	// Whether a companion history table is maintained beside this schema's output, recording every version observed on successive runs
 	HistoryEnabled *bool `json:"history_enabled,omitempty" url:"history_enabled,omitempty"`
-	// Source-side schema identifier (e.g. object name for SaaS sources, schema.table for databases).
+	// Source-side schema identifier (e.g. object name for SaaS sources, schema.table for databases)
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Effective name of the object written to the destination after any configured naming rules are applied.
+	// Effective name of the object written to the destination after any configured naming rules are applied
 	OutputName *string `json:"output_name,omitempty" url:"output_name,omitempty"`
 	// Source field used to partition rows when writing to the destination. Empty if the destination does not require one.
 	PartitionKey *string `json:"partition_key,omitempty" url:"partition_key,omitempty"`
@@ -1940,7 +1898,7 @@ var (
 type BulkSyncErrorHandling struct {
 	// How far behind ingestion may fall before a terminal execution is failed, in the unit this sync's source reports: seconds for a source carrying event timestamps, outstanding items for a queue-backed source such as S3. Null means this sync has no threshold of its own: a source reporting seconds then follows the deployment-wide default, while a queue-backed source is left unchecked.
 	IngestionFailureThreshold *int `json:"ingestion_failure_threshold,omitempty" url:"ingestion_failure_threshold,omitempty"`
-	// Email addresses notified when this sync fails.
+	// Email addresses notified when this sync fails
 	Subscribers []string `json:"subscribers,omitempty" url:"subscribers,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2039,6 +1997,7 @@ var (
 )
 
 type BulkSyncErrorHandlingEnvelope struct {
+	// Error handling settings for the bulk sync
 	Data *BulkSyncErrorHandling `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2140,25 +2099,42 @@ var (
 )
 
 type BulkSyncExecution struct {
-	CompletedAt       *time.Time                 `json:"completed_at,omitempty" url:"completed_at,omitempty"`
-	CreatedAt         *time.Time                 `json:"created_at,omitempty" url:"created_at,omitempty"`
-	ErrorCount        *int64                     `json:"error_count,omitempty" url:"error_count,omitempty"`
-	FetchMode         *BulkFetchMode             `json:"fetch_mode,omitempty" url:"fetch_mode,omitempty"`
-	ID                *string                    `json:"id,omitempty" url:"id,omitempty"`
-	IsPartial         *bool                      `json:"is_partial,omitempty" url:"is_partial,omitempty"`
-	IsResync          *bool                      `json:"is_resync,omitempty" url:"is_resync,omitempty"`
-	IsTest            *bool                      `json:"is_test,omitempty" url:"is_test,omitempty"`
-	OutputDisposition *BulkOutputDisposition     `json:"output_disposition,omitempty" url:"output_disposition,omitempty"`
-	RecordCount       *int64                     `json:"record_count,omitempty" url:"record_count,omitempty"`
-	Schemas           []*BulkSyncSchemaExecution `json:"schemas,omitempty" url:"schemas,omitempty"`
-	StartedAt         *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status            *BulkExecutionStatus       `json:"status,omitempty" url:"status,omitempty"`
-	StatusMessage     *string                    `json:"status_message,omitempty" url:"status_message,omitempty"`
-	Type              *string                    `json:"type,omitempty" url:"type,omitempty"`
-	UpdatedAt         *time.Time                 `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	// Polytomic version which last ran this execution.
-	Version      *string `json:"version,omitempty" url:"version,omitempty"`
-	WarningCount *int64  `json:"warning_count,omitempty" url:"warning_count,omitempty"`
+	// When the execution finished
+	CompletedAt *time.Time `json:"completed_at,omitempty" url:"completed_at,omitempty"`
+	// When the execution was created
+	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Total errors across all schemas
+	ErrorCount *int64 `json:"error_count,omitempty" url:"error_count,omitempty"`
+	// Selective fetch mode the execution runs with
+	FetchMode *BulkFetchMode `json:"fetch_mode,omitempty" url:"fetch_mode,omitempty"`
+	// Bulk sync execution ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Whether the execution syncs only a selected subset of schemas
+	IsPartial *bool `json:"is_partial,omitempty" url:"is_partial,omitempty"`
+	// Whether the execution is a resync
+	IsResync *bool `json:"is_resync,omitempty" url:"is_resync,omitempty"`
+	// Whether the execution is a test execution
+	IsTest *bool `json:"is_test,omitempty" url:"is_test,omitempty"`
+	// How the destination was handled during this execution (retain, truncate, rebuild)
+	OutputDisposition *BulkOutputDisposition `json:"output_disposition,omitempty" url:"output_disposition,omitempty"`
+	// Total records processed across all schemas
+	RecordCount *int64 `json:"record_count,omitempty" url:"record_count,omitempty"`
+	// Per-schema executions within this execution
+	Schemas []*BulkSyncSchemaExecution `json:"schemas,omitempty" url:"schemas,omitempty"`
+	// When the execution started
+	StartedAt *time.Time `json:"started_at,omitempty" url:"started_at,omitempty"`
+	// Status of the execution
+	Status *BulkExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	// Detail about the execution's status, such as an error message
+	StatusMessage *string `json:"status_message,omitempty" url:"status_message,omitempty"`
+	// What triggered the execution
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
+	// When the execution was last updated
+	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	// Polytomic version which last ran this execution
+	Version *string `json:"version,omitempty" url:"version,omitempty"`
+	// Total warnings across all schemas
+	WarningCount *int64 `json:"warning_count,omitempty" url:"warning_count,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2500,6 +2476,7 @@ var (
 )
 
 type BulkSyncExecutionEnvelope struct {
+	// The bulk sync execution
 	Data *BulkSyncExecution `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2585,7 +2562,7 @@ var (
 )
 
 type BulkSyncExecutionLogs struct {
-	// Timestamp at which the signed URLs in URLs stop working.
+	// Timestamp at which the signed URLs in URLs stop working
 	Expires *time.Time `json:"Expires,omitempty" url:"Expires,omitempty"`
 	// Signed URLs that download the execution's log files. These URLs expire at the Expires timestamp.
 	UrLs []string `json:"URLs,omitempty" url:"URLs,omitempty"`
@@ -2694,6 +2671,7 @@ var (
 )
 
 type BulkSyncExecutionLogsEnvelope struct {
+	// Signed URLs for the execution's log files
 	Data *BulkSyncExecutionLogs `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2781,12 +2759,13 @@ var (
 )
 
 type BulkSyncExecutionStatus struct {
-	// Next scheduled execution time, if the sync has a schedule configured.
+	// Next scheduled execution time, if the sync has a schedule configured
 	NextExecutionTime *time.Time `json:"nextExecutionTime,omitempty" url:"nextExecutionTime,omitempty"`
-	// Most recent execution status for each enabled schema in the sync.
+	// Most recent execution status for each enabled schema in the sync
 	Schemas []*BulkSyncSchemaExecutionStatus `json:"schemas,omitempty" url:"schemas,omitempty"`
-	Status  *BulkExecutionStatus             `json:"status,omitempty" url:"status,omitempty"`
-	// Unique identifier of the bulk sync.
+	// Sync execution status across all schemas
+	Status *BulkExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	// Unique identifier of the bulk sync
 	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2927,17 +2906,19 @@ var (
 )
 
 type BulkSyncScheduleAPI struct {
-	// Day of the month (1-31) for monthly schedules.
+	// Day of the month for custom and builder schedules
 	DayOfMonth *string `json:"dayOfMonth,omitempty" url:"dayOfMonth,omitempty"`
-	// Day of the week for weekly schedules.
-	DayOfWeek *string           `json:"dayOfWeek,omitempty" url:"dayOfWeek,omitempty"`
+	// Day of the week, 0 (Sunday) to 6 (Saturday), for weekly schedules; a cron day-of-week field for custom and builder schedules
+	DayOfWeek *string `json:"dayOfWeek,omitempty" url:"dayOfWeek,omitempty"`
+	// How often the sync runs on this schedule: manual, continuous, hourly, daily, weekly, custom, or builder
 	Frequency ScheduleFrequency `json:"frequency" url:"frequency"`
-	// Hour of the day (0-23, in UTC) the schedule fires.
+	// Hour of the day (0-23, in UTC) for daily, weekly, custom, and builder schedules
 	Hour *string `json:"hour,omitempty" url:"hour,omitempty"`
-	// Minute of the hour (0-59) the schedule fires.
+	// Minute of the hour (0-59) for hourly, daily, weekly, custom, and builder schedules
 	Minute *string `json:"minute,omitempty" url:"minute,omitempty"`
-	// Month of the year (1-12) for yearly schedules.
-	Month         *string            `json:"month,omitempty" url:"month,omitempty"`
+	// Month of the year for custom and builder schedules
+	Month *string `json:"month,omitempty" url:"month,omitempty"`
+	// Whether this schedule runs a full fetch, only incremental fields, or only non-incremental fields
 	SelectiveMode *BulkSelectiveMode `json:"selectiveMode,omitempty" url:"selectiveMode,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3117,19 +3098,30 @@ var (
 )
 
 type BulkSyncSchemaExecution struct {
-	CompletedAt   *time.Time                 `json:"completed_at,omitempty" url:"completed_at,omitempty"`
-	CreatedAt     *time.Time                 `json:"created_at,omitempty" url:"created_at,omitempty"`
-	ErrorCount    *int64                     `json:"error_count,omitempty" url:"error_count,omitempty"`
-	OutputName    *string                    `json:"output_name,omitempty" url:"output_name,omitempty"`
-	RecordCount   *int64                     `json:"record_count,omitempty" url:"record_count,omitempty"`
-	Schema        *string                    `json:"schema,omitempty" url:"schema,omitempty"`
-	StartedAt     *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status        *BulkSchemaExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-	StatusMessage *string                    `json:"status_message,omitempty" url:"status_message,omitempty"`
-	UpdatedAt     *time.Time                 `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	// Polytomic version which last ran this schema execution.
-	Version      *string `json:"version,omitempty" url:"version,omitempty"`
-	WarningCount *int64  `json:"warning_count,omitempty" url:"warning_count,omitempty"`
+	// When the schema execution finished
+	CompletedAt *time.Time `json:"completed_at,omitempty" url:"completed_at,omitempty"`
+	// When the schema execution was created
+	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Number of errors for this schema
+	ErrorCount *int64 `json:"error_count,omitempty" url:"error_count,omitempty"`
+	// Name of the destination object the schema was written to, set only once the schema execution completes
+	OutputName *string `json:"output_name,omitempty" url:"output_name,omitempty"`
+	// Number of records processed for this schema
+	RecordCount *int64 `json:"record_count,omitempty" url:"record_count,omitempty"`
+	// Source schema ID
+	Schema *string `json:"schema,omitempty" url:"schema,omitempty"`
+	// When the schema execution started
+	StartedAt *time.Time `json:"started_at,omitempty" url:"started_at,omitempty"`
+	// Status of the schema execution
+	Status *BulkSchemaExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	// Detail about the schema execution's status, such as an error message
+	StatusMessage *string `json:"status_message,omitempty" url:"status_message,omitempty"`
+	// When the schema execution was last updated
+	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	// Polytomic version which last ran this schema execution
+	Version *string `json:"version,omitempty" url:"version,omitempty"`
+	// Number of warnings for this schema
+	WarningCount *int64 `json:"warning_count,omitempty" url:"warning_count,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3397,20 +3389,21 @@ var (
 type BulkSyncSchemaExecutionStatus struct {
 	// Timestamp when the most recent execution finished. Null while the execution is still running.
 	CompletedAt *time.Time `json:"completed_at,omitempty" url:"completed_at,omitempty"`
-	// Number of errors emitted during the most recent execution.
+	// Number of errors emitted during the most recent execution
 	ErrorCount *int64 `json:"error_count,omitempty" url:"error_count,omitempty"`
-	// ID of the most recent execution for the schema.
+	// ID of the most recent execution for the schema
 	ExecutionID *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	// Number of records processed in the most recent execution.
+	// Number of records processed in the most recent execution
 	RecordCount *int64 `json:"record_count,omitempty" url:"record_count,omitempty"`
-	// Schema (table or object) identifier.
+	// Schema (table or object) identifier
 	Schema *string `json:"schema,omitempty" url:"schema,omitempty"`
-	// Timestamp when the most recent execution started.
-	StartedAt *time.Time                 `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status    *BulkSchemaExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-	// Human-readable detail for the current status (e.g. an error message when status is failed).
+	// Timestamp when the most recent execution started
+	StartedAt *time.Time `json:"started_at,omitempty" url:"started_at,omitempty"`
+	// Current status of the schema's most recent execution
+	Status *BulkSchemaExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	// Human-readable detail for the current status (e.g. an error message when status is failed)
 	StatusMessage *string `json:"status_message,omitempty" url:"status_message,omitempty"`
-	// Number of warnings emitted during the most recent execution.
+	// Number of warnings emitted during the most recent execution
 	WarningCount *int64 `json:"warning_count,omitempty" url:"warning_count,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3619,6 +3612,7 @@ var (
 )
 
 type CancelBulkSyncResponse struct {
+	// Outcome of the request, such as Cancellation requested or No active execution to cancel
 	Message *string `json:"message,omitempty" url:"message,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3703,6 +3697,7 @@ var (
 )
 
 type CancelBulkSyncResponseEnvelope struct {
+	// Result of the cancellation request
 	Data *CancelBulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3787,6 +3782,7 @@ var (
 )
 
 type CancelSyncExecutionResponse struct {
+	// Confirmation that cancellation was requested
 	Message *string `json:"message,omitempty" url:"message,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3871,6 +3867,7 @@ var (
 )
 
 type CancelSyncExecutionResponseEnvelope struct {
+	// Result of the cancellation request
 	Data *CancelSyncExecutionResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3958,10 +3955,14 @@ var (
 )
 
 type CompletionValue struct {
+	// Field IDs and values that must all match for this option to apply
 	DependsOn map[string]string `json:"depends_on,omitempty" url:"depends_on,omitempty"`
-	Label     *string           `json:"label,omitempty" url:"label,omitempty"`
-	Path      *string           `json:"path,omitempty" url:"path,omitempty"`
-	Value     any               `json:"value,omitempty" url:"value,omitempty"`
+	// Display label of the option
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	// Dot-separated position of the option in a hierarchy
+	Path *string `json:"path,omitempty" url:"path,omitempty"`
+	// Value to submit for this option
+	Value any `json:"value,omitempty" url:"value,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4088,8 +4089,10 @@ var (
 )
 
 type ConfigurationValue struct {
-	Items []any   `json:"items,omitempty" url:"items,omitempty"`
-	Type  *string `json:"type,omitempty" url:"type,omitempty"`
+	// Allowed values for the configuration field
+	Items []any `json:"items,omitempty" url:"items,omitempty"`
+	// JSON Schema type of the configuration field
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4274,12 +4277,13 @@ var (
 )
 
 type ConnectionProxyAPI struct {
-	// True for the API used when request.api is omitted.
+	// True for the API used when request.api is omitted
 	Default *bool `json:"default,omitempty" url:"default,omitempty"`
-	// What this API is for.
-	Description   *string                       `json:"description,omitempty" url:"description,omitempty"`
+	// What this API is for
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Base URL, query parameters, and headers that the proxy automatically applies to requests sent to this API
 	InheritedBase *ConnectionProxyInheritedBase `json:"inheritedBase,omitempty" url:"inheritedBase,omitempty"`
-	// Identifier to pass as request.api to call this API.
+	// Identifier to pass as request.api to call this API
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4604,29 +4608,29 @@ var (
 )
 
 type ConnectionProxyContract struct {
-	// HTTP methods the proxy accepts.
+	// HTTP methods the proxy accepts
 	AllowedMethods []string `json:"allowedMethods,omitempty" url:"allowedMethods,omitempty"`
-	// Headers the proxy strips from caller-supplied requests before forwarding.
+	// Headers the proxy strips from caller-supplied requests before forwarding
 	BlockedRequestHeaders []string `json:"blockedRequestHeaders,omitempty" url:"blockedRequestHeaders,omitempty"`
-	// Headers the proxy strips from upstream responses before returning them.
+	// Headers the proxy strips from upstream responses before returning them
 	BlockedResponseHeaders []string `json:"blockedResponseHeaders,omitempty" url:"blockedResponseHeaders,omitempty"`
-	// Supported JSON types for request.body (e.g. object, string, null).
+	// Supported JSON types for request.body (e.g. object, string, null)
 	BodyTypes []string `json:"bodyTypes,omitempty" url:"bodyTypes,omitempty"`
-	// Maximum accepted request body size in bytes.
+	// Maximum accepted request body size in bytes
 	MaxRequestBodyBytes *int `json:"maxRequestBodyBytes,omitempty" url:"maxRequestBodyBytes,omitempty"`
 	// Maximum response body size in bytes. Larger responses are truncated.
 	MaxResponseBodyBytes *int `json:"maxResponseBodyBytes,omitempty" url:"maxResponseBodyBytes,omitempty"`
-	// Rule the caller-supplied path must satisfy.
+	// Rule the caller-supplied path must satisfy
 	PathRule *string `json:"pathRule,omitempty" url:"pathRule,omitempty"`
 	// Supported request query inputs. Use query for structured URL-encoded parameters or rawQuery for exact passthrough.
 	QueryModes []string `json:"queryModes,omitempty" url:"queryModes,omitempty"`
-	// Supported value types for request.query.
+	// Supported value types for request.query
 	QueryValueTypes []string `json:"queryValueTypes,omitempty" url:"queryValueTypes,omitempty"`
-	// Maximum proxied requests per minute per connection before the proxy returns 429.
+	// Maximum proxied requests per minute per connection before the proxy returns 429
 	RateLimitPerMinute *int `json:"rateLimitPerMinute,omitempty" url:"rateLimitPerMinute,omitempty"`
-	// How request.rawQuery is appended and who is responsible for encoding.
+	// How request.rawQuery is appended and who is responsible for encoding
 	RawQueryRule *string `json:"rawQueryRule,omitempty" url:"rawQueryRule,omitempty"`
-	// Per-request timeout in milliseconds.
+	// Per-request timeout in milliseconds
 	TimeoutMs *int `json:"timeoutMs,omitempty" url:"timeoutMs,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4873,14 +4877,18 @@ var (
 type ConnectionProxyInfoResponse struct {
 	// Upstream APIs this connection exposes through the proxy, when there is more than one. Select one by passing its name as request.api; requests without request.api use the default.
 	APIs []*ConnectionProxyAPI `json:"apis,omitempty" url:"apis,omitempty"`
-	// Connection backend identifier (e.g. hubspot, salesforce).
+	// Connection backend identifier (e.g. hubspot, salesforce)
 	BackendType *string `json:"backendType,omitempty" url:"backendType,omitempty"`
-	// Unique identifier of the connection the proxy contract applies to.
-	ConnectionID    *string                       `json:"connectionId,omitempty" url:"connectionId,omitempty"`
-	InheritedBase   *ConnectionProxyInheritedBase `json:"inheritedBase,omitempty" url:"inheritedBase,omitempty"`
-	MergeRules      *ConnectionProxyMergeRules    `json:"mergeRules,omitempty" url:"mergeRules,omitempty"`
-	RequestContract *ConnectionProxyContract      `json:"requestContract,omitempty" url:"requestContract,omitempty"`
-	Stats           *ConnectionProxyStats         `json:"stats,omitempty" url:"stats,omitempty"`
+	// Unique identifier of the connection the proxy contract applies to
+	ConnectionID *string `json:"connectionId,omitempty" url:"connectionId,omitempty"`
+	// Base URL, query parameters, and headers that the proxy automatically applies to every outbound request. For connections that expose more than one API, this describes the default API.
+	InheritedBase *ConnectionProxyInheritedBase `json:"inheritedBase,omitempty" url:"inheritedBase,omitempty"`
+	// Rules describing how inherited query parameters and headers are merged with caller-supplied values
+	MergeRules *ConnectionProxyMergeRules `json:"mergeRules,omitempty" url:"mergeRules,omitempty"`
+	// Allowed request shapes, limits, and rate limits enforced by the proxy
+	RequestContract *ConnectionProxyContract `json:"requestContract,omitempty" url:"requestContract,omitempty"`
+	// Usage statistics for the connection over the last 24 hours
+	Stats *ConnectionProxyStats `json:"stats,omitempty" url:"stats,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -5169,9 +5177,9 @@ var (
 )
 
 type ConnectionProxyLockedHeader struct {
-	// Header name.
+	// Header name
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
-	// True when the header value was redacted before returning it.
+	// True when the header value was redacted before returning it
 	Redacted *bool `json:"redacted,omitempty" url:"redacted,omitempty"`
 	// Header value. Replaced with [REDACTED] if the header is sensitive.
 	Value *string `json:"value,omitempty" url:"value,omitempty"`
@@ -5287,9 +5295,9 @@ var (
 )
 
 type ConnectionProxyMergeRules struct {
-	// How caller-supplied headers are merged with the connection's inherited headers.
+	// How caller-supplied headers are merged with the connection's inherited headers
 	Headers *string `json:"headers,omitempty" url:"headers,omitempty"`
-	// How caller-supplied query parameters are merged with the connection's inherited query parameters.
+	// How caller-supplied query parameters are merged with the connection's inherited query parameters
 	Query *string `json:"query,omitempty" url:"query,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -5399,22 +5407,23 @@ var (
 type ConnectionProxyResponse struct {
 	// Upstream response body. If the upstream returned JSON, the body is returned as-is; otherwise it is returned as a string.
 	Body *string `json:"body,omitempty" url:"body,omitempty"`
-	// Content-Type of the upstream response.
+	// Content-Type of the upstream response
 	ContentType *string `json:"contentType,omitempty" url:"contentType,omitempty"`
 	// Response headers returned by the upstream service. Headers listed in blockedResponseHeaders are removed.
 	Headers map[string]*string `json:"headers,omitempty" url:"headers,omitempty"`
-	// Identifier for the async proxy job when async is true.
-	JobID     *string         `json:"jobId,omitempty" url:"jobId,omitempty"`
+	// Identifier for the async proxy job when async is true
+	JobID *string `json:"jobId,omitempty" url:"jobId,omitempty"`
+	// Current async proxy job status when async is true
 	JobStatus *WorkTaskStatus `json:"jobStatus,omitempty" url:"jobStatus,omitempty"`
-	// Polling URL for the async proxy job when async is true.
+	// Polling URL for the async proxy job when async is true
 	JobURL *string `json:"jobUrl,omitempty" url:"jobUrl,omitempty"`
-	// End-to-end latency of the proxied request in milliseconds.
+	// End-to-end latency of the proxied request in milliseconds
 	LatencyMs *int64 `json:"latencyMs,omitempty" url:"latencyMs,omitempty"`
-	// Identifier for this proxy call, suitable for correlating with audit logs.
+	// Identifier for this proxy call, suitable for correlating with audit logs
 	ProxyCallID *string `json:"proxyCallId,omitempty" url:"proxyCallId,omitempty"`
-	// HTTP status code returned by the upstream service for synchronous calls, or 202 when an async proxy job is accepted.
+	// HTTP status code returned by the upstream service for synchronous calls, or 202 when an async proxy job is accepted
 	Status *int `json:"status,omitempty" url:"status,omitempty"`
-	// True if the response body was truncated because it exceeded maxResponseBodyBytes.
+	// True if the response body was truncated because it exceeded maxResponseBodyBytes
 	Truncated *bool `json:"truncated,omitempty" url:"truncated,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -5625,6 +5634,7 @@ var (
 )
 
 type ConnectionProxySettingsEnvelope struct {
+	// The connection proxy settings
 	Data *ConnectionProxySettingsResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -5713,15 +5723,15 @@ var (
 )
 
 type ConnectionProxySettingsResponse struct {
-	// Connection backend identifier (e.g. hubspot, salesforce).
+	// Connection backend identifier (e.g. hubspot, salesforce)
 	BackendType *string `json:"backendType,omitempty" url:"backendType,omitempty"`
-	// Unique identifier of the requested connection.
+	// Unique identifier of the requested connection
 	ConnectionID *string `json:"connectionId,omitempty" url:"connectionId,omitempty"`
-	// True when the connection can currently be used through the Connection Proxy API.
+	// True when the connection can currently be used through the Connection Proxy API
 	Enabled *bool `json:"enabled,omitempty" url:"enabled,omitempty"`
 	// Unique identifier of the parent connection where proxy settings are stored. Omitted for non-shared connections.
 	ParentConnectionID *string `json:"parentConnectionId,omitempty" url:"parentConnectionId,omitempty"`
-	// True when the connection backend supports the Connection Proxy API.
+	// True when the connection backend supports the Connection Proxy API
 	Supported *bool `json:"supported,omitempty" url:"supported,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -5867,17 +5877,17 @@ var (
 )
 
 type ConnectionProxyStats struct {
-	// Total backend API calls made through this connection (including non-proxy calls) over the last 24 hours.
+	// Total backend API calls made through this connection (including non-proxy calls) over the last 24 hours
 	CallsLast24H *int `json:"callsLast24h,omitempty" url:"callsLast24h,omitempty"`
-	// Timestamp of the most recent proxy call, or null if none have occurred.
+	// Timestamp of the most recent proxy call, or null if none have occurred
 	LastProxyCallAt *time.Time `json:"lastProxyCallAt,omitempty" url:"lastProxyCallAt,omitempty"`
-	// Proxy calls that returned a 2xx status in the last 24 hours.
+	// Proxy calls that returned a 2xx status in the last 24 hours
 	Proxy2XxLast24H *int `json:"proxy2xxLast24h,omitempty" url:"proxy2xxLast24h,omitempty"`
-	// Proxy calls that returned a 4xx status in the last 24 hours.
+	// Proxy calls that returned a 4xx status in the last 24 hours
 	Proxy4XxLast24H *int `json:"proxy4xxLast24h,omitempty" url:"proxy4xxLast24h,omitempty"`
-	// Proxy calls that returned a 5xx status in the last 24 hours.
+	// Proxy calls that returned a 5xx status in the last 24 hours
 	Proxy5XxLast24H *int `json:"proxy5xxLast24h,omitempty" url:"proxy5xxLast24h,omitempty"`
-	// Proxy calls made in the last 24 hours.
+	// Proxy calls made in the last 24 hours
 	ProxyCallsLast24H *int `json:"proxyCallsLast24h,omitempty" url:"proxyCallsLast24h,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -6055,7 +6065,7 @@ var (
 )
 
 type ConnectionResponseSchema struct {
-	// API calls made to service in the last 24h (supported integrations only).
+	// API calls made to service in the last 24h (supported integrations only)
 	APICallsLast24Hours *int           `json:"api_calls_last_24_hours,omitempty" url:"api_calls_last_24_hours,omitempty"`
 	Configuration       map[string]any `json:"configuration,omitempty" url:"configuration,omitempty"`
 	CreatedAt           *time.Time     `json:"created_at,omitempty" url:"created_at,omitempty"`
@@ -6063,7 +6073,7 @@ type ConnectionResponseSchema struct {
 	ID                  *string        `json:"id,omitempty" url:"id,omitempty"`
 	Name                *string        `json:"name,omitempty" url:"name,omitempty"`
 	OrganizationID      *string        `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	// For shared connections, the ID of the parent connection.
+	// For shared connections, the ID of the parent connection
 	ParentConnectionID *string  `json:"parent_connection_id,omitempty" url:"parent_connection_id,omitempty"`
 	Policies           []string `json:"policies,omitempty" url:"policies,omitempty"`
 	// Observed connection-wide rate limiting, independent of connection health. Null when any required lookup is unavailable. Shared connections combine their own marker with their root connection's marker.
@@ -6659,6 +6669,7 @@ var (
 )
 
 type CreateSharedConnectionResponseEnvelope struct {
+	// The shared connection
 	Data *CreateSharedConnectionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -6743,6 +6754,7 @@ var (
 )
 
 type CreateSharedConnectionResponseSchema struct {
+	// Shared connection ID
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -6827,6 +6839,7 @@ var (
 )
 
 type ExecuteConnectionProxyEnvelope struct {
+	// The proxy call result
 	Data *ConnectionProxyResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -6915,11 +6928,16 @@ var (
 )
 
 type ExecutionConsoleLogEntry struct {
-	ID        *string        `json:"id,omitempty" url:"id,omitempty"`
-	Level     *string        `json:"level,omitempty" url:"level,omitempty"`
-	Message   *string        `json:"message,omitempty" url:"message,omitempty"`
-	Payload   map[string]any `json:"payload,omitempty" url:"payload,omitempty"`
-	Timestamp *time.Time     `json:"timestamp,omitempty" url:"timestamp,omitempty"`
+	// Console log entry ID, usable as the after cursor
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Severity level of the entry
+	Level *string `json:"level,omitempty" url:"level,omitempty"`
+	// Text of the log entry
+	Message *string `json:"message,omitempty" url:"message,omitempty"`
+	// Structured data logged with the entry
+	Payload map[string]any `json:"payload,omitempty" url:"payload,omitempty"`
+	// When the entry was logged
+	Timestamp *time.Time `json:"timestamp,omitempty" url:"timestamp,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -7068,8 +7086,10 @@ var (
 )
 
 type ExecutionConsoleLogsResponse struct {
-	Entries    []*ExecutionConsoleLogEntry `json:"entries,omitempty" url:"entries,omitempty"`
-	NextCursor *string                     `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+	// Console log entries on this page
+	Entries []*ExecutionConsoleLogEntry `json:"entries,omitempty" url:"entries,omitempty"`
+	// Cursor to pass as after to fetch newer entries; omitted when no entries are returned
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -7167,6 +7187,7 @@ var (
 )
 
 type ExecutionConsoleLogsResponseEnvelope struct {
+	// Console log entries and the cursor for newer entries
 	Data *ExecutionConsoleLogsResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -7257,12 +7278,19 @@ var (
 )
 
 type ExecutionCounts struct {
-	Delete   *int64 `json:"delete,omitempty" url:"delete,omitempty"`
-	Error    *int64 `json:"error,omitempty" url:"error,omitempty"`
-	Insert   *int64 `json:"insert,omitempty" url:"insert,omitempty"`
-	Total    *int64 `json:"total,omitempty" url:"total,omitempty"`
-	Update   *int64 `json:"update,omitempty" url:"update,omitempty"`
-	Upserts  *int64 `json:"upserts,omitempty" url:"upserts,omitempty"`
+	// Records deleted
+	Delete *int64 `json:"delete,omitempty" url:"delete,omitempty"`
+	// Records that failed with an error
+	Error *int64 `json:"error,omitempty" url:"error,omitempty"`
+	// Records inserted
+	Insert *int64 `json:"insert,omitempty" url:"insert,omitempty"`
+	// Records the execution processed
+	Total *int64 `json:"total,omitempty" url:"total,omitempty"`
+	// Records updated
+	Update *int64 `json:"update,omitempty" url:"update,omitempty"`
+	// Records upserted
+	Upserts *int64 `json:"upserts,omitempty" url:"upserts,omitempty"`
+	// Warnings raised during the execution
 	Warnings *int64 `json:"warnings,omitempty" url:"warnings,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -7432,8 +7460,10 @@ var (
 )
 
 type ExecutionLogResponse struct {
+	// When the signed URLs expire
 	Expires *time.Time `json:"expires,omitempty" url:"expires,omitempty"`
-	URLs    []string   `json:"urls,omitempty" url:"urls,omitempty"`
+	// Signed URLs for the execution log files of the requested type
+	URLs []string `json:"urls,omitempty" url:"urls,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -7573,6 +7603,7 @@ var (
 )
 
 type ExecutionLogsResponseEnvelope struct {
+	// Signed URLs for the execution log files
 	Data *ExecutionLogResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -7658,8 +7689,10 @@ var (
 )
 
 type ExportSyncLogsEnvelope struct {
+	// The exported log archive, with an empty url while the export job runs
 	Data *ExportSyncLogsResponse `json:"data,omitempty" url:"data,omitempty"`
-	Job  *JobResponse            `json:"job,omitempty" url:"job,omitempty"`
+	// Export job to poll, present while the log archive is being prepared
+	Job *JobResponse `json:"job,omitempty" url:"job,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -7757,7 +7790,7 @@ var (
 )
 
 type ExportSyncLogsResponse struct {
-	// Signed URL to download the exported log archive.
+	// Signed URL to download the exported log archive
 	URL *string `json:"url,omitempty" url:"url,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -7945,6 +7978,7 @@ var (
 )
 
 type GetConnectionProxyInfoEnvelope struct {
+	// The connection proxy contract
 	Data *ConnectionProxyInfoResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -8029,6 +8063,7 @@ var (
 )
 
 type GetExecutionResponseEnvelope struct {
+	// The execution
 	Data *GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -8121,15 +8156,23 @@ var (
 )
 
 type GetExecutionResponseSchema struct {
-	CompletedAt *time.Time           `json:"completed_at,omitempty" url:"completed_at,omitempty"`
-	Counts      *ExecutionCounts     `json:"counts,omitempty" url:"counts,omitempty"`
-	CreatedAt   *time.Time           `json:"created_at,omitempty" url:"created_at,omitempty"`
-	Errors      []string             `json:"errors,omitempty" url:"errors,omitempty"`
-	ID          *string              `json:"id,omitempty" url:"id,omitempty"`
-	StartedAt   *time.Time           `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status      *UtilExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-	Type        *string              `json:"type,omitempty" url:"type,omitempty"`
-	// Polytomic version which last ran this execution.
+	// When the execution completed
+	CompletedAt *time.Time `json:"completed_at,omitempty" url:"completed_at,omitempty"`
+	// Record counts for the execution
+	Counts *ExecutionCounts `json:"counts,omitempty" url:"counts,omitempty"`
+	// When the execution was created
+	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Execution errors not tied to a specific record
+	Errors []string `json:"errors,omitempty" url:"errors,omitempty"`
+	// Execution ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// When the execution started
+	StartedAt *time.Time `json:"started_at,omitempty" url:"started_at,omitempty"`
+	// Status of the execution
+	Status *UtilExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	// What triggered the execution
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
+	// Polytomic version which last ran this execution
 	Version *string `json:"version,omitempty" url:"version,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -8342,6 +8385,7 @@ var (
 )
 
 type GetSyncSourceMetaEnvelope struct {
+	// Source configuration choices for the connection
 	Data *SyncSourceMetaResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -8434,15 +8478,24 @@ var (
 )
 
 type HarborActionCapability struct {
-	Description  *string                     `json:"description,omitempty" url:"description,omitempty"`
-	Effect       *string                     `json:"effect,omitempty" url:"effect,omitempty"`
-	Idempotency  *SchemaOperationIdempotency `json:"idempotency,omitempty" url:"idempotency,omitempty"`
-	InputFields  []*HarborActionField        `json:"input_fields,omitempty" url:"input_fields,omitempty"`
-	LookupFields []*HarborActionField        `json:"lookup_fields,omitempty" url:"lookup_fields,omitempty"`
-	Name         *string                     `json:"name,omitempty" url:"name,omitempty"`
-	OperationID  *string                     `json:"operation_id,omitempty" url:"operation_id,omitempty"`
-	OutputFields []*HarborActionField        `json:"output_fields,omitempty" url:"output_fields,omitempty"`
-	SchemaID     *string                     `json:"schema_id,omitempty" url:"schema_id,omitempty"`
+	// Description of the operation
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Whether the operation only reads records (read_only) or changes them (mutating)
+	Effect *string `json:"effect,omitempty" url:"effect,omitempty"`
+	// Provider deduplication guarantee for repeated executions; null when the operation has none and an uncertain outcome must not be retried
+	Idempotency *SchemaOperationIdempotency `json:"idempotency,omitempty" url:"idempotency,omitempty"`
+	// Fields the operation accepts as input
+	InputFields []*HarborActionField `json:"input_fields,omitempty" url:"input_fields,omitempty"`
+	// Fields that can identify the record to act on
+	LookupFields []*HarborActionField `json:"lookup_fields,omitempty" url:"lookup_fields,omitempty"`
+	// Display name of the operation
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Operation ID
+	OperationID *string `json:"operation_id,omitempty" url:"operation_id,omitempty"`
+	// Fields the operation returns
+	OutputFields []*HarborActionField `json:"output_fields,omitempty" url:"output_fields,omitempty"`
+	// Schema ID
+	SchemaID *string `json:"schema_id,omitempty" url:"schema_id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -8638,6 +8691,7 @@ var (
 )
 
 type HarborActionDescribeEnvelope struct {
+	// The described action
 	Data *HarborActionCapability `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -8722,6 +8776,7 @@ var (
 )
 
 type HarborActionExecutionEnvelope struct {
+	// The execution receipt
 	Data *HarborActionExecutionResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -8819,23 +8874,34 @@ var (
 )
 
 type HarborActionExecutionResponse struct {
+	// Connection ID of the action
 	ConnectionID *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
-	// Original credential attribution, including when another credential submits a duplicate.
-	CredentialID    *string    `json:"credential_id,omitempty" url:"credential_id,omitempty"`
-	DeadlineAt      *time.Time `json:"deadline_at,omitempty" url:"deadline_at,omitempty"`
-	ExecutionID     *string    `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	FailureCategory *string    `json:"failure_category,omitempty" url:"failure_category,omitempty"`
-	// Submitted field names only, never their values.
-	FieldIDs      []string   `json:"field_ids,omitempty" url:"field_ids,omitempty"`
-	FinishedAt    *time.Time `json:"finished_at,omitempty" url:"finished_at,omitempty"`
-	LookupFieldID *string    `json:"lookup_field_id,omitempty" url:"lookup_field_id,omitempty"`
-	OperationID   *string    `json:"operation_id,omitempty" url:"operation_id,omitempty"`
+	// Original credential attribution, including when another credential submits a duplicate
+	CredentialID *string `json:"credential_id,omitempty" url:"credential_id,omitempty"`
+	// When an unfinished execution becomes unknown
+	DeadlineAt *time.Time `json:"deadline_at,omitempty" url:"deadline_at,omitempty"`
+	// Action execution ID
+	ExecutionID *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	// Category of a failed or unknown outcome
+	FailureCategory *string `json:"failure_category,omitempty" url:"failure_category,omitempty"`
+	// Submitted field names only, never their values
+	FieldIDs []string `json:"field_ids,omitempty" url:"field_ids,omitempty"`
+	// When the execution reached its final status
+	FinishedAt *time.Time `json:"finished_at,omitempty" url:"finished_at,omitempty"`
+	// Lookup field ID used to find the target record
+	LookupFieldID *string `json:"lookup_field_id,omitempty" url:"lookup_field_id,omitempty"`
+	// Operation ID of the action
+	OperationID *string `json:"operation_id,omitempty" url:"operation_id,omitempty"`
 	// True when receipt persistence was interrupted or uncertain. Inspect status; this response does not confirm durable acceptance or completion.
-	RecoveryRequired *bool                                `json:"recovery_required,omitempty" url:"recovery_required,omitempty"`
-	SchemaID         *string                              `json:"schema_id,omitempty" url:"schema_id,omitempty"`
-	StartedAt        *time.Time                           `json:"started_at,omitempty" url:"started_at,omitempty"`
-	Status           *HarborActionExecutionResponseStatus `json:"status,omitempty" url:"status,omitempty"`
-	StatusPath       *string                              `json:"status_path,omitempty" url:"status_path,omitempty"`
+	RecoveryRequired *bool `json:"recovery_required,omitempty" url:"recovery_required,omitempty"`
+	// Schema ID of the action
+	SchemaID *string `json:"schema_id,omitempty" url:"schema_id,omitempty"`
+	// When the execution started
+	StartedAt *time.Time `json:"started_at,omitempty" url:"started_at,omitempty"`
+	// Current execution status
+	Status *HarborActionExecutionResponseStatus `json:"status,omitempty" url:"status,omitempty"`
+	// API path for reading this execution receipt
+	StatusPath *string `json:"status_path,omitempty" url:"status_path,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -9112,6 +9178,7 @@ func (h *HarborActionExecutionResponse) String() string {
 	return fmt.Sprintf("%#v", h)
 }
 
+// Current execution status
 type HarborActionExecutionResponseStatus string
 
 const (
@@ -9155,17 +9222,28 @@ var (
 )
 
 type HarborActionField struct {
-	Definition  *TypesDefinition   `json:"definition,omitempty" url:"definition,omitempty"`
-	Description *string            `json:"description,omitempty" url:"description,omitempty"`
-	ID          *string            `json:"id,omitempty" url:"id,omitempty"`
-	MaxBytes    *int               `json:"max_bytes,omitempty" url:"max_bytes,omitempty"`
-	Name        *string            `json:"name,omitempty" url:"name,omitempty"`
-	NonBlank    *bool              `json:"non_blank,omitempty" url:"non_blank,omitempty"`
-	Nullable    *bool              `json:"nullable,omitempty" url:"nullable,omitempty"`
-	Pattern     *string            `json:"pattern,omitempty" url:"pattern,omitempty"`
-	Required    *bool              `json:"required,omitempty" url:"required,omitempty"`
-	Type        *UtilFieldType     `json:"type,omitempty" url:"type,omitempty"`
-	Values      []*CompletionValue `json:"values,omitempty" url:"values,omitempty"`
+	// Detailed type definition of the field
+	Definition *TypesDefinition `json:"definition,omitempty" url:"definition,omitempty"`
+	// Description of the field
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Field ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Maximum length of a string value in bytes
+	MaxBytes *int `json:"max_bytes,omitempty" url:"max_bytes,omitempty"`
+	// Display name of the field
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Whether a string value must contain a non-whitespace character
+	NonBlank *bool `json:"non_blank,omitempty" url:"non_blank,omitempty"`
+	// Whether the field accepts null
+	Nullable *bool `json:"nullable,omitempty" url:"nullable,omitempty"`
+	// Regular expression a string value must match
+	Pattern *string `json:"pattern,omitempty" url:"pattern,omitempty"`
+	// Whether input must include the field
+	Required *bool `json:"required,omitempty" url:"required,omitempty"`
+	// Type of the field
+	Type *UtilFieldType `json:"type,omitempty" url:"type,omitempty"`
+	// Known values for the field; not enforced on input
+	Values []*CompletionValue `json:"values,omitempty" url:"values,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -9390,7 +9468,9 @@ var (
 )
 
 type HarborActionListEnvelope struct {
-	Data       []*HarborActionSummary              `json:"data,omitempty" url:"data,omitempty"`
+	// Configured actions on this page
+	Data []*HarborActionSummary `json:"data,omitempty" url:"data,omitempty"`
+	// Pagination details for the next page
 	Pagination *HarborActionListEnvelopePagination `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -9484,11 +9564,13 @@ func (h *HarborActionListEnvelope) String() string {
 	return fmt.Sprintf("%#v", h)
 }
 
+// Pagination details for the next page
 var (
 	harborActionListEnvelopePaginationFieldNextPageToken = big.NewInt(1 << 0)
 )
 
 type HarborActionListEnvelopePagination struct {
+	// Token for the next page
 	NextPageToken *string `json:"next_page_token,omitempty" url:"next_page_token,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -9573,6 +9655,7 @@ var (
 )
 
 type HarborActionLookupEnvelope struct {
+	// Exactly one record projected to the selected currently granted outputs
 	Data *SchemaRecord `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -9658,8 +9741,10 @@ var (
 )
 
 type HarborActionPreparation struct {
-	ExecutionID *string    `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	ExpiresAt   *time.Time `json:"expires_at,omitempty" url:"expires_at,omitempty"`
+	// Execution ID of the prepared action
+	ExecutionID *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	// When the prepared action expires
+	ExpiresAt *time.Time `json:"expires_at,omitempty" url:"expires_at,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -9765,6 +9850,7 @@ var (
 )
 
 type HarborActionPreparationEnvelope struct {
+	// The prepared action
 	Data *HarborActionPreparation `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -9853,11 +9939,16 @@ var (
 )
 
 type HarborActionSummary struct {
-	ConnectionID   *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	// Connection ID
+	ConnectionID *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	// Name of the connection; empty when unavailable is true
 	ConnectionName *string `json:"connection_name,omitempty" url:"connection_name,omitempty"`
-	OperationID    *string `json:"operation_id,omitempty" url:"operation_id,omitempty"`
-	SchemaID       *string `json:"schema_id,omitempty" url:"schema_id,omitempty"`
-	Unavailable    *bool   `json:"unavailable,omitempty" url:"unavailable,omitempty"`
+	// Operation ID
+	OperationID *string `json:"operation_id,omitempty" url:"operation_id,omitempty"`
+	// Schema ID
+	SchemaID *string `json:"schema_id,omitempty" url:"schema_id,omitempty"`
+	// Whether the connection cannot currently run actions; schema and operation availability is checked when the action is described
+	Unavailable *bool `json:"unavailable,omitempty" url:"unavailable,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -10000,7 +10091,7 @@ var (
 type IdentityFunction struct {
 	// Identifier of the identity function; use this value when configuring the sync identity.
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Human-readable label for the identity function.
+	// Human-readable label for the identity function
 	Label *string `json:"label,omitempty" url:"label,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -10103,12 +10194,13 @@ var (
 )
 
 type JobResponse struct {
-	// Error message if the job failed.
+	// Error message if the job failed
 	Error *string `json:"error,omitempty" url:"error,omitempty"`
-	// Identifier of the job.
+	// Identifier of the job
 	JobID *string `json:"job_id,omitempty" url:"job_id,omitempty"`
 	// Job result. Shape depends on the job type; only populated once status is done.
-	Result any             `json:"result,omitempty" url:"result,omitempty"`
+	Result any `json:"result,omitempty" url:"result,omitempty"`
+	// Current execution status of the job (e.g. running, done, failed)
 	Status *WorkTaskStatus `json:"status,omitempty" url:"status,omitempty"`
 	// Job type. Matches the type used to fetch the job.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
@@ -10251,6 +10343,7 @@ var (
 )
 
 type ListBulkSchemaEnvelope struct {
+	// Schemas configured on the bulk sync
 	Data []*BulkSchemaListItem `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -10336,8 +10429,10 @@ var (
 )
 
 type ListBulkSyncExecutionsEnvelope struct {
-	Data       []*BulkSyncExecution `json:"data,omitempty" url:"data,omitempty"`
-	Pagination *PaginationDetails   `json:"pagination,omitempty" url:"pagination,omitempty"`
+	// Executions on this page
+	Data []*BulkSyncExecution `json:"data,omitempty" url:"data,omitempty"`
+	// Pagination details for the next page
+	Pagination *PaginationDetails `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -10435,6 +10530,7 @@ var (
 )
 
 type ListBulkSyncExecutionsStatusEnvelope struct {
+	// Execution status for each requested bulk sync
 	Data []*BulkSyncExecutionStatus `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -10520,8 +10616,10 @@ var (
 )
 
 type ListExecutionResponseEnvelope struct {
-	Data       []*GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
-	Pagination *PaginationDetails            `json:"pagination,omitempty" url:"pagination,omitempty"`
+	// Executions on this page
+	Data []*GetExecutionResponseSchema `json:"data,omitempty" url:"data,omitempty"`
+	// Pagination details for the next page
+	Pagination *PaginationDetails `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -10704,9 +10802,9 @@ var (
 )
 
 type LogsIndexEntry struct {
-	// Number of records reported for this log type across all segment files.
+	// Number of records reported for this log type across all segment files
 	Count *int64 `json:"count,omitempty" url:"count,omitempty"`
-	// Endpoint that returns signed URLs for this log type's segment files.
+	// Endpoint that returns signed URLs for this log type's segment files
 	URL *string `json:"url,omitempty" url:"url,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -10810,11 +10908,17 @@ var (
 )
 
 type LogsIndexResponse struct {
-	Deletes  *LogsIndexEntry `json:"deletes,omitempty" url:"deletes,omitempty"`
-	Errors   *LogsIndexEntry `json:"errors,omitempty" url:"errors,omitempty"`
-	Inserts  *LogsIndexEntry `json:"inserts,omitempty" url:"inserts,omitempty"`
-	Records  *LogsIndexEntry `json:"records,omitempty" url:"records,omitempty"`
-	Updates  *LogsIndexEntry `json:"updates,omitempty" url:"updates,omitempty"`
+	// Count and retrieval URL for the log of records deleted at the destination; omitted when no records were deleted
+	Deletes *LogsIndexEntry `json:"deletes,omitempty" url:"deletes,omitempty"`
+	// Count and retrieval URL for the log of records that failed to write; omitted when no errors were produced
+	Errors *LogsIndexEntry `json:"errors,omitempty" url:"errors,omitempty"`
+	// Count and retrieval URL for the log of records inserted at the destination; omitted when no records were inserted
+	Inserts *LogsIndexEntry `json:"inserts,omitempty" url:"inserts,omitempty"`
+	// Count and retrieval URL for the log of every record processed by the execution; omitted when no records were processed
+	Records *LogsIndexEntry `json:"records,omitempty" url:"records,omitempty"`
+	// Count and retrieval URL for the log of records updated at the destination; omitted when no records were updated
+	Updates *LogsIndexEntry `json:"updates,omitempty" url:"updates,omitempty"`
+	// Count and retrieval URL for the log of records that produced warnings during the write; omitted when no warnings were produced
 	Warnings *LogsIndexEntry `json:"warnings,omitempty" url:"warnings,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -10969,6 +11073,7 @@ var (
 )
 
 type LogsIndexResponseEnvelope struct {
+	// Record-log index for the execution
 	Data *LogsIndexResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -11058,17 +11163,17 @@ var (
 )
 
 type Mode struct {
-	// Description of the operations performed in this mode.
+	// Description of the operations performed in this mode
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Human-readable label for the sync mode.
+	// Human-readable label for the sync mode
 	Label *string `json:"label,omitempty" url:"label,omitempty"`
 	// Identifier of the sync mode; use this value when configuring a sync.
 	Mode *string `json:"mode,omitempty" url:"mode,omitempty"`
-	// True if this mode requires a sync identity to match records on.
+	// True if this mode requires a sync identity to match records on
 	RequiresIdentity *bool `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
-	// True if per-field sync modes (e.g. write-once vs. always-update) may be configured under this mode.
+	// True if per-field sync modes (e.g. write-once vs. always-update) may be configured under this mode
 	SupportsFieldSyncMode *bool `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
-	// True if this mode allows target filters to constrain which destination records are touched.
+	// True if this mode allows target filters to constrain which destination records are touched
 	SupportsTargetFilters *bool `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -11234,18 +11339,30 @@ var (
 )
 
 type ModelField struct {
-	CreatedAt   *time.Time   `json:"created_at,omitempty" url:"created_at,omitempty"`
-	CreatedBy   *OutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
-	Description *string      `json:"description,omitempty" url:"description,omitempty"`
-	Example     any          `json:"example,omitempty" url:"example,omitempty"`
-	ID          *string      `json:"id,omitempty" url:"id,omitempty"`
-	Label       *string      `json:"label,omitempty" url:"label,omitempty"`
-	Name        *string      `json:"name,omitempty" url:"name,omitempty"`
-	RemoteType  *string      `json:"remote_type,omitempty" url:"remote_type,omitempty"`
-	Type        *string      `json:"type,omitempty" url:"type,omitempty"`
-	Unique      *bool        `json:"unique,omitempty" url:"unique,omitempty"`
-	UpdatedAt   *time.Time   `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	UserAdded   *bool        `json:"user_added,omitempty" url:"user_added,omitempty"`
+	// When the field was created
+	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Actor that created the field
+	CreatedBy *OutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
+	// Description of the field
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Example value for the field
+	Example any `json:"example,omitempty" url:"example,omitempty"`
+	// Model field ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Display label for the field
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	// Source field name
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Field type reported by the source
+	RemoteType *string `json:"remote_type,omitempty" url:"remote_type,omitempty"`
+	// Polytomic field type
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
+	// Whether the field uniquely identifies records
+	Unique *bool `json:"unique,omitempty" url:"unique,omitempty"`
+	// When the field was last updated
+	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	// Whether the field is user-defined rather than discovered from the source
+	UserAdded *bool `json:"user_added,omitempty" url:"user_added,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -11534,8 +11651,11 @@ var (
 )
 
 type OutputActor struct {
-	ID   *string `json:"id,omitempty" url:"id,omitempty"`
+	// ID of the actor, such as the user ID for a user
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Display name of the actor
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Kind of actor, such as user
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -11648,6 +11768,7 @@ var (
 )
 
 type PaginationDetails struct {
+	// Token for fetching the next page of results
 	NextPageToken *string `json:"next_page_token,omitempty" url:"next_page_token,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -11736,8 +11857,10 @@ var (
 type PickValue struct {
 	// Field IDs and internal values required for this option to apply. All entries must match. Omitted for independent options.
 	DependsOn map[string]string `json:"depends_on,omitempty" url:"depends_on,omitempty"`
-	Label     *string           `json:"label,omitempty" url:"label,omitempty"`
-	Value     *string           `json:"value,omitempty" url:"value,omitempty"`
+	// Display label of the option
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	// Value of the option
+	Value *string `json:"value,omitempty" url:"value,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -11850,6 +11973,7 @@ var (
 )
 
 type PolicyAction struct {
+	// Action the roles may perform: create, delete, edit, trigger, query, export, apply_policy, modify_policy, sync_to, sync_from, connect, manage_access, or publish
 	Action  string   `json:"action" url:"action"`
 	RoleIDs []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
 
@@ -12512,6 +12636,7 @@ var (
 )
 
 type RunQueryEnvelope struct {
+	// The submitted query
 	Data *RunQueryResult `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -12604,7 +12729,7 @@ var (
 type RunQueryResult struct {
 	// The number of rows returned by the query. This will not be returned until the query completes.
 	Count *int64 `json:"count,omitempty" url:"count,omitempty"`
-	// Error message if the query failed.
+	// Error message if the query failed
 	Error *string `json:"error,omitempty" url:"error,omitempty"`
 	// The time at which the query will expire and be deleted. This will not be returned until the query completes.
 	Expires *string `json:"expires,omitempty" url:"expires,omitempty"`
@@ -12612,9 +12737,10 @@ type RunQueryResult struct {
 	Fields []string `json:"fields,omitempty" url:"fields,omitempty"`
 	// The ID of the query task. Poll GET /api/queries/{id} until the task reaches the terminal status done, failed, or unknown.
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// The query results, returned as an array of objects.
+	// The query results, returned as an array of objects
 	Results []map[string]any `json:"results,omitempty" url:"results,omitempty"`
-	Status  *QueryStatus     `json:"status,omitempty" url:"status,omitempty"`
+	// Current query status. The terminal statuses are done, failed, and unknown. Unknown means execution started but its durable terminal result was lost or expired.
+	Status *QueryStatus `json:"status,omitempty" url:"status,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -12782,6 +12908,7 @@ var (
 )
 
 type ScheduleEnvelope struct {
+	// The bulk sync schedule
 	Data *BulkBulkSyncSchedule `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -12912,6 +13039,7 @@ var (
 )
 
 type SchedulesEnvelope struct {
+	// Schedules configured on the bulk sync
 	Data []*BulkBulkSyncSchedule `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -12998,9 +13126,12 @@ var (
 )
 
 type Schema struct {
+	// Fields in the schema
 	Fields []*SchemaField `json:"fields,omitempty" url:"fields,omitempty"`
-	ID     *string        `json:"id,omitempty" url:"id,omitempty"`
-	Name   *string        `json:"name,omitempty" url:"name,omitempty"`
+	// Schema ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Display name of the schema
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -13115,10 +13246,14 @@ var (
 )
 
 type SchemaAssociation struct {
-	ID              *string  `json:"id,omitempty" url:"id,omitempty"`
-	Name            *string  `json:"name,omitempty" url:"name,omitempty"`
-	ReferenceTo     []string `json:"reference_to,omitempty" url:"reference_to,omitempty"`
-	ReferencedField *string  `json:"referenced_field,omitempty" url:"referenced_field,omitempty"`
+	// Association ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Association name
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Schema IDs the field references
+	ReferenceTo []string `json:"reference_to,omitempty" url:"reference_to,omitempty"`
+	// Field in the referenced schema that the field matches
+	ReferencedField *string `json:"referenced_field,omitempty" url:"referenced_field,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -13255,24 +13390,30 @@ var (
 )
 
 type SchemaField struct {
+	// Reference this field holds to records in other schemas
 	Association *SchemaAssociation `json:"association,omitempty" url:"association,omitempty"`
-	ID          *string            `json:"id,omitempty" url:"id,omitempty"`
-	// Whether this field is part of the schema's primary key, including any user override.
-	IsPrimaryKey *bool   `json:"is_primary_key,omitempty" url:"is_primary_key,omitempty"`
-	Name         *string `json:"name,omitempty" url:"name,omitempty"`
-	// JSONPath used to extract the field from each source record; only meaningful for document-style backends.
+	// Schema field ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Whether this field is part of the schema's primary key, including any user override
+	IsPrimaryKey *bool `json:"is_primary_key,omitempty" url:"is_primary_key,omitempty"`
+	// Display name of the field
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// JSONPath used to extract the field from each source record; only meaningful for document-style backends
 	Path *string `json:"path,omitempty" url:"path,omitempty"`
-	// The user-set primary key status for this field, which takes precedence over source_primary_key; omitted when no override is set.
+	// The user-set primary key status for this field, which takes precedence over source_primary_key; omitted when no override is set
 	PrimaryKeyOverride *bool `json:"primary_key_override,omitempty" url:"primary_key_override,omitempty"`
-	// The type of the field from the remote system.
+	// The type of the field from the remote system
 	RemoteType *string `json:"remote_type,omitempty" url:"remote_type,omitempty"`
-	// Whether the source system reports this field as part of the schema's primary key.
-	SourcePrimaryKey *bool          `json:"source_primary_key,omitempty" url:"source_primary_key,omitempty"`
-	Type             *UtilFieldType `json:"type,omitempty" url:"type,omitempty"`
-	TypeSpec         *TypesType     `json:"type_spec,omitempty" url:"type_spec,omitempty"`
-	// True when the field's effective definition came from a user override.
-	UserManaged *bool        `json:"user_managed,omitempty" url:"user_managed,omitempty"`
-	Values      []*PickValue `json:"values,omitempty" url:"values,omitempty"`
+	// Whether the source system reports this field as part of the schema's primary key
+	SourcePrimaryKey *bool `json:"source_primary_key,omitempty" url:"source_primary_key,omitempty"`
+	// The type classification for the field
+	Type *UtilFieldType `json:"type,omitempty" url:"type,omitempty"`
+	// The type specification for the field
+	TypeSpec *TypesType `json:"type_spec,omitempty" url:"type_spec,omitempty"`
+	// True when the field's effective definition came from a user override
+	UserManaged *bool `json:"user_managed,omitempty" url:"user_managed,omitempty"`
+	// Allowed values for the field
+	Values []*PickValue `json:"values,omitempty" url:"values,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -13511,8 +13652,10 @@ var (
 )
 
 type SchemaOperationIdempotency struct {
+	// Deduplication window in nanoseconds
 	RetentionNs *TimeDuration `json:"retention_ns,omitempty" url:"retention_ns,omitempty"`
-	Scope       *string       `json:"scope,omitempty" url:"scope,omitempty"`
+	// Where idempotency keys must be unique
+	Scope *string `json:"scope,omitempty" url:"scope,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -13616,7 +13759,7 @@ var (
 type SourceMeta struct {
 	// True when items is non-empty. Callers should present the values as a picker.
 	HasItems *bool `json:"has_items,omitempty" url:"has_items,omitempty"`
-	// Valid values the caller may choose for this configuration item.
+	// Valid values the caller may choose for this configuration item
 	Items []any `json:"items,omitempty" url:"items,omitempty"`
 	// Other configuration items this item depends on; exactly one of the listed items must also be selected.
 	RequiresOneOf []string `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
@@ -13735,10 +13878,11 @@ var (
 )
 
 type SupportedFilterFunction struct {
+	// Identifier of the comparison; use this value as a target filter condition's function.
 	ID *FilterFunction `json:"id,omitempty" url:"id,omitempty"`
-	// Human-readable label for the comparison.
+	// Human-readable label for the comparison
 	Label *string `json:"label,omitempty" url:"label,omitempty"`
-	// True if this comparison takes a list of values rather than a single one.
+	// True if this comparison takes a list of values rather than a single one
 	MultiValue *bool `json:"multi_value,omitempty" url:"multi_value,omitempty"`
 	// True if a condition using this comparison must carry a value; comparisons such as 'IsNotNull' take none.
 	RequiresValue *bool `json:"requires_value,omitempty" url:"requires_value,omitempty"`
@@ -13886,12 +14030,13 @@ var (
 )
 
 type SupportedMode struct {
+	// Sync mode identifier
 	ID *ModelsyncSyncTargetMode `json:"id,omitempty" url:"id,omitempty"`
-	// True if the sync mode requires an identity field mapping.
+	// True if the sync mode requires an identity field mapping
 	RequiresIdentity *bool `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
-	// True if the target supports per-field sync modes.
+	// True if the target supports per-field sync modes
 	SupportsPerFieldMode *bool `json:"supports_per_field_mode,omitempty" url:"supports_per_field_mode,omitempty"`
-	// True if the sync mode supports target filters.
+	// True if the sync mode supports target filters
 	SupportsTargetFilters *bool `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -14033,37 +14178,37 @@ var (
 )
 
 type SyncDestinationProperties struct {
-	// True if execution reports for this destination will not break record counts out by operation (insert vs. update); typical for upsert-only destinations.
+	// True if execution reports for this destination will not break record counts out by operation (insert vs. update); typical for upsert-only destinations
 	DoesNotReportOperationCounts *bool `json:"does_not_report_operation_counts,omitempty" url:"does_not_report_operation_counts,omitempty"`
 	// How this destination can combine more than one identity mapping: 'priority', 'and', or both. Every combination is supported when empty.
 	IdentityLogics []string `json:"identity_logics,omitempty" url:"identity_logics,omitempty"`
-	// True if a sync may be configured with only a target identity and no field mappings.
+	// True if a sync may be configured with only a target identity and no field mappings
 	MappingsNotRequired *bool `json:"mappings_not_required,omitempty" url:"mappings_not_required,omitempty"`
 	// Label to display when prompting for the name of a newly-created target (e.g. "Audience name", "Table name").
 	NewTargetLabel *string `json:"new_target_label,omitempty" url:"new_target_label,omitempty"`
-	// True if a sync may pick source fields without mapping each one to a specific target field (used by webhooks and target creators).
+	// True if a sync may pick source fields without mapping each one to a specific target field (used by webhooks and target creators)
 	OptionalTargetMappings *bool `json:"optional_target_mappings,omitempty" url:"optional_target_mappings,omitempty"`
-	// For destinations with multiple metadata dictionaries, identifies which dictionary new custom properties should be added to.
+	// For destinations with multiple metadata dictionaries, identifies which dictionary new custom properties should be added to
 	PrimaryMetadataObject *string `json:"primary_metadata_object,omitempty" url:"primary_metadata_object,omitempty"`
-	// True if the destination requires target-level configuration before a sync can run.
+	// True if the destination requires target-level configuration before a sync can run
 	RequiresConfiguration *bool `json:"requires_configuration,omitempty" url:"requires_configuration,omitempty"`
-	// True if a sync may create new fields on this target as part of mapping.
+	// True if a sync may create new fields on this target as part of mapping
 	SupportsFieldCreation *bool `json:"supports_field_creation,omitempty" url:"supports_field_creation,omitempty"`
-	// True if the destination supports field-level encryption.
+	// True if the destination supports field-level encryption
 	SupportsFieldEncryption *bool `json:"supports_field_encryption,omitempty" url:"supports_field_encryption,omitempty"`
-	// True if the type of a newly-created field can be chosen at sync configuration time.
+	// True if the type of a newly-created field can be chosen at sync configuration time
 	SupportsFieldTypeSelection *bool `json:"supports_field_type_selection,omitempty" url:"supports_field_type_selection,omitempty"`
-	// True if a target filter on this destination may compare against a model field's value, resolved separately for each record, rather than against a literal value.
+	// True if a target filter on this destination may compare against a model field's value, resolved separately for each record, rather than against a literal value
 	SupportsFilterValueFields *bool `json:"supports_filter_value_fields,omitempty" url:"supports_filter_value_fields,omitempty"`
-	// True if a sync may create a new field on this target to use as the sync identity.
+	// True if a sync may create a new field on this target to use as the sync identity
 	SupportsIdentityFieldCreation *bool `json:"supports_identity_field_creation,omitempty" url:"supports_identity_field_creation,omitempty"`
-	// True if the destination can match records on more than one identity mapping.
+	// True if the destination can match records on more than one identity mapping
 	SupportsMultipleIdentities *bool `json:"supports_multiple_identities,omitempty" url:"supports_multiple_identities,omitempty"`
 	// True if target filters are supported on this destination; the chosen sync mode may further constrain availability.
 	SupportsTargetFilters *bool `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
-	// True if writing to this target will create a new object in the destination system rather than write to an existing one.
+	// True if writing to this target will create a new object in the destination system rather than write to an existing one
 	TargetCreator *bool `json:"target_creator,omitempty" url:"target_creator,omitempty"`
-	// True if field IDs (rather than display names) should be used when labeling records in previews and logs.
+	// True if field IDs (rather than display names) should be used when labeling records in previews and logs
 	UseFieldNamesAsLabels *bool `json:"use_field_names_as_labels,omitempty" url:"use_field_names_as_labels,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -14361,13 +14506,13 @@ var (
 )
 
 type SyncErrorHandling struct {
-	// Whether records that fail are automatically retried on the next run.
+	// Whether records that fail are automatically retried on the next run
 	AutoRetryRecordErrors *bool `json:"auto_retry_record_errors,omitempty" url:"auto_retry_record_errors,omitempty"`
-	// Whether subscribers are notified when individual records fail, in addition to whole-sync failures.
+	// Whether subscribers are notified when individual records fail, in addition to whole-sync failures
 	NotifyOnRecordErrors *bool `json:"notify_on_record_errors,omitempty" url:"notify_on_record_errors,omitempty"`
-	// Email addresses notified when this sync fails.
+	// Email addresses notified when this sync fails
 	Subscribers []string `json:"subscribers,omitempty" url:"subscribers,omitempty"`
-	// Whether subscribers are notified when the sync completes with warnings.
+	// Whether subscribers are notified when the sync completes with warnings
 	WarningNotifications *bool `json:"warning_notifications,omitempty" url:"warning_notifications,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -14494,6 +14639,7 @@ var (
 )
 
 type SyncErrorHandlingEnvelope struct {
+	// Error handling settings for the model sync
 	Data *SyncErrorHandling `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -14580,11 +14726,11 @@ var (
 )
 
 type SyncSourceMetaResponse struct {
-	// Additional configuration fields available for this source, keyed by field name.
+	// Additional configuration fields available for this source, keyed by field name
 	Configuration map[string]*ConfigurationValue `json:"configuration,omitempty" url:"configuration,omitempty"`
-	// Map of configuration item name to its metadata (available values, required-one-of groups).
+	// Map of configuration item name to its metadata (available values, required-one-of groups)
 	Items map[string]*SourceMeta `json:"items,omitempty" url:"items,omitempty"`
-	// Configuration items where exactly one must be selected by the caller.
+	// Configuration items where exactly one must be selected by the caller
 	RequiresOneOf []string `json:"requires_one_of,omitempty" url:"requires_one_of,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -14698,9 +14844,9 @@ var (
 )
 
 type TargetCreator struct {
-	// The properties that are required for target creation.
+	// The properties that are required for target creation
 	Properties []*TargetPropertyValues `json:"properties,omitempty" url:"properties,omitempty"`
-	// True if the connection supports target creation.
+	// True if the connection supports target creation
 	Supported *bool `json:"supported,omitempty" url:"supported,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -14814,35 +14960,35 @@ var (
 )
 
 type TargetField struct {
-	// True if this field is an association (foreign key) to another object rather than a value column.
+	// True if this field is an association (foreign key) to another object rather than a value column
 	Association *bool `json:"association,omitempty" url:"association,omitempty"`
-	// True if this field can be written when creating a new record.
+	// True if this field can be written when creating a new record
 	Createable *bool `json:"createable,omitempty" url:"createable,omitempty"`
-	// Description of the field, when the backend provides one.
+	// Description of the field, when the backend provides one
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// True if this field supports field-level encryption.
+	// True if this field supports field-level encryption
 	Encryptable *bool `json:"encryptable,omitempty" url:"encryptable,omitempty"`
 	// Comparisons this field accepts in a target filter. A condition whose function is absent from this list is rejected when the sync is saved. Empty when the destination publishes no per-field list, in which case any comparison is accepted.
 	FilterFunctions []*SupportedFilterFunction `json:"filter_functions,omitempty" url:"filter_functions,omitempty"`
-	// True if this field can be used in a target filter.
+	// True if this field can be used in a target filter
 	Filterable *bool `json:"filterable,omitempty" url:"filterable,omitempty"`
 	// Backend-specific identifier of the field; use this value when configuring field mappings.
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Identity match functions supported when this field is used as the sync identity (e.g. exact match, hashed match).
+	// Identity match functions supported when this field is used as the sync identity (e.g. exact match, hashed match)
 	IdentityFunctions []*IdentityFunction `json:"identity_functions,omitempty" url:"identity_functions,omitempty"`
 	// True if this association field holds a set of references rather than one; every value mapped to it is a member of the set. False for a field that is not an association, and for one whose destination has not declared how many references the relationship holds.
 	MultipleAssociations *bool `json:"multiple_associations,omitempty" url:"multiple_associations,omitempty"`
-	// Human-readable name of the field.
+	// Human-readable name of the field
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
-	// True if a model sync must map a value to this field for records to be accepted.
+	// True if a model sync must map a value to this field for records to be accepted
 	Required *bool `json:"required,omitempty" url:"required,omitempty"`
-	// Native type reported by the destination system.
+	// Native type reported by the destination system
 	SourceType *string `json:"source_type,omitempty" url:"source_type,omitempty"`
-	// True if this field may be used as the identity (match key) for syncs that require one.
+	// True if this field may be used as the identity (match key) for syncs that require one
 	SupportsIdentity *bool `json:"supports_identity,omitempty" url:"supports_identity,omitempty"`
-	// Polytomic-normalized type used when mapping values to this field.
+	// Polytomic-normalized type used when mapping values to this field
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
-	// True if this field can be written when updating an existing record.
+	// True if this field can be written when updating an existing record
 	Updateable *bool `json:"updateable,omitempty" url:"updateable,omitempty"`
 	// Stored field options as value and label pairs. Use value when configuring mappings. Omitted when no options are available; enumeration fields may still omit options.
 	Values []*PickValue `json:"values,omitempty" url:"values,omitempty"`
@@ -15141,11 +15287,11 @@ var (
 )
 
 type TargetObject struct {
-	// The identifier of the target object.
+	// The identifier of the target object
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// The supported sync modes and their properties for the target object.
+	// The supported sync modes and their properties for the target object
 	Modes []*SupportedMode `json:"modes,omitempty" url:"modes,omitempty"`
-	// The name of the target object.
+	// The name of the target object
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -15259,8 +15405,10 @@ var (
 )
 
 type TargetObjectsResponseEnvelope struct {
-	Data           []*TargetObject `json:"data,omitempty" url:"data,omitempty"`
-	TargetCreation *TargetCreator  `json:"target_creation,omitempty" url:"target_creation,omitempty"`
+	// Target objects available on the connection
+	Data []*TargetObject `json:"data,omitempty" url:"data,omitempty"`
+	// The target creation properties
+	TargetCreation *TargetCreator `json:"target_creation,omitempty" url:"target_creation,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -15361,13 +15509,13 @@ var (
 )
 
 type TargetPropertyValues struct {
-	// True if the property is an enum.
+	// True if the property is an enum
 	Enum *bool `json:"enum,omitempty" url:"enum,omitempty"`
-	// The identifier of the target property.
+	// The identifier of the target property
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// A human readable title for the target property.
+	// A human readable title for the target property
 	Title *string `json:"title,omitempty" url:"title,omitempty"`
-	// Valid values for the target property.
+	// Valid values for the target property
 	Values []*UtilEnumValue `json:"values,omitempty" url:"values,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -15494,6 +15642,7 @@ var (
 )
 
 type TargetPropertyValuesEnvelope struct {
+	// The target-creation property and its valid values
 	Data *TargetPropertyValues `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -15589,8 +15738,9 @@ type TargetResponse struct {
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 	// Sync modes the target supports (e.g. create, update, upsert). The chosen mode determines which operations the sync may perform.
 	Modes []*Mode `json:"modes,omitempty" url:"modes,omitempty"`
-	// Human-readable name of the target object.
-	Name       *string                    `json:"name,omitempty" url:"name,omitempty"`
+	// Human-readable name of the target object
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Capability flags describing how the target behaves; controls which sync options are valid for this target
 	Properties *SyncDestinationProperties `json:"properties,omitempty" url:"properties,omitempty"`
 	// Timestamp the target's cached schema was last refreshed. Zero for targets that do not have a cached schema (including not-yet-created targets).
 	RefreshedAt *time.Time `json:"refreshed_at,omitempty" url:"refreshed_at,omitempty"`
@@ -15755,6 +15905,7 @@ var (
 )
 
 type TargetResponseEnvelope struct {
+	// The target object and its fields
 	Data *TargetResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -16161,9 +16312,13 @@ var (
 )
 
 type UpdateBulkField struct {
-	Enabled        *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
-	ID             *string `json:"id,omitempty" url:"id,omitempty"`
-	Obfuscated     *bool   `json:"obfuscated,omitempty" url:"obfuscated,omitempty"`
+	// Whether this field is synced. Primary-key fields are always enabled while their schema is enabled, and a false value for them is ignored.
+	Enabled *bool `json:"enabled,omitempty" url:"enabled,omitempty"`
+	// Source field ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Whether the field's values are written to the destination as SHA-256 hashes
+	Obfuscated *bool `json:"obfuscated,omitempty" url:"obfuscated,omitempty"`
+	// User-specified override for the field's destination name
 	UserOutputName *string `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -16290,6 +16445,7 @@ var (
 )
 
 type UpdateBulkSyncSchemasEnvelope struct {
+	// All schemas on the bulk sync after the update
 	Data []*BulkSchema `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -16375,7 +16531,9 @@ var (
 )
 
 type UtilEnumValue struct {
+	// Display label for the option
 	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	// Value to send for this option
 	Value *string `json:"value,omitempty" url:"value,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

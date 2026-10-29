@@ -49,9 +49,12 @@ var (
 )
 
 type ExecutionsListRequest struct {
-	PageToken     *string `json:"-" url:"page_token,omitempty"`
-	OnlyCompleted *bool   `json:"-" url:"only_completed,omitempty"`
-	Ascending     *bool   `json:"-" url:"ascending,omitempty"`
+	// Token from the previous page
+	PageToken *string `json:"-" url:"page_token,omitempty"`
+	// Return only completed executions.
+	OnlyCompleted *bool `json:"-" url:"only_completed,omitempty"`
+	// Return executions oldest first.
+	Ascending *bool `json:"-" url:"ascending,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`

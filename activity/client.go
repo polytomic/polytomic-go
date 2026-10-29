@@ -84,15 +84,11 @@ func NewClient(options *core.RequestOptions) *Client {
 //	            "248df4b7-aa70-47b8-a036-33ac447e668d",
 //	        ),
 //	    },
-//	    EventType: []*string{
-//	        polytomic.String(
-//	            "event_type",
-//	        ),
+//	    EventType: []*polytomic.HarboractivityEventType{
+//	        polytomic.HarboractivityEventTypeActionLookedUp.Ptr(),
 //	    },
-//	    Outcome: []*string{
-//	        polytomic.String(
-//	            "outcome",
-//	        ),
+//	    Outcome: []*polytomic.HarboractivityOutcome{
+//	        polytomic.HarboractivityOutcomeSucceeded.Ptr(),
 //	    },
 //	    OperationID: []*string{
 //	        polytomic.String(
@@ -181,7 +177,7 @@ func (c *Client) List(
 //	)
 func (c *Client) GetSession(
 	ctx context.Context,
-	// Harbor Activity session ID.
+	// Harbor Activity session ID
 	sessionID string,
 	request *polytomic.ActivityGetSessionRequest,
 	opts ...option.RequestOption,
@@ -220,7 +216,7 @@ func (c *Client) GetSession(
 //	)
 func (c *Client) Get(
 	ctx context.Context,
-	// Activity event ID.
+	// Activity event ID
 	eventID string,
 	opts ...option.RequestOption,
 ) (*polytomic.HarborActivityEventEnvelope, error) {

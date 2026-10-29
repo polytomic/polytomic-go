@@ -127,6 +127,7 @@ func (r *RawClient) Create(
 
 func (r *RawClient) Get(
 	ctx context.Context,
+	// Bulk sync ID
 	id string,
 	request *polytomic.BulkSyncGetRequest,
 	opts ...option.RequestOption,
@@ -180,7 +181,7 @@ func (r *RawClient) Get(
 
 func (r *RawClient) Update(
 	ctx context.Context,
-	// Unique identifier of the bulk sync to update.
+	// Unique identifier of the bulk sync to update
 	id string,
 	request *polytomic.UpdateBulkSyncRequest,
 	opts ...option.IdempotentRequestOption,
@@ -229,6 +230,7 @@ func (r *RawClient) Update(
 
 func (r *RawClient) Delete(
 	ctx context.Context,
+	// Bulk sync ID
 	id string,
 	request *polytomic.BulkSyncDeleteRequest,
 	opts ...option.IdempotentRequestOption,
@@ -280,8 +282,9 @@ func (r *RawClient) Delete(
 
 func (r *RawClient) Activate(
 	ctx context.Context,
+	// Bulk sync ID
 	id string,
-	request *polytomic.ActivateSyncInput,
+	request *polytomic.ActivateBulkSyncInput,
 	opts ...option.IdempotentRequestOption,
 ) (*core.Response[*polytomic.ActivateSyncEnvelope], error) {
 	options := core.NewIdempotentRequestOptions(opts...)
@@ -298,6 +301,7 @@ func (r *RawClient) Activate(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
+	headers.Add("Content-Type", "application/json")
 	var response *polytomic.ActivateSyncEnvelope
 	raw, err := r.caller.Call(
 		ctx,
@@ -373,7 +377,7 @@ func (r *RawClient) Cancel(
 
 func (r *RawClient) Start(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
 	request *polytomic.StartBulkSyncRequest,
 	opts ...option.IdempotentRequestOption,
@@ -422,7 +426,7 @@ func (r *RawClient) Start(
 
 func (r *RawClient) GetStatus(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.BulkSyncStatusEnvelope], error) {
@@ -468,7 +472,7 @@ func (r *RawClient) GetStatus(
 
 func (r *RawClient) GetSource(
 	ctx context.Context,
-	// Unique identifier of the connection.
+	// Unique identifier of the connection
 	id string,
 	request *polytomic.BulkSyncGetSourceRequest,
 	opts ...option.RequestOption,
@@ -522,6 +526,7 @@ func (r *RawClient) GetSource(
 
 func (r *RawClient) GetDestination(
 	ctx context.Context,
+	// Connection ID
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.BulkSyncDestEnvelope], error) {

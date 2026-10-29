@@ -64,7 +64,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	)
 func (c *Client) GetSource(
 	ctx context.Context,
-	// Unique identifier of the connection.
+	// Unique identifier of the connection
 	id string,
 	request *polytomic.ModelSyncGetSourceRequest,
 	opts ...option.RequestOption,
@@ -130,7 +130,7 @@ func (c *Client) GetSource(
 //	)
 func (c *Client) GetSourceFields(
 	ctx context.Context,
-	// Unique identifier of the connection.
+	// Unique identifier of the connection
 	id string,
 	request *polytomic.ModelSyncGetSourceFieldsRequest,
 	opts ...option.RequestOption,
@@ -336,6 +336,7 @@ func (c *Client) GetScheduleOptions(
 //	)
 func (c *Client) Get(
 	ctx context.Context,
+	// Model sync ID
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.ModelSyncV5ResponseEnvelope, error) {
@@ -354,7 +355,8 @@ func (c *Client) Get(
 //
 // Updating a model sync is a **full replacement** of the sync's configuration.
 // Every field in the request body is written to the sync; any field you omit is
-// cleared or reset to its default value.
+// cleared or reset to its default value. An empty or omitted `policies` list
+// leaves the sync's current policies unchanged.
 //
 // To make a partial change — for example, toggling `active` or adjusting a
 // single field mapping — fetch the current sync with
@@ -388,6 +390,7 @@ func (c *Client) Get(
 //	)
 func (c *Client) Update(
 	ctx context.Context,
+	// Model sync ID
 	id string,
 	request *polytomic.UpdateModelSyncV5Request,
 	opts ...option.IdempotentRequestOption,
@@ -418,6 +421,7 @@ func (c *Client) Update(
 //	)
 func (c *Client) Delete(
 	ctx context.Context,
+	// Model sync ID
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) error {
@@ -453,6 +457,7 @@ func (c *Client) Delete(
 //	)
 func (c *Client) Activate(
 	ctx context.Context,
+	// Model sync ID
 	id string,
 	request *polytomic.ActivateSyncInput,
 	opts ...option.IdempotentRequestOption,
@@ -516,6 +521,7 @@ func (c *Client) Cancel(
 //	)
 func (c *Client) Start(
 	ctx context.Context,
+	// Model sync ID
 	id string,
 	request *polytomic.StartModelSyncRequest,
 	opts ...option.IdempotentRequestOption,
@@ -546,6 +552,7 @@ func (c *Client) Start(
 //	)
 func (c *Client) GetStatus(
 	ctx context.Context,
+	// Model sync ID
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.SyncStatusEnvelope, error) {

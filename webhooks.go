@@ -17,7 +17,8 @@ var (
 )
 
 type CreateWebhooksSchema struct {
-	Endpoint       string  `json:"endpoint" url:"-"`
+	Endpoint string `json:"endpoint" url:"-"`
+	// Ignored for user and organization-scoped API keys, which always act in their own organization
 	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
 	Secret         string  `json:"secret" url:"-"`
 
@@ -84,13 +85,14 @@ var (
 
 type WebhooksListDeliveriesRequest struct {
 	// Filter by delivery result.
-	Success *bool   `json:"-" url:"success,omitempty"`
+	Success *bool `json:"-" url:"success,omitempty"`
+	// Return only attempts to deliver this event.
 	EventID *string `json:"-" url:"event_id,omitempty"`
 	// Include attempts at or after this time.
 	Start *time.Time `json:"-" url:"start,omitempty"`
 	// Include attempts before this time.
 	End *time.Time `json:"-" url:"end,omitempty"`
-	// Token from the previous page.
+	// Token from the previous page
 	PageToken *string `json:"-" url:"page_token,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -146,7 +148,8 @@ var (
 )
 
 type UpdateWebhooksSchema struct {
-	Endpoint       string  `json:"endpoint" url:"-"`
+	Endpoint string `json:"endpoint" url:"-"`
+	// Ignored for user and organization-scoped API keys, which always act in their own organization
 	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
 	Secret         string  `json:"secret" url:"-"`
 
@@ -532,7 +535,7 @@ type WebhookDelivery struct {
 	EventID     *string    `json:"event_id,omitempty" url:"event_id,omitempty"`
 	EventType   *string    `json:"event_type,omitempty" url:"event_type,omitempty"`
 	ID          *string    `json:"id,omitempty" url:"id,omitempty"`
-	// Response content returned by the webhook endpoint.
+	// Response content returned by the webhook endpoint
 	ResponseBody *string `json:"response_body,omitempty" url:"response_body,omitempty"`
 	StatusCode   *int    `json:"status_code,omitempty" url:"status_code,omitempty"`
 	Success      *bool   `json:"success,omitempty" url:"success,omitempty"`

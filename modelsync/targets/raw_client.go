@@ -35,7 +35,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetTargetFields(
 	ctx context.Context,
-	// Unique identifier of the connection.
+	// Unique identifier of the connection
 	id string,
 	request *modelsync.TargetsGetTargetFieldsRequest,
 	opts ...option.RequestOption,
@@ -89,6 +89,7 @@ func (r *RawClient) GetTargetFields(
 
 func (r *RawClient) List(
 	ctx context.Context,
+	// Connection ID
 	id string,
 	request *modelsync.TargetsListRequest,
 	opts ...option.RequestOption,
@@ -142,7 +143,9 @@ func (r *RawClient) List(
 
 func (r *RawClient) GetCreateProperty(
 	ctx context.Context,
+	// Connection ID
 	id string,
+	// Target-creation property ID
 	property string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.TargetPropertyValuesEnvelope], error) {

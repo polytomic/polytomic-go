@@ -16,7 +16,7 @@ var (
 )
 
 type CreateUserRequestSchema struct {
-	// Email address used to sign the user in and receive notifications.
+	// Email address used to sign the user in and receive notifications
 	Email string `json:"email" url:"-"`
 	// Deprecated legacy role name. Use role_ids instead; setting both role and role_ids in the same request is rejected.
 	Role *string `json:"role,omitempty" url:"-"`
@@ -109,7 +109,7 @@ var (
 )
 
 type CurrentOrgCreateUserRequestSchema struct {
-	// Email address used to sign the user in and receive notifications.
+	// Email address used to sign the user in and receive notifications
 	Email string `json:"email" url:"-"`
 	// Deprecated legacy role name. Use role_ids instead; setting both role and role_ids in the same request is rejected.
 	Role *string `json:"role,omitempty" url:"-"`
@@ -176,7 +176,7 @@ var (
 )
 
 type UpdateUserRequestSchema struct {
-	// Email address used to sign the user in and receive notifications.
+	// Email address used to sign the user in and receive notifications
 	Email string `json:"email" url:"-"`
 	// Deprecated legacy role name. Use role_ids instead; setting both role and role_ids in the same request is rejected.
 	Role *string `json:"role,omitempty" url:"-"`
@@ -467,6 +467,7 @@ var (
 )
 
 type CurrentOrgListUsersEnvelope struct {
+	// Users in the organization
 	Data []*CurrentOrgUserResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -551,6 +552,7 @@ var (
 )
 
 type CurrentOrgUserEnvelope struct {
+	// The user
 	Data *CurrentOrgUserResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -641,19 +643,19 @@ var (
 )
 
 type CurrentOrgUserResponse struct {
-	// Email address used to sign in and receive notifications.
+	// Email address used to sign in and receive notifications
 	Email *string `json:"email,omitempty" url:"email,omitempty"`
-	// Identifiers of the Harbors assigned to this user.
+	// Identifiers of the Harbors assigned to this user
 	HarborIDs []string `json:"harbor_ids,omitempty" url:"harbor_ids,omitempty"`
-	// Whether the account is restricted to assigned Harbors.
+	// Whether the account is restricted to assigned Harbors
 	HarborOnly *bool `json:"harbor_only,omitempty" url:"harbor_only,omitempty"`
-	// Unique identifier of the user.
+	// Unique identifier of the user
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Unique identifier of the organization the user belongs to.
+	// Unique identifier of the organization the user belongs to
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// Deprecated legacy role name. Use role_ids instead.
 	Role *string `json:"role,omitempty" url:"role,omitempty"`
-	// Identifiers of the permissions roles assigned to the user.
+	// Identifiers of the permissions roles assigned to the user
 	RoleIDs []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -910,15 +912,15 @@ var (
 )
 
 type User struct {
-	// Email address used to sign in and receive notifications.
+	// Email address used to sign in and receive notifications
 	Email *string `json:"email,omitempty" url:"email,omitempty"`
-	// Unique identifier of the user.
+	// Unique identifier of the user
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Unique identifier of the organization the user belongs to.
+	// Unique identifier of the organization the user belongs to
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// Deprecated legacy role name. Use role_ids instead.
 	Role *string `json:"role,omitempty" url:"role,omitempty"`
-	// Identifiers of the permissions roles assigned to the user.
+	// Identifiers of the permissions roles assigned to the user
 	RoleIDs []string `json:"role_ids,omitempty" url:"role_ids,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

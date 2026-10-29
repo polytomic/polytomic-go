@@ -119,6 +119,7 @@ func (r *RawClient) Create(
 
 func (r *RawClient) Get(
 	ctx context.Context,
+	// Webhook ID
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.WebhookEnvelope], error) {
@@ -164,6 +165,7 @@ func (r *RawClient) Get(
 
 func (r *RawClient) Update(
 	ctx context.Context,
+	// Webhook ID
 	id string,
 	request *polytomic.UpdateWebhooksSchema,
 	opts ...option.IdempotentRequestOption,
@@ -212,6 +214,7 @@ func (r *RawClient) Update(
 
 func (r *RawClient) Delete(
 	ctx context.Context,
+	// Webhook ID
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) (*core.Response[any], error) {
@@ -255,6 +258,7 @@ func (r *RawClient) Delete(
 
 func (r *RawClient) ListDeliveries(
 	ctx context.Context,
+	// Webhook ID
 	id string,
 	request *polytomic.WebhooksListDeliveriesRequest,
 	opts ...option.RequestOption,
@@ -308,6 +312,7 @@ func (r *RawClient) ListDeliveries(
 
 func (r *RawClient) Disable(
 	ctx context.Context,
+	// Webhook ID
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) (*core.Response[*polytomic.WebhookEnvelope], error) {
@@ -353,6 +358,7 @@ func (r *RawClient) Disable(
 
 func (r *RawClient) Enable(
 	ctx context.Context,
+	// Webhook ID
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) (*core.Response[*polytomic.WebhookEnvelope], error) {

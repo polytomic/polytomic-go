@@ -15,6 +15,7 @@ var (
 )
 
 type ModelsCreateRequest struct {
+	// Run in the background and return a job instead of the result.
 	Async *bool               `json:"-" url:"async,omitempty"`
 	Body  *CreateModelRequest `json:"-" url:"-"`
 
@@ -54,6 +55,7 @@ var (
 )
 
 type ModelsDeleteRequest struct {
+	// Deprecated; has no effect
 	Async *bool `json:"-" url:"async,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -79,6 +81,7 @@ var (
 )
 
 type ModelsGetRequest struct {
+	// Deprecated; has no effect
 	Async *bool `json:"-" url:"async,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -130,6 +133,7 @@ var (
 )
 
 type EnrichmentInputFieldsRequest struct {
+	// Enricher configuration to list valid input fields for
 	Configuration *EnricherConfiguration `json:"configuration,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -176,6 +180,7 @@ var (
 )
 
 type ModelsPreviewRequest struct {
+	// Run in the background and return a job instead of the result.
 	Async *bool               `json:"-" url:"async,omitempty"`
 	Body  *CreateModelRequest `json:"-" url:"-"`
 
@@ -215,6 +220,7 @@ var (
 )
 
 type ModelsSampleRequest struct {
+	// Run in the background and return a job instead of the result.
 	Async *bool `json:"-" url:"async,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -253,21 +259,34 @@ var (
 )
 
 type UpdateModelRequest struct {
-	Async            *bool                     `json:"-" url:"async,omitempty"`
+	// Run in the background and return a job instead of the result.
+	Async *bool `json:"-" url:"async,omitempty"`
+	// User-defined fields to add to the model alongside its source fields
 	AdditionalFields []*ModelModelFieldRequest `json:"additional_fields,omitempty" url:"-"`
-	Configuration    map[string]any            `json:"configuration" url:"-"`
-	ConnectionID     string                    `json:"connection_id" url:"-"`
-	Enricher         *Enrichment               `json:"enricher,omitempty" url:"-"`
+	// Model configuration for the source connection type
+	Configuration map[string]any `json:"configuration" url:"-"`
+	// Connection ID of the model's source, which cannot be changed after the model is created
+	ConnectionID string `json:"connection_id" url:"-"`
+	// Enrichment to apply to the model
+	Enricher *Enrichment `json:"enricher,omitempty" url:"-"`
 	// Technical/source field names to publish in the model. Use source names, not model-field UUIDs or display labels. For example, use dealname rather than Deal Name. Omit or pass an empty array to publish all standard source fields.
-	Fields          []string         `json:"fields,omitempty" url:"-"`
-	Identifier      *string          `json:"identifier,omitempty" url:"-"`
-	Labels          []string         `json:"labels,omitempty" url:"-"`
-	Name            string           `json:"name" url:"-"`
-	OrganizationID  *string          `json:"organization_id,omitempty" url:"-"`
-	Policies        []string         `json:"policies,omitempty" url:"-"`
-	Refresh         *bool            `json:"refresh,omitempty" url:"-"`
-	Relations       []*ModelRelation `json:"relations,omitempty" url:"-"`
-	TrackingColumns []string         `json:"tracking_columns,omitempty" url:"-"`
+	Fields []string `json:"fields,omitempty" url:"-"`
+	// Source field name of the model's unique identifier
+	Identifier *string `json:"identifier,omitempty" url:"-"`
+	// Deprecated; ignored
+	Labels []string `json:"labels,omitempty" url:"-"`
+	// Model name
+	Name string `json:"name" url:"-"`
+	// Ignored for user and organization-scoped API keys, which always act in their own organization
+	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
+	// Permissions policy IDs applied to the model. On update, a non-empty list replaces the model's policies and an empty or omitted list leaves them unchanged.
+	Policies []string `json:"policies,omitempty" url:"-"`
+	// Whether to refresh the enricher's fields and example values
+	Refresh *bool `json:"refresh,omitempty" url:"-"`
+	// Joins from this model's fields to fields on other models
+	Relations []*ModelRelation `json:"relations,omitempty" url:"-"`
+	// Source field names used to detect changed records
+	TrackingColumns []string `json:"tracking_columns,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -415,19 +434,30 @@ var (
 )
 
 type CreateModelRequest struct {
+	// User-defined fields to add to the model alongside its source fields
 	AdditionalFields []*ModelModelFieldRequest `json:"additional_fields,omitempty" url:"additional_fields,omitempty"`
-	Configuration    map[string]any            `json:"configuration" url:"configuration"`
-	ConnectionID     string                    `json:"connection_id" url:"connection_id"`
-	Enricher         *Enrichment               `json:"enricher,omitempty" url:"enricher,omitempty"`
+	// Model configuration for the source connection type
+	Configuration map[string]any `json:"configuration" url:"configuration"`
+	// Connection ID of the model's source, which cannot be changed after the model is created
+	ConnectionID string `json:"connection_id" url:"connection_id"`
+	// Enrichment to apply to the model
+	Enricher *Enrichment `json:"enricher,omitempty" url:"enricher,omitempty"`
 	// Technical/source field names to publish in the model. Use source names, not model-field UUIDs or display labels. For example, use dealname rather than Deal Name. Omit or pass an empty array to publish all standard source fields.
-	Fields          []string         `json:"fields,omitempty" url:"fields,omitempty"`
-	Identifier      *string          `json:"identifier,omitempty" url:"identifier,omitempty"`
-	Labels          []string         `json:"labels,omitempty" url:"labels,omitempty"`
-	Name            string           `json:"name" url:"name"`
-	OrganizationID  *string          `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies        []string         `json:"policies,omitempty" url:"policies,omitempty"`
-	Relations       []*ModelRelation `json:"relations,omitempty" url:"relations,omitempty"`
-	TrackingColumns []string         `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
+	Fields []string `json:"fields,omitempty" url:"fields,omitempty"`
+	// Source field name of the model's unique identifier
+	Identifier *string `json:"identifier,omitempty" url:"identifier,omitempty"`
+	// Deprecated; ignored
+	Labels []string `json:"labels,omitempty" url:"labels,omitempty"`
+	// Model name
+	Name string `json:"name" url:"name"`
+	// Ignored for user and organization-scoped API keys, which always act in their own organization
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Permissions policy IDs applied to the model. On update, a non-empty list replaces the model's policies and an empty or omitted list leaves them unchanged.
+	Policies []string `json:"policies,omitempty" url:"policies,omitempty"`
+	// Joins from this model's fields to fields on other models
+	Relations []*ModelRelation `json:"relations,omitempty" url:"relations,omitempty"`
+	// Source field names used to detect changed records
+	TrackingColumns []string `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -675,12 +705,15 @@ var (
 )
 
 type Enrichment struct {
+	// Enricher configuration
 	Configuration *EnricherConfiguration `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionID  *string                `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	// Connection ID of the enrichment source
+	ConnectionID *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
 	// Must be provided to update an existing enrichment
 	EnricherID *string `json:"enricher_id,omitempty" url:"enricher_id,omitempty"`
 	// If not provided, all fields will be enabled.
-	Fields   []*ModelField    `json:"fields,omitempty" url:"fields,omitempty"`
+	Fields []*ModelField `json:"fields,omitempty" url:"fields,omitempty"`
+	// Mappings from model fields to enricher input fields
 	Mappings *EnricherMapping `json:"mappings,omitempty" url:"mappings,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -821,6 +854,7 @@ var (
 )
 
 type GetEnrichmentInputFieldsResponseEnvelope struct {
+	// Sets of enricher input fields, any one of which satisfies the configuration
 	Data [][]string `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -907,6 +941,7 @@ var (
 )
 
 type ModelListResponseEnvelope struct {
+	// Models in the organization
 	Data []*ModelResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -994,10 +1029,14 @@ var (
 )
 
 type ModelModelFieldRequest struct {
+	// Example value of the field
 	Example *string `json:"example,omitempty" url:"example,omitempty"`
-	Label   string  `json:"label" url:"label"`
-	Name    string  `json:"name" url:"name"`
-	Type    string  `json:"type" url:"type"`
+	// Display label of the field
+	Label string `json:"label" url:"label"`
+	// Name of the field
+	Name string `json:"name" url:"name"`
+	// Data type of the field
+	Type string `json:"type" url:"type"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1124,8 +1163,10 @@ var (
 )
 
 type ModelRelation struct {
-	From *string          `json:"from,omitempty" url:"from,omitempty"`
-	To   *ModelRelationTo `json:"to,omitempty" url:"to,omitempty"`
+	// Source field name on this model
+	From *string `json:"from,omitempty" url:"from,omitempty"`
+	// Field on the related model
+	To *ModelRelationTo `json:"to,omitempty" url:"to,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1224,7 +1265,9 @@ var (
 )
 
 type ModelRelationTo struct {
-	Field   *string `json:"field,omitempty" url:"field,omitempty"`
+	// Source field name on the related model
+	Field *string `json:"field,omitempty" url:"field,omitempty"`
+	// Model ID of the related model
 	ModelID *string `json:"model_id,omitempty" url:"model_id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1340,24 +1383,42 @@ var (
 )
 
 type ModelResponse struct {
-	Configuration   map[string]any `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionID    *string        `json:"connection_id,omitempty" url:"connection_id,omitempty"`
-	CreatedAt       *time.Time     `json:"created_at,omitempty" url:"created_at,omitempty"`
-	CreatedBy       *OutputActor   `json:"created_by,omitempty" url:"created_by,omitempty"`
-	Enricher        *Enrichment    `json:"enricher,omitempty" url:"enricher,omitempty"`
-	Fields          []*ModelField  `json:"fields,omitempty" url:"fields,omitempty"`
-	ID              *string        `json:"id,omitempty" url:"id,omitempty"`
-	Identifier      *string        `json:"identifier,omitempty" url:"identifier,omitempty"`
-	Labels          []LabelLabel   `json:"labels,omitempty" url:"labels,omitempty"`
-	Name            *string        `json:"name,omitempty" url:"name,omitempty"`
-	OrganizationID  *string        `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Policies        []string       `json:"policies,omitempty" url:"policies,omitempty"`
-	Relations       []*Relation    `json:"relations,omitempty" url:"relations,omitempty"`
-	TrackingColumns []string       `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
-	Type            *string        `json:"type,omitempty" url:"type,omitempty"`
-	UpdatedAt       *time.Time     `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	UpdatedBy       *OutputActor   `json:"updated_by,omitempty" url:"updated_by,omitempty"`
-	Version         *int           `json:"version,omitempty" url:"version,omitempty"`
+	// Model configuration for the source connection type
+	Configuration map[string]any `json:"configuration,omitempty" url:"configuration,omitempty"`
+	// Connection ID of the model's source
+	ConnectionID *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	// When the model was created
+	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Actor that created the model
+	CreatedBy *OutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
+	// Enrichment applied to the model
+	Enricher *Enrichment `json:"enricher,omitempty" url:"enricher,omitempty"`
+	// Fields published by the model
+	Fields []*ModelField `json:"fields,omitempty" url:"fields,omitempty"`
+	// Model ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Source field name of the model's unique identifier
+	Identifier *string `json:"identifier,omitempty" url:"identifier,omitempty"`
+	// Deprecated; never returned
+	Labels []LabelLabel `json:"labels,omitempty" url:"labels,omitempty"`
+	// Model name
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Organization ID of the model
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Permissions policy IDs applied to the model
+	Policies []string `json:"policies,omitempty" url:"policies,omitempty"`
+	// Joins from this model's fields to fields on other models
+	Relations []*Relation `json:"relations,omitempty" url:"relations,omitempty"`
+	// Source field names used to detect changed records
+	TrackingColumns []string `json:"tracking_columns,omitempty" url:"tracking_columns,omitempty"`
+	// Connection type of the model's source
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
+	// When the model was last updated
+	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	// Actor that most recently updated the model
+	UpdatedBy *OutputActor `json:"updated_by,omitempty" url:"updated_by,omitempty"`
+	// Model version; increments when the configuration or field structure changes
+	Version *int `json:"version,omitempty" url:"version,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1692,8 +1753,10 @@ var (
 )
 
 type ModelResponseEnvelope struct {
+	// The model
 	Data *ModelResponse `json:"data,omitempty" url:"data,omitempty"`
-	Job  *JobResponse   `json:"job,omitempty" url:"job,omitempty"`
+	// Background job running the request when async is true
+	Job *JobResponse `json:"job,omitempty" url:"job,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1792,8 +1855,10 @@ var (
 )
 
 type ModelSample struct {
-	Records  []SampleRecord `json:"records,omitempty" url:"records,omitempty"`
-	Warnings []string       `json:"warnings,omitempty" url:"warnings,omitempty"`
+	// Up to ten records sampled from the model
+	Records []SampleRecord `json:"records,omitempty" url:"records,omitempty"`
+	// Warnings raised while enriching the sampled records
+	Warnings []string `json:"warnings,omitempty" url:"warnings,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1892,8 +1957,10 @@ var (
 )
 
 type ModelSampleResponseEnvelope struct {
+	// The sampled records
 	Data *ModelSample `json:"data,omitempty" url:"data,omitempty"`
-	Job  *JobResponse `json:"job,omitempty" url:"job,omitempty"`
+	// Background job running the request when async is true
+	Job *JobResponse `json:"job,omitempty" url:"job,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1992,8 +2059,10 @@ var (
 )
 
 type Relation struct {
-	From *string     `json:"from,omitempty" url:"from,omitempty"`
-	To   *RelationTo `json:"to,omitempty" url:"to,omitempty"`
+	// Source field name on this model
+	From *string `json:"from,omitempty" url:"from,omitempty"`
+	// Field on the related model
+	To *RelationTo `json:"to,omitempty" url:"to,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2092,7 +2161,9 @@ var (
 )
 
 type RelationTo struct {
-	Field   *string `json:"field,omitempty" url:"field,omitempty"`
+	// Source field name on the related model
+	Field *string `json:"field,omitempty" url:"field,omitempty"`
+	// Model ID of the related model
 	ModelID *string `json:"model_id,omitempty" url:"model_id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

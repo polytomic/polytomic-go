@@ -111,6 +111,7 @@ func (c *Client) Create(
 //	)
 func (c *Client) Get(
 	ctx context.Context,
+	// Policy ID
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.PolicyResponseEnvelope, error) {
@@ -145,6 +146,7 @@ func (c *Client) Get(
 //	)
 func (c *Client) Update(
 	ctx context.Context,
+	// Policy ID
 	id string,
 	request *permissions.UpdatePolicyRequest,
 	opts ...option.IdempotentRequestOption,
@@ -174,6 +176,7 @@ func (c *Client) Update(
 //	)
 func (c *Client) Delete(
 	ctx context.Context,
+	// Policy ID
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) error {

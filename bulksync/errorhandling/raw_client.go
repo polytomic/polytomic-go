@@ -35,7 +35,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) Get(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.BulkSyncErrorHandlingEnvelope], error) {
@@ -81,7 +81,7 @@ func (r *RawClient) Get(
 
 func (r *RawClient) Update(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
 	request *bulksync.UpdateBulkSyncErrorHandlingRequest,
 	opts ...option.IdempotentRequestOption,

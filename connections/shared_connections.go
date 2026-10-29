@@ -14,7 +14,7 @@ var (
 )
 
 type PartnerCreateSharedConnectionRequestSchema struct {
-	// Unique identifier of the child organization that should receive the shared connection.
+	// Unique identifier of the child organization that should receive the shared connection
 	ChildOrganizationID string `json:"child_organization_id" url:"-"`
 	// Optional name for the shared copy. Defaults to the parent connection name.
 	Name *string `json:"name,omitempty" url:"-"`

@@ -64,7 +64,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	)
 func (c *Client) RunQuery(
 	ctx context.Context,
-	// Unique identifier of the connection to run the query against.
+	// Unique identifier of the connection to run the query against
 	connectionID string,
 	request *polytomic.RunQueryRequest,
 	opts ...option.IdempotentRequestOption,
@@ -113,7 +113,7 @@ func (c *Client) RunQuery(
 //	)
 func (c *Client) GetQuery(
 	ctx context.Context,
-	// Unique identifier of the query task, as returned by POST /api/connections/{connection_id}/query.
+	// Unique identifier of the query task, as returned by POST /api/connections/{connection_id}/query
 	id string,
 	request *polytomic.QueryRunnerGetQueryRequest,
 	opts ...option.RequestOption,

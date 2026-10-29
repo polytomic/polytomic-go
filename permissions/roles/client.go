@@ -112,6 +112,7 @@ func (c *Client) Create(
 //	)
 func (c *Client) Get(
 	ctx context.Context,
+	// Role ID
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.RoleResponseEnvelope, error) {
@@ -145,6 +146,7 @@ func (c *Client) Get(
 //	)
 func (c *Client) Update(
 	ctx context.Context,
+	// Role ID
 	id string,
 	request *permissions.UpdateRoleRequest,
 	opts ...option.IdempotentRequestOption,
@@ -179,6 +181,7 @@ func (c *Client) Update(
 //	)
 func (c *Client) Delete(
 	ctx context.Context,
+	// Role ID
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) error {

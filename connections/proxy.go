@@ -15,8 +15,9 @@ var (
 )
 
 type ExecuteConnectionProxyRequest struct {
-	// When true, submits a GET request for asynchronous execution and returns a job handle instead of a synchronous upstream response.
-	Async   *bool                    `json:"async,omitempty" url:"-"`
+	// When true, submits a GET request for asynchronous execution and returns a job handle instead of a synchronous upstream response
+	Async *bool `json:"async,omitempty" url:"-"`
+	// Details of the upstream HTTP request to perform
 	Request *v25.ConnectionProxyCall `json:"request" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -70,7 +71,7 @@ var (
 )
 
 type UpdateConnectionProxySettingsRequest struct {
-	// Whether the connection can be used through the Connection Proxy API.
+	// Whether the connection can be used through the Connection Proxy API
 	Enabled bool `json:"enabled" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

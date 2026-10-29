@@ -16,9 +16,11 @@ var (
 )
 
 type QueryRunnerGetQueryRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
-	// Opaque pagination token returned in the links.next or links.previous URL of the previous response.
+	// Opaque pagination token returned in the links.next or links.previous URL of the previous response
 	Page *string `json:"-" url:"page,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -60,9 +62,11 @@ var (
 )
 
 type RunQueryRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
-	// The query to execute against the connection.
+	// The query to execute against the connection
 	Query *string `json:"-" url:"query,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -124,7 +128,9 @@ var (
 )
 
 type QueryResultsEnvelope struct {
-	Data  *RunQueryResult     `json:"data,omitempty" url:"data,omitempty"`
+	// The query and its results for this page
+	Data *RunQueryResult `json:"data,omitempty" url:"data,omitempty"`
+	// Links to adjacent pages of results
 	Links *RunQueryPagination `json:"links,omitempty" url:"links,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

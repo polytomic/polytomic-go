@@ -35,6 +35,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) List(
 	ctx context.Context,
+	// Model sync ID
 	syncID string,
 	request *modelsync.ExecutionsListRequest,
 	opts ...option.RequestOption,
@@ -88,7 +89,9 @@ func (r *RawClient) List(
 
 func (r *RawClient) Get(
 	ctx context.Context,
+	// Model sync ID
 	syncID string,
+	// Execution ID
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.GetExecutionResponseEnvelope], error) {
@@ -135,8 +138,9 @@ func (r *RawClient) Get(
 
 func (r *RawClient) Cancel(
 	ctx context.Context,
+	// Model sync ID
 	syncID string,
-	// The ID of the execution to cancel.
+	// The ID of the execution to cancel
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) (*core.Response[*polytomic.CancelSyncExecutionResponseEnvelope], error) {
@@ -183,7 +187,9 @@ func (r *RawClient) Cancel(
 
 func (r *RawClient) GetConsoleLogs(
 	ctx context.Context,
+	// Model sync ID
 	syncID string,
+	// Execution ID
 	id string,
 	request *modelsync.ExecutionsGetConsoleLogsRequest,
 	opts ...option.RequestOption,
@@ -238,9 +244,9 @@ func (r *RawClient) GetConsoleLogs(
 
 func (r *RawClient) GetLogsIndex(
 	ctx context.Context,
-	// Unique identifier of the model sync.
+	// Unique identifier of the model sync
 	syncID string,
-	// Unique identifier of the execution whose logs are being indexed.
+	// Unique identifier of the execution whose logs are being indexed
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.LogsIndexResponseEnvelope], error) {
@@ -287,8 +293,11 @@ func (r *RawClient) GetLogsIndex(
 
 func (r *RawClient) GetLogURLs(
 	ctx context.Context,
+	// Model sync ID
 	syncID string,
+	// Execution ID
 	id string,
+	// Log category
 	type_ *polytomic.ExecutionLogType,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.ExecutionLogsResponseEnvelope], error) {
@@ -336,9 +345,13 @@ func (r *RawClient) GetLogURLs(
 
 func (r *RawClient) GetLogs(
 	ctx context.Context,
+	// Model sync ID
 	syncID string,
+	// Execution ID
 	id string,
+	// Log category
 	type_ *polytomic.ExecutionLogType,
+	// Log file name
 	filename string,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {

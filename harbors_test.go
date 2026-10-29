@@ -10166,7 +10166,7 @@ func TestSettersMarkExplicitHarborConnectionListEnvelope(t *testing.T) {
 func TestSettersHarborConnectionResponse(t *testing.T) {
 	t.Run("SetCapabilities", func(t *testing.T) {
 		obj := &HarborConnectionResponse{}
-		var fernTestValueCapabilities []string
+		var fernTestValueCapabilities []HarborConnectionCapability
 		obj.SetCapabilities(fernTestValueCapabilities)
 		assert.Equal(t, fernTestValueCapabilities, obj.Capabilities)
 		assert.NotNil(t, obj.explicitFields)
@@ -10203,7 +10203,7 @@ func TestGettersHarborConnectionResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &HarborConnectionResponse{}
-		var expected []string
+		var expected []HarborConnectionCapability
 		obj.Capabilities = expected
 
 		// Act & Assert
@@ -10338,7 +10338,7 @@ func TestSettersMarkExplicitHarborConnectionResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &HarborConnectionResponse{}
-		var fernTestValueCapabilities []string
+		var fernTestValueCapabilities []HarborConnectionCapability
 
 		// Act
 		obj.SetCapabilities(fernTestValueCapabilities)
@@ -22099,9 +22099,17 @@ func TestSettersHarborSourceReference(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetModelID", func(t *testing.T) {
+		obj := &HarborSourceReference{}
+		var fernTestValueModelID *string
+		obj.SetModelID(fernTestValueModelID)
+		assert.Equal(t, fernTestValueModelID, obj.ModelID)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetSchemaID", func(t *testing.T) {
 		obj := &HarborSourceReference{}
-		var fernTestValueSchemaID string
+		var fernTestValueSchemaID *string
 		obj.SetSchemaID(fernTestValueSchemaID)
 		assert.Equal(t, fernTestValueSchemaID, obj.SchemaID)
 		assert.NotNil(t, obj.explicitFields)
@@ -22166,15 +22174,58 @@ func TestGettersHarborSourceReference(t *testing.T) {
 		_ = obj.GetFields() // Should return zero value
 	})
 
+	t.Run("GetModelID", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &HarborSourceReference{}
+		var expected *string
+		obj.ModelID = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetModelID(), "getter should return the property value")
+	})
+
+	t.Run("GetModelID_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &HarborSourceReference{}
+		obj.ModelID = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetModelID(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetModelID_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *HarborSourceReference
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetModelID() // Should return zero value
+	})
+
 	t.Run("GetSchemaID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &HarborSourceReference{}
-		var expected string
+		var expected *string
 		obj.SchemaID = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetSchemaID(), "getter should return the property value")
+	})
+
+	t.Run("GetSchemaID_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &HarborSourceReference{}
+		obj.SchemaID = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetSchemaID(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetSchemaID_NilReceiver", func(t *testing.T) {
@@ -22254,11 +22305,42 @@ func TestSettersMarkExplicitHarborSourceReference(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
+	t.Run("SetModelID_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &HarborSourceReference{}
+		var fernTestValueModelID *string
+
+		// Act
+		obj.SetModelID(fernTestValueModelID)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 	t.Run("SetSchemaID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &HarborSourceReference{}
-		var fernTestValueSchemaID string
+		var fernTestValueSchemaID *string
 
 		// Act
 		obj.SetSchemaID(fernTestValueSchemaID)
@@ -29022,6 +29104,42 @@ func TestEnumHarborActionConfigurationOperationResponseEffect(t *testing.T) {
 
 	t.Run("Ptr", func(t *testing.T) {
 		val, err := NewHarborActionConfigurationOperationResponseEffectFromString("mutating")
+		assert.NoError(t, err)
+		ptr := val.Ptr()
+		assert.NotNil(t, ptr)
+		assert.Equal(t, val, *ptr)
+	})
+}
+
+func TestEnumHarborConnectionCapability(t *testing.T) {
+	t.Run("NewFromString_schemas", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarborConnectionCapabilityFromString("schemas")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarborConnectionCapability("schemas"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_query", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarborConnectionCapabilityFromString("query")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarborConnectionCapability("query"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_record_view_links", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarborConnectionCapabilityFromString("record_view_links")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarborConnectionCapability("record_view_links"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Invalid", func(t *testing.T) {
+		_, err := NewHarborConnectionCapabilityFromString("invalid_value_that_does_not_exist")
+		assert.Error(t, err)
+	})
+
+	t.Run("Ptr", func(t *testing.T) {
+		val, err := NewHarborConnectionCapabilityFromString("schemas")
 		assert.NoError(t, err)
 		ptr := val.Ptr()
 		assert.NotNil(t, ptr)

@@ -16,7 +16,8 @@ var (
 )
 
 type CreatePolicyRequest struct {
-	Name           string              `json:"name" url:"-"`
+	Name string `json:"name" url:"-"`
+	// Ignored for user and organization-scoped API keys, which always act in their own organization
 	OrganizationID *string             `json:"organization_id,omitempty" url:"-"`
 	PolicyActions  []*v25.PolicyAction `json:"policy_actions,omitempty" url:"-"`
 
@@ -80,7 +81,8 @@ var (
 )
 
 type UpdatePolicyRequest struct {
-	Name           string              `json:"name" url:"-"`
+	Name string `json:"name" url:"-"`
+	// Ignored for user and organization-scoped API keys, which always act in their own organization
 	OrganizationID *string             `json:"organization_id,omitempty" url:"-"`
 	PolicyActions  []*v25.PolicyAction `json:"policy_actions,omitempty" url:"-"`
 

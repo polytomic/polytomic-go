@@ -216,8 +216,7 @@ func TestConnectionsConnectWithWireMock(
 		option.WithToken("test-token"),
 	)
 	request := &polytomic.ConnectCardRequest{
-		Name:        "Salesforce Connection",
-		RedirectURL: "redirect_url",
+		Name: "Salesforce Connection",
 	}
 	_, invocationErr := client.Connections.Connect(
 		context.TODO(),

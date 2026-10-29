@@ -197,7 +197,7 @@ func (c *Client) Create(
 //	)
 func (c *Client) Get(
 	ctx context.Context,
-	// Unique identifier of the organization.
+	// Unique identifier of the organization
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.OrganizationEnvelope, error) {
@@ -233,7 +233,7 @@ func (c *Client) Get(
 //	)
 func (c *Client) Update(
 	ctx context.Context,
-	// Unique identifier of the organization to update.
+	// Unique identifier of the organization to update
 	id string,
 	request *polytomic.UpdateOrganizationRequestSchema,
 	opts ...option.IdempotentRequestOption,
@@ -262,7 +262,7 @@ func (c *Client) Update(
 //	)
 func (c *Client) Delete(
 	ctx context.Context,
-	// Unique identifier of the organization.
+	// Unique identifier of the organization
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) error {

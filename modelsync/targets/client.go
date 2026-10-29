@@ -101,7 +101,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	)
 func (c *Client) GetTargetFields(
 	ctx context.Context,
-	// Unique identifier of the connection.
+	// Unique identifier of the connection
 	id string,
 	request *modelsync.TargetsGetTargetFieldsRequest,
 	opts ...option.RequestOption,
@@ -152,6 +152,7 @@ func (c *Client) GetTargetFields(
 //	)
 func (c *Client) List(
 	ctx context.Context,
+	// Connection ID
 	id string,
 	request *modelsync.TargetsListRequest,
 	opts ...option.RequestOption,
@@ -212,7 +213,9 @@ func (c *Client) List(
 //	)
 func (c *Client) GetCreateProperty(
 	ctx context.Context,
+	// Connection ID
 	id string,
+	// Target-creation property ID
 	property string,
 	opts ...option.RequestOption,
 ) (*polytomic.TargetPropertyValuesEnvelope, error) {

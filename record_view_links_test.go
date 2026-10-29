@@ -997,14 +997,6 @@ func TestSettersRecordviewCapabilities(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetDefaultFieldPolicy", func(t *testing.T) {
-		obj := &RecordviewCapabilities{}
-		var fernTestValueDefaultFieldPolicy *string
-		obj.SetDefaultFieldPolicy(fernTestValueDefaultFieldPolicy)
-		assert.Equal(t, fernTestValueDefaultFieldPolicy, obj.DefaultFieldPolicy)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
 	t.Run("SetDefaultTTLSeconds", func(t *testing.T) {
 		obj := &RecordviewCapabilities{}
 		var fernTestValueDefaultTTLSeconds *int
@@ -1103,39 +1095,6 @@ func TestGettersRecordviewCapabilities(t *testing.T) {
 			}
 		}()
 		_ = obj.GetConnectionID() // Should return zero value
-	})
-
-	t.Run("GetDefaultFieldPolicy", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &RecordviewCapabilities{}
-		var expected *string
-		obj.DefaultFieldPolicy = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetDefaultFieldPolicy(), "getter should return the property value")
-	})
-
-	t.Run("GetDefaultFieldPolicy_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &RecordviewCapabilities{}
-		obj.DefaultFieldPolicy = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetDefaultFieldPolicy(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetDefaultFieldPolicy_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *RecordviewCapabilities
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetDefaultFieldPolicy() // Should return zero value
 	})
 
 	t.Run("GetDefaultTTLSeconds", func(t *testing.T) {
@@ -1413,37 +1372,6 @@ func TestSettersMarkExplicitRecordviewCapabilities(t *testing.T) {
 
 		// Act
 		obj.SetConnectionID(fernTestValueConnectionID)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
-	t.Run("SetDefaultFieldPolicy_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &RecordviewCapabilities{}
-		var fernTestValueDefaultFieldPolicy *string
-
-		// Act
-		obj.SetDefaultFieldPolicy(fernTestValueDefaultFieldPolicy)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

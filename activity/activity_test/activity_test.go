@@ -107,15 +107,11 @@ func TestActivityListWithWireMock(
 				"248df4b7-aa70-47b8-a036-33ac447e668d",
 			),
 		},
-		EventType: []*string{
-			polytomic.String(
-				"event_type",
-			),
+		EventType: []*polytomic.HarboractivityEventType{
+			polytomic.HarboractivityEventTypeActionLookedUp.Ptr(),
 		},
-		Outcome: []*string{
-			polytomic.String(
-				"outcome",
-			),
+		Outcome: []*polytomic.HarboractivityOutcome{
+			polytomic.HarboractivityOutcomeSucceeded.Ptr(),
 		},
 		OperationID: []*string{
 			polytomic.String(
@@ -152,7 +148,7 @@ func TestActivityListWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestActivityListWithWireMock", "GET", "/api/organization/harbor-activity", map[string]interface{}{"start_time": "2024-01-15T09:30:00.000Z", "end_time": "2024-01-15T09:30:00.000Z", "limit": "1", "page_token": "page_token", "order": "asc", "harbor_id": "248df4b7-aa70-47b8-a036-33ac447e668d", "event_type": "event_type", "outcome": "outcome", "operation_id": "248df4b7-aa70-47b8-a036-33ac447e668d", "session_id": "248df4b7-aa70-47b8-a036-33ac447e668d", "actor_id": "248df4b7-aa70-47b8-a036-33ac447e668d", "credential_id": "248df4b7-aa70-47b8-a036-33ac447e668d", "connection_id": "248df4b7-aa70-47b8-a036-33ac447e668d"}, 1)
+	VerifyRequestCount(t, "TestActivityListWithWireMock", "GET", "/api/organization/harbor-activity", map[string]interface{}{"start_time": "2024-01-15T09:30:00.000Z", "end_time": "2024-01-15T09:30:00.000Z", "limit": "1", "page_token": "page_token", "order": "asc", "harbor_id": "248df4b7-aa70-47b8-a036-33ac447e668d", "event_type": "action.looked_up", "outcome": "succeeded", "operation_id": "248df4b7-aa70-47b8-a036-33ac447e668d", "session_id": "248df4b7-aa70-47b8-a036-33ac447e668d", "actor_id": "248df4b7-aa70-47b8-a036-33ac447e668d", "credential_id": "248df4b7-aa70-47b8-a036-33ac447e668d", "connection_id": "248df4b7-aa70-47b8-a036-33ac447e668d"}, 1)
 }
 
 func TestActivityGetSessionWithWireMock(

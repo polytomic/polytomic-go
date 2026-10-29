@@ -34,7 +34,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) RunQuery(
 	ctx context.Context,
-	// Unique identifier of the connection to run the query against.
+	// Unique identifier of the connection to run the query against
 	connectionID string,
 	request *polytomic.RunQueryRequest,
 	opts ...option.IdempotentRequestOption,
@@ -96,7 +96,7 @@ func (r *RawClient) RunQuery(
 
 func (r *RawClient) GetQuery(
 	ctx context.Context,
-	// Unique identifier of the query task, as returned by POST /api/connections/{connection_id}/query.
+	// Unique identifier of the query task, as returned by POST /api/connections/{connection_id}/query
 	id string,
 	request *polytomic.QueryRunnerGetQueryRequest,
 	opts ...option.RequestOption,

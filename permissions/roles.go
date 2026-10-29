@@ -14,7 +14,8 @@ var (
 )
 
 type CreateRoleRequest struct {
-	Name           string  `json:"name" url:"-"`
+	Name string `json:"name" url:"-"`
+	// Ignored for user and organization-scoped API keys, which always act in their own organization
 	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -69,7 +70,8 @@ var (
 )
 
 type UpdateRoleRequest struct {
-	Name           string  `json:"name" url:"-"`
+	Name string `json:"name" url:"-"`
+	// Ignored for user and organization-scoped API keys, which always act in their own organization
 	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

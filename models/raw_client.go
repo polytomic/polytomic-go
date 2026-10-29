@@ -34,7 +34,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetEnrichmentSource(
 	ctx context.Context,
-	// Unique identifier of the connection.
+	// Unique identifier of the connection
 	id string,
 	request *polytomic.ModelsGetEnrichmentSourceRequest,
 	opts ...option.RequestOption,
@@ -88,6 +88,7 @@ func (r *RawClient) GetEnrichmentSource(
 
 func (r *RawClient) Post(
 	ctx context.Context,
+	// Enrichment connection ID
 	connectionID string,
 	request *polytomic.EnrichmentInputFieldsRequest,
 	opts ...option.IdempotentRequestOption,
@@ -279,6 +280,7 @@ func (r *RawClient) Create(
 
 func (r *RawClient) Get(
 	ctx context.Context,
+	// Model ID
 	id string,
 	request *polytomic.ModelsGetRequest,
 	opts ...option.RequestOption,
@@ -332,6 +334,7 @@ func (r *RawClient) Get(
 
 func (r *RawClient) Update(
 	ctx context.Context,
+	// Model ID
 	id string,
 	request *polytomic.UpdateModelRequest,
 	opts ...option.IdempotentRequestOption,
@@ -387,6 +390,7 @@ func (r *RawClient) Update(
 
 func (r *RawClient) Delete(
 	ctx context.Context,
+	// Model ID
 	id string,
 	request *polytomic.ModelsDeleteRequest,
 	opts ...option.IdempotentRequestOption,
@@ -438,6 +442,7 @@ func (r *RawClient) Delete(
 
 func (r *RawClient) Sample(
 	ctx context.Context,
+	// Model ID
 	id string,
 	request *polytomic.ModelsSampleRequest,
 	opts ...option.RequestOption,

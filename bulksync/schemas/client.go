@@ -62,7 +62,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	)
 func (c *Client) List(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
 	request *bulksync.SchemasListRequest,
 	opts ...option.RequestOption,
@@ -88,7 +88,16 @@ func (c *Client) List(
 //
 // Within each provided schema, omitting `fields` enables all available fields on
 // that schema. To control which fields are enabled, include the `fields` array
-// with explicit `enabled` values for each field.
+// with explicit `enabled` values for each field. Primary-key fields stay enabled
+// while their schema is enabled, even when the request sets `enabled: false` for
+// them.
+//
+// `output_name` and `destination_history_output_name` on a schema, and
+// `output_name` on a field, are computed by Polytomic and ignored on input. Set
+// `user_output_name` to rename a destination object or field.
+//
+// The response contains every schema on the bulk sync after the update, not only
+// the schemas included in the request.
 //
 // > 📘 To replace a single schema's configuration in full (clearing any fields you
 // > omit), use
@@ -105,7 +114,7 @@ func (c *Client) List(
 //	)
 func (c *Client) Patch(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
 	request *bulksync.UpdateBulkSyncSchemasRequest,
 	opts ...option.IdempotentRequestOption,
@@ -142,9 +151,9 @@ func (c *Client) Patch(
 //	)
 func (c *Client) Get(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
-	// Source-side schema identifier.
+	// Source-side schema identifier
 	schemaID string,
 	opts ...option.RequestOption,
 ) (*polytomic.BulkSchemaEnvelope, error) {
@@ -170,6 +179,8 @@ func (c *Client) Get(
 //
 // Omitting `fields` enables all available fields on the schema. To control which
 // fields are enabled, include the `fields` array with explicit `enabled` values.
+// Primary-key fields stay enabled while the schema is enabled, even when the
+// request sets `enabled: false` for them.
 //
 // > 📘 To update multiple schemas in a single request without affecting others,
 // > use the partial-update endpoint
@@ -187,9 +198,9 @@ func (c *Client) Get(
 //	)
 func (c *Client) Update(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
-	// Source-side schema identifier.
+	// Source-side schema identifier
 	schemaID string,
 	request *bulksync.UpdateBulkSchema,
 	opts ...option.IdempotentRequestOption,
@@ -225,9 +236,9 @@ func (c *Client) Update(
 //	)
 func (c *Client) Cancel(
 	ctx context.Context,
-	// The bulk sync ID.
+	// The bulk sync ID
 	id string,
-	// The schema ID to cancel for the bulk sync.
+	// The schema ID to cancel for the bulk sync
 	schemaID string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.CancelBulkSyncResponseEnvelope, error) {

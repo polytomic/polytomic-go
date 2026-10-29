@@ -120,6 +120,7 @@ func (r *RawClient) Create(
 
 func (r *RawClient) Get(
 	ctx context.Context,
+	// Role ID
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.RoleResponseEnvelope], error) {
@@ -165,6 +166,7 @@ func (r *RawClient) Get(
 
 func (r *RawClient) Update(
 	ctx context.Context,
+	// Role ID
 	id string,
 	request *permissions.UpdateRoleRequest,
 	opts ...option.IdempotentRequestOption,
@@ -213,6 +215,7 @@ func (r *RawClient) Update(
 
 func (r *RawClient) Delete(
 	ctx context.Context,
+	// Role ID
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) (*core.Response[any], error) {

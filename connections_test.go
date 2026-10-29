@@ -45,7 +45,7 @@ func TestSettersConnectCardRequest(t *testing.T) {
 
 	t.Run("SetRedirectURL", func(t *testing.T) {
 		obj := &ConnectCardRequest{}
-		var fernTestValueRedirectURL string
+		var fernTestValueRedirectURL *string
 		obj.SetRedirectURL(fernTestValueRedirectURL)
 		assert.Equal(t, fernTestValueRedirectURL, obj.RedirectURL)
 		assert.NotNil(t, obj.explicitFields)
@@ -214,7 +214,7 @@ func TestSettersMarkExplicitConnectCardRequest(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &ConnectCardRequest{}
-		var fernTestValueRedirectURL string
+		var fernTestValueRedirectURL *string
 
 		// Act
 		obj.SetRedirectURL(fernTestValueRedirectURL)

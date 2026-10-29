@@ -11,6 +11,53 @@ import (
 )
 
 var (
+	activateSyncInputFieldActive = big.NewInt(1 << 0)
+)
+
+type ActivateSyncInput struct {
+	// Whether the model sync should be active
+	Active bool `json:"active" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *ActivateSyncInput) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetActive sets the Active field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ActivateSyncInput) SetActive(active bool) {
+	a.Active = active
+	a.require(activateSyncInputFieldActive)
+}
+
+func (a *ActivateSyncInput) UnmarshalJSON(data []byte) error {
+	type unmarshaler ActivateSyncInput
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*a = ActivateSyncInput(body)
+	return nil
+}
+
+func (a *ActivateSyncInput) MarshalJSON() ([]byte, error) {
+	type embed ActivateSyncInput
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+var (
 	createModelSyncV5RequestFieldActive               = big.NewInt(1 << 0)
 	createModelSyncV5RequestFieldEncryptionPassphrase = big.NewInt(1 << 1)
 	createModelSyncV5RequestFieldFields               = big.NewInt(1 << 2)
@@ -34,11 +81,11 @@ var (
 )
 
 type CreateModelSyncV5Request struct {
-	// Whether the sync is enabled and scheduled.
+	// Whether the sync is enabled and scheduled
 	Active *bool `json:"active,omitempty" url:"-"`
-	// Passphrase for encrypting the sync data.
+	// Passphrase for encrypting the sync data
 	EncryptionPassphrase *string `json:"encryption_passphrase,omitempty" url:"-"`
-	// Fields to sync from source to destination.
+	// Fields to sync from source to destination
 	Fields []*SyncField `json:"fields" url:"-"`
 	// Deprecated. Use 'model_filters.logic'. Combines the model filters in 'filters' only.
 	FilterLogic *string `json:"filter_logic,omitempty" url:"-"`
@@ -47,26 +94,33 @@ type CreateModelSyncV5Request struct {
 	// Identity mappings for the sync and the strategy combining them, replacing any the sync has. When this is omitted, 'identity' is used instead; updating a sync with more than one mapping requires this property.
 	Identities *ModelSyncIdentities `json:"identities,omitempty" url:"-"`
 	// Deprecated. Use 'identities'. Reports and accepts the first identity mapping only.
-	Identity     *Identity               `json:"identity,omitempty" url:"-"`
-	Mode         ModelsyncSyncTargetMode `json:"mode" url:"-"`
-	ModelFilters *ModelFilters           `json:"model_filters,omitempty" url:"-"`
-	Name         string                  `json:"name" url:"-"`
+	Identity *Identity `json:"identity,omitempty" url:"-"`
+	// How source records are written to the target
+	Mode ModelsyncSyncTargetMode `json:"mode" url:"-"`
+	// Filters narrowing the records read from the source. When either filter object is present it governs both kinds, and an absent object means that kind has no filters.
+	ModelFilters *ModelFilters `json:"model_filters,omitempty" url:"-"`
+	// Name of the model sync
+	Name string `json:"name" url:"-"`
 	// Whether to use enrichment models as a source of possible changes to sync. If true, only changes to the base models will cause a record to sync.
 	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"-"`
-	// Organization ID for the sync; read-only with a partner key.
+	// Ignored for user and organization-scoped API keys, which always act in their own organization
 	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
-	// Target fields which are set to a fixed value for every record, rather than mapped from a model field.
+	// Target fields which are set to a fixed value for every record, rather than mapped from a model field
 	OverrideFields []*OverrideFieldInput `json:"override_fields,omitempty" url:"-"`
-	// Conditional value replacement for fields.
+	// Conditional value replacement for fields
 	Overrides []*Override `json:"overrides,omitempty" url:"-"`
-	Policies  []string    `json:"policies,omitempty" url:"-"`
-	Schedule  *Schedule   `json:"schedule" url:"-"`
+	// Permissions policy IDs applied to the sync. On update, a non-empty list replaces the sync's policies and an empty or omitted list leaves them unchanged.
+	Policies []string `json:"policies,omitempty" url:"-"`
+	// Sync schedule. Schedule times are interpreted in UTC.
+	Schedule *Schedule `json:"schedule" url:"-"`
 	// Whether to skip the initial backfill of records; if true only records seen after the sync is enabled will be synced.
 	SkipInitialBackfill *bool `json:"skip_initial_backfill,omitempty" url:"-"`
-	// Whether to sync all records from the source, regardless of whether they've changed since the previous execution.
-	SyncAllRecords *bool              `json:"sync_all_records,omitempty" url:"-"`
-	Target         *ModelSyncV5Target `json:"target" url:"-"`
-	TargetFilters  *TargetFilters     `json:"target_filters,omitempty" url:"-"`
+	// Whether to sync all records from the source, regardless of whether they've changed since the previous execution
+	SyncAllRecords *bool `json:"sync_all_records,omitempty" url:"-"`
+	// Sync destination configuration
+	Target *ModelSyncV5Target `json:"target" url:"-"`
+	// Filters narrowing the records written to the destination. When either filter object is present it governs both kinds, and an absent object means that kind has no filters.
+	TargetFilters *TargetFilters `json:"target_filters,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -271,7 +325,7 @@ var (
 )
 
 type ModelSyncGetSourceFieldsRequest struct {
-	// Source configuration, matching the params used with GET /api/connections/{id}/modelsync/source, that selects the specific source to return fields for.
+	// Source configuration, matching the params used with GET /api/connections/{id}/modelsync/source, that selects the specific source to return fields for
 	Params map[string]*string `json:"-" url:"params,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -366,12 +420,14 @@ var (
 )
 
 type StartModelSyncRequest struct {
-	// Values of the sync's identity source field naming the records to sync. A sync with more than one identity mapping requires 'source_identities' instead.
+	// Values of the sync's identity source field naming the records to sync. A sync with more than one identity mapping requires 'source_identities' instead. Cannot be combined with 'resync'.
 	Identities []string `json:"identities,omitempty" url:"-"`
-	Resync     *bool    `json:"resync,omitempty" url:"-"`
-	// Records to sync, each identified by every source and value its entry lists. The sources of an entry are identity mapping sources of one model, and an entry for a sync whose identities strategy is 'and' lists all of them. Cannot be combined with 'identities'; at most 1000 entries.
+	// Whether the execution ignores change tracking and syncs every record; on a sync that skips the initial backfill, it instead restarts change tracking from the current position without syncing existing records
+	Resync *bool `json:"resync,omitempty" url:"-"`
+	// Records to sync, each identified by every source and value its entry lists. The sources of an entry are identity mapping sources of one model, and an entry for a sync whose identities strategy is 'and' lists all of them. Cannot be combined with 'identities' or 'resync'; at most 1000 entries.
 	SourceIdentities [][]*ModelSyncSourceIdentity `json:"source_identities,omitempty" url:"-"`
-	Test             *bool                        `json:"test,omitempty" url:"-"`
+	// Whether the execution is a test that syncs at most 5 records. Cannot be combined with 'resync'.
+	Test *bool `json:"test,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -457,11 +513,11 @@ var (
 )
 
 type UpdateModelSyncV5Request struct {
-	// Whether the sync is enabled and scheduled.
+	// Whether the sync is enabled and scheduled
 	Active *bool `json:"active,omitempty" url:"-"`
-	// Passphrase for encrypting the sync data.
+	// Passphrase for encrypting the sync data
 	EncryptionPassphrase *string `json:"encryption_passphrase,omitempty" url:"-"`
-	// Fields to sync from source to destination.
+	// Fields to sync from source to destination
 	Fields []*SyncField `json:"fields" url:"-"`
 	// Deprecated. Use 'model_filters.logic'. Combines the model filters in 'filters' only.
 	FilterLogic *string `json:"filter_logic,omitempty" url:"-"`
@@ -470,26 +526,33 @@ type UpdateModelSyncV5Request struct {
 	// Identity mappings for the sync and the strategy combining them, replacing any the sync has. When this is omitted, 'identity' is used instead; updating a sync with more than one mapping requires this property.
 	Identities *ModelSyncIdentities `json:"identities,omitempty" url:"-"`
 	// Deprecated. Use 'identities'. Reports and accepts the first identity mapping only.
-	Identity     *Identity               `json:"identity,omitempty" url:"-"`
-	Mode         ModelsyncSyncTargetMode `json:"mode" url:"-"`
-	ModelFilters *ModelFilters           `json:"model_filters,omitempty" url:"-"`
-	Name         string                  `json:"name" url:"-"`
+	Identity *Identity `json:"identity,omitempty" url:"-"`
+	// How source records are written to the target
+	Mode ModelsyncSyncTargetMode `json:"mode" url:"-"`
+	// Filters narrowing the records read from the source. When either filter object is present it governs both kinds, and an absent object means that kind has no filters.
+	ModelFilters *ModelFilters `json:"model_filters,omitempty" url:"-"`
+	// Name of the model sync
+	Name string `json:"name" url:"-"`
 	// Whether to use enrichment models as a source of possible changes to sync. If true, only changes to the base models will cause a record to sync.
 	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"-"`
-	// Organization ID for the sync; read-only with a partner key.
+	// Ignored for user and organization-scoped API keys, which always act in their own organization
 	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
-	// Target fields which are set to a fixed value for every record, rather than mapped from a model field.
+	// Target fields which are set to a fixed value for every record, rather than mapped from a model field
 	OverrideFields []*OverrideFieldInput `json:"override_fields,omitempty" url:"-"`
-	// Conditional value replacement for fields.
+	// Conditional value replacement for fields
 	Overrides []*Override `json:"overrides,omitempty" url:"-"`
-	Policies  []string    `json:"policies,omitempty" url:"-"`
-	Schedule  *Schedule   `json:"schedule" url:"-"`
+	// Permissions policy IDs applied to the sync. On update, a non-empty list replaces the sync's policies and an empty or omitted list leaves them unchanged.
+	Policies []string `json:"policies,omitempty" url:"-"`
+	// Sync schedule. Schedule times are interpreted in UTC.
+	Schedule *Schedule `json:"schedule" url:"-"`
 	// Whether to skip the initial backfill of records; if true only records seen after the sync is enabled will be synced.
 	SkipInitialBackfill *bool `json:"skip_initial_backfill,omitempty" url:"-"`
-	// Whether to sync all records from the source, regardless of whether they've changed since the previous execution.
-	SyncAllRecords *bool              `json:"sync_all_records,omitempty" url:"-"`
-	Target         *ModelSyncV5Target `json:"target" url:"-"`
-	TargetFilters  *TargetFilters     `json:"target_filters,omitempty" url:"-"`
+	// Whether to sync all records from the source, regardless of whether they've changed since the previous execution
+	SyncAllRecords *bool `json:"sync_all_records,omitempty" url:"-"`
+	// Sync destination configuration
+	Target *ModelSyncV5Target `json:"target" url:"-"`
+	// Filters narrowing the records written to the destination. When either filter object is present it governs both kinds, and an absent object means that kind has no filters.
+	TargetFilters *TargetFilters `json:"target_filters,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -668,6 +731,7 @@ var (
 )
 
 type CancelSyncResponse struct {
+	// Outcome of the request, such as Cancellation requested or No active execution to cancel
 	Message *string `json:"message,omitempty" url:"message,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -752,6 +816,7 @@ var (
 )
 
 type CancelSyncResponseEnvelope struct {
+	// Result of the cancellation request
 	Data *CancelSyncResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -843,13 +908,18 @@ var (
 )
 
 type Filter struct {
+	// Model field to filter on
 	Field *Source `json:"field,omitempty" url:"field,omitempty"`
-	// Identifier of the field to filter on: a model field's UUID when 'field_type' is 'Model', or the destination's own field identifier when it is 'Target'.
-	FieldID   *string                   `json:"field_id,omitempty" url:"field_id,omitempty"`
+	// Identifier of the field to filter on: a model field's UUID when 'field_type' is 'Model', or the destination's own field identifier when it is 'Target'
+	FieldID *string `json:"field_id,omitempty" url:"field_id,omitempty"`
+	// Type of field to filter on; required if the field name is ambiguous
 	FieldType *FilterFieldReferenceType `json:"field_type,omitempty" url:"field_type,omitempty"`
-	Function  FilterFunction            `json:"function" url:"function"`
-	Label     *string                   `json:"label,omitempty" url:"label,omitempty"`
-	Value     any                       `json:"value,omitempty" url:"value,omitempty"`
+	// Comparison the filter applies
+	Function FilterFunction `json:"function" url:"function"`
+	// Label naming this filter in filter_logic
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	// Value the field is compared against
+	Value any `json:"value,omitempty" url:"value,omitempty"`
 	// Model field whose value this filter compares against, resolved separately for each record. Only valid on a target filter, mutually exclusive with 'value', and accepted only by destinations reporting 'supports_filter_value_fields'.
 	ValueField *Source `json:"value_field,omitempty" url:"value_field,omitempty"`
 
@@ -1045,11 +1115,16 @@ var (
 )
 
 type Identity struct {
-	Function          SchemaIdentityFunction `json:"function" url:"function"`
-	NewField          *bool                  `json:"new_field,omitempty" url:"new_field,omitempty"`
-	RemoteFieldTypeID *string                `json:"remote_field_type_id,omitempty" url:"remote_field_type_id,omitempty"`
-	Source            *Source                `json:"source" url:"source"`
-	Target            string                 `json:"target" url:"target"`
+	// Function used to match source and destination values
+	Function SchemaIdentityFunction `json:"function" url:"function"`
+	// Whether Polytomic creates the identity field in the destination
+	NewField *bool `json:"new_field,omitempty" url:"new_field,omitempty"`
+	// Destination field type to use when Polytomic creates the identity field
+	RemoteFieldTypeID *string `json:"remote_field_type_id,omitempty" url:"remote_field_type_id,omitempty"`
+	// Model field matched against the destination
+	Source *Source `json:"source" url:"source"`
+	// Destination field ID matched against the source field
+	Target string `json:"target" url:"target"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1206,34 +1281,37 @@ var (
 )
 
 type ListSyncItem struct {
-	// Whether the sync runs on its schedule.
+	// Whether the sync runs on its schedule
 	Active *bool `json:"active,omitempty" url:"active,omitempty"`
-	// Timestamp the sync was created.
-	CreatedAt *time.Time   `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Timestamp the sync was created
+	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Actor that created the sync
 	CreatedBy *OutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
-	// Unique identifier of the sync.
+	// Unique identifier of the sync
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// How source records are written to the target (e.g. create, updateOrCreate, enrich).
+	// How source records are written to the target (e.g. create, updateOrCreate, enrich)
 	Mode *string `json:"mode,omitempty" url:"mode,omitempty"`
-	// Model IDs used in the sync.
+	// Model IDs used in the sync
 	ModelIDs []string `json:"model_ids,omitempty" url:"model_ids,omitempty"`
-	// Human-readable name of the sync.
+	// Human-readable name of the sync
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
 	// For enrichment syncs, only process records that have been updated since the previous run.
 	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
-	// Organization the sync belongs to.
-	OrganizationID *string   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Schedule       *Schedule `json:"schedule,omitempty" url:"schedule,omitempty"`
+	// Organization the sync belongs to
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Schedule that controls when the sync runs
+	Schedule *Schedule `json:"schedule,omitempty" url:"schedule,omitempty"`
 	// When true, the first execution of the sync skips the initial backfill and only processes new changes.
 	SkipInitialBackfill *bool `json:"skip_initial_backfill,omitempty" url:"skip_initial_backfill,omitempty"`
 	// When true, every execution syncs the full set of source records rather than only changes since the previous run.
 	SyncAllRecords *bool `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
-	// Connection the sync writes to.
+	// Connection the sync writes to
 	TargetConnectionID *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
-	// Destination object (e.g. table, SaaS object) the sync writes to.
+	// Destination object (e.g. table, SaaS object) the sync writes to
 	TargetObject *string `json:"target_object,omitempty" url:"target_object,omitempty"`
-	// Timestamp the sync was last updated.
-	UpdatedAt *time.Time   `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	// Timestamp the sync was last updated
+	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	// Actor that most recently updated the sync
 	UpdatedBy *OutputActor `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1541,7 +1619,9 @@ var (
 )
 
 type ListSyncResponseEnvelope struct {
-	Data       []*ListSyncItem    `json:"data,omitempty" url:"data,omitempty"`
+	// Model syncs on this page
+	Data []*ListSyncItem `json:"data,omitempty" url:"data,omitempty"`
+	// Pagination details for the next page
 	Pagination *PaginationDetails `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1640,6 +1720,7 @@ var (
 )
 
 type ModelFieldResponse struct {
+	// Fields the source connection provides for the given configuration
 	Data []*ModelField `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1727,11 +1808,11 @@ var (
 )
 
 type ModelFilterCondition struct {
-	// Comparison this condition applies to the field's value.
+	// Comparison this condition applies to the field's value
 	Function FilterFunction `json:"function" url:"function"`
 	// Handle naming this condition in 'logic'. A label starts with a letter or underscore and continues with letters, digits and underscores. Labels are scoped to this object, so a model condition and a target condition may share one. Optional: label every condition in the object or none of them, and an unlabelled object is labelled by position -- A, B, C -- which is how labels are always reported back.
 	Label *string `json:"label,omitempty" url:"label,omitempty"`
-	// Model field this condition tests, named the same way as a field mapping's source.
+	// Model field this condition tests, named the same way as a field mapping's source
 	Source *Source `json:"source" url:"source"`
 	// Value the field is compared against. Omitted for functions which take no value, such as 'IsNotNull'.
 	Value any `json:"value,omitempty" url:"value,omitempty"`
@@ -2094,9 +2175,9 @@ var (
 type ModelSyncProblem struct {
 	// Stable identifier for the kind of problem. Branch on this rather than on 'message'.
 	Code *string `json:"code,omitempty" url:"code,omitempty"`
-	// Description of the problem, suitable for showing to a person.
+	// Description of the problem, suitable for showing to a person
 	Message *string `json:"message,omitempty" url:"message,omitempty"`
-	// JSON path of the part of this configuration the problem is about, relative to the sync object.
+	// JSON path of the part of this configuration the problem is about, relative to the sync object
 	Path *string `json:"path,omitempty" url:"path,omitempty"`
 	// How serious the problem is. Every problem reported today is an error, which stops the sync from running; read this rather than assuming.
 	Severity *string `json:"severity,omitempty" url:"severity,omitempty"`
@@ -2219,8 +2300,9 @@ var (
 )
 
 type ModelSyncSourceIdentity struct {
+	// Model field holding the value, named the same way as an identity mapping's source
 	Source *Source `json:"source" url:"source"`
-	// Value the field must hold.
+	// Value the field must hold
 	Value string `json:"value" url:"value"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2345,39 +2427,60 @@ var (
 )
 
 type ModelSyncV5Response struct {
-	Active               *bool        `json:"active,omitempty" url:"active,omitempty"`
-	CreatedAt            *time.Time   `json:"created_at,omitempty" url:"created_at,omitempty"`
-	CreatedBy            *OutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
-	EncryptionPassphrase *string      `json:"encryption_passphrase,omitempty" url:"encryption_passphrase,omitempty"`
-	Fields               []*SyncField `json:"fields,omitempty" url:"fields,omitempty"`
+	// Whether the sync is enabled and scheduled
+	Active *bool `json:"active,omitempty" url:"active,omitempty"`
+	// When the sync was created
+	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Actor that created the sync
+	CreatedBy *OutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
+	// Passphrase for encrypting the sync data, masked
+	EncryptionPassphrase *string `json:"encryption_passphrase,omitempty" url:"encryption_passphrase,omitempty"`
+	// Fields synced from source to destination
+	Fields []*SyncField `json:"fields,omitempty" url:"fields,omitempty"`
 	// Deprecated. Use 'model_filters.logic'.
 	FilterLogic *string `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
 	// Deprecated. Use 'model_filters.conditions' and 'target_filters.conditions'. Reports the same filters, with the two kinds interleaved and told apart by 'field_type'.
 	Filters []*Filter `json:"filters,omitempty" url:"filters,omitempty"`
-	ID      *string   `json:"id,omitempty" url:"id,omitempty"`
-	// Identity mappings for the sync and the strategy combining them.
+	// Model sync ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Identity mappings for the sync and the strategy combining them
 	Identities *ModelSyncIdentities `json:"identities,omitempty" url:"identities,omitempty"`
 	// Deprecated. Use 'identities'. Reports the first identity mapping only.
-	Identity     *Identity                `json:"identity,omitempty" url:"identity,omitempty"`
-	Mode         *ModelsyncSyncTargetMode `json:"mode,omitempty" url:"mode,omitempty"`
-	ModelFilters *ModelFilters            `json:"model_filters,omitempty" url:"model_filters,omitempty"`
-	// Model IDs used in the sync.
-	ModelIDs          []string         `json:"model_ids,omitempty" url:"model_ids,omitempty"`
-	Name              *string          `json:"name,omitempty" url:"name,omitempty"`
-	OnlyEnrichUpdates *bool            `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
-	OrganizationID    *string          `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	OverrideFields    []*OverrideField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
-	Overrides         []*Override      `json:"overrides,omitempty" url:"overrides,omitempty"`
-	Policies          []string         `json:"policies,omitempty" url:"policies,omitempty"`
+	Identity *Identity `json:"identity,omitempty" url:"identity,omitempty"`
+	// How source records are written to the target
+	Mode *ModelsyncSyncTargetMode `json:"mode,omitempty" url:"mode,omitempty"`
+	// Filters narrowing the records read from the source
+	ModelFilters *ModelFilters `json:"model_filters,omitempty" url:"model_filters,omitempty"`
+	// Model IDs used in the sync
+	ModelIDs []string `json:"model_ids,omitempty" url:"model_ids,omitempty"`
+	// Name of the model sync
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Whether only changes to the base models cause a record to sync, rather than changes to enrichment models
+	OnlyEnrichUpdates *bool `json:"only_enrich_updates,omitempty" url:"only_enrich_updates,omitempty"`
+	// ID of the organization the sync belongs to
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Target fields which are set to a fixed value for every record
+	OverrideFields []*OverrideField `json:"override_fields,omitempty" url:"override_fields,omitempty"`
+	// Conditional value replacement for fields
+	Overrides []*Override `json:"overrides,omitempty" url:"overrides,omitempty"`
+	// Permissions policy IDs applied to the sync
+	Policies []string `json:"policies,omitempty" url:"policies,omitempty"`
 	// Parts of this configuration which could not be resolved when it was read. The configuration is reported unchanged, references included, so it can be corrected and written back; this property is ignored on input.
-	Problems            []*ModelSyncProblem `json:"problems,omitempty" url:"problems,omitempty"`
-	Schedule            *Schedule           `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SkipInitialBackfill *bool               `json:"skip_initial_backfill,omitempty" url:"skip_initial_backfill,omitempty"`
-	SyncAllRecords      *bool               `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
-	Target              *ModelSyncV5Target  `json:"target,omitempty" url:"target,omitempty"`
-	TargetFilters       *TargetFilters      `json:"target_filters,omitempty" url:"target_filters,omitempty"`
-	UpdatedAt           *time.Time          `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	UpdatedBy           *OutputActor        `json:"updated_by,omitempty" url:"updated_by,omitempty"`
+	Problems []*ModelSyncProblem `json:"problems,omitempty" url:"problems,omitempty"`
+	// Sync schedule. Schedule times are interpreted in UTC.
+	Schedule *Schedule `json:"schedule,omitempty" url:"schedule,omitempty"`
+	// Whether the initial backfill of records is skipped, so only records seen after the sync is enabled are synced
+	SkipInitialBackfill *bool `json:"skip_initial_backfill,omitempty" url:"skip_initial_backfill,omitempty"`
+	// Whether to sync all records from the source, regardless of whether they have changed since the previous execution
+	SyncAllRecords *bool `json:"sync_all_records,omitempty" url:"sync_all_records,omitempty"`
+	// Sync destination configuration
+	Target *ModelSyncV5Target `json:"target,omitempty" url:"target,omitempty"`
+	// Filters narrowing the records written to the destination
+	TargetFilters *TargetFilters `json:"target_filters,omitempty" url:"target_filters,omitempty"`
+	// When the sync was last updated
+	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	// Actor that most recently updated the sync
+	UpdatedBy *OutputActor `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2837,6 +2940,7 @@ var (
 )
 
 type ModelSyncV5ResponseEnvelope struct {
+	// The model sync
 	Data *ModelSyncV5Response `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2927,14 +3031,17 @@ var (
 )
 
 type ModelSyncV5Target struct {
+	// Destination-specific settings for the target object
 	Configuration map[string]any `json:"configuration,omitempty" url:"configuration,omitempty"`
-	ConnectionID  string         `json:"connection_id" url:"connection_id"`
+	// Connection ID of the destination
+	ConnectionID string `json:"connection_id" url:"connection_id"`
 	// Create a new target object with these properties.
 	Create map[string]string `json:"create,omitempty" url:"create,omitempty"`
 	// Deprecated. Use 'target_filters.logic', which combines the conditions it is grouped with.
 	FilterLogic *string `json:"filter_logic,omitempty" url:"filter_logic,omitempty"`
-	// Name for a new target object.
-	NewName      *string        `json:"new_name,omitempty" url:"new_name,omitempty"`
+	// Name for a new target object
+	NewName *string `json:"new_name,omitempty" url:"new_name,omitempty"`
+	// Destination object the sync writes to
 	Object       *string        `json:"object,omitempty" url:"object,omitempty"`
 	SearchValues map[string]any `json:"search_values,omitempty" url:"search_values,omitempty"`
 
@@ -3109,12 +3216,16 @@ var (
 )
 
 type Override struct {
+	// Model field whose value is overridden
 	Field *Source `json:"field,omitempty" url:"field,omitempty"`
-	// Field ID of the model field to override.
-	FieldID  *string         `json:"field_id,omitempty" url:"field_id,omitempty"`
+	// Field ID of the model field to override
+	FieldID *string `json:"field_id,omitempty" url:"field_id,omitempty"`
+	// Comparison that decides when the override applies
 	Function *FilterFunction `json:"function,omitempty" url:"function,omitempty"`
-	Override any             `json:"override,omitempty" url:"override,omitempty"`
-	Value    any             `json:"value,omitempty" url:"value,omitempty"`
+	// Value written in place of the field value when the condition matches
+	Override any `json:"override,omitempty" url:"override,omitempty"`
+	// Value the field is compared against
+	Value any `json:"value,omitempty" url:"value,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3260,11 +3371,11 @@ var (
 type OverrideField struct {
 	// New is set to true if the target field should be created by Polytomic. This is not supported by all backends.
 	New *bool `json:"new,omitempty" url:"new,omitempty"`
-	// Value written to the target field for every record.
+	// Value written to the target field for every record
 	OverrideValue string `json:"override_value" url:"override_value"`
 	// Sync mode for the field; defaults to 'updateOrCreate'. If set to 'create', the field will not be synced if it already has a value. This is not supported by all backends.
 	SyncMode *string `json:"sync_mode,omitempty" url:"sync_mode,omitempty"`
-	// Target field ID the value will be written to.
+	// Target field ID the value will be written to
 	Target string `json:"target" url:"target"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3401,13 +3512,13 @@ type OverrideFieldInput struct {
 	EncryptionEnabled *bool `json:"encryption_enabled,omitempty" url:"encryption_enabled,omitempty"`
 	// New is set to true if the target field should be created by Polytomic. This is not supported by all backends.
 	New *bool `json:"new,omitempty" url:"new,omitempty"`
-	// Value written to the target field for every record; required unless a source is provided.
+	// Value written to the target field for every record; required unless a source is provided
 	OverrideValue *string `json:"override_value,omitempty" url:"override_value,omitempty"`
 	// Deprecated. Override fields have no source; entries which name one are stored as a field mapping instead. Use 'fields' to map a source field.
 	Source *Source `json:"source,omitempty" url:"source,omitempty"`
 	// Sync mode for the field; defaults to 'updateOrCreate'. If set to 'create', the field will not be synced if it already has a value. This is not supported by all backends.
 	SyncMode *string `json:"sync_mode,omitempty" url:"sync_mode,omitempty"`
-	// Target field ID the value will be written to.
+	// Target field ID the value will be written to
 	Target string `json:"target" url:"target"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3563,8 +3674,10 @@ var (
 )
 
 type RunAfter struct {
+	// Bulk sync IDs this sync runs after
 	BulkSyncIDs []string `json:"bulk_sync_ids,omitempty" url:"bulk_sync_ids,omitempty"`
-	SyncIDs     []string `json:"sync_ids,omitempty" url:"sync_ids,omitempty"`
+	// Model sync IDs this sync runs after
+	SyncIDs []string `json:"sync_ids,omitempty" url:"sync_ids,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3671,15 +3784,24 @@ var (
 )
 
 type Schedule struct {
-	ConnectionID *string            `json:"connection_id,omitempty" url:"connection_id,omitempty"`
-	DayOfMonth   *string            `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
-	DayOfWeek    *string            `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
-	Frequency    *ScheduleFrequency `json:"frequency,omitempty" url:"frequency,omitempty"`
-	Hour         *string            `json:"hour,omitempty" url:"hour,omitempty"`
-	JobID        *int               `json:"job_id,omitempty" url:"job_id,omitempty"`
-	Minute       *string            `json:"minute,omitempty" url:"minute,omitempty"`
-	Month        *string            `json:"month,omitempty" url:"month,omitempty"`
-	RunAfter     *RunAfter          `json:"run_after,omitempty" url:"run_after,omitempty"`
+	// Connection ID of the dbt Cloud connection; required for dbtcloud schedules
+	ConnectionID *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	// Day of the month for custom and builder schedules
+	DayOfMonth *string `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
+	// Day of the week, 0 (Sunday) to 6 (Saturday), for weekly schedules; a cron day-of-week field for custom and builder schedules
+	DayOfWeek *string `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
+	// How often the sync runs
+	Frequency *ScheduleFrequency `json:"frequency,omitempty" url:"frequency,omitempty"`
+	// Hour of the day for daily, weekly, custom, and builder schedules
+	Hour *string `json:"hour,omitempty" url:"hour,omitempty"`
+	// dbt Cloud job ID; required for dbtcloud schedules
+	JobID *int `json:"job_id,omitempty" url:"job_id,omitempty"`
+	// Minute of the hour for hourly, daily, weekly, custom, and builder schedules
+	Minute *string `json:"minute,omitempty" url:"minute,omitempty"`
+	// Month of the year for custom and builder schedules
+	Month *string `json:"month,omitempty" url:"month,omitempty"`
+	// Syncs this sync runs after; required for runafter schedules
+	RunAfter *RunAfter `json:"run_after,omitempty" url:"run_after,omitempty"`
 	// If true, the sync will only run if the dependent syncs completed successfully.
 	RunAfterSuccessOnly *bool `json:"run_after_success_only,omitempty" url:"run_after_success_only,omitempty"`
 
@@ -3891,6 +4013,7 @@ var (
 )
 
 type ScheduleOptionResponse struct {
+	// Schedule types available for model syncs
 	ScheduleOptions []*ScheduleScheduleOption `json:"schedule_options,omitempty" url:"schedule_options,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3975,6 +4098,7 @@ var (
 )
 
 type ScheduleOptionResponseEnvelope struct {
+	// Available schedule options
 	Data *ScheduleOptionResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4062,10 +4186,14 @@ var (
 )
 
 type ScheduleScheduleOption struct {
-	Configuration *JsonschemaForm    `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Description   *string            `json:"description,omitempty" url:"description,omitempty"`
-	Frequency     *ScheduleFrequency `json:"frequency,omitempty" url:"frequency,omitempty"`
-	Label         *string            `json:"label,omitempty" url:"label,omitempty"`
+	// Settings form for schedules of this type
+	Configuration *JsonschemaForm `json:"configuration,omitempty" url:"configuration,omitempty"`
+	// Description of the schedule option
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Schedule frequency
+	Frequency *ScheduleFrequency `json:"frequency,omitempty" url:"frequency,omitempty"`
+	// Display name of the schedule option
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4223,7 +4351,9 @@ var (
 )
 
 type Source struct {
-	Field   string `json:"field" url:"field"`
+	// Source field name on the model
+	Field string `json:"field" url:"field"`
+	// Model ID of the field's model
 	ModelID string `json:"model_id" url:"model_id"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4322,6 +4452,7 @@ var (
 )
 
 type StartSyncResponseEnvelope struct {
+	// The started execution
 	Data *StartSyncResponseSchema `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4408,9 +4539,11 @@ var (
 )
 
 type StartSyncResponseSchema struct {
+	// When the execution was created
 	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
 	// Execution ID
-	ID     *string              `json:"id,omitempty" url:"id,omitempty"`
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Status of the new execution
 	Status *UtilExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4536,16 +4669,17 @@ var (
 )
 
 type SyncField struct {
-	// Whether the field should be encrypted.
+	// Whether the field should be encrypted
 	EncryptionEnabled *bool `json:"encryption_enabled,omitempty" url:"encryption_enabled,omitempty"`
 	// New is set to true if the target field should be created by Polytomic. This is not supported by all backends.
 	New *bool `json:"new,omitempty" url:"new,omitempty"`
 	// Value to set in the target field; a mapping with an override value and no source is stored as an override field.
 	OverrideValue *string `json:"override_value,omitempty" url:"override_value,omitempty"`
-	Source        *Source `json:"source,omitempty" url:"source,omitempty"`
+	// Source field to sync from. Required if 'override_value' is not provided.
+	Source *Source `json:"source,omitempty" url:"source,omitempty"`
 	// Sync mode for the field; defaults to 'updateOrCreate'. If set to 'create', the field will not be synced if it already has a value. This is not supported by all backends.
 	SyncMode *string `json:"sync_mode,omitempty" url:"sync_mode,omitempty"`
-	// Target field ID the source field value will be written to.
+	// Target field ID the source field value will be written to
 	Target string `json:"target" url:"target"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4700,6 +4834,7 @@ var (
 )
 
 type SyncStatusEnvelope struct {
+	// The model sync's status
 	Data *SyncStatusResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4786,9 +4921,12 @@ var (
 )
 
 type SyncStatusResponse struct {
-	CurrentExecution  *GetExecutionResponseSchema `json:"current_execution,omitempty" url:"current_execution,omitempty"`
-	LastExecution     *GetExecutionResponseSchema `json:"last_execution,omitempty" url:"last_execution,omitempty"`
-	NextExecutionTime *time.Time                  `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty"`
+	// The execution in progress
+	CurrentExecution *GetExecutionResponseSchema `json:"current_execution,omitempty" url:"current_execution,omitempty"`
+	// The most recent finished execution
+	LastExecution *GetExecutionResponseSchema `json:"last_execution,omitempty" url:"last_execution,omitempty"`
+	// When the sync is next scheduled to run
+	NextExecutionTime *time.Time `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4912,9 +5050,9 @@ var (
 )
 
 type TargetFilterCondition struct {
-	// Destination field this condition tests, identified the same way as a field mapping's target.
+	// Destination field this condition tests, identified the same way as a field mapping's target
 	Field string `json:"field" url:"field"`
-	// Comparison this condition applies to the field's value.
+	// Comparison this condition applies to the field's value
 	Function FilterFunction `json:"function" url:"function"`
 	// Handle naming this condition in 'logic'. A label starts with a letter or underscore and continues with letters, digits and underscores. Labels are scoped to this object, so a model condition and a target condition may share one. Optional: label every condition in the object or none of them, and an unlabelled object is labelled by position -- A, B, C -- which is how labels are always reported back.
 	Label *string `json:"label,omitempty" url:"label,omitempty"`

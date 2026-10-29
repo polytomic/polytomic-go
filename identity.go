@@ -108,22 +108,23 @@ var (
 )
 
 type GetIdentityResponseSchema struct {
+	// Metadata about the credential that authenticated the request
 	Credential *IdentityCredentialSchema `json:"credential,omitempty" url:"credential,omitempty"`
-	// The email of the caller.
+	// The email of the caller
 	Email *string `json:"email,omitempty" url:"email,omitempty"`
 	// The ID of the caller; this will be omitted for non-user callers.
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Whether the caller is using an organization key.
+	// Whether the caller is using an organization key
 	IsOrganization *bool `json:"is_organization,omitempty" url:"is_organization,omitempty"`
-	// Whether the caller is using a partner key.
+	// Whether the caller is using a partner key
 	IsPartner *bool `json:"is_partner,omitempty" url:"is_partner,omitempty"`
-	// Whether the caller is a system actor.
+	// Whether the caller is a system actor
 	IsSystem *bool `json:"is_system,omitempty" url:"is_system,omitempty"`
-	// Whether the caller is a user.
+	// Whether the caller is a user
 	IsUser *bool `json:"is_user,omitempty" url:"is_user,omitempty"`
-	// The ID of the organization the caller belongs to.
+	// The ID of the organization the caller belongs to
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	// The name of the organization the caller belongs to.
+	// The name of the organization the caller belongs to
 	OrganizationName *string `json:"organization_name,omitempty" url:"organization_name,omitempty"`
 	// Deprecated legacy role name. Populated only for user callers.
 	Role *string `json:"role,omitempty" url:"role,omitempty"`
@@ -340,14 +341,15 @@ var (
 )
 
 type IdentityCredentialAPIKeyProfileSchema struct {
+	// Profile-scoped resource capabilities. These capabilities narrow, but do not expand, the caller's authority.
 	Capabilities *IdentityCredentialCapabilitiesSchema `json:"capabilities,omitempty" url:"capabilities,omitempty"`
-	// Organization-provided summary of the data and questions this scoped profile supports.
+	// Organization-provided summary of the data and questions this scoped profile supports
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Stable API key profile ID.
+	// Stable API key profile ID
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// API key profile kind.
+	// API key profile kind
 	Kind *string `json:"kind,omitempty" url:"kind,omitempty"`
-	// Stable API key profile name.
+	// Stable API key profile name
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -489,7 +491,9 @@ var (
 )
 
 type IdentityCredentialCapabilitiesSchema struct {
-	Query   *IdentityCredentialConnectionCapabilitySchema `json:"query,omitempty" url:"query,omitempty"`
+	// Connections this credential may query through the query runner
+	Query *IdentityCredentialConnectionCapabilitySchema `json:"query,omitempty" url:"query,omitempty"`
+	// Connections this credential may inspect schemas for
 	Schemas *IdentityCredentialConnectionCapabilitySchema `json:"schemas,omitempty" url:"schemas,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -588,7 +592,7 @@ var (
 )
 
 type IdentityCredentialConnectionCapabilitySchema struct {
-	// Connection IDs enabled for this capability.
+	// Connection IDs enabled for this capability
 	ConnectionIDs []string `json:"connection_ids,omitempty" url:"connection_ids,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -679,13 +683,13 @@ var (
 type IdentityCredentialHarborSchema struct {
 	// Whether the organization has the Harbor actions feature enabled. Controls action tool visibility in new MCP sessions; does not grant permission or indicate that an action is configured.
 	ActionsEnabled *bool `json:"actions_enabled,omitempty" url:"actions_enabled,omitempty"`
-	// Organization-provided summary of the Harbor.
+	// Organization-provided summary of the Harbor
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Immutable Harbor ID.
+	// Immutable Harbor ID
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 	// Readable MCP resource URL for authorizing this Harbor independently. The credential's Harbor ID remains authoritative.
 	McpServerURL *string `json:"mcp_server_url,omitempty" url:"mcp_server_url,omitempty"`
-	// Current Harbor display name.
+	// Current Harbor display name
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -832,17 +836,19 @@ var (
 )
 
 type IdentityCredentialSchema struct {
+	// Profile metadata and capabilities for profile-backed API keys
 	APIKeyProfile *IdentityCredentialAPIKeyProfileSchema `json:"api_key_profile,omitempty" url:"api_key_profile,omitempty"`
-	// Provider expiry of a temporary API key.
-	ExpiresAt *time.Time                      `json:"expires_at,omitempty" url:"expires_at,omitempty"`
-	Harbor    *IdentityCredentialHarborSchema `json:"harbor,omitempty" url:"harbor,omitempty"`
-	// Authentication method used for the request.
+	// Provider expiry of a temporary API key
+	ExpiresAt *time.Time `json:"expires_at,omitempty" url:"expires_at,omitempty"`
+	// Authoritative Harbor identity for credentials backed by a Harbor-owned profile
+	Harbor *IdentityCredentialHarborSchema `json:"harbor,omitempty" url:"harbor,omitempty"`
+	// Authentication method used for the request
 	Method *string `json:"method,omitempty" url:"method,omitempty"`
-	// API key mode applied to the credential when available.
+	// API key mode applied to the credential when available
 	Mode *string `json:"mode,omitempty" url:"mode,omitempty"`
-	// OAuth client ID for OAuth-issued API keys.
+	// OAuth client ID for OAuth-issued API keys
 	OauthClientID *string `json:"oauth_client_id,omitempty" url:"oauth_client_id,omitempty"`
-	// Protected resource URL this OAuth-issued credential is bound to.
+	// Protected resource URL this OAuth-issued credential is bound to
 	OauthResource *string `json:"oauth_resource,omitempty" url:"oauth_resource,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

@@ -118,6 +118,7 @@ func (c *Client) Create(
 //	)
 func (c *Client) Get(
 	ctx context.Context,
+	// Webhook ID
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.WebhookEnvelope, error) {
@@ -154,6 +155,7 @@ func (c *Client) Get(
 //	)
 func (c *Client) Update(
 	ctx context.Context,
+	// Webhook ID
 	id string,
 	request *polytomic.UpdateWebhooksSchema,
 	opts ...option.IdempotentRequestOption,
@@ -191,6 +193,7 @@ func (c *Client) Update(
 //	)
 func (c *Client) Delete(
 	ctx context.Context,
+	// Webhook ID
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) error {
@@ -243,6 +246,7 @@ func (c *Client) Delete(
 //	)
 func (c *Client) ListDeliveries(
 	ctx context.Context,
+	// Webhook ID
 	id string,
 	request *polytomic.WebhooksListDeliveriesRequest,
 	opts ...option.RequestOption,
@@ -281,6 +285,7 @@ func (c *Client) ListDeliveries(
 //	)
 func (c *Client) Disable(
 	ctx context.Context,
+	// Webhook ID
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.WebhookEnvelope, error) {
@@ -315,6 +320,7 @@ func (c *Client) Disable(
 //	)
 func (c *Client) Enable(
 	ctx context.Context,
+	// Webhook ID
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.WebhookEnvelope, error) {

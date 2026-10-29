@@ -35,7 +35,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) Get(
 	ctx context.Context,
-	// Unique identifier of the model sync.
+	// Unique identifier of the model sync
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.SyncErrorHandlingEnvelope], error) {
@@ -81,7 +81,7 @@ func (r *RawClient) Get(
 
 func (r *RawClient) Update(
 	ctx context.Context,
-	// Unique identifier of the model sync.
+	// Unique identifier of the model sync
 	id string,
 	request *modelsync.UpdateSyncErrorHandlingRequest,
 	opts ...option.IdempotentRequestOption,

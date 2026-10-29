@@ -92,6 +92,7 @@ func (c *Client) ListAuthorizedConnections(
 //	)
 func (c *Client) ListAuthorizedSchemas(
 	ctx context.Context,
+	// Connection ID
 	connectionID string,
 	request *polytomic.HarborsListAuthorizedSchemasRequest,
 	opts ...option.RequestOption,
@@ -121,7 +122,9 @@ func (c *Client) ListAuthorizedSchemas(
 //	)
 func (c *Client) GetAuthorizedSchema(
 	ctx context.Context,
+	// Connection ID
 	connectionID string,
+	// Schema ID
 	schemaID string,
 	request *polytomic.HarborsGetAuthorizedSchemaRequest,
 	opts ...option.RequestOption,
@@ -176,6 +179,7 @@ func (c *Client) RegisterSession(
 //	)
 func (c *Client) CloseSession(
 	ctx context.Context,
+	// Harbor session ID
 	sessionID string,
 	request *polytomic.HarborsCloseSessionRequest,
 	opts ...option.IdempotentRequestOption,
@@ -275,7 +279,7 @@ func (c *Client) Create(
 //	)
 func (c *Client) Get(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	opts ...option.RequestOption,
 ) (*polytomic.HarborEnvelope, error) {
@@ -310,7 +314,7 @@ func (c *Client) Get(
 //	)
 func (c *Client) Update(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	request *polytomic.UpdateHarborRequest,
 	opts ...option.IdempotentRequestOption,
@@ -345,7 +349,7 @@ func (c *Client) Update(
 //	)
 func (c *Client) Delete(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.DeletedHarborEnvelope, error) {
@@ -382,7 +386,7 @@ func (c *Client) Delete(
 //	)
 func (c *Client) GetActionConfiguration(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	opts ...option.RequestOption,
 ) (*polytomic.HarborActionConfigurationEnvelope, error) {
@@ -419,7 +423,7 @@ func (c *Client) GetActionConfiguration(
 //	)
 func (c *Client) DisableActionConfiguration(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.HarborActionConfigurationEnvelope, error) {
@@ -456,7 +460,7 @@ func (c *Client) DisableActionConfiguration(
 //	)
 func (c *Client) ListActionSourceConnections(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	opts ...option.RequestOption,
 ) (*polytomic.HarborActionSourceConnectionsEnvelope, error) {
@@ -506,9 +510,9 @@ func (c *Client) ListActionSourceConnections(
 //	)
 func (c *Client) SetActionConfiguration(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Source Connection whose action grants you want to manage.
+	// Source Connection whose action grants you want to manage
 	connectionID string,
 	request *polytomic.SetHarborActionConfigurationRequest,
 	opts ...option.IdempotentRequestOption,
@@ -552,9 +556,9 @@ func (c *Client) SetActionConfiguration(
 //	)
 func (c *Client) RemoveActionConfiguration(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Source Connection whose action grants you want to manage.
+	// Source Connection whose action grants you want to manage
 	connectionID string,
 	request *polytomic.HarborsRemoveActionConfigurationRequest,
 	opts ...option.IdempotentRequestOption,
@@ -607,9 +611,9 @@ func (c *Client) RemoveActionConfiguration(
 //	)
 func (c *Client) ListActionConfigurationSchemas(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Source Connection whose action grants you want to manage.
+	// Source Connection whose action grants you want to manage
 	connectionID string,
 	request *polytomic.HarborsListActionConfigurationSchemasRequest,
 	opts ...option.RequestOption,
@@ -652,11 +656,11 @@ func (c *Client) ListActionConfigurationSchemas(
 //	)
 func (c *Client) ListActionConfigurationOperations(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Source Connection whose action grants you want to manage.
+	// Source Connection whose action grants you want to manage
 	connectionID string,
-	// Exact action schema ID returned by schema discovery.
+	// Exact action schema ID returned by schema discovery
 	schemaID string,
 	opts ...option.RequestOption,
 ) (*polytomic.HarborActionConfigurationOperationsEnvelope, error) {
@@ -698,7 +702,7 @@ func (c *Client) ListActionConfigurationOperations(
 //	)
 func (c *Client) ListContexts(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	request *polytomic.HarborsListContextsRequest,
 	opts ...option.RequestOption,
@@ -732,7 +736,7 @@ func (c *Client) ListContexts(
 //	)
 func (c *Client) CreateContext(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	request *polytomic.CreateHarborContextRequest,
 	opts ...option.IdempotentRequestOption,
@@ -776,7 +780,7 @@ func (c *Client) CreateContext(
 //	)
 func (c *Client) ListContextDrafts(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	request *polytomic.HarborsListContextDraftsRequest,
 	opts ...option.RequestOption,
@@ -817,7 +821,7 @@ func (c *Client) ListContextDrafts(
 //	)
 func (c *Client) CreateContextDraft(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	request *polytomic.CreateHarborContextDraftRequest,
 	opts ...option.IdempotentRequestOption,
@@ -853,9 +857,9 @@ func (c *Client) CreateContextDraft(
 //	)
 func (c *Client) GetContext(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique identifier of the context document.
+	// Unique identifier of the context document
 	contextID string,
 	request *polytomic.HarborsGetContextRequest,
 	opts ...option.RequestOption,
@@ -894,9 +898,9 @@ func (c *Client) GetContext(
 //	)
 func (c *Client) UpdateContext(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique identifier of the context document.
+	// Unique identifier of the context document
 	contextID string,
 	request *polytomic.SaveHarborContextRequest,
 	opts ...option.IdempotentRequestOption,
@@ -929,9 +933,9 @@ func (c *Client) UpdateContext(
 //	)
 func (c *Client) DeleteContext(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique identifier of the context document.
+	// Unique identifier of the context document
 	contextID string,
 	request *polytomic.HarborsDeleteContextRequest,
 	opts ...option.IdempotentRequestOption,
@@ -967,9 +971,9 @@ func (c *Client) DeleteContext(
 //	)
 func (c *Client) GetContextDraft(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique identifier of the context document.
+	// Unique identifier of the context document
 	contextID string,
 	request *polytomic.HarborsGetContextDraftRequest,
 	opts ...option.RequestOption,
@@ -1013,9 +1017,9 @@ func (c *Client) GetContextDraft(
 //	)
 func (c *Client) SaveContextDraft(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique identifier of the context document.
+	// Unique identifier of the context document
 	contextID string,
 	request *polytomic.SaveHarborContextDraftRequest,
 	opts ...option.IdempotentRequestOption,
@@ -1050,9 +1054,9 @@ func (c *Client) SaveContextDraft(
 //	)
 func (c *Client) DeleteContextDraft(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique identifier of the context document.
+	// Unique identifier of the context document
 	contextID string,
 	request *polytomic.HarborsDeleteContextDraftRequest,
 	opts ...option.IdempotentRequestOption,
@@ -1091,9 +1095,9 @@ func (c *Client) DeleteContextDraft(
 //	)
 func (c *Client) PromoteContextDraft(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique identifier of the context document.
+	// Unique identifier of the context document
 	contextID string,
 	request *polytomic.HarborsPromoteContextDraftRequest,
 	opts ...option.IdempotentRequestOption,
@@ -1144,9 +1148,9 @@ func (c *Client) PromoteContextDraft(
 //	)
 func (c *Client) ListContextVersions(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique identifier of the context document.
+	// Unique identifier of the context document
 	contextID string,
 	request *polytomic.HarborsListContextVersionsRequest,
 	opts ...option.RequestOption,
@@ -1184,11 +1188,11 @@ func (c *Client) ListContextVersions(
 //	)
 func (c *Client) GetContextVersion(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique identifier of the context document.
+	// Unique identifier of the context document
 	contextID string,
-	// Unique identifier of the published context version.
+	// Unique identifier of the published context version
 	versionID string,
 	request *polytomic.HarborsGetContextVersionRequest,
 	opts ...option.RequestOption,
@@ -1228,7 +1232,7 @@ func (c *Client) GetContextVersion(
 //	)
 func (c *Client) ListKeys(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	request *polytomic.HarborsListKeysRequest,
 	opts ...option.RequestOption,
@@ -1257,7 +1261,7 @@ func (c *Client) ListKeys(
 //	)
 func (c *Client) CreateKey(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.HarborKeyEnvelope, error) {
@@ -1285,9 +1289,9 @@ func (c *Client) CreateKey(
 //	)
 func (c *Client) DeleteKey(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique identifier of the Harbor credential.
+	// Unique identifier of the Harbor credential
 	keyID string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.RevokedHarborKeyEnvelope, error) {
@@ -1329,7 +1333,7 @@ func (c *Client) DeleteKey(
 //	)
 func (c *Client) RunQuery(
 	ctx context.Context,
-	// Unique identifier of the Harbor whose backing connection runs the query.
+	// Unique identifier of the Harbor whose backing connection runs the query
 	harborID string,
 	request *polytomic.RunHarborQueryRequest,
 	opts ...option.IdempotentRequestOption,
@@ -1389,7 +1393,7 @@ func (c *Client) RunQuery(
 //	)
 func (c *Client) ListSavedQueries(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	request *polytomic.HarborsListSavedQueriesRequest,
 	opts ...option.RequestOption,
@@ -1448,7 +1452,7 @@ func (c *Client) ListSavedQueries(
 //	)
 func (c *Client) CreateSavedQueryDraft(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	request *polytomic.CreateHarborSavedQueryDraftRequest,
 	opts ...option.IdempotentRequestOption,
@@ -1488,7 +1492,7 @@ func (c *Client) CreateSavedQueryDraft(
 //	)
 func (c *Client) ListSavedQueryDrafts(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	request *polytomic.HarborsListSavedQueryDraftsRequest,
 	opts ...option.RequestOption,
@@ -1541,9 +1545,9 @@ func (c *Client) ListSavedQueryDrafts(
 //	)
 func (c *Client) GetSavedQuery(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique stable identifier of the saved query.
+	// Unique stable identifier of the saved query
 	savedQueryID string,
 	request *polytomic.HarborsGetSavedQueryRequest,
 	opts ...option.RequestOption,
@@ -1581,9 +1585,9 @@ func (c *Client) GetSavedQuery(
 //	)
 func (c *Client) DeleteSavedQuery(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique stable identifier of the saved query.
+	// Unique stable identifier of the saved query
 	savedQueryID string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.DeletedHarborSavedQueryEnvelope, error) {
@@ -1634,9 +1638,9 @@ func (c *Client) DeleteSavedQuery(
 //	)
 func (c *Client) SaveSavedQueryDraft(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique stable identifier of the saved query.
+	// Unique stable identifier of the saved query
 	savedQueryID string,
 	request *polytomic.SaveHarborSavedQueryDraftRequest,
 	opts ...option.IdempotentRequestOption,
@@ -1669,9 +1673,9 @@ func (c *Client) SaveSavedQueryDraft(
 //	)
 func (c *Client) DeleteSavedQueryDraft(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique stable identifier of the saved query.
+	// Unique stable identifier of the saved query
 	savedQueryID string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.DeletedHarborSavedQueryDraftEnvelope, error) {
@@ -1710,9 +1714,9 @@ func (c *Client) DeleteSavedQueryDraft(
 //	)
 func (c *Client) PublishSavedQueryDraft(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique stable identifier of the saved query.
+	// Unique stable identifier of the saved query
 	savedQueryID string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.HarborSavedQueryEnvelope, error) {
@@ -1748,9 +1752,9 @@ func (c *Client) PublishSavedQueryDraft(
 //	)
 func (c *Client) ValidateSavedQueryDraft(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique stable identifier of the saved query.
+	// Unique stable identifier of the saved query
 	savedQueryID string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.HarborSavedQueryValidationEnvelope, error) {
@@ -1845,9 +1849,9 @@ func (c *Client) ValidateSavedQueryDraft(
 //	)
 func (c *Client) ExecuteSavedQuery(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique stable identifier of the saved query.
+	// Unique stable identifier of the saved query
 	savedQueryID string,
 	request *polytomic.ExecuteHarborSavedQueryRequest,
 	opts ...option.IdempotentRequestOption,
@@ -1877,7 +1881,7 @@ func (c *Client) ExecuteSavedQuery(
 //	)
 func (c *Client) ResolveSourceMappings(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	request *polytomic.ResolveHarborSourceMappingsRequest,
 	opts ...option.IdempotentRequestOption,
@@ -1936,7 +1940,7 @@ func (c *Client) ResolveSourceMappings(
 //	)
 func (c *Client) GetStatus(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	opts ...option.RequestOption,
 ) (*polytomic.HarborStatusEnvelope, error) {
@@ -1972,7 +1976,7 @@ func (c *Client) GetStatus(
 //	)
 func (c *Client) ListUsers(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	request *polytomic.HarborsListUsersRequest,
 	opts ...option.RequestOption,
@@ -2005,7 +2009,7 @@ func (c *Client) ListUsers(
 //	)
 func (c *Client) InviteUser(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
 	request *polytomic.InviteHarborUserRequest,
 	opts ...option.IdempotentRequestOption,
@@ -2035,9 +2039,9 @@ func (c *Client) InviteUser(
 //	)
 func (c *Client) AssignUser(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique identifier of the Harbor-only user.
+	// Unique identifier of the Harbor-only user
 	userID string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.HarborUserEnvelope, error) {
@@ -2066,9 +2070,9 @@ func (c *Client) AssignUser(
 //	)
 func (c *Client) UnassignUser(
 	ctx context.Context,
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	harborID string,
-	// Unique identifier of the Harbor-only user.
+	// Unique identifier of the Harbor-only user
 	userID string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.UnassignedHarborUserEnvelope, error) {

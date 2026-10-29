@@ -243,7 +243,7 @@ func TestBulkSyncActivateWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
-	request := &polytomic.ActivateSyncInput{
+	request := &polytomic.ActivateBulkSyncInput{
 		Active: true,
 	}
 	_, invocationErr := client.BulkSync.Activate(

@@ -75,7 +75,7 @@ var (
 )
 
 type ExecutionsGetIngestConsoleLogsRequest struct {
-	// Optional bulk sync ID for sync-scoped ingestion logs.
+	// Optional bulk sync ID for sync-scoped ingestion logs
 	SyncID *string `json:"-" url:"sync_id,omitempty"`
 	// Maximum number of entries to return. Values above the logger retention limit are capped to 50.
 	Limit *int `json:"-" url:"limit,omitempty"`

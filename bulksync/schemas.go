@@ -100,18 +100,19 @@ type UpdateBulkSchema struct {
 	DataCutoffTimestamp *time.Time `json:"data_cutoff_timestamp,omitempty" url:"-"`
 	// When true, the sync ignores any configured data_cutoff_timestamp for this schema.
 	DisableDataCutoff *bool `json:"disable_data_cutoff,omitempty" url:"-"`
-	// Whether this schema is included in sync runs.
+	// Whether this schema is included in sync runs
 	Enabled *bool `json:"enabled,omitempty" url:"-"`
 	// Field-level configuration. Supplying an empty list enables every field discovered on the source.
 	Fields []*v25.UpdateBulkField `json:"fields,omitempty" url:"-"`
-	// Row-level filters applied when reading from the source.
+	// Row-level filters applied when reading from the source
 	Filters []*v25.BulkFilter `json:"filters,omitempty" url:"-"`
 	// Whether a companion history table is maintained beside this schema's output. Requires a replicate-mode sync to a destination reporting supports_history_mode. Omit to keep the current value.
 	HistoryEnabled *bool `json:"history_enabled,omitempty" url:"-"`
-	// Source field used to partition rows when writing to the destination.
+	// Source field used to partition rows when writing to the destination
 	PartitionKey *string `json:"partition_key,omitempty" url:"-"`
-	// Source field used to detect changes between incremental sync runs.
-	TrackingField  *string `json:"tracking_field,omitempty" url:"-"`
+	// Source field used to detect changes between incremental sync runs
+	TrackingField *string `json:"tracking_field,omitempty" url:"-"`
+	// User-specified override for the destination object name
 	UserOutputName *string `json:"user_output_name,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

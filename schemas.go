@@ -19,10 +19,11 @@ var (
 )
 
 type PatchSchemaFieldRequest struct {
+	// Detailed type of the field, such as "bigint" or ["decimal", {"precision": 10, "scale": 2}]; it must be consistent with the field's type.
 	Definition *TypesDefinition `json:"definition,omitempty" url:"-"`
-	// Sample value surfaced in the UI.
+	// Sample value surfaced in the UI
 	Example any `json:"example,omitempty" url:"-"`
-	// Human-readable label for the field.
+	// Human-readable label for the field
 	Label *string `json:"label,omitempty" url:"-"`
 	// JSONPath used to extract the field from each source record; only meaningful for document-style backends. Pass an empty string to clear an existing path.
 	Path *string `json:"path,omitempty" url:"-"`
@@ -195,6 +196,7 @@ var (
 )
 
 type BulkSyncSourceSchemaEnvelope struct {
+	// The schema
 	Data *Schema `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -281,9 +283,12 @@ var (
 )
 
 type BulkSyncSourceStatus struct {
-	CacheStatus         *string    `json:"cache_status,omitempty" url:"cache_status,omitempty"`
+	// State of the connection schema cache: uninitialized, initializing, cached, refreshing or errors
+	CacheStatus *string `json:"cache_status,omitempty" url:"cache_status,omitempty"`
+	// When the most recent schema refresh finished
 	LastRefreshFinished *time.Time `json:"last_refresh_finished,omitempty" url:"last_refresh_finished,omitempty"`
-	LastRefreshStarted  *time.Time `json:"last_refresh_started,omitempty" url:"last_refresh_started,omitempty"`
+	// When the most recent schema refresh started
+	LastRefreshStarted *time.Time `json:"last_refresh_started,omitempty" url:"last_refresh_started,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -407,6 +412,7 @@ var (
 )
 
 type BulkSyncSourceStatusEnvelope struct {
+	// Schema cache status of the connection
 	Data *BulkSyncSourceStatus `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -491,6 +497,7 @@ var (
 )
 
 type SchemaFieldResponseEnvelope struct {
+	// The updated schema field
 	Data *SchemaField `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -576,8 +583,10 @@ var (
 )
 
 type SchemaPrimaryKeyOverrideInput struct {
-	FieldID      string `json:"field_id" url:"field_id"`
-	IsPrimaryKey bool   `json:"is_primary_key" url:"is_primary_key"`
+	// Field ID in the schema
+	FieldID string `json:"field_id" url:"field_id"`
+	// Whether the field is part of the primary key
+	IsPrimaryKey bool `json:"is_primary_key" url:"is_primary_key"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -675,6 +684,7 @@ var (
 )
 
 type SchemaRecordsResponseEnvelope struct {
+	// Sample records from the schema
 	Data []map[string]any `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -764,16 +774,17 @@ var (
 )
 
 type UserFieldRequest struct {
+	// Detailed type of the field, such as "bigint" or ["decimal", {"precision": 10, "scale": 2}]; it must be consistent with type.
 	Definition *TypesDefinition `json:"definition,omitempty" url:"definition,omitempty"`
-	// Example value shown in the UI and used as a hint for downstream consumers.
+	// Example value shown in the UI and used as a hint for downstream consumers
 	Example any `json:"example,omitempty" url:"example,omitempty"`
 	// Stable identifier for the user-defined field. Reuse an existing field_id to update a field in place.
 	FieldID string `json:"field_id" url:"field_id"`
-	// Human-readable label shown to users selecting this field in the app.
+	// Human-readable label shown to users selecting this field in the app
 	Label string `json:"label" url:"label"`
 	// JSON path expression that extracts the field's value from the source record. Required for nested or computed fields; omit for top-level fields.
 	Path *string `json:"path,omitempty" url:"path,omitempty"`
-	// One of: string, number, boolean, datetime, array, object, binary.
+	// One of: string, number, boolean, datetime, array, object, binary
 	Type string `json:"type" url:"type"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

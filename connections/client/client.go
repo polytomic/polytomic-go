@@ -89,7 +89,7 @@ func (c *Client) GetTypes(
 //	)
 func (c *Client) GetConnectionTypeSchema(
 	ctx context.Context,
-	// Connection type identifier (e.g. postgresql, salesforce, hubspot).
+	// Connection type identifier (e.g. postgresql, salesforce, hubspot)
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.JsonschemaSchema, error) {
@@ -126,6 +126,7 @@ func (c *Client) GetConnectionTypeSchema(
 //	)
 func (c *Client) GetTypeParameterValues(
 	ctx context.Context,
+	// Connection type ID
 	type_ string,
 	request *polytomic.GetConnectionTypeParameterValuesRequestSchema,
 	opts ...option.IdempotentRequestOption,
@@ -254,7 +255,6 @@ func (c *Client) Create(
 //
 //	request := &polytomic.ConnectCardRequest{
 //	    Name: "Salesforce Connection",
-//	    RedirectURL: "redirect_url",
 //	}
 //	client.Connections.Connect(
 //	    context.TODO(),
@@ -382,6 +382,7 @@ func (c *Client) TestConnection(
 //	)
 func (c *Client) Get(
 	ctx context.Context,
+	// Connection ID
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.ConnectionResponseEnvelope, error) {
@@ -434,6 +435,7 @@ func (c *Client) Get(
 //	)
 func (c *Client) Update(
 	ctx context.Context,
+	// Connection ID
 	id string,
 	request *polytomic.UpdateConnectionRequestSchema,
 	opts ...option.IdempotentRequestOption,
@@ -477,6 +479,7 @@ func (c *Client) Update(
 //	)
 func (c *Client) Delete(
 	ctx context.Context,
+	// Connection ID
 	id string,
 	request *polytomic.ConnectionsDeleteRequest,
 	opts ...option.IdempotentRequestOption,
@@ -512,6 +515,7 @@ func (c *Client) Delete(
 //	)
 func (c *Client) GetParameterValues(
 	ctx context.Context,
+	// Connection ID
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.ConnectionParameterValuesResponseEnvelope, error) {
@@ -550,7 +554,7 @@ func (c *Client) GetParameterValues(
 //	)
 func (c *Client) GetUsage(
 	ctx context.Context,
-	// Unique identifier of the connection whose API consumption should be returned.
+	// Unique identifier of the connection whose API consumption should be returned
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.GetConnectionUsageEnvelope, error) {

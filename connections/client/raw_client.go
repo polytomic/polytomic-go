@@ -75,7 +75,7 @@ func (r *RawClient) GetTypes(
 
 func (r *RawClient) GetConnectionTypeSchema(
 	ctx context.Context,
-	// Connection type identifier (e.g. postgresql, salesforce, hubspot).
+	// Connection type identifier (e.g. postgresql, salesforce, hubspot)
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.JsonschemaSchema], error) {
@@ -121,6 +121,7 @@ func (r *RawClient) GetConnectionTypeSchema(
 
 func (r *RawClient) GetTypeParameterValues(
 	ctx context.Context,
+	// Connection type ID
 	type_ string,
 	request *polytomic.GetConnectionTypeParameterValuesRequestSchema,
 	opts ...option.IdempotentRequestOption,
@@ -381,6 +382,7 @@ func (r *RawClient) TestConnection(
 
 func (r *RawClient) Get(
 	ctx context.Context,
+	// Connection ID
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.ConnectionResponseEnvelope], error) {
@@ -426,6 +428,7 @@ func (r *RawClient) Get(
 
 func (r *RawClient) Update(
 	ctx context.Context,
+	// Connection ID
 	id string,
 	request *polytomic.UpdateConnectionRequestSchema,
 	opts ...option.IdempotentRequestOption,
@@ -474,6 +477,7 @@ func (r *RawClient) Update(
 
 func (r *RawClient) Delete(
 	ctx context.Context,
+	// Connection ID
 	id string,
 	request *polytomic.ConnectionsDeleteRequest,
 	opts ...option.IdempotentRequestOption,
@@ -525,6 +529,7 @@ func (r *RawClient) Delete(
 
 func (r *RawClient) GetParameterValues(
 	ctx context.Context,
+	// Connection ID
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.ConnectionParameterValuesResponseEnvelope], error) {
@@ -570,7 +575,7 @@ func (r *RawClient) GetParameterValues(
 
 func (r *RawClient) GetUsage(
 	ctx context.Context,
-	// Unique identifier of the connection whose API consumption should be returned.
+	// Unique identifier of the connection whose API consumption should be returned
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.GetConnectionUsageEnvelope], error) {

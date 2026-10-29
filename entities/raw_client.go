@@ -83,7 +83,7 @@ func (r *RawClient) Search(
 
 func (r *RawClient) Get(
 	ctx context.Context,
-	// UUID of the entity to resolve.
+	// UUID of the entity to resolve
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.EntityResponseEnvelope], error) {
@@ -129,7 +129,7 @@ func (r *RawClient) Get(
 
 func (r *RawClient) GetForPartner(
 	ctx context.Context,
-	// UUID of the entity to resolve.
+	// UUID of the entity to resolve
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.EntityResponseEnvelope], error) {

@@ -49,7 +49,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	)
 func (c *Client) Get(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.BulkSyncErrorHandlingEnvelope, error) {
@@ -76,7 +76,7 @@ func (c *Client) Get(
 //	)
 func (c *Client) Update(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
 	request *bulksync.UpdateBulkSyncErrorHandlingRequest,
 	opts ...option.IdempotentRequestOption,

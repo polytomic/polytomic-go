@@ -35,7 +35,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) List(
 	ctx context.Context,
-	// Unique identifier of the bulk sync whose schedules should be returned.
+	// Unique identifier of the bulk sync whose schedules should be returned
 	syncID string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.SchedulesEnvelope], error) {
@@ -81,7 +81,7 @@ func (r *RawClient) List(
 
 func (r *RawClient) Create(
 	ctx context.Context,
-	// Unique identifier of the bulk sync to add a schedule to.
+	// Unique identifier of the bulk sync to add a schedule to
 	syncID string,
 	request *bulksync.CreateScheduleRequest,
 	opts ...option.IdempotentRequestOption,
@@ -130,9 +130,9 @@ func (r *RawClient) Create(
 
 func (r *RawClient) Get(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	syncID string,
-	// Unique identifier of the schedule.
+	// Unique identifier of the schedule
 	scheduleID string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.ScheduleEnvelope], error) {
@@ -179,9 +179,9 @@ func (r *RawClient) Get(
 
 func (r *RawClient) Update(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	syncID string,
-	// Unique identifier of the schedule to update.
+	// Unique identifier of the schedule to update
 	scheduleID string,
 	request *bulksync.UpdateScheduleRequest,
 	opts ...option.IdempotentRequestOption,
@@ -231,9 +231,9 @@ func (r *RawClient) Update(
 
 func (r *RawClient) Delete(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	syncID string,
-	// Unique identifier of the schedule to delete.
+	// Unique identifier of the schedule to delete
 	scheduleID string,
 	opts ...option.IdempotentRequestOption,
 ) (*core.Response[any], error) {

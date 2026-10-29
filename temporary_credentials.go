@@ -20,8 +20,9 @@ type CreateTemporaryCredentialRequest struct {
 	// Credential lifetime in seconds. Defaults to 3600 (1 hour); minimum 600 and maximum 14400.
 	DurationSeconds *int `json:"duration_seconds,omitempty" url:"-"`
 	// Optional audit correlation label, limited to 128 characters. Do not include secrets or personal data.
-	SessionName *string                     `json:"session_name,omitempty" url:"-"`
-	Subject     *TemporaryCredentialSubject `json:"subject" url:"-"`
+	SessionName *string `json:"session_name,omitempty" url:"-"`
+	// User or Harbor authority the temporary credential will assume
+	Subject *TemporaryCredentialSubject `json:"subject" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -86,9 +87,9 @@ var (
 type TemporaryCredentialResponse struct {
 	// Temporary credential secret. This value is returned only once; store it securely.
 	AccessToken *string `json:"access_token,omitempty" url:"access_token,omitempty"`
-	// Timestamp after which the credential is rejected.
+	// Timestamp after which the credential is rejected
 	ExpiresAt *time.Time `json:"expires_at,omitempty" url:"expires_at,omitempty"`
-	// Temporary credential identifier used for usage attribution.
+	// Temporary credential identifier used for usage attribution
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 	// Authorization scheme for the access token. Always Bearer.
 	TokenType *string `json:"token_type,omitempty" url:"token_type,omitempty"`
@@ -225,6 +226,7 @@ var (
 )
 
 type TemporaryCredentialResponseEnvelope struct {
+	// The issued temporary credential
 	Data *TemporaryCredentialResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -313,7 +315,7 @@ var (
 )
 
 type TemporaryCredentialSubject struct {
-	// Target Harbor for a Harbor credential.
+	// Target Harbor for a Harbor credential
 	HarborID *string `json:"harbor_id,omitempty" url:"harbor_id,omitempty"`
 	// Authority mode for a user credential. Defaults to user. Harbor subjects do not accept this field.
 	Mode *TemporaryCredentialSubjectMode `json:"mode,omitempty" url:"mode,omitempty"`

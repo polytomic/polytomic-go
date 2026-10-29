@@ -4298,6 +4298,14 @@ func TestSettersMarkExplicitEventingSyncCanceledEvent(t *testing.T) {
 }
 
 func TestSettersEventingSyncCompletedEvent(t *testing.T) {
+	t.Run("SetDeletedCount", func(t *testing.T) {
+		obj := &EventingSyncCompletedEvent{}
+		var fernTestValueDeletedCount *int64
+		obj.SetDeletedCount(fernTestValueDeletedCount)
+		assert.Equal(t, fernTestValueDeletedCount, obj.DeletedCount)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetDeletedRecords", func(t *testing.T) {
 		obj := &EventingSyncCompletedEvent{}
 		var fernTestValueDeletedRecords []string
@@ -4469,6 +4477,39 @@ func TestSettersEventingSyncCompletedEvent(t *testing.T) {
 }
 
 func TestGettersEventingSyncCompletedEvent(t *testing.T) {
+	t.Run("GetDeletedCount", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &EventingSyncCompletedEvent{}
+		var expected *int64
+		obj.DeletedCount = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetDeletedCount(), "getter should return the property value")
+	})
+
+	t.Run("GetDeletedCount_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &EventingSyncCompletedEvent{}
+		obj.DeletedCount = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetDeletedCount(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetDeletedCount_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *EventingSyncCompletedEvent
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetDeletedCount() // Should return zero value
+	})
+
 	t.Run("GetDeletedRecords", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
@@ -5165,6 +5206,37 @@ func TestGettersEventingSyncCompletedEvent(t *testing.T) {
 }
 
 func TestSettersMarkExplicitEventingSyncCompletedEvent(t *testing.T) {
+	t.Run("SetDeletedCount_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &EventingSyncCompletedEvent{}
+		var fernTestValueDeletedCount *int64
+
+		// Act
+		obj.SetDeletedCount(fernTestValueDeletedCount)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 	t.Run("SetDeletedRecords_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange

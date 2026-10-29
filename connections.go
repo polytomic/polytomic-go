@@ -23,18 +23,19 @@ var (
 )
 
 type ConnectCardRequest struct {
-	// The id of an existing connection to update.
+	// The id of an existing connection to update
 	Connection *string `json:"connection,omitempty" url:"-"`
-	// Whether to use the dark theme for the Connect modal.
+	// Whether to use the dark theme for the Connect modal
 	Dark *bool `json:"dark,omitempty" url:"-"`
 	// Name of the new connection. Must be unique per organization.
-	Name           string  `json:"name" url:"-"`
+	Name string `json:"name" url:"-"`
+	// Ignored for user and organization-scoped API keys, which always act in their own organization
 	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
-	// URL to redirect to after connection is created.
-	RedirectURL string `json:"redirect_url" url:"-"`
+	// URL to redirect to after the hosted Connect flow finishes. Required for hosted Connect; omit it to mint a session for the embedded form (@polytomic/connect-react).
+	RedirectURL *string `json:"redirect_url,omitempty" url:"-"`
 	// Connect session lifetime in seconds. Defaults to 300 and cannot exceed 604800.
 	TTL *int `json:"ttl,omitempty" url:"-"`
-	// Connection type to create.
+	// Connection type to create
 	Type *string `json:"type,omitempty" url:"-"`
 	// Whether to display the target organization name instead of the partner name in the Connect modal. Defaults to false; organizations without a partner always display their organization name.
 	UseOrganizationName *bool `json:"use_organization_name,omitempty" url:"-"`
@@ -82,7 +83,7 @@ func (c *ConnectCardRequest) SetOrganizationID(organizationID *string) {
 
 // SetRedirectURL sets the RedirectURL field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConnectCardRequest) SetRedirectURL(redirectURL string) {
+func (c *ConnectCardRequest) SetRedirectURL(redirectURL *string) {
 	c.RedirectURL = redirectURL
 	c.require(connectCardRequestFieldRedirectURL)
 }
@@ -149,12 +150,14 @@ var (
 
 type CreateConnectionRequestSchema struct {
 	Configuration map[string]any `json:"configuration" url:"-"`
-	// Override interval for connection health checking.
-	HealthcheckInterval *string  `json:"healthcheck_interval,omitempty" url:"-"`
-	Name                string   `json:"name" url:"-"`
-	OrganizationID      *string  `json:"organization_id,omitempty" url:"-"`
-	Policies            []string `json:"policies,omitempty" url:"-"`
-	// URL to redirect to after completing OAuth flow.
+	// Override interval for connection health checking
+	HealthcheckInterval *string `json:"healthcheck_interval,omitempty" url:"-"`
+	Name                string  `json:"name" url:"-"`
+	// Ignored for user and organization-scoped API keys, which always act in their own organization
+	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
+	// Permissions policy IDs applied to the connection
+	Policies []string `json:"policies,omitempty" url:"-"`
+	// URL to redirect to after completing OAuth flow
 	RedirectURL *string `json:"redirect_url,omitempty" url:"-"`
 	Type        string  `json:"type" url:"-"`
 	// Validate connection configuration.
@@ -253,6 +256,7 @@ var (
 )
 
 type ConnectionsDeleteRequest struct {
+	// Delete the connection with the models and syncs that depend on it.
 	Force *bool `json:"-" url:"force,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -284,7 +288,8 @@ type GetConnectionTypeParameterValuesRequestSchema struct {
 	ConnectionID *string        `json:"connection_id,omitempty" url:"-"`
 	Field        string         `json:"field" url:"-"`
 	Parameters   map[string]any `json:"parameters,omitempty" url:"-"`
-	Query        *string        `json:"query,omitempty" url:"-"`
+	// Has no effect on the values returned.
+	Query *string `json:"query,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -353,11 +358,11 @@ var (
 )
 
 type TestConnectionRequest struct {
-	// Connection configuration to test.
+	// Connection configuration to test
 	Configuration map[string]any `json:"configuration" url:"-"`
 	// Optional existing connection ID to use as a base for testing. The provided configuration will be merged over the stored configuration for this connection before testing.
 	ConnectionID *string `json:"connection_id,omitempty" url:"-"`
-	// The type of connection to test.
+	// The type of connection to test
 	Type string `json:"type" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -426,13 +431,16 @@ var (
 
 type UpdateConnectionRequestSchema struct {
 	Configuration map[string]any `json:"configuration" url:"-"`
-	// Override interval for connection health checking.
-	HealthcheckInterval *string  `json:"healthcheck_interval,omitempty" url:"-"`
-	Name                string   `json:"name" url:"-"`
-	OrganizationID      *string  `json:"organization_id,omitempty" url:"-"`
-	Policies            []string `json:"policies,omitempty" url:"-"`
-	Reconnect           *bool    `json:"reconnect,omitempty" url:"-"`
-	Type                *string  `json:"type,omitempty" url:"-"`
+	// Override interval for connection health checking
+	HealthcheckInterval *string `json:"healthcheck_interval,omitempty" url:"-"`
+	Name                string  `json:"name" url:"-"`
+	// Ignored for user and organization-scoped API keys, which always act in their own organization
+	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
+	// Permissions policy IDs applied to the connection. A non-empty list replaces the connection's policies and an empty or omitted list leaves them unchanged.
+	Policies  []string `json:"policies,omitempty" url:"-"`
+	Reconnect *bool    `json:"reconnect,omitempty" url:"-"`
+	// Ignored. A connection's type is fixed at creation.
+	Type *string `json:"type,omitempty" url:"-"`
 	// Validate connection configuration.
 	Validate *bool `json:"validate,omitempty" url:"-"`
 
@@ -533,11 +541,16 @@ var (
 )
 
 type BackendConnectionCapabilities struct {
-	Destination   bool `json:"destination" url:"destination"`
-	Enrichment    bool `json:"enrichment" url:"enrichment"`
-	Logging       bool `json:"logging" url:"logging"`
+	// Whether the connection type can be a sync destination
+	Destination bool `json:"destination" url:"destination"`
+	// Whether the connection type can enrich models
+	Enrichment bool `json:"enrichment" url:"enrichment"`
+	// Whether the connection type can receive sync event logs
+	Logging bool `json:"logging" url:"logging"`
+	// Whether the connection type can schedule syncs
 	Orchestration bool `json:"orchestration" url:"orchestration"`
-	Source        bool `json:"source" url:"source"`
+	// Whether the connection type can be a sync source
+	Source bool `json:"source" url:"source"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -679,9 +692,12 @@ var (
 )
 
 type BackendOAuthPrompt struct {
-	Key   *string `json:"key,omitempty" url:"key,omitempty"`
+	// Configuration field that decides whether the connection uses OAuth
+	Key *string `json:"key,omitempty" url:"key,omitempty"`
+	// Value of that configuration field that requires OAuth
 	Value *string `json:"value,omitempty" url:"value,omitempty"`
-	When  *string `json:"when,omitempty" url:"when,omitempty"`
+	// When the connection requires OAuth authorization: NEVER, CONDITIONAL, or ALWAYS
+	When *string `json:"when,omitempty" url:"when,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -794,9 +810,9 @@ var (
 )
 
 type ConnectCardResponse struct {
-	// URL that opens the Polytomic Connect flow for creating or reconnecting a Connection.
+	// URL that opens the hosted Polytomic Connect flow for creating or reconnecting a Connection. Empty when the request has no redirect_url.
 	RedirectURL *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
-	// Token for the Polytomic Connect session.
+	// Token for the Polytomic Connect session
 	Token *string `json:"token,omitempty" url:"token,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -895,6 +911,7 @@ var (
 )
 
 type ConnectCardResponseEnvelope struct {
+	// The Connect session
 	Data *ConnectCardResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -988,25 +1005,25 @@ var (
 )
 
 type ConnectSessionResponse struct {
-	// Existing or newly-created connection bound to this session.
+	// Existing or newly-created connection bound to this session
 	ConnectionID *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
-	// Whether the Connect modal uses the dark theme.
+	// Whether the Connect modal uses the dark theme
 	Dark *bool `json:"dark,omitempty" url:"dark,omitempty"`
-	// Absolute time when the Connect session expires.
+	// Absolute time when the Connect session expires
 	ExpiresAt *time.Time `json:"expires_at,omitempty" url:"expires_at,omitempty"`
-	// Stable identifier for this Connect session.
+	// Stable identifier for this Connect session
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Trusted logo URL displayed by the Connect modal.
+	// Trusted logo URL displayed by the Connect modal
 	Logo *string `json:"logo,omitempty" url:"logo,omitempty"`
-	// Trusted connection name for this session.
+	// Trusted connection name for this session
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
-	// Trusted organization or partner name displayed by the Connect modal.
+	// Trusted organization or partner name displayed by the Connect modal
 	OrganizationName *string `json:"organization_name,omitempty" url:"organization_name,omitempty"`
-	// URL to redirect to after the Connect flow finishes.
+	// URL to redirect to after the Connect flow finishes
 	RedirectURL *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
-	// Fixed connection type for this session, if any.
+	// Fixed connection type for this session, if any
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
-	// Connection types allowed for this session when type is empty.
+	// Connection types allowed for this session when type is empty
 	Whitelist []string `json:"whitelist,omitempty" url:"whitelist,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1225,6 +1242,7 @@ var (
 )
 
 type ConnectSessionResponseEnvelope struct {
+	// The Connect session
 	Data *ConnectSessionResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2107,11 +2125,11 @@ var (
 )
 
 type ConnectionUsageCategoryStats struct {
-	// Calls the sync spent in this category over the last 24 hours.
+	// Calls the sync spent in this category over the last 24 hours
 	Calls *int `json:"calls,omitempty" url:"calls,omitempty"`
-	// Backend-defined category identifier (e.g. rest, bulk).
+	// Backend-defined category identifier (e.g. rest, bulk)
 	Key *string `json:"key,omitempty" url:"key,omitempty"`
-	// Human-readable category name for display.
+	// Human-readable category name for display
 	Label *string `json:"label,omitempty" url:"label,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2227,11 +2245,11 @@ var (
 )
 
 type ConnectionUsageResponse struct {
-	// Per-sync breakdown of API calls spent against this connection in the last 24 hours, sorted by total calls descending.
+	// Per-sync breakdown of API calls spent against this connection in the last 24 hours, sorted by total calls descending
 	BySync []*ConnectionUsageSyncStats `json:"bySync,omitempty" url:"bySync,omitempty"`
-	// Total backend API calls made through this connection over the last 24 hours, or null if the backend does not report usage.
+	// Total backend API calls made through this connection over the last 24 hours, or null if the backend does not report usage
 	CallsLast24H *int `json:"callsLast24h,omitempty" url:"callsLast24h,omitempty"`
-	// Unique identifier of the connection the usage applies to.
+	// Unique identifier of the connection the usage applies to
 	ConnectionID *string `json:"connectionId,omitempty" url:"connectionId,omitempty"`
 	// True when the backend can break its API consumption down per sync; otherwise only the 24h total is reported.
 	ReportsSyncStats *bool `json:"reportsSyncStats,omitempty" url:"reportsSyncStats,omitempty"`
@@ -2365,17 +2383,17 @@ var (
 )
 
 type ConnectionUsageSyncStats struct {
-	// Per-category breakdown of the sync's calls, sorted by calls descending.
+	// Per-category breakdown of the sync's calls, sorted by calls descending
 	Categories []*ConnectionUsageCategoryStats `json:"categories,omitempty" url:"categories,omitempty"`
-	// Start time of the sync's most recent execution, or null if it has never run.
+	// Start time of the sync's most recent execution, or null if it has never run
 	LastRunAt *time.Time `json:"lastRunAt,omitempty" url:"lastRunAt,omitempty"`
-	// Unique identifier of the sync that spent the calls.
+	// Unique identifier of the sync that spent the calls
 	SyncID *string `json:"syncId,omitempty" url:"syncId,omitempty"`
-	// Human-readable name of the sync, or empty if it could not be resolved.
+	// Human-readable name of the sync, or empty if it could not be resolved
 	SyncName *string `json:"syncName,omitempty" url:"syncName,omitempty"`
-	// Kind of sync that spent the calls (model or bulk).
+	// Kind of sync that spent the calls (model or bulk)
 	SyncType *string `json:"syncType,omitempty" url:"syncType,omitempty"`
-	// Total API calls the sync spent against this connection in the last 24 hours.
+	// Total API calls the sync spent against this connection in the last 24 hours
 	TotalCalls *int `json:"totalCalls,omitempty" url:"totalCalls,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2633,12 +2651,12 @@ var (
 )
 
 type CreateConnectionResponseSchema struct {
-	// Code to enter in order to complete connection authentication.
+	// Code to enter in order to complete connection authentication
 	AuthCode *string `json:"auth_code,omitempty" url:"auth_code,omitempty"`
-	// URL to visit to complete connection authentication.
+	// URL to visit to complete connection authentication
 	AuthURL       *string        `json:"auth_url,omitempty" url:"auth_url,omitempty"`
 	Configuration map[string]any `json:"configuration,omitempty" url:"configuration,omitempty"`
-	// Interval for connection health checking.
+	// Interval for connection health checking
 	HealthcheckInterval *string               `json:"healthcheck_interval,omitempty" url:"healthcheck_interval,omitempty"`
 	ID                  *string               `json:"id,omitempty" url:"id,omitempty"`
 	Name                *string               `json:"name,omitempty" url:"name,omitempty"`
@@ -2885,6 +2903,7 @@ var (
 )
 
 type GetConnectionUsageEnvelope struct {
+	// API usage for the connection
 	Data *ConnectionUsageResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

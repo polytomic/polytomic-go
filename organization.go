@@ -19,17 +19,17 @@ var (
 )
 
 type CreateOrganizationRequestSchema struct {
-	// OIDC client ID issued by the identity provider.
+	// OIDC client ID issued by the identity provider
 	ClientID *string `json:"client_id,omitempty" url:"-"`
 	// OIDC client secret issued by the identity provider. Write-only; never returned in responses.
 	ClientSecret *string `json:"client_secret,omitempty" url:"-"`
-	// OIDC issuer URL for organizations using OpenID Connect single sign-on.
+	// OIDC issuer URL for organizations using OpenID Connect single sign-on
 	Issuer *string `json:"issuer,omitempty" url:"-"`
 	// Human-readable name of the organization. Must be unique across the partner account.
 	Name string `json:"name" url:"-"`
-	// Email domain used to match users to this organization during SSO sign-in.
+	// Email domain used to match users to this organization during SSO sign-in
 	SSODomain *string `json:"sso_domain,omitempty" url:"-"`
-	// WorkOS organization identifier linking this organization to its SAML/SSO configuration.
+	// WorkOS organization identifier linking this organization to its SAML/SSO configuration
 	SSOOrgID *string `json:"sso_org_id,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -116,17 +116,17 @@ var (
 )
 
 type UpdateOrganizationRequestSchema struct {
-	// OIDC client ID issued by the identity provider.
+	// OIDC client ID issued by the identity provider
 	ClientID *string `json:"client_id,omitempty" url:"-"`
 	// OIDC client secret issued by the identity provider. Write-only; never returned in responses.
 	ClientSecret *string `json:"client_secret,omitempty" url:"-"`
-	// OIDC issuer URL for organizations using OpenID Connect single sign-on.
+	// OIDC issuer URL for organizations using OpenID Connect single sign-on
 	Issuer *string `json:"issuer,omitempty" url:"-"`
 	// Human-readable name of the organization. Must be unique across the partner account.
 	Name string `json:"name" url:"-"`
-	// Email domain used to match users to this organization during SSO sign-in.
+	// Email domain used to match users to this organization during SSO sign-in
 	SSODomain *string `json:"sso_domain,omitempty" url:"-"`
-	// WorkOS organization identifier linking this organization to its SAML/SSO configuration.
+	// WorkOS organization identifier linking this organization to its SAML/SSO configuration
 	SSOOrgID *string `json:"sso_org_id,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -214,7 +214,7 @@ type UpdateRecordLoggingSettingsRequest struct {
 	DeliveryConnectionID *string `json:"deliveryConnectionId,omitempty" url:"-"`
 	// Path record logs are delivered under, ahead of the organization ID. Omit or send null for none; this field is replaced, not merged.
 	DeliveryPrefix *string `json:"deliveryPrefix,omitempty" url:"-"`
-	// Whether record logging is enabled for the organization.
+	// Whether record logging is enabled for the organization
 	Enabled bool `json:"enabled" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -279,15 +279,15 @@ var (
 )
 
 type Organization struct {
-	// Unique identifier of the organization.
+	// Unique identifier of the organization
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// OIDC issuer URL for organizations using OpenID Connect single sign-on.
+	// OIDC issuer URL for organizations using OpenID Connect single sign-on
 	Issuer *string `json:"issuer,omitempty" url:"issuer,omitempty"`
-	// Human-readable name of the organization.
+	// Human-readable name of the organization
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
-	// Email domain used to match users to this organization during SSO sign-in.
+	// Email domain used to match users to this organization during SSO sign-in
 	SSODomain *string `json:"sso_domain,omitempty" url:"sso_domain,omitempty"`
-	// WorkOS organization identifier linking this organization to its SAML/SSO configuration.
+	// WorkOS organization identifier linking this organization to its SAML/SSO configuration
 	SSOOrgID *string `json:"sso_org_id,omitempty" url:"sso_org_id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -596,6 +596,7 @@ var (
 )
 
 type RecordLoggingSettingsEnvelope struct {
+	// The organization record logging settings
 	Data *RecordLoggingSettingsResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -683,13 +684,13 @@ var (
 )
 
 type RecordLoggingSettingsResponse struct {
-	// Blobstorage connection receiving record log deliveries, if one is configured.
+	// Blobstorage connection receiving record log deliveries, if one is configured
 	DeliveryConnectionID *string `json:"deliveryConnectionId,omitempty" url:"deliveryConnectionId,omitempty"`
 	// Name of the destination connection, for display. Omitted when no destination is configured or the connection has been deleted.
 	DeliveryConnectionName *string `json:"deliveryConnectionName,omitempty" url:"deliveryConnectionName,omitempty"`
-	// Path record logs are delivered under, ahead of the organization ID, if one is set.
+	// Path record logs are delivered under, ahead of the organization ID, if one is set
 	DeliveryPrefix *string `json:"deliveryPrefix,omitempty" url:"deliveryPrefix,omitempty"`
-	// True when record logging is enabled for the organization.
+	// True when record logging is enabled for the organization
 	Enabled *bool `json:"enabled,omitempty" url:"enabled,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

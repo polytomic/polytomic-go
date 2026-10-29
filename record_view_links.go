@@ -23,9 +23,11 @@ var (
 )
 
 type CreateRecordViewLinkRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
-	// Connection containing the record.
+	// Connection containing the record
 	ConnectionID string `json:"connection_id" url:"-"`
 	// Optional expiry timestamp. Defaults to 72 hours and cannot exceed 7 days.
 	ExpiresAt *time.Time `json:"expires_at,omitempty" url:"-"`
@@ -33,11 +35,11 @@ type CreateRecordViewLinkRequest struct {
 	Fields []string `json:"fields,omitempty" url:"-"`
 	// The schema lookup-key field used to identify the record. V1 only accepts the schema's single effective primary key.
 	LookupKeyField string `json:"lookup_key_field" url:"-"`
-	// The lookup-key value for the record.
+	// The lookup-key value for the record
 	LookupKeyValue string `json:"lookup_key_value" url:"-"`
-	// Schema containing the record.
+	// Schema containing the record
 	SchemaID string `json:"schema_id" url:"-"`
-	// Optional creator/source label.
+	// Optional creator/source label
 	Source *string `json:"source,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -145,11 +147,13 @@ var (
 )
 
 type RecordViewLinksGetCapabilitiesRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
-	// Connection to check for record-view link support.
+	// Connection to check for record-view link support
 	ConnectionID string `json:"-" url:"connection_id"`
-	// Schema to check for record-view link support.
+	// Schema to check for record-view link support
 	SchemaID string `json:"-" url:"schema_id"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -196,6 +200,7 @@ var (
 )
 
 type CreateRecordViewLinkEnvelope struct {
+	// The created record-view link
 	Data *CreateRecordViewLinkResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -283,13 +288,13 @@ var (
 )
 
 type CreateRecordViewLinkResponse struct {
-	// Link creation timestamp.
+	// Link creation timestamp
 	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
-	// Link expiry timestamp.
+	// Link expiry timestamp
 	ExpiresAt *time.Time `json:"expires_at,omitempty" url:"expires_at,omitempty"`
-	// Record-view link identifier.
+	// Record-view link identifier
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// One-time returned viewer URL containing the raw bearer token.
+	// One-time returned viewer URL containing the raw bearer token
 	URL *string `json:"url,omitempty" url:"url,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -428,6 +433,7 @@ var (
 )
 
 type GetRecordViewCapabilitiesEnvelope struct {
+	// Record-view link capabilities for the schema
 	Data *RecordviewCapabilities `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -521,16 +527,26 @@ var (
 )
 
 type RecordviewCapabilities struct {
-	ConnectionID        *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
-	DefaultFieldPolicy  *string `json:"default_field_policy,omitempty" url:"default_field_policy,omitempty"`
-	DefaultTTLSeconds   *int    `json:"default_ttl_seconds,omitempty" url:"default_ttl_seconds,omitempty"`
-	LookupKeyField      *string `json:"lookup_key_field,omitempty" url:"lookup_key_field,omitempty"`
-	MaxTTLSeconds       *int    `json:"max_ttl_seconds,omitempty" url:"max_ttl_seconds,omitempty"`
-	Reason              *string `json:"reason,omitempty" url:"reason,omitempty"`
-	SchemaID            *string `json:"schema_id,omitempty" url:"schema_id,omitempty"`
-	Supported           *bool   `json:"supported,omitempty" url:"supported,omitempty"`
-	SupportsLiveRefresh *bool   `json:"supports_live_refresh,omitempty" url:"supports_live_refresh,omitempty"`
-	SupportsSnapshot    *bool   `json:"supports_snapshot,omitempty" url:"supports_snapshot,omitempty"`
+	// Connection ID
+	ConnectionID *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
+	// Which fields a link shows when none are selected
+	DefaultFieldPolicy *string `json:"default_field_policy,omitempty" url:"default_field_policy,omitempty"`
+	// Seconds until a link expires when no expiration is given
+	DefaultTTLSeconds *int `json:"default_ttl_seconds,omitempty" url:"default_ttl_seconds,omitempty"`
+	// Primary key field that links look records up by
+	LookupKeyField *string `json:"lookup_key_field,omitempty" url:"lookup_key_field,omitempty"`
+	// Longest allowed link lifetime in seconds
+	MaxTTLSeconds *int `json:"max_ttl_seconds,omitempty" url:"max_ttl_seconds,omitempty"`
+	// Why record view links are unsupported for this schema
+	Reason *string `json:"reason,omitempty" url:"reason,omitempty"`
+	// Schema ID
+	SchemaID *string `json:"schema_id,omitempty" url:"schema_id,omitempty"`
+	// Whether record view links can be created for this schema
+	Supported *bool `json:"supported,omitempty" url:"supported,omitempty"`
+	// Whether links refresh the record when viewed
+	SupportsLiveRefresh *bool `json:"supports_live_refresh,omitempty" url:"supports_live_refresh,omitempty"`
+	// Whether links show a snapshot of the record taken at creation
+	SupportsSnapshot *bool `json:"supports_snapshot,omitempty" url:"supports_snapshot,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -544,13 +560,6 @@ func (r *RecordviewCapabilities) GetConnectionID() *string {
 		return nil
 	}
 	return r.ConnectionID
-}
-
-func (r *RecordviewCapabilities) GetDefaultFieldPolicy() *string {
-	if r == nil {
-		return nil
-	}
-	return r.DefaultFieldPolicy
 }
 
 func (r *RecordviewCapabilities) GetDefaultTTLSeconds() *int {

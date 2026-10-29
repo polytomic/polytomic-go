@@ -245,7 +245,7 @@ func (r *RawClient) Create(
 
 func (r *RawClient) Get(
 	ctx context.Context,
-	// Unique identifier of the organization.
+	// Unique identifier of the organization
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.OrganizationEnvelope], error) {
@@ -291,7 +291,7 @@ func (r *RawClient) Get(
 
 func (r *RawClient) Update(
 	ctx context.Context,
-	// Unique identifier of the organization to update.
+	// Unique identifier of the organization to update
 	id string,
 	request *polytomic.UpdateOrganizationRequestSchema,
 	opts ...option.IdempotentRequestOption,
@@ -340,7 +340,7 @@ func (r *RawClient) Update(
 
 func (r *RawClient) Delete(
 	ctx context.Context,
-	// Unique identifier of the organization.
+	// Unique identifier of the organization
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) (*core.Response[any], error) {

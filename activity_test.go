@@ -184,7 +184,7 @@ func TestSettersActivityListRequest(t *testing.T) {
 
 	t.Run("SetEventType", func(t *testing.T) {
 		obj := &ActivityListRequest{}
-		var fernTestValueEventType []*string
+		var fernTestValueEventType []*HarboractivityEventType
 		obj.SetEventType(fernTestValueEventType)
 		assert.Equal(t, fernTestValueEventType, obj.EventType)
 		assert.NotNil(t, obj.explicitFields)
@@ -192,7 +192,7 @@ func TestSettersActivityListRequest(t *testing.T) {
 
 	t.Run("SetOutcome", func(t *testing.T) {
 		obj := &ActivityListRequest{}
-		var fernTestValueOutcome []*string
+		var fernTestValueOutcome []*HarboractivityOutcome
 		obj.SetOutcome(fernTestValueOutcome)
 		assert.Equal(t, fernTestValueOutcome, obj.Outcome)
 		assert.NotNil(t, obj.explicitFields)
@@ -431,7 +431,7 @@ func TestSettersMarkExplicitActivityListRequest(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &ActivityListRequest{}
-		var fernTestValueEventType []*string
+		var fernTestValueEventType []*HarboractivityEventType
 
 		// Act
 		obj.SetEventType(fernTestValueEventType)
@@ -462,7 +462,7 @@ func TestSettersMarkExplicitActivityListRequest(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &ActivityListRequest{}
-		var fernTestValueOutcome []*string
+		var fernTestValueOutcome []*HarboractivityOutcome
 
 		// Act
 		obj.SetOutcome(fernTestValueOutcome)
@@ -1397,7 +1397,7 @@ func TestSettersHarboractivityapiHarborActivityEvent(t *testing.T) {
 
 	t.Run("SetEventType", func(t *testing.T) {
 		obj := &HarboractivityapiHarborActivityEvent{}
-		var fernTestValueEventType *string
+		var fernTestValueEventType *HarboractivityEventType
 		obj.SetEventType(fernTestValueEventType)
 		assert.Equal(t, fernTestValueEventType, obj.EventType)
 		assert.NotNil(t, obj.explicitFields)
@@ -1453,7 +1453,7 @@ func TestSettersHarboractivityapiHarborActivityEvent(t *testing.T) {
 
 	t.Run("SetOutcome", func(t *testing.T) {
 		obj := &HarboractivityapiHarborActivityEvent{}
-		var fernTestValueOutcome *string
+		var fernTestValueOutcome *HarboractivityOutcome
 		obj.SetOutcome(fernTestValueOutcome)
 		assert.Equal(t, fernTestValueOutcome, obj.Outcome)
 		assert.NotNil(t, obj.explicitFields)
@@ -1469,7 +1469,7 @@ func TestSettersHarboractivityapiHarborActivityEvent(t *testing.T) {
 
 	t.Run("SetProvenance", func(t *testing.T) {
 		obj := &HarboractivityapiHarborActivityEvent{}
-		var fernTestValueProvenance *string
+		var fernTestValueProvenance *HarboractivityProvenance
 		obj.SetProvenance(fernTestValueProvenance)
 		assert.Equal(t, fernTestValueProvenance, obj.Provenance)
 		assert.NotNil(t, obj.explicitFields)
@@ -1778,7 +1778,7 @@ func TestGettersHarboractivityapiHarborActivityEvent(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &HarboractivityapiHarborActivityEvent{}
-		var expected *string
+		var expected *HarboractivityEventType
 		obj.EventType = expected
 
 		// Act & Assert
@@ -2009,7 +2009,7 @@ func TestGettersHarboractivityapiHarborActivityEvent(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &HarboractivityapiHarborActivityEvent{}
-		var expected *string
+		var expected *HarboractivityOutcome
 		obj.Outcome = expected
 
 		// Act & Assert
@@ -2075,7 +2075,7 @@ func TestGettersHarboractivityapiHarborActivityEvent(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &HarboractivityapiHarborActivityEvent{}
-		var expected *string
+		var expected *HarboractivityProvenance
 		obj.Provenance = expected
 
 		// Act & Assert
@@ -2491,7 +2491,7 @@ func TestSettersMarkExplicitHarboractivityapiHarborActivityEvent(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &HarboractivityapiHarborActivityEvent{}
-		var fernTestValueEventType *string
+		var fernTestValueEventType *HarboractivityEventType
 
 		// Act
 		obj.SetEventType(fernTestValueEventType)
@@ -2708,7 +2708,7 @@ func TestSettersMarkExplicitHarboractivityapiHarborActivityEvent(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &HarboractivityapiHarborActivityEvent{}
-		var fernTestValueOutcome *string
+		var fernTestValueOutcome *HarboractivityOutcome
 
 		// Act
 		obj.SetOutcome(fernTestValueOutcome)
@@ -2770,7 +2770,7 @@ func TestSettersMarkExplicitHarboractivityapiHarborActivityEvent(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &HarboractivityapiHarborActivityEvent{}
-		var fernTestValueProvenance *string
+		var fernTestValueProvenance *HarboractivityProvenance
 
 		// Act
 		obj.SetProvenance(fernTestValueProvenance)
@@ -3191,7 +3191,7 @@ func TestSettersHarboractivityapiHarborActivityMetadata(t *testing.T) {
 
 	t.Run("SetPhase", func(t *testing.T) {
 		obj := &HarboractivityapiHarborActivityMetadata{}
-		var fernTestValuePhase *string
+		var fernTestValuePhase *HarboractivityQueryPhase
 		obj.SetPhase(fernTestValuePhase)
 		assert.Equal(t, fernTestValuePhase, obj.Phase)
 		assert.NotNil(t, obj.explicitFields)
@@ -3263,7 +3263,7 @@ func TestSettersHarboractivityapiHarborActivityMetadata(t *testing.T) {
 
 	t.Run("SetStatementCategory", func(t *testing.T) {
 		obj := &HarboractivityapiHarborActivityMetadata{}
-		var fernTestValueStatementCategory *string
+		var fernTestValueStatementCategory *HarboractivityStatementCategory
 		obj.SetStatementCategory(fernTestValueStatementCategory)
 		assert.Equal(t, fernTestValueStatementCategory, obj.StatementCategory)
 		assert.NotNil(t, obj.explicitFields)
@@ -4051,7 +4051,7 @@ func TestGettersHarboractivityapiHarborActivityMetadata(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &HarboractivityapiHarborActivityMetadata{}
-		var expected *string
+		var expected *HarboractivityQueryPhase
 		obj.Phase = expected
 
 		// Act & Assert
@@ -4348,7 +4348,7 @@ func TestGettersHarboractivityapiHarborActivityMetadata(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &HarboractivityapiHarborActivityMetadata{}
-		var expected *string
+		var expected *HarboractivityStatementCategory
 		obj.StatementCategory = expected
 
 		// Act & Assert
@@ -5163,7 +5163,7 @@ func TestSettersMarkExplicitHarboractivityapiHarborActivityMetadata(t *testing.T
 		t.Parallel()
 		// Arrange
 		obj := &HarboractivityapiHarborActivityMetadata{}
-		var fernTestValuePhase *string
+		var fernTestValuePhase *HarboractivityQueryPhase
 
 		// Act
 		obj.SetPhase(fernTestValuePhase)
@@ -5442,7 +5442,7 @@ func TestSettersMarkExplicitHarboractivityapiHarborActivityMetadata(t *testing.T
 		t.Parallel()
 		// Arrange
 		obj := &HarboractivityapiHarborActivityMetadata{}
-		var fernTestValueStatementCategory *string
+		var fernTestValueStatementCategory *HarboractivityStatementCategory
 
 		// Act
 		obj.SetStatementCategory(fernTestValueStatementCategory)
@@ -8319,6 +8319,354 @@ func TestEnumActivityListRequestOrder(t *testing.T) {
 
 	t.Run("Ptr", func(t *testing.T) {
 		val, err := NewActivityListRequestOrderFromString("asc")
+		assert.NoError(t, err)
+		ptr := val.Ptr()
+		assert.NotNil(t, ptr)
+		assert.Equal(t, val, *ptr)
+	})
+}
+
+func TestEnumHarboractivityEventType(t *testing.T) {
+	t.Run("NewFromString_action_looked_up", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("action.looked_up")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("action.looked_up"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_action_configuration_changed", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("action.configuration_changed")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("action.configuration_changed"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_action_listed", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("action.listed")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("action.listed"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_action_prepared", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("action.prepared")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("action.prepared"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_action_preparation_expired", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("action.preparation_expired")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("action.preparation_expired"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_action_attempt_started", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("action.attempt_started")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("action.attempt_started"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_action_succeeded", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("action.succeeded")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("action.succeeded"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_action_failed", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("action.failed")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("action.failed"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_action_unknown", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("action.unknown")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("action.unknown"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_session_started", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("session.started")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("session.started"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_session_closed", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("session.closed")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("session.closed"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_session_expired", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("session.expired")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("session.expired"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_context_listed", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("context.listed")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("context.listed"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_context_fetched", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("context.fetched")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("context.fetched"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_saved_query_listed", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("saved_query.listed")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("saved_query.listed"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_saved_query_fetched", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("saved_query.fetched")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("saved_query.fetched"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_connection_listed", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("connection.listed")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("connection.listed"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_schema_listed", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("schema.listed")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("schema.listed"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_schema_fetched", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("schema.fetched")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("schema.fetched"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_evidence_capability_fetched", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("evidence_capability.fetched")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("evidence_capability.fetched"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_query_submitted", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("query.submitted")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("query.submitted"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_query_started", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("query.started")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("query.started"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_query_succeeded", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("query.succeeded")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("query.succeeded"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_query_failed", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("query.failed")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("query.failed"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_evidence_link_created", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("evidence_link.created")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("evidence_link.created"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_access_denied", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityEventTypeFromString("access.denied")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityEventType("access.denied"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Invalid", func(t *testing.T) {
+		_, err := NewHarboractivityEventTypeFromString("invalid_value_that_does_not_exist")
+		assert.Error(t, err)
+	})
+
+	t.Run("Ptr", func(t *testing.T) {
+		val, err := NewHarboractivityEventTypeFromString("action.looked_up")
+		assert.NoError(t, err)
+		ptr := val.Ptr()
+		assert.NotNil(t, ptr)
+		assert.Equal(t, val, *ptr)
+	})
+}
+
+func TestEnumHarboractivityOutcome(t *testing.T) {
+	t.Run("NewFromString_succeeded", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityOutcomeFromString("succeeded")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityOutcome("succeeded"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_failed", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityOutcomeFromString("failed")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityOutcome("failed"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_denied", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityOutcomeFromString("denied")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityOutcome("denied"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_unknown", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityOutcomeFromString("unknown")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityOutcome("unknown"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Invalid", func(t *testing.T) {
+		_, err := NewHarboractivityOutcomeFromString("invalid_value_that_does_not_exist")
+		assert.Error(t, err)
+	})
+
+	t.Run("Ptr", func(t *testing.T) {
+		val, err := NewHarboractivityOutcomeFromString("succeeded")
+		assert.NoError(t, err)
+		ptr := val.Ptr()
+		assert.NotNil(t, ptr)
+		assert.Equal(t, val, *ptr)
+	})
+}
+
+func TestEnumHarboractivityProvenance(t *testing.T) {
+	t.Run("NewFromString_server_observed", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityProvenanceFromString("server_observed")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityProvenance("server_observed"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_service_attested", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityProvenanceFromString("service_attested")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityProvenance("service_attested"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_client_asserted", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityProvenanceFromString("client_asserted")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityProvenance("client_asserted"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Invalid", func(t *testing.T) {
+		_, err := NewHarboractivityProvenanceFromString("invalid_value_that_does_not_exist")
+		assert.Error(t, err)
+	})
+
+	t.Run("Ptr", func(t *testing.T) {
+		val, err := NewHarboractivityProvenanceFromString("server_observed")
+		assert.NoError(t, err)
+		ptr := val.Ptr()
+		assert.NotNil(t, ptr)
+		assert.Equal(t, val, *ptr)
+	})
+}
+
+func TestEnumHarboractivityQueryPhase(t *testing.T) {
+	t.Run("NewFromString_dispatch", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityQueryPhaseFromString("dispatch")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityQueryPhase("dispatch"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_preflight", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityQueryPhaseFromString("preflight")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityQueryPhase("preflight"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_execution", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityQueryPhaseFromString("execution")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityQueryPhase("execution"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Invalid", func(t *testing.T) {
+		_, err := NewHarboractivityQueryPhaseFromString("invalid_value_that_does_not_exist")
+		assert.Error(t, err)
+	})
+
+	t.Run("Ptr", func(t *testing.T) {
+		val, err := NewHarboractivityQueryPhaseFromString("dispatch")
+		assert.NoError(t, err)
+		ptr := val.Ptr()
+		assert.NotNil(t, ptr)
+		assert.Equal(t, val, *ptr)
+	})
+}
+
+func TestEnumHarboractivityStatementCategory(t *testing.T) {
+	t.Run("NewFromString_select", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityStatementCategoryFromString("select")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityStatementCategory("select"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_other", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityStatementCategoryFromString("other")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityStatementCategory("other"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_unknown", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewHarboractivityStatementCategoryFromString("unknown")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, HarboractivityStatementCategory("unknown"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Invalid", func(t *testing.T) {
+		_, err := NewHarboractivityStatementCategoryFromString("invalid_value_that_does_not_exist")
+		assert.Error(t, err)
+	})
+
+	t.Run("Ptr", func(t *testing.T) {
+		val, err := NewHarboractivityStatementCategoryFromString("select")
 		assert.NoError(t, err)
 		ptr := val.Ptr()
 		assert.NotNil(t, ptr)

@@ -18,11 +18,16 @@ var (
 )
 
 type ActionsDescribeRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
-	ConnectionID               string  `json:"-" url:"connection_id"`
-	SchemaID                   string  `json:"-" url:"schema_id"`
-	OperationID                string  `json:"-" url:"operation_id"`
+	// Connection ID of the action
+	ConnectionID string `json:"-" url:"connection_id"`
+	// Schema ID of the action
+	SchemaID string `json:"-" url:"schema_id"`
+	// Operation ID of the action
+	OperationID string `json:"-" url:"operation_id"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -77,7 +82,9 @@ var (
 )
 
 type ExecuteHarborActionRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
 	// Server-issued identifier returned by prepare. Preserve it for status recovery; never prepare a replacement to retry uncertainty.
 	ExecutionID string `json:"execution_id" url:"-"`
@@ -141,7 +148,9 @@ var (
 )
 
 type ActionsGetExecutionRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -178,13 +187,16 @@ var (
 )
 
 type ActionsListRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
 	// Filter configured schema or operation identities.
 	Search *string `json:"-" url:"search,omitempty"`
 	// Continuation token from the previous page; keep search unchanged.
 	PageToken *string `json:"-" url:"page_token,omitempty"`
-	Limit     *int    `json:"-" url:"limit,omitempty"`
+	// Maximum number of actions to return
+	Limit *int `json:"-" url:"limit,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -243,16 +255,19 @@ var (
 )
 
 type LookupHarborActionRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
-	// Connection ID from Harbor action discovery.
+	// Connection ID from Harbor action discovery
 	ConnectionID string `json:"connection_id" url:"-"`
 	// Unique, nonempty subset of granted output field IDs. Omit to return all currently available granted outputs. Null and empty arrays are invalid.
-	Fields []string          `json:"fields,omitempty" url:"-"`
+	Fields []string `json:"fields,omitempty" url:"-"`
+	// One granted lookup field and exact scalar value
 	Lookup *v25.ActionLookup `json:"lookup" url:"-"`
-	// Exact read-only operation ID from action discovery.
+	// Exact read-only operation ID from action discovery
 	OperationID string `json:"operation_id" url:"-"`
-	// Exact schema ID from action discovery.
+	// Exact schema ID from action discovery
 	SchemaID string `json:"schema_id" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -347,15 +362,19 @@ var (
 )
 
 type PrepareHarborActionRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
 	// Explicit destination connection ID from action discovery. Must have this action and its submitted fields enabled in this Harbor.
-	ConnectionID string            `json:"connection_id" url:"-"`
-	Input        v25.SchemaRecord  `json:"input" url:"-"`
-	Lookup       *v25.ActionLookup `json:"lookup,omitempty" url:"-"`
-	// Exact operation_id from action discovery.
+	ConnectionID string `json:"connection_id" url:"-"`
+	// Nonempty map of enabled input fields to JSON scalars. Omission leaves fields unchanged; null requires advertised nullability; empty strings follow field constraints. Numbers must use integer JSON notation (no decimal point or exponent) within +/-9007199254740991; opaque IDs remain strings. Arrays, objects, and coercion are unsupported.
+	Input v25.SchemaRecord `json:"input" url:"-"`
+	// One advertised lookup field and exact scalar value. Required when lookup_fields is nonempty; otherwise omit.
+	Lookup *v25.ActionLookup `json:"lookup,omitempty" url:"-"`
+	// Exact operation_id from action discovery
 	OperationID string `json:"operation_id" url:"-"`
-	// Exact schema_id from action discovery.
+	// Exact schema_id from action discovery
 	SchemaID string `json:"schema_id" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

@@ -34,9 +34,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) UpsertField(
 	ctx context.Context,
-	// Unique identifier of the connection.
+	// Unique identifier of the connection
 	connectionID string,
-	// Identifier of the schema the fields belong to.
+	// Identifier of the schema the fields belong to
 	schemaID string,
 	request *polytomic.UpsertSchemaFieldRequest,
 	opts ...option.IdempotentRequestOption,
@@ -84,11 +84,11 @@ func (r *RawClient) UpsertField(
 
 func (r *RawClient) DeleteField(
 	ctx context.Context,
-	// Unique identifier of the connection.
+	// Unique identifier of the connection
 	connectionID string,
-	// Identifier of the schema the field belongs to.
+	// Identifier of the schema the field belongs to
 	schemaID string,
-	// Identifier of the user-defined field to delete.
+	// Identifier of the user-defined field to delete
 	fieldID string,
 	opts ...option.IdempotentRequestOption,
 ) (*core.Response[any], error) {
@@ -134,11 +134,11 @@ func (r *RawClient) DeleteField(
 
 func (r *RawClient) PatchField(
 	ctx context.Context,
-	// Connection holding the schema.
+	// Connection holding the schema
 	connectionID string,
-	// Schema identifier.
+	// Schema identifier
 	schemaID string,
-	// Field identifier within the schema.
+	// Field identifier within the schema
 	fieldID string,
 	request *polytomic.PatchSchemaFieldRequest,
 	opts ...option.IdempotentRequestOption,
@@ -189,9 +189,9 @@ func (r *RawClient) PatchField(
 
 func (r *RawClient) SetPrimaryKeys(
 	ctx context.Context,
-	// Unique identifier of the connection.
+	// Unique identifier of the connection
 	connectionID string,
-	// Identifier of the schema whose primary keys are being overridden.
+	// Identifier of the schema whose primary keys are being overridden
 	schemaID string,
 	request *polytomic.SetPrimaryKeysRequest,
 	opts ...option.IdempotentRequestOption,
@@ -239,9 +239,9 @@ func (r *RawClient) SetPrimaryKeys(
 
 func (r *RawClient) ResetPrimaryKeys(
 	ctx context.Context,
-	// Unique identifier of the connection.
+	// Unique identifier of the connection
 	connectionID string,
-	// Identifier of the schema whose primary key override should be cleared.
+	// Identifier of the schema whose primary key override should be cleared
 	schemaID string,
 	opts ...option.IdempotentRequestOption,
 ) (*core.Response[any], error) {
@@ -286,7 +286,7 @@ func (r *RawClient) ResetPrimaryKeys(
 
 func (r *RawClient) Refresh(
 	ctx context.Context,
-	// Unique identifier of the connection whose schema cache should be refreshed.
+	// Unique identifier of the connection whose schema cache should be refreshed
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) (*core.Response[any], error) {
@@ -330,7 +330,7 @@ func (r *RawClient) Refresh(
 
 func (r *RawClient) GetStatus(
 	ctx context.Context,
-	// Unique identifier of the connection whose schema cache status should be returned.
+	// Unique identifier of the connection whose schema cache status should be returned
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.BulkSyncSourceStatusEnvelope], error) {
@@ -376,7 +376,7 @@ func (r *RawClient) GetStatus(
 
 func (r *RawClient) Get(
 	ctx context.Context,
-	// Unique identifier of the connection.
+	// Unique identifier of the connection
 	id string,
 	// Identifier of the schema within the connection. Format depends on the connection type (e.g. schema.table for databases, object name for SaaS backends).
 	schemaID string,
@@ -425,9 +425,9 @@ func (r *RawClient) Get(
 
 func (r *RawClient) GetRecords(
 	ctx context.Context,
-	// Unique identifier of the connection.
+	// Unique identifier of the connection
 	id string,
-	// Identifier of the schema within the connection.
+	// Identifier of the schema within the connection
 	schemaID string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.SchemaRecordsResponseEnvelope], error) {

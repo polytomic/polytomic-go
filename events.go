@@ -85,14 +85,15 @@ var (
 )
 
 type Event struct {
-	// Timestamp the event was emitted.
-	CreatedAt *time.Time    `json:"created_at,omitempty" url:"created_at,omitempty"`
-	Event     *EventPayload `json:"event,omitempty" url:"event,omitempty"`
-	// Unique identifier of the event.
+	// Timestamp the event was emitted
+	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Event payload. Shape depends on the event type.
+	Event *EventPayload `json:"event,omitempty" url:"event,omitempty"`
+	// Unique identifier of the event
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Organization the event belongs to.
+	// Organization the event belongs to
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	// Event type identifier.
+	// Event type identifier
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -560,12 +561,18 @@ var (
 )
 
 type EventingBulkSyncCanceledEvent struct {
+	// Destination connection ID
 	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
-	ExecutionID             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationID          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	SourceConnectionID      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	SyncID                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	// Execution ID
+	ExecutionID *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	// Organization ID
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Source connection ID
+	SourceConnectionID *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	// Bulk sync ID
+	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	// Name of the bulk sync
+	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -726,14 +733,22 @@ var (
 )
 
 type EventingBulkSyncCompletedEvent struct {
-	DestinationConnectionID *string                   `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
-	ExecutionID             *string                   `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationID          *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Schedule                *EventingBulkSyncSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SourceConnectionID      *string                   `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	SyncID                  *string                   `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	SyncName                *string                   `json:"sync_name,omitempty" url:"sync_name,omitempty"`
-	TriggerSource           *string                   `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
+	// Destination connection ID
+	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	// Execution ID
+	ExecutionID *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	// Organization ID
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Schedule that started the execution
+	Schedule *EventingBulkSyncSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
+	// Source connection ID
+	SourceConnectionID *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	// Bulk sync ID
+	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	// Name of the bulk sync
+	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	// What started the execution
+	TriggerSource *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -922,14 +937,22 @@ var (
 )
 
 type EventingBulkSyncCompletedWithErrorEvent struct {
-	DestinationConnectionID *string                   `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
-	ExecutionID             *string                   `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationID          *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Schedule                *EventingBulkSyncSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SourceConnectionID      *string                   `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	SyncID                  *string                   `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	SyncName                *string                   `json:"sync_name,omitempty" url:"sync_name,omitempty"`
-	TriggerSource           *string                   `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
+	// Destination connection ID
+	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	// Execution ID
+	ExecutionID *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	// Organization ID
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Schedule that started the execution
+	Schedule *EventingBulkSyncSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
+	// Source connection ID
+	SourceConnectionID *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	// Bulk sync ID
+	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	// Name of the bulk sync
+	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	// What started the execution
+	TriggerSource *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1119,15 +1142,24 @@ var (
 )
 
 type EventingBulkSyncFailedEvent struct {
-	DestinationConnectionID *string                   `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
-	Error                   *string                   `json:"error,omitempty" url:"error,omitempty"`
-	ExecutionID             *string                   `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationID          *string                   `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Schedule                *EventingBulkSyncSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
-	SourceConnectionID      *string                   `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	SyncID                  *string                   `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	SyncName                *string                   `json:"sync_name,omitempty" url:"sync_name,omitempty"`
-	TriggerSource           *string                   `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
+	// Destination connection ID
+	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
+	// Error message for the failed execution
+	Error *string `json:"error,omitempty" url:"error,omitempty"`
+	// Execution ID
+	ExecutionID *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	// Organization ID
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Schedule that started the execution
+	Schedule *EventingBulkSyncSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
+	// Source connection ID
+	SourceConnectionID *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	// Bulk sync ID
+	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	// Name of the bulk sync
+	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	// What started the execution
+	TriggerSource *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1328,12 +1360,18 @@ var (
 )
 
 type EventingBulkSyncRunningEvent struct {
+	// Destination connection ID
 	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
-	ExecutionID             *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationID          *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	SourceConnectionID      *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	SyncID                  *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	SyncName                *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	// Execution ID
+	ExecutionID *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	// Organization ID
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Source connection ID
+	SourceConnectionID *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	// Bulk sync ID
+	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	// Name of the bulk sync
+	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1488,8 +1526,10 @@ var (
 )
 
 type EventingBulkSyncSchedule struct {
+	// Frequency of the schedule
 	Frequency *string `json:"frequency,omitempty" url:"frequency,omitempty"`
-	ID        *string `json:"id,omitempty" url:"id,omitempty"`
+	// Bulk sync schedule ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1592,12 +1632,18 @@ var (
 )
 
 type EventingSyncCanceledEvent struct {
-	ExecutionID        *string              `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationID     *string              `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	Status             *UtilExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-	SyncID             *string              `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	SyncName           *string              `json:"sync_name,omitempty" url:"sync_name,omitempty"`
-	TargetConnectionID *string              `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
+	// Execution ID
+	ExecutionID *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	// Organization ID
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Status of the execution
+	Status *UtilExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	// Model sync ID
+	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	// Name of the model sync
+	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	// Destination connection ID
+	TargetConnectionID *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1747,58 +1793,88 @@ func (e *EventingSyncCanceledEvent) String() string {
 }
 
 var (
-	eventingSyncCompletedEventFieldDeletedRecords     = big.NewInt(1 << 0)
-	eventingSyncCompletedEventFieldErrorCount         = big.NewInt(1 << 1)
-	eventingSyncCompletedEventFieldErroredRecords     = big.NewInt(1 << 2)
-	eventingSyncCompletedEventFieldExecutionID        = big.NewInt(1 << 3)
-	eventingSyncCompletedEventFieldInsertedCount      = big.NewInt(1 << 4)
-	eventingSyncCompletedEventFieldInsertedRecords    = big.NewInt(1 << 5)
-	eventingSyncCompletedEventFieldLogsURL            = big.NewInt(1 << 6)
-	eventingSyncCompletedEventFieldOrganizationID     = big.NewInt(1 << 7)
-	eventingSyncCompletedEventFieldRecordCount        = big.NewInt(1 << 8)
-	eventingSyncCompletedEventFieldSchedule           = big.NewInt(1 << 9)
-	eventingSyncCompletedEventFieldStatus             = big.NewInt(1 << 10)
-	eventingSyncCompletedEventFieldSyncID             = big.NewInt(1 << 11)
-	eventingSyncCompletedEventFieldSyncName           = big.NewInt(1 << 12)
-	eventingSyncCompletedEventFieldTargetConnectionID = big.NewInt(1 << 13)
-	eventingSyncCompletedEventFieldTotalRecords       = big.NewInt(1 << 14)
-	eventingSyncCompletedEventFieldTrigger            = big.NewInt(1 << 15)
-	eventingSyncCompletedEventFieldUpdatedCount       = big.NewInt(1 << 16)
-	eventingSyncCompletedEventFieldUpdatedRecords     = big.NewInt(1 << 17)
-	eventingSyncCompletedEventFieldUpsertedCount      = big.NewInt(1 << 18)
-	eventingSyncCompletedEventFieldWarningCount       = big.NewInt(1 << 19)
-	eventingSyncCompletedEventFieldWarnings           = big.NewInt(1 << 20)
+	eventingSyncCompletedEventFieldDeletedCount       = big.NewInt(1 << 0)
+	eventingSyncCompletedEventFieldDeletedRecords     = big.NewInt(1 << 1)
+	eventingSyncCompletedEventFieldErrorCount         = big.NewInt(1 << 2)
+	eventingSyncCompletedEventFieldErroredRecords     = big.NewInt(1 << 3)
+	eventingSyncCompletedEventFieldExecutionID        = big.NewInt(1 << 4)
+	eventingSyncCompletedEventFieldInsertedCount      = big.NewInt(1 << 5)
+	eventingSyncCompletedEventFieldInsertedRecords    = big.NewInt(1 << 6)
+	eventingSyncCompletedEventFieldLogsURL            = big.NewInt(1 << 7)
+	eventingSyncCompletedEventFieldOrganizationID     = big.NewInt(1 << 8)
+	eventingSyncCompletedEventFieldRecordCount        = big.NewInt(1 << 9)
+	eventingSyncCompletedEventFieldSchedule           = big.NewInt(1 << 10)
+	eventingSyncCompletedEventFieldStatus             = big.NewInt(1 << 11)
+	eventingSyncCompletedEventFieldSyncID             = big.NewInt(1 << 12)
+	eventingSyncCompletedEventFieldSyncName           = big.NewInt(1 << 13)
+	eventingSyncCompletedEventFieldTargetConnectionID = big.NewInt(1 << 14)
+	eventingSyncCompletedEventFieldTotalRecords       = big.NewInt(1 << 15)
+	eventingSyncCompletedEventFieldTrigger            = big.NewInt(1 << 16)
+	eventingSyncCompletedEventFieldUpdatedCount       = big.NewInt(1 << 17)
+	eventingSyncCompletedEventFieldUpdatedRecords     = big.NewInt(1 << 18)
+	eventingSyncCompletedEventFieldUpsertedCount      = big.NewInt(1 << 19)
+	eventingSyncCompletedEventFieldWarningCount       = big.NewInt(1 << 20)
+	eventingSyncCompletedEventFieldWarnings           = big.NewInt(1 << 21)
 )
 
 type EventingSyncCompletedEvent struct {
-	DeletedRecords  []string `json:"deleted_records,omitempty" url:"deleted_records,omitempty"`
-	ErrorCount      *int64   `json:"error_count,omitempty" url:"error_count,omitempty"`
-	ErroredRecords  []string `json:"errored_records,omitempty" url:"errored_records,omitempty"`
-	ExecutionID     *string  `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	InsertedCount   *int64   `json:"inserted_count,omitempty" url:"inserted_count,omitempty"`
+	// Number of records deleted
+	DeletedCount *int64 `json:"deleted_count,omitempty" url:"deleted_count,omitempty"`
+	// URLs of the record log files for deleted records
+	DeletedRecords []string `json:"deleted_records,omitempty" url:"deleted_records,omitempty"`
+	// Number of record errors
+	ErrorCount *int64 `json:"error_count,omitempty" url:"error_count,omitempty"`
+	// URLs of the record log files for records with errors
+	ErroredRecords []string `json:"errored_records,omitempty" url:"errored_records,omitempty"`
+	// Execution ID
+	ExecutionID *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	// Number of records inserted
+	InsertedCount *int64 `json:"inserted_count,omitempty" url:"inserted_count,omitempty"`
+	// URLs of the record log files for inserted records
 	InsertedRecords []string `json:"inserted_records,omitempty" url:"inserted_records,omitempty"`
-	// Endpoint returning the index of record logs produced by this execution.
-	LogsURL            *string               `json:"logs_url,omitempty" url:"logs_url,omitempty"`
-	OrganizationID     *string               `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	RecordCount        *int64                `json:"record_count,omitempty" url:"record_count,omitempty"`
-	Schedule           *EventingSyncSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
-	Status             *UtilExecutionStatus  `json:"status,omitempty" url:"status,omitempty"`
-	SyncID             *string               `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	SyncName           *string               `json:"sync_name,omitempty" url:"sync_name,omitempty"`
-	TargetConnectionID *string               `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
-	TotalRecords       []string              `json:"total_records,omitempty" url:"total_records,omitempty"`
-	Trigger            *string               `json:"trigger,omitempty" url:"trigger,omitempty"`
-	UpdatedCount       *int64                `json:"updated_count,omitempty" url:"updated_count,omitempty"`
-	UpdatedRecords     []string              `json:"updated_records,omitempty" url:"updated_records,omitempty"`
-	UpsertedCount      *int64                `json:"upserted_count,omitempty" url:"upserted_count,omitempty"`
-	WarningCount       *int64                `json:"warning_count,omitempty" url:"warning_count,omitempty"`
-	Warnings           []string              `json:"warnings,omitempty" url:"warnings,omitempty"`
+	// Endpoint returning the index of record logs produced by this execution
+	LogsURL *string `json:"logs_url,omitempty" url:"logs_url,omitempty"`
+	// Organization ID
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Number of records processed by the execution
+	RecordCount *int64 `json:"record_count,omitempty" url:"record_count,omitempty"`
+	// Schedule that started the execution
+	Schedule *EventingSyncSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
+	// Final status of the execution
+	Status *UtilExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
+	// Model sync ID
+	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	// Name of the model sync
+	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	// Destination connection ID
+	TargetConnectionID *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
+	// URLs of the record log files for all records
+	TotalRecords []string `json:"total_records,omitempty" url:"total_records,omitempty"`
+	// What started the execution
+	Trigger *string `json:"trigger,omitempty" url:"trigger,omitempty"`
+	// Number of records updated
+	UpdatedCount *int64 `json:"updated_count,omitempty" url:"updated_count,omitempty"`
+	// URLs of the record log files for updated records
+	UpdatedRecords []string `json:"updated_records,omitempty" url:"updated_records,omitempty"`
+	// Number of records upserted
+	UpsertedCount *int64 `json:"upserted_count,omitempty" url:"upserted_count,omitempty"`
+	// Number of record warnings
+	WarningCount *int64 `json:"warning_count,omitempty" url:"warning_count,omitempty"`
+	// URLs of the record log files for records with warnings
+	Warnings []string `json:"warnings,omitempty" url:"warnings,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (e *EventingSyncCompletedEvent) GetDeletedCount() *int64 {
+	if e == nil {
+		return nil
+	}
+	return e.DeletedCount
 }
 
 func (e *EventingSyncCompletedEvent) GetDeletedRecords() []string {
@@ -1960,6 +2036,13 @@ func (e *EventingSyncCompletedEvent) require(field *big.Int) {
 		e.explicitFields = big.NewInt(0)
 	}
 	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetDeletedCount sets the DeletedCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingSyncCompletedEvent) SetDeletedCount(deletedCount *int64) {
+	e.DeletedCount = deletedCount
+	e.require(eventingSyncCompletedEventFieldDeletedCount)
 }
 
 // SetDeletedRecords sets the DeletedRecords field and marks it as non-optional;
@@ -2163,13 +2246,21 @@ var (
 )
 
 type EventingSyncCompletedWithErrorsEvent struct {
-	Error              *string `json:"error,omitempty" url:"error,omitempty"`
-	ExecutionID        *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	NumberOfErrors     *int64  `json:"number_of_errors,omitempty" url:"number_of_errors,omitempty"`
-	NumberOfWarnings   *int64  `json:"number_of_warnings,omitempty" url:"number_of_warnings,omitempty"`
-	OrganizationID     *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	SyncID             *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	SyncName           *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	// Error message from the execution, if any
+	Error *string `json:"error,omitempty" url:"error,omitempty"`
+	// Execution ID
+	ExecutionID *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	// Number of record errors
+	NumberOfErrors *int64 `json:"number_of_errors,omitempty" url:"number_of_errors,omitempty"`
+	// Number of record warnings
+	NumberOfWarnings *int64 `json:"number_of_warnings,omitempty" url:"number_of_warnings,omitempty"`
+	// Organization ID
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Model sync ID
+	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	// Name of the model sync
+	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	// Destination connection ID
 	TargetConnectionID *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2357,11 +2448,17 @@ var (
 )
 
 type EventingSyncFailedEvent struct {
-	Error              *string `json:"error,omitempty" url:"error,omitempty"`
-	ExecutionID        *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationID     *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	SyncID             *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	SyncName           *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	// Error message for the failed execution
+	Error *string `json:"error,omitempty" url:"error,omitempty"`
+	// Execution ID
+	ExecutionID *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	// Organization ID
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Model sync ID
+	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	// Name of the model sync
+	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	// Destination connection ID
 	TargetConnectionID *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2520,10 +2617,15 @@ var (
 )
 
 type EventingSyncRunningEvent struct {
-	ExecutionID        *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
-	OrganizationID     *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	SyncID             *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	SyncName           *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	// Execution ID
+	ExecutionID *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
+	// Organization ID
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Model sync ID
+	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	// Name of the model sync
+	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+	// Destination connection ID
 	TargetConnectionID *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2664,6 +2766,7 @@ var (
 )
 
 type EventingSyncSchedule struct {
+	// Frequency of the schedule
 	Frequency *string `json:"frequency,omitempty" url:"frequency,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

@@ -15,7 +15,7 @@ var (
 )
 
 type EntitiesSearchRequest struct {
-	// Search term matched, by word prefix, against models, model fields, model syncs, bulk syncs, and connections in the caller's organization.
+	// Search term matched, by word prefix, against models, model fields, model syncs, bulk syncs, and connections in the caller's organization
 	Search string `json:"-" url:"search"`
 	// Maximum number of results to return across all result types. Defaults to 50 and cannot exceed 100.
 	Limit *int `json:"-" url:"limit,omitempty"`
@@ -59,17 +59,26 @@ var (
 )
 
 type BulkSyncSearchHit struct {
-	BulkSyncID   string             `json:"bulk_sync_id" url:"bulk_sync_id"`
-	BulkSyncName string             `json:"bulk_sync_name" url:"bulk_sync_name"`
-	Links        *SearchResultLinks `json:"links" url:"links"`
-	// Contributing attributes grouped by saved mapping or schema context, with one group for resource metadata.
-	Matches              []*SearchMatch `json:"matches,omitempty" url:"matches,omitempty"`
-	SourceConnectionID   string         `json:"source_connection_id" url:"source_connection_id"`
-	SourceConnectionName string         `json:"source_connection_name" url:"source_connection_name"`
-	SourceConnectionType string         `json:"source_connection_type" url:"source_connection_type"`
-	TargetConnectionID   string         `json:"target_connection_id" url:"target_connection_id"`
-	TargetConnectionName string         `json:"target_connection_name" url:"target_connection_name"`
-	TargetConnectionType string         `json:"target_connection_type" url:"target_connection_type"`
+	// Bulk sync ID
+	BulkSyncID string `json:"bulk_sync_id" url:"bulk_sync_id"`
+	// Bulk sync name
+	BulkSyncName string `json:"bulk_sync_name" url:"bulk_sync_name"`
+	// API paths of the bulk sync and its source and target connections
+	Links *SearchResultLinks `json:"links" url:"links"`
+	// Contributing attributes grouped by saved mapping or schema context, with one group for resource metadata
+	Matches []*SearchMatch `json:"matches,omitempty" url:"matches,omitempty"`
+	// Source connection ID
+	SourceConnectionID string `json:"source_connection_id" url:"source_connection_id"`
+	// Source connection name
+	SourceConnectionName string `json:"source_connection_name" url:"source_connection_name"`
+	// Source connection type
+	SourceConnectionType string `json:"source_connection_type" url:"source_connection_type"`
+	// Target connection ID
+	TargetConnectionID string `json:"target_connection_id" url:"target_connection_id"`
+	// Target connection name
+	TargetConnectionName string `json:"target_connection_name" url:"target_connection_name"`
+	// Target connection type
+	TargetConnectionType string `json:"target_connection_type" url:"target_connection_type"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -283,11 +292,15 @@ var (
 )
 
 type ConnectionSearchHit struct {
-	ConnectionID   string             `json:"connection_id" url:"connection_id"`
-	ConnectionName string             `json:"connection_name" url:"connection_name"`
-	ConnectionType string             `json:"connection_type" url:"connection_type"`
-	Links          *SearchResultLinks `json:"links" url:"links"`
-	// Contributing attributes grouped by saved mapping context, with one group for resource metadata.
+	// Connection ID
+	ConnectionID string `json:"connection_id" url:"connection_id"`
+	// Connection name
+	ConnectionName string `json:"connection_name" url:"connection_name"`
+	// Connection type
+	ConnectionType string `json:"connection_type" url:"connection_type"`
+	// API path of the connection
+	Links *SearchResultLinks `json:"links" url:"links"`
+	// Contributing attributes grouped by saved mapping context, with one group for resource metadata
 	Matches []*SearchMatch `json:"matches,omitempty" url:"matches,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -429,9 +442,9 @@ var (
 )
 
 type EntityRelationship struct {
-	// UUID of the related resource.
+	// UUID of the related resource
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Canonical REST path of the related resource.
+	// Canonical REST path of the related resource
 	Path *string `json:"path,omitempty" url:"path,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -535,11 +548,11 @@ var (
 )
 
 type EntityResponse struct {
-	// Canonical REST path for the resolved resource, suitable for fetching it directly.
+	// Canonical REST path for the resolved resource, suitable for fetching it directly
 	CanonicalPath *string `json:"canonical_path,omitempty" url:"canonical_path,omitempty"`
-	// Lightweight additional context about the resolved entity, such as bulk sync schema_ids.
+	// Lightweight additional context about the resolved entity, such as bulk sync schema_ids
 	Context map[string]any `json:"context,omitempty" url:"context,omitempty"`
-	// UUID that was resolved.
+	// UUID that was resolved
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 	// Organization that owns the resolved resource. Omitted from responses on the user-scoped endpoint.
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
@@ -700,6 +713,7 @@ var (
 )
 
 type EntityResponseEnvelope struct {
+	// The resolved entity
 	Data *EntityResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -793,18 +807,26 @@ var (
 )
 
 type ModelFieldSearchHit struct {
-	FieldID    string `json:"field_id" url:"field_id"`
+	// Model field ID
+	FieldID string `json:"field_id" url:"field_id"`
+	// Model field label
 	FieldLabel string `json:"field_label" url:"field_label"`
-	// Source or technical field name.
-	FieldName string             `json:"field_name" url:"field_name"`
-	Links     *SearchResultLinks `json:"links" url:"links"`
-	// Contributing attributes grouped by saved mapping context, with one group for resource metadata.
-	Matches             []*SearchMatch `json:"matches,omitempty" url:"matches,omitempty"`
-	ModelConnectionID   string         `json:"model_connection_id" url:"model_connection_id"`
-	ModelConnectionName string         `json:"model_connection_name" url:"model_connection_name"`
-	ModelConnectionType string         `json:"model_connection_type" url:"model_connection_type"`
-	ModelID             string         `json:"model_id" url:"model_id"`
-	ModelName           string         `json:"model_name" url:"model_name"`
+	// Source or technical field name
+	FieldName string `json:"field_name" url:"field_name"`
+	// API paths of the field's model and its connection
+	Links *SearchResultLinks `json:"links" url:"links"`
+	// Contributing attributes grouped by saved mapping context, with one group for resource metadata
+	Matches []*SearchMatch `json:"matches,omitempty" url:"matches,omitempty"`
+	// Connection ID of the field's model
+	ModelConnectionID string `json:"model_connection_id" url:"model_connection_id"`
+	// Name of the connection of the field's model
+	ModelConnectionName string `json:"model_connection_name" url:"model_connection_name"`
+	// Connection type of the connection of the field's model
+	ModelConnectionType string `json:"model_connection_type" url:"model_connection_type"`
+	// Model ID of the field's model
+	ModelID string `json:"model_id" url:"model_id"`
+	// Name of the field's model
+	ModelName string `json:"model_name" url:"model_name"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1020,14 +1042,20 @@ var (
 )
 
 type ModelSearchHit struct {
+	// API paths of the model and its connection
 	Links *SearchResultLinks `json:"links" url:"links"`
-	// Contributing attributes grouped by saved mapping context, with one group for resource metadata.
-	Matches             []*SearchMatch `json:"matches,omitempty" url:"matches,omitempty"`
-	ModelConnectionID   string         `json:"model_connection_id" url:"model_connection_id"`
-	ModelConnectionName string         `json:"model_connection_name" url:"model_connection_name"`
-	ModelConnectionType string         `json:"model_connection_type" url:"model_connection_type"`
-	ModelID             string         `json:"model_id" url:"model_id"`
-	ModelName           string         `json:"model_name" url:"model_name"`
+	// Contributing attributes grouped by saved mapping context, with one group for resource metadata
+	Matches []*SearchMatch `json:"matches,omitempty" url:"matches,omitempty"`
+	// Connection ID of the model
+	ModelConnectionID string `json:"model_connection_id" url:"model_connection_id"`
+	// Name of the model's connection
+	ModelConnectionName string `json:"model_connection_name" url:"model_connection_name"`
+	// Connection type of the model's connection
+	ModelConnectionType string `json:"model_connection_type" url:"model_connection_type"`
+	// Model ID
+	ModelID string `json:"model_id" url:"model_id"`
+	// Model name
+	ModelName string `json:"model_name" url:"model_name"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1202,15 +1230,22 @@ var (
 )
 
 type ModelSyncSearchHit struct {
+	// API paths of the model sync and its target connection
 	Links *SearchResultLinks `json:"links" url:"links"`
-	// Contributing attributes grouped by saved mapping context, with one group for resource metadata.
-	Matches              []*SearchMatch               `json:"matches,omitempty" url:"matches,omitempty"`
-	SourceConnections    []*ModelSyncSourceConnection `json:"source_connections" url:"source_connections"`
-	SyncID               string                       `json:"sync_id" url:"sync_id"`
-	SyncName             string                       `json:"sync_name" url:"sync_name"`
-	TargetConnectionID   string                       `json:"target_connection_id" url:"target_connection_id"`
-	TargetConnectionName string                       `json:"target_connection_name" url:"target_connection_name"`
-	TargetConnectionType string                       `json:"target_connection_type" url:"target_connection_type"`
+	// Contributing attributes grouped by saved mapping context, with one group for resource metadata
+	Matches []*SearchMatch `json:"matches,omitempty" url:"matches,omitempty"`
+	// Connections of the models this sync maps from
+	SourceConnections []*ModelSyncSourceConnection `json:"source_connections" url:"source_connections"`
+	// Model sync ID
+	SyncID string `json:"sync_id" url:"sync_id"`
+	// Model sync name
+	SyncName string `json:"sync_name" url:"sync_name"`
+	// Target connection ID
+	TargetConnectionID string `json:"target_connection_id" url:"target_connection_id"`
+	// Target connection name
+	TargetConnectionName string `json:"target_connection_name" url:"target_connection_name"`
+	// Target connection type
+	TargetConnectionType string `json:"target_connection_type" url:"target_connection_type"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1394,8 +1429,11 @@ var (
 )
 
 type ModelSyncSourceConnection struct {
-	ConnectionID   string `json:"connection_id" url:"connection_id"`
+	// Source connection ID
+	ConnectionID string `json:"connection_id" url:"connection_id"`
+	// Source connection name
 	ConnectionName string `json:"connection_name" url:"connection_name"`
+	// Source connection type
 	ConnectionType string `json:"connection_type" url:"connection_type"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1509,7 +1547,9 @@ var (
 )
 
 type SearchEnvelope struct {
-	Data     []*SearchResultItem   `json:"data,omitempty" url:"data,omitempty"`
+	// Matching resources, ordered by type and name
+	Data []*SearchResultItem `json:"data,omitempty" url:"data,omitempty"`
+	// Truncation and completeness details for the results
 	Metadata *SearchResultMetadata `json:"metadata,omitempty" url:"metadata,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1610,10 +1650,12 @@ var (
 )
 
 type SearchMatch struct {
-	// Indexed attributes contributing to this result, with matching query terms.
+	// Indexed attributes contributing to this result, with matching query terms
 	Attributes []*SearchMatchAttribute `json:"attributes,omitempty" url:"attributes,omitempty"`
-	Mapping    *SearchMatchMapping     `json:"mapping,omitempty" url:"mapping,omitempty"`
-	Schema     *SearchMatchSchema      `json:"schema,omitempty" url:"schema,omitempty"`
+	// Saved mapping context shared by these attributes; absent for resource metadata
+	Mapping *SearchMatchMapping `json:"mapping,omitempty" url:"mapping,omitempty"`
+	// Enabled Bulk Sync schema context shared by these attributes; absent for resource metadata
+	Schema *SearchMatchSchema `json:"schema,omitempty" url:"schema,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1727,11 +1769,11 @@ var (
 )
 
 type SearchMatchAttribute struct {
-	// Indexed attribute that matched a query term.
+	// Indexed attribute that matched a query term
 	Attribute string `json:"attribute" url:"attribute"`
-	// Unique normalized query terms matching word prefixes in this value.
+	// Unique normalized query terms matching word prefixes in this value
 	Terms []string `json:"terms,omitempty" url:"terms,omitempty"`
-	// Original indexed string, before tokenization and case normalization.
+	// Original indexed string, before tokenization and case normalization
 	Value string `json:"value" url:"value"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1851,14 +1893,21 @@ var (
 )
 
 type SearchMatchMapping struct {
-	Kind             SearchMatchMappingKind `json:"kind" url:"kind"`
-	SourceFieldID    *string                `json:"source_field_id,omitempty" url:"source_field_id,omitempty"`
-	SourceFieldLabel *string                `json:"source_field_label,omitempty" url:"source_field_label,omitempty"`
-	SourceFieldName  *string                `json:"source_field_name,omitempty" url:"source_field_name,omitempty"`
-	SourceModelID    *string                `json:"source_model_id,omitempty" url:"source_model_id,omitempty"`
-	SourceModelName  *string                `json:"source_model_name,omitempty" url:"source_model_name,omitempty"`
-	TargetFieldID    string                 `json:"target_field_id" url:"target_field_id"`
-	// Target field name from stored schema metadata, when available.
+	// Kind of saved mapping
+	Kind SearchMatchMappingKind `json:"kind" url:"kind"`
+	// Field ID of the mapped source field
+	SourceFieldID *string `json:"source_field_id,omitempty" url:"source_field_id,omitempty"`
+	// Label of the mapped source field
+	SourceFieldLabel *string `json:"source_field_label,omitempty" url:"source_field_label,omitempty"`
+	// Source name of the mapped source field
+	SourceFieldName *string `json:"source_field_name,omitempty" url:"source_field_name,omitempty"`
+	// Model ID of the mapped source field
+	SourceModelID *string `json:"source_model_id,omitempty" url:"source_model_id,omitempty"`
+	// Name of the model that owns the mapped source field
+	SourceModelName *string `json:"source_model_name,omitempty" url:"source_model_name,omitempty"`
+	// Target field ID the source field maps to
+	TargetFieldID string `json:"target_field_id" url:"target_field_id"`
+	// Target field name from stored schema metadata, when available
 	TargetFieldName *string `json:"target_field_name,omitempty" url:"target_field_name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2036,6 +2085,7 @@ func (s *SearchMatchMapping) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+// Kind of saved mapping
 type SearchMatchMappingKind string
 
 const (
@@ -2068,11 +2118,11 @@ var (
 )
 
 type SearchMatchSchema struct {
-	// Configured destination output name, when available.
+	// Configured destination output name, when available
 	OutputName *string `json:"output_name,omitempty" url:"output_name,omitempty"`
-	// Saved source schema ID.
+	// Saved source schema ID
 	SchemaID string `json:"schema_id" url:"schema_id"`
-	// Source schema display name from stored metadata, when available.
+	// Source schema display name from stored metadata, when available
 	SchemaName *string `json:"schema_name,omitempty" url:"schema_name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2388,11 +2438,17 @@ var (
 )
 
 type SearchResultLinks struct {
-	BulkSync         *string `json:"bulk_sync,omitempty" url:"bulk_sync,omitempty"`
-	Connection       *string `json:"connection,omitempty" url:"connection,omitempty"`
-	Model            *string `json:"model,omitempty" url:"model,omitempty"`
-	ModelSync        *string `json:"model_sync,omitempty" url:"model_sync,omitempty"`
+	// API path of the bulk sync
+	BulkSync *string `json:"bulk_sync,omitempty" url:"bulk_sync,omitempty"`
+	// API path of the connection
+	Connection *string `json:"connection,omitempty" url:"connection,omitempty"`
+	// API path of the model
+	Model *string `json:"model,omitempty" url:"model,omitempty"`
+	// API path of the model sync
+	ModelSync *string `json:"model_sync,omitempty" url:"model_sync,omitempty"`
+	// API path of the source connection
 	SourceConnection *string `json:"source_connection,omitempty" url:"source_connection,omitempty"`
+	// API path of the target connection
 	TargetConnection *string `json:"target_connection,omitempty" url:"target_connection,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

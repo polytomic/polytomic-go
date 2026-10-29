@@ -11,6 +11,53 @@ import (
 )
 
 var (
+	activateBulkSyncInputFieldActive = big.NewInt(1 << 0)
+)
+
+type ActivateBulkSyncInput struct {
+	// Whether the bulk sync should be active
+	Active bool `json:"active" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *ActivateBulkSyncInput) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetActive sets the Active field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ActivateBulkSyncInput) SetActive(active bool) {
+	a.Active = active
+	a.require(activateBulkSyncInputFieldActive)
+}
+
+func (a *ActivateBulkSyncInput) UnmarshalJSON(data []byte) error {
+	type unmarshaler ActivateBulkSyncInput
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*a = ActivateBulkSyncInput(body)
+	return nil
+}
+
+func (a *ActivateBulkSyncInput) MarshalJSON() ([]byte, error) {
+	type embed ActivateBulkSyncInput
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+var (
 	createBulkSyncRequestFieldActive                     = big.NewInt(1 << 0)
 	createBulkSyncRequestFieldAdditionalSchedules        = big.NewInt(1 << 1)
 	createBulkSyncRequestFieldAutomaticallyAddNewFields  = big.NewInt(1 << 2)
@@ -36,27 +83,32 @@ type CreateBulkSyncRequest struct {
 	// Whether the sync is active. Inactive syncs do not run on their schedule but can still be triggered manually.
 	Active *bool `json:"active,omitempty" url:"-"`
 	// Additional bulk sync schedules. Schedule times are interpreted in UTC.
-	AdditionalSchedules        []*BulkSyncAdditionalScheduleRequest `json:"additional_schedules,omitempty" url:"-"`
-	AutomaticallyAddNewFields  *BulkDiscover                        `json:"automatically_add_new_fields,omitempty" url:"-"`
-	AutomaticallyAddNewObjects *BulkDiscover                        `json:"automatically_add_new_objects,omitempty" url:"-"`
+	AdditionalSchedules []*BulkSyncAdditionalScheduleRequest `json:"additional_schedules,omitempty" url:"-"`
+	// Controls whether Polytomic automatically enables newly discovered fields on existing objects. Valid values depend on the source backend.
+	AutomaticallyAddNewFields *BulkDiscover `json:"automatically_add_new_fields,omitempty" url:"-"`
+	// Controls whether Polytomic automatically enables newly discovered source objects (tables). Valid values depend on the source backend.
+	AutomaticallyAddNewObjects *BulkDiscover `json:"automatically_add_new_objects,omitempty" url:"-"`
 	// Override the default concurrency limit for this sync.
 	ConcurrencyLimit *int `json:"concurrency_limit,omitempty" url:"-"`
 	// Global cutoff applied across schemas. Source records older than this timestamp are excluded from sync runs.
-	DataCutoffTimestamp *time.Time                      `json:"data_cutoff_timestamp,omitempty" url:"-"`
-	DefaultSchedule     *BulkSyncDefaultScheduleRequest `json:"default_schedule" url:"-"`
+	DataCutoffTimestamp *time.Time `json:"data_cutoff_timestamp,omitempty" url:"-"`
+	// The default bulk sync schedule. This schedule applies to all fields and schemas. Schedules are interpreted in UTC.
+	DefaultSchedule *BulkSyncDefaultScheduleRequest `json:"default_schedule" url:"-"`
 	// Destination-specific bulk sync configuration (e.g. output schema name, file format). The accepted keys depend on the destination connection type.
 	DestinationConfiguration map[string]any `json:"destination_configuration" url:"-"`
-	// Unique identifier of the connection rows are written to.
+	// Unique identifier of the connection rows are written to
 	DestinationConnectionID string `json:"destination_connection_id" url:"-"`
 	// When true, Polytomic will not add its own timestamp columns to destination rows.
-	DisableRecordTimestamps *bool               `json:"disable_record_timestamps,omitempty" url:"-"`
-	Mode                    *BulkSyncTargetMode `json:"mode,omitempty" url:"-"`
-	// Human-readable name for the bulk sync.
-	Name           string              `json:"name" url:"-"`
+	DisableRecordTimestamps *bool `json:"disable_record_timestamps,omitempty" url:"-"`
+	// How source data is written to the destination. replicate keeps the destination in sync with the source; snapshot writes a timestamped copy per execution; append adds every delivered record, including full reads, without updating existing rows.
+	Mode *BulkSyncTargetMode `json:"mode,omitempty" url:"-"`
+	// Human-readable name for the bulk sync
+	Name string `json:"name" url:"-"`
+	// Controls whether destination object and field names are normalized (e.g. lowercased, special characters replaced). Valid values depend on the destination backend.
 	NormalizeNames *BulkNormalizeNames `json:"normalize_names,omitempty" url:"-"`
-	// Organization the sync is created in. Only used by partner callers; normal callers always create syncs in their own organization.
+	// Ignored for user and organization-scoped API keys, which always act in their own organization
 	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
-	// Identifiers of permissions policies applied to the bulk sync.
+	// Permissions policy IDs applied to the bulk sync. On update, a non-empty list replaces the bulk sync's policies and an empty or omitted list leaves them unchanged.
 	Policies []string `json:"policies,omitempty" url:"-"`
 	// Override the default resync concurrency limit for this sync.
 	ResyncConcurrencyLimit *int `json:"resync_concurrency_limit,omitempty" url:"-"`
@@ -64,7 +116,7 @@ type CreateBulkSyncRequest struct {
 	Schemas []*CreateBulkSyncRequestSchemasItem `json:"schemas,omitempty" url:"-"`
 	// Source-specific bulk sync configuration (e.g. replication slot name, sync lookback). The accepted keys depend on the source connection type.
 	SourceConfiguration map[string]any `json:"source_configuration,omitempty" url:"-"`
-	// Unique identifier of the connection rows are read from.
+	// Unique identifier of the connection rows are read from
 	SourceConnectionID string `json:"source_connection_id" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -239,6 +291,7 @@ var (
 )
 
 type BulkSyncDeleteRequest struct {
+	// Deprecated; has no effect
 	RefreshSchemas *bool `json:"-" url:"refresh_schemas,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -264,6 +317,7 @@ var (
 )
 
 type BulkSyncGetRequest struct {
+	// Deprecated; has no effect
 	RefreshSchemas *bool `json:"-" url:"refresh_schemas,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -344,7 +398,9 @@ var (
 )
 
 type StartBulkSyncRequest struct {
-	FetchMode  *BulkFetchMode  `json:"fetch_mode,omitempty" url:"-"`
+	// Selective fetch mode. Controls whether the execution runs a full fetch, only incremental fields, or only non-incremental fields.
+	FetchMode *BulkFetchMode `json:"fetch_mode,omitempty" url:"-"`
+	// Controls how the destination is handled during a resync. Valid values: refetch (retain destination data), resync (truncate destination data), rebuild (drop and recreate destination tables).
 	ResyncMode *BulkResyncMode `json:"resync_mode,omitempty" url:"-"`
 	// Optional list of schema IDs to include in this execution. If empty, all enabled schemas are included.
 	Schemas []string `json:"schemas,omitempty" url:"-"`
@@ -437,27 +493,32 @@ type UpdateBulkSyncRequest struct {
 	// Whether the sync is active. Inactive syncs do not run on their schedule but can still be triggered manually.
 	Active *bool `json:"active,omitempty" url:"-"`
 	// Additional bulk sync schedules. Schedule times are interpreted in UTC.
-	AdditionalSchedules        []*BulkSyncAdditionalScheduleRequest `json:"additional_schedules,omitempty" url:"-"`
-	AutomaticallyAddNewFields  *BulkDiscover                        `json:"automatically_add_new_fields,omitempty" url:"-"`
-	AutomaticallyAddNewObjects *BulkDiscover                        `json:"automatically_add_new_objects,omitempty" url:"-"`
+	AdditionalSchedules []*BulkSyncAdditionalScheduleRequest `json:"additional_schedules,omitempty" url:"-"`
+	// Controls whether Polytomic automatically enables newly discovered fields on existing objects. Valid values depend on the source backend.
+	AutomaticallyAddNewFields *BulkDiscover `json:"automatically_add_new_fields,omitempty" url:"-"`
+	// Controls whether Polytomic automatically enables newly discovered source objects (tables). Valid values depend on the source backend.
+	AutomaticallyAddNewObjects *BulkDiscover `json:"automatically_add_new_objects,omitempty" url:"-"`
 	// Override the default concurrency limit for this sync.
 	ConcurrencyLimit *int `json:"concurrency_limit,omitempty" url:"-"`
 	// Global cutoff applied across schemas. Source records older than this timestamp are excluded from sync runs.
-	DataCutoffTimestamp *time.Time                      `json:"data_cutoff_timestamp,omitempty" url:"-"`
-	DefaultSchedule     *BulkSyncDefaultScheduleRequest `json:"default_schedule" url:"-"`
+	DataCutoffTimestamp *time.Time `json:"data_cutoff_timestamp,omitempty" url:"-"`
+	// The default bulk sync schedule. This schedule applies to all fields and schemas. Schedules are interpreted in UTC.
+	DefaultSchedule *BulkSyncDefaultScheduleRequest `json:"default_schedule" url:"-"`
 	// Destination-specific bulk sync configuration (e.g. output schema name, file format). The accepted keys depend on the destination connection type.
 	DestinationConfiguration map[string]any `json:"destination_configuration" url:"-"`
-	// Unique identifier of the connection rows are written to.
+	// Unique identifier of the connection rows are written to
 	DestinationConnectionID string `json:"destination_connection_id" url:"-"`
 	// When true, Polytomic will not add its own timestamp columns to destination rows.
-	DisableRecordTimestamps *bool               `json:"disable_record_timestamps,omitempty" url:"-"`
-	Mode                    *BulkSyncTargetMode `json:"mode,omitempty" url:"-"`
-	// Human-readable name for the bulk sync.
-	Name           string              `json:"name" url:"-"`
+	DisableRecordTimestamps *bool `json:"disable_record_timestamps,omitempty" url:"-"`
+	// How source data is written to the destination. replicate keeps the destination in sync with the source; snapshot writes a timestamped copy per execution; append adds every delivered record, including full reads, without updating existing rows.
+	Mode *BulkSyncTargetMode `json:"mode,omitempty" url:"-"`
+	// Human-readable name for the bulk sync
+	Name string `json:"name" url:"-"`
+	// Controls whether destination object and field names are normalized (e.g. lowercased, special characters replaced). Valid values depend on the destination backend.
 	NormalizeNames *BulkNormalizeNames `json:"normalize_names,omitempty" url:"-"`
-	// Organization the sync belongs to. Only used by partner callers; normal callers are always scoped to their own organization.
+	// Ignored for user and organization-scoped API keys, which always act in their own organization
 	OrganizationID *string `json:"organization_id,omitempty" url:"-"`
-	// Identifiers of permissions policies applied to the bulk sync.
+	// Permissions policy IDs applied to the bulk sync. On update, a non-empty list replaces the bulk sync's policies and an empty or omitted list leaves them unchanged.
 	Policies []string `json:"policies,omitempty" url:"-"`
 	// Override the default resync concurrency limit for this sync.
 	ResyncConcurrencyLimit *int `json:"resync_concurrency_limit,omitempty" url:"-"`
@@ -465,7 +526,7 @@ type UpdateBulkSyncRequest struct {
 	Schemas []*UpdateBulkSyncRequestSchemasItem `json:"schemas,omitempty" url:"-"`
 	// Source-specific bulk sync configuration (e.g. replication slot name, sync lookback). The accepted keys depend on the source connection type.
 	SourceConfiguration map[string]any `json:"source_configuration,omitempty" url:"-"`
-	// Unique identifier of the connection rows are read from.
+	// Unique identifier of the connection rows are read from
 	SourceConnectionID string `json:"source_connection_id" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -727,21 +788,25 @@ var (
 )
 
 type BulkSyncAdditionalScheduleRequest struct {
-	// Day of the month (1-31) to run monthly schedules.
+	// Day of the month for custom and builder schedules
 	DayOfMonth *string `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
-	// Day of the week to run weekly schedules.
-	DayOfWeek *string           `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
+	// Day of the week, 0 (Sunday) to 6 (Saturday), for weekly schedules; a cron day-of-week field for custom and builder schedules
+	DayOfWeek *string `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
+	// How often the sync runs on this schedule: manual, continuous, hourly, daily, weekly, custom, or builder
 	Frequency ScheduleFrequency `json:"frequency" url:"frequency"`
-	// Hour of the day (0-23, in UTC) to run hourly, daily, weekly, or monthly schedules.
+	// Hour of the day (0-23, in UTC) for daily, weekly, custom, and builder schedules
 	Hour *string `json:"hour,omitempty" url:"hour,omitempty"`
-	ID   *string `json:"id,omitempty" url:"id,omitempty"`
-	// Minute of the hour (0-59) to run the schedule.
+	// ID of an existing schedule on this bulk sync; omit to create a new schedule. Creating a bulk sync rejects any schedule ID, and updating one rejects an ID that does not match an existing schedule of that bulk sync.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Minute of the hour (0-59) for hourly, daily, weekly, custom, and builder schedules
 	Minute *string `json:"minute,omitempty" url:"minute,omitempty"`
-	// Month of the year (1-12) to run yearly schedules.
-	Month      *string               `json:"month,omitempty" url:"month,omitempty"`
+	// Month of the year for custom and builder schedules
+	Month *string `json:"month,omitempty" url:"month,omitempty"`
+	// Controls how the destination is handled when this schedule executes. Valid values: normal, refetch, resync, rebuild.
 	ResyncMode *BulkScheduleSyncMode `json:"resync_mode,omitempty" url:"resync_mode,omitempty"`
 	// Optional list of schema IDs this schedule applies to. If empty, the schedule applies to all schemas.
-	Schemas       []string           `json:"schemas,omitempty" url:"schemas,omitempty"`
+	Schemas []string `json:"schemas,omitempty" url:"schemas,omitempty"`
+	// Whether this schedule runs a full fetch, only incremental fields, or only non-incremental fields
 	SelectiveMode *BulkSelectiveMode `json:"selective_mode,omitempty" url:"selective_mode,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -965,28 +1030,33 @@ var (
 )
 
 type BulkSyncAdditionalScheduleResponse struct {
-	// Timestamp the schedule was created.
-	CreatedAt *time.Time   `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Timestamp the schedule was created
+	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Actor that created the schedule
 	CreatedBy *OutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
-	// Day of the month (1-31) for monthly schedules.
+	// Day of the month for custom and builder schedules
 	DayOfMonth *string `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
-	// Day of the week for weekly schedules.
-	DayOfWeek *string           `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
+	// Day of the week, 0 (Sunday) to 6 (Saturday), for weekly schedules; a cron day-of-week field for custom and builder schedules
+	DayOfWeek *string `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
+	// How often the sync runs on this schedule: manual, continuous, hourly, daily, weekly, custom, or builder
 	Frequency ScheduleFrequency `json:"frequency" url:"frequency"`
-	// Hour of the day (0-23, in UTC) the schedule fires.
+	// Hour of the day (0-23, in UTC) for daily, weekly, custom, and builder schedules
 	Hour *string `json:"hour,omitempty" url:"hour,omitempty"`
-	// Unique identifier of the schedule.
+	// Unique identifier of the schedule
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Minute of the hour (0-59) the schedule fires.
+	// Minute of the hour (0-59) for hourly, daily, weekly, custom, and builder schedules
 	Minute *string `json:"minute,omitempty" url:"minute,omitempty"`
-	// Month of the year (1-12) for yearly schedules.
-	Month      *string               `json:"month,omitempty" url:"month,omitempty"`
+	// Month of the year for custom and builder schedules
+	Month *string `json:"month,omitempty" url:"month,omitempty"`
+	// Controls how the destination is handled when this schedule executes
 	ResyncMode *BulkScheduleSyncMode `json:"resync_mode,omitempty" url:"resync_mode,omitempty"`
 	// Schema IDs this schedule applies to. Empty means all schemas.
-	Schemas       []string           `json:"schemas,omitempty" url:"schemas,omitempty"`
+	Schemas []string `json:"schemas,omitempty" url:"schemas,omitempty"`
+	// Whether this schedule runs a full fetch, only incremental fields, or only non-incremental fields
 	SelectiveMode *BulkSelectiveMode `json:"selective_mode,omitempty" url:"selective_mode,omitempty"`
-	// Timestamp the schedule was last updated.
-	UpdatedAt *time.Time   `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	// Timestamp the schedule was last updated
+	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	// Actor that most recently updated the schedule
 	UpdatedBy *OutputActor `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1271,17 +1341,19 @@ var (
 )
 
 type BulkSyncDefaultScheduleRequest struct {
-	// Day of the month (1-31) to run monthly schedules.
+	// Day of the month for custom and builder schedules
 	DayOfMonth *string `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
-	// Day of the week to run weekly schedules.
-	DayOfWeek *string           `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
+	// Day of the week, 0 (Sunday) to 6 (Saturday), for weekly schedules; a cron day-of-week field for custom and builder schedules
+	DayOfWeek *string `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
+	// How often the sync runs on this schedule: manual, continuous, hourly, daily, weekly, custom, or builder
 	Frequency ScheduleFrequency `json:"frequency" url:"frequency"`
-	// Hour of the day (0-23, in UTC) to run hourly, daily, weekly, or monthly schedules.
+	// Hour of the day (0-23, in UTC) for daily, weekly, custom, and builder schedules
 	Hour *string `json:"hour,omitempty" url:"hour,omitempty"`
-	ID   *string `json:"id,omitempty" url:"id,omitempty"`
-	// Minute of the hour (0-59) to run the schedule.
+	// ID of an existing schedule on this bulk sync; omit to create a new schedule. Creating a bulk sync rejects any schedule ID, and updating one rejects an ID that does not match an existing schedule of that bulk sync.
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Minute of the hour (0-59) for hourly, daily, weekly, custom, and builder schedules
 	Minute *string `json:"minute,omitempty" url:"minute,omitempty"`
-	// Month of the year (1-12) to run yearly schedules.
+	// Month of the year for custom and builder schedules
 	Month *string `json:"month,omitempty" url:"month,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1460,24 +1532,27 @@ var (
 )
 
 type BulkSyncDefaultScheduleResponse struct {
-	// Timestamp the schedule was created.
-	CreatedAt *time.Time   `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Timestamp the schedule was created
+	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Actor that created the schedule
 	CreatedBy *OutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
-	// Day of the month (1-31) for monthly schedules.
+	// Day of the month for custom and builder schedules
 	DayOfMonth *string `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
-	// Day of the week for weekly schedules.
-	DayOfWeek *string           `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
+	// Day of the week, 0 (Sunday) to 6 (Saturday), for weekly schedules; a cron day-of-week field for custom and builder schedules
+	DayOfWeek *string `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
+	// How often the sync runs on this schedule: manual, continuous, hourly, daily, weekly, custom, or builder
 	Frequency ScheduleFrequency `json:"frequency" url:"frequency"`
-	// Hour of the day (0-23, in UTC) the schedule fires.
+	// Hour of the day (0-23, in UTC) for daily, weekly, custom, and builder schedules
 	Hour *string `json:"hour,omitempty" url:"hour,omitempty"`
-	// Unique identifier of the schedule.
+	// Unique identifier of the schedule
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Minute of the hour (0-59) the schedule fires.
+	// Minute of the hour (0-59) for hourly, daily, weekly, custom, and builder schedules
 	Minute *string `json:"minute,omitempty" url:"minute,omitempty"`
-	// Month of the year (1-12) for yearly schedules.
+	// Month of the year for custom and builder schedules
 	Month *string `json:"month,omitempty" url:"month,omitempty"`
-	// Timestamp the schedule was last updated.
-	UpdatedAt *time.Time   `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	// Timestamp the schedule was last updated
+	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	// Actor that most recently updated the schedule
 	UpdatedBy *OutputActor `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1717,11 +1792,13 @@ var (
 )
 
 type BulkSyncDest struct {
-	Configuration map[string]any       `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Modes         []*SupportedBulkMode `json:"modes,omitempty" url:"modes,omitempty"`
-	// Resync modes supported by this destination (refetch, resync, rebuild).
+	// Destination configuration options this connection accepts, keyed by option name
+	Configuration map[string]any `json:"configuration,omitempty" url:"configuration,omitempty"`
+	// Bulk sync modes this destination supports
+	Modes []*SupportedBulkMode `json:"modes,omitempty" url:"modes,omitempty"`
+	// Resync modes supported by this destination (refetch, resync, rebuild)
 	SupportedResyncModes []BulkResyncMode `json:"supported_resync_modes,omitempty" url:"supported_resync_modes,omitempty"`
-	// True if this destination can maintain a companion history table per schema (history_enabled) in replicate mode.
+	// True if this destination can maintain a companion history table per schema (history_enabled) in replicate mode
 	SupportsHistoryMode *bool `json:"supports_history_mode,omitempty" url:"supports_history_mode,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1848,6 +1925,7 @@ var (
 )
 
 type BulkSyncDestEnvelope struct {
+	// The connection's bulk sync destination capabilities
 	Data *BulkSyncDest `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1939,14 +2017,22 @@ var (
 )
 
 type BulkSyncIngestionStatus struct {
-	Enabled       *bool                 `json:"enabled,omitempty" url:"enabled,omitempty"`
-	HighwaterMark *string               `json:"highwater_mark,omitempty" url:"highwater_mark,omitempty"`
-	IsRunning     *bool                 `json:"is_running,omitempty" url:"is_running,omitempty"`
-	Position      *string               `json:"position,omitempty" url:"position,omitempty"`
-	PositionTime  *time.Time            `json:"position_time,omitempty" url:"position_time,omitempty"`
-	Status        *IngestionStatusLevel `json:"status,omitempty" url:"status,omitempty"`
-	StatusMessage *string               `json:"status_message,omitempty" url:"status_message,omitempty"`
-	UpdatedAt     *time.Time            `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	// Whether change ingestion is enabled for the sync
+	Enabled *bool `json:"enabled,omitempty" url:"enabled,omitempty"`
+	// Source change-stream position that ingestion is catching up to
+	HighwaterMark *string `json:"highwater_mark,omitempty" url:"highwater_mark,omitempty"`
+	// Whether ingestion is currently running
+	IsRunning *bool `json:"is_running,omitempty" url:"is_running,omitempty"`
+	// Source change-stream position that ingestion has reached
+	Position *string `json:"position,omitempty" url:"position,omitempty"`
+	// Source time of the change at position, or of the next pending change while a backlog waits
+	PositionTime *time.Time `json:"position_time,omitempty" url:"position_time,omitempty"`
+	// Health of ingestion
+	Status *IngestionStatusLevel `json:"status,omitempty" url:"status,omitempty"`
+	// Ingestion error or warning detail
+	StatusMessage *string `json:"status_message,omitempty" url:"status_message,omitempty"`
+	// When the ingestion status was last updated
+	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2140,6 +2226,7 @@ var (
 )
 
 type BulkSyncListEnvelope struct {
+	// Bulk syncs matching the filters
 	Data []*BulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2249,41 +2336,48 @@ type BulkSyncResponse struct {
 	// Whether the sync is active. Inactive syncs do not run on their schedule.
 	Active *bool `json:"active,omitempty" url:"active,omitempty"`
 	// Additional bulk sync schedules. Schedule times are interpreted in UTC.
-	AdditionalSchedules        []*BulkSyncAdditionalScheduleResponse `json:"additional_schedules,omitempty" url:"additional_schedules,omitempty"`
-	AutomaticallyAddNewFields  *BulkDiscover                         `json:"automatically_add_new_fields,omitempty" url:"automatically_add_new_fields,omitempty"`
-	AutomaticallyAddNewObjects *BulkDiscover                         `json:"automatically_add_new_objects,omitempty" url:"automatically_add_new_objects,omitempty"`
-	// Per-sync concurrency limit override.
+	AdditionalSchedules []*BulkSyncAdditionalScheduleResponse `json:"additional_schedules,omitempty" url:"additional_schedules,omitempty"`
+	// Whether Polytomic automatically enables newly discovered fields on existing objects
+	AutomaticallyAddNewFields *BulkDiscover `json:"automatically_add_new_fields,omitempty" url:"automatically_add_new_fields,omitempty"`
+	// Whether Polytomic automatically enables newly discovered source objects
+	AutomaticallyAddNewObjects *BulkDiscover `json:"automatically_add_new_objects,omitempty" url:"automatically_add_new_objects,omitempty"`
+	// Per-sync concurrency limit override
 	ConcurrencyLimit *int `json:"concurrency_limit,omitempty" url:"concurrency_limit,omitempty"`
-	// Timestamp the sync was created.
-	CreatedAt *time.Time   `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Timestamp the sync was created
+	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
+	// Actor that created the sync
 	CreatedBy *OutputActor `json:"created_by,omitempty" url:"created_by,omitempty"`
 	// Global cutoff applied across schemas; source records older than this timestamp are excluded.
-	DataCutoffTimestamp *time.Time                       `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
-	DefaultSchedule     *BulkSyncDefaultScheduleResponse `json:"default_schedule,omitempty" url:"default_schedule,omitempty"`
+	DataCutoffTimestamp *time.Time `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
+	// The default bulk sync schedule. Null when no explicit default schedule is configured.
+	DefaultSchedule *BulkSyncDefaultScheduleResponse `json:"default_schedule,omitempty" url:"default_schedule,omitempty"`
 	// Destination-specific bulk sync configuration. e.g. output schema name, s3 file format, etc.
 	DestinationConfiguration map[string]any `json:"destination_configuration,omitempty" url:"destination_configuration,omitempty"`
-	// Connection rows are written to.
+	// Connection rows are written to
 	DestinationConnectionID *string `json:"destination_connection_id,omitempty" url:"destination_connection_id,omitempty"`
 	// When true, Polytomic does not add its own timestamp columns to destination rows.
 	DisableRecordTimestamps *bool `json:"disable_record_timestamps,omitempty" url:"disable_record_timestamps,omitempty"`
-	// Unique identifier of the bulk sync.
-	ID   *string             `json:"id,omitempty" url:"id,omitempty"`
+	// Unique identifier of the bulk sync
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// How source data is written to the destination
 	Mode *BulkSyncTargetMode `json:"mode,omitempty" url:"mode,omitempty"`
-	// Human-readable name of the bulk sync.
-	Name           *string             `json:"name,omitempty" url:"name,omitempty"`
+	// Human-readable name of the bulk sync
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Whether destination object and field names are normalized
 	NormalizeNames *BulkNormalizeNames `json:"normalize_names,omitempty" url:"normalize_names,omitempty"`
-	// Organization the sync belongs to.
+	// Organization the sync belongs to
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	// List of permissions policies applied to the bulk sync.
+	// List of permissions policies applied to the bulk sync
 	Policies []string `json:"policies,omitempty" url:"policies,omitempty"`
-	// Per-sync resync concurrency limit override.
+	// Per-sync resync concurrency limit override
 	ResyncConcurrencyLimit *int `json:"resync_concurrency_limit,omitempty" url:"resync_concurrency_limit,omitempty"`
 	// Source-specific bulk sync configuration. e.g. replication slot name, sync lookback, etc.
 	SourceConfiguration map[string]any `json:"source_configuration,omitempty" url:"source_configuration,omitempty"`
-	// Connection rows are read from.
+	// Connection rows are read from
 	SourceConnectionID *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	// Timestamp the sync was last updated.
-	UpdatedAt *time.Time   `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	// Timestamp the sync was last updated
+	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	// Actor that most recently updated the sync
 	UpdatedBy *OutputActor `json:"updated_by,omitempty" url:"updated_by,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2692,6 +2786,7 @@ var (
 )
 
 type BulkSyncResponseEnvelope struct {
+	// The bulk sync
 	Data *BulkSyncResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2778,9 +2873,12 @@ var (
 )
 
 type BulkSyncSource struct {
-	Capabilities  *BulkSyncSourceCapabilities `json:"capabilities,omitempty" url:"capabilities,omitempty"`
-	Configuration any                         `json:"configuration,omitempty" url:"configuration,omitempty"`
-	Schemas       []*Schema                   `json:"schemas,omitempty" url:"schemas,omitempty"`
+	// Bulk sync features the source supports
+	Capabilities *BulkSyncSourceCapabilities `json:"capabilities,omitempty" url:"capabilities,omitempty"`
+	// Options accepted in a bulk sync's source_configuration, keyed by option name
+	Configuration any `json:"configuration,omitempty" url:"configuration,omitempty"`
+	// Schemas available on the connection
+	Schemas []*Schema `json:"schemas,omitempty" url:"schemas,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2894,7 +2992,8 @@ var (
 
 type BulkSyncSourceCapabilities struct {
 	// When true, the portion of a schema ID before its last dot is that schema's namespace.
-	SupportsNamespaces     *bool `json:"supports_namespaces,omitempty" url:"supports_namespaces,omitempty"`
+	SupportsNamespaces *bool `json:"supports_namespaces,omitempty" url:"supports_namespaces,omitempty"`
+	// Whether the source supports a tracking field for detecting changes between sync runs
 	SupportsTrackingFields *bool `json:"supports_tracking_fields,omitempty" url:"supports_tracking_fields,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2993,6 +3092,7 @@ var (
 )
 
 type BulkSyncSourceEnvelope struct {
+	// Bulk sync source details for the connection
 	Data *BulkSyncSource `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3077,6 +3177,7 @@ var (
 )
 
 type BulkSyncStatusEnvelope struct {
+	// Status of the bulk sync
 	Data *BulkSyncStatusResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3164,10 +3265,14 @@ var (
 )
 
 type BulkSyncStatusResponse struct {
-	CurrentExecution  *BulkSyncExecution       `json:"current_execution,omitempty" url:"current_execution,omitempty"`
-	IngestionStatus   *BulkSyncIngestionStatus `json:"ingestion_status,omitempty" url:"ingestion_status,omitempty"`
-	LastExecution     *BulkSyncExecution       `json:"last_execution,omitempty" url:"last_execution,omitempty"`
-	NextExecutionTime *time.Time               `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty"`
+	// Execution in progress, if any
+	CurrentExecution *BulkSyncExecution `json:"current_execution,omitempty" url:"current_execution,omitempty"`
+	// Change ingestion status, present when the sync consumes ingested changes
+	IngestionStatus *BulkSyncIngestionStatus `json:"ingestion_status,omitempty" url:"ingestion_status,omitempty"`
+	// Most recent finished execution
+	LastExecution *BulkSyncExecution `json:"last_execution,omitempty" url:"last_execution,omitempty"`
+	// When the sync is next scheduled to run
+	NextExecutionTime *time.Time `json:"next_execution_time,omitempty" url:"next_execution_time,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3329,10 +3434,11 @@ var (
 )
 
 type FieldConfiguration struct {
-	// Whether the field is enabled for syncing.
-	Enabled *bool   `json:"enabled,omitempty" url:"enabled,omitempty"`
-	ID      *string `json:"id,omitempty" url:"id,omitempty"`
-	// Whether the field should be obfuscated.
+	// Whether the field is enabled for syncing
+	Enabled *bool `json:"enabled,omitempty" url:"enabled,omitempty"`
+	// Field ID within the schema
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Whether the field should be obfuscated
 	Obfuscate *bool `json:"obfuscate,omitempty" url:"obfuscate,omitempty"`
 	// User-specified override for the destination field name. Omit to keep the current value; send an empty string to clear it.
 	UserOutputName *string `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
@@ -3496,18 +3602,24 @@ var (
 )
 
 type SchemaConfiguration struct {
+	// Per-schema cutoff; source records older than this are excluded
 	DataCutoffTimestamp *time.Time `json:"data_cutoff_timestamp,omitempty" url:"data_cutoff_timestamp,omitempty"`
-	// Whether data cutoff is disabled for this schema.
+	// Whether data cutoff is disabled for this schema
 	DisableDataCutoff *bool `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
-	// Whether the schema is enabled for syncing.
-	Enabled *bool                            `json:"enabled,omitempty" url:"enabled,omitempty"`
-	Fields  []*SchemaConfigurationFieldsItem `json:"fields,omitempty" url:"fields,omitempty"`
-	Filters []*BulkFilter                    `json:"filters,omitempty" url:"filters,omitempty"`
+	// Whether the schema is enabled for syncing
+	Enabled *bool `json:"enabled,omitempty" url:"enabled,omitempty"`
+	// Field IDs or field configurations for this schema; an empty list enables every field
+	Fields []*SchemaConfigurationFieldsItem `json:"fields,omitempty" url:"fields,omitempty"`
+	// Filters applied to records read from this schema
+	Filters []*BulkFilter `json:"filters,omitempty" url:"filters,omitempty"`
 	// Whether a companion history table is maintained beside this schema's output, recording every version observed on successive runs. Requires a replicate-mode sync to a destination reporting supports_history_mode. Omit to keep the current value.
-	HistoryEnabled *bool   `json:"history_enabled,omitempty" url:"history_enabled,omitempty"`
-	ID             *string `json:"id,omitempty" url:"id,omitempty"`
-	PartitionKey   *string `json:"partition_key,omitempty" url:"partition_key,omitempty"`
-	TrackingField  *string `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
+	HistoryEnabled *bool `json:"history_enabled,omitempty" url:"history_enabled,omitempty"`
+	// Source schema ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Source field used to partition rows in the destination
+	PartitionKey *string `json:"partition_key,omitempty" url:"partition_key,omitempty"`
+	// Source field used to detect changes between incremental runs
+	TrackingField *string `json:"tracking_field,omitempty" url:"tracking_field,omitempty"`
 	// User-specified override for the destination object name. Omit to keep the current value; send an empty string to clear it.
 	UserOutputName *string `json:"user_output_name,omitempty" url:"user_output_name,omitempty"`
 
@@ -3794,12 +3906,18 @@ var (
 )
 
 type SupportedBulkMode struct {
-	Description           *string             `json:"description,omitempty" url:"description,omitempty"`
-	ID                    *BulkSyncTargetMode `json:"id,omitempty" url:"id,omitempty"`
-	Label                 *string             `json:"label,omitempty" url:"label,omitempty"`
-	RequiresIdentity      *bool               `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
-	SupportsFieldSyncMode *bool               `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
-	SupportsTargetFilters *bool               `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
+	// Description of the mode
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Bulk sync mode identifier
+	ID *BulkSyncTargetMode `json:"id,omitempty" url:"id,omitempty"`
+	// Human-readable label for the mode
+	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	// Deprecated; always false for bulk sync modes
+	RequiresIdentity *bool `json:"requires_identity,omitempty" url:"requires_identity,omitempty"`
+	// Deprecated; always false for bulk sync modes
+	SupportsFieldSyncMode *bool `json:"supports_field_sync_mode,omitempty" url:"supports_field_sync_mode,omitempty"`
+	// Deprecated; always false for bulk sync modes
+	SupportsTargetFilters *bool `json:"supports_target_filters,omitempty" url:"supports_target_filters,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`

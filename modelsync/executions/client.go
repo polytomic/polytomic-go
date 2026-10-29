@@ -71,6 +71,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	)
 func (c *Client) List(
 	ctx context.Context,
+	// Model sync ID
 	syncID string,
 	request *modelsync.ExecutionsListRequest,
 	opts ...option.RequestOption,
@@ -102,7 +103,9 @@ func (c *Client) List(
 //	)
 func (c *Client) Get(
 	ctx context.Context,
+	// Model sync ID
 	syncID string,
+	// Execution ID
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.GetExecutionResponseEnvelope, error) {
@@ -129,8 +132,9 @@ func (c *Client) Get(
 //	)
 func (c *Client) Cancel(
 	ctx context.Context,
+	// Model sync ID
 	syncID string,
-	// The ID of the execution to cancel.
+	// The ID of the execution to cancel
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.CancelSyncExecutionResponseEnvelope, error) {
@@ -166,7 +170,9 @@ func (c *Client) Cancel(
 //	)
 func (c *Client) GetConsoleLogs(
 	ctx context.Context,
+	// Model sync ID
 	syncID string,
+	// Execution ID
 	id string,
 	request *modelsync.ExecutionsGetConsoleLogsRequest,
 	opts ...option.RequestOption,
@@ -195,9 +201,9 @@ func (c *Client) GetConsoleLogs(
 //	)
 func (c *Client) GetLogsIndex(
 	ctx context.Context,
-	// Unique identifier of the model sync.
+	// Unique identifier of the model sync
 	syncID string,
-	// Unique identifier of the execution whose logs are being indexed.
+	// Unique identifier of the execution whose logs are being indexed
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.LogsIndexResponseEnvelope, error) {
@@ -232,8 +238,11 @@ func (c *Client) GetLogsIndex(
 //	)
 func (c *Client) GetLogURLs(
 	ctx context.Context,
+	// Model sync ID
 	syncID string,
+	// Execution ID
 	id string,
+	// Log category
 	type_ *polytomic.ExecutionLogType,
 	opts ...option.RequestOption,
 ) (*polytomic.ExecutionLogsResponseEnvelope, error) {
@@ -268,9 +277,13 @@ func (c *Client) GetLogURLs(
 //	)
 func (c *Client) GetLogs(
 	ctx context.Context,
+	// Model sync ID
 	syncID string,
+	// Execution ID
 	id string,
+	// Log category
 	type_ *polytomic.ExecutionLogType,
+	// Log file name
 	filename string,
 	opts ...option.RequestOption,
 ) error {

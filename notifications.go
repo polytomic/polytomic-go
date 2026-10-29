@@ -61,7 +61,7 @@ var (
 )
 
 type GlobalErrorSubscribersResponse struct {
-	// Email addresses subscribed to global sync error notifications for the organization.
+	// Email addresses subscribed to global sync error notifications for the organization
 	Emails []string `json:"emails,omitempty" url:"emails,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

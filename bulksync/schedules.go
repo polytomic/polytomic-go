@@ -14,6 +14,7 @@ var (
 )
 
 type CreateScheduleRequest struct {
+	// Bulk sync schedule. Schedule times are interpreted in UTC.
 	Schedule *v25.BulkSyncScheduleAPI `json:"schedule" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -60,6 +61,7 @@ var (
 )
 
 type UpdateScheduleRequest struct {
+	// Bulk sync schedule. Schedule times are interpreted in UTC.
 	Schedule *v25.BulkSyncScheduleAPI `json:"schedule" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

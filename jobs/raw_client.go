@@ -36,7 +36,7 @@ func (r *RawClient) Get(
 	ctx context.Context,
 	// Job type. One of: createmodel, updatemodel, previewmodel, samplemodel, exportlogs, connectionproxy.
 	type_ string,
-	// Unique identifier of the job (usually returned by whichever endpoint started the job).
+	// Unique identifier of the job (usually returned by whichever endpoint started the job)
 	id string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.JobResponseEnvelope], error) {

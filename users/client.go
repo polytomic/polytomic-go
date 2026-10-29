@@ -101,7 +101,7 @@ func (c *Client) CreateCurrentOrgUser(
 //	)
 func (c *Client) GetCurrentOrgUser(
 	ctx context.Context,
-	// Unique identifier of the user.
+	// Unique identifier of the user
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.CurrentOrgUserEnvelope, error) {
@@ -131,7 +131,7 @@ func (c *Client) GetCurrentOrgUser(
 //	)
 func (c *Client) UpdateCurrentOrgUser(
 	ctx context.Context,
-	// Unique identifier of the user to update.
+	// Unique identifier of the user to update
 	id string,
 	request *polytomic.CurrentOrgUpdateUserRequestSchema,
 	opts ...option.IdempotentRequestOption,
@@ -162,7 +162,7 @@ func (c *Client) UpdateCurrentOrgUser(
 //	)
 func (c *Client) DeleteCurrentOrgUser(
 	ctx context.Context,
-	// Unique identifier of the user.
+	// Unique identifier of the user
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.UserEnvelope, error) {
@@ -193,7 +193,7 @@ func (c *Client) DeleteCurrentOrgUser(
 //	)
 func (c *Client) List(
 	ctx context.Context,
-	// Unique identifier of the organization whose users should be listed.
+	// Unique identifier of the organization whose users should be listed
 	orgID string,
 	opts ...option.RequestOption,
 ) (*polytomic.ListUsersEnvelope, error) {
@@ -229,7 +229,7 @@ func (c *Client) List(
 //	)
 func (c *Client) Create(
 	ctx context.Context,
-	// Unique identifier of the organization the user belongs to.
+	// Unique identifier of the organization the user belongs to
 	orgID string,
 	request *polytomic.CreateUserRequestSchema,
 	opts ...option.IdempotentRequestOption,
@@ -261,9 +261,9 @@ func (c *Client) Create(
 //	)
 func (c *Client) Get(
 	ctx context.Context,
-	// Unique identifier of the organization the user belongs to.
+	// Unique identifier of the organization the user belongs to
 	orgID string,
-	// Unique identifier of the user.
+	// Unique identifier of the user
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.UserEnvelope, error) {
@@ -301,9 +301,9 @@ func (c *Client) Get(
 //	)
 func (c *Client) Update(
 	ctx context.Context,
-	// Unique identifier of the organization the user belongs to.
+	// Unique identifier of the organization the user belongs to
 	orgID string,
-	// Unique identifier of the user to update.
+	// Unique identifier of the user to update
 	id string,
 	request *polytomic.UpdateUserRequestSchema,
 	opts ...option.IdempotentRequestOption,
@@ -340,9 +340,9 @@ func (c *Client) Update(
 //	)
 func (c *Client) Delete(
 	ctx context.Context,
-	// Unique identifier of the organization the user belongs to.
+	// Unique identifier of the organization the user belongs to
 	orgID string,
-	// Unique identifier of the user.
+	// Unique identifier of the user
 	id string,
 	opts ...option.IdempotentRequestOption,
 ) (*polytomic.UserEnvelope, error) {
@@ -378,9 +378,9 @@ func (c *Client) Delete(
 //	)
 func (c *Client) CreateAPIKey(
 	ctx context.Context,
-	// Unique identifier of the organization the user belongs to.
+	// Unique identifier of the organization the user belongs to
 	orgID string,
-	// Unique identifier of the user the key will be issued for.
+	// Unique identifier of the user the key will be issued for
 	id string,
 	request *polytomic.UsersCreateAPIKeyRequest,
 	opts ...option.IdempotentRequestOption,

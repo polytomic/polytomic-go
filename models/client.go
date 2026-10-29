@@ -62,7 +62,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	)
 func (c *Client) GetEnrichmentSource(
 	ctx context.Context,
-	// Unique identifier of the connection.
+	// Unique identifier of the connection
 	id string,
 	request *polytomic.ModelsGetEnrichmentSourceRequest,
 	opts ...option.RequestOption,
@@ -97,6 +97,7 @@ func (c *Client) GetEnrichmentSource(
 //	)
 func (c *Client) Post(
 	ctx context.Context,
+	// Enrichment connection ID
 	connectionID string,
 	request *polytomic.EnrichmentInputFieldsRequest,
 	opts ...option.IdempotentRequestOption,
@@ -113,12 +114,15 @@ func (c *Client) Post(
 	return response.Body, nil
 }
 
-// Submits a job that previews the fields a model would expose without persisting it.
+// Previews the fields a model exposes without saving the model.
 //
-// The response contains a job ID that resolves to the list of fields the model
-// would expose. Poll the job until it completes to retrieve the field list. The
-// model is not persisted — this endpoint is useful for validating a query or
-// configuration before calling [`POST /api/models`](../../api-reference/models/create) to save it.
+// The response contains the previewed model, including the fields it exposes.
+// With `async=true`, the response contains a job instead; poll the job until it
+// completes to retrieve the field list.
+//
+// The model is not saved, and `policies` and `labels` are ignored. Use this
+// endpoint to validate a query or configuration before calling
+// [`POST /api/models`](../../api-reference/models/create) to save it.
 //
 // Example:
 //
@@ -248,6 +252,7 @@ func (c *Client) Create(
 //	)
 func (c *Client) Get(
 	ctx context.Context,
+	// Model ID
 	id string,
 	request *polytomic.ModelsGetRequest,
 	opts ...option.RequestOption,
@@ -268,7 +273,8 @@ func (c *Client) Get(
 //
 // Updating a model is a **full replacement** of its configuration. Every field in
 // the request body is written to the model; any field you omit is cleared or reset
-// to its default value.
+// to its default value. An empty or omitted `policies` list leaves the model's
+// current policies unchanged.
 //
 // To make a partial change, fetch the current model with
 // [`GET /api/models/{id}`](../../../api-reference/models/get), modify the fields you want to change, and send
@@ -296,6 +302,7 @@ func (c *Client) Get(
 //	)
 func (c *Client) Update(
 	ctx context.Context,
+	// Model ID
 	id string,
 	request *polytomic.UpdateModelRequest,
 	opts ...option.IdempotentRequestOption,
@@ -331,6 +338,7 @@ func (c *Client) Update(
 //	)
 func (c *Client) Delete(
 	ctx context.Context,
+	// Model ID
 	id string,
 	request *polytomic.ModelsDeleteRequest,
 	opts ...option.IdempotentRequestOption,
@@ -367,6 +375,7 @@ func (c *Client) Delete(
 //	)
 func (c *Client) Sample(
 	ctx context.Context,
+	// Model ID
 	id string,
 	request *polytomic.ModelsSampleRequest,
 	opts ...option.RequestOption,

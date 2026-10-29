@@ -17,11 +17,11 @@ var (
 )
 
 type SearchOperationsRequest struct {
-	// Maximum operations per task, from 1 to 10; defaults to 5.
+	// Maximum operations per task, from 1 to 10; defaults to 5
 	Limit *int `json:"limit,omitempty" url:"-"`
-	// Optional nonempty list of unique stable operation IDs to rank; omitted to rank the full catalog.
+	// Optional nonempty list of unique stable operation IDs to rank; omitted to rank the full catalog
 	OperationIDs []string `json:"operationIds,omitempty" url:"-"`
-	// One to three plain-language tasks to find API operations for.
+	// One to three plain-language tasks to find API operations for
 	Queries []string `json:"queries" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -90,17 +90,17 @@ var (
 type OperationMatch struct {
 	// Authentication audience declared by the operation; a match does not grant access.
 	AuthAudience *string `json:"authAudience,omitempty" url:"authAudience,omitempty"`
-	// Stable METHOD and path identifier.
+	// Stable METHOD and path identifier
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// HTTP method of the operation.
+	// HTTP method of the operation
 	Method *string `json:"method,omitempty" url:"method,omitempty"`
-	// JSON pointer into the public OpenAPI paths object.
+	// JSON pointer into the public OpenAPI paths object
 	OpenapiPointer *string `json:"openapiPointer,omitempty" url:"openapiPointer,omitempty"`
-	// Templated public API path.
+	// Templated public API path
 	Path *string `json:"path,omitempty" url:"path,omitempty"`
-	// Relative probability of selection as the single best operation for this query, not an independent relevance score.
+	// Relative probability of selection as the single best operation for this query, not an independent relevance score
 	SelectionProbability *float64 `json:"selectionProbability,omitempty" url:"selectionProbability,omitempty"`
-	// Short description of the operation.
+	// Short description of the operation
 	Summary *string `json:"summary,omitempty" url:"summary,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -269,6 +269,7 @@ var (
 )
 
 type OperationSearchAvailabilityEnvelope struct {
+	// Operation search availability
 	Data *OperationSearchAvailabilityEnvelopeData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -348,14 +349,16 @@ func (o *OperationSearchAvailabilityEnvelope) String() string {
 	return fmt.Sprintf("%#v", o)
 }
 
+// Operation search availability
 var (
 	operationSearchAvailabilityEnvelopeDataFieldEnabled     = big.NewInt(1 << 0)
 	operationSearchAvailabilityEnvelopeDataFieldRateLimited = big.NewInt(1 << 1)
 )
 
 type OperationSearchAvailabilityEnvelopeData struct {
-	// Whether operation search is configured on this API deployment.
-	Enabled     bool                      `json:"enabled" url:"enabled"`
+	// Whether operation search is configured on this API deployment
+	Enabled bool `json:"enabled" url:"enabled"`
+	// Present when a one-question request exceeds a question budget for this organization
 	RateLimited *OperationSearchRateLimit `json:"rate_limited,omitempty" url:"rate_limited,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -455,9 +458,9 @@ var (
 )
 
 type OperationSearchRateLimit struct {
-	// The exhausted question budget.
+	// The exhausted question budget
 	Reason OperationSearchRateLimitReason `json:"reason" url:"reason"`
-	// UTC time when this exhausted budget resets.
+	// UTC time when this exhausted budget resets
 	ResetAt time.Time `json:"reset_at" url:"reset_at"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -559,7 +562,7 @@ func (o *OperationSearchRateLimit) String() string {
 	return fmt.Sprintf("%#v", o)
 }
 
-// The exhausted question budget.
+// The exhausted question budget
 type OperationSearchRateLimitReason string
 
 const (
@@ -592,11 +595,11 @@ var (
 )
 
 type OperationSearchResult struct {
-	// Operations ranked by probability of being the single best choice for this task; empty when no match wins.
+	// Operations ranked by probability of being the single best choice for this task; empty when no match wins
 	Matches []*OperationMatch `json:"matches,omitempty" url:"matches,omitempty"`
-	// Relative probability that none of the documented operations is the best choice.
+	// Relative probability that none of the documented operations is the best choice
 	NoMatchProbability *float64 `json:"noMatchProbability,omitempty" url:"noMatchProbability,omitempty"`
-	// The trimmed input task.
+	// The trimmed input task
 	Query *string `json:"query,omitempty" url:"query,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -709,6 +712,7 @@ var (
 )
 
 type SearchOperationsEnvelope struct {
+	// Operation search results
 	Data *SearchOperationsResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -794,9 +798,9 @@ var (
 )
 
 type SearchOperationsResponse struct {
-	// Ranked results in the same order as the input queries.
+	// Ranked results in the same order as the input queries
 	Results []*OperationSearchResult `json:"results,omitempty" url:"results,omitempty"`
-	// SHA-256 digest of the OpenAPI-derived operation catalog source.
+	// SHA-256 digest of the OpenAPI-derived operation catalog source
 	SourceSha256 *string `json:"sourceSha256,omitempty" url:"sourceSha256,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

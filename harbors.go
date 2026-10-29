@@ -20,12 +20,18 @@ var (
 )
 
 type HarborsCloseSessionRequest struct {
-	PolytomicMcpKeyID          *string `json:"-" url:"-"`
-	PolytomicMcpTimestamp      *int64  `json:"-" url:"-"`
-	PolytomicMcpNonce          *string `json:"-" url:"-"`
-	PolytomicMcpSignature      *string `json:"-" url:"-"`
+	// ID of the key that signed the attestation
+	PolytomicMcpKeyID *string `json:"-" url:"-"`
+	// Unix time, in seconds, when the attestation was signed
+	PolytomicMcpTimestamp *int64 `json:"-" url:"-"`
+	// Single-use value of at least 16 characters included in the signature
+	PolytomicMcpNonce *string `json:"-" url:"-"`
+	// Attestation signature
+	PolytomicMcpSignature *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Token issued when the session was registered
+	PolytomicHarborSession *string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -97,7 +103,7 @@ type CreateHarborRequest struct {
 	Description *string `json:"description,omitempty" url:"-"`
 	// Whether to generate a profile credential. Defaults to true.
 	GenerateAPIKey *bool `json:"generate_api_key,omitempty" url:"-"`
-	// Human-readable Harbor name.
+	// Human-readable Harbor name
 	Name string `json:"name" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -242,7 +248,7 @@ var (
 )
 
 type CreateHarborContextDraftRequest struct {
-	// Optional note stored with the draft and copied to published version 1 on promotion.
+	// Optional note stored with the draft and copied to published version 1 on promotion
 	ChangeNote *string `json:"change_note,omitempty" url:"-"`
 	// Complete plain-text draft content. Maximum 20,000 characters.
 	Content string `json:"content" url:"-"`
@@ -322,7 +328,7 @@ var (
 )
 
 type CreateHarborSavedQueryDraftRequest struct {
-	// Optional note copied to the immutable published version.
+	// Optional note copied to the immutable published version
 	ChangeNote *string `json:"change_note,omitempty" url:"-"`
 	// Business definition and usage notes. Maximum 2,000 characters.
 	Description *string `json:"description,omitempty" url:"-"`
@@ -330,11 +336,11 @@ type CreateHarborSavedQueryDraftRequest struct {
 	Name string `json:"name" url:"-"`
 	// Human-readable owner label. Maximum 200 characters.
 	Owner *string `json:"owner,omitempty" url:"-"`
-	// Typed scalar parameter declarations.
+	// Typed scalar parameter declarations
 	Parameters []*HarborSavedQueryParameter `json:"parameters,omitempty" url:"-"`
-	// DuckDB SQL template using {{name}} references for bound parameters.
+	// DuckDB SQL template using {{name}} references for bound parameters
 	SQLTemplate string `json:"sql_template" url:"-"`
-	// Author-supplied JSON scalar values used only to validate this draft.
+	// Author-supplied JSON scalar values used only to validate this draft
 	ValidationValues map[string]any `json:"validation_values,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -424,7 +430,9 @@ var (
 )
 
 type HarborsDeleteContextRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -458,7 +466,9 @@ var (
 )
 
 type HarborsDeleteContextDraftRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -493,7 +503,9 @@ var (
 )
 
 type ExecuteHarborSavedQueryRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
 	// Named JSON scalar overrides for declared parameters. Omission uses published default_value, or SQL NULL for optional parameters without a default. Required parameters reject explicit null even with a default; without a default they also reject omission. Unknown names and invalid types are rejected.
 	Parameters map[string]any `json:"parameters,omitempty" url:"-"`
@@ -557,7 +569,9 @@ var (
 )
 
 type HarborsGetAuthorizedSchemaRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -591,7 +605,9 @@ var (
 )
 
 type HarborsGetContextRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -625,7 +641,9 @@ var (
 )
 
 type HarborsGetContextDraftRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -659,7 +677,9 @@ var (
 )
 
 type HarborsGetContextVersionRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -693,7 +713,9 @@ var (
 )
 
 type HarborsGetSavedQueryRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -726,7 +748,7 @@ var (
 )
 
 type InviteHarborUserRequest struct {
-	// Email address used to invite the Harbor-only user.
+	// Email address used to invite the Harbor-only user
 	Email string `json:"email" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -776,7 +798,7 @@ var (
 type HarborsListRequest struct {
 	// Maximum number of Harbors to return. Defaults to 50 and cannot exceed 50.
 	Limit *int `json:"-" url:"limit,omitempty"`
-	// Opaque pagination cursor returned by the previous request.
+	// Opaque pagination cursor returned by the previous request
 	PageToken *string `json:"-" url:"page_token,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -813,9 +835,9 @@ var (
 type HarborsListActionConfigurationSchemasRequest struct {
 	// Filter action schemas by ID or name.
 	Search *string `json:"-" url:"search,omitempty"`
-	// Maximum number of schemas to return.
+	// Maximum number of schemas to return
 	Limit *int `json:"-" url:"limit,omitempty"`
-	// Opaque cursor returned by the previous request.
+	// Opaque cursor returned by the previous request
 	PageToken *string `json:"-" url:"page_token,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -858,10 +880,14 @@ var (
 )
 
 type HarborsListAuthorizedConnectionsRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
-	Limit                      *int    `json:"-" url:"limit,omitempty"`
-	PageToken                  *string `json:"-" url:"page_token,omitempty"`
+	// Maximum number of results to return
+	Limit *int `json:"-" url:"limit,omitempty"`
+	// Token from the previous page
+	PageToken *string `json:"-" url:"page_token,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -910,10 +936,14 @@ var (
 )
 
 type HarborsListAuthorizedSchemasRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
-	Limit                      *int    `json:"-" url:"limit,omitempty"`
-	PageToken                  *string `json:"-" url:"page_token,omitempty"`
+	// Maximum number of results to return
+	Limit *int `json:"-" url:"limit,omitempty"`
+	// Token from the previous page
+	PageToken *string `json:"-" url:"page_token,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -962,7 +992,7 @@ var (
 type HarborsListContextDraftsRequest struct {
 	// Maximum number of mutable drafts to return. Defaults to 50 and cannot exceed 50.
 	Limit *int `json:"-" url:"limit,omitempty"`
-	// Opaque pagination cursor returned by the previous request.
+	// Opaque pagination cursor returned by the previous request
 	PageToken *string `json:"-" url:"page_token,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -998,11 +1028,13 @@ var (
 )
 
 type HarborsListContextVersionsRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
 	// Maximum number of published versions to return. Defaults to 50 and cannot exceed 50.
 	Limit *int `json:"-" url:"limit,omitempty"`
-	// Opaque pagination cursor returned by the previous request.
+	// Opaque pagination cursor returned by the previous request
 	PageToken *string `json:"-" url:"page_token,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1052,11 +1084,13 @@ var (
 )
 
 type HarborsListContextsRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
 	// Maximum number of context documents to return. Defaults to 50 and cannot exceed 50.
 	Limit *int `json:"-" url:"limit,omitempty"`
-	// Opaque pagination cursor returned by the previous request.
+	// Opaque pagination cursor returned by the previous request
 	PageToken *string `json:"-" url:"page_token,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1106,7 +1140,7 @@ var (
 type HarborsListKeysRequest struct {
 	// Maximum number of active credentials to return. Defaults to 50 and cannot exceed 50.
 	Limit *int `json:"-" url:"limit,omitempty"`
-	// Opaque pagination cursor returned by the previous request.
+	// Opaque pagination cursor returned by the previous request
 	PageToken *string `json:"-" url:"page_token,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1142,11 +1176,13 @@ var (
 )
 
 type HarborsListSavedQueriesRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
-	// Maximum number of saved queries to return.
+	// Maximum number of saved queries to return
 	Limit *int `json:"-" url:"limit,omitempty"`
-	// Opaque pagination cursor returned by the previous request.
+	// Opaque pagination cursor returned by the previous request
 	PageToken *string `json:"-" url:"page_token,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1194,9 +1230,9 @@ var (
 )
 
 type HarborsListSavedQueryDraftsRequest struct {
-	// Maximum number of saved-query drafts to return.
+	// Maximum number of saved-query drafts to return
 	Limit *int `json:"-" url:"limit,omitempty"`
-	// Opaque pagination cursor returned by the previous request.
+	// Opaque pagination cursor returned by the previous request
 	PageToken *string `json:"-" url:"page_token,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1232,7 +1268,7 @@ var (
 type HarborsListUsersRequest struct {
 	// Maximum number of assigned users to return. Defaults to 50 and cannot exceed 50.
 	Limit *int `json:"-" url:"limit,omitempty"`
-	// Opaque pagination cursor returned by the previous request.
+	// Opaque pagination cursor returned by the previous request
 	PageToken *string `json:"-" url:"page_token,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1266,7 +1302,9 @@ var (
 )
 
 type HarborsPromoteContextDraftRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1306,16 +1344,21 @@ var (
 )
 
 type RegisterHarborSessionRequest struct {
-	PolytomicMcpKeyID          *string `json:"-" url:"-"`
-	PolytomicMcpTimestamp      *int64  `json:"-" url:"-"`
-	PolytomicMcpNonce          *string `json:"-" url:"-"`
-	PolytomicMcpSignature      *string `json:"-" url:"-"`
+	// ID of the key that signed the attestation
+	PolytomicMcpKeyID *string `json:"-" url:"-"`
+	// Unix time, in seconds, when the attestation was signed
+	PolytomicMcpTimestamp *int64 `json:"-" url:"-"`
+	// Single-use value of at least 16 characters included in the signature
+	PolytomicMcpNonce *string `json:"-" url:"-"`
+	// Attestation signature
+	PolytomicMcpSignature *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
-	// MCP-observed client name.
+	// MCP-observed client name
 	ClientName *string `json:"client_name,omitempty" url:"-"`
-	// MCP-observed client version.
+	// MCP-observed client version
 	ClientVersion *string `json:"client_version,omitempty" url:"-"`
-	// Optional client-supplied run correlation value.
+	// Optional client-supplied run correlation value
 	ExternalRunID *string `json:"external_run_id,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1411,7 +1454,7 @@ var (
 )
 
 type HarborsRemoveActionConfigurationRequest struct {
-	// Current revision of the Connection's action grants.
+	// Current revision of the Connection's action grants
 	ExpectedRevision string `json:"-" url:"expected_revision"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1486,9 +1529,11 @@ var (
 )
 
 type RunHarborQueryRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
-	// SQL query to execute against the Harbor backing connection.
+	// SQL query to execute against the Harbor backing connection
 	Query string `json:"query" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1554,9 +1599,11 @@ var (
 )
 
 type SaveHarborContextDraftRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
-	// Optional note stored with the draft and copied to the published version on promotion.
+	// Optional note stored with the draft and copied to the published version on promotion
 	ChangeNote *string `json:"change_note,omitempty" url:"-"`
 	// Complete plain-text draft content. Maximum 20,000 characters.
 	Content string `json:"content" url:"-"`
@@ -1650,7 +1697,7 @@ var (
 )
 
 type SaveHarborSavedQueryDraftRequest struct {
-	// Optional note copied to the immutable published version.
+	// Optional note copied to the immutable published version
 	ChangeNote *string `json:"change_note,omitempty" url:"-"`
 	// Business definition and usage notes. Maximum 2,000 characters.
 	Description *string `json:"description,omitempty" url:"-"`
@@ -1658,11 +1705,11 @@ type SaveHarborSavedQueryDraftRequest struct {
 	Name string `json:"name" url:"-"`
 	// Human-readable owner label. Maximum 200 characters.
 	Owner *string `json:"owner,omitempty" url:"-"`
-	// Typed scalar parameter declarations.
+	// Typed scalar parameter declarations
 	Parameters []*HarborSavedQueryParameter `json:"parameters,omitempty" url:"-"`
-	// DuckDB SQL template using {{name}} references for bound parameters.
+	// DuckDB SQL template using {{name}} references for bound parameters
 	SQLTemplate string `json:"sql_template" url:"-"`
-	// Author-supplied JSON scalar values used only to validate this draft.
+	// Author-supplied JSON scalar values used only to validate this draft
 	ValidationValues map[string]any `json:"validation_values,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1754,7 +1801,7 @@ var (
 type SetHarborActionConfigurationRequest struct {
 	// Current revision when replacing existing grants. Omit when creating grants for this Connection.
 	ExpectedRevision *string `json:"expected_revision,omitempty" url:"-"`
-	// Complete replacement of this Connection's action grants.
+	// Complete replacement of this Connection's action grants
 	Grants []*HarborActionGrantSchema `json:"grants,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1811,7 +1858,7 @@ var (
 type UpdateHarborRequest struct {
 	// Short description of the Harbor. Maximum 1,000 characters.
 	Description *string `json:"description,omitempty" url:"-"`
-	// Human-readable Harbor name.
+	// Human-readable Harbor name
 	Name string `json:"name" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1870,9 +1917,11 @@ var (
 )
 
 type SaveHarborContextRequest struct {
-	PolytomicHarborSession     *string `json:"-" url:"-"`
+	// Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
+	PolytomicHarborSession *string `json:"-" url:"-"`
+	// New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
 	PolytomicActivityRequestID *string `json:"-" url:"-"`
-	// Optional note describing this published change.
+	// Optional note describing this published change
 	ChangeNote *string `json:"change_note,omitempty" url:"-"`
 	// Plain-text context content. Maximum 20,000 characters.
 	Content string `json:"content" url:"-"`
@@ -1960,6 +2009,7 @@ var (
 )
 
 type CloseHarborSessionEnvelope struct {
+	// The closed session
 	Data *CloseHarborSessionEnvelopeData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2039,14 +2089,17 @@ func (c *CloseHarborSessionEnvelope) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// The closed session
 var (
 	closeHarborSessionEnvelopeDataFieldSessionID = big.NewInt(1 << 0)
 	closeHarborSessionEnvelopeDataFieldStatus    = big.NewInt(1 << 1)
 )
 
 type CloseHarborSessionEnvelopeData struct {
+	// Harbor session ID
 	SessionID *string `json:"session_id,omitempty" url:"session_id,omitempty"`
-	Status    *string `json:"status,omitempty" url:"status,omitempty"`
+	// Session status after the request
+	Status *string `json:"status,omitempty" url:"status,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2144,6 +2197,7 @@ var (
 )
 
 type CreateHarborEnvelope struct {
+	// The created Harbor
 	Data *CreateHarborResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2229,8 +2283,10 @@ var (
 )
 
 type CreateHarborResponse struct {
+	// New plaintext credential. Omitted when credential generation is disabled.
 	APIKey *HarborAPIKeyCreatedResponse `json:"api_key,omitempty" url:"api_key,omitempty"`
-	Harbor *HarborResponse              `json:"harbor,omitempty" url:"harbor,omitempty"`
+	// Created Harbor
+	Harbor *HarborResponse `json:"harbor,omitempty" url:"harbor,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2328,6 +2384,7 @@ var (
 )
 
 type DeletedHarborContextDraftEnvelope struct {
+	// The discarded context draft
 	Data *DeletedHarborContextDraftEnvelopeData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2407,12 +2464,13 @@ func (d *DeletedHarborContextDraftEnvelope) String() string {
 	return fmt.Sprintf("%#v", d)
 }
 
+// The discarded context draft
 var (
 	deletedHarborContextDraftEnvelopeDataFieldID = big.NewInt(1 << 0)
 )
 
 type DeletedHarborContextDraftEnvelopeData struct {
-	// Unique identifier of the discarded draft.
+	// Unique identifier of the discarded draft
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2497,6 +2555,7 @@ var (
 )
 
 type DeletedHarborContextEnvelope struct {
+	// The deleted context document
 	Data *DeletedHarborContextEnvelopeData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2576,12 +2635,13 @@ func (d *DeletedHarborContextEnvelope) String() string {
 	return fmt.Sprintf("%#v", d)
 }
 
+// The deleted context document
 var (
 	deletedHarborContextEnvelopeDataFieldID = big.NewInt(1 << 0)
 )
 
 type DeletedHarborContextEnvelopeData struct {
-	// Unique identifier of the deleted context document.
+	// Unique identifier of the deleted context document
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2666,6 +2726,7 @@ var (
 )
 
 type DeletedHarborEnvelope struct {
+	// The deleted Harbor
 	Data *DeletedHarborResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2750,7 +2811,7 @@ var (
 )
 
 type DeletedHarborResponse struct {
-	// Unique identifier of the deleted Harbor.
+	// Unique identifier of the deleted Harbor
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2835,6 +2896,7 @@ var (
 )
 
 type DeletedHarborSavedQueryDraftEnvelope struct {
+	// The discarded draft
 	Data *DeletedHarborSavedQueryDraftEnvelopeData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2914,12 +2976,13 @@ func (d *DeletedHarborSavedQueryDraftEnvelope) String() string {
 	return fmt.Sprintf("%#v", d)
 }
 
+// The discarded draft
 var (
 	deletedHarborSavedQueryDraftEnvelopeDataFieldID = big.NewInt(1 << 0)
 )
 
 type DeletedHarborSavedQueryDraftEnvelopeData struct {
-	// Identifier of the discarded draft.
+	// Identifier of the discarded draft
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3004,6 +3067,7 @@ var (
 )
 
 type DeletedHarborSavedQueryEnvelope struct {
+	// The archived saved query
 	Data *DeletedHarborSavedQueryEnvelopeData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3083,12 +3147,13 @@ func (d *DeletedHarborSavedQueryEnvelope) String() string {
 	return fmt.Sprintf("%#v", d)
 }
 
+// The archived saved query
 var (
 	deletedHarborSavedQueryEnvelopeDataFieldID = big.NewInt(1 << 0)
 )
 
 type DeletedHarborSavedQueryEnvelopeData struct {
-	// Stable identifier of the archived saved query.
+	// Stable identifier of the archived saved query
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3173,6 +3238,7 @@ var (
 )
 
 type ExecuteHarborSavedQueryEnvelope struct {
+	// The submitted query
 	Data *ExecuteHarborSavedQueryEnvelopeData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3252,6 +3318,7 @@ func (e *ExecuteHarborSavedQueryEnvelope) String() string {
 	return fmt.Sprintf("%#v", e)
 }
 
+// The submitted query
 var (
 	executeHarborSavedQueryEnvelopeDataFieldCount        = big.NewInt(1 << 0)
 	executeHarborSavedQueryEnvelopeDataFieldError        = big.NewInt(1 << 1)
@@ -3268,7 +3335,7 @@ var (
 type ExecuteHarborSavedQueryEnvelopeData struct {
 	// The number of rows returned by the query. This will not be returned until the query completes.
 	Count *int64 `json:"count,omitempty" url:"count,omitempty"`
-	// Error message if the query failed.
+	// Error message if the query failed
 	Error *string `json:"error,omitempty" url:"error,omitempty"`
 	// The time at which the query will expire and be deleted. This will not be returned until the query completes.
 	Expires *string `json:"expires,omitempty" url:"expires,omitempty"`
@@ -3276,14 +3343,15 @@ type ExecuteHarborSavedQueryEnvelopeData struct {
 	Fields []string `json:"fields,omitempty" url:"fields,omitempty"`
 	// The ID of the query task. Poll GET /api/queries/{id} until the task reaches the terminal status done, failed, or unknown.
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// The query results, returned as an array of objects.
+	// The query results, returned as an array of objects
 	Results []map[string]any `json:"results,omitempty" url:"results,omitempty"`
-	// Immutable published revision selected while processing this request, before execution acceptance.
+	// Immutable published revision selected while processing this request, before execution acceptance
 	RevisionID *string `json:"revision_id,omitempty" url:"revision_id,omitempty"`
-	// Stable identifier of the executed saved query.
-	SavedQueryID *string      `json:"saved_query_id,omitempty" url:"saved_query_id,omitempty"`
-	Status       *QueryStatus `json:"status,omitempty" url:"status,omitempty"`
-	// Published version of the selected immutable revision.
+	// Stable identifier of the executed saved query
+	SavedQueryID *string `json:"saved_query_id,omitempty" url:"saved_query_id,omitempty"`
+	// Current query status. The terminal statuses are done, failed, and unknown. Unknown means execution started but its durable terminal result was lost or expired.
+	Status *QueryStatus `json:"status,omitempty" url:"status,omitempty"`
+	// Published version of the selected immutable revision
 	Version *int `json:"version,omitempty" url:"version,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3494,7 +3562,7 @@ var (
 )
 
 type HarborActionConfigurationEnvelope struct {
-	// All configured action Connections after this request.
+	// All configured action Connections after this request
 	Data []*HarborActionConfigurationResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3587,23 +3655,23 @@ var (
 )
 
 type HarborActionConfigurationFieldResponse struct {
-	// Field description.
+	// Field description
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Stable configurable field ID.
+	// Stable configurable field ID
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Maximum input size in bytes, when constrained.
+	// Maximum input size in bytes, when constrained
 	MaxBytes *int `json:"max_bytes,omitempty" url:"max_bytes,omitempty"`
-	// Field name.
+	// Field name
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
-	// Whether a nonblank value is required.
+	// Whether a nonblank value is required
 	NonBlank *bool `json:"non_blank,omitempty" url:"non_blank,omitempty"`
-	// Whether this input field accepts null.
+	// Whether this input field accepts null
 	Nullable *bool `json:"nullable,omitempty" url:"nullable,omitempty"`
-	// Validation pattern, when constrained.
+	// Validation pattern, when constrained
 	Pattern *string `json:"pattern,omitempty" url:"pattern,omitempty"`
-	// Whether the operation requires this input field.
+	// Whether the operation requires this input field
 	Required *bool `json:"required,omitempty" url:"required,omitempty"`
-	// Scalar field type.
+	// Scalar field type
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3801,9 +3869,9 @@ var (
 )
 
 type HarborActionConfigurationIdempotencyResponse struct {
-	// Provider deduplication window in nanoseconds.
+	// Provider deduplication window in nanoseconds
 	RetentionNs *int64 `json:"retention_ns,omitempty" url:"retention_ns,omitempty"`
-	// Provider idempotency scope.
+	// Provider idempotency scope
 	Scope *string `json:"scope,omitempty" url:"scope,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3910,22 +3978,23 @@ var (
 )
 
 type HarborActionConfigurationOperationResponse struct {
-	// Operation description.
+	// Operation description
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Whether the operation changes records or only reads them.
-	Effect      *HarborActionConfigurationOperationResponseEffect `json:"effect,omitempty" url:"effect,omitempty"`
-	Idempotency *HarborActionConfigurationIdempotencyResponse     `json:"idempotency,omitempty" url:"idempotency,omitempty"`
-	// Fields you can grant for a mutating operation.
+	// Whether the operation changes records or only reads them
+	Effect *HarborActionConfigurationOperationResponseEffect `json:"effect,omitempty" url:"effect,omitempty"`
+	// Provider idempotency guarantees, when supported
+	Idempotency *HarborActionConfigurationIdempotencyResponse `json:"idempotency,omitempty" url:"idempotency,omitempty"`
+	// Fields you can grant for a mutating operation
 	InputFields []*HarborActionConfigurationFieldResponse `json:"input_fields,omitempty" url:"input_fields,omitempty"`
-	// Lookup fields supported by this operation.
+	// Lookup fields supported by this operation
 	LookupFields []*HarborActionConfigurationFieldResponse `json:"lookup_fields,omitempty" url:"lookup_fields,omitempty"`
-	// Operation name.
+	// Operation name
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
-	// Stable operation ID.
+	// Stable operation ID
 	OperationID *string `json:"operation_id,omitempty" url:"operation_id,omitempty"`
-	// Fields you can grant for a read-only operation.
+	// Fields you can grant for a read-only operation
 	OutputFields []*HarborActionConfigurationFieldResponse `json:"output_fields,omitempty" url:"output_fields,omitempty"`
-	// Action schema ID.
+	// Action schema ID
 	SchemaID *string `json:"schema_id,omitempty" url:"schema_id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4117,7 +4186,7 @@ func (h *HarborActionConfigurationOperationResponse) String() string {
 	return fmt.Sprintf("%#v", h)
 }
 
-// Whether the operation changes records or only reads them.
+// Whether the operation changes records or only reads them
 type HarborActionConfigurationOperationResponseEffect string
 
 const (
@@ -4145,6 +4214,7 @@ var (
 )
 
 type HarborActionConfigurationOperationsEnvelope struct {
+	// Operations available for the action schema
 	Data []*HarborActionConfigurationOperationResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4233,15 +4303,15 @@ var (
 )
 
 type HarborActionConfigurationResponse struct {
-	// Configured source Connection ID, including sources no longer attached to the Harbor.
+	// Configured source Connection ID, including sources no longer attached to the Harbor
 	ConnectionID *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
-	// When these grants were first created.
+	// When these grants were first created
 	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
-	// Configured action permissions.
+	// Configured action permissions
 	Grants []*HarborActionGrantSchema `json:"grants,omitempty" url:"grants,omitempty"`
-	// Revision to supply when replacing or removing these grants.
+	// Revision to supply when replacing or removing these grants
 	Revision *string `json:"revision,omitempty" url:"revision,omitempty"`
-	// When these grants were last replaced.
+	// When these grants were last replaced
 	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4395,8 +4465,10 @@ var (
 )
 
 type HarborActionConfigurationSchemasEnvelope struct {
-	Data       []*HarborActionSchemaResponse `json:"data,omitempty" url:"data,omitempty"`
-	Pagination *PaginationDetails            `json:"pagination,omitempty" url:"pagination,omitempty"`
+	// Action schemas on this page
+	Data []*HarborActionSchemaResponse `json:"data,omitempty" url:"data,omitempty"`
+	// Pagination details for the next page
+	Pagination *PaginationDetails `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4497,13 +4569,13 @@ var (
 )
 
 type HarborActionGrantSchema struct {
-	// Unique input field IDs for a mutating operation, or output field IDs for a read-only operation.
+	// Unique input field IDs for a mutating operation, or output field IDs for a read-only operation
 	FieldIDs []string `json:"field_ids,omitempty" url:"field_ids,omitempty"`
 	// Unique lookup field IDs for a read-only operation. Omit for a mutating operation.
 	LookupFieldIDs []string `json:"lookup_field_ids,omitempty" url:"lookup_field_ids,omitempty"`
-	// Exact operation ID from operation discovery.
+	// Exact operation ID from operation discovery
 	OperationID string `json:"operation_id" url:"operation_id"`
-	// Exact action schema ID.
+	// Exact action schema ID
 	SchemaID string `json:"schema_id" url:"schema_id"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4632,9 +4704,9 @@ var (
 )
 
 type HarborActionSchemaResponse struct {
-	// Stable action schema ID.
+	// Stable action schema ID
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Action schema name.
+	// Action schema name
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
 	// Operation IDs advertised by the schema catalog. Operation discovery supplies the current configurable fields.
 	Operations []string `json:"operations,omitempty" url:"operations,omitempty"`
@@ -4751,11 +4823,11 @@ var (
 )
 
 type HarborActionSourceConnectionResponse struct {
-	// Connection backend type.
+	// Connection backend type
 	ConnectionType *string `json:"connection_type,omitempty" url:"connection_type,omitempty"`
-	// Eligible source Connection ID.
+	// Eligible source Connection ID
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Connection name.
+	// Connection name
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4868,6 +4940,7 @@ var (
 )
 
 type HarborActionSourceConnectionsEnvelope struct {
+	// Connections eligible for action configuration
 	Data []*HarborActionSourceConnectionResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4955,11 +5028,11 @@ var (
 )
 
 type HarborAPIKeyCreatedResponse struct {
-	// When the credential was created.
+	// When the credential was created
 	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
-	// Unique identifier of the credential.
+	// Unique identifier of the credential
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Credential authorization mode.
+	// Credential authorization mode
 	Mode *string `json:"mode,omitempty" url:"mode,omitempty"`
 	// Plaintext credential. This value is returned only once.
 	Value *string `json:"value,omitempty" url:"value,omitempty"`
@@ -5091,14 +5164,41 @@ func (h *HarborAPIKeyCreatedResponse) String() string {
 	return fmt.Sprintf("%#v", h)
 }
 
+type HarborConnectionCapability string
+
+const (
+	HarborConnectionCapabilitySchemas         HarborConnectionCapability = "schemas"
+	HarborConnectionCapabilityQuery           HarborConnectionCapability = "query"
+	HarborConnectionCapabilityRecordViewLinks HarborConnectionCapability = "record_view_links"
+)
+
+func NewHarborConnectionCapabilityFromString(s string) (HarborConnectionCapability, error) {
+	switch s {
+	case "schemas":
+		return HarborConnectionCapabilitySchemas, nil
+	case "query":
+		return HarborConnectionCapabilityQuery, nil
+	case "record_view_links":
+		return HarborConnectionCapabilityRecordViewLinks, nil
+	}
+	var t HarborConnectionCapability
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (h HarborConnectionCapability) Ptr() *HarborConnectionCapability {
+	return &h
+}
+
 var (
 	harborConnectionListEnvelopeFieldData       = big.NewInt(1 << 0)
 	harborConnectionListEnvelopeFieldPagination = big.NewInt(1 << 1)
 )
 
 type HarborConnectionListEnvelope struct {
-	Data       []*HarborConnectionResponse `json:"data,omitempty" url:"data,omitempty"`
-	Pagination *PaginationDetails          `json:"pagination,omitempty" url:"pagination,omitempty"`
+	// Connections on this page
+	Data []*HarborConnectionResponse `json:"data,omitempty" url:"data,omitempty"`
+	// Pagination details for the next page
+	Pagination *PaginationDetails `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -5199,10 +5299,14 @@ var (
 )
 
 type HarborConnectionResponse struct {
-	Capabilities []string `json:"capabilities,omitempty" url:"capabilities,omitempty"`
-	ID           *string  `json:"id,omitempty" url:"id,omitempty"`
-	Name         *string  `json:"name,omitempty" url:"name,omitempty"`
-	Type         *string  `json:"type,omitempty" url:"type,omitempty"`
+	// Operations the credential can perform on the connection: schemas, query, or record_view_links
+	Capabilities []HarborConnectionCapability `json:"capabilities,omitempty" url:"capabilities,omitempty"`
+	// Connection ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Connection name
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Connection type
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -5211,7 +5315,7 @@ type HarborConnectionResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (h *HarborConnectionResponse) GetCapabilities() []string {
+func (h *HarborConnectionResponse) GetCapabilities() []HarborConnectionCapability {
 	if h == nil {
 		return nil
 	}
@@ -5255,7 +5359,7 @@ func (h *HarborConnectionResponse) require(field *big.Int) {
 
 // SetCapabilities sets the Capabilities field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HarborConnectionResponse) SetCapabilities(capabilities []string) {
+func (h *HarborConnectionResponse) SetCapabilities(capabilities []HarborConnectionCapability) {
 	h.Capabilities = capabilities
 	h.require(harborConnectionResponseFieldCapabilities)
 }
@@ -5328,6 +5432,7 @@ var (
 )
 
 type HarborConnectionSchemaEnvelope struct {
+	// The schema
 	Data *Schema `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -5412,6 +5517,7 @@ var (
 )
 
 type HarborContextDraftEnvelope struct {
+	// The context draft
 	Data *HarborContextDraftResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -5497,8 +5603,10 @@ var (
 )
 
 type HarborContextDraftListEnvelope struct {
-	Data       []*HarborContextDraftMetadataResponse `json:"data,omitempty" url:"data,omitempty"`
-	Pagination *PaginationDetails                    `json:"pagination,omitempty" url:"pagination,omitempty"`
+	// Context drafts on this page
+	Data []*HarborContextDraftMetadataResponse `json:"data,omitempty" url:"data,omitempty"`
+	// Pagination details for the next page
+	Pagination *PaginationDetails `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -5609,27 +5717,27 @@ var (
 type HarborContextDraftMetadataResponse struct {
 	// Published revision on which this draft is based. Null for an unpublished context's initial draft.
 	BaseRevisionID *string `json:"base_revision_id,omitempty" url:"base_revision_id,omitempty"`
-	// Optional note copied to the published version on promotion.
+	// Optional note copied to the published version on promotion
 	ChangeNote *string `json:"change_note,omitempty" url:"change_note,omitempty"`
 	// Stable context document identity. Use this ID for draft replacement, promotion, and discard.
 	ContextID *string `json:"context_id,omitempty" url:"context_id,omitempty"`
-	// When the draft was created.
+	// When the draft was created
 	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
 	// Actor that created the draft. Null for the system actor.
 	CreatedBy *string `json:"created_by,omitempty" url:"created_by,omitempty"`
-	// Type of actor that created the draft.
+	// Type of actor that created the draft
 	CreatedByType *string `json:"created_by_type,omitempty" url:"created_by_type,omitempty"`
-	// Draft description.
+	// Draft description
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Unique identifier of the mutable draft.
+	// Unique identifier of the mutable draft
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Draft title.
+	// Draft title
 	Title *string `json:"title,omitempty" url:"title,omitempty"`
-	// When the draft was most recently replaced.
+	// When the draft was most recently replaced
 	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 	// Actor that most recently replaced the draft. Null for the system actor.
 	UpdatedBy *string `json:"updated_by,omitempty" url:"updated_by,omitempty"`
-	// Type of actor that most recently replaced the draft.
+	// Type of actor that most recently replaced the draft
 	UpdatedByType *string `json:"updated_by_type,omitempty" url:"updated_by_type,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -5894,29 +6002,29 @@ var (
 type HarborContextDraftResponse struct {
 	// Published revision on which this draft is based. Null for an unpublished context's initial draft.
 	BaseRevisionID *string `json:"base_revision_id,omitempty" url:"base_revision_id,omitempty"`
-	// Optional note copied to the published version on promotion.
+	// Optional note copied to the published version on promotion
 	ChangeNote *string `json:"change_note,omitempty" url:"change_note,omitempty"`
-	// Complete plain-text draft content.
+	// Complete plain-text draft content
 	Content *string `json:"content,omitempty" url:"content,omitempty"`
 	// Stable context document identity. Use this ID for draft replacement, promotion, and discard.
 	ContextID *string `json:"context_id,omitempty" url:"context_id,omitempty"`
-	// When the draft was created.
+	// When the draft was created
 	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
 	// Actor that created the draft. Null for the system actor.
 	CreatedBy *string `json:"created_by,omitempty" url:"created_by,omitempty"`
-	// Type of actor that created the draft.
+	// Type of actor that created the draft
 	CreatedByType *string `json:"created_by_type,omitempty" url:"created_by_type,omitempty"`
-	// Draft description.
+	// Draft description
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Unique identifier of the mutable draft.
+	// Unique identifier of the mutable draft
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Draft title.
+	// Draft title
 	Title *string `json:"title,omitempty" url:"title,omitempty"`
-	// When the draft was most recently replaced.
+	// When the draft was most recently replaced
 	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 	// Actor that most recently replaced the draft. Null for the system actor.
 	UpdatedBy *string `json:"updated_by,omitempty" url:"updated_by,omitempty"`
-	// Type of actor that most recently replaced the draft.
+	// Type of actor that most recently replaced the draft
 	UpdatedByType *string `json:"updated_by_type,omitempty" url:"updated_by_type,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -6181,6 +6289,7 @@ var (
 )
 
 type HarborContextEnvelope struct {
+	// The context document
 	Data *HarborContextResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -6266,8 +6375,10 @@ var (
 )
 
 type HarborContextListEnvelope struct {
-	Data       []*HarborContextMetadataResponse `json:"data,omitempty" url:"data,omitempty"`
-	Pagination *PaginationDetails               `json:"pagination,omitempty" url:"pagination,omitempty"`
+	// Context documents on this page
+	Data []*HarborContextMetadataResponse `json:"data,omitempty" url:"data,omitempty"`
+	// Pagination details for the next page
+	Pagination *PaginationDetails `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -6371,19 +6482,19 @@ var (
 )
 
 type HarborContextMetadataResponse struct {
-	// When the context document was created.
+	// When the context document was created
 	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
-	// Short summary of the context document.
+	// Short summary of the context document
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Unique identifier of the context document.
+	// Unique identifier of the context document
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Exact immutable revision currently published for this context document.
+	// Exact immutable revision currently published for this context document
 	RevisionID *string `json:"revision_id,omitempty" url:"revision_id,omitempty"`
-	// Human-readable context title.
+	// Human-readable context title
 	Title *string `json:"title,omitempty" url:"title,omitempty"`
-	// When the context document was last updated.
+	// When the context document was last updated
 	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	// Current published version number of the context document.
+	// Current published version number of the context document
 	Version *int `json:"version,omitempty" url:"version,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -6571,21 +6682,21 @@ var (
 )
 
 type HarborContextResponse struct {
-	// Complete plain-text context content.
+	// Complete plain-text context content
 	Content *string `json:"content,omitempty" url:"content,omitempty"`
-	// When the context document was created.
+	// When the context document was created
 	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
-	// Short summary of the context document.
+	// Short summary of the context document
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Unique identifier of the context document.
+	// Unique identifier of the context document
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Exact immutable revision currently published for this context document.
+	// Exact immutable revision currently published for this context document
 	RevisionID *string `json:"revision_id,omitempty" url:"revision_id,omitempty"`
-	// Human-readable context title.
+	// Human-readable context title
 	Title *string `json:"title,omitempty" url:"title,omitempty"`
-	// When the context document was last updated.
+	// When the context document was last updated
 	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	// Current published version number of the context document.
+	// Current published version number of the context document
 	Version *int `json:"version,omitempty" url:"version,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -6780,6 +6891,7 @@ var (
 )
 
 type HarborContextVersionEnvelope struct {
+	// The context version
 	Data *HarborContextVersionResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -6865,8 +6977,10 @@ var (
 )
 
 type HarborContextVersionListEnvelope struct {
-	Data       []*HarborContextVersionMetadataResponse `json:"data,omitempty" url:"data,omitempty"`
-	Pagination *PaginationDetails                      `json:"pagination,omitempty" url:"pagination,omitempty"`
+	// Context versions on this page
+	Data []*HarborContextVersionMetadataResponse `json:"data,omitempty" url:"data,omitempty"`
+	// Pagination details for the next page
+	Pagination *PaginationDetails `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -6971,21 +7085,21 @@ var (
 )
 
 type HarborContextVersionMetadataResponse struct {
-	// Optional note supplied when this version was published.
+	// Optional note supplied when this version was published
 	ChangeNote *string `json:"change_note,omitempty" url:"change_note,omitempty"`
-	// Description captured in this version.
+	// Description captured in this version
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Unique identifier of this published version.
+	// Unique identifier of this published version
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// When this version was published.
+	// When this version was published
 	PublishedAt *time.Time `json:"published_at,omitempty" url:"published_at,omitempty"`
 	// Actor that published this version. Null for system publications.
 	PublishedBy *string `json:"published_by,omitempty" url:"published_by,omitempty"`
-	// Type of actor that published this version.
+	// Type of actor that published this version
 	PublishedByType *string `json:"published_by_type,omitempty" url:"published_by_type,omitempty"`
-	// Title captured in this version.
+	// Title captured in this version
 	Title *string `json:"title,omitempty" url:"title,omitempty"`
-	// Monotonic version number within the context document.
+	// Monotonic version number within the context document
 	Version *int `json:"version,omitempty" url:"version,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -7184,23 +7298,23 @@ var (
 )
 
 type HarborContextVersionResponse struct {
-	// Optional note supplied when this version was published.
+	// Optional note supplied when this version was published
 	ChangeNote *string `json:"change_note,omitempty" url:"change_note,omitempty"`
-	// Complete plain-text content captured in this version.
+	// Complete plain-text content captured in this version
 	Content *string `json:"content,omitempty" url:"content,omitempty"`
-	// Description captured in this version.
+	// Description captured in this version
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Unique identifier of this published version.
+	// Unique identifier of this published version
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// When this version was published.
+	// When this version was published
 	PublishedAt *time.Time `json:"published_at,omitempty" url:"published_at,omitempty"`
 	// Actor that published this version. Null for system publications.
 	PublishedBy *string `json:"published_by,omitempty" url:"published_by,omitempty"`
-	// Type of actor that published this version.
+	// Type of actor that published this version
 	PublishedByType *string `json:"published_by_type,omitempty" url:"published_by_type,omitempty"`
-	// Title captured in this version.
+	// Title captured in this version
 	Title *string `json:"title,omitempty" url:"title,omitempty"`
-	// Monotonic version number within the context document.
+	// Monotonic version number within the context document
 	Version *int `json:"version,omitempty" url:"version,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -7407,11 +7521,11 @@ var (
 )
 
 type HarborDatasetStatusResponse struct {
-	// Latest raw execution error associated with the dataset, when present.
+	// Latest raw execution error associated with the dataset, when present
 	Error *string `json:"error,omitempty" url:"error,omitempty"`
 	// Start time of the most recent successful dataset refresh. This is a conservative upper bound on data freshness. Completed refreshes with other dataset errors still count as successful for this dataset.
 	LastSuccessAt *time.Time `json:"last_success_at,omitempty" url:"last_success_at,omitempty"`
-	// Raw status of the latest Polytomic execution that selected this dataset.
+	// Raw status of the latest Polytomic execution that selected this dataset
 	LatestStatus *string `json:"latest_status,omitempty" url:"latest_status,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -7532,6 +7646,7 @@ var (
 )
 
 type HarborEnvelope struct {
+	// The Harbor
 	Data *HarborResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -7616,6 +7731,7 @@ var (
 )
 
 type HarborKeyEnvelope struct {
+	// The created credential
 	Data *HarborAPIKeyCreatedResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -7701,8 +7817,10 @@ var (
 )
 
 type HarborKeyListEnvelope struct {
-	Data       []*HarborKeyResponse `json:"data,omitempty" url:"data,omitempty"`
-	Pagination *PaginationDetails   `json:"pagination,omitempty" url:"pagination,omitempty"`
+	// Credentials on this page
+	Data []*HarborKeyResponse `json:"data,omitempty" url:"data,omitempty"`
+	// Pagination details for the next page
+	Pagination *PaginationDetails `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -7806,19 +7924,19 @@ var (
 )
 
 type HarborKeyResponse struct {
-	// Recorded API calls made with this credential in the last 24 hours.
+	// Recorded API calls made with this credential in the last 24 hours
 	CallsLast24Hours *int `json:"calls_last_24_hours,omitempty" url:"calls_last_24_hours,omitempty"`
-	// OAuth client that issued this credential, when applicable.
+	// OAuth client that issued this credential, when applicable
 	ClientName *string `json:"client_name,omitempty" url:"client_name,omitempty"`
-	// When the credential was created.
+	// When the credential was created
 	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
 	// When the credential expires. Omitted for durable credentials.
 	ExpiresAt *time.Time `json:"expires_at,omitempty" url:"expires_at,omitempty"`
-	// Unique identifier of the credential.
+	// Unique identifier of the credential
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 	// Masked credential hint. Never contains the plaintext credential.
 	KeyHint *string `json:"key_hint,omitempty" url:"key_hint,omitempty"`
-	// Credential authorization mode.
+	// Credential authorization mode
 	Mode *string `json:"mode,omitempty" url:"mode,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -8000,7 +8118,9 @@ var (
 )
 
 type HarborListEnvelope struct {
-	Data       []*HarborResponse  `json:"data,omitempty" url:"data,omitempty"`
+	// Harbors on this page
+	Data []*HarborResponse `json:"data,omitempty" url:"data,omitempty"`
+	// Pagination details for the next page
 	Pagination *PaginationDetails `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -8103,15 +8223,15 @@ var (
 )
 
 type HarborPipelineStatusResponse struct {
-	// Dataset refresh evidence keyed by the effective destination name visible to Harbor queries.
+	// Dataset refresh evidence keyed by the effective destination name visible to Harbor queries
 	Datasets map[string]*HarborDatasetStatusResponse `json:"datasets,omitempty" url:"datasets,omitempty"`
-	// Unique identifier of the Polytomic pipeline.
+	// Unique identifier of the Polytomic pipeline
 	ID string `json:"id" url:"id"`
-	// Whether this pipeline is enabled.
+	// Whether this pipeline is enabled
 	RefreshEnabled bool `json:"refresh_enabled" url:"refresh_enabled"`
-	// Exact Polytomic schedules that can select datasets in this pipeline.
+	// Exact Polytomic schedules that can select datasets in this pipeline
 	Schedules []*HarborStatusScheduleResponse `json:"schedules" url:"schedules"`
-	// Type of Polytomic pipeline.
+	// Type of Polytomic pipeline
 	Type HarborPipelineStatusResponseType `json:"type" url:"type"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -8247,7 +8367,7 @@ func (h *HarborPipelineStatusResponse) String() string {
 	return fmt.Sprintf("%#v", h)
 }
 
-// Type of Polytomic pipeline.
+// Type of Polytomic pipeline
 type HarborPipelineStatusResponseType string
 
 const (
@@ -8284,25 +8404,25 @@ var (
 )
 
 type HarborResponse struct {
-	// Connection that provides the Harbor's queryable data store.
+	// Connection that provides the Harbor's queryable data store
 	BackingConnectionID *string `json:"backing_connection_id,omitempty" url:"backing_connection_id,omitempty"`
-	// How the Harbor's queryable data store is provided.
+	// How the Harbor's queryable data store is provided
 	BackingMode *string `json:"backing_mode,omitempty" url:"backing_mode,omitempty"`
-	// When the Harbor was created.
+	// When the Harbor was created
 	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
-	// Short description of the Harbor.
+	// Short description of the Harbor
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Unique identifier of the Harbor.
+	// Unique identifier of the Harbor
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// MCP server URL for the Harbor.
+	// MCP server URL for the Harbor
 	McpServerURL *string `json:"mcp_server_url,omitempty" url:"mcp_server_url,omitempty"`
-	// Human-readable Harbor name.
+	// Human-readable Harbor name
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
-	// Organization that owns the Harbor.
+	// Organization that owns the Harbor
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// Storage lifecycle status. Wait for ready before using the Harbor; failed provisioning is retried automatically.
 	Status *string `json:"status,omitempty" url:"status,omitempty"`
-	// When the Harbor was last updated.
+	// When the Harbor was last updated
 	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -8525,6 +8645,7 @@ var (
 )
 
 type HarborSavedQueryDraftEnvelope struct {
+	// The saved query draft
 	Data *HarborSavedQueryDraftResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -8610,8 +8731,10 @@ var (
 )
 
 type HarborSavedQueryDraftListEnvelope struct {
-	Data       []*HarborSavedQueryDraftResponse `json:"data,omitempty" url:"data,omitempty"`
-	Pagination *PaginationDetails               `json:"pagination,omitempty" url:"pagination,omitempty"`
+	// Saved query drafts on this page
+	Data []*HarborSavedQueryDraftResponse `json:"data,omitempty" url:"data,omitempty"`
+	// Pagination details for the next page
+	Pagination *PaginationDetails `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -8723,35 +8846,35 @@ var (
 )
 
 type HarborSavedQueryDraftResponse struct {
-	// Optional draft change note.
+	// Optional draft change note
 	ChangeNote *string `json:"change_note,omitempty" url:"change_note,omitempty"`
-	// When the draft was created.
+	// When the draft was created
 	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
 	// Actor that created the draft. Null for the system actor.
 	CreatedBy *string `json:"created_by,omitempty" url:"created_by,omitempty"`
-	// Type of actor that created the draft.
+	// Type of actor that created the draft
 	CreatedByType *string `json:"created_by_type,omitempty" url:"created_by_type,omitempty"`
-	// Draft business definition.
+	// Draft business definition
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Unique identifier of this mutable draft candidate.
+	// Unique identifier of this mutable draft candidate
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Draft name.
+	// Draft name
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
-	// Draft owner label.
+	// Draft owner label
 	Owner *string `json:"owner,omitempty" url:"owner,omitempty"`
-	// Draft typed parameter declarations.
+	// Draft typed parameter declarations
 	Parameters []*HarborSavedQueryParameter `json:"parameters,omitempty" url:"parameters,omitempty"`
-	// Stable saved-query identifier.
+	// Stable saved-query identifier
 	SavedQueryID *string `json:"saved_query_id,omitempty" url:"saved_query_id,omitempty"`
-	// Draft SQL template.
+	// Draft SQL template
 	SQLTemplate *string `json:"sql_template,omitempty" url:"sql_template,omitempty"`
-	// When the draft was last replaced.
+	// When the draft was last replaced
 	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 	// Actor that last replaced the draft. Null for the system actor.
 	UpdatedBy *string `json:"updated_by,omitempty" url:"updated_by,omitempty"`
-	// Type of actor that last replaced the draft.
+	// Type of actor that last replaced the draft
 	UpdatedByType *string `json:"updated_by_type,omitempty" url:"updated_by_type,omitempty"`
-	// Author-supplied validation inputs.
+	// Author-supplied validation inputs
 	ValidationValues map[string]any `json:"validation_values,omitempty" url:"validation_values,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -9044,6 +9167,7 @@ var (
 )
 
 type HarborSavedQueryEnvelope struct {
+	// The saved query
 	Data *HarborSavedQueryResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -9129,8 +9253,10 @@ var (
 )
 
 type HarborSavedQueryListEnvelope struct {
-	Data       []*HarborSavedQueryMetadataResponse `json:"data,omitempty" url:"data,omitempty"`
-	Pagination *PaginationDetails                  `json:"pagination,omitempty" url:"pagination,omitempty"`
+	// Saved queries on this page
+	Data []*HarborSavedQueryMetadataResponse `json:"data,omitempty" url:"data,omitempty"`
+	// Pagination details for the next page
+	Pagination *PaginationDetails `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -9236,23 +9362,23 @@ var (
 )
 
 type HarborSavedQueryMetadataResponse struct {
-	// Business definition and usage notes.
+	// Business definition and usage notes
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Expected ordered result-column names.
+	// Expected ordered result-column names
 	ExpectedColumns []string `json:"expected_columns,omitempty" url:"expected_columns,omitempty"`
-	// Stable saved-query identifier.
+	// Stable saved-query identifier
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Human-readable saved-query name.
+	// Human-readable saved-query name
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
-	// Human-readable owner label.
+	// Human-readable owner label
 	Owner *string `json:"owner,omitempty" url:"owner,omitempty"`
-	// When this version was published.
+	// When this version was published
 	PublishedAt *time.Time `json:"published_at,omitempty" url:"published_at,omitempty"`
-	// Immutable identifier of this exact published definition.
+	// Immutable identifier of this exact published definition
 	RevisionID *string `json:"revision_id,omitempty" url:"revision_id,omitempty"`
-	// When this version's draft was last updated before publication.
+	// When this version's draft was last updated before publication
 	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	// Current published version number.
+	// Current published version number
 	Version *int `json:"version,omitempty" url:"version,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -9466,11 +9592,11 @@ var (
 type HarborSavedQueryParameter struct {
 	// JSON scalar used when the parameter is omitted, matching the declared type. Use default_value, not default. Optional parameters without a default bind SQL NULL.
 	DefaultValue any `json:"default_value,omitempty" url:"default_value,omitempty"`
-	// Template parameter name referenced as {{start_date}}.
+	// Template parameter name referenced as {{start_date}}
 	Name string `json:"name" url:"name"`
-	// When true, rejects explicit null during validation and execution and allows omission only when default_value is present.
+	// When true, rejects explicit null during validation and execution and allows omission only when default_value is present
 	Required *bool `json:"required,omitempty" url:"required,omitempty"`
-	// Scalar parameter type.
+	// Scalar parameter type
 	Type HarborSavedQueryParameterType `json:"type" url:"type"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -9592,7 +9718,7 @@ func (h *HarborSavedQueryParameter) String() string {
 	return fmt.Sprintf("%#v", h)
 }
 
-// Scalar parameter type.
+// Scalar parameter type
 type HarborSavedQueryParameterType string
 
 const (
@@ -9634,11 +9760,11 @@ var (
 )
 
 type HarborSavedQueryPreviewResponse struct {
-	// Ordered preview column names.
+	// Ordered preview column names
 	Columns []string `json:"columns,omitempty" url:"columns,omitempty"`
 	// Ephemeral bounded preview rows. These rows are never persisted.
 	Rows []map[string]any `json:"rows,omitempty" url:"rows,omitempty"`
-	// Whether validation stopped at the row or serialized-size bound.
+	// Whether validation stopped at the row or serialized-size bound
 	Truncated *bool `json:"truncated,omitempty" url:"truncated,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -9764,33 +9890,33 @@ var (
 )
 
 type HarborSavedQueryResponse struct {
-	// Note supplied when this version was published.
+	// Note supplied when this version was published
 	ChangeNote *string `json:"change_note,omitempty" url:"change_note,omitempty"`
-	// Business definition and usage notes.
+	// Business definition and usage notes
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Expected ordered result-column names.
+	// Expected ordered result-column names
 	ExpectedColumns []string `json:"expected_columns,omitempty" url:"expected_columns,omitempty"`
-	// Stable saved-query identifier.
+	// Stable saved-query identifier
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Human-readable saved-query name.
+	// Human-readable saved-query name
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
-	// Human-readable owner label.
+	// Human-readable owner label
 	Owner *string `json:"owner,omitempty" url:"owner,omitempty"`
-	// Published typed scalar parameter declarations.
+	// Published typed scalar parameter declarations
 	Parameters []*HarborSavedQueryParameter `json:"parameters,omitempty" url:"parameters,omitempty"`
-	// When this version was published.
+	// When this version was published
 	PublishedAt *time.Time `json:"published_at,omitempty" url:"published_at,omitempty"`
 	// Actor that published this version. Null for the system actor.
 	PublishedBy *string `json:"published_by,omitempty" url:"published_by,omitempty"`
-	// Type of actor that published this version.
+	// Type of actor that published this version
 	PublishedByType *string `json:"published_by_type,omitempty" url:"published_by_type,omitempty"`
-	// Immutable identifier of this exact published definition.
+	// Immutable identifier of this exact published definition
 	RevisionID *string `json:"revision_id,omitempty" url:"revision_id,omitempty"`
-	// Published SQL template.
+	// Published SQL template
 	SQLTemplate *string `json:"sql_template,omitempty" url:"sql_template,omitempty"`
-	// When this version's draft was last updated before publication.
+	// When this version's draft was last updated before publication
 	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-	// Current published version number.
+	// Current published version number
 	Version *int `json:"version,omitempty" url:"version,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -10069,6 +10195,7 @@ var (
 )
 
 type HarborSavedQueryValidationEnvelope struct {
+	// Preview of the draft's results
 	Data *HarborSavedQueryPreviewResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -10155,9 +10282,12 @@ var (
 )
 
 type HarborSchemaListEnvelope struct {
-	Data               []*HarborSchemaResponse `json:"data,omitempty" url:"data,omitempty"`
-	Pagination         *PaginationDetails      `json:"pagination,omitempty" url:"pagination,omitempty"`
-	SupportsNamespaces *bool                   `json:"supports_namespaces,omitempty" url:"supports_namespaces,omitempty"`
+	// Schemas on this page
+	Data []*HarborSchemaResponse `json:"data,omitempty" url:"data,omitempty"`
+	// Pagination details for the next page
+	Pagination *PaginationDetails `json:"pagination,omitempty" url:"pagination,omitempty"`
+	// Whether the connection organizes schemas into namespaces
+	SupportsNamespaces *bool `json:"supports_namespaces,omitempty" url:"supports_namespaces,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -10270,7 +10400,9 @@ var (
 )
 
 type HarborSchemaResponse struct {
-	ID   *string `json:"id,omitempty" url:"id,omitempty"`
+	// Schema ID
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
+	// Schema name
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -10373,9 +10505,9 @@ var (
 type HarborSourceMappingResponse struct {
 	// Qualified table name in the Harbor's backing Connection. Empty unless status is resolved.
 	DestinationSchemaID *string `json:"destination_schema_id,omitempty" url:"destination_schema_id,omitempty"`
-	// Requested source field identifiers mapped to their destination names. A requested field that was not materialized is absent.
+	// Requested source field identifiers mapped to their destination names. A requested field that is not in the Harbor is absent.
 	Fields map[string]*string `json:"fields,omitempty" url:"fields,omitempty"`
-	// resolved when exactly one completed materialization was found, unresolved when none was, ambiguous when more than one was.
+	// resolved when exactly one sync writes the table into the Harbor and the table is there: a bulk sync's completed run, or a model sync's configured table in the Harbor's cached schema. unresolved when none does, ambiguous when more than one does.
 	Status *string `json:"status,omitempty" url:"status,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -10486,16 +10618,19 @@ func (h *HarborSourceMappingResponse) String() string {
 var (
 	harborSourceReferenceFieldConnectionID = big.NewInt(1 << 0)
 	harborSourceReferenceFieldFields       = big.NewInt(1 << 1)
-	harborSourceReferenceFieldSchemaID     = big.NewInt(1 << 2)
+	harborSourceReferenceFieldModelID      = big.NewInt(1 << 2)
+	harborSourceReferenceFieldSchemaID     = big.NewInt(1 << 3)
 )
 
 type HarborSourceReference struct {
-	// Source Connection the documented table belongs to.
+	// Source Connection the documented table belongs to: the bulk sync's source, or the model's Connection
 	ConnectionID string `json:"connection_id" url:"connection_id"`
 	// Source field identifiers to translate. Fields not listed are not returned.
 	Fields []string `json:"fields,omitempty" url:"fields,omitempty"`
-	// Source schema identifier, exactly as source schema discovery reports it.
-	SchemaID string `json:"schema_id" url:"schema_id"`
+	// Model identifier for a table a model sync delivers. Fields are then model field identifiers. Exactly one of schema_id and model_id is required.
+	ModelID *string `json:"model_id,omitempty" url:"model_id,omitempty"`
+	// Source schema identifier, exactly as source schema discovery reports it, for a table a bulk sync delivers. Exactly one of schema_id and model_id is required.
+	SchemaID *string `json:"schema_id,omitempty" url:"schema_id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -10518,9 +10653,16 @@ func (h *HarborSourceReference) GetFields() []string {
 	return h.Fields
 }
 
-func (h *HarborSourceReference) GetSchemaID() string {
+func (h *HarborSourceReference) GetModelID() *string {
 	if h == nil {
-		return ""
+		return nil
+	}
+	return h.ModelID
+}
+
+func (h *HarborSourceReference) GetSchemaID() *string {
+	if h == nil {
+		return nil
 	}
 	return h.SchemaID
 }
@@ -10553,9 +10695,16 @@ func (h *HarborSourceReference) SetFields(fields []string) {
 	h.require(harborSourceReferenceFieldFields)
 }
 
+// SetModelID sets the ModelID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HarborSourceReference) SetModelID(modelID *string) {
+	h.ModelID = modelID
+	h.require(harborSourceReferenceFieldModelID)
+}
+
 // SetSchemaID sets the SchemaID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HarborSourceReference) SetSchemaID(schemaID string) {
+func (h *HarborSourceReference) SetSchemaID(schemaID *string) {
 	h.SchemaID = schemaID
 	h.require(harborSourceReferenceFieldSchemaID)
 }
@@ -10607,6 +10756,7 @@ var (
 )
 
 type HarborStatusEnvelope struct {
+	// The Harbor status
 	Data *HarborStatusResponse `json:"data" url:"data"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -10692,7 +10842,7 @@ var (
 )
 
 type HarborStatusResponse struct {
-	// UTC time at which Polytomic assembled this status snapshot.
+	// UTC time at which Polytomic assembled this status snapshot
 	AsOf time.Time `json:"as_of" url:"as_of"`
 	// Polytomic pipelines that populate datasets in the Harbor backing Connection. Unmanaged tables are excluded.
 	Pipelines []*HarborPipelineStatusResponse `json:"pipelines,omitempty" url:"pipelines,omitempty"`
@@ -10814,31 +10964,34 @@ var (
 )
 
 type HarborStatusScheduleResponse struct {
-	// External schedule Connection ID, when configured.
+	// External schedule Connection ID, when configured
 	ConnectionID *string `json:"connection_id,omitempty" url:"connection_id,omitempty"`
-	// Raw day-of-month schedule expression for an advanced schedule, when configured.
+	// Raw day-of-month schedule expression for an advanced schedule, when configured
 	DayOfMonth *string `json:"day_of_month,omitempty" url:"day_of_month,omitempty"`
-	// Raw day-of-week schedule expression, when configured.
-	DayOfWeek *string           `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
+	// Raw day-of-week schedule expression, when configured
+	DayOfWeek *string `json:"day_of_week,omitempty" url:"day_of_week,omitempty"`
+	// Raw Polytomic schedule frequency
 	Frequency ScheduleFrequency `json:"frequency" url:"frequency"`
-	// Raw hour schedule expression, when configured.
+	// Raw hour schedule expression, when configured
 	Hour *string `json:"hour,omitempty" url:"hour,omitempty"`
-	// Whether this is the bulk sync's default schedule.
+	// Whether this is the bulk sync's default schedule
 	IsDefault *bool `json:"is_default,omitempty" url:"is_default,omitempty"`
-	// External job ID for an event-driven model sync schedule, when configured.
+	// External job ID for an event-driven model sync schedule, when configured
 	JobID *int `json:"job_id,omitempty" url:"job_id,omitempty"`
-	// Raw minute schedule expression, when configured.
+	// Raw minute schedule expression, when configured
 	Minute *string `json:"minute,omitempty" url:"minute,omitempty"`
-	// Raw month schedule expression for an advanced schedule, when configured.
+	// Raw month schedule expression for an advanced schedule, when configured
 	Month *string `json:"month,omitempty" url:"month,omitempty"`
 	// Next scheduled run time in UTC. Continuous schedules use persisted scheduler state. Omitted for disabled, manual, event-driven, otherwise non-cron, or unavailable scheduler state.
 	NextRunAt *time.Time `json:"next_run_at,omitempty" url:"next_run_at,omitempty"`
-	// Whether a run-after model schedule requires the upstream execution to succeed.
+	// Whether a run-after model schedule requires the upstream execution to succeed
 	RunAfterSuccessOnly *bool `json:"run_after_success_only,omitempty" url:"run_after_success_only,omitempty"`
-	// Source schema IDs explicitly selected by this bulk schedule.
-	Schemas       []string              `json:"schemas,omitempty" url:"schemas,omitempty"`
-	SelectiveMode *BulkSelectiveMode    `json:"selective_mode,omitempty" url:"selective_mode,omitempty"`
-	SyncMode      *BulkScheduleSyncMode `json:"sync_mode,omitempty" url:"sync_mode,omitempty"`
+	// Source schema IDs explicitly selected by this bulk schedule
+	Schemas []string `json:"schemas,omitempty" url:"schemas,omitempty"`
+	// Bulk schedule field-selection mode, when the schedule applies selectively
+	SelectiveMode *BulkSelectiveMode `json:"selective_mode,omitempty" url:"selective_mode,omitempty"`
+	// Bulk refresh mode selected by this schedule
+	SyncMode *BulkScheduleSyncMode `json:"sync_mode,omitempty" url:"sync_mode,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -11112,6 +11265,7 @@ var (
 )
 
 type HarborUserEnvelope struct {
+	// The user
 	Data *HarborUserResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -11197,8 +11351,10 @@ var (
 )
 
 type HarborUserListEnvelope struct {
-	Data       []*HarborUserResponse `json:"data,omitempty" url:"data,omitempty"`
-	Pagination *PaginationDetails    `json:"pagination,omitempty" url:"pagination,omitempty"`
+	// Users on this page
+	Data []*HarborUserResponse `json:"data,omitempty" url:"data,omitempty"`
+	// Pagination details for the next page
+	Pagination *PaginationDetails `json:"pagination,omitempty" url:"pagination,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -11302,19 +11458,19 @@ var (
 )
 
 type HarborUserResponse struct {
-	// When the user was invited.
+	// When the user was invited
 	CreatedAt *time.Time `json:"created_at,omitempty" url:"created_at,omitempty"`
-	// Email address used to sign in.
+	// Email address used to sign in
 	Email *string `json:"email,omitempty" url:"email,omitempty"`
-	// Harbors assigned to this user.
+	// Harbors assigned to this user
 	HarborIDs []string `json:"harbor_ids,omitempty" url:"harbor_ids,omitempty"`
-	// Whether the account is restricted to assigned Harbors.
+	// Whether the account is restricted to assigned Harbors
 	HarborOnly *bool `json:"harbor_only,omitempty" url:"harbor_only,omitempty"`
-	// Unique identifier of the user.
+	// Unique identifier of the user
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
-	// Organization the user belongs to.
+	// Organization the user belongs to
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	// Current account status.
+	// Current account status
 	Status *string `json:"status,omitempty" url:"status,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -11491,6 +11647,7 @@ var (
 )
 
 type RegisterHarborSessionEnvelope struct {
+	// The registered session
 	Data *RegisterHarborSessionResponse `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -11577,9 +11734,11 @@ var (
 )
 
 type RegisterHarborSessionResponse struct {
+	// When the session expires
 	ExpiresAt *time.Time `json:"expires_at,omitempty" url:"expires_at,omitempty"`
-	SessionID *string    `json:"session_id,omitempty" url:"session_id,omitempty"`
-	// Opaque bearer token for subsequent governed requests.
+	// Harbor session ID
+	SessionID *string `json:"session_id,omitempty" url:"session_id,omitempty"`
+	// Opaque bearer token for subsequent governed requests
 	Token *string `json:"token,omitempty" url:"token,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -11700,6 +11859,7 @@ var (
 )
 
 type ResolveHarborSourceMappingsEnvelope struct {
+	// The resolved source mappings
 	Data *ResolveHarborSourceMappingsEnvelopeData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -11779,15 +11939,16 @@ func (r *ResolveHarborSourceMappingsEnvelope) String() string {
 	return fmt.Sprintf("%#v", r)
 }
 
+// The resolved source mappings
 var (
 	resolveHarborSourceMappingsEnvelopeDataFieldBackingConnectionID = big.NewInt(1 << 0)
 	resolveHarborSourceMappingsEnvelopeDataFieldSources             = big.NewInt(1 << 1)
 )
 
 type ResolveHarborSourceMappingsEnvelopeData struct {
-	// Connection the resolved names belong to.
+	// Connection the resolved names belong to
 	BackingConnectionID *string `json:"backing_connection_id,omitempty" url:"backing_connection_id,omitempty"`
-	// One result per requested source table, in request order.
+	// One result per requested source table, in request order
 	Sources []*HarborSourceMappingResponse `json:"sources,omitempty" url:"sources,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -11886,6 +12047,7 @@ var (
 )
 
 type RevokedHarborKeyEnvelope struct {
+	// The revoked credential
 	Data *RevokedHarborKeyEnvelopeData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -11965,12 +12127,13 @@ func (r *RevokedHarborKeyEnvelope) String() string {
 	return fmt.Sprintf("%#v", r)
 }
 
+// The revoked credential
 var (
 	revokedHarborKeyEnvelopeDataFieldID = big.NewInt(1 << 0)
 )
 
 type RevokedHarborKeyEnvelopeData struct {
-	// Unique identifier of the revoked credential.
+	// Unique identifier of the revoked credential
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -12055,6 +12218,7 @@ var (
 )
 
 type UnassignedHarborUserEnvelope struct {
+	// The unassigned user
 	Data *UnassignedHarborUserEnvelopeData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -12134,12 +12298,13 @@ func (u *UnassignedHarborUserEnvelope) String() string {
 	return fmt.Sprintf("%#v", u)
 }
 
+// The unassigned user
 var (
 	unassignedHarborUserEnvelopeDataFieldID = big.NewInt(1 << 0)
 )
 
 type UnassignedHarborUserEnvelopeData struct {
-	// Unique identifier of the unassigned user.
+	// Unique identifier of the unassigned user
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

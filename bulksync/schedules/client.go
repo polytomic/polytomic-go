@@ -52,7 +52,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	)
 func (c *Client) List(
 	ctx context.Context,
-	// Unique identifier of the bulk sync whose schedules should be returned.
+	// Unique identifier of the bulk sync whose schedules should be returned
 	syncID string,
 	opts ...option.RequestOption,
 ) (*polytomic.SchedulesEnvelope, error) {
@@ -90,7 +90,7 @@ func (c *Client) List(
 //	)
 func (c *Client) Create(
 	ctx context.Context,
-	// Unique identifier of the bulk sync to add a schedule to.
+	// Unique identifier of the bulk sync to add a schedule to
 	syncID string,
 	request *bulksync.CreateScheduleRequest,
 	opts ...option.IdempotentRequestOption,
@@ -125,9 +125,9 @@ func (c *Client) Create(
 //	)
 func (c *Client) Get(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	syncID string,
-	// Unique identifier of the schedule.
+	// Unique identifier of the schedule
 	scheduleID string,
 	opts ...option.RequestOption,
 ) (*polytomic.ScheduleEnvelope, error) {
@@ -164,9 +164,9 @@ func (c *Client) Get(
 //	)
 func (c *Client) Update(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	syncID string,
-	// Unique identifier of the schedule to update.
+	// Unique identifier of the schedule to update
 	scheduleID string,
 	request *bulksync.UpdateScheduleRequest,
 	opts ...option.IdempotentRequestOption,
@@ -198,9 +198,9 @@ func (c *Client) Update(
 //	)
 func (c *Client) Delete(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	syncID string,
-	// Unique identifier of the schedule to delete.
+	// Unique identifier of the schedule to delete
 	scheduleID string,
 	opts ...option.IdempotentRequestOption,
 ) error {

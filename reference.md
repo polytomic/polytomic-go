@@ -185,7 +185,7 @@ client.BulkSync.Create(
 <dl>
 <dd>
 
-**automaticallyAddNewFields:** `*polytomic.BulkDiscover` 
+**automaticallyAddNewFields:** `*polytomic.BulkDiscover` — Controls whether Polytomic automatically enables newly discovered fields on existing objects. Valid values depend on the source backend.
     
 </dd>
 </dl>
@@ -193,7 +193,7 @@ client.BulkSync.Create(
 <dl>
 <dd>
 
-**automaticallyAddNewObjects:** `*polytomic.BulkDiscover` 
+**automaticallyAddNewObjects:** `*polytomic.BulkDiscover` — Controls whether Polytomic automatically enables newly discovered source objects (tables). Valid values depend on the source backend.
     
 </dd>
 </dl>
@@ -217,7 +217,7 @@ client.BulkSync.Create(
 <dl>
 <dd>
 
-**defaultSchedule:** `*polytomic.BulkSyncDefaultScheduleRequest` 
+**defaultSchedule:** `*polytomic.BulkSyncDefaultScheduleRequest` — The default bulk sync schedule. This schedule applies to all fields and schemas. Schedules are interpreted in UTC.
     
 </dd>
 </dl>
@@ -233,7 +233,7 @@ client.BulkSync.Create(
 <dl>
 <dd>
 
-**destinationConnectionID:** `string` — Unique identifier of the connection rows are written to.
+**destinationConnectionID:** `string` — Unique identifier of the connection rows are written to
     
 </dd>
 </dl>
@@ -249,7 +249,7 @@ client.BulkSync.Create(
 <dl>
 <dd>
 
-**mode:** `*polytomic.BulkSyncTargetMode` 
+**mode:** `*polytomic.BulkSyncTargetMode` — How source data is written to the destination. replicate keeps the destination in sync with the source; snapshot writes a timestamped copy per execution; append adds every delivered record, including full reads, without updating existing rows.
     
 </dd>
 </dl>
@@ -257,7 +257,7 @@ client.BulkSync.Create(
 <dl>
 <dd>
 
-**name:** `string` — Human-readable name for the bulk sync.
+**name:** `string` — Human-readable name for the bulk sync
     
 </dd>
 </dl>
@@ -265,7 +265,7 @@ client.BulkSync.Create(
 <dl>
 <dd>
 
-**normalizeNames:** `*polytomic.BulkNormalizeNames` 
+**normalizeNames:** `*polytomic.BulkNormalizeNames` — Controls whether destination object and field names are normalized (e.g. lowercased, special characters replaced). Valid values depend on the destination backend.
     
 </dd>
 </dl>
@@ -273,7 +273,7 @@ client.BulkSync.Create(
 <dl>
 <dd>
 
-**organizationID:** `*string` — Organization the sync is created in. Only used by partner callers; normal callers always create syncs in their own organization.
+**organizationID:** `*string` — Ignored for user and organization-scoped API keys, which always act in their own organization
     
 </dd>
 </dl>
@@ -281,7 +281,7 @@ client.BulkSync.Create(
 <dl>
 <dd>
 
-**policies:** `[]string` — Identifiers of permissions policies applied to the bulk sync.
+**policies:** `[]string` — Permissions policy IDs applied to the bulk sync. On update, a non-empty list replaces the bulk sync's policies and an empty or omitted list leaves them unchanged.
     
 </dd>
 </dl>
@@ -313,7 +313,7 @@ client.BulkSync.Create(
 <dl>
 <dd>
 
-**sourceConnectionID:** `string` — Unique identifier of the connection rows are read from.
+**sourceConnectionID:** `string` — Unique identifier of the connection rows are read from
     
 </dd>
 </dl>
@@ -384,7 +384,7 @@ client.BulkSync.Get(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Bulk sync ID
     
 </dd>
 </dl>
@@ -392,7 +392,7 @@ client.BulkSync.Get(
 <dl>
 <dd>
 
-**refreshSchemas:** `*bool` 
+**refreshSchemas:** `*bool` — Deprecated; has no effect
     
 </dd>
 </dl>
@@ -420,7 +420,8 @@ Updates an existing bulk sync's top-level configuration.
 
 Updating a bulk sync is a **full replacement** of the sync's top-level
 configuration. Every field in the request body is written to the sync; any
-field you omit is cleared or reset to its default value.
+field you omit is cleared or reset to its default value. An empty or omitted
+`policies` list leaves the sync's current policies unchanged.
 
 To make a partial change — for example, toggling `active` or swapping a
 schedule — fetch the current sync with
@@ -497,7 +498,7 @@ client.BulkSync.Update(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the bulk sync to update.
+**id:** `string` — Unique identifier of the bulk sync to update
     
 </dd>
 </dl>
@@ -521,7 +522,7 @@ client.BulkSync.Update(
 <dl>
 <dd>
 
-**automaticallyAddNewFields:** `*polytomic.BulkDiscover` 
+**automaticallyAddNewFields:** `*polytomic.BulkDiscover` — Controls whether Polytomic automatically enables newly discovered fields on existing objects. Valid values depend on the source backend.
     
 </dd>
 </dl>
@@ -529,7 +530,7 @@ client.BulkSync.Update(
 <dl>
 <dd>
 
-**automaticallyAddNewObjects:** `*polytomic.BulkDiscover` 
+**automaticallyAddNewObjects:** `*polytomic.BulkDiscover` — Controls whether Polytomic automatically enables newly discovered source objects (tables). Valid values depend on the source backend.
     
 </dd>
 </dl>
@@ -553,7 +554,7 @@ client.BulkSync.Update(
 <dl>
 <dd>
 
-**defaultSchedule:** `*polytomic.BulkSyncDefaultScheduleRequest` 
+**defaultSchedule:** `*polytomic.BulkSyncDefaultScheduleRequest` — The default bulk sync schedule. This schedule applies to all fields and schemas. Schedules are interpreted in UTC.
     
 </dd>
 </dl>
@@ -569,7 +570,7 @@ client.BulkSync.Update(
 <dl>
 <dd>
 
-**destinationConnectionID:** `string` — Unique identifier of the connection rows are written to.
+**destinationConnectionID:** `string` — Unique identifier of the connection rows are written to
     
 </dd>
 </dl>
@@ -585,7 +586,7 @@ client.BulkSync.Update(
 <dl>
 <dd>
 
-**mode:** `*polytomic.BulkSyncTargetMode` 
+**mode:** `*polytomic.BulkSyncTargetMode` — How source data is written to the destination. replicate keeps the destination in sync with the source; snapshot writes a timestamped copy per execution; append adds every delivered record, including full reads, without updating existing rows.
     
 </dd>
 </dl>
@@ -593,7 +594,7 @@ client.BulkSync.Update(
 <dl>
 <dd>
 
-**name:** `string` — Human-readable name for the bulk sync.
+**name:** `string` — Human-readable name for the bulk sync
     
 </dd>
 </dl>
@@ -601,7 +602,7 @@ client.BulkSync.Update(
 <dl>
 <dd>
 
-**normalizeNames:** `*polytomic.BulkNormalizeNames` 
+**normalizeNames:** `*polytomic.BulkNormalizeNames` — Controls whether destination object and field names are normalized (e.g. lowercased, special characters replaced). Valid values depend on the destination backend.
     
 </dd>
 </dl>
@@ -609,7 +610,7 @@ client.BulkSync.Update(
 <dl>
 <dd>
 
-**organizationID:** `*string` — Organization the sync belongs to. Only used by partner callers; normal callers are always scoped to their own organization.
+**organizationID:** `*string` — Ignored for user and organization-scoped API keys, which always act in their own organization
     
 </dd>
 </dl>
@@ -617,7 +618,7 @@ client.BulkSync.Update(
 <dl>
 <dd>
 
-**policies:** `[]string` — Identifiers of permissions policies applied to the bulk sync.
+**policies:** `[]string` — Permissions policy IDs applied to the bulk sync. On update, a non-empty list replaces the bulk sync's policies and an empty or omitted list leaves them unchanged.
     
 </dd>
 </dl>
@@ -649,7 +650,7 @@ client.BulkSync.Update(
 <dl>
 <dd>
 
-**sourceConnectionID:** `string` — Unique identifier of the connection rows are read from.
+**sourceConnectionID:** `string` — Unique identifier of the connection rows are read from
     
 </dd>
 </dl>
@@ -718,7 +719,7 @@ client.BulkSync.Delete(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Bulk sync ID
     
 </dd>
 </dl>
@@ -726,7 +727,7 @@ client.BulkSync.Delete(
 <dl>
 <dd>
 
-**refreshSchemas:** `*bool` 
+**refreshSchemas:** `*bool` — Deprecated; has no effect
     
 </dd>
 </dl>
@@ -774,7 +775,7 @@ any execution that is currently in progress.
 <dd>
 
 ```go
-request := &polytomic.ActivateSyncInput{
+request := &polytomic.ActivateBulkSyncInput{
     Active: true,
 }
 client.BulkSync.Activate(
@@ -796,7 +797,7 @@ client.BulkSync.Activate(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Bulk sync ID
     
 </dd>
 </dl>
@@ -804,7 +805,7 @@ client.BulkSync.Activate(
 <dl>
 <dd>
 
-**request:** `*polytomic.ActivateSyncInput` 
+**active:** `bool` — Whether the bulk sync should be active
     
 </dd>
 </dl>
@@ -941,7 +942,7 @@ client.BulkSync.Start(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the bulk sync.
+**id:** `string` — Unique identifier of the bulk sync
     
 </dd>
 </dl>
@@ -949,7 +950,7 @@ client.BulkSync.Start(
 <dl>
 <dd>
 
-**fetchMode:** `*polytomic.BulkFetchMode` 
+**fetchMode:** `*polytomic.BulkFetchMode` — Selective fetch mode. Controls whether the execution runs a full fetch, only incremental fields, or only non-incremental fields.
     
 </dd>
 </dl>
@@ -957,7 +958,7 @@ client.BulkSync.Start(
 <dl>
 <dd>
 
-**resyncMode:** `*polytomic.BulkResyncMode` 
+**resyncMode:** `*polytomic.BulkResyncMode` — Controls how the destination is handled during a resync. Valid values: refetch (retain destination data), resync (truncate destination data), rebuild (drop and recreate destination tables).
     
 </dd>
 </dl>
@@ -1040,7 +1041,7 @@ client.BulkSync.GetStatus(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the bulk sync.
+**id:** `string` — Unique identifier of the bulk sync
     
 </dd>
 </dl>
@@ -1116,7 +1117,7 @@ client.BulkSync.GetSource(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the connection.
+**id:** `string` — Unique identifier of the connection
     
 </dd>
 </dl>
@@ -1191,7 +1192,7 @@ client.BulkSync.GetDestination(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Connection ID
     
 </dd>
 </dl>
@@ -1304,7 +1305,7 @@ client.Connections.GetConnectionTypeSchema(
 <dl>
 <dd>
 
-**id:** `string` — Connection type identifier (e.g. postgresql, salesforce, hubspot).
+**id:** `string` — Connection type identifier (e.g. postgresql, salesforce, hubspot)
     
 </dd>
 </dl>
@@ -1373,7 +1374,7 @@ client.Connections.GetTypeParameterValues(
 <dl>
 <dd>
 
-**type_:** `string` 
+**type_:** `string` — Connection type ID
     
 </dd>
 </dl>
@@ -1405,7 +1406,7 @@ client.Connections.GetTypeParameterValues(
 <dl>
 <dd>
 
-**query:** `*string` 
+**query:** `*string` — Has no effect on the values returned.
     
 </dd>
 </dl>
@@ -1562,7 +1563,7 @@ client.Connections.Create(
 <dl>
 <dd>
 
-**healthcheckInterval:** `*string` — Override interval for connection health checking.
+**healthcheckInterval:** `*string` — Override interval for connection health checking
     
 </dd>
 </dl>
@@ -1578,7 +1579,7 @@ client.Connections.Create(
 <dl>
 <dd>
 
-**organizationID:** `*string` 
+**organizationID:** `*string` — Ignored for user and organization-scoped API keys, which always act in their own organization
     
 </dd>
 </dl>
@@ -1586,7 +1587,7 @@ client.Connections.Create(
 <dl>
 <dd>
 
-**policies:** `[]string` 
+**policies:** `[]string` — Permissions policy IDs applied to the connection
     
 </dd>
 </dl>
@@ -1594,7 +1595,7 @@ client.Connections.Create(
 <dl>
 <dd>
 
-**redirectURL:** `*string` — URL to redirect to after completing OAuth flow.
+**redirectURL:** `*string` — URL to redirect to after completing OAuth flow
     
 </dd>
 </dl>
@@ -1661,7 +1662,6 @@ See also:
 ```go
 request := &polytomic.ConnectCardRequest{
     Name: "Salesforce Connection",
-    RedirectURL: "redirect_url",
 }
 client.Connections.Connect(
     context.TODO(),
@@ -1681,7 +1681,7 @@ client.Connections.Connect(
 <dl>
 <dd>
 
-**connection:** `*string` — The id of an existing connection to update.
+**connection:** `*string` — The id of an existing connection to update
     
 </dd>
 </dl>
@@ -1689,7 +1689,7 @@ client.Connections.Connect(
 <dl>
 <dd>
 
-**dark:** `*bool` — Whether to use the dark theme for the Connect modal.
+**dark:** `*bool` — Whether to use the dark theme for the Connect modal
     
 </dd>
 </dl>
@@ -1705,7 +1705,7 @@ client.Connections.Connect(
 <dl>
 <dd>
 
-**organizationID:** `*string` 
+**organizationID:** `*string` — Ignored for user and organization-scoped API keys, which always act in their own organization
     
 </dd>
 </dl>
@@ -1713,7 +1713,7 @@ client.Connections.Connect(
 <dl>
 <dd>
 
-**redirectURL:** `string` — URL to redirect to after connection is created.
+**redirectURL:** `*string` — URL to redirect to after the hosted Connect flow finishes. Required for hosted Connect; omit it to mint a session for the embedded form (@polytomic/connect-react).
     
 </dd>
 </dl>
@@ -1729,7 +1729,7 @@ client.Connections.Connect(
 <dl>
 <dd>
 
-**type_:** `*string` — Connection type to create.
+**type_:** `*string` — Connection type to create
     
 </dd>
 </dl>
@@ -1868,7 +1868,7 @@ client.Connections.TestConnection(
 <dl>
 <dd>
 
-**configuration:** `map[string]any` — Connection configuration to test.
+**configuration:** `map[string]any` — Connection configuration to test
     
 </dd>
 </dl>
@@ -1884,7 +1884,7 @@ client.Connections.TestConnection(
 <dl>
 <dd>
 
-**type_:** `string` — The type of connection to test.
+**type_:** `string` — The type of connection to test
     
 </dd>
 </dl>
@@ -1967,7 +1967,7 @@ client.Connections.Get(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Connection ID
     
 </dd>
 </dl>
@@ -2052,7 +2052,7 @@ client.Connections.Update(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Connection ID
     
 </dd>
 </dl>
@@ -2068,7 +2068,7 @@ client.Connections.Update(
 <dl>
 <dd>
 
-**healthcheckInterval:** `*string` — Override interval for connection health checking.
+**healthcheckInterval:** `*string` — Override interval for connection health checking
     
 </dd>
 </dl>
@@ -2084,7 +2084,7 @@ client.Connections.Update(
 <dl>
 <dd>
 
-**organizationID:** `*string` 
+**organizationID:** `*string` — Ignored for user and organization-scoped API keys, which always act in their own organization
     
 </dd>
 </dl>
@@ -2092,7 +2092,7 @@ client.Connections.Update(
 <dl>
 <dd>
 
-**policies:** `[]string` 
+**policies:** `[]string` — Permissions policy IDs applied to the connection. A non-empty list replaces the connection's policies and an empty or omitted list leaves them unchanged.
     
 </dd>
 </dl>
@@ -2108,7 +2108,7 @@ client.Connections.Update(
 <dl>
 <dd>
 
-**type_:** `*string` 
+**type_:** `*string` — Ignored. A connection's type is fixed at creation.
     
 </dd>
 </dl>
@@ -2190,7 +2190,7 @@ client.Connections.Delete(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Connection ID
     
 </dd>
 </dl>
@@ -2198,7 +2198,7 @@ client.Connections.Delete(
 <dl>
 <dd>
 
-**force:** `*bool` 
+**force:** `*bool` — Delete the connection with the models and syncs that depend on it.
     
 </dd>
 </dl>
@@ -2264,7 +2264,7 @@ client.Connections.GetParameterValues(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Connection ID
     
 </dd>
 </dl>
@@ -2335,7 +2335,7 @@ client.Connections.GetUsage(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the connection whose API consumption should be returned.
+**id:** `string` — Unique identifier of the connection whose API consumption should be returned
     
 </dd>
 </dl>
@@ -2409,7 +2409,7 @@ client.QueryRunner.RunQuery(
 <dl>
 <dd>
 
-**connectionID:** `string` — Unique identifier of the connection to run the query against.
+**connectionID:** `string` — Unique identifier of the connection to run the query against
     
 </dd>
 </dl>
@@ -2417,7 +2417,7 @@ client.QueryRunner.RunQuery(
 <dl>
 <dd>
 
-**query:** `*string` — The query to execute against the connection.
+**query:** `*string` — The query to execute against the connection
     
 </dd>
 </dl>
@@ -2425,7 +2425,7 @@ client.QueryRunner.RunQuery(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -2433,7 +2433,7 @@ client.QueryRunner.RunQuery(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -2512,7 +2512,7 @@ client.QueryRunner.GetQuery(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the query task, as returned by POST /api/connections/{connection_id}/query.
+**id:** `string` — Unique identifier of the query task, as returned by POST /api/connections/{connection_id}/query
     
 </dd>
 </dl>
@@ -2520,7 +2520,7 @@ client.QueryRunner.GetQuery(
 <dl>
 <dd>
 
-**page:** `*string` — Opaque pagination token returned in the links.next or links.previous URL of the previous response.
+**page:** `*string` — Opaque pagination token returned in the links.next or links.previous URL of the previous response
     
 </dd>
 </dl>
@@ -2528,7 +2528,7 @@ client.QueryRunner.GetQuery(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -2536,7 +2536,7 @@ client.QueryRunner.GetQuery(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -2607,7 +2607,7 @@ client.Schemas.UpsertField(
 <dl>
 <dd>
 
-**connectionID:** `string` — Unique identifier of the connection.
+**connectionID:** `string` — Unique identifier of the connection
     
 </dd>
 </dl>
@@ -2615,7 +2615,7 @@ client.Schemas.UpsertField(
 <dl>
 <dd>
 
-**schemaID:** `string` — Identifier of the schema the fields belong to.
+**schemaID:** `string` — Identifier of the schema the fields belong to
     
 </dd>
 </dl>
@@ -2691,7 +2691,7 @@ client.Schemas.DeleteField(
 <dl>
 <dd>
 
-**connectionID:** `string` — Unique identifier of the connection.
+**connectionID:** `string` — Unique identifier of the connection
     
 </dd>
 </dl>
@@ -2699,7 +2699,7 @@ client.Schemas.DeleteField(
 <dl>
 <dd>
 
-**schemaID:** `string` — Identifier of the schema the field belongs to.
+**schemaID:** `string` — Identifier of the schema the field belongs to
     
 </dd>
 </dl>
@@ -2707,7 +2707,7 @@ client.Schemas.DeleteField(
 <dl>
 <dd>
 
-**fieldID:** `string` — Identifier of the user-defined field to delete.
+**fieldID:** `string` — Identifier of the user-defined field to delete
     
 </dd>
 </dl>
@@ -2768,7 +2768,7 @@ client.Schemas.PatchField(
 <dl>
 <dd>
 
-**connectionID:** `string` — Connection holding the schema.
+**connectionID:** `string` — Connection holding the schema
     
 </dd>
 </dl>
@@ -2776,7 +2776,7 @@ client.Schemas.PatchField(
 <dl>
 <dd>
 
-**schemaID:** `string` — Schema identifier.
+**schemaID:** `string` — Schema identifier
     
 </dd>
 </dl>
@@ -2784,7 +2784,7 @@ client.Schemas.PatchField(
 <dl>
 <dd>
 
-**fieldID:** `string` — Field identifier within the schema.
+**fieldID:** `string` — Field identifier within the schema
     
 </dd>
 </dl>
@@ -2792,7 +2792,7 @@ client.Schemas.PatchField(
 <dl>
 <dd>
 
-**definition:** `*polytomic.TypesDefinition` 
+**definition:** `*polytomic.TypesDefinition` — Detailed type of the field, such as "bigint" or ["decimal", {"precision": 10, "scale": 2}]; it must be consistent with the field's type.
     
 </dd>
 </dl>
@@ -2800,7 +2800,7 @@ client.Schemas.PatchField(
 <dl>
 <dd>
 
-**example:** `any` — Sample value surfaced in the UI.
+**example:** `any` — Sample value surfaced in the UI
     
 </dd>
 </dl>
@@ -2808,7 +2808,7 @@ client.Schemas.PatchField(
 <dl>
 <dd>
 
-**label:** `*string` — Human-readable label for the field.
+**label:** `*string` — Human-readable label for the field
     
 </dd>
 </dl>
@@ -2895,7 +2895,7 @@ client.Schemas.SetPrimaryKeys(
 <dl>
 <dd>
 
-**connectionID:** `string` — Unique identifier of the connection.
+**connectionID:** `string` — Unique identifier of the connection
     
 </dd>
 </dl>
@@ -2903,7 +2903,7 @@ client.Schemas.SetPrimaryKeys(
 <dl>
 <dd>
 
-**schemaID:** `string` — Identifier of the schema whose primary keys are being overridden.
+**schemaID:** `string` — Identifier of the schema whose primary keys are being overridden
     
 </dd>
 </dl>
@@ -2973,7 +2973,7 @@ client.Schemas.ResetPrimaryKeys(
 <dl>
 <dd>
 
-**connectionID:** `string` — Unique identifier of the connection.
+**connectionID:** `string` — Unique identifier of the connection
     
 </dd>
 </dl>
@@ -2981,7 +2981,7 @@ client.Schemas.ResetPrimaryKeys(
 <dl>
 <dd>
 
-**schemaID:** `string` — Identifier of the schema whose primary key override should be cleared.
+**schemaID:** `string` — Identifier of the schema whose primary key override should be cleared
     
 </dd>
 </dl>
@@ -3057,7 +3057,7 @@ client.Schemas.Refresh(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the connection whose schema cache should be refreshed.
+**id:** `string` — Unique identifier of the connection whose schema cache should be refreshed
     
 </dd>
 </dl>
@@ -3130,7 +3130,7 @@ client.Schemas.GetStatus(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the connection whose schema cache status should be returned.
+**id:** `string` — Unique identifier of the connection whose schema cache status should be returned
     
 </dd>
 </dl>
@@ -3196,7 +3196,7 @@ client.Schemas.Get(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the connection.
+**id:** `string` — Unique identifier of the connection
     
 </dd>
 </dl>
@@ -3273,7 +3273,7 @@ client.Schemas.GetRecords(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the connection.
+**id:** `string` — Unique identifier of the connection
     
 </dd>
 </dl>
@@ -3281,7 +3281,7 @@ client.Schemas.GetRecords(
 <dl>
 <dd>
 
-**schemaID:** `string` — Identifier of the schema within the connection.
+**schemaID:** `string` — Identifier of the schema within the connection
     
 </dd>
 </dl>
@@ -3353,7 +3353,7 @@ client.Models.GetEnrichmentSource(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the connection.
+**id:** `string` — Unique identifier of the connection
     
 </dd>
 </dl>
@@ -3426,7 +3426,7 @@ client.Models.Post(
 <dl>
 <dd>
 
-**connectionID:** `string` 
+**connectionID:** `string` — Enrichment connection ID
     
 </dd>
 </dl>
@@ -3434,7 +3434,7 @@ client.Models.Post(
 <dl>
 <dd>
 
-**configuration:** `*polytomic.EnricherConfiguration` 
+**configuration:** `*polytomic.EnricherConfiguration` — Enricher configuration to list valid input fields for
     
 </dd>
 </dl>
@@ -3458,12 +3458,15 @@ client.Models.Post(
 <dl>
 <dd>
 
-Submits a job that previews the fields a model would expose without persisting it.
+Previews the fields a model exposes without saving the model.
 
-The response contains a job ID that resolves to the list of fields the model
-would expose. Poll the job until it completes to retrieve the field list. The
-model is not persisted — this endpoint is useful for validating a query or
-configuration before calling [`POST /api/models`](../../api-reference/models/create) to save it.
+The response contains the previewed model, including the fields it exposes.
+With `async=true`, the response contains a job instead; poll the job until it
+completes to retrieve the field list.
+
+The model is not saved, and `policies` and `labels` are ignored. Use this
+endpoint to validate a query or configuration before calling
+[`POST /api/models`](../../api-reference/models/create) to save it.
 </dd>
 </dl>
 </dd>
@@ -3508,7 +3511,7 @@ client.Models.Preview(
 <dl>
 <dd>
 
-**async:** `*bool` 
+**async:** `*bool` — Run in the background and return a job instead of the result.
     
 </dd>
 </dl>
@@ -3643,7 +3646,7 @@ client.Models.Create(
 <dl>
 <dd>
 
-**async:** `*bool` 
+**async:** `*bool` — Run in the background and return a job instead of the result.
     
 </dd>
 </dl>
@@ -3718,7 +3721,7 @@ client.Models.Get(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Model ID
     
 </dd>
 </dl>
@@ -3726,7 +3729,7 @@ client.Models.Get(
 <dl>
 <dd>
 
-**async:** `*bool` 
+**async:** `*bool` — Deprecated; has no effect
     
 </dd>
 </dl>
@@ -3754,7 +3757,8 @@ Updates a model's configuration.
 
 Updating a model is a **full replacement** of its configuration. Every field in
 the request body is written to the model; any field you omit is cleared or reset
-to its default value.
+to its default value. An empty or omitted `policies` list leaves the model's
+current policies unchanged.
 
 To make a partial change, fetch the current model with
 [`GET /api/models/{id}`](../../../api-reference/models/get), modify the fields you want to change, and send
@@ -3805,7 +3809,7 @@ client.Models.Update(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Model ID
     
 </dd>
 </dl>
@@ -3813,7 +3817,7 @@ client.Models.Update(
 <dl>
 <dd>
 
-**async:** `*bool` 
+**async:** `*bool` — Run in the background and return a job instead of the result.
     
 </dd>
 </dl>
@@ -3821,7 +3825,7 @@ client.Models.Update(
 <dl>
 <dd>
 
-**additionalFields:** `[]*polytomic.ModelModelFieldRequest` 
+**additionalFields:** `[]*polytomic.ModelModelFieldRequest` — User-defined fields to add to the model alongside its source fields
     
 </dd>
 </dl>
@@ -3829,7 +3833,7 @@ client.Models.Update(
 <dl>
 <dd>
 
-**configuration:** `map[string]any` 
+**configuration:** `map[string]any` — Model configuration for the source connection type
     
 </dd>
 </dl>
@@ -3837,7 +3841,7 @@ client.Models.Update(
 <dl>
 <dd>
 
-**connectionID:** `string` 
+**connectionID:** `string` — Connection ID of the model's source, which cannot be changed after the model is created
     
 </dd>
 </dl>
@@ -3845,7 +3849,7 @@ client.Models.Update(
 <dl>
 <dd>
 
-**enricher:** `*polytomic.Enrichment` 
+**enricher:** `*polytomic.Enrichment` — Enrichment to apply to the model
     
 </dd>
 </dl>
@@ -3861,7 +3865,7 @@ client.Models.Update(
 <dl>
 <dd>
 
-**identifier:** `*string` 
+**identifier:** `*string` — Source field name of the model's unique identifier
     
 </dd>
 </dl>
@@ -3869,7 +3873,7 @@ client.Models.Update(
 <dl>
 <dd>
 
-**labels:** `[]string` 
+**labels:** `[]string` — Deprecated; ignored
     
 </dd>
 </dl>
@@ -3877,7 +3881,7 @@ client.Models.Update(
 <dl>
 <dd>
 
-**name:** `string` 
+**name:** `string` — Model name
     
 </dd>
 </dl>
@@ -3885,7 +3889,7 @@ client.Models.Update(
 <dl>
 <dd>
 
-**organizationID:** `*string` 
+**organizationID:** `*string` — Ignored for user and organization-scoped API keys, which always act in their own organization
     
 </dd>
 </dl>
@@ -3893,7 +3897,7 @@ client.Models.Update(
 <dl>
 <dd>
 
-**policies:** `[]string` 
+**policies:** `[]string` — Permissions policy IDs applied to the model. On update, a non-empty list replaces the model's policies and an empty or omitted list leaves them unchanged.
     
 </dd>
 </dl>
@@ -3901,7 +3905,7 @@ client.Models.Update(
 <dl>
 <dd>
 
-**refresh:** `*bool` 
+**refresh:** `*bool` — Whether to refresh the enricher's fields and example values
     
 </dd>
 </dl>
@@ -3909,7 +3913,7 @@ client.Models.Update(
 <dl>
 <dd>
 
-**relations:** `[]*polytomic.ModelRelation` 
+**relations:** `[]*polytomic.ModelRelation` — Joins from this model's fields to fields on other models
     
 </dd>
 </dl>
@@ -3917,7 +3921,7 @@ client.Models.Update(
 <dl>
 <dd>
 
-**trackingColumns:** `[]string` 
+**trackingColumns:** `[]string` — Source field names used to detect changed records
     
 </dd>
 </dl>
@@ -3983,7 +3987,7 @@ client.Models.Delete(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Model ID
     
 </dd>
 </dl>
@@ -3991,7 +3995,7 @@ client.Models.Delete(
 <dl>
 <dd>
 
-**async:** `*bool` 
+**async:** `*bool` — Deprecated; has no effect
     
 </dd>
 </dl>
@@ -4058,7 +4062,7 @@ client.Models.Sample(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Model ID
     
 </dd>
 </dl>
@@ -4066,7 +4070,7 @@ client.Models.Sample(
 <dl>
 <dd>
 
-**async:** `*bool` 
+**async:** `*bool` — Run in the background and return a job instead of the result.
     
 </dd>
 </dl>
@@ -4131,7 +4135,7 @@ client.ModelSync.GetSource(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the connection.
+**id:** `string` — Unique identifier of the connection
     
 </dd>
 </dl>
@@ -4233,7 +4237,7 @@ client.ModelSync.GetSourceFields(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the connection.
+**id:** `string` — Unique identifier of the connection
     
 </dd>
 </dl>
@@ -4241,7 +4245,7 @@ client.ModelSync.GetSourceFields(
 <dl>
 <dd>
 
-**params:** `map[string]*string` — Source configuration, matching the params used with GET /api/connections/{id}/modelsync/source, that selects the specific source to return fields for.
+**params:** `map[string]*string` — Source configuration, matching the params used with GET /api/connections/{id}/modelsync/source, that selects the specific source to return fields for
     
 </dd>
 </dl>
@@ -4485,7 +4489,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**active:** `*bool` — Whether the sync is enabled and scheduled.
+**active:** `*bool` — Whether the sync is enabled and scheduled
     
 </dd>
 </dl>
@@ -4493,7 +4497,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**encryptionPassphrase:** `*string` — Passphrase for encrypting the sync data.
+**encryptionPassphrase:** `*string` — Passphrase for encrypting the sync data
     
 </dd>
 </dl>
@@ -4501,7 +4505,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**fields:** `[]*polytomic.SyncField` — Fields to sync from source to destination.
+**fields:** `[]*polytomic.SyncField` — Fields to sync from source to destination
     
 </dd>
 </dl>
@@ -4541,7 +4545,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**mode:** `*polytomic.ModelsyncSyncTargetMode` 
+**mode:** `*polytomic.ModelsyncSyncTargetMode` — How source records are written to the target
     
 </dd>
 </dl>
@@ -4549,7 +4553,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**modelFilters:** `*polytomic.ModelFilters` 
+**modelFilters:** `*polytomic.ModelFilters` — Filters narrowing the records read from the source. When either filter object is present it governs both kinds, and an absent object means that kind has no filters.
     
 </dd>
 </dl>
@@ -4557,7 +4561,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**name:** `string` 
+**name:** `string` — Name of the model sync
     
 </dd>
 </dl>
@@ -4573,7 +4577,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**organizationID:** `*string` — Organization ID for the sync; read-only with a partner key.
+**organizationID:** `*string` — Ignored for user and organization-scoped API keys, which always act in their own organization
     
 </dd>
 </dl>
@@ -4581,7 +4585,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**overrideFields:** `[]*polytomic.OverrideFieldInput` — Target fields which are set to a fixed value for every record, rather than mapped from a model field.
+**overrideFields:** `[]*polytomic.OverrideFieldInput` — Target fields which are set to a fixed value for every record, rather than mapped from a model field
     
 </dd>
 </dl>
@@ -4589,7 +4593,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**overrides:** `[]*polytomic.Override` — Conditional value replacement for fields.
+**overrides:** `[]*polytomic.Override` — Conditional value replacement for fields
     
 </dd>
 </dl>
@@ -4597,7 +4601,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**policies:** `[]string` 
+**policies:** `[]string` — Permissions policy IDs applied to the sync. On update, a non-empty list replaces the sync's policies and an empty or omitted list leaves them unchanged.
     
 </dd>
 </dl>
@@ -4605,7 +4609,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**schedule:** `*polytomic.Schedule` 
+**schedule:** `*polytomic.Schedule` — Sync schedule. Schedule times are interpreted in UTC.
     
 </dd>
 </dl>
@@ -4621,7 +4625,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**syncAllRecords:** `*bool` — Whether to sync all records from the source, regardless of whether they've changed since the previous execution.
+**syncAllRecords:** `*bool` — Whether to sync all records from the source, regardless of whether they've changed since the previous execution
     
 </dd>
 </dl>
@@ -4629,7 +4633,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**target:** `*polytomic.ModelSyncV5Target` 
+**target:** `*polytomic.ModelSyncV5Target` — Sync destination configuration
     
 </dd>
 </dl>
@@ -4637,7 +4641,7 @@ client.ModelSync.Create(
 <dl>
 <dd>
 
-**targetFilters:** `*polytomic.TargetFilters` 
+**targetFilters:** `*polytomic.TargetFilters` — Filters narrowing the records written to the destination. When either filter object is present it governs both kinds, and an absent object means that kind has no filters.
     
 </dd>
 </dl>
@@ -4743,7 +4747,7 @@ client.ModelSync.Get(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Model sync ID
     
 </dd>
 </dl>
@@ -4771,7 +4775,8 @@ Updates a model sync's configuration.
 
 Updating a model sync is a **full replacement** of the sync's configuration.
 Every field in the request body is written to the sync; any field you omit is
-cleared or reset to its default value.
+cleared or reset to its default value. An empty or omitted `policies` list
+leaves the sync's current policies unchanged.
 
 To make a partial change — for example, toggling `active` or adjusting a
 single field mapping — fetch the current sync with
@@ -4828,7 +4833,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Model sync ID
     
 </dd>
 </dl>
@@ -4836,7 +4841,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**active:** `*bool` — Whether the sync is enabled and scheduled.
+**active:** `*bool` — Whether the sync is enabled and scheduled
     
 </dd>
 </dl>
@@ -4844,7 +4849,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**encryptionPassphrase:** `*string` — Passphrase for encrypting the sync data.
+**encryptionPassphrase:** `*string` — Passphrase for encrypting the sync data
     
 </dd>
 </dl>
@@ -4852,7 +4857,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**fields:** `[]*polytomic.SyncField` — Fields to sync from source to destination.
+**fields:** `[]*polytomic.SyncField` — Fields to sync from source to destination
     
 </dd>
 </dl>
@@ -4892,7 +4897,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**mode:** `*polytomic.ModelsyncSyncTargetMode` 
+**mode:** `*polytomic.ModelsyncSyncTargetMode` — How source records are written to the target
     
 </dd>
 </dl>
@@ -4900,7 +4905,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**modelFilters:** `*polytomic.ModelFilters` 
+**modelFilters:** `*polytomic.ModelFilters` — Filters narrowing the records read from the source. When either filter object is present it governs both kinds, and an absent object means that kind has no filters.
     
 </dd>
 </dl>
@@ -4908,7 +4913,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**name:** `string` 
+**name:** `string` — Name of the model sync
     
 </dd>
 </dl>
@@ -4924,7 +4929,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**organizationID:** `*string` — Organization ID for the sync; read-only with a partner key.
+**organizationID:** `*string` — Ignored for user and organization-scoped API keys, which always act in their own organization
     
 </dd>
 </dl>
@@ -4932,7 +4937,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**overrideFields:** `[]*polytomic.OverrideFieldInput` — Target fields which are set to a fixed value for every record, rather than mapped from a model field.
+**overrideFields:** `[]*polytomic.OverrideFieldInput` — Target fields which are set to a fixed value for every record, rather than mapped from a model field
     
 </dd>
 </dl>
@@ -4940,7 +4945,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**overrides:** `[]*polytomic.Override` — Conditional value replacement for fields.
+**overrides:** `[]*polytomic.Override` — Conditional value replacement for fields
     
 </dd>
 </dl>
@@ -4948,7 +4953,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**policies:** `[]string` 
+**policies:** `[]string` — Permissions policy IDs applied to the sync. On update, a non-empty list replaces the sync's policies and an empty or omitted list leaves them unchanged.
     
 </dd>
 </dl>
@@ -4956,7 +4961,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**schedule:** `*polytomic.Schedule` 
+**schedule:** `*polytomic.Schedule` — Sync schedule. Schedule times are interpreted in UTC.
     
 </dd>
 </dl>
@@ -4972,7 +4977,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**syncAllRecords:** `*bool` — Whether to sync all records from the source, regardless of whether they've changed since the previous execution.
+**syncAllRecords:** `*bool` — Whether to sync all records from the source, regardless of whether they've changed since the previous execution
     
 </dd>
 </dl>
@@ -4980,7 +4985,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**target:** `*polytomic.ModelSyncV5Target` 
+**target:** `*polytomic.ModelSyncV5Target` — Sync destination configuration
     
 </dd>
 </dl>
@@ -4988,7 +4993,7 @@ client.ModelSync.Update(
 <dl>
 <dd>
 
-**targetFilters:** `*polytomic.TargetFilters` 
+**targetFilters:** `*polytomic.TargetFilters` — Filters narrowing the records written to the destination. When either filter object is present it governs both kinds, and an absent object means that kind has no filters.
     
 </dd>
 </dl>
@@ -5049,7 +5054,7 @@ client.ModelSync.Delete(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Model sync ID
     
 </dd>
 </dl>
@@ -5117,7 +5122,7 @@ client.ModelSync.Activate(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Model sync ID
     
 </dd>
 </dl>
@@ -5125,7 +5130,7 @@ client.ModelSync.Activate(
 <dl>
 <dd>
 
-**request:** `*polytomic.ActivateSyncInput` 
+**active:** `bool` — Whether the model sync should be active
     
 </dd>
 </dl>
@@ -5251,7 +5256,7 @@ client.ModelSync.Start(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Model sync ID
     
 </dd>
 </dl>
@@ -5259,7 +5264,7 @@ client.ModelSync.Start(
 <dl>
 <dd>
 
-**identities:** `[]string` — Values of the sync's identity source field naming the records to sync. A sync with more than one identity mapping requires 'source_identities' instead.
+**identities:** `[]string` — Values of the sync's identity source field naming the records to sync. A sync with more than one identity mapping requires 'source_identities' instead. Cannot be combined with 'resync'.
     
 </dd>
 </dl>
@@ -5267,7 +5272,7 @@ client.ModelSync.Start(
 <dl>
 <dd>
 
-**resync:** `*bool` 
+**resync:** `*bool` — Whether the execution ignores change tracking and syncs every record; on a sync that skips the initial backfill, it instead restarts change tracking from the current position without syncing existing records
     
 </dd>
 </dl>
@@ -5275,7 +5280,7 @@ client.ModelSync.Start(
 <dl>
 <dd>
 
-**sourceIdentities:** `[][]*polytomic.ModelSyncSourceIdentity` — Records to sync, each identified by every source and value its entry lists. The sources of an entry are identity mapping sources of one model, and an entry for a sync whose identities strategy is 'and' lists all of them. Cannot be combined with 'identities'; at most 1000 entries.
+**sourceIdentities:** `[][]*polytomic.ModelSyncSourceIdentity` — Records to sync, each identified by every source and value its entry lists. The sources of an entry are identity mapping sources of one model, and an entry for a sync whose identities strategy is 'and' lists all of them. Cannot be combined with 'identities' or 'resync'; at most 1000 entries.
     
 </dd>
 </dl>
@@ -5283,7 +5288,7 @@ client.ModelSync.Start(
 <dl>
 <dd>
 
-**test:** `*bool` 
+**test:** `*bool` — Whether the execution is a test that syncs at most 5 records. Cannot be combined with 'resync'.
     
 </dd>
 </dl>
@@ -5344,7 +5349,7 @@ client.ModelSync.GetStatus(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Model sync ID
     
 </dd>
 </dl>
@@ -5456,7 +5461,7 @@ client.Entities.Search(
 <dl>
 <dd>
 
-**search:** `string` — Search term matched, by word prefix, against models, model fields, model syncs, bulk syncs, and connections in the caller's organization.
+**search:** `string` — Search term matched, by word prefix, against models, model fields, model syncs, bulk syncs, and connections in the caller's organization
     
 </dd>
 </dl>
@@ -5567,7 +5572,7 @@ client.Entities.Get(
 <dl>
 <dd>
 
-**id:** `string` — UUID of the entity to resolve.
+**id:** `string` — UUID of the entity to resolve
     
 </dd>
 </dl>
@@ -5667,7 +5672,7 @@ client.Entities.GetForPartner(
 <dl>
 <dd>
 
-**id:** `string` — UUID of the entity to resolve.
+**id:** `string` — UUID of the entity to resolve
     
 </dd>
 </dl>
@@ -5899,7 +5904,7 @@ client.Harbors.ListAuthorizedConnections(
 <dl>
 <dd>
 
-**limit:** `*int` 
+**limit:** `*int` — Maximum number of results to return
     
 </dd>
 </dl>
@@ -5907,7 +5912,7 @@ client.Harbors.ListAuthorizedConnections(
 <dl>
 <dd>
 
-**pageToken:** `*string` 
+**pageToken:** `*string` — Token from the previous page
     
 </dd>
 </dl>
@@ -5915,7 +5920,7 @@ client.Harbors.ListAuthorizedConnections(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -5923,7 +5928,7 @@ client.Harbors.ListAuthorizedConnections(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -5989,7 +5994,7 @@ client.Harbors.ListAuthorizedSchemas(
 <dl>
 <dd>
 
-**connectionID:** `string` 
+**connectionID:** `string` — Connection ID
     
 </dd>
 </dl>
@@ -5997,7 +6002,7 @@ client.Harbors.ListAuthorizedSchemas(
 <dl>
 <dd>
 
-**limit:** `*int` 
+**limit:** `*int` — Maximum number of results to return
     
 </dd>
 </dl>
@@ -6005,7 +6010,7 @@ client.Harbors.ListAuthorizedSchemas(
 <dl>
 <dd>
 
-**pageToken:** `*string` 
+**pageToken:** `*string` — Token from the previous page
     
 </dd>
 </dl>
@@ -6013,7 +6018,7 @@ client.Harbors.ListAuthorizedSchemas(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -6021,7 +6026,7 @@ client.Harbors.ListAuthorizedSchemas(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -6081,7 +6086,7 @@ client.Harbors.GetAuthorizedSchema(
 <dl>
 <dd>
 
-**connectionID:** `string` 
+**connectionID:** `string` — Connection ID
     
 </dd>
 </dl>
@@ -6089,7 +6094,7 @@ client.Harbors.GetAuthorizedSchema(
 <dl>
 <dd>
 
-**schemaID:** `string` 
+**schemaID:** `string` — Schema ID
     
 </dd>
 </dl>
@@ -6097,7 +6102,7 @@ client.Harbors.GetAuthorizedSchema(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -6105,7 +6110,7 @@ client.Harbors.GetAuthorizedSchema(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -6163,7 +6168,7 @@ client.Harbors.RegisterSession(
 <dl>
 <dd>
 
-**polytomicMcpKeyID:** `*string` 
+**polytomicMcpKeyID:** `*string` — ID of the key that signed the attestation
     
 </dd>
 </dl>
@@ -6171,7 +6176,7 @@ client.Harbors.RegisterSession(
 <dl>
 <dd>
 
-**polytomicMcpTimestamp:** `*int64` 
+**polytomicMcpTimestamp:** `*int64` — Unix time, in seconds, when the attestation was signed
     
 </dd>
 </dl>
@@ -6179,7 +6184,7 @@ client.Harbors.RegisterSession(
 <dl>
 <dd>
 
-**polytomicMcpNonce:** `*string` 
+**polytomicMcpNonce:** `*string` — Single-use value of at least 16 characters included in the signature
     
 </dd>
 </dl>
@@ -6187,7 +6192,7 @@ client.Harbors.RegisterSession(
 <dl>
 <dd>
 
-**polytomicMcpSignature:** `*string` 
+**polytomicMcpSignature:** `*string` — Attestation signature
     
 </dd>
 </dl>
@@ -6195,7 +6200,7 @@ client.Harbors.RegisterSession(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -6203,7 +6208,7 @@ client.Harbors.RegisterSession(
 <dl>
 <dd>
 
-**clientName:** `*string` — MCP-observed client name.
+**clientName:** `*string` — MCP-observed client name
     
 </dd>
 </dl>
@@ -6211,7 +6216,7 @@ client.Harbors.RegisterSession(
 <dl>
 <dd>
 
-**clientVersion:** `*string` — MCP-observed client version.
+**clientVersion:** `*string` — MCP-observed client version
     
 </dd>
 </dl>
@@ -6219,7 +6224,7 @@ client.Harbors.RegisterSession(
 <dl>
 <dd>
 
-**externalRunID:** `*string` — Optional client-supplied run correlation value.
+**externalRunID:** `*string` — Optional client-supplied run correlation value
     
 </dd>
 </dl>
@@ -6278,7 +6283,7 @@ client.Harbors.CloseSession(
 <dl>
 <dd>
 
-**sessionID:** `string` 
+**sessionID:** `string` — Harbor session ID
     
 </dd>
 </dl>
@@ -6286,7 +6291,7 @@ client.Harbors.CloseSession(
 <dl>
 <dd>
 
-**polytomicMcpKeyID:** `*string` 
+**polytomicMcpKeyID:** `*string` — ID of the key that signed the attestation
     
 </dd>
 </dl>
@@ -6294,7 +6299,7 @@ client.Harbors.CloseSession(
 <dl>
 <dd>
 
-**polytomicMcpTimestamp:** `*int64` 
+**polytomicMcpTimestamp:** `*int64` — Unix time, in seconds, when the attestation was signed
     
 </dd>
 </dl>
@@ -6302,7 +6307,7 @@ client.Harbors.CloseSession(
 <dl>
 <dd>
 
-**polytomicMcpNonce:** `*string` 
+**polytomicMcpNonce:** `*string` — Single-use value of at least 16 characters included in the signature
     
 </dd>
 </dl>
@@ -6310,7 +6315,7 @@ client.Harbors.CloseSession(
 <dl>
 <dd>
 
-**polytomicMcpSignature:** `*string` 
+**polytomicMcpSignature:** `*string` — Attestation signature
     
 </dd>
 </dl>
@@ -6318,7 +6323,7 @@ client.Harbors.CloseSession(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -6326,7 +6331,7 @@ client.Harbors.CloseSession(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Token issued when the session was registered
     
 </dd>
 </dl>
@@ -6401,7 +6406,7 @@ client.Harbors.List(
 <dl>
 <dd>
 
-**pageToken:** `*string` — Opaque pagination cursor returned by the previous request.
+**pageToken:** `*string` — Opaque pagination cursor returned by the previous request
     
 </dd>
 </dl>
@@ -6503,7 +6508,7 @@ client.Harbors.Create(
 <dl>
 <dd>
 
-**name:** `string` — Human-readable Harbor name.
+**name:** `string` — Human-readable Harbor name
     
 </dd>
 </dl>
@@ -6562,7 +6567,7 @@ client.Harbors.Get(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -6629,7 +6634,7 @@ client.Harbors.Update(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -6645,7 +6650,7 @@ client.Harbors.Update(
 <dl>
 <dd>
 
-**name:** `string` — Human-readable Harbor name.
+**name:** `string` — Human-readable Harbor name
     
 </dd>
 </dl>
@@ -6710,7 +6715,7 @@ client.Harbors.Delete(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -6779,7 +6784,7 @@ client.Harbors.GetActionConfiguration(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -6848,7 +6853,7 @@ client.Harbors.DisableActionConfiguration(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -6917,7 +6922,7 @@ client.Harbors.ListActionSourceConnections(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -6999,7 +7004,7 @@ client.Harbors.SetActionConfiguration(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -7007,7 +7012,7 @@ client.Harbors.SetActionConfiguration(
 <dl>
 <dd>
 
-**connectionID:** `string` — Source Connection whose action grants you want to manage.
+**connectionID:** `string` — Source Connection whose action grants you want to manage
     
 </dd>
 </dl>
@@ -7023,7 +7028,7 @@ client.Harbors.SetActionConfiguration(
 <dl>
 <dd>
 
-**grants:** `[]*polytomic.HarborActionGrantSchema` — Complete replacement of this Connection's action grants.
+**grants:** `[]*polytomic.HarborActionGrantSchema` — Complete replacement of this Connection's action grants
     
 </dd>
 </dl>
@@ -7096,7 +7101,7 @@ client.Harbors.RemoveActionConfiguration(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -7104,7 +7109,7 @@ client.Harbors.RemoveActionConfiguration(
 <dl>
 <dd>
 
-**connectionID:** `string` — Source Connection whose action grants you want to manage.
+**connectionID:** `string` — Source Connection whose action grants you want to manage
     
 </dd>
 </dl>
@@ -7112,7 +7117,7 @@ client.Harbors.RemoveActionConfiguration(
 <dl>
 <dd>
 
-**expectedRevision:** `string` — Current revision of the Connection's action grants.
+**expectedRevision:** `string` — Current revision of the Connection's action grants
     
 </dd>
 </dl>
@@ -7194,7 +7199,7 @@ client.Harbors.ListActionConfigurationSchemas(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -7202,7 +7207,7 @@ client.Harbors.ListActionConfigurationSchemas(
 <dl>
 <dd>
 
-**connectionID:** `string` — Source Connection whose action grants you want to manage.
+**connectionID:** `string` — Source Connection whose action grants you want to manage
     
 </dd>
 </dl>
@@ -7218,7 +7223,7 @@ client.Harbors.ListActionConfigurationSchemas(
 <dl>
 <dd>
 
-**limit:** `*int` — Maximum number of schemas to return.
+**limit:** `*int` — Maximum number of schemas to return
     
 </dd>
 </dl>
@@ -7226,7 +7231,7 @@ client.Harbors.ListActionConfigurationSchemas(
 <dl>
 <dd>
 
-**pageToken:** `*string` — Opaque cursor returned by the previous request.
+**pageToken:** `*string` — Opaque cursor returned by the previous request
     
 </dd>
 </dl>
@@ -7298,7 +7303,7 @@ client.Harbors.ListActionConfigurationOperations(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -7306,7 +7311,7 @@ client.Harbors.ListActionConfigurationOperations(
 <dl>
 <dd>
 
-**connectionID:** `string` — Source Connection whose action grants you want to manage.
+**connectionID:** `string` — Source Connection whose action grants you want to manage
     
 </dd>
 </dl>
@@ -7314,7 +7319,7 @@ client.Harbors.ListActionConfigurationOperations(
 <dl>
 <dd>
 
-**schemaID:** `string` — Exact action schema ID returned by schema discovery.
+**schemaID:** `string` — Exact action schema ID returned by schema discovery
     
 </dd>
 </dl>
@@ -7386,7 +7391,7 @@ client.Harbors.ListContexts(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -7402,7 +7407,7 @@ client.Harbors.ListContexts(
 <dl>
 <dd>
 
-**pageToken:** `*string` — Opaque pagination cursor returned by the previous request.
+**pageToken:** `*string` — Opaque pagination cursor returned by the previous request
     
 </dd>
 </dl>
@@ -7410,7 +7415,7 @@ client.Harbors.ListContexts(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -7418,7 +7423,7 @@ client.Harbors.ListContexts(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -7482,7 +7487,7 @@ client.Harbors.CreateContext(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -7580,7 +7585,7 @@ client.Harbors.ListContextDrafts(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -7596,7 +7601,7 @@ client.Harbors.ListContextDrafts(
 <dl>
 <dd>
 
-**pageToken:** `*string` — Opaque pagination cursor returned by the previous request.
+**pageToken:** `*string` — Opaque pagination cursor returned by the previous request
     
 </dd>
 </dl>
@@ -7667,7 +7672,7 @@ client.Harbors.CreateContextDraft(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -7675,7 +7680,7 @@ client.Harbors.CreateContextDraft(
 <dl>
 <dd>
 
-**changeNote:** `*string` — Optional note stored with the draft and copied to published version 1 on promotion.
+**changeNote:** `*string` — Optional note stored with the draft and copied to published version 1 on promotion
     
 </dd>
 </dl>
@@ -7765,7 +7770,7 @@ client.Harbors.GetContext(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -7773,7 +7778,7 @@ client.Harbors.GetContext(
 <dl>
 <dd>
 
-**contextID:** `string` — Unique identifier of the context document.
+**contextID:** `string` — Unique identifier of the context document
     
 </dd>
 </dl>
@@ -7781,7 +7786,7 @@ client.Harbors.GetContext(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -7789,7 +7794,7 @@ client.Harbors.GetContext(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -7857,7 +7862,7 @@ client.Harbors.UpdateContext(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -7865,7 +7870,7 @@ client.Harbors.UpdateContext(
 <dl>
 <dd>
 
-**contextID:** `string` — Unique identifier of the context document.
+**contextID:** `string` — Unique identifier of the context document
     
 </dd>
 </dl>
@@ -7873,7 +7878,7 @@ client.Harbors.UpdateContext(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -7881,7 +7886,7 @@ client.Harbors.UpdateContext(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -7889,7 +7894,7 @@ client.Harbors.UpdateContext(
 <dl>
 <dd>
 
-**changeNote:** `*string` — Optional note describing this published change.
+**changeNote:** `*string` — Optional note describing this published change
     
 </dd>
 </dl>
@@ -7975,7 +7980,7 @@ client.Harbors.DeleteContext(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -7983,7 +7988,7 @@ client.Harbors.DeleteContext(
 <dl>
 <dd>
 
-**contextID:** `string` — Unique identifier of the context document.
+**contextID:** `string` — Unique identifier of the context document
     
 </dd>
 </dl>
@@ -7991,7 +7996,7 @@ client.Harbors.DeleteContext(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -7999,7 +8004,7 @@ client.Harbors.DeleteContext(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -8064,7 +8069,7 @@ client.Harbors.GetContextDraft(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -8072,7 +8077,7 @@ client.Harbors.GetContextDraft(
 <dl>
 <dd>
 
-**contextID:** `string` — Unique identifier of the context document.
+**contextID:** `string` — Unique identifier of the context document
     
 </dd>
 </dl>
@@ -8080,7 +8085,7 @@ client.Harbors.GetContextDraft(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -8088,7 +8093,7 @@ client.Harbors.GetContextDraft(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -8161,7 +8166,7 @@ client.Harbors.SaveContextDraft(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -8169,7 +8174,7 @@ client.Harbors.SaveContextDraft(
 <dl>
 <dd>
 
-**contextID:** `string` — Unique identifier of the context document.
+**contextID:** `string` — Unique identifier of the context document
     
 </dd>
 </dl>
@@ -8177,7 +8182,7 @@ client.Harbors.SaveContextDraft(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -8185,7 +8190,7 @@ client.Harbors.SaveContextDraft(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -8193,7 +8198,7 @@ client.Harbors.SaveContextDraft(
 <dl>
 <dd>
 
-**changeNote:** `*string` — Optional note stored with the draft and copied to the published version on promotion.
+**changeNote:** `*string` — Optional note stored with the draft and copied to the published version on promotion
     
 </dd>
 </dl>
@@ -8281,7 +8286,7 @@ client.Harbors.DeleteContextDraft(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -8289,7 +8294,7 @@ client.Harbors.DeleteContextDraft(
 <dl>
 <dd>
 
-**contextID:** `string` — Unique identifier of the context document.
+**contextID:** `string` — Unique identifier of the context document
     
 </dd>
 </dl>
@@ -8297,7 +8302,7 @@ client.Harbors.DeleteContextDraft(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -8305,7 +8310,7 @@ client.Harbors.DeleteContextDraft(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -8373,7 +8378,7 @@ client.Harbors.PromoteContextDraft(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -8381,7 +8386,7 @@ client.Harbors.PromoteContextDraft(
 <dl>
 <dd>
 
-**contextID:** `string` — Unique identifier of the context document.
+**contextID:** `string` — Unique identifier of the context document
     
 </dd>
 </dl>
@@ -8389,7 +8394,7 @@ client.Harbors.PromoteContextDraft(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -8397,7 +8402,7 @@ client.Harbors.PromoteContextDraft(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -8477,7 +8482,7 @@ client.Harbors.ListContextVersions(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -8485,7 +8490,7 @@ client.Harbors.ListContextVersions(
 <dl>
 <dd>
 
-**contextID:** `string` — Unique identifier of the context document.
+**contextID:** `string` — Unique identifier of the context document
     
 </dd>
 </dl>
@@ -8501,7 +8506,7 @@ client.Harbors.ListContextVersions(
 <dl>
 <dd>
 
-**pageToken:** `*string` — Opaque pagination cursor returned by the previous request.
+**pageToken:** `*string` — Opaque pagination cursor returned by the previous request
     
 </dd>
 </dl>
@@ -8509,7 +8514,7 @@ client.Harbors.ListContextVersions(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -8517,7 +8522,7 @@ client.Harbors.ListContextVersions(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -8584,7 +8589,7 @@ client.Harbors.GetContextVersion(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -8592,7 +8597,7 @@ client.Harbors.GetContextVersion(
 <dl>
 <dd>
 
-**contextID:** `string` — Unique identifier of the context document.
+**contextID:** `string` — Unique identifier of the context document
     
 </dd>
 </dl>
@@ -8600,7 +8605,7 @@ client.Harbors.GetContextVersion(
 <dl>
 <dd>
 
-**versionID:** `string` — Unique identifier of the published context version.
+**versionID:** `string` — Unique identifier of the published context version
     
 </dd>
 </dl>
@@ -8608,7 +8613,7 @@ client.Harbors.GetContextVersion(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -8616,7 +8621,7 @@ client.Harbors.GetContextVersion(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -8684,7 +8689,7 @@ client.Harbors.ListKeys(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -8700,7 +8705,7 @@ client.Harbors.ListKeys(
 <dl>
 <dd>
 
-**pageToken:** `*string` — Opaque pagination cursor returned by the previous request.
+**pageToken:** `*string` — Opaque pagination cursor returned by the previous request
     
 </dd>
 </dl>
@@ -8759,7 +8764,7 @@ client.Harbors.CreateKey(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -8819,7 +8824,7 @@ client.Harbors.DeleteKey(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -8827,7 +8832,7 @@ client.Harbors.DeleteKey(
 <dl>
 <dd>
 
-**keyID:** `string` — Unique identifier of the Harbor credential.
+**keyID:** `string` — Unique identifier of the Harbor credential
     
 </dd>
 </dl>
@@ -8900,7 +8905,7 @@ client.Harbors.RunQuery(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor whose backing connection runs the query.
+**harborID:** `string` — Unique identifier of the Harbor whose backing connection runs the query
     
 </dd>
 </dl>
@@ -8908,7 +8913,7 @@ client.Harbors.RunQuery(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -8916,7 +8921,7 @@ client.Harbors.RunQuery(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -8924,7 +8929,7 @@ client.Harbors.RunQuery(
 <dl>
 <dd>
 
-**query:** `string` — SQL query to execute against the Harbor backing connection.
+**query:** `string` — SQL query to execute against the Harbor backing connection
     
 </dd>
 </dl>
@@ -9014,7 +9019,7 @@ client.Harbors.ListSavedQueries(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -9022,7 +9027,7 @@ client.Harbors.ListSavedQueries(
 <dl>
 <dd>
 
-**limit:** `*int` — Maximum number of saved queries to return.
+**limit:** `*int` — Maximum number of saved queries to return
     
 </dd>
 </dl>
@@ -9030,7 +9035,7 @@ client.Harbors.ListSavedQueries(
 <dl>
 <dd>
 
-**pageToken:** `*string` — Opaque pagination cursor returned by the previous request.
+**pageToken:** `*string` — Opaque pagination cursor returned by the previous request
     
 </dd>
 </dl>
@@ -9038,7 +9043,7 @@ client.Harbors.ListSavedQueries(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -9046,7 +9051,7 @@ client.Harbors.ListSavedQueries(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -9135,7 +9140,7 @@ client.Harbors.CreateSavedQueryDraft(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -9143,7 +9148,7 @@ client.Harbors.CreateSavedQueryDraft(
 <dl>
 <dd>
 
-**changeNote:** `*string` — Optional note copied to the immutable published version.
+**changeNote:** `*string` — Optional note copied to the immutable published version
     
 </dd>
 </dl>
@@ -9175,7 +9180,7 @@ client.Harbors.CreateSavedQueryDraft(
 <dl>
 <dd>
 
-**parameters:** `[]*polytomic.HarborSavedQueryParameter` — Typed scalar parameter declarations.
+**parameters:** `[]*polytomic.HarborSavedQueryParameter` — Typed scalar parameter declarations
     
 </dd>
 </dl>
@@ -9183,7 +9188,7 @@ client.Harbors.CreateSavedQueryDraft(
 <dl>
 <dd>
 
-**sqlTemplate:** `string` — DuckDB SQL template using {{name}} references for bound parameters.
+**sqlTemplate:** `string` — DuckDB SQL template using {{name}} references for bound parameters
     
 </dd>
 </dl>
@@ -9191,7 +9196,7 @@ client.Harbors.CreateSavedQueryDraft(
 <dl>
 <dd>
 
-**validationValues:** `map[string]any` — Author-supplied JSON scalar values used only to validate this draft.
+**validationValues:** `map[string]any` — Author-supplied JSON scalar values used only to validate this draft
     
 </dd>
 </dl>
@@ -9261,7 +9266,7 @@ client.Harbors.ListSavedQueryDrafts(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -9269,7 +9274,7 @@ client.Harbors.ListSavedQueryDrafts(
 <dl>
 <dd>
 
-**limit:** `*int` — Maximum number of saved-query drafts to return.
+**limit:** `*int` — Maximum number of saved-query drafts to return
     
 </dd>
 </dl>
@@ -9277,7 +9282,7 @@ client.Harbors.ListSavedQueryDrafts(
 <dl>
 <dd>
 
-**pageToken:** `*string` — Opaque pagination cursor returned by the previous request.
+**pageToken:** `*string` — Opaque pagination cursor returned by the previous request
     
 </dd>
 </dl>
@@ -9360,7 +9365,7 @@ client.Harbors.GetSavedQuery(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -9368,7 +9373,7 @@ client.Harbors.GetSavedQuery(
 <dl>
 <dd>
 
-**savedQueryID:** `string` — Unique stable identifier of the saved query.
+**savedQueryID:** `string` — Unique stable identifier of the saved query
     
 </dd>
 </dl>
@@ -9376,7 +9381,7 @@ client.Harbors.GetSavedQuery(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -9384,7 +9389,7 @@ client.Harbors.GetSavedQuery(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -9451,7 +9456,7 @@ client.Harbors.DeleteSavedQuery(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -9459,7 +9464,7 @@ client.Harbors.DeleteSavedQuery(
 <dl>
 <dd>
 
-**savedQueryID:** `string` — Unique stable identifier of the saved query.
+**savedQueryID:** `string` — Unique stable identifier of the saved query
     
 </dd>
 </dl>
@@ -9541,7 +9546,7 @@ client.Harbors.SaveSavedQueryDraft(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -9549,7 +9554,7 @@ client.Harbors.SaveSavedQueryDraft(
 <dl>
 <dd>
 
-**savedQueryID:** `string` — Unique stable identifier of the saved query.
+**savedQueryID:** `string` — Unique stable identifier of the saved query
     
 </dd>
 </dl>
@@ -9557,7 +9562,7 @@ client.Harbors.SaveSavedQueryDraft(
 <dl>
 <dd>
 
-**changeNote:** `*string` — Optional note copied to the immutable published version.
+**changeNote:** `*string` — Optional note copied to the immutable published version
     
 </dd>
 </dl>
@@ -9589,7 +9594,7 @@ client.Harbors.SaveSavedQueryDraft(
 <dl>
 <dd>
 
-**parameters:** `[]*polytomic.HarborSavedQueryParameter` — Typed scalar parameter declarations.
+**parameters:** `[]*polytomic.HarborSavedQueryParameter` — Typed scalar parameter declarations
     
 </dd>
 </dl>
@@ -9597,7 +9602,7 @@ client.Harbors.SaveSavedQueryDraft(
 <dl>
 <dd>
 
-**sqlTemplate:** `string` — DuckDB SQL template using {{name}} references for bound parameters.
+**sqlTemplate:** `string` — DuckDB SQL template using {{name}} references for bound parameters
     
 </dd>
 </dl>
@@ -9605,7 +9610,7 @@ client.Harbors.SaveSavedQueryDraft(
 <dl>
 <dd>
 
-**validationValues:** `map[string]any` — Author-supplied JSON scalar values used only to validate this draft.
+**validationValues:** `map[string]any` — Author-supplied JSON scalar values used only to validate this draft
     
 </dd>
 </dl>
@@ -9667,7 +9672,7 @@ client.Harbors.DeleteSavedQueryDraft(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -9675,7 +9680,7 @@ client.Harbors.DeleteSavedQueryDraft(
 <dl>
 <dd>
 
-**savedQueryID:** `string` — Unique stable identifier of the saved query.
+**savedQueryID:** `string` — Unique stable identifier of the saved query
     
 </dd>
 </dl>
@@ -9745,7 +9750,7 @@ client.Harbors.PublishSavedQueryDraft(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -9753,7 +9758,7 @@ client.Harbors.PublishSavedQueryDraft(
 <dl>
 <dd>
 
-**savedQueryID:** `string` — Unique stable identifier of the saved query.
+**savedQueryID:** `string` — Unique stable identifier of the saved query
     
 </dd>
 </dl>
@@ -9820,7 +9825,7 @@ client.Harbors.ValidateSavedQueryDraft(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -9828,7 +9833,7 @@ client.Harbors.ValidateSavedQueryDraft(
 <dl>
 <dd>
 
-**savedQueryID:** `string` — Unique stable identifier of the saved query.
+**savedQueryID:** `string` — Unique stable identifier of the saved query
     
 </dd>
 </dl>
@@ -9954,7 +9959,7 @@ client.Harbors.ExecuteSavedQuery(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -9962,7 +9967,7 @@ client.Harbors.ExecuteSavedQuery(
 <dl>
 <dd>
 
-**savedQueryID:** `string` — Unique stable identifier of the saved query.
+**savedQueryID:** `string` — Unique stable identifier of the saved query
     
 </dd>
 </dl>
@@ -9970,7 +9975,7 @@ client.Harbors.ExecuteSavedQuery(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -9978,7 +9983,7 @@ client.Harbors.ExecuteSavedQuery(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -10045,7 +10050,7 @@ client.Harbors.ResolveSourceMappings(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -10142,7 +10147,7 @@ client.Harbors.GetStatus(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -10210,7 +10215,7 @@ client.Harbors.ListUsers(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -10226,7 +10231,7 @@ client.Harbors.ListUsers(
 <dl>
 <dd>
 
-**pageToken:** `*string` — Opaque pagination cursor returned by the previous request.
+**pageToken:** `*string` — Opaque pagination cursor returned by the previous request
     
 </dd>
 </dl>
@@ -10289,7 +10294,7 @@ client.Harbors.InviteUser(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -10297,7 +10302,7 @@ client.Harbors.InviteUser(
 <dl>
 <dd>
 
-**email:** `string` — Email address used to invite the Harbor-only user.
+**email:** `string` — Email address used to invite the Harbor-only user
     
 </dd>
 </dl>
@@ -10357,7 +10362,7 @@ client.Harbors.AssignUser(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -10365,7 +10370,7 @@ client.Harbors.AssignUser(
 <dl>
 <dd>
 
-**userID:** `string` — Unique identifier of the Harbor-only user.
+**userID:** `string` — Unique identifier of the Harbor-only user
     
 </dd>
 </dl>
@@ -10425,7 +10430,7 @@ client.Harbors.UnassignUser(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -10433,7 +10438,7 @@ client.Harbors.UnassignUser(
 <dl>
 <dd>
 
-**userID:** `string` — Unique identifier of the Harbor-only user.
+**userID:** `string` — Unique identifier of the Harbor-only user
     
 </dd>
 </dl>
@@ -10510,7 +10515,7 @@ client.Jobs.Get(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the job (usually returned by whichever endpoint started the job).
+**id:** `string` — Unique identifier of the job (usually returned by whichever endpoint started the job)
     
 </dd>
 </dl>
@@ -10771,7 +10776,7 @@ client.Operations.Search(
 <dl>
 <dd>
 
-**limit:** `*int` — Maximum operations per task, from 1 to 10; defaults to 5.
+**limit:** `*int` — Maximum operations per task, from 1 to 10; defaults to 5
     
 </dd>
 </dl>
@@ -10779,7 +10784,7 @@ client.Operations.Search(
 <dl>
 <dd>
 
-**operationIDs:** `[]string` — Optional nonempty list of unique stable operation IDs to rank; omitted to rank the full catalog.
+**operationIDs:** `[]string` — Optional nonempty list of unique stable operation IDs to rank; omitted to rank the full catalog
     
 </dd>
 </dl>
@@ -10787,7 +10792,7 @@ client.Operations.Search(
 <dl>
 <dd>
 
-**queries:** `[]string` — One to three plain-language tasks to find API operations for.
+**queries:** `[]string` — One to three plain-language tasks to find API operations for
     
 </dd>
 </dl>
@@ -11012,7 +11017,7 @@ client.Organization.UpdateRecordLogging(
 <dl>
 <dd>
 
-**enabled:** `bool` — Whether record logging is enabled for the organization.
+**enabled:** `bool` — Whether record logging is enabled for the organization
     
 </dd>
 </dl>
@@ -11130,7 +11135,7 @@ client.Organization.Create(
 <dl>
 <dd>
 
-**clientID:** `*string` — OIDC client ID issued by the identity provider.
+**clientID:** `*string` — OIDC client ID issued by the identity provider
     
 </dd>
 </dl>
@@ -11146,7 +11151,7 @@ client.Organization.Create(
 <dl>
 <dd>
 
-**issuer:** `*string` — OIDC issuer URL for organizations using OpenID Connect single sign-on.
+**issuer:** `*string` — OIDC issuer URL for organizations using OpenID Connect single sign-on
     
 </dd>
 </dl>
@@ -11162,7 +11167,7 @@ client.Organization.Create(
 <dl>
 <dd>
 
-**ssoDomain:** `*string` — Email domain used to match users to this organization during SSO sign-in.
+**ssoDomain:** `*string` — Email domain used to match users to this organization during SSO sign-in
     
 </dd>
 </dl>
@@ -11170,7 +11175,7 @@ client.Organization.Create(
 <dl>
 <dd>
 
-**ssoOrgID:** `*string` — WorkOS organization identifier linking this organization to its SAML/SSO configuration.
+**ssoOrgID:** `*string` — WorkOS organization identifier linking this organization to its SAML/SSO configuration
     
 </dd>
 </dl>
@@ -11233,7 +11238,7 @@ client.Organization.Get(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the organization.
+**id:** `string` — Unique identifier of the organization
     
 </dd>
 </dl>
@@ -11301,7 +11306,7 @@ client.Organization.Update(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the organization to update.
+**id:** `string` — Unique identifier of the organization to update
     
 </dd>
 </dl>
@@ -11309,7 +11314,7 @@ client.Organization.Update(
 <dl>
 <dd>
 
-**clientID:** `*string` — OIDC client ID issued by the identity provider.
+**clientID:** `*string` — OIDC client ID issued by the identity provider
     
 </dd>
 </dl>
@@ -11325,7 +11330,7 @@ client.Organization.Update(
 <dl>
 <dd>
 
-**issuer:** `*string` — OIDC issuer URL for organizations using OpenID Connect single sign-on.
+**issuer:** `*string` — OIDC issuer URL for organizations using OpenID Connect single sign-on
     
 </dd>
 </dl>
@@ -11341,7 +11346,7 @@ client.Organization.Update(
 <dl>
 <dd>
 
-**ssoDomain:** `*string` — Email domain used to match users to this organization during SSO sign-in.
+**ssoDomain:** `*string` — Email domain used to match users to this organization during SSO sign-in
     
 </dd>
 </dl>
@@ -11349,7 +11354,7 @@ client.Organization.Update(
 <dl>
 <dd>
 
-**ssoOrgID:** `*string` — WorkOS organization identifier linking this organization to its SAML/SSO configuration.
+**ssoOrgID:** `*string` — WorkOS organization identifier linking this organization to its SAML/SSO configuration
     
 </dd>
 </dl>
@@ -11408,7 +11413,7 @@ client.Organization.Delete(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the organization.
+**id:** `string` — Unique identifier of the organization
     
 </dd>
 </dl>
@@ -11490,15 +11495,11 @@ request := &polytomic.ActivityListRequest{
             "248df4b7-aa70-47b8-a036-33ac447e668d",
         ),
     },
-    EventType: []*string{
-        polytomic.String(
-            "event_type",
-        ),
+    EventType: []*polytomic.HarboractivityEventType{
+        polytomic.HarboractivityEventTypeActionLookedUp.Ptr(),
     },
-    Outcome: []*string{
-        polytomic.String(
-            "outcome",
-        ),
+    Outcome: []*polytomic.HarboractivityOutcome{
+        polytomic.HarboractivityOutcomeSucceeded.Ptr(),
     },
     OperationID: []*string{
         polytomic.String(
@@ -11544,7 +11545,7 @@ client.Activity.List(
 <dl>
 <dd>
 
-**startTime:** `time.Time` — Inclusive start of the event recorded-time range.
+**startTime:** `time.Time` — Inclusive start of the event recorded-time range
     
 </dd>
 </dl>
@@ -11592,7 +11593,7 @@ client.Activity.List(
 <dl>
 <dd>
 
-**eventType:** `*string` — Return events with these event types. Repeat the parameter to filter by multiple types.
+**eventType:** `*polytomic.HarboractivityEventType` — Return events with these event types. Repeat the parameter to filter by multiple types.
     
 </dd>
 </dl>
@@ -11600,7 +11601,7 @@ client.Activity.List(
 <dl>
 <dd>
 
-**outcome:** `*string` — Return events with these outcomes. Repeat the parameter to filter by multiple outcomes.
+**outcome:** `*polytomic.HarboractivityOutcome` — Return events with these outcomes. Repeat the parameter to filter by multiple outcomes.
     
 </dd>
 </dl>
@@ -11728,7 +11729,7 @@ client.Activity.GetSession(
 <dl>
 <dd>
 
-**sessionID:** `string` — Harbor Activity session ID.
+**sessionID:** `string` — Harbor Activity session ID
     
 </dd>
 </dl>
@@ -11821,7 +11822,7 @@ client.Activity.Get(
 <dl>
 <dd>
 
-**eventID:** `string` — Activity event ID.
+**eventID:** `string` — Activity event ID
     
 </dd>
 </dl>
@@ -11928,7 +11929,7 @@ client.Users.CreateCurrentOrgUser(
 <dl>
 <dd>
 
-**email:** `string` — Email address used to sign the user in and receive notifications.
+**email:** `string` — Email address used to sign the user in and receive notifications
     
 </dd>
 </dl>
@@ -12001,7 +12002,7 @@ client.Users.GetCurrentOrgUser(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the user.
+**id:** `string` — Unique identifier of the user
     
 </dd>
 </dl>
@@ -12063,7 +12064,7 @@ client.Users.UpdateCurrentOrgUser(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the user to update.
+**id:** `string` — Unique identifier of the user to update
     
 </dd>
 </dl>
@@ -12140,7 +12141,7 @@ client.Users.DeleteCurrentOrgUser(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the user.
+**id:** `string` — Unique identifier of the user
     
 </dd>
 </dl>
@@ -12203,7 +12204,7 @@ client.Users.List(
 <dl>
 <dd>
 
-**orgID:** `string` — Unique identifier of the organization whose users should be listed.
+**orgID:** `string` — Unique identifier of the organization whose users should be listed
     
 </dd>
 </dl>
@@ -12271,7 +12272,7 @@ client.Users.Create(
 <dl>
 <dd>
 
-**orgID:** `string` — Unique identifier of the organization the user belongs to.
+**orgID:** `string` — Unique identifier of the organization the user belongs to
     
 </dd>
 </dl>
@@ -12279,7 +12280,7 @@ client.Users.Create(
 <dl>
 <dd>
 
-**email:** `string` — Email address used to sign the user in and receive notifications.
+**email:** `string` — Email address used to sign the user in and receive notifications
     
 </dd>
 </dl>
@@ -12357,7 +12358,7 @@ client.Users.Get(
 <dl>
 <dd>
 
-**orgID:** `string` — Unique identifier of the organization the user belongs to.
+**orgID:** `string` — Unique identifier of the organization the user belongs to
     
 </dd>
 </dl>
@@ -12365,7 +12366,7 @@ client.Users.Get(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the user.
+**id:** `string` — Unique identifier of the user
     
 </dd>
 </dl>
@@ -12434,7 +12435,7 @@ client.Users.Update(
 <dl>
 <dd>
 
-**orgID:** `string` — Unique identifier of the organization the user belongs to.
+**orgID:** `string` — Unique identifier of the organization the user belongs to
     
 </dd>
 </dl>
@@ -12442,7 +12443,7 @@ client.Users.Update(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the user to update.
+**id:** `string` — Unique identifier of the user to update
     
 </dd>
 </dl>
@@ -12450,7 +12451,7 @@ client.Users.Update(
 <dl>
 <dd>
 
-**email:** `string` — Email address used to sign the user in and receive notifications.
+**email:** `string` — Email address used to sign the user in and receive notifications
     
 </dd>
 </dl>
@@ -12532,7 +12533,7 @@ client.Users.Delete(
 <dl>
 <dd>
 
-**orgID:** `string` — Unique identifier of the organization the user belongs to.
+**orgID:** `string` — Unique identifier of the organization the user belongs to
     
 </dd>
 </dl>
@@ -12540,7 +12541,7 @@ client.Users.Delete(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the user.
+**id:** `string` — Unique identifier of the user
     
 </dd>
 </dl>
@@ -12607,7 +12608,7 @@ client.Users.CreateAPIKey(
 <dl>
 <dd>
 
-**orgID:** `string` — Unique identifier of the organization the user belongs to.
+**orgID:** `string` — Unique identifier of the organization the user belongs to
     
 </dd>
 </dl>
@@ -12615,7 +12616,7 @@ client.Users.CreateAPIKey(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the user the key will be issued for.
+**id:** `string` — Unique identifier of the user the key will be issued for
     
 </dd>
 </dl>
@@ -12687,7 +12688,7 @@ client.RecordViewLinks.Create(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -12695,7 +12696,7 @@ client.RecordViewLinks.Create(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -12703,7 +12704,7 @@ client.RecordViewLinks.Create(
 <dl>
 <dd>
 
-**connectionID:** `string` — Connection containing the record.
+**connectionID:** `string` — Connection containing the record
     
 </dd>
 </dl>
@@ -12735,7 +12736,7 @@ client.RecordViewLinks.Create(
 <dl>
 <dd>
 
-**lookupKeyValue:** `string` — The lookup-key value for the record.
+**lookupKeyValue:** `string` — The lookup-key value for the record
     
 </dd>
 </dl>
@@ -12743,7 +12744,7 @@ client.RecordViewLinks.Create(
 <dl>
 <dd>
 
-**schemaID:** `string` — Schema containing the record.
+**schemaID:** `string` — Schema containing the record
     
 </dd>
 </dl>
@@ -12751,7 +12752,7 @@ client.RecordViewLinks.Create(
 <dl>
 <dd>
 
-**source:** `*string` — Optional creator/source label.
+**source:** `*string` — Optional creator/source label
     
 </dd>
 </dl>
@@ -12812,7 +12813,7 @@ client.RecordViewLinks.GetCapabilities(
 <dl>
 <dd>
 
-**connectionID:** `string` — Connection to check for record-view link support.
+**connectionID:** `string` — Connection to check for record-view link support
     
 </dd>
 </dl>
@@ -12820,7 +12821,7 @@ client.RecordViewLinks.GetCapabilities(
 <dl>
 <dd>
 
-**schemaID:** `string` — Schema to check for record-view link support.
+**schemaID:** `string` — Schema to check for record-view link support
     
 </dd>
 </dl>
@@ -12828,7 +12829,7 @@ client.RecordViewLinks.GetCapabilities(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -12836,7 +12837,7 @@ client.RecordViewLinks.GetCapabilities(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -12955,7 +12956,7 @@ client.TemporaryCredentials.Create(
 <dl>
 <dd>
 
-**subject:** `*polytomic.TemporaryCredentialSubject` 
+**subject:** `*polytomic.TemporaryCredentialSubject` — User or Harbor authority the temporary credential will assume
     
 </dd>
 </dl>
@@ -13080,7 +13081,7 @@ client.Webhooks.Create(
 <dl>
 <dd>
 
-**organizationID:** `*string` 
+**organizationID:** `*string` — Ignored for user and organization-scoped API keys, which always act in their own organization
     
 </dd>
 </dl>
@@ -13152,7 +13153,7 @@ client.Webhooks.Get(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Webhook ID
     
 </dd>
 </dl>
@@ -13221,7 +13222,7 @@ client.Webhooks.Update(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Webhook ID
     
 </dd>
 </dl>
@@ -13237,7 +13238,7 @@ client.Webhooks.Update(
 <dl>
 <dd>
 
-**organizationID:** `*string` 
+**organizationID:** `*string` — Ignored for user and organization-scoped API keys, which always act in their own organization
     
 </dd>
 </dl>
@@ -13313,7 +13314,7 @@ client.Webhooks.Delete(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Webhook ID
     
 </dd>
 </dl>
@@ -13398,7 +13399,7 @@ client.Webhooks.ListDeliveries(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Webhook ID
     
 </dd>
 </dl>
@@ -13414,7 +13415,7 @@ client.Webhooks.ListDeliveries(
 <dl>
 <dd>
 
-**eventID:** `*string` 
+**eventID:** `*string` — Return only attempts to deliver this event.
     
 </dd>
 </dl>
@@ -13438,7 +13439,7 @@ client.Webhooks.ListDeliveries(
 <dl>
 <dd>
 
-**pageToken:** `*string` — Token from the previous page.
+**pageToken:** `*string` — Token from the previous page
     
 </dd>
 </dl>
@@ -13507,7 +13508,7 @@ client.Webhooks.Disable(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Webhook ID
     
 </dd>
 </dl>
@@ -13574,7 +13575,7 @@ client.Webhooks.Enable(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Webhook ID
     
 </dd>
 </dl>
@@ -13759,7 +13760,7 @@ client.BulkSync.Executions.List(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the bulk sync.
+**id:** `string` — Unique identifier of the bulk sync
     
 </dd>
 </dl>
@@ -13854,7 +13855,7 @@ client.BulkSync.Executions.Get(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the bulk sync.
+**id:** `string` — Unique identifier of the bulk sync
     
 </dd>
 </dl>
@@ -13862,7 +13863,7 @@ client.BulkSync.Executions.Get(
 <dl>
 <dd>
 
-**execID:** `string` — Unique identifier of the execution.
+**execID:** `string` — Unique identifier of the execution
     
 </dd>
 </dl>
@@ -13926,7 +13927,7 @@ client.BulkSync.Executions.Cancel(
 <dl>
 <dd>
 
-**id:** `string` — The bulk sync ID.
+**id:** `string` — The bulk sync ID
     
 </dd>
 </dl>
@@ -13934,7 +13935,7 @@ client.BulkSync.Executions.Cancel(
 <dl>
 <dd>
 
-**execID:** `string` — The execution ID to cancel.
+**execID:** `string` — The execution ID to cancel
     
 </dd>
 </dl>
@@ -14001,7 +14002,7 @@ client.BulkSync.Executions.GetConsoleLogs(
 <dl>
 <dd>
 
-**syncID:** `string` 
+**syncID:** `string` — Bulk sync ID
     
 </dd>
 </dl>
@@ -14009,7 +14010,7 @@ client.BulkSync.Executions.GetConsoleLogs(
 <dl>
 <dd>
 
-**executionID:** `string` 
+**executionID:** `string` — Bulk sync execution ID
     
 </dd>
 </dl>
@@ -14092,7 +14093,7 @@ client.BulkSync.Executions.GetLogs(
 <dl>
 <dd>
 
-**syncID:** `string` — Unique identifier of the bulk sync.
+**syncID:** `string` — Unique identifier of the bulk sync
     
 </dd>
 </dl>
@@ -14100,7 +14101,7 @@ client.BulkSync.Executions.GetLogs(
 <dl>
 <dd>
 
-**executionID:** `string` — Unique identifier of the execution whose log files should be listed.
+**executionID:** `string` — Unique identifier of the execution whose log files should be listed
     
 </dd>
 </dl>
@@ -14176,7 +14177,7 @@ client.BulkSync.Executions.ExportLogs(
 <dl>
 <dd>
 
-**syncID:** `string` — Unique identifier of the bulk sync.
+**syncID:** `string` — Unique identifier of the bulk sync
     
 </dd>
 </dl>
@@ -14184,7 +14185,7 @@ client.BulkSync.Executions.ExportLogs(
 <dl>
 <dd>
 
-**executionID:** `string` — Unique identifier of the execution whose logs should be exported.
+**executionID:** `string` — Unique identifier of the execution whose logs should be exported
     
 </dd>
 </dl>
@@ -14260,7 +14261,7 @@ client.BulkSync.Executions.GetSchemaConsoleLogs(
 <dl>
 <dd>
 
-**syncID:** `string` 
+**syncID:** `string` — Bulk sync ID
     
 </dd>
 </dl>
@@ -14268,7 +14269,7 @@ client.BulkSync.Executions.GetSchemaConsoleLogs(
 <dl>
 <dd>
 
-**executionID:** `string` 
+**executionID:** `string` — Bulk sync execution ID
     
 </dd>
 </dl>
@@ -14276,7 +14277,7 @@ client.BulkSync.Executions.GetSchemaConsoleLogs(
 <dl>
 <dd>
 
-**schemaID:** `string` — Schema identifier for schema-scoped console logs.
+**schemaID:** `string` — Schema identifier for schema-scoped console logs
     
 </dd>
 </dl>
@@ -14361,7 +14362,7 @@ client.BulkSync.Executions.GetIngestConsoleLogs(
 <dl>
 <dd>
 
-**connectionID:** `string` 
+**connectionID:** `string` — Connection ID
     
 </dd>
 </dl>
@@ -14369,7 +14370,7 @@ client.BulkSync.Executions.GetIngestConsoleLogs(
 <dl>
 <dd>
 
-**syncID:** `*string` — Optional bulk sync ID for sync-scoped ingestion logs.
+**syncID:** `*string` — Optional bulk sync ID for sync-scoped ingestion logs
     
 </dd>
 </dl>
@@ -14443,7 +14444,7 @@ client.BulkSync.ErrorHandling.Get(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the bulk sync.
+**id:** `string` — Unique identifier of the bulk sync
     
 </dd>
 </dl>
@@ -14502,7 +14503,7 @@ client.BulkSync.ErrorHandling.Update(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the bulk sync.
+**id:** `string` — Unique identifier of the bulk sync
     
 </dd>
 </dl>
@@ -14589,7 +14590,7 @@ client.BulkSync.Schemas.List(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the bulk sync.
+**id:** `string` — Unique identifier of the bulk sync
     
 </dd>
 </dl>
@@ -14630,7 +14631,16 @@ sync's schema configuration.
 
 Within each provided schema, omitting `fields` enables all available fields on
 that schema. To control which fields are enabled, include the `fields` array
-with explicit `enabled` values for each field.
+with explicit `enabled` values for each field. Primary-key fields stay enabled
+while their schema is enabled, even when the request sets `enabled: false` for
+them.
+
+`output_name` and `destination_history_output_name` on a schema, and
+`output_name` on a field, are computed by Polytomic and ignored on input. Set
+`user_output_name` to rename a destination object or field.
+
+The response contains every schema on the bulk sync after the update, not only
+the schemas included in the request.
 
 > 📘 To replace a single schema's configuration in full (clearing any fields you
 > omit), use
@@ -14670,7 +14680,7 @@ client.BulkSync.Schemas.Patch(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the bulk sync.
+**id:** `string` — Unique identifier of the bulk sync
     
 </dd>
 </dl>
@@ -14745,7 +14755,7 @@ client.BulkSync.Schemas.Get(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the bulk sync.
+**id:** `string` — Unique identifier of the bulk sync
     
 </dd>
 </dl>
@@ -14753,7 +14763,7 @@ client.BulkSync.Schemas.Get(
 <dl>
 <dd>
 
-**schemaID:** `string` — Source-side schema identifier.
+**schemaID:** `string` — Source-side schema identifier
     
 </dd>
 </dl>
@@ -14787,6 +14797,8 @@ first if you want to preserve existing settings while changing only a subset.
 
 Omitting `fields` enables all available fields on the schema. To control which
 fields are enabled, include the `fields` array with explicit `enabled` values.
+Primary-key fields stay enabled while the schema is enabled, even when the
+request sets `enabled: false` for them.
 
 > 📘 To update multiple schemas in a single request without affecting others,
 > use the partial-update endpoint
@@ -14827,7 +14839,7 @@ client.BulkSync.Schemas.Update(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the bulk sync.
+**id:** `string` — Unique identifier of the bulk sync
     
 </dd>
 </dl>
@@ -14835,7 +14847,7 @@ client.BulkSync.Schemas.Update(
 <dl>
 <dd>
 
-**schemaID:** `string` — Source-side schema identifier.
+**schemaID:** `string` — Source-side schema identifier
     
 </dd>
 </dl>
@@ -14859,7 +14871,7 @@ client.BulkSync.Schemas.Update(
 <dl>
 <dd>
 
-**enabled:** `*bool` — Whether this schema is included in sync runs.
+**enabled:** `*bool` — Whether this schema is included in sync runs
     
 </dd>
 </dl>
@@ -14875,7 +14887,7 @@ client.BulkSync.Schemas.Update(
 <dl>
 <dd>
 
-**filters:** `[]*polytomic.BulkFilter` — Row-level filters applied when reading from the source.
+**filters:** `[]*polytomic.BulkFilter` — Row-level filters applied when reading from the source
     
 </dd>
 </dl>
@@ -14891,7 +14903,7 @@ client.BulkSync.Schemas.Update(
 <dl>
 <dd>
 
-**partitionKey:** `*string` — Source field used to partition rows when writing to the destination.
+**partitionKey:** `*string` — Source field used to partition rows when writing to the destination
     
 </dd>
 </dl>
@@ -14899,7 +14911,7 @@ client.BulkSync.Schemas.Update(
 <dl>
 <dd>
 
-**trackingField:** `*string` — Source field used to detect changes between incremental sync runs.
+**trackingField:** `*string` — Source field used to detect changes between incremental sync runs
     
 </dd>
 </dl>
@@ -14907,7 +14919,7 @@ client.BulkSync.Schemas.Update(
 <dl>
 <dd>
 
-**userOutputName:** `*string` 
+**userOutputName:** `*string` — User-specified override for the destination object name
     
 </dd>
 </dl>
@@ -14972,7 +14984,7 @@ client.BulkSync.Schemas.Cancel(
 <dl>
 <dd>
 
-**id:** `string` — The bulk sync ID.
+**id:** `string` — The bulk sync ID
     
 </dd>
 </dl>
@@ -14980,7 +14992,7 @@ client.BulkSync.Schemas.Cancel(
 <dl>
 <dd>
 
-**schemaID:** `string` — The schema ID to cancel for the bulk sync.
+**schemaID:** `string` — The schema ID to cancel for the bulk sync
     
 </dd>
 </dl>
@@ -15041,7 +15053,7 @@ client.BulkSync.Schedules.List(
 <dl>
 <dd>
 
-**syncID:** `string` — Unique identifier of the bulk sync whose schedules should be returned.
+**syncID:** `string` — Unique identifier of the bulk sync whose schedules should be returned
     
 </dd>
 </dl>
@@ -15111,7 +15123,7 @@ client.BulkSync.Schedules.Create(
 <dl>
 <dd>
 
-**syncID:** `string` — Unique identifier of the bulk sync to add a schedule to.
+**syncID:** `string` — Unique identifier of the bulk sync to add a schedule to
     
 </dd>
 </dl>
@@ -15119,7 +15131,7 @@ client.BulkSync.Schedules.Create(
 <dl>
 <dd>
 
-**schedule:** `*polytomic.BulkSyncScheduleAPI` 
+**schedule:** `*polytomic.BulkSyncScheduleAPI` — Bulk sync schedule. Schedule times are interpreted in UTC.
     
 </dd>
 </dl>
@@ -15184,7 +15196,7 @@ client.BulkSync.Schedules.Get(
 <dl>
 <dd>
 
-**syncID:** `string` — Unique identifier of the bulk sync.
+**syncID:** `string` — Unique identifier of the bulk sync
     
 </dd>
 </dl>
@@ -15192,7 +15204,7 @@ client.BulkSync.Schedules.Get(
 <dl>
 <dd>
 
-**scheduleID:** `string` — Unique identifier of the schedule.
+**scheduleID:** `string` — Unique identifier of the schedule
     
 </dd>
 </dl>
@@ -15260,7 +15272,7 @@ client.BulkSync.Schedules.Update(
 <dl>
 <dd>
 
-**syncID:** `string` — Unique identifier of the bulk sync.
+**syncID:** `string` — Unique identifier of the bulk sync
     
 </dd>
 </dl>
@@ -15268,7 +15280,7 @@ client.BulkSync.Schedules.Update(
 <dl>
 <dd>
 
-**scheduleID:** `string` — Unique identifier of the schedule to update.
+**scheduleID:** `string` — Unique identifier of the schedule to update
     
 </dd>
 </dl>
@@ -15276,7 +15288,7 @@ client.BulkSync.Schedules.Update(
 <dl>
 <dd>
 
-**schedule:** `*polytomic.BulkSyncScheduleAPI` 
+**schedule:** `*polytomic.BulkSyncScheduleAPI` — Bulk sync schedule. Schedule times are interpreted in UTC.
     
 </dd>
 </dl>
@@ -15337,7 +15349,7 @@ client.BulkSync.Schedules.Delete(
 <dl>
 <dd>
 
-**syncID:** `string` — Unique identifier of the bulk sync.
+**syncID:** `string` — Unique identifier of the bulk sync
     
 </dd>
 </dl>
@@ -15345,7 +15357,7 @@ client.BulkSync.Schedules.Delete(
 <dl>
 <dd>
 
-**scheduleID:** `string` — Unique identifier of the schedule to delete.
+**scheduleID:** `string` — Unique identifier of the schedule to delete
     
 </dd>
 </dl>
@@ -15448,7 +15460,7 @@ client.Connections.Proxy.ExecuteProxy(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the connection to proxy the request through.
+**id:** `string` — Unique identifier of the connection to proxy the request through
     
 </dd>
 </dl>
@@ -15456,7 +15468,7 @@ client.Connections.Proxy.ExecuteProxy(
 <dl>
 <dd>
 
-**async:** `*bool` — When true, submits a GET request for asynchronous execution and returns a job handle instead of a synchronous upstream response.
+**async:** `*bool` — When true, submits a GET request for asynchronous execution and returns a job handle instead of a synchronous upstream response
     
 </dd>
 </dl>
@@ -15464,7 +15476,7 @@ client.Connections.Proxy.ExecuteProxy(
 <dl>
 <dd>
 
-**request:** `*polytomic.ConnectionProxyCall` 
+**request:** `*polytomic.ConnectionProxyCall` — Details of the upstream HTTP request to perform
     
 </dd>
 </dl>
@@ -15541,7 +15553,7 @@ client.Connections.Proxy.GetProxyInfo(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the connection whose proxy contract should be returned.
+**id:** `string` — Unique identifier of the connection whose proxy contract should be returned
     
 </dd>
 </dl>
@@ -15603,7 +15615,7 @@ client.Connections.Proxy.GetProxySettings(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the connection whose proxy settings should be returned.
+**id:** `string` — Unique identifier of the connection whose proxy settings should be returned
     
 </dd>
 </dl>
@@ -15674,7 +15686,7 @@ client.Connections.Proxy.UpdateProxySettings(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the connection whose proxy settings should be updated.
+**id:** `string` — Unique identifier of the connection whose proxy settings should be updated
     
 </dd>
 </dl>
@@ -15682,7 +15694,7 @@ client.Connections.Proxy.UpdateProxySettings(
 <dl>
 <dd>
 
-**enabled:** `bool` — Whether the connection can be used through the Connection Proxy API.
+**enabled:** `bool` — Whether the connection can be used through the Connection Proxy API
     
 </dd>
 </dl>
@@ -15769,7 +15781,7 @@ client.Connections.SharedConnections.ListSharedConnections(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the parent connection whose shared copies should be listed.
+**id:** `string` — Unique identifier of the parent connection whose shared copies should be listed
     
 </dd>
 </dl>
@@ -15856,7 +15868,7 @@ client.Connections.SharedConnections.ListSharedConnectionsForPartner(
 <dl>
 <dd>
 
-**orgID:** `string` — Unique identifier of the organization that owns the parent connection.
+**orgID:** `string` — Unique identifier of the organization that owns the parent connection
     
 </dd>
 </dl>
@@ -15864,7 +15876,7 @@ client.Connections.SharedConnections.ListSharedConnectionsForPartner(
 <dl>
 <dd>
 
-**connectionID:** `string` — Unique identifier of the parent connection whose shared copies should be listed.
+**connectionID:** `string` — Unique identifier of the parent connection whose shared copies should be listed
     
 </dd>
 </dl>
@@ -15926,7 +15938,7 @@ client.Connections.SharedConnections.CreateSharedConnection(
 <dl>
 <dd>
 
-**orgID:** `string` — Unique identifier of the organization that owns the parent connection.
+**orgID:** `string` — Unique identifier of the organization that owns the parent connection
     
 </dd>
 </dl>
@@ -15934,7 +15946,7 @@ client.Connections.SharedConnections.CreateSharedConnection(
 <dl>
 <dd>
 
-**connectionID:** `string` — Unique identifier of the parent connection to share.
+**connectionID:** `string` — Unique identifier of the parent connection to share
     
 </dd>
 </dl>
@@ -15942,7 +15954,7 @@ client.Connections.SharedConnections.CreateSharedConnection(
 <dl>
 <dd>
 
-**childOrganizationID:** `string` — Unique identifier of the child organization that should receive the shared connection.
+**childOrganizationID:** `string` — Unique identifier of the child organization that should receive the shared connection
     
 </dd>
 </dl>
@@ -16030,7 +16042,7 @@ client.Harbors.Actions.GetExecution(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -16038,7 +16050,7 @@ client.Harbors.Actions.GetExecution(
 <dl>
 <dd>
 
-**executionID:** `string` 
+**executionID:** `string` — Action execution ID
     
 </dd>
 </dl>
@@ -16046,7 +16058,7 @@ client.Harbors.Actions.GetExecution(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -16054,7 +16066,7 @@ client.Harbors.Actions.GetExecution(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -16155,7 +16167,7 @@ client.Harbors.Actions.List(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -16179,7 +16191,7 @@ client.Harbors.Actions.List(
 <dl>
 <dd>
 
-**limit:** `*int` 
+**limit:** `*int` — Maximum number of actions to return
     
 </dd>
 </dl>
@@ -16187,7 +16199,7 @@ client.Harbors.Actions.List(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -16195,7 +16207,7 @@ client.Harbors.Actions.List(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -16291,7 +16303,7 @@ client.Harbors.Actions.Describe(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -16299,7 +16311,7 @@ client.Harbors.Actions.Describe(
 <dl>
 <dd>
 
-**connectionID:** `string` 
+**connectionID:** `string` — Connection ID of the action
     
 </dd>
 </dl>
@@ -16307,7 +16319,7 @@ client.Harbors.Actions.Describe(
 <dl>
 <dd>
 
-**schemaID:** `string` 
+**schemaID:** `string` — Schema ID of the action
     
 </dd>
 </dl>
@@ -16315,7 +16327,7 @@ client.Harbors.Actions.Describe(
 <dl>
 <dd>
 
-**operationID:** `string` 
+**operationID:** `string` — Operation ID of the action
     
 </dd>
 </dl>
@@ -16323,7 +16335,7 @@ client.Harbors.Actions.Describe(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -16331,7 +16343,7 @@ client.Harbors.Actions.Describe(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -16444,7 +16456,7 @@ client.Harbors.Actions.Execute(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -16452,7 +16464,7 @@ client.Harbors.Actions.Execute(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -16460,7 +16472,7 @@ client.Harbors.Actions.Execute(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -16565,7 +16577,7 @@ client.Harbors.Actions.Lookup(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -16573,7 +16585,7 @@ client.Harbors.Actions.Lookup(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -16581,7 +16593,7 @@ client.Harbors.Actions.Lookup(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -16589,7 +16601,7 @@ client.Harbors.Actions.Lookup(
 <dl>
 <dd>
 
-**connectionID:** `string` — Connection ID from Harbor action discovery.
+**connectionID:** `string` — Connection ID from Harbor action discovery
     
 </dd>
 </dl>
@@ -16605,7 +16617,7 @@ client.Harbors.Actions.Lookup(
 <dl>
 <dd>
 
-**lookup:** `*polytomic.ActionLookup` 
+**lookup:** `*polytomic.ActionLookup` — One granted lookup field and exact scalar value
     
 </dd>
 </dl>
@@ -16613,7 +16625,7 @@ client.Harbors.Actions.Lookup(
 <dl>
 <dd>
 
-**operationID:** `string` — Exact read-only operation ID from action discovery.
+**operationID:** `string` — Exact read-only operation ID from action discovery
     
 </dd>
 </dl>
@@ -16621,7 +16633,7 @@ client.Harbors.Actions.Lookup(
 <dl>
 <dd>
 
-**schemaID:** `string` — Exact schema ID from action discovery.
+**schemaID:** `string` — Exact schema ID from action discovery
     
 </dd>
 </dl>
@@ -16735,7 +16747,7 @@ client.Harbors.Actions.Prepare(
 <dl>
 <dd>
 
-**harborID:** `string` — Unique identifier of the Harbor.
+**harborID:** `string` — Unique identifier of the Harbor
     
 </dd>
 </dl>
@@ -16743,7 +16755,7 @@ client.Harbors.Actions.Prepare(
 <dl>
 <dd>
 
-**polytomicHarborSession:** `*string` 
+**polytomicHarborSession:** `*string` — Harbor session token; when supplied, the session must be active and bound to this credential and Harbor.
     
 </dd>
 </dl>
@@ -16751,7 +16763,7 @@ client.Harbors.Actions.Prepare(
 <dl>
 <dd>
 
-**polytomicActivityRequestID:** `*string` 
+**polytomicActivityRequestID:** `*string` — New nonzero UUID for each request, required for scoped credentials; a reused value is rejected.
     
 </dd>
 </dl>
@@ -16767,7 +16779,7 @@ client.Harbors.Actions.Prepare(
 <dl>
 <dd>
 
-**input:** `polytomic.SchemaRecord` 
+**input:** `polytomic.SchemaRecord` — Nonempty map of enabled input fields to JSON scalars. Omission leaves fields unchanged; null requires advertised nullability; empty strings follow field constraints. Numbers must use integer JSON notation (no decimal point or exponent) within +/-9007199254740991; opaque IDs remain strings. Arrays, objects, and coercion are unsupported.
     
 </dd>
 </dl>
@@ -16775,7 +16787,7 @@ client.Harbors.Actions.Prepare(
 <dl>
 <dd>
 
-**lookup:** `*polytomic.ActionLookup` 
+**lookup:** `*polytomic.ActionLookup` — One advertised lookup field and exact scalar value. Required when lookup_fields is nonempty; otherwise omit.
     
 </dd>
 </dl>
@@ -16783,7 +16795,7 @@ client.Harbors.Actions.Prepare(
 <dl>
 <dd>
 
-**operationID:** `string` — Exact operation_id from action discovery.
+**operationID:** `string` — Exact operation_id from action discovery
     
 </dd>
 </dl>
@@ -16791,7 +16803,7 @@ client.Harbors.Actions.Prepare(
 <dl>
 <dd>
 
-**schemaID:** `string` — Exact schema_id from action discovery.
+**schemaID:** `string` — Exact schema_id from action discovery
     
 </dd>
 </dl>
@@ -16899,7 +16911,7 @@ client.ModelSync.Targets.GetTargetFields(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the connection.
+**id:** `string` — Unique identifier of the connection
     
 </dd>
 </dl>
@@ -17004,7 +17016,7 @@ client.ModelSync.Targets.List(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Connection ID
     
 </dd>
 </dl>
@@ -17101,7 +17113,7 @@ client.ModelSync.Targets.GetCreateProperty(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Connection ID
     
 </dd>
 </dl>
@@ -17109,7 +17121,7 @@ client.ModelSync.Targets.GetCreateProperty(
 <dl>
 <dd>
 
-**property:** `string` 
+**property:** `string` — Target-creation property ID
     
 </dd>
 </dl>
@@ -17167,7 +17179,7 @@ client.ModelSync.ErrorHandling.Get(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the model sync.
+**id:** `string` — Unique identifier of the model sync
     
 </dd>
 </dl>
@@ -17226,7 +17238,7 @@ client.ModelSync.ErrorHandling.Update(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the model sync.
+**id:** `string` — Unique identifier of the model sync
     
 </dd>
 </dl>
@@ -17338,7 +17350,7 @@ client.ModelSync.Executions.List(
 <dl>
 <dd>
 
-**syncID:** `string` 
+**syncID:** `string` — Model sync ID
     
 </dd>
 </dl>
@@ -17346,7 +17358,7 @@ client.ModelSync.Executions.List(
 <dl>
 <dd>
 
-**pageToken:** `*string` 
+**pageToken:** `*string` — Token from the previous page
     
 </dd>
 </dl>
@@ -17354,7 +17366,7 @@ client.ModelSync.Executions.List(
 <dl>
 <dd>
 
-**onlyCompleted:** `*bool` 
+**onlyCompleted:** `*bool` — Return only completed executions.
     
 </dd>
 </dl>
@@ -17362,7 +17374,7 @@ client.ModelSync.Executions.List(
 <dl>
 <dd>
 
-**ascending:** `*bool` 
+**ascending:** `*bool` — Return executions oldest first.
     
 </dd>
 </dl>
@@ -17424,7 +17436,7 @@ client.ModelSync.Executions.Get(
 <dl>
 <dd>
 
-**syncID:** `string` 
+**syncID:** `string` — Model sync ID
     
 </dd>
 </dl>
@@ -17432,7 +17444,7 @@ client.ModelSync.Executions.Get(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Execution ID
     
 </dd>
 </dl>
@@ -17490,7 +17502,7 @@ client.ModelSync.Executions.Cancel(
 <dl>
 <dd>
 
-**syncID:** `string` 
+**syncID:** `string` — Model sync ID
     
 </dd>
 </dl>
@@ -17498,7 +17510,7 @@ client.ModelSync.Executions.Cancel(
 <dl>
 <dd>
 
-**id:** `string` — The ID of the execution to cancel.
+**id:** `string` — The ID of the execution to cancel
     
 </dd>
 </dl>
@@ -17565,7 +17577,7 @@ client.ModelSync.Executions.GetConsoleLogs(
 <dl>
 <dd>
 
-**syncID:** `string` 
+**syncID:** `string` — Model sync ID
     
 </dd>
 </dl>
@@ -17573,7 +17585,7 @@ client.ModelSync.Executions.GetConsoleLogs(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Execution ID
     
 </dd>
 </dl>
@@ -17647,7 +17659,7 @@ client.ModelSync.Executions.GetLogsIndex(
 <dl>
 <dd>
 
-**syncID:** `string` — Unique identifier of the model sync.
+**syncID:** `string` — Unique identifier of the model sync
     
 </dd>
 </dl>
@@ -17655,7 +17667,7 @@ client.ModelSync.Executions.GetLogsIndex(
 <dl>
 <dd>
 
-**id:** `string` — Unique identifier of the execution whose logs are being indexed.
+**id:** `string` — Unique identifier of the execution whose logs are being indexed
     
 </dd>
 </dl>
@@ -17721,7 +17733,7 @@ client.ModelSync.Executions.GetLogURLs(
 <dl>
 <dd>
 
-**syncID:** `string` 
+**syncID:** `string` — Model sync ID
     
 </dd>
 </dl>
@@ -17729,7 +17741,7 @@ client.ModelSync.Executions.GetLogURLs(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Execution ID
     
 </dd>
 </dl>
@@ -17737,7 +17749,7 @@ client.ModelSync.Executions.GetLogURLs(
 <dl>
 <dd>
 
-**type_:** `*polytomic.ExecutionLogType` 
+**type_:** `*polytomic.ExecutionLogType` — Log category
     
 </dd>
 </dl>
@@ -17802,7 +17814,7 @@ client.ModelSync.Executions.GetLogs(
 <dl>
 <dd>
 
-**syncID:** `string` 
+**syncID:** `string` — Model sync ID
     
 </dd>
 </dl>
@@ -17810,7 +17822,7 @@ client.ModelSync.Executions.GetLogs(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Execution ID
     
 </dd>
 </dl>
@@ -17818,7 +17830,7 @@ client.ModelSync.Executions.GetLogs(
 <dl>
 <dd>
 
-**type_:** `*polytomic.ExecutionLogType` 
+**type_:** `*polytomic.ExecutionLogType` — Log category
     
 </dd>
 </dl>
@@ -17826,7 +17838,7 @@ client.ModelSync.Executions.GetLogs(
 <dl>
 <dd>
 
-**filename:** `string` 
+**filename:** `string` — Log file name
     
 </dd>
 </dl>
@@ -17947,7 +17959,7 @@ client.Permissions.Policies.Create(
 <dl>
 <dd>
 
-**organizationID:** `*string` 
+**organizationID:** `*string` — Ignored for user and organization-scoped API keys, which always act in their own organization
     
 </dd>
 </dl>
@@ -18015,7 +18027,7 @@ client.Permissions.Policies.Get(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Policy ID
     
 </dd>
 </dl>
@@ -18082,7 +18094,7 @@ client.Permissions.Policies.Update(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Policy ID
     
 </dd>
 </dl>
@@ -18098,7 +18110,7 @@ client.Permissions.Policies.Update(
 <dl>
 <dd>
 
-**organizationID:** `*string` 
+**organizationID:** `*string` — Ignored for user and organization-scoped API keys, which always act in their own organization
     
 </dd>
 </dl>
@@ -18166,7 +18178,7 @@ client.Permissions.Policies.Delete(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Policy ID
     
 </dd>
 </dl>
@@ -18289,7 +18301,7 @@ client.Permissions.Roles.Create(
 <dl>
 <dd>
 
-**organizationID:** `*string` 
+**organizationID:** `*string` — Ignored for user and organization-scoped API keys, which always act in their own organization
     
 </dd>
 </dl>
@@ -18348,7 +18360,7 @@ client.Permissions.Roles.Get(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Role ID
     
 </dd>
 </dl>
@@ -18414,7 +18426,7 @@ client.Permissions.Roles.Update(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Role ID
     
 </dd>
 </dl>
@@ -18430,7 +18442,7 @@ client.Permissions.Roles.Update(
 <dl>
 <dd>
 
-**organizationID:** `*string` 
+**organizationID:** `*string` — Ignored for user and organization-scoped API keys, which always act in their own organization
     
 </dd>
 </dl>
@@ -18495,7 +18507,7 @@ client.Permissions.Roles.Delete(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Role ID
     
 </dd>
 </dl>

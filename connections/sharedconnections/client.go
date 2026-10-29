@@ -78,7 +78,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	)
 func (c *Client) ListSharedConnections(
 	ctx context.Context,
-	// Unique identifier of the parent connection whose shared copies should be listed.
+	// Unique identifier of the parent connection whose shared copies should be listed
 	id string,
 	opts ...option.RequestOption,
 ) (*polytomic.ConnectionListResponseEnvelope, error) {
@@ -133,9 +133,9 @@ func (c *Client) ListSharedConnections(
 //	)
 func (c *Client) ListSharedConnectionsForPartner(
 	ctx context.Context,
-	// Unique identifier of the organization that owns the parent connection.
+	// Unique identifier of the organization that owns the parent connection
 	orgID string,
-	// Unique identifier of the parent connection whose shared copies should be listed.
+	// Unique identifier of the parent connection whose shared copies should be listed
 	connectionID string,
 	opts ...option.RequestOption,
 ) (*polytomic.ConnectionListResponseEnvelope, error) {
@@ -166,9 +166,9 @@ func (c *Client) ListSharedConnectionsForPartner(
 //	)
 func (c *Client) CreateSharedConnection(
 	ctx context.Context,
-	// Unique identifier of the organization that owns the parent connection.
+	// Unique identifier of the organization that owns the parent connection
 	orgID string,
-	// Unique identifier of the parent connection to share.
+	// Unique identifier of the parent connection to share
 	connectionID string,
 	request *connections.PartnerCreateSharedConnectionRequestSchema,
 	opts ...option.IdempotentRequestOption,

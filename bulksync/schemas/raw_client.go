@@ -35,7 +35,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) List(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
 	request *bulksync.SchemasListRequest,
 	opts ...option.RequestOption,
@@ -89,7 +89,7 @@ func (r *RawClient) List(
 
 func (r *RawClient) Patch(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
 	request *bulksync.UpdateBulkSyncSchemasRequest,
 	opts ...option.IdempotentRequestOption,
@@ -138,9 +138,9 @@ func (r *RawClient) Patch(
 
 func (r *RawClient) Get(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
-	// Source-side schema identifier.
+	// Source-side schema identifier
 	schemaID string,
 	opts ...option.RequestOption,
 ) (*core.Response[*polytomic.BulkSchemaEnvelope], error) {
@@ -187,9 +187,9 @@ func (r *RawClient) Get(
 
 func (r *RawClient) Update(
 	ctx context.Context,
-	// Unique identifier of the bulk sync.
+	// Unique identifier of the bulk sync
 	id string,
-	// Source-side schema identifier.
+	// Source-side schema identifier
 	schemaID string,
 	request *bulksync.UpdateBulkSchema,
 	opts ...option.IdempotentRequestOption,
@@ -239,9 +239,9 @@ func (r *RawClient) Update(
 
 func (r *RawClient) Cancel(
 	ctx context.Context,
-	// The bulk sync ID.
+	// The bulk sync ID
 	id string,
-	// The schema ID to cancel for the bulk sync.
+	// The schema ID to cancel for the bulk sync
 	schemaID string,
 	opts ...option.IdempotentRequestOption,
 ) (*core.Response[*polytomic.CancelBulkSyncResponseEnvelope], error) {

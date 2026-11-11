@@ -339,6 +339,32 @@ func (b *BulkSyncGetRequest) SetRefreshSchemas(refreshSchemas *bool) {
 }
 
 var (
+	bulkSyncGetDestinationRequestFieldSourceConnectionID = big.NewInt(1 << 0)
+)
+
+type BulkSyncGetDestinationRequest struct {
+	// Source Connection ID used to suggest initial destination configuration values
+	SourceConnectionID *string `json:"-" url:"source_connection_id,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (b *BulkSyncGetDestinationRequest) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetSourceConnectionID sets the SourceConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncGetDestinationRequest) SetSourceConnectionID(sourceConnectionID *string) {
+	b.SourceConnectionID = sourceConnectionID
+	b.require(bulkSyncGetDestinationRequestFieldSourceConnectionID)
+}
+
+var (
 	bulkSyncGetSourceRequestFieldIncludeFields = big.NewInt(1 << 0)
 )
 
@@ -805,8 +831,7 @@ type BulkSyncAdditionalScheduleRequest struct {
 	// Controls how the destination is handled when this schedule executes. Valid values: normal, refetch, resync, rebuild.
 	ResyncMode *BulkScheduleSyncMode `json:"resync_mode,omitempty" url:"resync_mode,omitempty"`
 	// Optional list of schema IDs this schedule applies to. If empty, the schedule applies to all schemas.
-	Schemas []string `json:"schemas,omitempty" url:"schemas,omitempty"`
-	// Whether this schedule runs a full fetch, only incremental fields, or only non-incremental fields
+	Schemas       []string           `json:"schemas,omitempty" url:"schemas,omitempty"`
 	SelectiveMode *BulkSelectiveMode `json:"selective_mode,omitempty" url:"selective_mode,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1051,8 +1076,7 @@ type BulkSyncAdditionalScheduleResponse struct {
 	// Controls how the destination is handled when this schedule executes
 	ResyncMode *BulkScheduleSyncMode `json:"resync_mode,omitempty" url:"resync_mode,omitempty"`
 	// Schema IDs this schedule applies to. Empty means all schemas.
-	Schemas []string `json:"schemas,omitempty" url:"schemas,omitempty"`
-	// Whether this schedule runs a full fetch, only incremental fields, or only non-incremental fields
+	Schemas       []string           `json:"schemas,omitempty" url:"schemas,omitempty"`
 	SelectiveMode *BulkSelectiveMode `json:"selective_mode,omitempty" url:"selective_mode,omitempty"`
 	// Timestamp the schedule was last updated
 	UpdatedAt *time.Time `json:"updated_at,omitempty" url:"updated_at,omitempty"`
@@ -1786,14 +1810,17 @@ func (b *BulkSyncDefaultScheduleResponse) String() string {
 
 var (
 	bulkSyncDestFieldConfiguration        = big.NewInt(1 << 0)
-	bulkSyncDestFieldModes                = big.NewInt(1 << 1)
-	bulkSyncDestFieldSupportedResyncModes = big.NewInt(1 << 2)
-	bulkSyncDestFieldSupportsHistoryMode  = big.NewInt(1 << 3)
+	bulkSyncDestFieldInitialConfiguration = big.NewInt(1 << 1)
+	bulkSyncDestFieldModes                = big.NewInt(1 << 2)
+	bulkSyncDestFieldSupportedResyncModes = big.NewInt(1 << 3)
+	bulkSyncDestFieldSupportsHistoryMode  = big.NewInt(1 << 4)
 )
 
 type BulkSyncDest struct {
 	// Destination configuration options this connection accepts, keyed by option name
 	Configuration map[string]any `json:"configuration,omitempty" url:"configuration,omitempty"`
+	// Suggested values for a new destination configuration, when source_connection_id is provided and the destination generates them. Preserve explicit choices and existing configurations.
+	InitialConfiguration map[string]any `json:"initial_configuration,omitempty" url:"initial_configuration,omitempty"`
 	// Bulk sync modes this destination supports
 	Modes []*SupportedBulkMode `json:"modes,omitempty" url:"modes,omitempty"`
 	// Resync modes supported by this destination (refetch, resync, rebuild)
@@ -1813,6 +1840,13 @@ func (b *BulkSyncDest) GetConfiguration() map[string]any {
 		return nil
 	}
 	return b.Configuration
+}
+
+func (b *BulkSyncDest) GetInitialConfiguration() map[string]any {
+	if b == nil {
+		return nil
+	}
+	return b.InitialConfiguration
 }
 
 func (b *BulkSyncDest) GetModes() []*SupportedBulkMode {
@@ -1855,6 +1889,13 @@ func (b *BulkSyncDest) require(field *big.Int) {
 func (b *BulkSyncDest) SetConfiguration(configuration map[string]any) {
 	b.Configuration = configuration
 	b.require(bulkSyncDestFieldConfiguration)
+}
+
+// SetInitialConfiguration sets the InitialConfiguration field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncDest) SetInitialConfiguration(initialConfiguration map[string]any) {
+	b.InitialConfiguration = initialConfiguration
+	b.require(bulkSyncDestFieldInitialConfiguration)
 }
 
 // SetModes sets the Modes field and marks it as non-optional;
@@ -2987,12 +3028,15 @@ func (b *BulkSyncSource) String() string {
 
 var (
 	bulkSyncSourceCapabilitiesFieldSupportsNamespaces     = big.NewInt(1 << 0)
-	bulkSyncSourceCapabilitiesFieldSupportsTrackingFields = big.NewInt(1 << 1)
+	bulkSyncSourceCapabilitiesFieldSupportsSelectiveModes = big.NewInt(1 << 1)
+	bulkSyncSourceCapabilitiesFieldSupportsTrackingFields = big.NewInt(1 << 2)
 )
 
 type BulkSyncSourceCapabilities struct {
 	// When true, the portion of a schema ID before its last dot is that schema's namespace.
 	SupportsNamespaces *bool `json:"supports_namespaces,omitempty" url:"supports_namespaces,omitempty"`
+	// Whether bulk sync schedules from this source can set a selective mode other than none
+	SupportsSelectiveModes *bool `json:"supports_selective_modes,omitempty" url:"supports_selective_modes,omitempty"`
 	// Whether the source supports a tracking field for detecting changes between sync runs
 	SupportsTrackingFields *bool `json:"supports_tracking_fields,omitempty" url:"supports_tracking_fields,omitempty"`
 
@@ -3008,6 +3052,13 @@ func (b *BulkSyncSourceCapabilities) GetSupportsNamespaces() *bool {
 		return nil
 	}
 	return b.SupportsNamespaces
+}
+
+func (b *BulkSyncSourceCapabilities) GetSupportsSelectiveModes() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.SupportsSelectiveModes
 }
 
 func (b *BulkSyncSourceCapabilities) GetSupportsTrackingFields() *bool {
@@ -3036,6 +3087,13 @@ func (b *BulkSyncSourceCapabilities) require(field *big.Int) {
 func (b *BulkSyncSourceCapabilities) SetSupportsNamespaces(supportsNamespaces *bool) {
 	b.SupportsNamespaces = supportsNamespaces
 	b.require(bulkSyncSourceCapabilitiesFieldSupportsNamespaces)
+}
+
+// SetSupportsSelectiveModes sets the SupportsSelectiveModes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkSyncSourceCapabilities) SetSupportsSelectiveModes(supportsSelectiveModes *bool) {
+	b.SupportsSelectiveModes = supportsSelectiveModes
+	b.require(bulkSyncSourceCapabilitiesFieldSupportsSelectiveModes)
 }
 
 // SetSupportsTrackingFields sets the SupportsTrackingFields field and marks it as non-optional;
@@ -3592,13 +3650,14 @@ var (
 	schemaConfigurationFieldDataCutoffTimestamp = big.NewInt(1 << 0)
 	schemaConfigurationFieldDisableDataCutoff   = big.NewInt(1 << 1)
 	schemaConfigurationFieldEnabled             = big.NewInt(1 << 2)
-	schemaConfigurationFieldFields              = big.NewInt(1 << 3)
-	schemaConfigurationFieldFilters             = big.NewInt(1 << 4)
-	schemaConfigurationFieldHistoryEnabled      = big.NewInt(1 << 5)
-	schemaConfigurationFieldID                  = big.NewInt(1 << 6)
-	schemaConfigurationFieldPartitionKey        = big.NewInt(1 << 7)
-	schemaConfigurationFieldTrackingField       = big.NewInt(1 << 8)
-	schemaConfigurationFieldUserOutputName      = big.NewInt(1 << 9)
+	schemaConfigurationFieldExcludedFields      = big.NewInt(1 << 3)
+	schemaConfigurationFieldFields              = big.NewInt(1 << 4)
+	schemaConfigurationFieldFilters             = big.NewInt(1 << 5)
+	schemaConfigurationFieldHistoryEnabled      = big.NewInt(1 << 6)
+	schemaConfigurationFieldID                  = big.NewInt(1 << 7)
+	schemaConfigurationFieldPartitionKey        = big.NewInt(1 << 8)
+	schemaConfigurationFieldTrackingField       = big.NewInt(1 << 9)
+	schemaConfigurationFieldUserOutputName      = big.NewInt(1 << 10)
 )
 
 type SchemaConfiguration struct {
@@ -3608,6 +3667,8 @@ type SchemaConfiguration struct {
 	DisableDataCutoff *bool `json:"disable_data_cutoff,omitempty" url:"disable_data_cutoff,omitempty"`
 	// Whether the schema is enabled for syncing
 	Enabled *bool `json:"enabled,omitempty" url:"enabled,omitempty"`
+	// IDs of fields that are never synced, even when automatically_add_new_fields would add them. Each must be an existing field that is not part of the primary key, the tracking field, or the partition key. Omit to keep the current list; send an empty list to clear it.
+	ExcludedFields []string `json:"excluded_fields,omitempty" url:"excluded_fields,omitempty"`
 	// Field IDs or field configurations for this schema; an empty list enables every field
 	Fields []*SchemaConfigurationFieldsItem `json:"fields,omitempty" url:"fields,omitempty"`
 	// Filters applied to records read from this schema
@@ -3649,6 +3710,13 @@ func (s *SchemaConfiguration) GetEnabled() *bool {
 		return nil
 	}
 	return s.Enabled
+}
+
+func (s *SchemaConfiguration) GetExcludedFields() []string {
+	if s == nil {
+		return nil
+	}
+	return s.ExcludedFields
 }
 
 func (s *SchemaConfiguration) GetFields() []*SchemaConfigurationFieldsItem {
@@ -3733,6 +3801,13 @@ func (s *SchemaConfiguration) SetDisableDataCutoff(disableDataCutoff *bool) {
 func (s *SchemaConfiguration) SetEnabled(enabled *bool) {
 	s.Enabled = enabled
 	s.require(schemaConfigurationFieldEnabled)
+}
+
+// SetExcludedFields sets the ExcludedFields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SchemaConfiguration) SetExcludedFields(excludedFields []string) {
+	s.ExcludedFields = excludedFields
+	s.require(schemaConfigurationFieldExcludedFields)
 }
 
 // SetFields sets the Fields field and marks it as non-optional;

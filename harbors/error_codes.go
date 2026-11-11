@@ -3,7 +3,55 @@
 package harbors
 
 import (
+	polytomic "github.com/polytomic/polytomic-go/v25"
+	core "github.com/polytomic/polytomic-go/v25/core"
 	internal "github.com/polytomic/polytomic-go/v25/internal"
 )
 
-var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{}
+var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
+	403: func(apiError *core.APIError) error {
+		return &polytomic.ForbiddenError{
+			APIError: apiError,
+		}
+	},
+	404: func(apiError *core.APIError) error {
+		return &polytomic.NotFoundError{
+			APIError: apiError,
+		}
+	},
+	409: func(apiError *core.APIError) error {
+		return &polytomic.ConflictError{
+			APIError: apiError,
+		}
+	},
+	422: func(apiError *core.APIError) error {
+		return &polytomic.UnprocessableEntityError{
+			APIError: apiError,
+		}
+	},
+	500: func(apiError *core.APIError) error {
+		return &polytomic.InternalServerError{
+			APIError: apiError,
+		}
+	},
+	503: func(apiError *core.APIError) error {
+		return &polytomic.ServiceUnavailableError{
+			APIError: apiError,
+		}
+	},
+	400: func(apiError *core.APIError) error {
+		return &polytomic.BadRequestError{
+			APIError: apiError,
+		}
+	},
+	401: func(apiError *core.APIError) error {
+		return &polytomic.UnauthorizedError{
+			APIError: apiError,
+		}
+	},
+	410: func(apiError *core.APIError) error {
+		return &polytomic.GoneError{
+			APIError: apiError,
+		}
+	},
+}

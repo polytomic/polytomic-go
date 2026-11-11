@@ -3,7 +3,6 @@
 package client
 
 import (
-	activity "github.com/polytomic/polytomic-go/v25/activity"
 	client "github.com/polytomic/polytomic-go/v25/bulksync/client"
 	connectionsclient "github.com/polytomic/polytomic-go/v25/connections/client"
 	core "github.com/polytomic/polytomic-go/v25/core"
@@ -43,7 +42,6 @@ type Client struct {
 	Notifications        *notifications.Client
 	Operations           *operations.Client
 	Organization         *organization.Client
-	Activity             *activity.Client
 	Users                *users.Client
 	RecordViewLinks      *recordviewlinks.Client
 	TemporaryCredentials *temporarycredentials.Client
@@ -76,7 +74,6 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Notifications:        notifications.NewClient(options),
 		Operations:           operations.NewClient(options),
 		Organization:         organization.NewClient(options),
-		Activity:             activity.NewClient(options),
 		Users:                users.NewClient(options),
 		RecordViewLinks:      recordviewlinks.NewClient(options),
 		TemporaryCredentials: temporarycredentials.NewClient(options),

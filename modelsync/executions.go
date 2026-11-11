@@ -53,7 +53,7 @@ type ExecutionsListRequest struct {
 	PageToken *string `json:"-" url:"page_token,omitempty"`
 	// Return only completed executions.
 	OnlyCompleted *bool `json:"-" url:"only_completed,omitempty"`
-	// Return executions oldest first.
+	// Traverse from the oldest executions; each page is ordered newest first.
 	Ascending *bool `json:"-" url:"ascending,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

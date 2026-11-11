@@ -46,12 +46,9 @@ func NewClient(options *core.RequestOptions) *Client {
 
 // Lists all connection types supported by this deployment.
 //
-// Each entry includes per-type metadata:
-//
-// - The available operations the connection type supports.
-// - Its category.
-// - Whether the connection type is enabled for the caller's organization.
-// - Which modes (source, destination, enrichment) it can act as.
+// Each entry includes the Connection type's ID, name, capabilities, and
+// configuration schema. Capabilities indicate whether it supports use as a
+// source, destination, enrichment source, scheduler, or sync event log target.
 //
 // Example:
 //
@@ -118,6 +115,10 @@ func (c *Client) GetConnectionTypeSchema(
 //
 //	request := &polytomic.GetConnectionTypeParameterValuesRequestSchema{
 //	    Field: "field",
+//	    Parameters: map[string]any{
+//	        "byo_app_token": "secret",
+//	        "name": "Example",
+//	    },
 //	}
 //	client.Connections.GetTypeParameterValues(
 //	    context.TODO(),

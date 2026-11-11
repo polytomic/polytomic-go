@@ -87,12 +87,13 @@ var (
 	updateBulkSchemaFieldDataCutoffTimestamp = big.NewInt(1 << 0)
 	updateBulkSchemaFieldDisableDataCutoff   = big.NewInt(1 << 1)
 	updateBulkSchemaFieldEnabled             = big.NewInt(1 << 2)
-	updateBulkSchemaFieldFields              = big.NewInt(1 << 3)
-	updateBulkSchemaFieldFilters             = big.NewInt(1 << 4)
-	updateBulkSchemaFieldHistoryEnabled      = big.NewInt(1 << 5)
-	updateBulkSchemaFieldPartitionKey        = big.NewInt(1 << 6)
-	updateBulkSchemaFieldTrackingField       = big.NewInt(1 << 7)
-	updateBulkSchemaFieldUserOutputName      = big.NewInt(1 << 8)
+	updateBulkSchemaFieldExcludedFields      = big.NewInt(1 << 3)
+	updateBulkSchemaFieldFields              = big.NewInt(1 << 4)
+	updateBulkSchemaFieldFilters             = big.NewInt(1 << 5)
+	updateBulkSchemaFieldHistoryEnabled      = big.NewInt(1 << 6)
+	updateBulkSchemaFieldPartitionKey        = big.NewInt(1 << 7)
+	updateBulkSchemaFieldTrackingField       = big.NewInt(1 << 8)
+	updateBulkSchemaFieldUserOutputName      = big.NewInt(1 << 9)
 )
 
 type UpdateBulkSchema struct {
@@ -102,6 +103,8 @@ type UpdateBulkSchema struct {
 	DisableDataCutoff *bool `json:"disable_data_cutoff,omitempty" url:"-"`
 	// Whether this schema is included in sync runs
 	Enabled *bool `json:"enabled,omitempty" url:"-"`
+	// IDs of fields that are never synced, even when automatically_add_new_fields would add them. Each must be an existing field that is not part of the primary key, the tracking field, or the partition key. Omit to keep the current list; send an empty list to clear it.
+	ExcludedFields []string `json:"excluded_fields,omitempty" url:"-"`
 	// Field-level configuration. Supplying an empty list enables every field discovered on the source.
 	Fields []*v25.UpdateBulkField `json:"fields,omitempty" url:"-"`
 	// Row-level filters applied when reading from the source
@@ -145,6 +148,13 @@ func (u *UpdateBulkSchema) SetDisableDataCutoff(disableDataCutoff *bool) {
 func (u *UpdateBulkSchema) SetEnabled(enabled *bool) {
 	u.Enabled = enabled
 	u.require(updateBulkSchemaFieldEnabled)
+}
+
+// SetExcludedFields sets the ExcludedFields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateBulkSchema) SetExcludedFields(excludedFields []string) {
+	u.ExcludedFields = excludedFields
+	u.require(updateBulkSchemaFieldExcludedFields)
 }
 
 // SetFields sets the Fields field and marks it as non-optional;

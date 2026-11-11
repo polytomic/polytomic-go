@@ -11,18 +11,21 @@ import (
 )
 
 var (
-	connectCardRequestFieldConnection          = big.NewInt(1 << 0)
-	connectCardRequestFieldDark                = big.NewInt(1 << 1)
-	connectCardRequestFieldName                = big.NewInt(1 << 2)
-	connectCardRequestFieldOrganizationID      = big.NewInt(1 << 3)
-	connectCardRequestFieldRedirectURL         = big.NewInt(1 << 4)
-	connectCardRequestFieldTTL                 = big.NewInt(1 << 5)
-	connectCardRequestFieldType                = big.NewInt(1 << 6)
-	connectCardRequestFieldUseOrganizationName = big.NewInt(1 << 7)
-	connectCardRequestFieldWhitelist           = big.NewInt(1 << 8)
+	connectCardRequestFieldAccess              = big.NewInt(1 << 0)
+	connectCardRequestFieldConnection          = big.NewInt(1 << 1)
+	connectCardRequestFieldDark                = big.NewInt(1 << 2)
+	connectCardRequestFieldName                = big.NewInt(1 << 3)
+	connectCardRequestFieldOrganizationID      = big.NewInt(1 << 4)
+	connectCardRequestFieldRedirectURL         = big.NewInt(1 << 5)
+	connectCardRequestFieldTTL                 = big.NewInt(1 << 6)
+	connectCardRequestFieldType                = big.NewInt(1 << 7)
+	connectCardRequestFieldUseOrganizationName = big.NewInt(1 << 8)
+	connectCardRequestFieldWhitelist           = big.NewInt(1 << 9)
 )
 
 type ConnectCardRequest struct {
+	// Access levels the new connection requests: ["read"] for read-only access, or ["read", "write"] for full access, the default. Only some connection types support read-only access.
+	Access []ConnectAccessLevel `json:"access,omitempty" url:"-"`
 	// The id of an existing connection to update
 	Connection *string `json:"connection,omitempty" url:"-"`
 	// Whether to use the dark theme for the Connect modal
@@ -39,7 +42,7 @@ type ConnectCardRequest struct {
 	Type *string `json:"type,omitempty" url:"-"`
 	// Whether to display the target organization name instead of the partner name in the Connect modal. Defaults to false; organizations without a partner always display their organization name.
 	UseOrganizationName *bool `json:"use_organization_name,omitempty" url:"-"`
-	// List of connection types which are allowed to be created. Ignored if type is set.
+	// List of connection types which are allowed to be created. Ignored if type is set. The embedded form shows one connection type, so send exactly one entry.
 	Whitelist []string `json:"whitelist,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -51,6 +54,13 @@ func (c *ConnectCardRequest) require(field *big.Int) {
 		c.explicitFields = big.NewInt(0)
 	}
 	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetAccess sets the Access field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectCardRequest) SetAccess(access []ConnectAccessLevel) {
+	c.Access = access
+	c.require(connectCardRequestFieldAccess)
 }
 
 // SetConnection sets the Connection field and marks it as non-optional;
@@ -802,6 +812,28 @@ func (b *BackendOAuthPrompt) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
+}
+
+type ConnectAccessLevel string
+
+const (
+	ConnectAccessLevelRead  ConnectAccessLevel = "read"
+	ConnectAccessLevelWrite ConnectAccessLevel = "write"
+)
+
+func NewConnectAccessLevelFromString(s string) (ConnectAccessLevel, error) {
+	switch s {
+	case "read":
+		return ConnectAccessLevelRead, nil
+	case "write":
+		return ConnectAccessLevelWrite, nil
+	}
+	var t ConnectAccessLevel
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ConnectAccessLevel) Ptr() *ConnectAccessLevel {
+	return &c
 }
 
 var (
@@ -1807,16 +1839,17 @@ func (c *ConnectionResponseEnvelope) String() string {
 }
 
 var (
-	connectionTypeFieldCapabilities         = big.NewInt(1 << 0)
-	connectionTypeFieldConfigurationForm    = big.NewInt(1 << 1)
-	connectionTypeFieldEnvConfig            = big.NewInt(1 << 2)
-	connectionTypeFieldID                   = big.NewInt(1 << 3)
-	connectionTypeFieldInitialConfiguration = big.NewInt(1 << 4)
-	connectionTypeFieldLogoDarkURL          = big.NewInt(1 << 5)
-	connectionTypeFieldLogoURL              = big.NewInt(1 << 6)
-	connectionTypeFieldName                 = big.NewInt(1 << 7)
-	connectionTypeFieldOauthPrompt          = big.NewInt(1 << 8)
-	connectionTypeFieldUseOauth             = big.NewInt(1 << 9)
+	connectionTypeFieldCapabilities           = big.NewInt(1 << 0)
+	connectionTypeFieldConfigurationForm      = big.NewInt(1 << 1)
+	connectionTypeFieldEnvConfig              = big.NewInt(1 << 2)
+	connectionTypeFieldID                     = big.NewInt(1 << 3)
+	connectionTypeFieldInitialConfiguration   = big.NewInt(1 << 4)
+	connectionTypeFieldLogoDarkURL            = big.NewInt(1 << 5)
+	connectionTypeFieldLogoURL                = big.NewInt(1 << 6)
+	connectionTypeFieldName                   = big.NewInt(1 << 7)
+	connectionTypeFieldOauthPrompt            = big.NewInt(1 << 8)
+	connectionTypeFieldSupportsReadOnlyAccess = big.NewInt(1 << 9)
+	connectionTypeFieldUseOauth               = big.NewInt(1 << 10)
 )
 
 type ConnectionType struct {
@@ -1829,7 +1862,9 @@ type ConnectionType struct {
 	LogoURL              *string                        `json:"logo_url,omitempty" url:"logo_url,omitempty"`
 	Name                 *string                        `json:"name,omitempty" url:"name,omitempty"`
 	OauthPrompt          *BackendOAuthPrompt            `json:"oauth_prompt,omitempty" url:"oauth_prompt,omitempty"`
-	UseOauth             *bool                          `json:"use_oauth,omitempty" url:"use_oauth,omitempty"`
+	// Whether this deployment supports creating this connection type through Connect with access set to ["read"].
+	SupportsReadOnlyAccess bool  `json:"supports_read_only_access" url:"supports_read_only_access"`
+	UseOauth               *bool `json:"use_oauth,omitempty" url:"use_oauth,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1899,6 +1934,13 @@ func (c *ConnectionType) GetOauthPrompt() *BackendOAuthPrompt {
 		return nil
 	}
 	return c.OauthPrompt
+}
+
+func (c *ConnectionType) GetSupportsReadOnlyAccess() bool {
+	if c == nil {
+		return false
+	}
+	return c.SupportsReadOnlyAccess
 }
 
 func (c *ConnectionType) GetUseOauth() *bool {
@@ -1983,6 +2025,13 @@ func (c *ConnectionType) SetName(name *string) {
 func (c *ConnectionType) SetOauthPrompt(oauthPrompt *BackendOAuthPrompt) {
 	c.OauthPrompt = oauthPrompt
 	c.require(connectionTypeFieldOauthPrompt)
+}
+
+// SetSupportsReadOnlyAccess sets the SupportsReadOnlyAccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConnectionType) SetSupportsReadOnlyAccess(supportsReadOnlyAccess bool) {
+	c.SupportsReadOnlyAccess = supportsReadOnlyAccess
+	c.require(connectionTypeFieldSupportsReadOnlyAccess)
 }
 
 // SetUseOauth sets the UseOauth field and marks it as non-optional;

@@ -52,15 +52,12 @@ func NewClient(options *core.RequestOptions) *Client {
 
 // Lists bulk syncs in the caller's organization.
 //
-// Results are ordered by `updated_at` descending, with `id` as a tiebreaker for
-// syncs modified at the same instant. Pagination uses an opaque
-// `pagination.next_page_token` returned in the response; pass it back as the
-// `page_token` query parameter to fetch the next page. The `limit` parameter is
-// optional, and the default and maximum page size is 50 syncs.
+// Results are returned as a single `data` array. You can filter by `active`, but
+// this endpoint does not support pagination, `limit`, or `page_token` query
+// parameters.
 //
-// > 📘 To retrieve a specific sync, use
-// > [`GET /api/bulk/syncs/{id}`](../../../api-reference/bulk-sync/get)
-// > instead of filtering the list client-side.
+// To retrieve a specific Bulk Sync, use
+// [`GET /api/bulk/syncs/{id}`](../../../api-reference/bulk-sync/get).
 //
 // Example:
 //
@@ -131,6 +128,17 @@ func (c *Client) List(
 //   - `automatically_add_new_fields` defaults to enabling newly discovered fields
 //     on already selected objects.
 //   - `normalize_names` defaults to enabled.
+//
+// ## Scheduling
+//
+// To sync the two selective groups of objects at different frequencies, add one
+// entry to `additional_schedules` with `selective_mode` set to
+// `incrementalFields` and another with `nonincrementalFields`. Set
+// `default_schedule.frequency` to `manual` to avoid an additional automatic run
+// covering all selected objects. The default schedule does not accept a
+// selective mode. Check `capabilities.supports_selective_modes` on
+// [`GET /api/connections/{id}/bulksync/source`](../../../api-reference/bulk-sync/get-source)
+// for the source connection first.
 //
 // Example:
 //
@@ -519,31 +527,52 @@ func (c *Client) GetSource(
 
 // Describes the destination configuration schema a connection accepts when used as a bulk sync destination.
 //
-// The response is a JSON Schema object describing the shape of the
-// `destination_configuration` field you must supply when
-// [creating](../../../../../api-reference/bulk-sync/create) or
-// [updating](../../../../../api-reference/bulk-sync/update) a bulk sync that uses this
-// connection as its destination. Required fields vary by connection type.
+// Use `configuration` to discover the fields accepted by
+// `destination_configuration` when you [create](../../../../../api-reference/bulk-sync/create)
+// or [update](../../../../../api-reference/bulk-sync/update) a Bulk Sync. Required fields vary
+// by Connection type. Use `modes` to choose a mode supported by this destination.
 //
-// > 📘 Fetch this endpoint once per connection type rather than once per sync.
-// > The configuration schema is the same for all syncs sharing the same
-// > destination connection.
+// ## Suggested initial configuration
+//
+// Supply `source_connection_id` to request suggested values for a new Bulk Sync.
+// For example, Snowflake suggests an output schema based on the source Connection
+// name. You must be able to read both Connections, and they must belong to the
+// same Organization.
+//
+// When the destination generates suggestions, `initial_configuration` contains
+// values using the same field names as `destination_configuration`. Use these
+// values as a starting point, preserving any explicit choices. This request does
+// not change a Connection or an existing Bulk Sync. Omit `source_connection_id`
+// to retrieve metadata without contextual suggestions.
+//
+// > ℹ️ Configuration field metadata is reusable for the destination Connection.
+// > Initial values depend on the source and destination Connections. Fetch them
+// > for each new source/destination pair rather than caching them by Connection
+// > type. Do not apply them over an existing configuration.
 //
 // Example:
 //
+//	request := &polytomic.BulkSyncGetDestinationRequest{
+//	    SourceConnectionID: polytomic.String(
+//	        "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    ),
+//	}
 //	client.BulkSync.GetDestination(
 //	    context.TODO(),
 //	    "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	    request,
 //	)
 func (c *Client) GetDestination(
 	ctx context.Context,
 	// Connection ID
 	id string,
+	request *polytomic.BulkSyncGetDestinationRequest,
 	opts ...option.RequestOption,
 ) (*polytomic.BulkSyncDestEnvelope, error) {
 	response, err := c.WithRawResponse.GetDestination(
 		ctx,
 		id,
+		request,
 		opts...,
 	)
 	if err != nil {

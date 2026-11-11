@@ -7,6 +7,7 @@ import (
 
 	polytomic "github.com/polytomic/polytomic-go/v25"
 	core "github.com/polytomic/polytomic-go/v25/core"
+	harbors "github.com/polytomic/polytomic-go/v25/harbors"
 	internal "github.com/polytomic/polytomic-go/v25/internal"
 	option "github.com/polytomic/polytomic-go/v25/option"
 )
@@ -65,7 +66,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //
 // Example:
 //
-//	request := &polytomic.ActivityListRequest{
+//	request := &harbors.ActivityListRequest{
 //	    StartTime: polytomic.MustParseDateTime(
 //	        "2024-01-15T09:30:00Z",
 //	    ),
@@ -78,7 +79,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	    PageToken: polytomic.String(
 //	        "page_token",
 //	    ),
-//	    Order: polytomic.ActivityListRequestOrderAsc.Ptr(),
+//	    Order: harbors.ActivityListRequestOrderAsc.Ptr(),
 //	    HarborID: []*string{
 //	        polytomic.String(
 //	            "248df4b7-aa70-47b8-a036-33ac447e668d",
@@ -116,13 +117,13 @@ func NewClient(options *core.RequestOptions) *Client {
 //	        ),
 //	    },
 //	}
-//	client.Activity.List(
+//	client.Harbors.Activity.List(
 //	    context.TODO(),
 //	    request,
 //	)
 func (c *Client) List(
 	ctx context.Context,
-	request *polytomic.ActivityListRequest,
+	request *harbors.ActivityListRequest,
 	opts ...option.RequestOption,
 ) (*polytomic.HarborActivityListEnvelope, error) {
 	response, err := c.WithRawResponse.List(
@@ -161,16 +162,16 @@ func (c *Client) List(
 //
 // Example:
 //
-//	request := &polytomic.ActivityGetSessionRequest{
+//	request := &harbors.ActivityGetSessionRequest{
 //	    Limit: polytomic.Int(
 //	        1,
 //	    ),
 //	    PageToken: polytomic.String(
 //	        "page_token",
 //	    ),
-//	    Order: polytomic.ActivityGetSessionRequestOrderAsc.Ptr(),
+//	    Order: harbors.ActivityGetSessionRequestOrderAsc.Ptr(),
 //	}
-//	client.Activity.GetSession(
+//	client.Harbors.Activity.GetSession(
 //	    context.TODO(),
 //	    "248df4b7-aa70-47b8-a036-33ac447e668d",
 //	    request,
@@ -179,7 +180,7 @@ func (c *Client) GetSession(
 	ctx context.Context,
 	// Harbor Activity session ID
 	sessionID string,
-	request *polytomic.ActivityGetSessionRequest,
+	request *harbors.ActivityGetSessionRequest,
 	opts ...option.RequestOption,
 ) (*polytomic.HarborActivitySessionEnvelope, error) {
 	response, err := c.WithRawResponse.GetSession(
@@ -210,7 +211,7 @@ func (c *Client) GetSession(
 //
 // Example:
 //
-//	client.Activity.Get(
+//	client.Harbors.Activity.Get(
 //	    context.TODO(),
 //	    "248df4b7-aa70-47b8-a036-33ac447e668d",
 //	)

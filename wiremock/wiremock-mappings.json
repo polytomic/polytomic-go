@@ -354,7 +354,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"capabilities\": {\n      \"supports_namespaces\": true,\n      \"supports_tracking_fields\": true\n    },\n    \"configuration\": {\n      \"key\": \"value\"\n    },\n    \"schemas\": [\n      {\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"is_primary_key\": true,\n            \"name\": \"Email\",\n            \"primary_key_override\": true,\n            \"remote_type\": \"varchar(255)\",\n            \"source_primary_key\": false\n          }\n        ],\n        \"id\": \"contact\",\n        \"name\": \"Contact\"\n      }\n    ]\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"capabilities\": {\n      \"supports_namespaces\": true,\n      \"supports_selective_modes\": true,\n      \"supports_tracking_fields\": true\n    },\n    \"configuration\": {\n      \"key\": \"value\"\n    },\n    \"schemas\": [\n      {\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"is_primary_key\": true,\n            \"name\": \"Email\",\n            \"primary_key_override\": true,\n            \"remote_type\": \"varchar(255)\",\n            \"source_primary_key\": false\n          }\n        ],\n        \"id\": \"contact\",\n        \"name\": \"Contact\"\n      }\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -386,11 +386,16 @@
           "id": {
             "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
           }
+        },
+        "queryParameters": {
+          "source_connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
         }
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"configuration\": {\n      \"advanced\": {\n        \"items\": {\n          \"truncate_existing\": {\n            \"default\": \"\",\n            \"required\": false\n          }\n        }\n      },\n      \"mirror_schemas\": {\n        \"default\": \"\",\n        \"required\": false\n      },\n      \"schema\": {\n        \"default\": \"\",\n        \"required\": false\n      }\n    },\n    \"modes\": [\n      {\n        \"description\": \"Replace all records\",\n        \"label\": \"Replace\"\n      }\n    ],\n    \"supported_resync_modes\": [\n      \"refetch\"\n    ],\n    \"supports_history_mode\": false\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"configuration\": {\n      \"advanced\": {\n        \"items\": {\n          \"truncate_existing\": {\n            \"default\": \"\",\n            \"required\": false\n          }\n        }\n      },\n      \"mirror_schemas\": {\n        \"default\": \"\",\n        \"required\": false\n      },\n      \"schema\": {\n        \"default\": \"\",\n        \"required\": false\n      }\n    },\n    \"initial_configuration\": {\n      \"key\": \"value\"\n    },\n    \"modes\": [\n      {\n        \"description\": \"Replace all records\",\n        \"label\": \"Replace\"\n      }\n    ],\n    \"supported_resync_modes\": [\n      \"refetch\"\n    ],\n    \"supports_history_mode\": false\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -416,7 +421,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"capabilities\": {\n        \"destination\": true,\n        \"enrichment\": false,\n        \"logging\": false,\n        \"orchestration\": false,\n        \"source\": true\n      },\n      \"envConfig\": {\n        \"key\": \"value\"\n      },\n      \"id\": \"postgresql\",\n      \"initialConfiguration\": {\n        \"key\": \"value\"\n      },\n      \"logo_dark_url\": \"https://connect-assets.polytomic.com/logos/dark/postgresql.svg\",\n      \"logo_url\": \"https://connect-assets.polytomic.com/logos/postgresql.svg\",\n      \"name\": \"PostgreSQL\",\n      \"use_oauth\": true\n    }\n  ]\n}",
+        "body": "{\n  \"data\": [\n    {\n      \"capabilities\": {\n        \"destination\": true,\n        \"enrichment\": false,\n        \"logging\": false,\n        \"orchestration\": false,\n        \"source\": true\n      },\n      \"envConfig\": {\n        \"key\": \"value\"\n      },\n      \"id\": \"postgresql\",\n      \"initialConfiguration\": {\n        \"key\": \"value\"\n      },\n      \"logo_dark_url\": \"https://connect-assets.polytomic.com/logos/dark/postgresql.svg\",\n      \"logo_url\": \"https://connect-assets.polytomic.com/logos/postgresql.svg\",\n      \"name\": \"PostgreSQL\",\n      \"supports_read_only_access\": true,\n      \"use_oauth\": true\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -2195,7 +2200,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"created_at\": \"2024-01-01T00:00:00Z\",\n      \"event\": {\n        \"execution_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"sync_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"target_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"type\": \"sync.running\"\n    }\n  ]\n}",
+        "body": "{\n  \"data\": [\n    {\n      \"created_at\": \"2024-01-01T00:00:00Z\",\n      \"event\": {\n        \"execution_id\": \"0ecd09c1-b901-4d27-9053-f0367c427254\",\n        \"organization_id\": \"be80a27e-0e80-4dcb-bee9-1666f02eeb83\",\n        \"sync_id\": \"0b155265-c537-44c9-9359-a3ceb468a4da\",\n        \"sync_name\": \"Salesforce contacts\",\n        \"target_connection_id\": \"7c67e0b3-9759-44eb-b96c-2a7042b583f0\"\n      },\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"type\": \"sync.running\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -2244,129 +2249,6 @@
         }
       },
       "postServeActions": []
-    },
-    {
-      "id": "7b261a41-7a29-450c-9609-30d09ed4ac95",
-      "name": "List Harbor Connections - default",
-      "request": {
-        "urlPathTemplate": "/api/harbor/connections",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "queryParameters": {
-          "limit": {
-            "equalTo": "1"
-          },
-          "page_token": {
-            "equalTo": "page_token"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"capabilities\": [\n        \"schemas\"\n      ],\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"name\": \"name\",\n      \"type\": \"type\"\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "7b261a41-7a29-450c-9609-30d09ed4ac95",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      },
-      "postServeActions": []
-    },
-    {
-      "id": "260f6c83-7c78-4984-b81b-ade3bd39d0aa",
-      "name": "List Harbor Connection Schemas - default",
-      "request": {
-        "urlPathTemplate": "/api/harbor/connections/{connection_id}/schemas",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "connection_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        },
-        "queryParameters": {
-          "limit": {
-            "equalTo": "1"
-          },
-          "page_token": {
-            "equalTo": "page_token"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"id\": \"id\",\n      \"name\": \"name\"\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  },\n  \"supports_namespaces\": true\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "260f6c83-7c78-4984-b81b-ade3bd39d0aa",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "78aa9a1f-3cb8-4b67-9273-57fccae5ecf4",
-      "name": "Get Harbor Connection Schema - default",
-      "request": {
-        "urlPathTemplate": "/api/harbor/connections/{connection_id}/schemas/{schema_id}",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "connection_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "schema_id": {
-            "equalTo": "schema_id"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"fields\": [\n      {\n        \"id\": \"email\",\n        \"is_primary_key\": true,\n        \"name\": \"Email\",\n        \"primary_key_override\": true,\n        \"remote_type\": \"varchar(255)\",\n        \"source_primary_key\": false\n      }\n    ],\n    \"id\": \"contact\",\n    \"name\": \"Contact\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "78aa9a1f-3cb8-4b67-9273-57fccae5ecf4",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
     },
     {
       "id": "b16db86e-df62-44db-b442-e8b35a3aec8b",
@@ -2615,930 +2497,6 @@
       }
     },
     {
-      "id": "decd8fec-df9b-4b64-bf2f-737fb05ce5b6",
-      "name": "Get Harbor Action Configuration - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"grants\": [\n        {\n          \"field_ids\": null,\n          \"operation_id\": \"operation_id\",\n          \"schema_id\": \"schema_id\"\n        }\n      ],\n      \"revision\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "decd8fec-df9b-4b64-bf2f-737fb05ce5b6",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "d5c06481-af96-4d5d-9bdf-2422a849f690",
-      "name": "Disable Harbor Action Configuration - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration",
-        "method": "DELETE",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"grants\": [\n        {\n          \"field_ids\": null,\n          \"operation_id\": \"operation_id\",\n          \"schema_id\": \"schema_id\"\n        }\n      ],\n      \"revision\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "d5c06481-af96-4d5d-9bdf-2422a849f690",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "71dd3df6-9e5f-428b-9331-a3203c03c12e",
-      "name": "List Harbor Action Source Connections - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration/connections",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"connection_type\": \"connection_type\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"name\": \"name\"\n    }\n  ]\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "71dd3df6-9e5f-428b-9331-a3203c03c12e",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "baffdbeb-bcb1-40c2-aacb-22ff5a4e64c3",
-      "name": "Set Harbor Action Configuration - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration/connections/{connection_id}",
-        "method": "PUT",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "connection_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"grants\": [\n        {\n          \"field_ids\": null,\n          \"operation_id\": \"operation_id\",\n          \"schema_id\": \"schema_id\"\n        }\n      ],\n      \"revision\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "baffdbeb-bcb1-40c2-aacb-22ff5a4e64c3",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "581b1692-f96a-4f34-8e68-ecf13b13f17c",
-      "name": "Remove Harbor Action Configuration - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration/connections/{connection_id}",
-        "method": "DELETE",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "connection_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        },
-        "queryParameters": {
-          "expected_revision": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"grants\": [\n        {\n          \"field_ids\": null,\n          \"operation_id\": \"operation_id\",\n          \"schema_id\": \"schema_id\"\n        }\n      ],\n      \"revision\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "581b1692-f96a-4f34-8e68-ecf13b13f17c",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "dbc4282c-f33e-4386-92c4-4aeef969957c",
-      "name": "List Harbor Action Configuration Schemas - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration/connections/{connection_id}/schemas",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "connection_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        },
-        "queryParameters": {
-          "search": {
-            "equalTo": "search"
-          },
-          "limit": {
-            "equalTo": "1"
-          },
-          "page_token": {
-            "equalTo": "page_token"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"id\": \"id\",\n      \"name\": \"name\",\n      \"operations\": [\n        \"operations\"\n      ]\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "dbc4282c-f33e-4386-92c4-4aeef969957c",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "6a758b07-574f-4f30-9a12-d4431efceed5",
-      "name": "List Harbor Action Configuration Operations - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration/connections/{connection_id}/schemas/{schema_id}/operations",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "connection_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "schema_id": {
-            "equalTo": "schema_id"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"description\": \"description\",\n      \"effect\": \"mutating\",\n      \"input_fields\": [\n        {}\n      ],\n      \"lookup_fields\": [\n        {}\n      ],\n      \"name\": \"name\",\n      \"operation_id\": \"operation_id\",\n      \"output_fields\": [\n        {}\n      ],\n      \"schema_id\": \"schema_id\"\n    }\n  ]\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "6a758b07-574f-4f30-9a12-d4431efceed5",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "f1cc85ec-918d-426e-b3ed-50e6a36ed1d8",
-      "name": "List Harbor Contexts - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        },
-        "queryParameters": {
-          "limit": {
-            "equalTo": "50"
-          },
-          "page_token": {
-            "equalTo": "page_token"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"description\": \"description\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"title\": \"title\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\",\n      \"version\": 1\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "f1cc85ec-918d-426e-b3ed-50e6a36ed1d8",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "878e8109-255f-4d66-812e-e8d2a323324a",
-      "name": "Create Harbor Context - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts",
-        "method": "POST",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"content\": \"content\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"title\": \"title\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"version\": 1\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "878e8109-255f-4d66-812e-e8d2a323324a",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "11723581-e187-46e8-a969-215ddf48db91",
-      "name": "List Harbor Context Drafts - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/drafts",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        },
-        "queryParameters": {
-          "limit": {
-            "equalTo": "50"
-          },
-          "page_token": {
-            "equalTo": "page_token"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"base_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"change_note\": \"change_note\",\n      \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"created_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_by_type\": \"created_by_type\",\n      \"description\": \"description\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"title\": \"title\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_by_type\": \"updated_by_type\"\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "11723581-e187-46e8-a969-215ddf48db91",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "4d39bab6-425c-45d3-8dd4-19cc0c09268d",
-      "name": "Create Harbor Context Draft - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/drafts",
-        "method": "POST",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"base_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"change_note\": \"change_note\",\n    \"content\": \"content\",\n    \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_by_type\": \"created_by_type\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"title\": \"title\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"updated_by_type\": \"updated_by_type\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "4d39bab6-425c-45d3-8dd4-19cc0c09268d",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "80b14ae8-d07d-4a06-8047-be58bff8d071",
-      "name": "Get Harbor Context Document - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "context_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"content\": \"content\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"title\": \"title\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"version\": 1\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "80b14ae8-d07d-4a06-8047-be58bff8d071",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "93fa5954-5b29-4cda-939a-60a79150cdb7",
-      "name": "Update Harbor Context - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}",
-        "method": "PUT",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "context_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"content\": \"content\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"title\": \"title\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"version\": 1\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "93fa5954-5b29-4cda-939a-60a79150cdb7",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "fc35a634-a81e-47db-8b83-da7ed37c31e7",
-      "name": "Delete Harbor Context Document - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}",
-        "method": "DELETE",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "context_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "fc35a634-a81e-47db-8b83-da7ed37c31e7",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "e998954b-b70a-4344-b040-7c8f34f216ac",
-      "name": "Get Harbor Context Draft - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}/draft",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "context_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"base_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"change_note\": \"change_note\",\n    \"content\": \"content\",\n    \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_by_type\": \"created_by_type\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"title\": \"title\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"updated_by_type\": \"updated_by_type\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "e998954b-b70a-4344-b040-7c8f34f216ac",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "456d73aa-2e4b-4876-8581-612f233bc93d",
-      "name": "Save Harbor Context Draft - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}/draft",
-        "method": "PUT",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "context_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"base_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"change_note\": \"change_note\",\n    \"content\": \"content\",\n    \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_by_type\": \"created_by_type\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"title\": \"title\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"updated_by_type\": \"updated_by_type\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "456d73aa-2e4b-4876-8581-612f233bc93d",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "f88be14a-9267-4ad6-9c29-0f75aa0d9d2f",
-      "name": "Delete Harbor Context Draft - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}/draft",
-        "method": "DELETE",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "context_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "f88be14a-9267-4ad6-9c29-0f75aa0d9d2f",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "c749fdce-150d-4cef-a556-6782cd46ca5d",
-      "name": "Promote Harbor Context Draft - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}/draft/promote",
-        "method": "POST",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "context_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"change_note\": \"change_note\",\n    \"content\": \"content\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"published_at\": \"2024-01-15T09:30:00Z\",\n    \"published_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"published_by_type\": \"published_by_type\",\n    \"title\": \"title\",\n    \"version\": 1\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "c749fdce-150d-4cef-a556-6782cd46ca5d",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "a22f6509-22ce-4c9f-80e3-56e408c64daf",
-      "name": "List Harbor Context Versions - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}/versions",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "context_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        },
-        "queryParameters": {
-          "limit": {
-            "equalTo": "50"
-          },
-          "page_token": {
-            "equalTo": "page_token"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"change_note\": \"change_note\",\n      \"description\": \"description\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"published_at\": \"2024-01-15T09:30:00Z\",\n      \"published_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"published_by_type\": \"published_by_type\",\n      \"title\": \"title\",\n      \"version\": 1\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "a22f6509-22ce-4c9f-80e3-56e408c64daf",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "e53d1ab9-9806-4881-ac5d-c73b16bc108f",
-      "name": "Get Harbor Context Version - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}/versions/{version_id}",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "context_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "version_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"change_note\": \"change_note\",\n    \"content\": \"content\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"published_at\": \"2024-01-15T09:30:00Z\",\n    \"published_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"published_by_type\": \"published_by_type\",\n    \"title\": \"title\",\n    \"version\": 1\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "e53d1ab9-9806-4881-ac5d-c73b16bc108f",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "7d42454c-ae91-42bd-8dff-82821f0dada3",
-      "name": "List Harbor Keys - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/keys",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        },
-        "queryParameters": {
-          "limit": {
-            "equalTo": "50"
-          },
-          "page_token": {
-            "equalTo": "page_token"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"calls_last_24_hours\": 1,\n      \"client_name\": \"client_name\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"expires_at\": \"2024-01-15T09:30:00Z\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"key_hint\": \"key_hint\",\n      \"mode\": \"profile\"\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "7d42454c-ae91-42bd-8dff-82821f0dada3",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "b27c4af8-0fd9-4657-9fe1-8bb121b49c6a",
-      "name": "Create Harbor Key - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/keys",
-        "method": "POST",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"mode\": \"profile\",\n    \"value\": \"value\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "b27c4af8-0fd9-4657-9fe1-8bb121b49c6a",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "214aed9d-b4a5-47f2-8ad7-5f57caf3b3bd",
-      "name": "Delete Harbor Key - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/keys/{key_id}",
-        "method": "DELETE",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "key_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "214aed9d-b4a5-47f2-8ad7-5f57caf3b3bd",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
       "id": "4780f97e-a82a-4af9-9da2-618d32f82bc3",
       "name": "Run Harbor Query - default",
       "request": {
@@ -3575,439 +2533,6 @@
       }
     },
     {
-      "id": "066ce3a1-f2b6-4a70-95c2-d72eba95e0b4",
-      "name": "List Harbor Saved Queries - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        },
-        "queryParameters": {
-          "limit": {
-            "equalTo": "1"
-          },
-          "page_token": {
-            "equalTo": "page_token"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"description\": \"description\",\n      \"expected_columns\": [\n        \"expected_columns\"\n      ],\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"name\": \"name\",\n      \"owner\": \"owner\",\n      \"published_at\": \"2024-01-15T09:30:00Z\",\n      \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\",\n      \"version\": 1\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "066ce3a1-f2b6-4a70-95c2-d72eba95e0b4",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "df49cfdd-be85-4ebe-8118-e3759c2fa473",
-      "name": "Create Harbor Saved Query Draft - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries",
-        "method": "POST",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"change_note\": \"change_note\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_by_type\": \"created_by_type\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"name\",\n    \"owner\": \"owner\",\n    \"parameters\": [\n      {\n        \"name\": \"start_date\",\n        \"type\": \"string\"\n      }\n    ],\n    \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"sql_template\": \"sql_template\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"updated_by_type\": \"updated_by_type\",\n    \"validation_values\": {\n      \"key\": \"value\"\n    }\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "df49cfdd-be85-4ebe-8118-e3759c2fa473",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "94ea7549-d184-4328-9d68-0bcd935e370c",
-      "name": "List Harbor Saved Query Drafts - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries/drafts",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        },
-        "queryParameters": {
-          "limit": {
-            "equalTo": "1"
-          },
-          "page_token": {
-            "equalTo": "page_token"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"change_note\": \"change_note\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"created_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_by_type\": \"created_by_type\",\n      \"description\": \"description\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"name\": \"name\",\n      \"owner\": \"owner\",\n      \"parameters\": [\n        {\n          \"name\": \"start_date\",\n          \"type\": \"string\"\n        }\n      ],\n      \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"sql_template\": \"sql_template\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_by_type\": \"updated_by_type\",\n      \"validation_values\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "94ea7549-d184-4328-9d68-0bcd935e370c",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "3bcd51aa-8e1e-454d-80c7-ec0121af24e2",
-      "name": "Get Harbor Saved Query - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries/{saved_query_id}",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "saved_query_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"change_note\": \"change_note\",\n    \"description\": \"description\",\n    \"expected_columns\": [\n      \"expected_columns\"\n    ],\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"name\",\n    \"owner\": \"owner\",\n    \"parameters\": [\n      {\n        \"name\": \"start_date\",\n        \"type\": \"string\"\n      }\n    ],\n    \"published_at\": \"2024-01-15T09:30:00Z\",\n    \"published_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"published_by_type\": \"published_by_type\",\n    \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"sql_template\": \"sql_template\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"version\": 1\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "3bcd51aa-8e1e-454d-80c7-ec0121af24e2",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "9ce1da95-93d2-4973-886e-eeb9ff5fccb8",
-      "name": "Delete Harbor Saved Query - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries/{saved_query_id}",
-        "method": "DELETE",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "saved_query_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "9ce1da95-93d2-4973-886e-eeb9ff5fccb8",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "1ba47c8b-1482-4471-a02f-c1b9275cf131",
-      "name": "Save Harbor Saved Query Draft - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries/{saved_query_id}/draft",
-        "method": "PUT",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "saved_query_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"change_note\": \"change_note\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_by_type\": \"created_by_type\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"name\",\n    \"owner\": \"owner\",\n    \"parameters\": [\n      {\n        \"name\": \"start_date\",\n        \"type\": \"string\"\n      }\n    ],\n    \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"sql_template\": \"sql_template\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"updated_by_type\": \"updated_by_type\",\n    \"validation_values\": {\n      \"key\": \"value\"\n    }\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "1ba47c8b-1482-4471-a02f-c1b9275cf131",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "63fab666-21bd-4168-ab6a-7235844aa288",
-      "name": "Delete Harbor Saved Query Draft - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries/{saved_query_id}/draft",
-        "method": "DELETE",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "saved_query_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "63fab666-21bd-4168-ab6a-7235844aa288",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "b4d326ba-1854-4090-bac0-51b2ff35a0a1",
-      "name": "Publish Harbor Saved Query Draft - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries/{saved_query_id}/draft/publish",
-        "method": "POST",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "saved_query_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"change_note\": \"change_note\",\n    \"description\": \"description\",\n    \"expected_columns\": [\n      \"expected_columns\"\n    ],\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"name\",\n    \"owner\": \"owner\",\n    \"parameters\": [\n      {\n        \"name\": \"start_date\",\n        \"type\": \"string\"\n      }\n    ],\n    \"published_at\": \"2024-01-15T09:30:00Z\",\n    \"published_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"published_by_type\": \"published_by_type\",\n    \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"sql_template\": \"sql_template\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"version\": 1\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "b4d326ba-1854-4090-bac0-51b2ff35a0a1",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "488fbf9e-52bd-461e-b0da-6a6a7849642c",
-      "name": "Validate Harbor Saved Query Draft - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries/{saved_query_id}/draft/validate",
-        "method": "POST",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "saved_query_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"columns\": [\n      \"columns\"\n    ],\n    \"rows\": [\n      {\n        \"key\": \"value\"\n      }\n    ],\n    \"truncated\": true\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "488fbf9e-52bd-461e-b0da-6a6a7849642c",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "fbbe7583-5055-48a3-adc0-3ecdebd3894f",
-      "name": "Execute Harbor Saved Query - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries/{saved_query_id}/execute",
-        "method": "POST",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "saved_query_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"count\": 10,\n    \"error\": \"error\",\n    \"expires\": \"2021-01-01T00:00:00Z\",\n    \"fields\": [\n      \"name\",\n      \"age\"\n    ],\n    \"id\": \"43d893ef-322b-47da-badb-3cf10d13a556\",\n    \"results\": [\n      {\n        \"key\": \"value\"\n      }\n    ],\n    \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"status\": \"created\",\n    \"version\": 1\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "fbbe7583-5055-48a3-adc0-3ecdebd3894f",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "6d107670-82ac-4861-b4b4-8c4e6685a1b5",
-      "name": "Resolve Harbor Source Mappings - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/source-mappings/resolve",
-        "method": "POST",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"backing_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"sources\": [\n      {\n        \"destination_schema_id\": \"salesforce.account\",\n        \"status\": \"resolved\"\n      }\n    ]\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "6d107670-82ac-4861-b4b4-8c4e6685a1b5",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
       "id": "5aac7d36-5bcf-4c5a-88a3-8710db1fc085",
       "name": "Get Harbor Status - default",
       "request": {
@@ -4032,164 +2557,6 @@
         }
       },
       "uuid": "5aac7d36-5bcf-4c5a-88a3-8710db1fc085",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "215bf246-4cc0-430b-9821-1de7f103ec34",
-      "name": "List Harbor Users - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/users",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        },
-        "queryParameters": {
-          "limit": {
-            "equalTo": "50"
-          },
-          "page_token": {
-            "equalTo": "page_token"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"email\": \"analyst@example.com\",\n      \"harbor_ids\": [\n        \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      ],\n      \"harbor_only\": true,\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"status\": \"invited\"\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "215bf246-4cc0-430b-9821-1de7f103ec34",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "058c5196-4eec-4194-9d78-d91970dbe071",
-      "name": "Invite Harbor User - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/users",
-        "method": "POST",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"email\": \"analyst@example.com\",\n    \"harbor_ids\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"harbor_only\": true,\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"status\": \"invited\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "058c5196-4eec-4194-9d78-d91970dbe071",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "db928b6b-b063-4f27-a3dc-e959c3a06aba",
-      "name": "Assign Harbor User - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/users/{user_id}",
-        "method": "PUT",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "user_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"email\": \"analyst@example.com\",\n    \"harbor_ids\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"harbor_only\": true,\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"status\": \"invited\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "db928b6b-b063-4f27-a3dc-e959c3a06aba",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "a17a68a4-44df-4132-9aa0-2fcb98199618",
-      "name": "Unassign Harbor User - default",
-      "request": {
-        "urlPathTemplate": "/api/harbors/{harbor_id}/users/{user_id}",
-        "method": "DELETE",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "harbor_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          },
-          "user_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "a17a68a4-44df-4132-9aa0-2fcb98199618",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -4643,194 +3010,6 @@
         }
       },
       "uuid": "c97511d7-83a3-4860-b7f6-0ee318953d3a",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "b63ceb9d-8a73-4a5d-8563-100f374135d0",
-      "name": "List Harbor Activity - default",
-      "request": {
-        "urlPathTemplate": "/api/organization/harbor-activity",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "queryParameters": {
-          "start_time": {
-            "equalTo": "2024-01-15T09:30:00.000Z"
-          },
-          "end_time": {
-            "equalTo": "2024-01-15T09:30:00.000Z"
-          },
-          "limit": {
-            "equalTo": "1"
-          },
-          "page_token": {
-            "equalTo": "page_token"
-          },
-          "order": {
-            "equalTo": "asc"
-          },
-          "harbor_id": {
-            "hasExactly": [
-              {
-                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-              }
-            ]
-          },
-          "event_type": {
-            "hasExactly": [
-              {
-                "equalTo": "action.looked_up"
-              }
-            ]
-          },
-          "outcome": {
-            "hasExactly": [
-              {
-                "equalTo": "succeeded"
-              }
-            ]
-          },
-          "operation_id": {
-            "hasExactly": [
-              {
-                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-              }
-            ]
-          },
-          "session_id": {
-            "hasExactly": [
-              {
-                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-              }
-            ]
-          },
-          "actor_id": {
-            "hasExactly": [
-              {
-                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-              }
-            ]
-          },
-          "credential_id": {
-            "hasExactly": [
-              {
-                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-              }
-            ]
-          },
-          "connection_id": {
-            "hasExactly": [
-              {
-                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-              }
-            ]
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"actor\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"attempt_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"client_name\": \"client_name\",\n      \"client_version\": \"client_version\",\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"context_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"credential\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"event_type\": \"action.looked_up\",\n      \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"metadata\": {\n        \"action_request_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"saved_query_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"occurred_at\": \"2024-01-15T09:30:00Z\",\n      \"operation_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"outcome\": \"succeeded\",\n      \"profile\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"provenance\": \"server_observed\",\n      \"query_source\": {\n        \"saved_query\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n          \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"submission_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"recorded_at\": \"2024-01-15T09:30:00Z\",\n      \"session_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"targets\": [\n        {\n          \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        }\n      ]\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "b63ceb9d-8a73-4a5d-8563-100f374135d0",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      },
-      "postServeActions": []
-    },
-    {
-      "id": "6f045645-c58f-490b-acfa-e6c9dfb2b5f4",
-      "name": "Get Harbor Activity Session - default",
-      "request": {
-        "urlPathTemplate": "/api/organization/harbor-activity/sessions/{session_id}",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "session_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        },
-        "queryParameters": {
-          "limit": {
-            "equalTo": "1"
-          },
-          "page_token": {
-            "equalTo": "page_token"
-          },
-          "order": {
-            "equalTo": "asc"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"client_name\": \"client_name\",\n    \"client_version\": \"client_version\",\n    \"credential\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"ended_at\": \"2024-01-15T09:30:00Z\",\n    \"events\": [\n      {\n        \"actor\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"attempt_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"context_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"credential\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"metadata\": {\n          \"action_request_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n          \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n          \"saved_query_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"operation_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"profile\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"query_source\": {\n          \"saved_query\": {\n            \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n            \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n          },\n          \"submission_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"session_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"targets\": [\n          {\n            \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n          }\n        ]\n      }\n    ],\n    \"expires_at\": \"2024-01-15T09:30:00Z\",\n    \"external_run_id\": \"external_run_id\",\n    \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"history_truncated\": true,\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"profile\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"started_at\": \"2024-01-15T09:30:00Z\",\n    \"started_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"status\": \"active\",\n    \"terminal_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  },\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "6f045645-c58f-490b-acfa-e6c9dfb2b5f4",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "b684ee80-5b81-46d9-b4ab-7f706eded168",
-      "name": "Get Harbor Activity - default",
-      "request": {
-        "urlPathTemplate": "/api/organization/harbor-activity/{event_id}",
-        "method": "GET",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .+"
-          }
-        },
-        "pathParameters": {
-          "event_id": {
-            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"data\": {\n    \"actor\": {\n      \"display_name\": \"display_name\",\n      \"email\": \"email\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"type\": \"type\"\n    },\n    \"attempt_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"client_name\": \"client_name\",\n    \"client_version\": \"client_version\",\n    \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"context_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"credential\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"event_type\": \"action.looked_up\",\n    \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"metadata\": {\n      \"action_enabled\": true,\n      \"action_field_ids\": [\n        \"action_field_ids\"\n      ],\n      \"action_id\": \"action_id\",\n      \"action_lookup_field_id\": \"action_lookup_field_id\",\n      \"action_lookup_field_ids\": [\n        \"action_lookup_field_ids\"\n      ],\n      \"action_request_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"attempt_number\": 1,\n      \"category\": \"category\",\n      \"client_name\": \"client_name\",\n      \"client_version\": \"client_version\",\n      \"connection_name\": \"connection_name\",\n      \"connection_name_truncated\": true,\n      \"connection_type\": \"connection_type\",\n      \"context_version\": 1,\n      \"error_category\": \"error_category\",\n      \"execution_duration_ms\": 1,\n      \"external_run_id\": \"external_run_id\",\n      \"failure_code\": \"failure_code\",\n      \"field_count\": 1,\n      \"has_next_page\": true,\n      \"label\": \"label\",\n      \"label_truncated\": true,\n      \"operation\": \"operation\",\n      \"phase\": \"dispatch\",\n      \"queue_duration_ms\": 1,\n      \"reason\": \"reason\",\n      \"record_id\": \"record_id\",\n      \"row_count\": 1,\n      \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"saved_query_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"saved_query_version\": 1,\n      \"schema_id\": \"schema_id\",\n      \"statement_category\": \"select\",\n      \"supported\": true,\n      \"total_duration_ms\": 1\n    },\n    \"occurred_at\": \"2024-01-15T09:30:00Z\",\n    \"operation_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"outcome\": \"succeeded\",\n    \"profile\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"provenance\": \"server_observed\",\n    \"query_source\": {\n      \"kind\": \"kind\",\n      \"saved_query\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"submission_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"submitted_at\": \"2024-01-15T09:30:00Z\"\n    },\n    \"recorded_at\": \"2024-01-15T09:30:00Z\",\n    \"session_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"targets\": [\n      {\n        \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      }\n    ]\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "b684ee80-5b81-46d9-b4ab-7f706eded168",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -6173,7 +4352,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": [\n    {\n      \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n      \"destination_history_output_name\": \"contact__history\",\n      \"disable_data_cutoff\": false,\n      \"enabled\": true,\n      \"history_enabled\": false,\n      \"id\": \"Contact\",\n      \"output_name\": \"contact\",\n      \"partition_key\": \"email\",\n      \"tracking_field\": \"updated_at\",\n      \"user_output_name\": \"my_contact\"\n    }\n  ]\n}",
+        "body": "{\n  \"data\": [\n    {\n      \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n      \"destination_history_output_name\": \"contact__history\",\n      \"disable_data_cutoff\": false,\n      \"enabled\": true,\n      \"excluded_fields\": [\n        \"ssn\"\n      ],\n      \"history_enabled\": false,\n      \"id\": \"Contact\",\n      \"output_name\": \"contact\",\n      \"partition_key\": \"email\",\n      \"tracking_field\": \"updated_at\",\n      \"user_output_name\": \"my_contact\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -6212,7 +4391,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n    \"destination_history_output_name\": \"contact__history\",\n    \"disable_data_cutoff\": false,\n    \"enabled\": true,\n    \"history_enabled\": false,\n    \"id\": \"Contact\",\n    \"output_name\": \"contact\",\n    \"partition_key\": \"email\",\n    \"tracking_field\": \"updated_at\",\n    \"user_output_name\": \"my_contact\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n    \"destination_history_output_name\": \"contact__history\",\n    \"disable_data_cutoff\": false,\n    \"enabled\": true,\n    \"excluded_fields\": [\n      \"ssn\"\n    ],\n    \"history_enabled\": false,\n    \"id\": \"Contact\",\n    \"output_name\": \"contact\",\n    \"partition_key\": \"email\",\n    \"tracking_field\": \"updated_at\",\n    \"user_output_name\": \"my_contact\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -6251,7 +4430,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"data\": {\n    \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n    \"destination_history_output_name\": \"contact__history\",\n    \"disable_data_cutoff\": false,\n    \"enabled\": true,\n    \"history_enabled\": false,\n    \"id\": \"Contact\",\n    \"output_name\": \"contact\",\n    \"partition_key\": \"email\",\n    \"tracking_field\": \"updated_at\",\n    \"user_output_name\": \"my_contact\"\n  }\n}",
+        "body": "{\n  \"data\": {\n    \"data_cutoff_timestamp\": \"2023-04-25T12:00:00Z\",\n    \"destination_history_output_name\": \"contact__history\",\n    \"disable_data_cutoff\": false,\n    \"enabled\": true,\n    \"excluded_fields\": [\n      \"ssn\"\n    ],\n    \"history_enabled\": false,\n    \"id\": \"Contact\",\n    \"output_name\": \"contact\",\n    \"partition_key\": \"email\",\n    \"tracking_field\": \"updated_at\",\n    \"user_output_name\": \"my_contact\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -6755,6 +4934,412 @@
       }
     },
     {
+      "id": "411b9ea6-80ab-4da2-9e65-8f46ff3b13f8",
+      "name": "List Harbor Connections - default",
+      "request": {
+        "urlPathTemplate": "/api/harbor/connections",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "queryParameters": {
+          "limit": {
+            "equalTo": "1"
+          },
+          "page_token": {
+            "equalTo": "page_token"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"capabilities\": [\n        \"schemas\"\n      ],\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"name\": \"name\",\n      \"type\": \"type\"\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "411b9ea6-80ab-4da2-9e65-8f46ff3b13f8",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "ccfa14fa-3959-4d38-87ba-2c2fc1bb1923",
+      "name": "List Harbor Connection Schemas - default",
+      "request": {
+        "urlPathTemplate": "/api/harbor/connections/{connection_id}/schemas",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "limit": {
+            "equalTo": "1"
+          },
+          "page_token": {
+            "equalTo": "page_token"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"id\": \"id\",\n      \"name\": \"name\"\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  },\n  \"supports_namespaces\": true\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ccfa14fa-3959-4d38-87ba-2c2fc1bb1923",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "1b955710-0d56-4b52-8637-83b05e5cbb24",
+      "name": "Get Harbor Connection Schema - default",
+      "request": {
+        "urlPathTemplate": "/api/harbor/connections/{connection_id}/schemas/{schema_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "schema_id": {
+            "equalTo": "schema_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"fields\": [\n      {\n        \"id\": \"email\",\n        \"is_primary_key\": true,\n        \"name\": \"Email\",\n        \"primary_key_override\": true,\n        \"remote_type\": \"varchar(255)\",\n        \"source_primary_key\": false\n      }\n    ],\n    \"id\": \"contact\",\n    \"name\": \"Contact\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "1b955710-0d56-4b52-8637-83b05e5cbb24",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "1c815681-c6ed-45ad-a214-b19b59742a2e",
+      "name": "Get Harbor Action Configuration - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"grants\": [\n        {\n          \"field_ids\": null,\n          \"operation_id\": \"operation_id\",\n          \"schema_id\": \"schema_id\"\n        }\n      ],\n      \"revision\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "1c815681-c6ed-45ad-a214-b19b59742a2e",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "a01975df-648b-409c-b00d-fb524fe1269a",
+      "name": "Disable Harbor Action Configuration - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration",
+        "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"grants\": [\n        {\n          \"field_ids\": null,\n          \"operation_id\": \"operation_id\",\n          \"schema_id\": \"schema_id\"\n        }\n      ],\n      \"revision\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "a01975df-648b-409c-b00d-fb524fe1269a",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "93ddb99f-b97b-4310-9f3c-0d38fe17efeb",
+      "name": "List Harbor Action Source Connections - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration/connections",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"connection_type\": \"connection_type\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"name\": \"name\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "93ddb99f-b97b-4310-9f3c-0d38fe17efeb",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "5ba25d5c-776d-44d7-9f78-11920f76de34",
+      "name": "Set Harbor Action Configuration - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration/connections/{connection_id}",
+        "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"grants\": [\n        {\n          \"field_ids\": null,\n          \"operation_id\": \"operation_id\",\n          \"schema_id\": \"schema_id\"\n        }\n      ],\n      \"revision\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "5ba25d5c-776d-44d7-9f78-11920f76de34",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "cbd858e2-e4b8-43f3-b04f-03aa10f3390e",
+      "name": "Remove Harbor Action Configuration - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration/connections/{connection_id}",
+        "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "expected_revision": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"grants\": [\n        {\n          \"field_ids\": null,\n          \"operation_id\": \"operation_id\",\n          \"schema_id\": \"schema_id\"\n        }\n      ],\n      \"revision\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "cbd858e2-e4b8-43f3-b04f-03aa10f3390e",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "1af0c137-de55-497f-a14f-a0ba21bc57f4",
+      "name": "List Harbor Action Configuration Schemas - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration/connections/{connection_id}/schemas",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "search": {
+            "equalTo": "search"
+          },
+          "limit": {
+            "equalTo": "1"
+          },
+          "page_token": {
+            "equalTo": "page_token"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"id\": \"id\",\n      \"name\": \"name\",\n      \"operations\": [\n        \"operations\"\n      ]\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "1af0c137-de55-497f-a14f-a0ba21bc57f4",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "60610446-0445-4538-844b-ec7163065151",
+      "name": "List Harbor Action Configuration Operations - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/action-configuration/connections/{connection_id}/schemas/{schema_id}/operations",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "connection_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "schema_id": {
+            "equalTo": "schema_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"description\": \"description\",\n      \"effect\": \"mutating\",\n      \"input_fields\": [\n        {}\n      ],\n      \"lookup_fields\": [\n        {}\n      ],\n      \"name\": \"name\",\n      \"operation_id\": \"operation_id\",\n      \"output_fields\": [\n        {}\n      ],\n      \"schema_id\": \"schema_id\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "60610446-0445-4538-844b-ec7163065151",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
       "id": "115726b6-2fae-4efc-87c5-a9fce1d4b9fb",
       "name": "Get Harbor Action Execution - default",
       "request": {
@@ -6984,6 +5569,1426 @@
         }
       },
       "uuid": "92bce28c-dc12-44df-835b-2716ec91cc51",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "593cdb08-832a-485b-93ea-7e060fd040fe",
+      "name": "List Harbor Contexts - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "limit": {
+            "equalTo": "50"
+          },
+          "page_token": {
+            "equalTo": "page_token"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"description\": \"description\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"title\": \"title\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\",\n      \"version\": 1\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "593cdb08-832a-485b-93ea-7e060fd040fe",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "8979fa6f-d3e1-40ee-8307-26205a28f21b",
+      "name": "Create Harbor Context - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"content\": \"content\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"title\": \"title\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"version\": 1\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "8979fa6f-d3e1-40ee-8307-26205a28f21b",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "1cddc4aa-9fcd-420b-91bd-0bc84f1b58ba",
+      "name": "List Harbor Context Drafts - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/drafts",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "limit": {
+            "equalTo": "50"
+          },
+          "page_token": {
+            "equalTo": "page_token"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"base_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"change_note\": \"change_note\",\n      \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"created_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_by_type\": \"created_by_type\",\n      \"description\": \"description\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"title\": \"title\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_by_type\": \"updated_by_type\"\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "1cddc4aa-9fcd-420b-91bd-0bc84f1b58ba",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "06b1a57a-bf7a-4ded-a265-8ff9c4341d80",
+      "name": "Create Harbor Context Draft - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/drafts",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"base_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"change_note\": \"change_note\",\n    \"content\": \"content\",\n    \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_by_type\": \"created_by_type\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"title\": \"title\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"updated_by_type\": \"updated_by_type\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "06b1a57a-bf7a-4ded-a265-8ff9c4341d80",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "9aa586c3-bc49-450f-9d30-01a5ebdd7f30",
+      "name": "Get Harbor Context Document - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "context_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"content\": \"content\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"title\": \"title\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"version\": 1\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "9aa586c3-bc49-450f-9d30-01a5ebdd7f30",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "efd47502-c118-4ef1-bc8c-e9eb1a180f80",
+      "name": "Update Harbor Context - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}",
+        "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "context_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"content\": \"content\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"title\": \"title\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"version\": 1\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "efd47502-c118-4ef1-bc8c-e9eb1a180f80",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "04989581-48d6-4fa8-9be5-60605504a14d",
+      "name": "Delete Harbor Context Document - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}",
+        "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "context_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "04989581-48d6-4fa8-9be5-60605504a14d",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "2e40507c-d1f6-44b9-affc-1d40abfd8302",
+      "name": "Get Harbor Context Draft - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}/draft",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "context_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"base_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"change_note\": \"change_note\",\n    \"content\": \"content\",\n    \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_by_type\": \"created_by_type\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"title\": \"title\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"updated_by_type\": \"updated_by_type\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "2e40507c-d1f6-44b9-affc-1d40abfd8302",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "6c49be07-5702-4a63-9862-cbd0e7a5705d",
+      "name": "Save Harbor Context Draft - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}/draft",
+        "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "context_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"base_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"change_note\": \"change_note\",\n    \"content\": \"content\",\n    \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_by_type\": \"created_by_type\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"title\": \"title\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"updated_by_type\": \"updated_by_type\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "6c49be07-5702-4a63-9862-cbd0e7a5705d",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "9ef1bedf-1796-4019-b9cd-f9ea5fb20fb5",
+      "name": "Delete Harbor Context Draft - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}/draft",
+        "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "context_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "9ef1bedf-1796-4019-b9cd-f9ea5fb20fb5",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "d840302c-01fb-426e-aa32-2e03a71597e9",
+      "name": "Promote Harbor Context Draft - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}/draft/promote",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "context_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"change_note\": \"change_note\",\n    \"content\": \"content\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"published_at\": \"2024-01-15T09:30:00Z\",\n    \"published_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"published_by_type\": \"published_by_type\",\n    \"title\": \"title\",\n    \"version\": 1\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "d840302c-01fb-426e-aa32-2e03a71597e9",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "52ad82f4-ae8f-4b0d-92c4-588b9b07848f",
+      "name": "List Harbor Context Versions - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}/versions",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "context_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "limit": {
+            "equalTo": "50"
+          },
+          "page_token": {
+            "equalTo": "page_token"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"change_note\": \"change_note\",\n      \"description\": \"description\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"published_at\": \"2024-01-15T09:30:00Z\",\n      \"published_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"published_by_type\": \"published_by_type\",\n      \"title\": \"title\",\n      \"version\": 1\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "52ad82f4-ae8f-4b0d-92c4-588b9b07848f",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "9c4df65b-2cf8-4f86-8316-dc85124170e5",
+      "name": "Get Harbor Context Version - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/contexts/{context_id}/versions/{version_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "context_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "version_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"change_note\": \"change_note\",\n    \"content\": \"content\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"published_at\": \"2024-01-15T09:30:00Z\",\n    \"published_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"published_by_type\": \"published_by_type\",\n    \"title\": \"title\",\n    \"version\": 1\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "9c4df65b-2cf8-4f86-8316-dc85124170e5",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "aead5213-1f93-4bec-885c-1561318d0e2c",
+      "name": "Resolve Harbor Source Mappings - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/source-mappings/resolve",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"backing_connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"sources\": [\n      {\n        \"destination_schema_id\": \"salesforce.account\",\n        \"status\": \"resolved\"\n      }\n    ]\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "aead5213-1f93-4bec-885c-1561318d0e2c",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "98130680-cb95-4d30-ab26-285f6f7be56b",
+      "name": "List Harbor Keys - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/keys",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "limit": {
+            "equalTo": "50"
+          },
+          "page_token": {
+            "equalTo": "page_token"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"calls_last_24_hours\": 1,\n      \"client_name\": \"client_name\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"expires_at\": \"2024-01-15T09:30:00Z\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"key_hint\": \"key_hint\",\n      \"mode\": \"profile\"\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "98130680-cb95-4d30-ab26-285f6f7be56b",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "4b6bd137-3bb5-4b51-9458-d18ccfa81efd",
+      "name": "Create Harbor Key - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/keys",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"mode\": \"profile\",\n    \"value\": \"value\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "4b6bd137-3bb5-4b51-9458-d18ccfa81efd",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "ab736a8e-c7a2-4a74-87f2-189467ef865f",
+      "name": "Delete Harbor Key - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/keys/{key_id}",
+        "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "key_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ab736a8e-c7a2-4a74-87f2-189467ef865f",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "04053cd1-87d8-4f47-9d10-875677999c7d",
+      "name": "List Harbor Saved Queries - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "limit": {
+            "equalTo": "1"
+          },
+          "page_token": {
+            "equalTo": "page_token"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"description\": \"description\",\n      \"expected_columns\": [\n        \"expected_columns\"\n      ],\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"name\": \"name\",\n      \"owner\": \"owner\",\n      \"published_at\": \"2024-01-15T09:30:00Z\",\n      \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\",\n      \"version\": 1\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "04053cd1-87d8-4f47-9d10-875677999c7d",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "1387bcde-3f4b-450c-8241-5ef0c28cc071",
+      "name": "Create Harbor Saved Query Draft - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"change_note\": \"change_note\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_by_type\": \"created_by_type\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"name\",\n    \"owner\": \"owner\",\n    \"parameters\": [\n      {\n        \"name\": \"start_date\",\n        \"type\": \"string\"\n      }\n    ],\n    \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"sql_template\": \"sql_template\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"updated_by_type\": \"updated_by_type\",\n    \"validation_values\": {\n      \"key\": \"value\"\n    }\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "1387bcde-3f4b-450c-8241-5ef0c28cc071",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "8e439eea-9f1f-426a-9ecd-3891bee43489",
+      "name": "List Harbor Saved Query Drafts - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries/drafts",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "limit": {
+            "equalTo": "1"
+          },
+          "page_token": {
+            "equalTo": "page_token"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"change_note\": \"change_note\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"created_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"created_by_type\": \"created_by_type\",\n      \"description\": \"description\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"name\": \"name\",\n      \"owner\": \"owner\",\n      \"parameters\": [\n        {\n          \"name\": \"start_date\",\n          \"type\": \"string\"\n        }\n      ],\n      \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"sql_template\": \"sql_template\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"updated_by_type\": \"updated_by_type\",\n      \"validation_values\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "8e439eea-9f1f-426a-9ecd-3891bee43489",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "7da4fb5f-7b3b-4644-ae70-17140a080286",
+      "name": "Get Harbor Saved Query - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries/{saved_query_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "saved_query_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"change_note\": \"change_note\",\n    \"description\": \"description\",\n    \"expected_columns\": [\n      \"expected_columns\"\n    ],\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"name\",\n    \"owner\": \"owner\",\n    \"parameters\": [\n      {\n        \"name\": \"start_date\",\n        \"type\": \"string\"\n      }\n    ],\n    \"published_at\": \"2024-01-15T09:30:00Z\",\n    \"published_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"published_by_type\": \"published_by_type\",\n    \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"sql_template\": \"sql_template\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"version\": 1\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "7da4fb5f-7b3b-4644-ae70-17140a080286",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "e3a69792-5d11-40b5-ad4f-976f03d10645",
+      "name": "Delete Harbor Saved Query - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries/{saved_query_id}",
+        "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "saved_query_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "e3a69792-5d11-40b5-ad4f-976f03d10645",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "a7ba0352-7a2c-4b5d-baed-846a99845b2b",
+      "name": "Save Harbor Saved Query Draft - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries/{saved_query_id}/draft",
+        "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "saved_query_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"change_note\": \"change_note\",\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"created_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"created_by_type\": \"created_by_type\",\n    \"description\": \"description\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"name\",\n    \"owner\": \"owner\",\n    \"parameters\": [\n      {\n        \"name\": \"start_date\",\n        \"type\": \"string\"\n      }\n    ],\n    \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"sql_template\": \"sql_template\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"updated_by_type\": \"updated_by_type\",\n    \"validation_values\": {\n      \"key\": \"value\"\n    }\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "a7ba0352-7a2c-4b5d-baed-846a99845b2b",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "7644016c-3dc2-4c26-ac6d-c32ec2c65d5a",
+      "name": "Delete Harbor Saved Query Draft - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries/{saved_query_id}/draft",
+        "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "saved_query_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "7644016c-3dc2-4c26-ac6d-c32ec2c65d5a",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "39982c34-72b6-404e-bd29-fb570bdc18bf",
+      "name": "Publish Harbor Saved Query Draft - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries/{saved_query_id}/draft/publish",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "saved_query_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"change_note\": \"change_note\",\n    \"description\": \"description\",\n    \"expected_columns\": [\n      \"expected_columns\"\n    ],\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"name\": \"name\",\n    \"owner\": \"owner\",\n    \"parameters\": [\n      {\n        \"name\": \"start_date\",\n        \"type\": \"string\"\n      }\n    ],\n    \"published_at\": \"2024-01-15T09:30:00Z\",\n    \"published_by\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"published_by_type\": \"published_by_type\",\n    \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"sql_template\": \"sql_template\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\",\n    \"version\": 1\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "39982c34-72b6-404e-bd29-fb570bdc18bf",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "653bbc96-5aaf-48c5-bb1e-3b5a176fb544",
+      "name": "Validate Harbor Saved Query Draft - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries/{saved_query_id}/draft/validate",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "saved_query_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"columns\": [\n      \"columns\"\n    ],\n    \"rows\": [\n      {\n        \"key\": \"value\"\n      }\n    ],\n    \"truncated\": true\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "653bbc96-5aaf-48c5-bb1e-3b5a176fb544",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "e62936bd-d555-454a-b059-89534d8350ec",
+      "name": "Execute Harbor Saved Query - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/saved-queries/{saved_query_id}/execute",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "saved_query_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"count\": 10,\n    \"error\": \"error\",\n    \"expires\": \"2021-01-01T00:00:00Z\",\n    \"fields\": [\n      \"name\",\n      \"age\"\n    ],\n    \"id\": \"43d893ef-322b-47da-badb-3cf10d13a556\",\n    \"results\": [\n      {\n        \"key\": \"value\"\n      }\n    ],\n    \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"status\": \"created\",\n    \"version\": 1\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "e62936bd-d555-454a-b059-89534d8350ec",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "5ae81765-fc90-467e-a5cc-932f764f7d98",
+      "name": "List Harbor Users - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/users",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "limit": {
+            "equalTo": "50"
+          },
+          "page_token": {
+            "equalTo": "page_token"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"email\": \"analyst@example.com\",\n      \"harbor_ids\": [\n        \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      ],\n      \"harbor_only\": true,\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"status\": \"invited\"\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "5ae81765-fc90-467e-a5cc-932f764f7d98",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "8d0a375a-6d3f-465e-8513-f2eed93c2c0d",
+      "name": "Invite Harbor User - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/users",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"email\": \"analyst@example.com\",\n    \"harbor_ids\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"harbor_only\": true,\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"status\": \"invited\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "8d0a375a-6d3f-465e-8513-f2eed93c2c0d",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "171ca0f5-d1c8-42aa-8fb4-9ae6cb8ab1f6",
+      "name": "Assign Harbor User - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/users/{user_id}",
+        "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "user_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"email\": \"analyst@example.com\",\n    \"harbor_ids\": [\n      \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    ],\n    \"harbor_only\": true,\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"organization_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"status\": \"invited\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "171ca0f5-d1c8-42aa-8fb4-9ae6cb8ab1f6",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "673ca1ea-ba9b-4903-97a9-f7293cf9ab62",
+      "name": "Unassign Harbor User - default",
+      "request": {
+        "urlPathTemplate": "/api/harbors/{harbor_id}/users/{user_id}",
+        "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "harbor_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          },
+          "user_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "673ca1ea-ba9b-4903-97a9-f7293cf9ab62",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "a817402b-3e49-4d52-b711-5866a5159842",
+      "name": "List Harbor Activity - default",
+      "request": {
+        "urlPathTemplate": "/api/organization/harbor-activity",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "queryParameters": {
+          "start_time": {
+            "equalTo": "2024-01-15T09:30:00.000Z"
+          },
+          "end_time": {
+            "equalTo": "2024-01-15T09:30:00.000Z"
+          },
+          "limit": {
+            "equalTo": "1"
+          },
+          "page_token": {
+            "equalTo": "page_token"
+          },
+          "order": {
+            "equalTo": "asc"
+          },
+          "harbor_id": {
+            "hasExactly": [
+              {
+                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+              }
+            ]
+          },
+          "event_type": {
+            "hasExactly": [
+              {
+                "equalTo": "action.looked_up"
+              }
+            ]
+          },
+          "outcome": {
+            "hasExactly": [
+              {
+                "equalTo": "succeeded"
+              }
+            ]
+          },
+          "operation_id": {
+            "hasExactly": [
+              {
+                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+              }
+            ]
+          },
+          "session_id": {
+            "hasExactly": [
+              {
+                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+              }
+            ]
+          },
+          "actor_id": {
+            "hasExactly": [
+              {
+                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+              }
+            ]
+          },
+          "credential_id": {
+            "hasExactly": [
+              {
+                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+              }
+            ]
+          },
+          "connection_id": {
+            "hasExactly": [
+              {
+                "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+              }
+            ]
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": [\n    {\n      \"actor\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"attempt_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"client_name\": \"client_name\",\n      \"client_version\": \"client_version\",\n      \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"context_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"credential\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"event_type\": \"action.looked_up\",\n      \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"metadata\": {\n        \"action_request_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"saved_query_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"occurred_at\": \"2024-01-15T09:30:00Z\",\n      \"operation_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"outcome\": \"succeeded\",\n      \"profile\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"provenance\": \"server_observed\",\n      \"query_source\": {\n        \"saved_query\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n          \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"submission_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"recorded_at\": \"2024-01-15T09:30:00Z\",\n      \"session_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"targets\": [\n        {\n          \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        }\n      ]\n    }\n  ],\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "a817402b-3e49-4d52-b711-5866a5159842",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "c13df73d-fb64-4cf3-8a15-fde2d25afae2",
+      "name": "Get Harbor Activity Session - default",
+      "request": {
+        "urlPathTemplate": "/api/organization/harbor-activity/sessions/{session_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "session_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        },
+        "queryParameters": {
+          "limit": {
+            "equalTo": "1"
+          },
+          "page_token": {
+            "equalTo": "page_token"
+          },
+          "order": {
+            "equalTo": "asc"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"client_name\": \"client_name\",\n    \"client_version\": \"client_version\",\n    \"credential\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"ended_at\": \"2024-01-15T09:30:00Z\",\n    \"events\": [\n      {\n        \"actor\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"attempt_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"context_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"credential\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"metadata\": {\n          \"action_request_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n          \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n          \"saved_query_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"operation_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"profile\": {\n          \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"query_source\": {\n          \"saved_query\": {\n            \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n            \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n          },\n          \"submission_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n        },\n        \"session_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"targets\": [\n          {\n            \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n          }\n        ]\n      }\n    ],\n    \"expires_at\": \"2024-01-15T09:30:00Z\",\n    \"external_run_id\": \"external_run_id\",\n    \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"history_truncated\": true,\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"profile\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"started_at\": \"2024-01-15T09:30:00Z\",\n    \"started_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"status\": \"active\",\n    \"terminal_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n  },\n  \"pagination\": {\n    \"next_page_token\": \"AmkYh8v0jR5B3kls2Qcc9y8MjrPmvR4CvaK7H0F4rEwqvg76K==\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "c13df73d-fb64-4cf3-8a15-fde2d25afae2",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "3736aaf2-71e8-4b00-8599-9be80aac2dcd",
+      "name": "Get Harbor Activity - default",
+      "request": {
+        "urlPathTemplate": "/api/organization/harbor-activity/{event_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "event_id": {
+            "equalTo": "248df4b7-aa70-47b8-a036-33ac447e668d"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"data\": {\n    \"actor\": {\n      \"display_name\": \"display_name\",\n      \"email\": \"email\",\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"type\": \"type\"\n    },\n    \"attempt_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"client_name\": \"client_name\",\n    \"client_version\": \"client_version\",\n    \"connection_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"context_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"context_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"credential\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"event_type\": \"action.looked_up\",\n    \"harbor_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"metadata\": {\n      \"action_enabled\": true,\n      \"action_field_ids\": [\n        \"action_field_ids\"\n      ],\n      \"action_id\": \"action_id\",\n      \"action_lookup_field_id\": \"action_lookup_field_id\",\n      \"action_lookup_field_ids\": [\n        \"action_lookup_field_ids\"\n      ],\n      \"action_request_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"attempt_number\": 1,\n      \"category\": \"category\",\n      \"client_name\": \"client_name\",\n      \"client_version\": \"client_version\",\n      \"connection_name\": \"connection_name\",\n      \"connection_name_truncated\": true,\n      \"connection_type\": \"connection_type\",\n      \"context_version\": 1,\n      \"error_category\": \"error_category\",\n      \"execution_duration_ms\": 1,\n      \"external_run_id\": \"external_run_id\",\n      \"failure_code\": \"failure_code\",\n      \"field_count\": 1,\n      \"has_next_page\": true,\n      \"label\": \"label\",\n      \"label_truncated\": true,\n      \"operation\": \"operation\",\n      \"phase\": \"dispatch\",\n      \"queue_duration_ms\": 1,\n      \"reason\": \"reason\",\n      \"record_id\": \"record_id\",\n      \"row_count\": 1,\n      \"saved_query_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"saved_query_revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"saved_query_version\": 1,\n      \"schema_id\": \"schema_id\",\n      \"statement_category\": \"select\",\n      \"supported\": true,\n      \"total_duration_ms\": 1\n    },\n    \"occurred_at\": \"2024-01-15T09:30:00Z\",\n    \"operation_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"outcome\": \"succeeded\",\n    \"profile\": {\n      \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n    },\n    \"provenance\": \"server_observed\",\n    \"query_source\": {\n      \"kind\": \"kind\",\n      \"saved_query\": {\n        \"id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n        \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      },\n      \"submission_event_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n      \"submitted_at\": \"2024-01-15T09:30:00Z\"\n    },\n    \"recorded_at\": \"2024-01-15T09:30:00Z\",\n    \"session_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\",\n    \"targets\": [\n      {\n        \"revision_id\": \"248df4b7-aa70-47b8-a036-33ac447e668d\"\n      }\n    ]\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "3736aaf2-71e8-4b00-8599-9be80aac2dcd",
       "persistent": true,
       "priority": 3,
       "metadata": {

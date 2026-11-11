@@ -77,6 +77,14 @@ func (c *Client) List(
 //
 //	request := &permissions.CreatePolicyRequest{
 //	    Name: "Custom",
+//	    PolicyActions: []*polytomic.PolicyAction{
+//	        &polytomic.PolicyAction{
+//	            Action: "edit",
+//	            RoleIDs: []string{
+//	                "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	            },
+//	        },
+//	    },
 //	}
 //	client.Permissions.Policies.Create(
 //	    context.TODO(),
@@ -138,6 +146,14 @@ func (c *Client) Get(
 //
 //	request := &permissions.UpdatePolicyRequest{
 //	    Name: "Custom",
+//	    PolicyActions: []*polytomic.PolicyAction{
+//	        &polytomic.PolicyAction{
+//	            Action: "edit",
+//	            RoleIDs: []string{
+//	                "248df4b7-aa70-47b8-a036-33ac447e668d",
+//	            },
+//	        },
+//	    },
 //	}
 //	client.Permissions.Policies.Update(
 //	    context.TODO(),

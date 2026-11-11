@@ -370,14 +370,20 @@ func TestBulkSyncGetDestinationWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithToken("test-token"),
 	)
+	request := &polytomic.BulkSyncGetDestinationRequest{
+		SourceConnectionID: polytomic.String(
+			"248df4b7-aa70-47b8-a036-33ac447e668d",
+		),
+	}
 	_, invocationErr := client.BulkSync.GetDestination(
 		context.TODO(),
 		"248df4b7-aa70-47b8-a036-33ac447e668d",
+		request,
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestBulkSyncGetDestinationWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestBulkSyncGetDestinationWithWireMock", "GET", "/api/connections/248df4b7-aa70-47b8-a036-33ac447e668d/bulksync/target", nil, 1)
+	VerifyRequestCount(t, "TestBulkSyncGetDestinationWithWireMock", "GET", "/api/connections/248df4b7-aa70-47b8-a036-33ac447e668d/bulksync/target", map[string]interface{}{"source_connection_id": "248df4b7-aa70-47b8-a036-33ac447e668d"}, 1)
 }

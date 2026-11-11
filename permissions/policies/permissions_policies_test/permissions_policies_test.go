@@ -10,6 +10,7 @@ import (
 	os "os"
 	testing "testing"
 
+	polytomic "github.com/polytomic/polytomic-go/v25"
 	client "github.com/polytomic/polytomic-go/v25/client"
 	option "github.com/polytomic/polytomic-go/v25/option"
 	permissions "github.com/polytomic/polytomic-go/v25/permissions"
@@ -112,6 +113,14 @@ func TestPermissionsPoliciesCreateWithWireMock(
 	)
 	request := &permissions.CreatePolicyRequest{
 		Name: "Custom",
+		PolicyActions: []*polytomic.PolicyAction{
+			&polytomic.PolicyAction{
+				Action: "edit",
+				RoleIDs: []string{
+					"248df4b7-aa70-47b8-a036-33ac447e668d",
+				},
+			},
+		},
 	}
 	_, invocationErr := client.Permissions.Policies.Create(
 		context.TODO(),
@@ -161,6 +170,14 @@ func TestPermissionsPoliciesUpdateWithWireMock(
 	)
 	request := &permissions.UpdatePolicyRequest{
 		Name: "Custom",
+		PolicyActions: []*polytomic.PolicyAction{
+			&polytomic.PolicyAction{
+				Action: "edit",
+				RoleIDs: []string{
+					"248df4b7-aa70-47b8-a036-33ac447e668d",
+				},
+			},
+		},
 	}
 	_, invocationErr := client.Permissions.Policies.Update(
 		context.TODO(),

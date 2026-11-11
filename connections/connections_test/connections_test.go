@@ -134,6 +134,10 @@ func TestConnectionsGetTypeParameterValuesWithWireMock(
 	)
 	request := &polytomic.GetConnectionTypeParameterValuesRequestSchema{
 		Field: "field",
+		Parameters: map[string]any{
+			"byo_app_token": "secret",
+			"name":          "Example",
+		},
 	}
 	_, invocationErr := client.Connections.GetTypeParameterValues(
 		context.TODO(),

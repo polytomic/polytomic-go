@@ -248,6 +248,8 @@ type EventPayload struct {
 	EventingBulkSyncCanceledEvent           *EventingBulkSyncCanceledEvent
 	EventingBulkSyncCompletedWithErrorEvent *EventingBulkSyncCompletedWithErrorEvent
 	EventingBulkSyncFailedEvent             *EventingBulkSyncFailedEvent
+	EventingIngestionStalledEvent           *EventingIngestionStalledEvent
+	EventingIngestionRecoveredEvent         *EventingIngestionRecoveredEvent
 
 	typ string
 }
@@ -322,6 +324,20 @@ func (e *EventPayload) GetEventingBulkSyncFailedEvent() *EventingBulkSyncFailedE
 	return e.EventingBulkSyncFailedEvent
 }
 
+func (e *EventPayload) GetEventingIngestionStalledEvent() *EventingIngestionStalledEvent {
+	if e == nil {
+		return nil
+	}
+	return e.EventingIngestionStalledEvent
+}
+
+func (e *EventPayload) GetEventingIngestionRecoveredEvent() *EventingIngestionRecoveredEvent {
+	if e == nil {
+		return nil
+	}
+	return e.EventingIngestionRecoveredEvent
+}
+
 func (e *EventPayload) UnmarshalJSON(data []byte) error {
 	valueEventingSyncRunningEvent := new(EventingSyncRunningEvent)
 	if err := json.Unmarshal(data, &valueEventingSyncRunningEvent); err == nil {
@@ -383,6 +399,18 @@ func (e *EventPayload) UnmarshalJSON(data []byte) error {
 		e.EventingBulkSyncFailedEvent = valueEventingBulkSyncFailedEvent
 		return nil
 	}
+	valueEventingIngestionStalledEvent := new(EventingIngestionStalledEvent)
+	if err := json.Unmarshal(data, &valueEventingIngestionStalledEvent); err == nil {
+		e.typ = "EventingIngestionStalledEvent"
+		e.EventingIngestionStalledEvent = valueEventingIngestionStalledEvent
+		return nil
+	}
+	valueEventingIngestionRecoveredEvent := new(EventingIngestionRecoveredEvent)
+	if err := json.Unmarshal(data, &valueEventingIngestionRecoveredEvent); err == nil {
+		e.typ = "EventingIngestionRecoveredEvent"
+		e.EventingIngestionRecoveredEvent = valueEventingIngestionRecoveredEvent
+		return nil
+	}
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, e)
 }
 
@@ -417,6 +445,12 @@ func (e EventPayload) MarshalJSON() ([]byte, error) {
 	if e.typ == "EventingBulkSyncFailedEvent" || e.EventingBulkSyncFailedEvent != nil {
 		return json.Marshal(e.EventingBulkSyncFailedEvent)
 	}
+	if e.typ == "EventingIngestionStalledEvent" || e.EventingIngestionStalledEvent != nil {
+		return json.Marshal(e.EventingIngestionStalledEvent)
+	}
+	if e.typ == "EventingIngestionRecoveredEvent" || e.EventingIngestionRecoveredEvent != nil {
+		return json.Marshal(e.EventingIngestionRecoveredEvent)
+	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", e)
 }
 
@@ -431,6 +465,8 @@ type EventPayloadVisitor interface {
 	VisitEventingBulkSyncCanceledEvent(*EventingBulkSyncCanceledEvent) error
 	VisitEventingBulkSyncCompletedWithErrorEvent(*EventingBulkSyncCompletedWithErrorEvent) error
 	VisitEventingBulkSyncFailedEvent(*EventingBulkSyncFailedEvent) error
+	VisitEventingIngestionStalledEvent(*EventingIngestionStalledEvent) error
+	VisitEventingIngestionRecoveredEvent(*EventingIngestionRecoveredEvent) error
 }
 
 func (e *EventPayload) Accept(visitor EventPayloadVisitor) error {
@@ -463,6 +499,12 @@ func (e *EventPayload) Accept(visitor EventPayloadVisitor) error {
 	}
 	if e.typ == "EventingBulkSyncFailedEvent" || e.EventingBulkSyncFailedEvent != nil {
 		return visitor.VisitEventingBulkSyncFailedEvent(e.EventingBulkSyncFailedEvent)
+	}
+	if e.typ == "EventingIngestionStalledEvent" || e.EventingIngestionStalledEvent != nil {
+		return visitor.VisitEventingIngestionStalledEvent(e.EventingIngestionStalledEvent)
+	}
+	if e.typ == "EventingIngestionRecoveredEvent" || e.EventingIngestionRecoveredEvent != nil {
+		return visitor.VisitEventingIngestionRecoveredEvent(e.EventingIngestionRecoveredEvent)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", e)
 }
@@ -551,6 +593,7 @@ func (e *EventTypesEnvelope) String() string {
 	return fmt.Sprintf("%#v", e)
 }
 
+// Fires when you cancel a whole Bulk Sync execution or when every object in it is canceled. An execution ends with one of `bulk_sync.completed`, `bulk_sync.completed_with_errors`, `bulk_sync.failed`, or `bulk_sync.canceled`.
 var (
 	eventingBulkSyncCanceledEventFieldDestinationConnectionID = big.NewInt(1 << 0)
 	eventingBulkSyncCanceledEventFieldExecutionID             = big.NewInt(1 << 1)
@@ -569,9 +612,9 @@ type EventingBulkSyncCanceledEvent struct {
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// Source connection ID
 	SourceConnectionID *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	// Bulk sync ID
+	// Bulk Sync ID
 	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	// Name of the bulk sync
+	// Name of the Bulk Sync
 	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -721,6 +764,7 @@ func (e *EventingBulkSyncCanceledEvent) String() string {
 	return fmt.Sprintf("%#v", e)
 }
 
+// Fires when a Bulk Sync execution finishes with no failed objects, including when you cancel some of its objects and the rest finish. An execution ends with one of `bulk_sync.completed`, `bulk_sync.completed_with_errors`, `bulk_sync.failed`, or `bulk_sync.canceled`.
 var (
 	eventingBulkSyncCompletedEventFieldDestinationConnectionID = big.NewInt(1 << 0)
 	eventingBulkSyncCompletedEventFieldExecutionID             = big.NewInt(1 << 1)
@@ -743,9 +787,9 @@ type EventingBulkSyncCompletedEvent struct {
 	Schedule *EventingBulkSyncSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
 	// Source connection ID
 	SourceConnectionID *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	// Bulk sync ID
+	// Bulk Sync ID
 	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	// Name of the bulk sync
+	// Name of the Bulk Sync
 	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	// What started the execution
 	TriggerSource *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
@@ -925,6 +969,7 @@ func (e *EventingBulkSyncCompletedEvent) String() string {
 	return fmt.Sprintf("%#v", e)
 }
 
+// Fires when a Bulk Sync execution finishes with some objects failed and others not, or with an error reported for the execution as a whole. An execution ends with one of `bulk_sync.completed`, `bulk_sync.completed_with_errors`, `bulk_sync.failed`, or `bulk_sync.canceled`.
 var (
 	eventingBulkSyncCompletedWithErrorEventFieldDestinationConnectionID = big.NewInt(1 << 0)
 	eventingBulkSyncCompletedWithErrorEventFieldExecutionID             = big.NewInt(1 << 1)
@@ -947,9 +992,9 @@ type EventingBulkSyncCompletedWithErrorEvent struct {
 	Schedule *EventingBulkSyncSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
 	// Source connection ID
 	SourceConnectionID *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	// Bulk sync ID
+	// Bulk Sync ID
 	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	// Name of the bulk sync
+	// Name of the Bulk Sync
 	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	// What started the execution
 	TriggerSource *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
@@ -1129,6 +1174,7 @@ func (e *EventingBulkSyncCompletedWithErrorEvent) String() string {
 	return fmt.Sprintf("%#v", e)
 }
 
+// Fires when a Bulk Sync execution fails because every object failed, an error stopped the whole execution, or ingestion fell behind the failure threshold set on the Bulk Sync. An execution ends with one of `bulk_sync.completed`, `bulk_sync.completed_with_errors`, `bulk_sync.failed`, or `bulk_sync.canceled`.
 var (
 	eventingBulkSyncFailedEventFieldDestinationConnectionID = big.NewInt(1 << 0)
 	eventingBulkSyncFailedEventFieldError                   = big.NewInt(1 << 1)
@@ -1154,9 +1200,9 @@ type EventingBulkSyncFailedEvent struct {
 	Schedule *EventingBulkSyncSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
 	// Source connection ID
 	SourceConnectionID *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	// Bulk sync ID
+	// Bulk Sync ID
 	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	// Name of the bulk sync
+	// Name of the Bulk Sync
 	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	// What started the execution
 	TriggerSource *string `json:"trigger_source,omitempty" url:"trigger_source,omitempty"`
@@ -1350,6 +1396,7 @@ func (e *EventingBulkSyncFailedEvent) String() string {
 	return fmt.Sprintf("%#v", e)
 }
 
+// Fires when a Bulk Sync execution starts running.
 var (
 	eventingBulkSyncRunningEventFieldDestinationConnectionID = big.NewInt(1 << 0)
 	eventingBulkSyncRunningEventFieldExecutionID             = big.NewInt(1 << 1)
@@ -1368,9 +1415,9 @@ type EventingBulkSyncRunningEvent struct {
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// Source connection ID
 	SourceConnectionID *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
-	// Bulk sync ID
+	// Bulk Sync ID
 	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	// Name of the bulk sync
+	// Name of the Bulk Sync
 	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1528,7 +1575,7 @@ var (
 type EventingBulkSyncSchedule struct {
 	// Frequency of the schedule
 	Frequency *string `json:"frequency,omitempty" url:"frequency,omitempty"`
-	// Bulk sync schedule ID
+	// Bulk Sync schedule ID
 	ID *string `json:"id,omitempty" url:"id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1622,6 +1669,382 @@ func (e *EventingBulkSyncSchedule) String() string {
 	return fmt.Sprintf("%#v", e)
 }
 
+// Fires when an ingestion run finishes healthy after Polytomic has reported a stall. `stalled_since` matches the stall that ended. This event can arrive with no earlier `ingestion.stalled` if stall notifications were turned on for your Organization during the stall. The `sync_id` and `sync_name` fields are absent when ingestion belongs to the Connection.
+var (
+	eventingIngestionRecoveredEventFieldOrganizationID       = big.NewInt(1 << 0)
+	eventingIngestionRecoveredEventFieldSourceConnectionID   = big.NewInt(1 << 1)
+	eventingIngestionRecoveredEventFieldSourceConnectionName = big.NewInt(1 << 2)
+	eventingIngestionRecoveredEventFieldStalledSince         = big.NewInt(1 << 3)
+	eventingIngestionRecoveredEventFieldSyncID               = big.NewInt(1 << 4)
+	eventingIngestionRecoveredEventFieldSyncName             = big.NewInt(1 << 5)
+)
+
+type EventingIngestionRecoveredEvent struct {
+	// Organization ID
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Source connection ID
+	SourceConnectionID *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	// Name of the source Connection
+	SourceConnectionName *string `json:"source_connection_name,omitempty" url:"source_connection_name,omitempty"`
+	// When ingestion became unhealthy
+	StalledSince *time.Time `json:"stalled_since,omitempty" url:"stalled_since,omitempty"`
+	// Bulk Sync ID, absent when ingestion belongs to the Connection
+	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	// Name of the Bulk Sync, absent when ingestion belongs to the Connection
+	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (e *EventingIngestionRecoveredEvent) GetOrganizationID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.OrganizationID
+}
+
+func (e *EventingIngestionRecoveredEvent) GetSourceConnectionID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.SourceConnectionID
+}
+
+func (e *EventingIngestionRecoveredEvent) GetSourceConnectionName() *string {
+	if e == nil {
+		return nil
+	}
+	return e.SourceConnectionName
+}
+
+func (e *EventingIngestionRecoveredEvent) GetStalledSince() *time.Time {
+	if e == nil {
+		return nil
+	}
+	return e.StalledSince
+}
+
+func (e *EventingIngestionRecoveredEvent) GetSyncID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.SyncID
+}
+
+func (e *EventingIngestionRecoveredEvent) GetSyncName() *string {
+	if e == nil {
+		return nil
+	}
+	return e.SyncName
+}
+
+func (e *EventingIngestionRecoveredEvent) GetExtraProperties() map[string]interface{} {
+	if e == nil {
+		return nil
+	}
+	return e.extraProperties
+}
+
+func (e *EventingIngestionRecoveredEvent) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingIngestionRecoveredEvent) SetOrganizationID(organizationID *string) {
+	e.OrganizationID = organizationID
+	e.require(eventingIngestionRecoveredEventFieldOrganizationID)
+}
+
+// SetSourceConnectionID sets the SourceConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingIngestionRecoveredEvent) SetSourceConnectionID(sourceConnectionID *string) {
+	e.SourceConnectionID = sourceConnectionID
+	e.require(eventingIngestionRecoveredEventFieldSourceConnectionID)
+}
+
+// SetSourceConnectionName sets the SourceConnectionName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingIngestionRecoveredEvent) SetSourceConnectionName(sourceConnectionName *string) {
+	e.SourceConnectionName = sourceConnectionName
+	e.require(eventingIngestionRecoveredEventFieldSourceConnectionName)
+}
+
+// SetStalledSince sets the StalledSince field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingIngestionRecoveredEvent) SetStalledSince(stalledSince *time.Time) {
+	e.StalledSince = stalledSince
+	e.require(eventingIngestionRecoveredEventFieldStalledSince)
+}
+
+// SetSyncID sets the SyncID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingIngestionRecoveredEvent) SetSyncID(syncID *string) {
+	e.SyncID = syncID
+	e.require(eventingIngestionRecoveredEventFieldSyncID)
+}
+
+// SetSyncName sets the SyncName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingIngestionRecoveredEvent) SetSyncName(syncName *string) {
+	e.SyncName = syncName
+	e.require(eventingIngestionRecoveredEventFieldSyncName)
+}
+
+func (e *EventingIngestionRecoveredEvent) UnmarshalJSON(data []byte) error {
+	type embed EventingIngestionRecoveredEvent
+	var unmarshaler = struct {
+		embed
+		StalledSince *internal.DateTime `json:"stalled_since,omitempty"`
+	}{
+		embed: embed(*e),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*e = EventingIngestionRecoveredEvent(unmarshaler.embed)
+	e.StalledSince = unmarshaler.StalledSince.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
+	if err != nil {
+		return err
+	}
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *EventingIngestionRecoveredEvent) MarshalJSON() ([]byte, error) {
+	type embed EventingIngestionRecoveredEvent
+	var marshaler = struct {
+		embed
+		StalledSince *internal.DateTime `json:"stalled_since,omitempty"`
+	}{
+		embed:        embed(*e),
+		StalledSince: internal.NewOptionalDateTime(e.StalledSince),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (e *EventingIngestionRecoveredEvent) String() string {
+	if e == nil {
+		return "<nil>"
+	}
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+// Fires when ingestion from a source Connection has been unhealthy for one hour by default. Ingestion is unhealthy when its runs fail or stop advancing toward the source's latest position. Polytomic checks when an ingestion run finishes and sends this event once per stall. `stalled_since` can be well before the event's `created_at`. The `sync_id` and `sync_name` fields are absent when ingestion belongs to the Connection.
+var (
+	eventingIngestionStalledEventFieldError                = big.NewInt(1 << 0)
+	eventingIngestionStalledEventFieldOrganizationID       = big.NewInt(1 << 1)
+	eventingIngestionStalledEventFieldSourceConnectionID   = big.NewInt(1 << 2)
+	eventingIngestionStalledEventFieldSourceConnectionName = big.NewInt(1 << 3)
+	eventingIngestionStalledEventFieldStalledSince         = big.NewInt(1 << 4)
+	eventingIngestionStalledEventFieldSyncID               = big.NewInt(1 << 5)
+	eventingIngestionStalledEventFieldSyncName             = big.NewInt(1 << 6)
+)
+
+type EventingIngestionStalledEvent struct {
+	// Most recent ingestion error
+	Error *string `json:"error,omitempty" url:"error,omitempty"`
+	// Organization ID
+	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
+	// Source connection ID
+	SourceConnectionID *string `json:"source_connection_id,omitempty" url:"source_connection_id,omitempty"`
+	// Name of the source Connection
+	SourceConnectionName *string `json:"source_connection_name,omitempty" url:"source_connection_name,omitempty"`
+	// When ingestion became unhealthy
+	StalledSince *time.Time `json:"stalled_since,omitempty" url:"stalled_since,omitempty"`
+	// Bulk Sync ID, absent when ingestion belongs to the Connection
+	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
+	// Name of the Bulk Sync, absent when ingestion belongs to the Connection
+	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (e *EventingIngestionStalledEvent) GetError() *string {
+	if e == nil {
+		return nil
+	}
+	return e.Error
+}
+
+func (e *EventingIngestionStalledEvent) GetOrganizationID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.OrganizationID
+}
+
+func (e *EventingIngestionStalledEvent) GetSourceConnectionID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.SourceConnectionID
+}
+
+func (e *EventingIngestionStalledEvent) GetSourceConnectionName() *string {
+	if e == nil {
+		return nil
+	}
+	return e.SourceConnectionName
+}
+
+func (e *EventingIngestionStalledEvent) GetStalledSince() *time.Time {
+	if e == nil {
+		return nil
+	}
+	return e.StalledSince
+}
+
+func (e *EventingIngestionStalledEvent) GetSyncID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.SyncID
+}
+
+func (e *EventingIngestionStalledEvent) GetSyncName() *string {
+	if e == nil {
+		return nil
+	}
+	return e.SyncName
+}
+
+func (e *EventingIngestionStalledEvent) GetExtraProperties() map[string]interface{} {
+	if e == nil {
+		return nil
+	}
+	return e.extraProperties
+}
+
+func (e *EventingIngestionStalledEvent) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetError sets the Error field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingIngestionStalledEvent) SetError(error_ *string) {
+	e.Error = error_
+	e.require(eventingIngestionStalledEventFieldError)
+}
+
+// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingIngestionStalledEvent) SetOrganizationID(organizationID *string) {
+	e.OrganizationID = organizationID
+	e.require(eventingIngestionStalledEventFieldOrganizationID)
+}
+
+// SetSourceConnectionID sets the SourceConnectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingIngestionStalledEvent) SetSourceConnectionID(sourceConnectionID *string) {
+	e.SourceConnectionID = sourceConnectionID
+	e.require(eventingIngestionStalledEventFieldSourceConnectionID)
+}
+
+// SetSourceConnectionName sets the SourceConnectionName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingIngestionStalledEvent) SetSourceConnectionName(sourceConnectionName *string) {
+	e.SourceConnectionName = sourceConnectionName
+	e.require(eventingIngestionStalledEventFieldSourceConnectionName)
+}
+
+// SetStalledSince sets the StalledSince field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingIngestionStalledEvent) SetStalledSince(stalledSince *time.Time) {
+	e.StalledSince = stalledSince
+	e.require(eventingIngestionStalledEventFieldStalledSince)
+}
+
+// SetSyncID sets the SyncID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingIngestionStalledEvent) SetSyncID(syncID *string) {
+	e.SyncID = syncID
+	e.require(eventingIngestionStalledEventFieldSyncID)
+}
+
+// SetSyncName sets the SyncName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EventingIngestionStalledEvent) SetSyncName(syncName *string) {
+	e.SyncName = syncName
+	e.require(eventingIngestionStalledEventFieldSyncName)
+}
+
+func (e *EventingIngestionStalledEvent) UnmarshalJSON(data []byte) error {
+	type embed EventingIngestionStalledEvent
+	var unmarshaler = struct {
+		embed
+		StalledSince *internal.DateTime `json:"stalled_since,omitempty"`
+	}{
+		embed: embed(*e),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*e = EventingIngestionStalledEvent(unmarshaler.embed)
+	e.StalledSince = unmarshaler.StalledSince.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
+	if err != nil {
+		return err
+	}
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *EventingIngestionStalledEvent) MarshalJSON() ([]byte, error) {
+	type embed EventingIngestionStalledEvent
+	var marshaler = struct {
+		embed
+		StalledSince *internal.DateTime `json:"stalled_since,omitempty"`
+	}{
+		embed:        embed(*e),
+		StalledSince: internal.NewOptionalDateTime(e.StalledSince),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (e *EventingIngestionStalledEvent) String() string {
+	if e == nil {
+		return "<nil>"
+	}
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+// Fires when a Model Sync execution is canceled. The execution also fires `sync.completed` with a `status` of `canceled`.
 var (
 	eventingSyncCanceledEventFieldExecutionID        = big.NewInt(1 << 0)
 	eventingSyncCanceledEventFieldOrganizationID     = big.NewInt(1 << 1)
@@ -1638,9 +2061,9 @@ type EventingSyncCanceledEvent struct {
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
 	// Status of the execution
 	Status *UtilExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-	// Model sync ID
+	// Model Sync ID
 	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	// Name of the model sync
+	// Name of the Model Sync
 	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	// Destination connection ID
 	TargetConnectionID *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
@@ -1792,6 +2215,7 @@ func (e *EventingSyncCanceledEvent) String() string {
 	return fmt.Sprintf("%#v", e)
 }
 
+// Fires when a Model Sync execution finishes, whatever its outcome. Read `status` to see the outcome. A failed or canceled execution also fires `sync.failed` or `sync.canceled`, and a completed execution with record errors or warnings also fires `sync.completed_with_errors`. Polytomic sends this event once the execution's record logs are available, so it can arrive after those events. Polytomic does not send it if the Model Sync has been deleted.
 var (
 	eventingSyncCompletedEventFieldDeletedCount       = big.NewInt(1 << 0)
 	eventingSyncCompletedEventFieldDeletedRecords     = big.NewInt(1 << 1)
@@ -1840,11 +2264,11 @@ type EventingSyncCompletedEvent struct {
 	RecordCount *int64 `json:"record_count,omitempty" url:"record_count,omitempty"`
 	// Schedule that started the execution
 	Schedule *EventingSyncSchedule `json:"schedule,omitempty" url:"schedule,omitempty"`
-	// Final status of the execution
+	// Final status of the execution, one of completed, failed, or canceled
 	Status *UtilExecutionStatus `json:"status,omitempty" url:"status,omitempty"`
-	// Model sync ID
+	// Model Sync ID
 	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	// Name of the model sync
+	// Name of the Model Sync
 	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	// Destination connection ID
 	TargetConnectionID *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
@@ -2234,6 +2658,7 @@ func (e *EventingSyncCompletedEvent) String() string {
 	return fmt.Sprintf("%#v", e)
 }
 
+// Fires when a Model Sync execution completes with at least one record error or warning. `number_of_errors` can be `0`. The execution also fires `sync.completed`.
 var (
 	eventingSyncCompletedWithErrorsEventFieldError              = big.NewInt(1 << 0)
 	eventingSyncCompletedWithErrorsEventFieldExecutionID        = big.NewInt(1 << 1)
@@ -2256,9 +2681,9 @@ type EventingSyncCompletedWithErrorsEvent struct {
 	NumberOfWarnings *int64 `json:"number_of_warnings,omitempty" url:"number_of_warnings,omitempty"`
 	// Organization ID
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	// Model sync ID
+	// Model Sync ID
 	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	// Name of the model sync
+	// Name of the Model Sync
 	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	// Destination connection ID
 	TargetConnectionID *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
@@ -2438,6 +2863,7 @@ func (e *EventingSyncCompletedWithErrorsEvent) String() string {
 	return fmt.Sprintf("%#v", e)
 }
 
+// Fires when a Model Sync execution fails. The execution also fires `sync.completed` with a `status` of `failed`.
 var (
 	eventingSyncFailedEventFieldError              = big.NewInt(1 << 0)
 	eventingSyncFailedEventFieldExecutionID        = big.NewInt(1 << 1)
@@ -2454,9 +2880,9 @@ type EventingSyncFailedEvent struct {
 	ExecutionID *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
 	// Organization ID
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	// Model sync ID
+	// Model Sync ID
 	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	// Name of the model sync
+	// Name of the Model Sync
 	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	// Destination connection ID
 	TargetConnectionID *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`
@@ -2608,6 +3034,7 @@ func (e *EventingSyncFailedEvent) String() string {
 	return fmt.Sprintf("%#v", e)
 }
 
+// Fires when a Model Sync execution starts running.
 var (
 	eventingSyncRunningEventFieldExecutionID        = big.NewInt(1 << 0)
 	eventingSyncRunningEventFieldOrganizationID     = big.NewInt(1 << 1)
@@ -2621,9 +3048,9 @@ type EventingSyncRunningEvent struct {
 	ExecutionID *string `json:"execution_id,omitempty" url:"execution_id,omitempty"`
 	// Organization ID
 	OrganizationID *string `json:"organization_id,omitempty" url:"organization_id,omitempty"`
-	// Model sync ID
+	// Model Sync ID
 	SyncID *string `json:"sync_id,omitempty" url:"sync_id,omitempty"`
-	// Name of the model sync
+	// Name of the Model Sync
 	SyncName *string `json:"sync_name,omitempty" url:"sync_name,omitempty"`
 	// Destination connection ID
 	TargetConnectionID *string `json:"target_connection_id,omitempty" url:"target_connection_id,omitempty"`

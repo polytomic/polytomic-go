@@ -162,7 +162,7 @@ type ExecutionsListRequest struct {
 	PageToken *string `json:"-" url:"page_token,omitempty"`
 	// When true, only return executions that have finished. Terminal executions are ordered by updated_at.
 	OnlyTerminal *bool `json:"-" url:"only_terminal,omitempty"`
-	// When true, return executions from oldest to newest. Default is newest first.
+	// Traverse from the oldest executions by the selected sort timestamp; each page is ordered newest first.
 	Ascending *bool `json:"-" url:"ascending,omitempty"`
 	// Maximum number of executions to return. Capped at 100.
 	Limit *int `json:"-" url:"limit,omitempty"`
